@@ -11,7 +11,7 @@ android:versionName="1.0">
         android:supportsRtl="true"
         android:name=".app.LikingApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
