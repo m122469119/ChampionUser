@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--base text size-->
+    <dimen name="textsize_huge">20sp</dimen>
+    <dimen name="textsize_medium">16sp</dimen>
+    <dimen name="textsize_large">18sp</dimen>
+    <dimen name="textsize_small">14sp</dimen>
+    <dimen name="textsize_mirco">12sp</dimen>
+    <!-- BaseActivity -->
+    <dimen name="distance_dialog_title_top_bottom">10dp</dimen>
+    <dimen name="distance_dialog_title_right_left">15dp</dimen>
+    <dimen name="image_size_dialog_title_icon">24dp</dimen>
+    <dimen name="text_size_dialog_title">18sp</dimen>
+    <dimen name="text_size_dialog_content">16sp</dimen>
+    <dimen name="text_size_dialog_button">14sp</dimen>
+    <dimen name="distance_dialog_button_text">12dp</dimen>
+    <dimen name="distance_dialog_operation_button">10dp</dimen>
+
+
+    <!-- ActionBar -->
+    <dimen name="imagesize_action_bar_icon">32dp</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
+    <dimen name="action_bar_padding_left_right">4dp</dimen>
+    <dimen name="action_bar_title_textsize">16dp</dimen>
+    <dimen name="action_bar_subtitle_textsize">12dp</dimen>
+    <dimen name="refresh_load_icon_width">52dp</dimen>
+    <dimen name="refresh_load_icon_height">120dp</dimen>
+    <dimen name="dialog_background_radius">4dp</dimen>
+    <dimen name="dialog_title_panel_minHeight">48dp</dimen>
+    <dimen name="dialog_title_padding_top_bottom">10dp</dimen>
+</resources>

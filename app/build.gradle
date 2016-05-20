@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.chushi007.android.liking"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+    }
+    signingConfigs {
+        myConfig {
+            storeFile file("haochushi")
+            storePassword "haochushi007"
+            keyAlias "haochushi"
+            keyPassword "haochushi"
+        }
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = ['libs']
+        }
+        androidTest.setRoot('src/androidTest')
+    }
+    buildTypes {
+        def STRING = "String"
+        def BOOLEAN = "boolean"
+        def TEST_MODE = "TEST_MODE"
+        def APP_FLAG = "APP_FLAG"
+        def HTTP_HOST = "HTTP_HOST"
+        def TRUE = "true"
+        def FALSE = "false"
+        def appFlag = "\"goodChef\""
+        release {
+            buildConfigField BOOLEAN, TEST_MODE, FALSE
+            buildConfigField STRING, APP_FLAG, appFlag
+            buildConfigField STRING, HTTP_HOST, "\"http://manage.chushi007.com\""
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.myConfig
+            proguardFiles 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField BOOLEAN, TEST_MODE, TRUE
+            buildConfigField STRING, APP_FLAG, appFlag
+            buildConfigField STRING, HTTP_HOST, "\"http://testmanage.chushi007.com\""
+            applicationIdSuffix ".test"
+            versionNameSuffix "测试版"
+            signingConfig signingConfigs.myConfig
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = rootProject.ext.sourceCompatibility
+        targetCompatibility = rootProject.ext.targetCompatibility
+    }
+
+    lintOptions {
+        abortOnError rootProject.ext.abortOnError
+    }
+
+    packagingOptions {
+        exclude('META-INF/maven/com.squareup.okio/okio/pom.xml')
+        exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':framework')
+//    compile 'io.reactivex:rxjava:1.1.5'
+//    compile 'io.reactivex:rxandroid:1.2.0'
+}
