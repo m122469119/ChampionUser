@@ -1,8 +1,9 @@
-package com.chushi007.android.liking;
+package com.chushi007.android.liking.activity;
 
 import android.os.Bundle;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.chushi007.android.liking.R;
 
 public class MainActivity extends AppBarActivity {
 
