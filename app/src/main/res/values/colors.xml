@@ -4,4 +4,5 @@
     <color name="tab_indicator_gray_color">#9198a1</color>
 
     <color name="split_line_color">#cccbcb</color>
+    <color name="bg_dark_gray_text">#3F4246</color>
 </resources>
