@@ -2,4 +2,6 @@
 <resources>
     <color name="tab_indicator_color">#23ec7d</color>
     <color name="tab_indicator_gray_color">#9198a1</color>
+
+    <color name="split_line_color">#cccbcb</color>
 </resources>
