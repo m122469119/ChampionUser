@@ -14,6 +14,7 @@ import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.chushi007.android.liking.R;
 import com.chushi007.android.liking.activity.GroupLessonDetailsActivity;
+import com.chushi007.android.liking.activity.PrivateLessonDetailsActivity;
 import com.chushi007.android.liking.adapter.BannerPagerAdapter;
 import com.chushi007.android.liking.adapter.LikingLessonAdapter;
 import com.chushi007.android.liking.adapter.LinkingLessonRecyclerAdapter;
@@ -45,17 +46,17 @@ public class LikingLessonFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View  view= inflater.inflate(R.layout.fragment_liking_lesson,null,false);
+        View view = inflater.inflate(R.layout.fragment_liking_lesson, null, false);
         mPullToRefreshRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.listview);
         initData();
         initView();
         return view;
     }
 
-    private void initData(){
+    private void initData() {
         List<String> list = new ArrayList<>();
-        for (int i=0;i<30;i++){
-            list.add(""+i);
+        for (int i = 0; i < 30; i++) {
+            list.add("" + i);
         }
         mLinkingLessonRecyclerAdapter = new LinkingLessonRecyclerAdapter(getActivity());
         mLinkingLessonRecyclerAdapter.setData(list);
@@ -63,8 +64,14 @@ public class LikingLessonFragment extends BaseFragment {
         mLinkingLessonRecyclerAdapter.setOnItemClickListener(new LinkingLessonRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, String data) {
-                Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
-                startActivity(intent);
+                if ((position % 2 == 0)) {
+                    Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -77,17 +84,17 @@ public class LikingLessonFragment extends BaseFragment {
         mLinkingLessonRecyclerAdapter.setHeaderView(headView);
         initImageSliderLayout();
         requestBanner();
-      //  setNoDataView();
+        //  setNoDataView();
     }
 
     private void setNoDataView() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_no_data, null, false);
         TextView textView = (TextView) view.findViewById(R.id.no_data_text);
-       // getStateView().setNodataView(view);
+        // getStateView().setNodataView(view);
     }
 
     private void initImageSliderLayout() {
-     //   resizeImageSliderLayout();
+        //   resizeImageSliderLayout();
         mBannerPagerAdapter = new BannerPagerAdapter(getActivity());
         mImageViewPager.setAdapter(mBannerPagerAdapter);
         mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
