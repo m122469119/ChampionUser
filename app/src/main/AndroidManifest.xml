@@ -19,7 +19,12 @@ android:versionName="1.0">
             </intent-filter>
         </activity>
 
+        <!--团体课程详情-->
         <activity android:name=".activity.GroupLessonDetailsActivity"/>
+
+        <!--私教课程详情-->
+        <activity android:name=".activity.PrivateLessonDetailsActivity"/>
+
     </application>
 
 </manifest>

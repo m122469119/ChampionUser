@@ -189,5 +189,5 @@
         android:textSize="15sp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="立即预约"/>
+        android:text="@string/immadetails_appointment"/>
 </RelativeLayout>
