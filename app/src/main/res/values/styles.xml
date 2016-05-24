@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <style name="LikingItemRating" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/liking_detail_ratting_start</item>
+        <item name="android:minHeight">18dip</item>
+        <item name="android:maxHeight">18dip</item>
+        <item name="android:isIndicator">true</item>
+    </style>
 </resources>

@@ -12,4 +12,7 @@
     <string name="layout_contact_join">联系加盟</string>
     <string name="layout_become_teacher">称为教练</string>
     <string name="layout_about_us">关于我们</string>
+    <string name="lesson_time">时间：</string>
+    <string name="lesson_address">地点：</string>
+    <string name="lesson_teacher">教练：</string>
 </resources>

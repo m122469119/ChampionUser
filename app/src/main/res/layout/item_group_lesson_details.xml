@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              android:layout_width="200dp"
+              android:layout_marginRight="10dp"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <com.aaron.android.framework.library.imageloader.HImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        fresco:failureImage="@drawable/linshi_back"
+        fresco:failureImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/linshi_back"
+        fresco:placeholderImageScaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/motor_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="有氧区"
+        android:textSize="16sp"/>
+
+</LinearLayout>

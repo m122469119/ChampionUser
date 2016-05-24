@@ -5,4 +5,5 @@
 
     <color name="split_line_color">#cccbcb</color>
     <color name="bg_dark_gray_text">#3F4246</color>
+    <color name="line">#e0e0e0</color>
 </resources>

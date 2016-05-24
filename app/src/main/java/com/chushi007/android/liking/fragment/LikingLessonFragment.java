@@ -1,5 +1,6 @@
 package com.chushi007.android.liking.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.chushi007.android.liking.R;
+import com.chushi007.android.liking.activity.GroupLessonDetailsActivity;
 import com.chushi007.android.liking.adapter.BannerPagerAdapter;
 import com.chushi007.android.liking.adapter.LikingLessonAdapter;
 import com.chushi007.android.liking.adapter.LinkingLessonRecyclerAdapter;
@@ -58,6 +60,13 @@ public class LikingLessonFragment extends BaseFragment {
         mLinkingLessonRecyclerAdapter = new LinkingLessonRecyclerAdapter(getActivity());
         mLinkingLessonRecyclerAdapter.setData(list);
         mPullToRefreshRecyclerView.setAdapter(mLinkingLessonRecyclerAdapter);
+        mLinkingLessonRecyclerAdapter.setOnItemClickListener(new LinkingLessonRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, String data) {
+                Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
@@ -109,6 +118,7 @@ public class LikingLessonFragment extends BaseFragment {
         mImageViewPager.setCurrentItem(0);
         mImageViewPager.startAutoScroll();
     }
+
 
     @Override
     public void onResume() {
