@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:fresco="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="vertical"
+                                    card_view:cardBackgroundColor="@color/cardview_dark_background"
+                                    card_view:cardCornerRadius="0dp"
+                                    card_view:cardPreventCornerOverlap="true"
+                                    card_view:cardElevation="10dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/shape_card_stoke_bottom_background"
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/frameLayout_lesson"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -22,9 +29,9 @@
                 android:id="@+id/lesson_image"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                fresco:failureImage="@drawable/image_defalut_bg"
+                fresco:failureImage="@drawable/linshi_back"
                 fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/image_defalut_bg"
+                fresco:placeholderImage="@drawable/linshi_back"
                 fresco:placeholderImageScaleType="centerCrop"/>
 
             <RelativeLayout
@@ -38,6 +45,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:text="核心力量训练"
+                    android:textColor="@color/white"
                     android:textSize="15sp"/>
 
 
@@ -49,6 +57,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="#增肌 #减肥"
+                    android:textColor="@color/white"
                     android:textSize="14sp"/>
 
                 <RelativeLayout
@@ -78,6 +87,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:text="今天 17：00 - 19：00"
+                    android:textColor="@color/white"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -90,13 +100,18 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
                     android:text="剩余名额：10"
+                    android:textColor="@color/white"
                     android:textSize="14sp"/>
+
+
             </RelativeLayout>
+
         </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:padding="10dp">
 
             <ImageView
@@ -126,4 +141,4 @@
                 android:textSize="15sp"/>
         </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>
