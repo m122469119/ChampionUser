@@ -135,7 +135,7 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
         }
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int position, String data);
     }
 }

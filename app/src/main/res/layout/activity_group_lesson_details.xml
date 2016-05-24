@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="42dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.aaron.android.framework.library.imageloader.HImageView
+                android:id="@+id/group_lesson_details_teach_image"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                fresco:failureImage="@drawable/linshi_back"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/linshi_back"
+                fresco:placeholderImageScaleType="centerCrop"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="@string/lesson_time"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="今天 17：00 --20：40"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="@string/lesson_address"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="凌空SOHO 8楼1102室"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="@string/lesson_teacher"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hary"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="强度："
+                    android:layout_marginRight="20dp"
+                    android:textSize="15sp"/>
+
+                <RatingBar
+                    android:id="@+id/rating_kitchen"
+                    style="@style/LikingItemRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="2" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/bg_dark_gray_text"
+                    android:text="课程介绍"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:lineSpacingExtra="3dp"
+                    android:textSize="13sp"
+                    android:text="这节课是团体课这节课是团体课这节课是团体课这节课是团体课这节课是团体课这节课是团体课"/>
+            </LinearLayout>
+
+
+            <com.aaron.android.framework.library.imageloader.HImageView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="10dp"
+                fresco:failureImage="@drawable/linshi_back"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/linshi_back"
+                fresco:placeholderImageScaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:text="教练介绍教练介绍教练介绍教练介绍教练介绍教练介绍"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="场馆介绍"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:textColor="@color/bg_dark_gray_text"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/group_lesson_details_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="有疑问？联系客服"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:textSize="15sp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="立即预约"/>
+</RelativeLayout>
