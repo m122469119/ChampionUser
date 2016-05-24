@@ -104,6 +104,24 @@
                 android:id="@+id/layout_about_us"
                 layout="@layout/item_my_standard"/>
 
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="如有问题,联系客服"
+                android:textSize="13sp"/>
         </LinearLayout>
 
     </ScrollView>
