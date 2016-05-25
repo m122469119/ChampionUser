@@ -1,144 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:orientation="vertical"
-                                    card_view:cardBackgroundColor="@color/cardview_dark_background"
-                                    card_view:cardCornerRadius="0dp"
-                                    card_view:cardPreventCornerOverlap="true"
-                                    card_view:cardElevation="10dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:card_view="http://schemas.android.com/apk/res-auto"
+             xmlns:fresco="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/white"
+             android:orientation="vertical">
 
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/frameLayout_lesson"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:id="@+id/lesson_image"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp">
-
-                <TextView
-                    android:id="@+id/lesson_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="核心力量训练"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"/>
-
-
-                <TextView
-                    android:id="@+id/lesson_use"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/lesson_name"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="#增肌 #减肥"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"/>
-
-                <RelativeLayout
-                    android:id="@+id/layout_lesson_type"
-                    android:layout_width="60dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/icon_pivate_teach_lesson">
-
-                    <TextView
-                        android:id="@+id/lesson_type_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:text="私教课"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"/>
-                </RelativeLayout>
-
-
-                <TextView
-                    android:id="@+id/lesson_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="今天 17：00 - 19：00"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/surplus_person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:text="剩余名额：10"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"/>
-
-
-            </RelativeLayout>
-
-        </FrameLayout>
-
-        <RelativeLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="10dp">
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="10dp"
+            card_view:cardPreventCornerOverlap="true">
 
-            <ImageView
-                android:id="@+id/lesson_address_icon"
-                android:layout_width="15dp"
-                android:layout_height="18dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_lesson_address"/>
-
-            <TextView
-                android:id="@+id/lesson_address"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/lesson_address_icon"
-                android:text="凌空SOHO"
-                android:textSize="14sp"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lesson_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:text="5 km"
-                android:textSize="15sp"/>
-        </RelativeLayout>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+                <RelativeLayout
+                    android:id="@+id/frameLayout_lesson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.aaron.android.framework.library.imageloader.HImageView
+                        android:id="@+id/lesson_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        fresco:failureImage="@drawable/linshi_back"
+                        fresco:failureImageScaleType="centerCrop"
+                        fresco:placeholderImage="@drawable/linshi_back"
+                        fresco:placeholderImageScaleType="centerCrop"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:background="#60000000"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp">
+
+                        <TextView
+                            android:id="@+id/lesson_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="核心力量训练"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"/>
+
+
+                        <TextView
+                            android:id="@+id/lesson_use"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_name"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:text="#增肌 #减肥"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"/>
+
+
+                        <TextView
+                            android:id="@+id/lesson_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="今天 17：00 - 19：00"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"/>
+
+                        <TextView
+                            android:id="@+id/surplus_person"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="15dp"
+                            android:text="剩余名额：10"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    >
+
+                    <ImageView
+                        android:id="@+id/lesson_address_icon"
+                        android:layout_width="14dp"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/icon_lesson_address"/>
+
+                    <TextView
+                        android:id="@+id/lesson_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/lesson_address_icon"
+                        android:text="凌空SOHO"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="13sp"/>
+
+                    <TextView
+                        android:id="@+id/lesson_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="5 km"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="13sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_lesson_type"
+        android:layout_width="55dp"
+        android:layout_height="23dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/icon_pivate_teach_lesson">
+
+        <TextView
+            android:id="@+id/lesson_type_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="私教课"
+            android:textColor="@color/white"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+
+</FrameLayout>
