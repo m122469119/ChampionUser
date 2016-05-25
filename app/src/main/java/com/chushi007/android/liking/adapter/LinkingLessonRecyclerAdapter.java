@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.chushi007.android.liking.R;
 
 import java.util.ArrayList;
@@ -73,9 +74,11 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
             if ((back % 2) == 0) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 holder.mLessonTypeTextView.setText("团体课");
+                holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
             } else {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 holder.mLessonTypeTextView.setText("私教课");
+                holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
             }
             holder.mDistanceTextView.setText(str + " km");
 
