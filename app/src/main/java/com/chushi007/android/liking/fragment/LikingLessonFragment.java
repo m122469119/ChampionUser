@@ -3,12 +3,10 @@ package com.chushi007.android.liking.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseFragment;
@@ -17,12 +15,12 @@ import com.chushi007.android.liking.R;
 import com.chushi007.android.liking.activity.GroupLessonDetailsActivity;
 import com.chushi007.android.liking.activity.PrivateLessonDetailsActivity;
 import com.chushi007.android.liking.adapter.BannerPagerAdapter;
-import com.chushi007.android.liking.adapter.LikingLessonAdapter;
 import com.chushi007.android.liking.adapter.LinkingLessonRecyclerAdapter;
 import com.chushi007.android.liking.http.result.BannerResult;
 import com.chushi007.android.liking.widgets.PullToRefreshRecyclerView;
 import com.chushi007.android.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.chushi007.android.liking.widgets.autoviewpager.indicator.CirclePageIndicator;
+import com.chushi007.android.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class LikingLessonFragment extends BaseFragment {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private View headView;
     private InfiniteViewPager mImageViewPager;
-    private CirclePageIndicator mCirclePageIndicator;
+    private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
     private View mSliderParentLayout;
     private PullToRefreshRecyclerView mPullToRefreshRecyclerView;
@@ -81,7 +79,7 @@ public class LikingLessonFragment extends BaseFragment {
         headView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, mPullToRefreshRecyclerView, false);
         mSliderParentLayout = headView.findViewById(R.id.layout_liking_home_head);
         mImageViewPager = (InfiniteViewPager) headView.findViewById(R.id.liking_home_head_viewpager);
-        mCirclePageIndicator = (CirclePageIndicator) headView.findViewById(R.id.liking_home_head_indicator);
+        mIconPageIndicator = (IconPageIndicator) headView.findViewById(R.id.liking_home_head_indicator);
         mLinkingLessonRecyclerAdapter.setHeaderView(headView);
         initImageSliderLayout();
         requestBanner();
@@ -99,7 +97,7 @@ public class LikingLessonFragment extends BaseFragment {
         mBannerPagerAdapter = new BannerPagerAdapter(getActivity());
         mImageViewPager.setAdapter(mBannerPagerAdapter);
         mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
-        mCirclePageIndicator.setViewPager(mImageViewPager);
+        mIconPageIndicator.setViewPager(mImageViewPager);
     }
 
     private void resizeImageSliderLayout() {
@@ -122,6 +120,7 @@ public class LikingLessonFragment extends BaseFragment {
         if (mBannerPagerAdapter != null) {
             mBannerPagerAdapter.setData(banners);
             mBannerPagerAdapter.notifyDataSetChanged();
+            mIconPageIndicator.notifyDataSetChanged();
         }
         mImageViewPager.setCurrentItem(0);
         mImageViewPager.startAutoScroll();
@@ -142,11 +141,5 @@ public class LikingLessonFragment extends BaseFragment {
         if (mImageViewPager != null && mImageViewPager.getChildCount() != 0) {
             mImageViewPager.stopAutoScroll();
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        onStop();
     }
 }

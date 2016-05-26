@@ -12,7 +12,7 @@ import com.chushi007.android.liking.R;
 import com.chushi007.android.liking.http.result.BannerResult;
 import com.chushi007.android.liking.utils.BannerSkipUtils;
 import com.chushi007.android.liking.widgets.autoviewpager.InfinitePagerAdapter;
-
+import com.chushi007.android.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class BannerPagerAdapter extends InfinitePagerAdapter {
+public class BannerPagerAdapter extends InfinitePagerAdapter implements IconPagerAdapter {
     private Context mContext;
     private List<BannerResult.BannerData.Banner> mBannerList = new ArrayList<>();
     private LayoutInflater mLayoutInflater;
@@ -100,5 +100,10 @@ public class BannerPagerAdapter extends InfinitePagerAdapter {
         public View getView() {
             return mBannerImageView;
         }
+    }
+
+    @Override
+    public int getIconResId(int index) {
+        return R.drawable.banner_indicator;
     }
 }
