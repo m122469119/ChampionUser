@@ -21,10 +21,14 @@ android:versionName="1.0">
 
         <!--团体课程详情-->
         <activity android:name=".activity.GroupLessonDetailsActivity"/>
-
         <!--私教课程详情-->
         <activity android:name=".activity.PrivateLessonDetailsActivity"/>
-
+         <!--关于我们-->
+        <activity android:name=".activity.AboutActivity"/>
+        <!--成为教练-->
+        <activity android:name=".activity.BecomeTeacherActivity"/>
+        <!--周边-菜品详情-->
+        <activity android:name=".activity.DishesDetailsActivity"/>
     </application>
 
 </manifest>

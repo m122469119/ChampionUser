@@ -1,5 +1,6 @@
 package com.chushi007.android.liking.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.aaron.android.framework.base.BaseFragment;
 import com.chushi007.android.liking.R;
+import com.chushi007.android.liking.activity.DishesDetailsActivity;
 import com.chushi007.android.liking.adapter.LikingNearbyAdapter;
 import com.chushi007.android.liking.widgets.PullToRefreshRecyclerView;
 
@@ -46,5 +48,12 @@ public class LikingNearbyFragment extends BaseFragment {
         mAdapter = new LikingNearbyAdapter(getActivity());
         mAdapter.setData(list);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new LikingNearbyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, String data) {
+                Intent intent = new Intent(getActivity(), DishesDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
