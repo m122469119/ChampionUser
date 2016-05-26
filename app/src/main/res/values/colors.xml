@@ -8,4 +8,6 @@
     <color name="line">#e0e0e0</color>
     <color name="liking_lesson_text">#596167</color>
     <color name="liking_lesson_group_text">#2e2f34</color>
+    <color name="add_minus_dishes_text">#34C86C</color>
+    <color name="nearby_item_gray_text">#A8ABAE</color>
 </resources>

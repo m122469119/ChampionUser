@@ -4,11 +4,11 @@
                                     xmlns:fresco="http://schemas.android.com/apk/res-auto"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    card_view:cardCornerRadius="0dp"
-                                    android:layout_marginTop="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="vertical"
+                                    card_view:cardCornerRadius="0dp"
                                     card_view:cardElevation="10dp"
                                     card_view:cardPreventCornerOverlap="true">
 
@@ -17,105 +17,122 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
+
+        <com.aaron.android.framework.library.imageloader.HImageView
+            android:id="@+id/lesson_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="140dp"
+            fresco:failureImage="@drawable/linshi_back"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/linshi_back"
+            fresco:placeholderImageScaleType="centerCrop"/>
 
-
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:id="@+id/lesson_image"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="#60000000"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp">
-
-                 <TextView
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:textColor="@color/white"
-                     android:gravity="center"
-                     android:textSize="13sp"
-                     android:layout_marginTop="10dp"
-                     android:text="菜品名称"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:textSize="14sp"
-                    android:layout_margin="10dp"
-                    android:text="增肌,塑身"/>
-            </RelativeLayout>
-
-        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:padding="10dp"
-            android:layout_height="42dp">
+            android:layout_height="64dp"
+            android:padding="10dp">
 
-            <TextView
-                android:id="@+id/dishes_money"
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/liking_lesson_group_text"
-                android:textSize="14sp"
-                android:text="¥ 35"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dishes_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="减肥沙拉"
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/surplus_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@+id/dishes_name"
+                    android:text="今日还剩15份"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/dishes_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dishes_name"
+                    android:layout_marginTop="4dp"
+                    android:text="¥ 35"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="16sp"/>
+            </RelativeLayout>
 
 
-            <ImageView
-                android:id="@+id/add_image"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/add"/>
-
-            <TextView
-                android:id="@+id/food_buy_number"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="45"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/add_image"
-                android:textColor="@color/liking_lesson_group_text"
-                android:textSize="15sp"/>
+                android:layout_centerVertical="true">
 
-            <ImageView
-                android:id="@+id/reduce_image"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@+id/food_buy_number"
-                android:src="@drawable/minus"
-                android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/add_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/add"/>
+
+                <TextView
+                    android:id="@+id/food_buy_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/add_image"
+                    android:text="45"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="15sp"/>
+
+                <ImageView
+                    android:id="@+id/reduce_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_toLeftOf="@+id/food_buy_number"
+                    android:src="@drawable/minus"
+                    android:visibility="visible"/>
+            </RelativeLayout>
 
         </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/liking_lesson_group_text"
-            android:textSize="13sp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:text="今日还剩 16 份 | 1000人品尝过"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/dishes_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:text="#减肥 #塑性"
+                android:textColor="@color/nearby_item_gray_text"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/buy_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:text="999人购买过"
+                android:textColor="@color/nearby_item_gray_text"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

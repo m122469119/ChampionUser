@@ -16,4 +16,5 @@
     <string name="lesson_address">地点：</string>
     <string name="lesson_teacher">教练：</string>
     <string name="immadetails_appointment">立即预约</string>
+    <string name="title_activity_about">关于</string>
 </resources>
