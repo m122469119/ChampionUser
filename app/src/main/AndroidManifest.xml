@@ -31,6 +31,8 @@
         <activity android:name=".activity.DishesDetailsActivity"/>
         <!--联系加盟-->
         <activity android:name=".activity.ContactJonInActivity"/>
+        <!--我的信息-->
+        <activity android:name=".activity.MyInfoActivity"/>
     </application>
 
 </manifest>
