@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.chushi007.android.liking"
           xmlns:android="http://schemas.android.com/apk/res/android"
-android:versionCode="1"
-android:versionName="1.0">
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <application
+        android:name=".app.LikingApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".app.LikingApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.LikingHomeActivity">
             <intent-filter>
@@ -23,12 +23,14 @@ android:versionName="1.0">
         <activity android:name=".activity.GroupLessonDetailsActivity"/>
         <!--私教课程详情-->
         <activity android:name=".activity.PrivateLessonDetailsActivity"/>
-         <!--关于我们-->
+        <!--关于我们-->
         <activity android:name=".activity.AboutActivity"/>
         <!--成为教练-->
         <activity android:name=".activity.BecomeTeacherActivity"/>
         <!--周边-菜品详情-->
         <activity android:name=".activity.DishesDetailsActivity"/>
+        <!--联系加盟-->
+        <activity android:name=".activity.ContactJonInActivity"/>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import com.aaron.android.framework.base.BaseFragment;
 import com.chushi007.android.liking.R;
 import com.chushi007.android.liking.activity.AboutActivity;
 import com.chushi007.android.liking.activity.BecomeTeacherActivity;
+import com.chushi007.android.liking.activity.ContactJonInActivity;
 
 /**
  * Created on 16/5/20.
@@ -81,7 +82,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         }else if (v == mCouponsLayout){
 
         }else if (v == mContactJoinLayout){
-
+            Intent intent = new Intent(getActivity(), ContactJonInActivity.class);
+            startActivity(intent);
         }else if (v == mBecomeTeacherLayout){
             Intent intent = new Intent(getActivity(), BecomeTeacherActivity.class);
             startActivity(intent);
