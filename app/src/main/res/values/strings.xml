@@ -17,4 +17,6 @@
     <string name="lesson_teacher">教练：</string>
     <string name="immadetails_appointment">立即预约</string>
     <string name="title_activity_about">关于</string>
+    <string name="immediately_submit">立即提交</string>
+    <string name="title_activity_contact_join">联系加盟</string>
 </resources>

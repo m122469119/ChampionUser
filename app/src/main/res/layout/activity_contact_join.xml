@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
               xmlns:fresco="http://schemas.android.com/apk/res-auto"
-              android:layout_height="match_parent">
-
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <com.aaron.android.framework.library.imageloader.HImageView
         android:layout_width="match_parent"
@@ -14,59 +13,57 @@
         fresco:placeholderImage="@drawable/linshi_back"
         fresco:placeholderImageScaleType="centerCrop"/>
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="3dp"
-        android:textSize="15sp"
         android:padding="10dp"
+        android:text="提交信息后，工作人员会在2个工作日内与您联系，请耐心等待"
         android:textColor="@color/bg_dark_gray_text"
-        android:text="提交信息后，工作人员会在2个工作日内与您联系，请耐心等待"/>
+        android:textSize="15sp"/>
 
 
     <EditText
-    android:id="@+id/name_editText"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="15sp"
-    android:hint="姓名"
-    android:padding="10dp"
-    android:inputType="text"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:textColorHint="@color/split_line_color"
-    android:textColor="@color/bg_dark_gray_text"/>
+        android:id="@+id/name_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:hint="姓名"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/bg_dark_gray_text"
+        android:textColorHint="@color/split_line_color"
+        android:textSize="15sp"/>
 
     <EditText
         android:id="@+id/phone_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:hint="联系方式"
         android:inputType="phone"
         android:padding="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:textColor="@color/bg_dark_gray_text"
         android:textColorHint="@color/split_line_color"
-        android:textColor="@color/bg_dark_gray_text"/>
+        android:textSize="15sp"/>
 
     <EditText
         android:id="@+id/city_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:hint="所在城市"
-        android:padding="10dp"
-        android:inputType="text"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:hint="所在城市"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/bg_dark_gray_text"
         android:textColorHint="@color/split_line_color"
-        android:textColor="@color/bg_dark_gray_text"/>
-
+        android:textSize="15sp"/>
 
     <TextView
         android:id="@+id/immediately_submit"
