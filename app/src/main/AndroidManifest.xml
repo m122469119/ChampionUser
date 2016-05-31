@@ -33,6 +33,8 @@
         <activity android:name=".activity.ContactJonInActivity"/>
         <!--我的信息-->
         <activity android:name=".activity.MyInfoActivity"/>
+        <!-- 图片选择-->
+      <activity android:name=".widgets.camera.AlbumActivity"/>
     </application>
 
 </manifest>
