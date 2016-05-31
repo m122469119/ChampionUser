@@ -16,6 +16,7 @@ import com.chushi007.android.liking.R;
 import com.chushi007.android.liking.activity.AboutActivity;
 import com.chushi007.android.liking.activity.BecomeTeacherActivity;
 import com.chushi007.android.liking.activity.ContactJonInActivity;
+import com.chushi007.android.liking.activity.LessonActivity;
 import com.chushi007.android.liking.activity.MyInfoActivity;
 
 /**
@@ -86,7 +87,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             Intent intent = new Intent(getActivity(), MyInfoActivity.class);
             startActivity(intent);
         } else if (v == mInviteFriendsLayout) {
-
+            Intent intent = new Intent(getActivity(), LessonActivity.class);
+            startActivity(intent);
         } else if (v == mCouponsLayout) {
 
         } else if (v == mContactJoinLayout) {
