@@ -10,4 +10,7 @@
     <color name="liking_lesson_group_text">#2e2f34</color>
     <color name="add_minus_dishes_text">#34C86C</color>
     <color name="nearby_item_gray_text">#A8ABAE</color>
+    <color name="bg_camera_text">#6A6F75</color>
+    <color name="album_icon_select">#30000000</color>
+    <color name="dialog_window_background">#F6F4F4</color>
 </resources>
