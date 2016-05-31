@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/main_app_color"
+                android:orientation="vertical"
+                android:fitsSystemWindows="true"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+
+    <TextView
+        android:id="@+id/lesson_left_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:text="上海"
+        android:fitsSystemWindows="true"
+        android:textColor="@color/tab_indicator_color"
+        android:textSize="@dimen/textsize_small"/>
+
+    <ImageView
+        android:id="@+id/title_down_arrow"
+        android:layout_width="15dp"
+        android:layout_height="9dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:fitsSystemWindows="true"
+        android:layout_toRightOf="@+id/lesson_left_textview"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/lesson_title_down_arrow"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/tv_screen_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="LIKING"
+        android:fitsSystemWindows="true"
+        android:textColor="@color/tab_indicator_color"
+        android:textSize="@dimen/textsize_small"/>
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:fitsSystemWindows="true"
+        android:layout_marginRight="10dp"
+        android:padding="10dp"/>
+</RelativeLayout>
