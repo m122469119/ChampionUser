@@ -19,4 +19,7 @@
     <string name="title_activity_about">关于</string>
     <string name="immediately_submit">立即提交</string>
     <string name="title_activity_contact_join">联系加盟</string>
+
+    <string name="tab_title_group_lesson">团体课</string>
+    <string name="tab_title_private_lesson">私教课</string>
 </resources>

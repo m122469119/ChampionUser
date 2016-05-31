@@ -34,7 +34,9 @@
         <!--我的信息-->
         <activity android:name=".activity.MyInfoActivity"/>
         <!-- 图片选择-->
-      <activity android:name=".widgets.camera.AlbumActivity"/>
+        <activity android:name=".widgets.camera.AlbumActivity"/>
+        <!--课程-->
+        <activity android:name=".activity.LessonActivity"/>
     </application>
 
 </manifest>
