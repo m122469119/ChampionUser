@@ -5,12 +5,12 @@
     android:layout_marginBottom="10dp"
     android:layout_height="140dp">
 
-    <com.chushi007.android.liking.widgets.autoviewpager.InfiniteViewPager
+    <com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager
         android:id="@+id/liking_home_head_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.chushi007.android.liking.widgets.autoviewpager.indicator.IconPageIndicator
+    <com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator
         android:id="@+id/liking_home_head_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
