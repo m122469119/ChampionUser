@@ -12,11 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseFragment;
+import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.LessonActivity;
+import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
 
 /**
@@ -33,6 +35,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LinearLayout mAboutUsLayout;//关于我们
 
     private RelativeLayout mHeadInfoLayout;
+    private HImageView mHeadHImageView;
 
     @Nullable
     @Override
@@ -50,6 +53,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
         mAboutUsLayout = (LinearLayout) view.findViewById(R.id.layout_about_us);
+        mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
 
         mInviteFriendsLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
@@ -57,6 +61,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mBecomeTeacherLayout.setOnClickListener(this);
         mAboutUsLayout.setOnClickListener(this);
         mHeadInfoLayout.setOnClickListener(this);
+        mHeadHImageView.setOnClickListener(this);
     }
 
 
@@ -83,8 +88,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v == mHeadInfoLayout) {
+        if (v == mHeadHImageView) {
             Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+            startActivity(intent);
+        } else if (v == mHeadInfoLayout) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         } else if (v == mInviteFriendsLayout) {
             Intent intent = new Intent(getActivity(), LessonActivity.class);

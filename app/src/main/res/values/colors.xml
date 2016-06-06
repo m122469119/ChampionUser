@@ -13,4 +13,6 @@
     <color name="bg_camera_text">#6A6F75</color>
     <color name="album_icon_select">#30000000</color>
     <color name="dialog_window_background">#F6F4F4</color>
+    <color name="bg_hint_gray">#adb0b8</color>
+    <color name="get_code_gray_dark">#8E8E8E</color>
 </resources>
