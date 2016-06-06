@@ -2,8 +2,8 @@
     <string name="app_name">Liking</string>
     <string name="activity_liking_home">Liking</string>
     <string name="tab_liking_home_my">我的</string>
-    <string name="tab_liking_home_recharge">充值</string>
-    <string name="tab_liking_home_nearby">周边</string>
+    <string name="tab_liking_home_recharge">买卡</string>
+    <string name="tab_liking_home_nearby">营养餐</string>
     <string name="tab_liking_home_lesson">约课</string>
 
 
@@ -22,4 +22,8 @@
 
     <string name="tab_title_group_lesson">团体课</string>
     <string name="tab_title_private_lesson">私教课</string>
+
+    <string name="hint_login_phone">请输入手机号码</string>
+    <string name="hint_verification_code">请输入验证码</string>
+    <string name="login_btn_text">登录</string>
 </resources>

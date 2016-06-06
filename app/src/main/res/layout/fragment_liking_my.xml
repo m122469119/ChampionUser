@@ -14,28 +14,27 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.aaron.android.framework.library.imageloader.HImageView
+                android:id="@+id/head_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                fresco:failureImage="@drawable/image_defalut_bg"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/image_defalut_bg"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:roundAsCircle="true"/>
+
             <RelativeLayout
                 android:id="@+id/layout_head_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.aaron.android.framework.library.imageloader.HImageView
-                    android:id="@+id/head_image"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    fresco:failureImage="@drawable/image_defalut_bg"
-                    fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@drawable/image_defalut_bg"
-                    fresco:placeholderImageScaleType="centerCrop"
-                    fresco:roundAsCircle="true"/>
-
                 <TextView
                     android:id="@+id/person_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/head_image"
                     android:layout_centerHorizontal="true"
                     android:text="liking"
                     android:textSize="15sp"/>
@@ -118,8 +117,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="如有问题,联系客服"
                 android:textSize="13sp"/>
