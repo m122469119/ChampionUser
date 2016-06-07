@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +13,18 @@ import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.UserLoginResult;
+import com.goodchef.liking.http.result.VerificationCodeResult;
+import com.goodchef.liking.mvp.presenter.LoginPresenter;
+import com.goodchef.liking.mvp.view.LoginView;
+import com.goodchef.liking.storage.Preference;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/6/6 上午10:04
  */
-public class LoginActivity extends AppBarActivity implements View.OnClickListener {
+public class LoginActivity extends AppBarActivity implements View.OnClickListener, LoginView {
     private EditText mLoginPhoneEditText;//输入手机号
     private EditText mCodeEditText;//输入验证码
     private TextView mSendCodeBtn;//获取验证码按钮
@@ -26,6 +32,8 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
 
     private String phoneStr;
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
+
+    private LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,8 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
 
     private void initData() {
         initView();
+        mMyCountdownTime = new MyCountdownTime(60000, 1000);
+        mLoginPresenter = new LoginPresenter(this, this);
         mSendCodeBtn.setText("发送");
         showHomeUpIcon(R.drawable.icon_screen_cancel);
         setViewOnClickListener();
@@ -59,8 +69,28 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         if (v == mSendCodeBtn) {
             getVerificationCode();
         } else if (v == mLoginBtn) {
-
+            login();
         }
+    }
+
+    /**
+     * 登录
+     */
+    private void login() {
+        if (!checkPhone()) {
+            return;
+        }
+        String code = mCodeEditText.getText().toString().trim();
+        if (StringUtils.isEmpty(code)) {
+            PopupUtils.showToast("验证码不能为空");
+            return;
+        }
+        requestLogin(phoneStr, code);
+    }
+
+
+    private void requestLogin(String phoneStr, String code) {
+        mLoginPresenter.userLogin(phoneStr, code);
     }
 
 
@@ -71,7 +101,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         if (checkPhone()) {
             //发送请求
             mMyCountdownTime.start();
-           // requestVerificationCode(phoneStr);
+            mLoginPresenter.getVerificationCode(phoneStr);
         }
     }
 
@@ -90,6 +120,41 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
+        mCodeEditText.setText("");
+        PopupUtils.showToast("验证码已发送");
+        if (verificationCodeData != null && !TextUtils.isEmpty(verificationCodeData.getCaptcha())) {
+            mCodeEditText.setText(verificationCodeData.getCaptcha());
+        }
+    }
+
+    @Override
+    public void updateLoginView(UserLoginResult.UserLoginData userLoginData) {
+        if (userLoginData != null) {
+            Preference.setToken(userLoginData.getToken());
+            Preference.setNickName(userLoginData.getName());
+            Preference.setUserIconUrl(userLoginData.getAvatar());
+            Preference.setUserPhone(userLoginData.getPhone());
+         //   postEvent(new LoginFinishMessage());
+            this.finish();
+        }
+    }
+
+    @Override
+    public void updateLoginOut() {
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mMyCountdownTime != null) {
+            mMyCountdownTime.cancel();
+        }
     }
 
 
