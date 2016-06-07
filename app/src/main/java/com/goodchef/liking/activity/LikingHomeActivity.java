@@ -18,6 +18,7 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.fragment.LikingRechargeFragment;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 
 public class LikingHomeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -44,6 +45,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setTitle(R.string.activity_liking_home);
         initViews();
         setViewOnClickListener();
+        LiKingVerifyUtils.initApi(this);
     }
 
     private void initViews() {

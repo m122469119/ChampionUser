@@ -13,10 +13,13 @@ import com.aaron.android.framework.base.mvp.BaseView;
 import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.storage.Preference;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created on 16/1/27.
@@ -105,6 +108,7 @@ public class LiKingVerifyUtils {
                             + (currentSystemSeconds - LiKingApi.sRequestSyncTimestamp) / 2
                             - currentSystemSeconds;
                    // getBaseConfig(context);
+                    EventBus.getDefault().post(new InitApiFinishedMessage(true));
                 } else {
                     mSyncTimestampIsLoading = false;
                    // sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
@@ -114,7 +118,7 @@ public class LiKingVerifyUtils {
             @Override
             public void onFailure(RequestError error) {
               //  sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
-              //  EventBus.getDefault().post(new InitApiFinishedMessage(false));
+                EventBus.getDefault().post(new InitApiFinishedMessage(false));
                 mSyncTimestampIsLoading = false;
             }
         });
