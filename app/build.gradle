@@ -51,9 +51,9 @@ android {
         debug {
             buildConfigField BOOLEAN, TEST_MODE, TRUE
             buildConfigField STRING, APP_FLAG, appFlag
-            buildConfigField STRING, HTTP_HOST, "\"http://testmanage.chushi007.com\""
+            buildConfigField STRING, HTTP_HOST, "\"http://likingapp.ecookinn.com\""
             applicationIdSuffix ".test"
-            versionNameSuffix "测试版"
+            versionNameSuffix ""
             signingConfig signingConfigs.myConfig
             proguardFiles 'proguard-rules.pro'
         }
