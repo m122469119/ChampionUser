@@ -71,7 +71,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             @Override
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
-                mView.updateLoginOut();
+                if (LiKingVerifyUtils.isValid(mContext,result)){
+                    mView.updateLoginOut();
+                }else {
+                    PopupUtils.showToast(result.getMessage());
+                }
             }
 
             @Override
