@@ -138,6 +138,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setNickName(userLoginData.getName());
             Preference.setUserIconUrl(userLoginData.getAvatar());
             Preference.setUserPhone(userLoginData.getPhone());
+            Preference.setIsNewUser(userLoginData.getNewUser());
          //   postEvent(new LoginFinishMessage());
             this.finish();
         }

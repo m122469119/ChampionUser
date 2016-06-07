@@ -3,6 +3,7 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
@@ -12,6 +13,7 @@ import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.LoginView;
+import com.goodchef.liking.storage.Preference;
 
 /**
  * 说明:
@@ -60,5 +62,24 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             }
         });
     }
+
+
+    public  void userLoginOut(){
+        //极光推送的id,有就传，没有可以不传或者传0
+        //Preference.getJPushRegistrationId()
+        LiKingApi.userLoginOut(Preference.getToken(), "", new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading_data) {
+            @Override
+            public void onSuccess(BaseResult result) {
+                super.onSuccess(result);
+                mView.updateLoginOut();
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
+    }
+
 
 }
