@@ -25,5 +25,7 @@ public class UrlList {
     public static final String GET_VERIFICATION_CODE = getHostUrl() +  "/sms/captcha";
     /**用户登录*/
     public static final String USER_LOGIN = getVersionHostUrl() + "/user/login";
+    /**登出*/
+    public static final String LOGIN_OUT = getVersionHostUrl()+"/user/logout";
 
 }

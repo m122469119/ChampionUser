@@ -1,6 +1,7 @@
 package com.goodchef.liking.http.api;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
+import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.library.http.RequestParams;
@@ -77,6 +78,18 @@ public class LiKingApi {
      */
     public static void userLogin(String phone, String captcha, RequestCallback<UserLoginResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_LOGIN, UserLoginResult.class, null, getCommonRequestParams().append("phone", phone).append("captcha", captcha), callback);
+    }
+
+
+    /***
+     * 退出登录
+     *
+     * @param token          token
+     * @param registrationId 极光注册ID //没有可不传或传0
+     * @param callback       RequestCallback
+     */
+    public static void userLoginOut(String token, String registrationId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.LOGIN_OUT, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token).append("registrationId", registrationId), callback);
     }
 
 }

@@ -174,7 +174,7 @@ public class Preference extends AbsPreference {
      * @param isNewUser 新用户标识
      * @return
      */
-    public static boolean setIsNewUser(int isNewUser) {
+    public static boolean setIsNewUser(Integer isNewUser) {
         return setObject(IS_NEW_USER, isNewUser);
     }
 
