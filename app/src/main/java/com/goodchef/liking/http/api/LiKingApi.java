@@ -7,6 +7,7 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -90,6 +91,22 @@ public class LiKingApi {
      */
     public static void userLoginOut(String token, String registrationId, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.LOGIN_OUT, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token).append("registrationId", registrationId), callback);
+    }
+
+
+    /***
+     * 首页课程列表
+     *
+     * @param longitude   经度
+     * @param latitude    纬度
+     * @param cityId      城市id
+     * @param districtId  街道id
+     * @param currentPage 页数
+     * @param callback    RequestCallback
+     */
+    public static void getHomeData(double longitude, double latitude, String cityId, String districtId, int currentPage, RequestCallback<CoursesResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.HOME_INDEX, CoursesResult.class, getCommonRequestParams().append("longitude", longitude)
+                .append("latitude", latitude).append("cityId", cityId).append("districtId", districtId).append("currentPage", currentPage), callback);
     }
 
 }

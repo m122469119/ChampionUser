@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTabHost;
@@ -10,15 +11,21 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.thirdparty.map.LocationListener;
+import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
+import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.fragment.LikingRechargeFragment;
+import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.storage.Preference;
 
 public class LikingHomeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -36,6 +43,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private ImageView mMiddleImageView;
 
     private FragmentTabHost fragmentTabHost;
+    private AmapGDLocation mAmapGDLocation;
+
+    private double mLongitude;
+    private double mLatitude;
+    private String mCityId;
+    private String mDistrictId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +59,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setTitle(R.string.activity_liking_home);
         initViews();
         setViewOnClickListener();
-        LiKingVerifyUtils.initApi(this);
+        initTitleLocation();
     }
 
     private void initViews() {
@@ -61,6 +75,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private void setViewOnClickListener() {
         mLikingLeftTitleTextView.setOnClickListener(this);
+        mLeftImageView.setOnClickListener(this);
     }
 
     private void initTabHost() {
@@ -132,11 +147,69 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if (v == mLikingLeftTitleTextView) {
+        if (v == mLikingLeftTitleTextView || v == mLeftImageView) {
             String tag = fragmentTabHost.getCurrentTabTag();
             if (tag.equals(TAG_MAIN_TAB)) {
-                PopupUtils.showToast("开发中");
+                Intent intent = new Intent(this,LookStoreMapActivity.class);
+                startActivity(intent);
             }
         }
+    }
+
+
+    private void initTitleLocation() {
+        mAmapGDLocation = new AmapGDLocation(this);
+        mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
+            @Override
+            public void receive(AMapLocation object) {
+                if (object == null || object.getErrorCode() != 0) {
+                    LiKingVerifyUtils.initApi(LikingHomeActivity.this);
+                    // mTitleTextView.setText(R.string.location_error);
+                    return;
+                }
+                String locationAddress = object.getAddress();
+                LogUtils.d(TAG, "city: " + object.getCity() + " city code: " + object.getCityCode());
+                LogUtils.d(TAG, "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
+                //  mTitleTextView.setText(StringUtils.isEmpty(locationAddress) ? getString(R.string.location_error) : object.getPoiName());
+                //  updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude());
+                updateLocationPoint(object.getProvince(), object.getDistrict(), object.getLongitude(), object.getLatitude());
+                LiKingVerifyUtils.initApi(LikingHomeActivity.this);
+                mLeftImageView.setVisibility(View.VISIBLE);
+                mLikingLeftTitleTextView.setText(object.getCity());
+            }
+
+            @Override
+            public void start() {
+//                if (mTitleTextView != null) {
+//                    mTitleTextView.setText(R.string.location_loading);
+//                }
+            }
+
+            @Override
+            public void end() {
+                LogUtils.i(TAG, "定位结束...");
+            }
+        });
+        mAmapGDLocation.start();
+    }
+
+    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude) {
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mCityId = cityId;
+        mDistrictId = districtId;
+        postEvent(new MainAddressChanged(longitude, latitude, cityId, districtId));
+        saveLocationInfo(cityId, districtId, longitude, latitude);
+    }
+
+    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude) {
+        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude);
+        Preference.setLocationData(locationData);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAmapGDLocation.destroy();
     }
 }

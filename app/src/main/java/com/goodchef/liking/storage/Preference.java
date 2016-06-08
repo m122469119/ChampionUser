@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.storage.AbsPreference;
+import com.goodchef.liking.http.result.data.LocationData;
+import com.google.gson.Gson;
 
 /**
  * 说明:
@@ -18,6 +20,7 @@ public class Preference extends AbsPreference {
     public static final String IS_NEW_USER = "isNewUser";
 
     private static final String TAG = "Preference";
+    public static final String NULL_STRING = "";
 
 
     /**
@@ -136,7 +139,7 @@ public class Preference extends AbsPreference {
      * @return UserIconUrl
      */
     public static String getUserIconUrl() {
-        String headUrl = (String) getObject(USER_ICON_URL, "");
+        String headUrl = (String) getObject(USER_ICON_URL, NULL_STRING);
         return headUrl;
     }
 
@@ -155,7 +158,7 @@ public class Preference extends AbsPreference {
      * @return phone
      */
     public static String getUserPhone() {
-        String phone = (String) getObject(SHOW_PHONE, "");
+        String phone = (String) getObject(SHOW_PHONE, NULL_STRING);
         return phone;
     }
 
@@ -192,6 +195,22 @@ public class Preference extends AbsPreference {
             isNewUser = true;
         }
         return isNewUser;
+    }
+
+
+    public static boolean setLocationData(LocationData locationData) {
+        if (locationData != null) {
+            String locationString = new Gson().toJson(locationData);
+            if (!setObject("locationData", locationString)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static LocationData getLocationData() {
+        String locationString = (String) getObject("locationData", NULL_STRING);
+        return new Gson().fromJson(locationString, LocationData.class);
     }
 
 }

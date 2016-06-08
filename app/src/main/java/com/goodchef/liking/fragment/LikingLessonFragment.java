@@ -16,7 +16,11 @@ import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LinkingLessonRecyclerAdapter;
+import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.CoursesResult;
+import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
+import com.goodchef.liking.mvp.view.HomeCourseView;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -30,7 +34,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingLessonFragment extends BaseFragment {
+public class LikingLessonFragment extends BaseFragment implements HomeCourseView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private View headView;
     private InfiniteViewPager mImageViewPager;
@@ -40,6 +44,12 @@ public class LikingLessonFragment extends BaseFragment {
     private PullToRefreshRecyclerView mPullToRefreshRecyclerView;
     //private LikingLessonAdapter mLikingLessonAdapter;
     private LinkingLessonRecyclerAdapter mLinkingLessonRecyclerAdapter;
+
+    private HomeCoursesPresenter mCoursesPresenter;
+    private double mLongitude;
+    private double mLatitude;
+    private String mCityId = "310100";
+    private String mDistrictId = "310104";
 
     @Nullable
     @Override
@@ -52,26 +62,8 @@ public class LikingLessonFragment extends BaseFragment {
     }
 
     private void initData() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            list.add("" + i);
-        }
         mLinkingLessonRecyclerAdapter = new LinkingLessonRecyclerAdapter(getActivity());
-        mLinkingLessonRecyclerAdapter.setData(list);
-        mPullToRefreshRecyclerView.setAdapter(mLinkingLessonRecyclerAdapter);
-        mLinkingLessonRecyclerAdapter.setOnItemClickListener(new LinkingLessonRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, String data) {
-                if ((position % 2 == 0)) {
-                    Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
+        getCoursesRequest();
     }
 
     private void initView() {
@@ -126,6 +118,36 @@ public class LikingLessonFragment extends BaseFragment {
     }
 
 
+    private void getCoursesRequest() {
+        mCoursesPresenter = new HomeCoursesPresenter(getActivity(), this);
+        mCoursesPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, 1);
+    }
+
+
+    @Override
+    public void updateCourseView(CoursesResult.Courses courses) {
+        List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
+        if (list != null) {
+            mLinkingLessonRecyclerAdapter.setData(list);
+            mPullToRefreshRecyclerView.setAdapter(mLinkingLessonRecyclerAdapter);
+            mLinkingLessonRecyclerAdapter.setOnItemClickListener(new LinkingLessonRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position, CoursesResult.Courses.CoursesData data) {
+                    if ((position % 2 == 0)) {
+                        Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
+                        startActivity(intent);
+                    }
+
+                }
+            });
+        }
+
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -140,5 +162,17 @@ public class LikingLessonFragment extends BaseFragment {
         if (mImageViewPager != null && mImageViewPager.getChildCount() != 0) {
             mImageViewPager.stopAutoScroll();
         }
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(MainAddressChanged mainAddressChanged) {
+        mLongitude = mainAddressChanged.getLatitude();
+        mLatitude = mainAddressChanged.getLatitude();
+        // mCityId = mainAddressChanged.getCityId();
+        //  mDistrictId = mainAddressChanged.getDistrictId();
     }
 }
