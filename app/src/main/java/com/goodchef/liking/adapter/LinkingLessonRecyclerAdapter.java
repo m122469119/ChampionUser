@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.CoursesResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +28,18 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
     private View mHeaderView;
     private OnItemClickListener mListener;
 
-    private List<String> mList = new ArrayList<>();
+    private List<CoursesResult.Courses.CoursesData> mList = new ArrayList<>();
     private Context mContext;
 
     public LinkingLessonRecyclerAdapter(Context context) {
         mContext = context;
     }
 
-    public List<String> getData() {
+    public List<CoursesResult.Courses.CoursesData> getData() {
         return mList;
     }
 
-    public void setData(List<String> list) {
+    public void setData(List<CoursesResult.Courses.CoursesData> list) {
         mList.addAll(list);
         notifyDataSetChanged();
     }
@@ -68,26 +69,30 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_HEADER) return;
         final int pos = getRealPosition(holder);
-        final String str = mList.get(pos);
+        final CoursesResult.Courses.CoursesData coursesData = mList.get(pos);
         if (holder instanceof RecyclerViewHolder) {
-            int back = Integer.parseInt(str);
-            if ((back % 2) == 0) {
+            String name = coursesData.getName();
+
+            int type = coursesData.getType();
+
+            if (type == 1) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 holder.mLessonTypeTextView.setText("团体课");
                 holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
-            } else {
+            } else if (type == 2) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 holder.mLessonTypeTextView.setText("私教课");
                 holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
             }
-            holder.mDistanceTextView.setText(str + " km");
+            holder.mDistanceTextView.setText(name + " km");
+            holder.mLessonNameTextView.setText(name);
 
 
             if (mListener == null) return;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onItemClick(pos, str);
+                    mListener.onItemClick(pos, coursesData);
                 }
             });
         }
@@ -139,6 +144,6 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position, String data);
+        void onItemClick(int position, CoursesResult.Courses.CoursesData data);
     }
 }

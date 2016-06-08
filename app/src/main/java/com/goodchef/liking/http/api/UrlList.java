@@ -27,5 +27,8 @@ public class UrlList {
     public static final String USER_LOGIN = getVersionHostUrl() + "/user/login";
     /**登出*/
     public static final String LOGIN_OUT = getVersionHostUrl()+"/user/logout";
+    /**首页*/
+    public static final String HOME_INDEX = getVersionHostUrl()+"/index/index";
+
 
 }

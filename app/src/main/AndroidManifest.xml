@@ -4,6 +4,16 @@
           android:versionCode="1"
           android:versionName="1.0.0">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
     <application
         android:name=".app.LikingApplication"
         android:allowBackup="true"
@@ -18,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
 
         <!--团体课程详情-->
         <activity android:name=".activity.GroupLessonDetailsActivity"/>
@@ -39,6 +50,14 @@
         <activity android:name=".activity.LessonActivity"/>
         <!--用户登录-->
         <activity android:name=".activity.LoginActivity"/>
+        <!--查看场馆-->
+        <activity android:name=".activity.LookStoreMapActivity"/>
+
+        <!-- 高德地图注册信息-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="d599392f8c7be8820ac37204819a453b"/>
+        <service android:name="com.amap.api.location.APSService"/>
     </application>
 
 </manifest>
