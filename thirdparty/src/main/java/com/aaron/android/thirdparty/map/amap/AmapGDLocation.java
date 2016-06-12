@@ -14,7 +14,7 @@ import com.amap.api.location.AMapLocationListener;
  *
  * @author aaron.huang
  * @version 1.0.0
- *          <p/>
+ *          <p>
  *          高德地图定位
  */
 public class AmapGDLocation extends Location<AMapLocation> {

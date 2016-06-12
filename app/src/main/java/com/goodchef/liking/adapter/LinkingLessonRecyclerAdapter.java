@@ -33,6 +33,8 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
     private OnItemClickListener mListener;
     public static final String FORMAT_DAY = "yyyy-MM-dd";
 
+    public static final int TYPE_GROUP_LESSON = 1;//团体课
+    public static final int TYPE_PRIVATE_LESSON= 2;//私教课
     private List<CoursesResult.Courses.CoursesData> mList = new ArrayList<>();
     private Context mContext;
 
@@ -84,7 +86,7 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
                 }
             }
             int type = coursesData.getType();
-            if (type == 1) {
+            if (type == TYPE_GROUP_LESSON) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 holder.mLessonTypeTextView.setText("团体课");
                 holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
@@ -105,7 +107,7 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
                 }
                 holder.mSurplusPersonTextView.setVisibility(View.VISIBLE);
                 holder.mSurplusPersonTextView.setText("剩余名额：" + coursesData.getQuota());
-            } else if (type == 2) {
+            } else if (type == TYPE_PRIVATE_LESSON) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 holder.mLessonTypeTextView.setText("私教课");
                 holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
@@ -120,11 +122,9 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
             List<String> tagList = coursesData.getTags();
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < tagList.size(); i++) {
-
                 stringBuffer.append("#" + tagList.get(i));
             }
             holder.mLessonUseTextView.setText(stringBuffer.toString());
-
 
             if (mListener == null) return;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
