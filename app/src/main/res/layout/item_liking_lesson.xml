@@ -67,7 +67,6 @@
                             android:layout_below="@+id/lesson_name"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="5dp"
-                            android:text="#增肌 #减肥"
                             android:textColor="@color/white"
                             android:textSize="13sp"/>
 
@@ -79,7 +78,6 @@
                             android:layout_alignParentBottom="true"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
-                            android:text="今天 17：00 - 19：00"
                             android:textColor="@color/white"
                             android:textSize="12sp"/>
 
@@ -92,7 +90,7 @@
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="15dp"
-                            android:text="剩余名额：10"
+                            android:text="剩余名额："
                             android:textColor="@color/white"
                             android:textSize="12sp"/>
                     </RelativeLayout>
@@ -119,7 +117,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@+id/lesson_address_icon"
-                        android:text="凌空SOHO"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="13sp"/>
 
@@ -130,7 +127,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="5 km"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="13sp"/>
                 </RelativeLayout>

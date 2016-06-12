@@ -37,6 +37,7 @@ public class CoursesResult extends BaseResult {
 
         public static class CoursesData extends BaseData {
 
+
             /**
              * trainer_id : 10000
              * name : 雷达
@@ -47,6 +48,13 @@ public class CoursesResult extends BaseResult {
              * imgs : []
              * tags : []
              * type : 2
+             * course_name :
+             * course_id :
+             * room_id :
+             * gym_id :
+             * calorie :
+             * end_time :
+             * start_time :
              */
 
             @SerializedName("trainer_id")
@@ -57,16 +65,38 @@ public class CoursesResult extends BaseResult {
             private String gender;
             @SerializedName("phone")
             private String phone;
-            @SerializedName("description")
+            @SerializedName("desc")
             private String description;
             @SerializedName("quota")
             private String quota;
             @SerializedName("type")
             private int type;
+            @SerializedName("course_name")
+            private String courseName;
+            @SerializedName("course_id")
+            private String courseId;
+            @SerializedName("room_id")
+            private String roomId;
+            @SerializedName("gym_id")
+            private String gymId;
+            @SerializedName("calorie")
+            private String calorie;
+            @SerializedName("end_time")
+            private String endTime;
+            @SerializedName("start_time")
+            private String startTime;
             @SerializedName("imgs")
             private List<String> imgs;
             @SerializedName("tags")
             private List<String> tags;
+            @SerializedName("course_date")
+            private String courseDate;
+            @SerializedName("gym_address")
+            private String gymAddress;
+            @SerializedName("distance")
+            private String distance;
+            @SerializedName("schedule_id")
+            private String scheduleId;
 
             public String getTrainerId() {
                 return trainerId;
@@ -124,7 +154,63 @@ public class CoursesResult extends BaseResult {
                 this.type = type;
             }
 
-            public List<?> getImgs() {
+            public String getCourseName() {
+                return courseName;
+            }
+
+            public void setCourseName(String courseName) {
+                this.courseName = courseName;
+            }
+
+            public String getCourseId() {
+                return courseId;
+            }
+
+            public void setCourseId(String courseId) {
+                this.courseId = courseId;
+            }
+
+            public String getRoomId() {
+                return roomId;
+            }
+
+            public void setRoomId(String roomId) {
+                this.roomId = roomId;
+            }
+
+            public String getGymId() {
+                return gymId;
+            }
+
+            public void setGymId(String gymId) {
+                this.gymId = gymId;
+            }
+
+            public String getCalorie() {
+                return calorie;
+            }
+
+            public void setCalorie(String calorie) {
+                this.calorie = calorie;
+            }
+
+            public String getEndTime() {
+                return endTime;
+            }
+
+            public void setEndTime(String endTime) {
+                this.endTime = endTime;
+            }
+
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
+
+            public List<String> getImgs() {
                 return imgs;
             }
 
@@ -132,12 +218,44 @@ public class CoursesResult extends BaseResult {
                 this.imgs = imgs;
             }
 
-            public List<?> getTags() {
+            public List<String> getTags() {
                 return tags;
             }
 
             public void setTags(List<String> tags) {
                 this.tags = tags;
+            }
+
+            public String getCourseDate() {
+                return courseDate;
+            }
+
+            public void setCourseDate(String courseDate) {
+                this.courseDate = courseDate;
+            }
+
+            public String getGymAddress() {
+                return gymAddress;
+            }
+
+            public void setGymAddress(String gymAddress) {
+                this.gymAddress = gymAddress;
+            }
+
+            public String getDistance() {
+                return distance;
+            }
+
+            public void setDistance(String distance) {
+                this.distance = distance;
+            }
+
+            public String getScheduleId() {
+                return scheduleId;
+            }
+
+            public void setScheduleId(String scheduleId) {
+                this.scheduleId = scheduleId;
             }
         }
     }

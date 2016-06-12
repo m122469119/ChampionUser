@@ -9,12 +9,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.DateUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CoursesResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +31,7 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
     private OnItemClickListener mListener;
+    public static final String FORMAT_DAY = "yyyy-MM-dd";
 
     private List<CoursesResult.Courses.CoursesData> mList = new ArrayList<>();
     private Context mContext;
@@ -71,21 +76,54 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
         final int pos = getRealPosition(holder);
         final CoursesResult.Courses.CoursesData coursesData = mList.get(pos);
         if (holder instanceof RecyclerViewHolder) {
-            String name = coursesData.getName();
-
+            List<String> imageList = coursesData.getImgs();
+            if (imageList != null && imageList.size() > 0) {
+                String imageUrl = coursesData.getImgs().get(0);
+                if (!StringUtils.isEmpty(imageUrl)) {
+                    HImageLoaderSingleton.getInstance().requestImage(holder.mHImageView, imageUrl);
+                }
+            }
             int type = coursesData.getType();
-
             if (type == 1) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 holder.mLessonTypeTextView.setText("团体课");
                 holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
+                holder.mLessonNameTextView.setText(coursesData.getCourseName());
+
+                String courseDate = coursesData.getCourseDate();
+                if (!StringUtils.isEmpty(courseDate)) {
+                    Date date = DateUtils.parseString("yyyyMMdd",courseDate);
+                    String dayStr = DateUtils.formatDate(FORMAT_DAY, date);
+                    holder.mLessonTimeTextView.setText(dayStr + " " + coursesData.getStartTime() + "—" + coursesData.getEndTime());
+                }
+
+                holder.mImageView.setVisibility(View.VISIBLE);
+                holder.mAddressTextView.setText(coursesData.getGymAddress());
+                String distance = coursesData.getDistance();
+                if (!StringUtils.isEmpty(distance)) {
+                    holder.mDistanceTextView.setText(distance + " km");
+                }
+                holder.mSurplusPersonTextView.setVisibility(View.VISIBLE);
+                holder.mSurplusPersonTextView.setText("剩余名额：" + coursesData.getQuota());
             } else if (type == 2) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 holder.mLessonTypeTextView.setText("私教课");
                 holder.mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+                holder.mLessonNameTextView.setText(coursesData.getName());
+                holder.mImageView.setVisibility(View.GONE);
+                holder.mAddressTextView.setText(coursesData.getDescription());
+                holder.mDistanceTextView.setText("");
+                holder.mLessonTimeTextView.setText("");
+                holder.mSurplusPersonTextView.setVisibility(View.INVISIBLE);
             }
-            holder.mDistanceTextView.setText(name + " km");
-            holder.mLessonNameTextView.setText(name);
+
+            List<String> tagList = coursesData.getTags();
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0; i < tagList.size(); i++) {
+
+                stringBuffer.append("#" + tagList.get(i));
+            }
+            holder.mLessonUseTextView.setText(stringBuffer.toString());
 
 
             if (mListener == null) return;
