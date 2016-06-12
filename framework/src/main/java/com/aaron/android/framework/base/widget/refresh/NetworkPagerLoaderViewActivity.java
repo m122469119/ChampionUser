@@ -15,7 +15,7 @@ import com.aaron.android.framework.base.actionbar.AppBarActivity;
  * @author aaron.huang
  * @version 1.0.0
  */
-public abstract class NetworkPagerLoaderListViewActivity<T extends NetworkPagerLoaderListViewFragment> extends AppBarActivity {
+public abstract class NetworkPagerLoaderViewActivity<T extends BasePagerLoaderViewFragment> extends AppBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

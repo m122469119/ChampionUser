@@ -10,12 +10,14 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseFragment;
+import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LinkingLessonRecyclerAdapter;
+import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -51,8 +53,8 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
     private String mCityId = "310100";
     private String mDistrictId = "310104";
 
-    public static final String KEY_SCHEDULE_ID="scheduleId";
-    public static final String KEY_TRAINER_ID="trainerId";
+    public static final String KEY_SCHEDULE_ID = "scheduleId";
+    public static final String KEY_TRAINER_ID = "trainerId";
     private static final int TYPE_GROUP_LESSON = 1;//团体课
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
 
@@ -68,7 +70,8 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
 
     private void initData() {
         mLinkingLessonRecyclerAdapter = new LinkingLessonRecyclerAdapter(getActivity());
-        getCoursesRequest();
+        mPullToRefreshRecyclerView.setAdapter(mLinkingLessonRecyclerAdapter);
+        mLinkingLessonRecyclerAdapter.setHeaderView(headView);
     }
 
     private void initView() {
@@ -76,7 +79,7 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
         mSliderParentLayout = headView.findViewById(R.id.layout_liking_home_head);
         mImageViewPager = (InfiniteViewPager) headView.findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) headView.findViewById(R.id.liking_home_head_indicator);
-        mLinkingLessonRecyclerAdapter.setHeaderView(headView);
+
         initImageSliderLayout();
         requestBanner();
         //  setNoDataView();
@@ -99,6 +102,14 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
     private void resizeImageSliderLayout() {
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) mSliderParentLayout.getLayoutParams();
         layoutParams.height = (int) (DisplayUtils.getWidthPixels() * 0.4);
+    }
+
+    public void onEvent(InitApiFinishedMessage message) {
+        if (message.isSuccess()) {
+            getCoursesRequest();
+        } else {
+
+        }
     }
 
     private void requestBanner() {
@@ -130,25 +141,30 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
 
 
     @Override
-    public void updateCourseView(CoursesResult.Courses courses) {
+    public void updateCourseView(final CoursesResult.Courses courses) {
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
         if (list != null) {
             mLinkingLessonRecyclerAdapter.setData(list);
-            mPullToRefreshRecyclerView.setAdapter(mLinkingLessonRecyclerAdapter);
-            mLinkingLessonRecyclerAdapter.setOnItemClickListener(new LinkingLessonRecyclerAdapter.OnItemClickListener() {
+            mLinkingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
-                public void onItemClick(int position, CoursesResult.Courses.CoursesData data) {
-                    int type = data.getType();
+                public void onItemClick(View view, int position) {
+                    List<CoursesResult.Courses.CoursesData> coursesDatas = mLinkingLessonRecyclerAdapter.getDataList();
+                    CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position - 1);
+                    int type = coursesData.getType();
                     if (type == TYPE_GROUP_LESSON) {
                         Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
-                        intent.putExtra(KEY_SCHEDULE_ID,data.getScheduleId());
+                        intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                         startActivity(intent);
                     } else if (type == TYPE_PRIVATE_LESSON) {
                         Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
-                        intent.putExtra(KEY_TRAINER_ID,data.getTrainerId());
+                        intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
                         startActivity(intent);
                     }
+                }
 
+                @Override
+                public boolean onItemLongClick(View view, int position) {
+                    return false;
                 }
             });
         }

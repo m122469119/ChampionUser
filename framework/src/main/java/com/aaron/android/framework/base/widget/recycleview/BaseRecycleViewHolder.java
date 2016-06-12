@@ -12,6 +12,7 @@ import android.view.View;
  */
 public abstract class BaseRecycleViewHolder<T> extends RecyclerView.ViewHolder {
 
+    protected int mPosition;
     /**
      * Constructor
      * @param itemView Item Root View
@@ -26,4 +27,11 @@ public abstract class BaseRecycleViewHolder<T> extends RecyclerView.ViewHolder {
      */
     public abstract void bindViews(T object);
 
+    /**
+     * 是否为Header项
+     * @return
+     */
+    public boolean isHeaderHolder() {
+        return getItemViewType() == BaseRecycleViewAdapter.TYPE_HEADER;
+    }
 }

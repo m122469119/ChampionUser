@@ -37,15 +37,12 @@ public abstract class NetworkPagerLoaderListViewFragment extends BasePagerLoader
         return null;
     }
 
-    protected abstract void initViews();
-
     @Override
     protected PullToRefreshListView createContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mListView = createListView();
         if (mListView == null) {
             getDefaultListView(inflater);
         }
-        initViews();
         return mListView;
     }
 
