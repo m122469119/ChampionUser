@@ -73,12 +73,6 @@ public class CoursesResult extends BaseResult {
             private int type;
             @SerializedName("course_name")
             private String courseName;
-            @SerializedName("course_id")
-            private String courseId;
-            @SerializedName("room_id")
-            private String roomId;
-            @SerializedName("gym_id")
-            private String gymId;
             @SerializedName("calorie")
             private String calorie;
             @SerializedName("end_time")
@@ -160,30 +154,6 @@ public class CoursesResult extends BaseResult {
 
             public void setCourseName(String courseName) {
                 this.courseName = courseName;
-            }
-
-            public String getCourseId() {
-                return courseId;
-            }
-
-            public void setCourseId(String courseId) {
-                this.courseId = courseId;
-            }
-
-            public String getRoomId() {
-                return roomId;
-            }
-
-            public void setRoomId(String roomId) {
-                this.roomId = roomId;
-            }
-
-            public String getGymId() {
-                return gymId;
-            }
-
-            public void setGymId(String gymId) {
-                this.gymId = gymId;
             }
 
             public String getCalorie() {
