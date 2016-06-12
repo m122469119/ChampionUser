@@ -28,7 +28,7 @@ import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
  * @author ran.huang
  * @version 1.0.0
  */
-public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshAdapterViewBase> extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private FrameLayout mRootView;
     private T mRefreshView;
     private StateView mStateView;
@@ -41,6 +41,8 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshAdapter
 
     protected abstract void requestData(int page);
 
+    protected abstract void initViews();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshAdapter
             mRootView = (FrameLayout) inflater.inflate(R.layout.layout_pager_loader, null, false);
             initStatView();
             setRefreshView(createContentView(inflater, container, savedInstanceState));
+            initViews();
             setPullType(mPullMode);
             mStateView.setState(StateView.State.LOADING);
             loadHomePage();

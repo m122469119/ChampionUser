@@ -2,6 +2,7 @@ package com.aaron.android.framework.base.widget.recycleview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,7 +26,12 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
 
     private Context mContext;
 
+    public static final int TYPE_HEADER = 0;
+    public static final int TYPE_NORMAL = 1;
+    private View mHeaderView;
+
     private OnRecycleViewItemClickListener mOnRecycleViewItemClickListener;
+    private int mPosition;
 
     protected BaseRecycleViewAdapter(Context context) {
         mContext = context;
@@ -36,6 +42,36 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
      */
     public Context getContext() {
         return mContext;
+    }
+
+    @Override
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mHeaderView != null && viewType == TYPE_HEADER) {
+            return createHeaderViewHolder();
+        }
+        return createViewHolder(parent);
+    }
+
+
+    protected abstract VH createHeaderViewHolder();
+
+    protected abstract VH createViewHolder(ViewGroup parent);
+
+    /**
+     * 设置HeaderView
+     * @param headerView View
+     */
+    public void setHeaderView(View headerView) {
+        mHeaderView = headerView;
+        notifyItemInserted(0);
+    }
+
+    /**
+     * 获取HeaderView
+     * @return View
+     */
+    public View getHeaderView() {
+        return mHeaderView;
     }
 
     /**
@@ -78,17 +114,31 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         }
     }
 
+    public int getRealPosition(RecyclerView.ViewHolder holder) {
+        int position = holder.getLayoutPosition();
+        return mHeaderView == null ? position : position - 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mHeaderView == null) return TYPE_NORMAL;
+        if (position == 0) return TYPE_HEADER;
+        return TYPE_NORMAL;
+    }
+
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return mHeaderView == null ? mDataList.size() : mDataList.size() + 1;
     }
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        T data = mDataList.get(position);
+        if (getItemViewType(position) == TYPE_HEADER) return;
+        T data = mDataList.get(getRealPosition(holder));
         if (data != null) {
             /**绑定holder数据*/
             holder.bindViews(data);
+            holder.mPosition = position;
             /**ItemView设置监听*/
             View itemView = holder.itemView;
             if (itemView != null) {
