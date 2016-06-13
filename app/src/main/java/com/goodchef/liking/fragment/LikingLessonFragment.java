@@ -149,7 +149,7 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
                 @Override
                 public void onItemClick(View view, int position) {
                     List<CoursesResult.Courses.CoursesData> coursesDatas = mLinkingLessonRecyclerAdapter.getDataList();
-                    CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position - 1);
+                    CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position);
                     int type = coursesData.getType();
                     if (type == TYPE_GROUP_LESSON) {
                         Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
@@ -167,6 +167,8 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
                     return false;
                 }
             });
+            mLinkingLessonRecyclerAdapter.notifyDataSetChanged();
+            mLinkingLessonRecyclerAdapter.setHeaderView(headView);
         }
 
     }
