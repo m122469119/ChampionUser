@@ -9,6 +9,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CoursesDetailsView;
 
@@ -30,7 +31,27 @@ public class CoursesDetailsPresenter extends BasePresenter<CoursesDetailsView> {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateGroupLessonDetailsView(result.getGroupLessonData());
-                }else {
+                } else {
+                    PopupUtils.showToast(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
+    }
+
+
+    public void getPrivateCouresDetails(String trainerId) {
+        LiKingApi.getPrivateCoursesDetails(trainerId, new RequestUiLoadingCallback<PrivateCoursesResult>(mContext, R.string.loading_data) {
+            @Override
+            public void onSuccess(PrivateCoursesResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
+                } else {
                     PopupUtils.showToast(result.getMessage());
                 }
             }

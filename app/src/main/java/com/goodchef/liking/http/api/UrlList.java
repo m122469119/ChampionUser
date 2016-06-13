@@ -31,6 +31,8 @@ public class UrlList {
     public static final String HOME_INDEX = getVersionHostUrl()+"/index/index";
     /**团体课详情*/
     public static final String GROUP_LESSON_DETAILS = getVersionHostUrl()+"/course/info";
+    /**私教课详情*/
+    public static final String PRIVATE_LESSON_DETAILS = getVersionHostUrl()+"/trainer/info";
 
 
 }
