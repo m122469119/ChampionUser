@@ -29,6 +29,8 @@ public class UrlList {
     public static final String LOGIN_OUT = getVersionHostUrl()+"/user/logout";
     /**首页*/
     public static final String HOME_INDEX = getVersionHostUrl()+"/index/index";
+    /**团体课详情*/
+    public static final String GROUP_LESSON_DETAILS = getVersionHostUrl()+"/course/info";
 
 
 }

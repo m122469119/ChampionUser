@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
@@ -18,7 +17,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CoursesResult;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,10 +29,10 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
     private OnItemClickListener mListener;
-    public static final String FORMAT_DAY = "yyyy-MM-dd";
+
 
     public static final int TYPE_GROUP_LESSON = 1;//团体课
-    public static final int TYPE_PRIVATE_LESSON= 2;//私教课
+    public static final int TYPE_PRIVATE_LESSON = 2;//私教课
     private List<CoursesResult.Courses.CoursesData> mList = new ArrayList<>();
     private Context mContext;
 
@@ -94,9 +92,7 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
 
                 String courseDate = coursesData.getCourseDate();
                 if (!StringUtils.isEmpty(courseDate)) {
-                    Date date = DateUtils.parseString("yyyyMMdd",courseDate);
-                    String dayStr = DateUtils.formatDate(FORMAT_DAY, date);
-                    holder.mLessonTimeTextView.setText(dayStr + " " + coursesData.getStartTime() + "—" + coursesData.getEndTime());
+                    holder.mLessonTimeTextView.setText(courseDate);
                 }
 
                 holder.mImageView.setVisibility(View.VISIBLE);
@@ -106,7 +102,7 @@ public class LinkingLessonRecyclerAdapter extends RecyclerView.Adapter<LinkingLe
                     holder.mDistanceTextView.setText(distance + " km");
                 }
                 holder.mSurplusPersonTextView.setVisibility(View.VISIBLE);
-                holder.mSurplusPersonTextView.setText("剩余名额：" + coursesData.getQuota());
+                holder.mSurplusPersonTextView.setText(coursesData.getQuota());
             } else if (type == TYPE_PRIVATE_LESSON) {
                 holder.mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 holder.mLessonTypeTextView.setText("私教课");
