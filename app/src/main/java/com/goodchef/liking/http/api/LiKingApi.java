@@ -1,5 +1,7 @@
 package com.goodchef.liking.http.api;
 
+import android.text.TextUtils;
+
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.DateUtils;
@@ -13,6 +15,7 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
+import com.goodchef.liking.storage.Preference;
 
 /**
  * 说明:
@@ -120,7 +123,12 @@ public class LiKingApi {
      * @param callback   RequestCallback
      */
     public static void getGroupLessonDetails(String scheduleId, RequestCallback<GroupCoursesResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.GROUP_LESSON_DETAILS, GroupCoursesResult.class, getCommonRequestParams().append("schedule_id", scheduleId), callback);
+        RequestParams params = getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()).append("schedule_id", scheduleId);
+        String token = Preference.getToken();
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.GROUP_LESSON_DETAILS, GroupCoursesResult.class, params, callback);
     }
 
 
@@ -131,7 +139,12 @@ public class LiKingApi {
      * @param callback  RequestCallback
      */
     public static void getPrivateCoursesDetails(String trainerId, RequestCallback<PrivateCoursesResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.PRIVATE_LESSON_DETAILS, PrivateCoursesResult.class, getCommonRequestParams().append("trainer_id", trainerId), callback);
+        RequestParams params = getCommonRequestParams().append("trainer_id", trainerId);
+        String token = Preference.getToken();
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.PRIVATE_LESSON_DETAILS, PrivateCoursesResult.class, params, callback);
     }
 
 }
