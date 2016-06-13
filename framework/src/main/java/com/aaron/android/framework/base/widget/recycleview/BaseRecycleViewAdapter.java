@@ -2,6 +2,7 @@ package com.aaron.android.framework.base.widget.recycleview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import java.util.List;
 public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>, T>
         extends RecyclerView.Adapter<VH> implements View.OnClickListener, View.OnLongClickListener {
 
+    private static final String TAG = "BaseRecycleViewAdapter";
     private List<T> mDataList = new ArrayList<>();
 
     private Context mContext;
@@ -126,6 +128,8 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         return TYPE_NORMAL;
     }
 
+
+
     @Override
     public int getItemCount() {
         return mHeaderView == null ? mDataList.size() : mDataList.size() + 1;
@@ -134,15 +138,16 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
     @Override
     public void onBindViewHolder(VH holder, int position) {
         if (getItemViewType(position) == TYPE_HEADER) return;
-        T data = mDataList.get(getRealPosition(holder));
+        int realPosition = getRealPosition(holder);
+        T data = mDataList.get(realPosition);
         if (data != null) {
             /**绑定holder数据*/
             holder.bindViews(data);
-            holder.mPosition = position;
+            holder.mPosition = realPosition;
             /**ItemView设置监听*/
             View itemView = holder.itemView;
             if (itemView != null) {
-                itemView.setTag(position);
+                itemView.setTag(realPosition);
                 itemView.setClickable(true);
                 itemView.setLongClickable(true);
                 itemView.setOnClickListener(this);
@@ -164,4 +169,5 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         return mOnRecycleViewItemClickListener != null
                 && mOnRecycleViewItemClickListener.onItemLongClick(v, (Integer) v.getTag());
     }
+
 }
