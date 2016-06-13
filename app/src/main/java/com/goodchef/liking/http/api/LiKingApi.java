@@ -9,6 +9,7 @@ import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -120,6 +121,17 @@ public class LiKingApi {
      */
     public static void getGroupLessonDetails(String scheduleId, RequestCallback<GroupCoursesResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GROUP_LESSON_DETAILS, GroupCoursesResult.class, getCommonRequestParams().append("schedule_id", scheduleId), callback);
+    }
+
+
+    /***
+     * 私教课详情
+     *
+     * @param trainerId 私教id
+     * @param callback  RequestCallback
+     */
+    public static void getPrivateCoursesDetails(String trainerId, RequestCallback<PrivateCoursesResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.PRIVATE_LESSON_DETAILS, PrivateCoursesResult.class, getCommonRequestParams().append("trainer_id", trainerId), callback);
     }
 
 }

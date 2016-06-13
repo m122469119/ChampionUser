@@ -52,6 +52,7 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
     private String mDistrictId = "310104";
 
     public static final String KEY_SCHEDULE_ID="scheduleId";
+    public static final String KEY_TRAINER_ID="trainerId";
     private static final int TYPE_GROUP_LESSON = 1;//团体课
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
 
@@ -144,6 +145,7 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
                         startActivity(intent);
                     } else if (type == TYPE_PRIVATE_LESSON) {
                         Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
+                        intent.putExtra(KEY_TRAINER_ID,data.getTrainerId());
                         startActivity(intent);
                     }
 

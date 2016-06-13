@@ -9,6 +9,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.mvp.presenter.CoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.CoursesDetailsView;
 
@@ -67,5 +68,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements Course
     @Override
     public void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData) {
         String name = groupLessonData.getCourseName();
+    }
+
+    @Override
+    public void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData) {
+
     }
 }

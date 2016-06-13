@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.PrivateCoursesResult;
 
 /**
  * 说明:
@@ -10,4 +11,5 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
  */
 public interface CoursesDetailsView extends BaseView {
     void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData);
+    void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData);
 }
