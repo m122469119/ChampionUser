@@ -9,10 +9,10 @@ import com.google.gson.annotations.SerializedName;
  * @version 3.0.1
  */
 public class BaseResult implements ResultInterface {
-    @SerializedName("errCode")
+    @SerializedName("err_code")
     private int mCode;
 
-    @SerializedName("errMsg")
+    @SerializedName("err_msg")
     private String message;
 
     /**

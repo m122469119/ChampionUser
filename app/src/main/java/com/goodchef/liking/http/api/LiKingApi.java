@@ -8,6 +8,7 @@ import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.CoursesResult;
+import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -20,13 +21,14 @@ import com.goodchef.liking.http.result.VerificationCodeResult;
 public class LiKingApi {
     private static final String TAG = "LiKingApi";
     private static final String KEY_TOKEN = "token";
-    public static final String KEY_CITY_ID = "cityId";
-    public static final String KEY_APP_VERSION = "appVersion";
+    public static final String KEY_APP_VERSION = "app_version";
     private static final String PLATFORM_ANDROID = "android";
     private static final String KEY_PLATFORM = "platform";
-    public static final String KEY_DISTRICT_ID = "districtId";
     public static final String KEY_PAGE_NUM = "pageNum";
     public static final String DEFAULT_PAGE_SIZE = "20";
+    private static final String KEY_PAGE = "current_page";
+    private static final String KEY_DISTRICT_ID = "district_id";
+    private static final String KEY_CITY_ID = "city_id";
     public static long sTimestampOffset = 0;
     public static long sRequestTimestamp = 0;
     public static long sRequestSyncTimestamp = 0;
@@ -40,7 +42,7 @@ public class LiKingApi {
         RequestParams requestParams = new RequestParams();
         requestParams.append("signature", RequestParamsHelper.getSignature(String.valueOf(sRequestTimestamp), requestId));
         requestParams.append("timestamp", sRequestTimestamp);
-        requestParams.append("requestId", requestId);
+        requestParams.append("request_id", requestId);
         requestParams.append(KEY_APP_VERSION, EnvironmentUtils.Config.getAppVersionName());
         requestParams.append(KEY_PLATFORM, PLATFORM_ANDROID);
         LogUtils.i(TAG, requestParams.getParams().toString());
@@ -106,7 +108,18 @@ public class LiKingApi {
      */
     public static void getHomeData(double longitude, double latitude, String cityId, String districtId, int currentPage, RequestCallback<CoursesResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.HOME_INDEX, CoursesResult.class, getCommonRequestParams().append("longitude", longitude)
-                .append("latitude", latitude).append("cityId", cityId).append("districtId", districtId).append("currentPage", currentPage), callback);
+                .append("latitude", latitude).append(KEY_CITY_ID, cityId).append(KEY_DISTRICT_ID, districtId).append(KEY_PAGE, currentPage), callback);
+    }
+
+
+    /**
+     * 获取团体课详情
+     *
+     * @param scheduleId 课程排序id
+     * @param callback   RequestCallback
+     */
+    public static void getGroupLessonDetails(String scheduleId, RequestCallback<GroupCoursesResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GROUP_LESSON_DETAILS, GroupCoursesResult.class, getCommonRequestParams().append("schedule_id", scheduleId), callback);
     }
 
 }

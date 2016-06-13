@@ -51,6 +51,10 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
     private String mCityId = "310100";
     private String mDistrictId = "310104";
 
+    public static final String KEY_SCHEDULE_ID="scheduleId";
+    private static final int TYPE_GROUP_LESSON = 1;//团体课
+    private static final int TYPE_PRIVATE_LESSON = 2;//私教课
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,10 +137,12 @@ public class LikingLessonFragment extends BaseFragment implements HomeCourseView
             mLinkingLessonRecyclerAdapter.setOnItemClickListener(new LinkingLessonRecyclerAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, CoursesResult.Courses.CoursesData data) {
-                    if ((position % 2 == 0)) {
+                    int type = data.getType();
+                    if (type == TYPE_GROUP_LESSON) {
                         Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+                        intent.putExtra(KEY_SCHEDULE_ID,data.getScheduleId());
                         startActivity(intent);
-                    } else {
+                    } else if (type == TYPE_PRIVATE_LESSON) {
                         Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                         startActivity(intent);
                     }
