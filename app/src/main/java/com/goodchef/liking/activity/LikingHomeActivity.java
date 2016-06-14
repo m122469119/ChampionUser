@@ -55,11 +55,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liking_home);
-        //  showHomeUpIcon(0);
         setTitle(R.string.activity_liking_home);
         initViews();
         setViewOnClickListener();
         initTitleLocation();
+        LiKingVerifyUtils.initApi(LikingHomeActivity.this);
     }
 
     private void initViews() {
@@ -164,10 +164,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             public void receive(AMapLocation object) {
                 if (object == null || object.getErrorCode() != 0) {
                     LiKingVerifyUtils.initApi(LikingHomeActivity.this);
-                    // mTitleTextView.setText(R.string.location_error);
                     return;
                 }
-                String locationAddress = object.getAddress();
                 LogUtils.d(TAG, "city: " + object.getCity() + " city code: " + object.getCityCode());
                 LogUtils.d(TAG, "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                 //  mTitleTextView.setText(StringUtils.isEmpty(locationAddress) ? getString(R.string.location_error) : object.getPoiName());
@@ -180,9 +178,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void start() {
-//                if (mTitleTextView != null) {
-//                    mTitleTextView.setText(R.string.location_loading);
-//                }
             }
 
             @Override
@@ -206,6 +201,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         LocationData locationData = new LocationData(cityId, districtId, longitude, latitude);
         Preference.setLocationData(locationData);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAmapGDLocation.stop();
+    }
+
 
     @Override
     protected void onDestroy() {

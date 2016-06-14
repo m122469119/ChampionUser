@@ -44,12 +44,14 @@ public class BannerResult extends BaseResult {
         }
 
         public static class Banner extends BaseData {
-            @SerializedName("imgUrl")
+            @SerializedName("img_url")
             private String mImgUrl;
-            @SerializedName("loadUrl")
+            @SerializedName("load_url")
             private String mLoadUrl;
-            @SerializedName("type")
+            @SerializedName("load_type")
             private String mType;
+            @SerializedName("title")
+            private String title;
 
             public void setImgUrl(String imgUrl) {
                 this.mImgUrl = imgUrl;
@@ -73,6 +75,14 @@ public class BannerResult extends BaseResult {
 
             public String getType() {
                 return mType;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
             }
         }
     }

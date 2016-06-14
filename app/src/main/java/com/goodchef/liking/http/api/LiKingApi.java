@@ -9,6 +9,7 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
@@ -145,6 +146,15 @@ public class LiKingApi {
             params.append(KEY_TOKEN, token);
         }
         VolleyHttpRequestClient.doPost(UrlList.PRIVATE_LESSON_DETAILS, PrivateCoursesResult.class, params, callback);
+    }
+
+    /**
+     * 获取首页banner
+     *
+     * @param callback RequestCallback
+     */
+    public static void getBanner(RequestCallback<BannerResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.HOME_BANNER, BannerResult.class, getCommonRequestParams(), callback);
     }
 
 }

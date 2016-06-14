@@ -1,6 +1,7 @@
 package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.mvp.BaseView;
+import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 
 /**
@@ -10,4 +11,5 @@ import com.goodchef.liking.http.result.CoursesResult;
  */
 public interface HomeCourseView extends BaseView {
     void updateCourseView(CoursesResult.Courses courses);
+    void updateBanner(BannerResult.BannerData bannerData);
 }

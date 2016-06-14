@@ -18,6 +18,7 @@ public class Preference extends AbsPreference {
     public static final String USER_ICON_URL = "headimgurl";
     public static final String SHOW_PHONE = "showPhone";
     public static final String IS_NEW_USER = "isNewUser";
+    public static final String IS_GET_API_MESSAGE = "isGetApiFinishedMessage";
 
     private static final String TAG = "Preference";
     public static final String NULL_STRING = "";
@@ -197,7 +198,12 @@ public class Preference extends AbsPreference {
         return isNewUser;
     }
 
-
+    /***
+     * 设置定位信息
+     *
+     * @param locationData
+     * @return
+     */
     public static boolean setLocationData(LocationData locationData) {
         if (locationData != null) {
             String locationString = new Gson().toJson(locationData);
@@ -208,9 +214,33 @@ public class Preference extends AbsPreference {
         return true;
     }
 
+    /**
+     * 获取定位信息
+     *
+     * @return
+     */
     public static LocationData getLocationData() {
         String locationString = (String) getObject("locationData", NULL_STRING);
         return new Gson().fromJson(locationString, LocationData.class);
     }
+
+    /**
+     * 设置是首页第一次是否初始化
+     * @param siGet
+     * @return
+     */
+    public static boolean setGetFinishedMessage(boolean siGet) {
+        return setObject(IS_GET_API_MESSAGE, siGet);
+    }
+
+    /**
+     * 获取首页第一次是否初始化
+     * @return
+     */
+    public static boolean getGetFinishedMessage() {
+        boolean isGet = (boolean) getObject(IS_GET_API_MESSAGE, false);
+        return isGet;
+    }
+
 
 }
