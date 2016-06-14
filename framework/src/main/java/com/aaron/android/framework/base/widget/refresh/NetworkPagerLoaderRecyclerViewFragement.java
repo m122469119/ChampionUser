@@ -21,12 +21,14 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public abstract class NetworkPagerLoaderRecyclerViewFragement extends BasePagerLoaderViewFragment<PullToRefreshRecyclerView>{
+public abstract class NetworkPagerLoaderRecyclerViewFragement extends BasePagerLoaderViewFragment<PullToRefreshRecyclerView> {
     private PullToRefreshRecyclerView mRecyclerView;
     private BaseRecycleViewAdapter mRecyclerViewAdapter;
+
     protected PullToRefreshRecyclerView createRecyclerView() {
         return null;
     }
+
     @Override
     protected PullToRefreshRecyclerView createContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRecyclerView = createRecyclerView();
@@ -104,10 +106,10 @@ public abstract class NetworkPagerLoaderRecyclerViewFragement extends BasePagerL
     }
 
 
-        /**
-         * @return 获取ListView适配器
-         */
-    public RecyclerView.Adapter getListAdapter() {
+    /**
+     * @return 获取ListView适配器
+     */
+    public RecyclerView.Adapter getRecyclerAdapter() {
         return mRecyclerViewAdapter;
     }
 
@@ -116,9 +118,18 @@ public abstract class NetworkPagerLoaderRecyclerViewFragement extends BasePagerL
      *
      * @param adapter BaseAdapter
      */
-    public void setListAdapter(BaseRecycleViewAdapter adapter) {
+    public void setRecyclerAdapter(BaseRecycleViewAdapter adapter) {
         mRecyclerViewAdapter = adapter;
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
+    }
+
+    /**
+     * 获取 PullToRefreshRecyclerView
+     *
+     * @return mRecyclerView
+     */
+    public PullToRefreshRecyclerView getPullToRefreshRecyclerView() {
+        return mRecyclerView;
     }
 
 }
