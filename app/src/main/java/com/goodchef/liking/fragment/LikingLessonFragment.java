@@ -20,6 +20,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
@@ -42,8 +43,8 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
     private LinkingLessonRecyclerAdapter mLinkingLessonRecyclerAdapter;
 
     private HomeCoursesPresenter mCoursesPresenter;
-    private double mLongitude;
-    private double mLatitude;
+    private double mLongitude = 0.0;
+    private double mLatitude = 0.0;
     private String mCityId = "310100";
     private String mDistrictId = "310104";
 
@@ -51,10 +52,15 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
     public static final String KEY_TRAINER_ID = "trainerId";
     private static final int TYPE_GROUP_LESSON = 1;//团体课
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
+    private boolean isFirstMessage;
+    private List<BannerResult.BannerData.Banner> bannerDataList = new ArrayList<>();
 
     @Override
     protected void requestData(int page) {
-        getCoursesRequest(page);
+        isFirstMessage = Preference.getGetFinishedMessage();
+        if (isFirstMessage) {
+            getCoursesRequest(page);
+        }
     }
 
     @Override
@@ -63,18 +69,17 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
     }
 
     private void initData() {
+        mCoursesPresenter = new HomeCoursesPresenter(getActivity(), this);
         initRecycleView();
         initRecycleHeadView();
         requestBanner();
-        //  setNoDataView();
+        setNoDataView();
     }
 
     private void initRecycleView() {
         setPullType(PullMode.PULL_BOTH);
         mLinkingLessonRecyclerAdapter = new LinkingLessonRecyclerAdapter(getActivity());
         setRecyclerAdapter(mLinkingLessonRecyclerAdapter);
-        mLinkingLessonRecyclerAdapter.setHeaderView(mHeadView);
-
         mLinkingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -110,7 +115,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
     private void setNoDataView() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_no_data, null, false);
         TextView textView = (TextView) view.findViewById(R.id.no_data_text);
-        // getStateView().setNodataView(view);
+        getStateView().setNodataView(view);
     }
 
     private void initImageSliderLayout() {
@@ -126,39 +131,19 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
         layoutParams.height = (int) (DisplayUtils.getWidthPixels() * 0.4);
     }
 
-    public void onEvent(InitApiFinishedMessage message) {
-        if (message.isSuccess()) {
-            getCoursesRequest(1);
-        } else {
 
-        }
-    }
-
+    //发送banner请求
     private void requestBanner() {
-        List<BannerResult.BannerData.Banner> banners = new ArrayList<>();
-        BannerResult.BannerData.Banner banner = new BannerResult.BannerData.Banner();
-        banner.setImgUrl("http://bizhi.33lc.com/uploadfile/2014/0911/20140911092615146.jpg");
-        banner.setType("2");
-        banners.add(banner);
-
-        BannerResult.BannerData.Banner banner1 = new BannerResult.BannerData.Banner();
-        banner1.setImgUrl("http://thumbs.dreamstime.com/z/%BD%A1%C9%ED-34080752.jpg");
-        banner1.setType("2");
-        banners.add(banner1);
-
-        if (mBannerPagerAdapter != null) {
-            mBannerPagerAdapter.setData(banners);
-            mBannerPagerAdapter.notifyDataSetChanged();
-            mIconPageIndicator.notifyDataSetChanged();
-        }
-        mImageViewPager.setCurrentItem(0);
-        mImageViewPager.startAutoScroll();
+        mCoursesPresenter.getBanner();
     }
 
-
+    //发送首页数据
     private void getCoursesRequest(int page) {
-        mCoursesPresenter = new HomeCoursesPresenter(getActivity(), this);
-        mCoursesPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingLessonFragment.this);
+        if (mLongitude > 0.0 && mLatitude > 0.0) {
+            mCoursesPresenter.getHomeData(0, 0, mCityId, mDistrictId, page, LikingLessonFragment.this);
+        } else {
+            mCoursesPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingLessonFragment.this);
+        }
     }
 
 
@@ -167,9 +152,37 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
         if (list != null) {
             updateListView(list);
-            mLinkingLessonRecyclerAdapter.setHeaderView(mHeadView);
+            if (bannerDataList != null && bannerDataList.size() > 0) {
+                mLinkingLessonRecyclerAdapter.setHeaderView(mHeadView);
+            } else {
+                removeHeadView();
+            }
         }
+    }
 
+    @Override
+    public void updateBanner(BannerResult.BannerData bannerData) {
+        bannerDataList = bannerData.getBannerList();
+        if (bannerDataList != null && bannerDataList.size() > 0) {
+            mLinkingLessonRecyclerAdapter.setHeaderView(mHeadView);
+            if (mBannerPagerAdapter != null) {
+                mBannerPagerAdapter.setData(bannerData.getBannerList());
+                mBannerPagerAdapter.notifyDataSetChanged();
+                mIconPageIndicator.notifyDataSetChanged();
+            }
+            mImageViewPager.setCurrentItem(0);
+            mImageViewPager.startAutoScroll();
+        } else {
+            removeHeadView();
+        }
+    }
+
+
+    private void removeHeadView() {
+        if (mHeadView != null) {
+            getPullToRefreshRecyclerView().removeView(mHeadView);
+            mLinkingLessonRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -197,5 +210,15 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
     public void onEvent(MainAddressChanged mainAddressChanged) {
         mLongitude = mainAddressChanged.getLatitude();
         mLatitude = mainAddressChanged.getLatitude();
+        getCoursesRequest(1);
+    }
+
+    public void onEvent(InitApiFinishedMessage message) {
+        if (message.isSuccess()) {
+            Preference.setGetFinishedMessage(true);
+            getCoursesRequest(1);
+        } else {
+
+        }
     }
 }
