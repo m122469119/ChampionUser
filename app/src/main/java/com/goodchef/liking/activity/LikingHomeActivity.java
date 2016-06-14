@@ -57,9 +57,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_liking_home);
         setTitle(R.string.activity_liking_home);
         initViews();
+        LiKingVerifyUtils.initApi(LikingHomeActivity.this);
         setViewOnClickListener();
         initTitleLocation();
-        LiKingVerifyUtils.initApi(LikingHomeActivity.this);
     }
 
     private void initViews() {
