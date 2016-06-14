@@ -72,7 +72,7 @@ public class PrivateCoursesResult extends BaseResult {
             this.plan = plan;
         }
 
-        public List<?> getTags() {
+        public List<String> getTags() {
             return tags;
         }
 

@@ -3,97 +3,136 @@
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/app_content_background"
                 android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="42dp">
+        android:layout_marginBottom="42dp"
+        android:background="@color/app_content_background"
+        android:fadingEdge="none"
+        android:overScrollMode="ifContentScrolls">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:id="@+id/private_lesson_details_teach_image"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
+                android:layout_height="160dp">
 
+                <com.aaron.android.framework.library.imageloader.HImageView
+                    android:id="@+id/private_lesson_details_teach_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    fresco:failureImage="@drawable/linshi_back"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/linshi_back"
+                    fresco:placeholderImageScaleType="centerCrop"/>
 
-            <TextView
+                <TextView
+                    android:layout_width="55dp"
+                    android:layout_height="23dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/icon_pivate_teach_lesson"
+                    android:gravity="center"
+                    android:text="私教课"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/lesson_details_layer">
+
+                    <TextView
+                        android:id="@+id/teacher_tags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_mirco"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="教练介绍"
-                android:textColor="@color/bg_dark_gray_text"
-                android:textSize="15sp"/>
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
 
-            <TextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="教练介绍"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/teacher_introduce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:lineSpacingExtra="3dp"
-                android:text="教练介绍教练介绍教练介绍教练介绍教练介绍教练介绍练介绍教练介绍教练介绍教练介绍教"
-                android:textSize="13sp"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="训练计划"
-                android:textColor="@color/bg_dark_gray_text"
-                android:textSize="15sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:lineSpacingExtra="3dp"
-                android:text="训练计划训练计划训练计划训练计划训练计划训练计划训练计划训练计划"
-                android:textSize="13sp"/>
-
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
                 android:layout_marginTop="10dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
 
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginTop="10dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="训练计划"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="15sp"/>
 
+                <TextView
+                    android:id="@+id/train_plan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="13sp"/>
+            </LinearLayout>
 
-            <TextView
+            <ListView
+                android:id="@+id/private_lesson_listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="有疑问？联系客服"/>
+                android:layout_marginBottom="10dp"
+                android:divider="@color/transparent"
+                android:listSelector="@color/transparent"/>
 
         </LinearLayout>
     </ScrollView>
 
     <TextView
+        android:id="@+id/private_lesson_immediately_submit"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_card_stoke_top_background"
+        android:background="@drawable/shape_card_green_background"
         android:gravity="center"
         android:text="@string/immadetails_appointment"
+        android:textColor="@color/white"
         android:textSize="15sp"/>
 </RelativeLayout>

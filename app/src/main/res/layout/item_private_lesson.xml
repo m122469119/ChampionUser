@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:orientation="vertical">
+
+    <com.aaron.android.framework.library.imageloader.HImageView
+        android:id="@+id/private_lesson_details_hImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        fresco:failureImage="@drawable/linshi_back"
+        fresco:failureImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/linshi_back"
+        fresco:placeholderImageScaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/lesson_details_layer">
+
+        <TextView
+            android:id="@+id/private_lesson_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_mirco"/>
+
+    </RelativeLayout>
+</RelativeLayout>

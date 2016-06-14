@@ -15,4 +15,9 @@
     <color name="dialog_window_background">#F6F4F4</color>
     <color name="bg_hint_gray">#adb0b8</color>
     <color name="get_code_gray_dark">#8E8E8E</color>
+    <color name="lesson_details_dark_back">#596167</color>
+    <color name="lesson_details_gray_back">#888b9a</color>
+    <color name="lesson_details_layer">#60000000</color>
+    <color name="liking_green_btn_back">#34c86c</color>
+    <color name="app_content_background">#edeff6</color>
 </resources>

@@ -41,15 +41,16 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
     private BannerPagerAdapter mBannerPagerAdapter;
     private View mSliderParentLayout;
     private LinkingLessonRecyclerAdapter mLinkingLessonRecyclerAdapter;
-
     private HomeCoursesPresenter mCoursesPresenter;
+
     private double mLongitude = 0.0;
     private double mLatitude = 0.0;
     private String mCityId = "310100";
     private String mDistrictId = "310104";
 
-    public static final String KEY_SCHEDULE_ID = "scheduleId";
     public static final String KEY_TRAINER_ID = "trainerId";
+    public static final String KEY_SCHEDULE_ID = "scheduleId";
+    public static final String KEY_TEACHER_NAME = "teacher_name";
     private static final int TYPE_GROUP_LESSON = 1;//团体课
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
     private boolean isFirstMessage;
@@ -93,6 +94,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragemen
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
+                    intent.putExtra(KEY_TEACHER_NAME,coursesData.getName());
                     startActivity(intent);
                 }
             }
