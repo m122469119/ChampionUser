@@ -24,7 +24,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/24 上午10:48
  */
-public class LinkingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LinkingLessonRecyclerAdapter.LessonViewHolder, CoursesResult.Courses.CoursesData> {
+public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLessonRecyclerAdapter.LessonViewHolder, CoursesResult.Courses.CoursesData> {
     public static final int TYPE_GROUP_LESSON = 1;//团体课
     public static final int TYPE_PRIVATE_LESSON = 2;//私教课
 
@@ -110,7 +110,7 @@ public class LinkingLessonRecyclerAdapter extends BaseRecycleViewAdapter<Linking
         }
     }
 
-    public LinkingLessonRecyclerAdapter(Context context) {
+    public LikingLessonRecyclerAdapter(Context context) {
         super(context);
     }
 

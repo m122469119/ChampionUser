@@ -2,6 +2,7 @@
 <resources>
     <color name="main_app_color">#2e2f34</color>
     <color name="main_app_dark_color">#2e2f34</color>
+    <color name="app_content_background">#edeff6</color>
     <color name="list_item_selected">#87CEFA</color>
     <color name="dialog_background_color">#ffffffff</color>
     <color name="dialog_text_color">#655001</color>
