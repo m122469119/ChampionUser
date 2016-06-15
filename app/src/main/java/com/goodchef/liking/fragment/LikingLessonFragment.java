@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.DisplayUtils;
@@ -20,7 +21,6 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
-import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
@@ -53,14 +53,14 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     public static final String KEY_TEACHER_NAME = "teacher_name";
     private static final int TYPE_GROUP_LESSON = 1;//团体课
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
-    private boolean isFirstMessage;
+    private boolean isFirstMessage = false;
     private List<BannerResult.BannerData.Banner> bannerDataList = new ArrayList<>();
 
     @Override
     protected void requestData(int page) {
-        isFirstMessage = Preference.getGetFinishedMessage();
         if (isFirstMessage) {
             getCoursesRequest(page);
+            LogUtils.i("shouye", "shouye");
         }
     }
 
@@ -73,7 +73,6 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         mCoursesPresenter = new HomeCoursesPresenter(getActivity(), this);
         initRecycleView();
         initRecycleHeadView();
-        requestBanner();
         setNoDataView();
     }
 
@@ -94,7 +93,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
-                    intent.putExtra(KEY_TEACHER_NAME,coursesData.getName());
+                    intent.putExtra(KEY_TEACHER_NAME, coursesData.getName());
                     startActivity(intent);
                 }
             }
@@ -142,9 +141,9 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     //发送首页数据
     private void getCoursesRequest(int page) {
         if (mLongitude > 0.0 && mLatitude > 0.0) {
-            mCoursesPresenter.getHomeData(0, 0, mCityId, mDistrictId, page, LikingLessonFragment.this);
-        } else {
             mCoursesPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingLessonFragment.this);
+        } else {
+            mCoursesPresenter.getHomeData(0, 0, mCityId, mDistrictId, page, LikingLessonFragment.this);
         }
     }
 
@@ -210,15 +209,16 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     }
 
     public void onEvent(MainAddressChanged mainAddressChanged) {
-        mLongitude = mainAddressChanged.getLatitude();
         mLatitude = mainAddressChanged.getLatitude();
-        getCoursesRequest(1);
+        mLongitude = mainAddressChanged.getLongitude();
     }
 
     public void onEvent(InitApiFinishedMessage message) {
         if (message.isSuccess()) {
-            Preference.setGetFinishedMessage(true);
+            isFirstMessage = true;
+            requestBanner();
             getCoursesRequest(1);
+            LogUtils.i("shouye", "onevent");
         } else {
 
         }

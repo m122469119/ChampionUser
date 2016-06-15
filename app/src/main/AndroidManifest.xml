@@ -41,9 +41,14 @@
         <!--课程-->
         <activity android:name=".activity.LessonActivity"/>
         <!--用户登录-->
-        <activity android:name=".activity.LoginActivity"/>
-        <!--查看场馆-->
+        <activity
+            android:name=".activity.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <!--查看所有门店-->
         <activity android:name=".activity.LookStoreMapActivity"/>
+        <!--查看场馆-->
+        <activity android:name=".activity.ArenaActivity"/>
 
         <!-- 高德地图注册信息-->
         <meta-data
