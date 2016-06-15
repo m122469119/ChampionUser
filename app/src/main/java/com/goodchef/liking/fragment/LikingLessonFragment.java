@@ -7,7 +7,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragement;
+import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragement implements HomeCourseView {
+public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements HomeCourseView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private View mHeadView;
     private InfiniteViewPager mImageViewPager;

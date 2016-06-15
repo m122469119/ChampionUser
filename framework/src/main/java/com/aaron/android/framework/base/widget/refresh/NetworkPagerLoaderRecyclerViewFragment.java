@@ -21,7 +21,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public abstract class NetworkPagerLoaderRecyclerViewFragement extends BasePagerLoaderViewFragment<PullToRefreshRecyclerView> {
+public abstract class NetworkPagerLoaderRecyclerViewFragment extends BasePagerLoaderViewFragment<PullToRefreshRecyclerView> {
     private PullToRefreshRecyclerView mRecyclerView;
     private BaseRecycleViewAdapter mRecyclerViewAdapter;
 
