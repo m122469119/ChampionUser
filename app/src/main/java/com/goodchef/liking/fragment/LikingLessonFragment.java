@@ -14,7 +14,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
-import com.goodchef.liking.adapter.LinkingLessonRecyclerAdapter;
+import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
@@ -40,7 +40,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
     private View mSliderParentLayout;
-    private LinkingLessonRecyclerAdapter mLinkingLessonRecyclerAdapter;
+    private LikingLessonRecyclerAdapter mLikingLessonRecyclerAdapter;
     private HomeCoursesPresenter mCoursesPresenter;
 
     private double mLongitude = 0.0;
@@ -78,12 +78,12 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     private void initRecycleView() {
         setPullType(PullMode.PULL_BOTH);
-        mLinkingLessonRecyclerAdapter = new LinkingLessonRecyclerAdapter(getActivity());
-        setRecyclerAdapter(mLinkingLessonRecyclerAdapter);
-        mLinkingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+        mLikingLessonRecyclerAdapter = new LikingLessonRecyclerAdapter(getActivity());
+        setRecyclerAdapter(mLikingLessonRecyclerAdapter);
+        mLikingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                List<CoursesResult.Courses.CoursesData> coursesDatas = mLinkingLessonRecyclerAdapter.getDataList();
+                List<CoursesResult.Courses.CoursesData> coursesDatas = mLikingLessonRecyclerAdapter.getDataList();
                 CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position);
                 int type = coursesData.getType();
                 if (type == TYPE_GROUP_LESSON) {
@@ -154,7 +154,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         if (list != null) {
             updateListView(list);
             if (bannerDataList != null && bannerDataList.size() > 0) {
-                mLinkingLessonRecyclerAdapter.setHeaderView(mHeadView);
+                mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);
             } else {
                 removeHeadView();
             }
@@ -165,7 +165,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     public void updateBanner(BannerResult.BannerData bannerData) {
         bannerDataList = bannerData.getBannerList();
         if (bannerDataList != null && bannerDataList.size() > 0) {
-            mLinkingLessonRecyclerAdapter.setHeaderView(mHeadView);
+            mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);
             if (mBannerPagerAdapter != null) {
                 mBannerPagerAdapter.setData(bannerData.getBannerList());
                 mBannerPagerAdapter.notifyDataSetChanged();
@@ -182,7 +182,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     private void removeHeadView() {
         if (mHeadView != null) {
             getPullToRefreshRecyclerView().removeView(mHeadView);
-            mLinkingLessonRecyclerAdapter.notifyDataSetChanged();
+            mLikingLessonRecyclerAdapter.notifyDataSetChanged();
         }
     }
 
