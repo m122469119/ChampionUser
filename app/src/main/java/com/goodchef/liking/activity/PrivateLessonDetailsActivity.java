@@ -1,6 +1,7 @@
 package com.goodchef.liking.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
+import com.goodchef.liking.storage.Preference;
 
 import java.util.List;
 
@@ -118,7 +120,13 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     @Override
     public void onClick(View v) {
         if (v == mImmediatelySubmitBtn) {
-            PopupUtils.showToast("开发中");
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
