@@ -49,7 +49,8 @@
         <activity android:name=".activity.LookStoreMapActivity"/>
         <!--查看场馆-->
         <activity android:name=".activity.ArenaActivity"/>
-
+        <!--私教课确认订单-->
+        <activity android:name=".activity.OrderPrivateCoursesConfirmActivity"/>
         <!-- 高德地图注册信息-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
