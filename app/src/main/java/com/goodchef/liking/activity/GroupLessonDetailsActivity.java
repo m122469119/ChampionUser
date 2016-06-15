@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +18,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GroupCoursesResult;
-import com.goodchef.liking.http.result.PrivateCoursesResult;
-import com.goodchef.liking.mvp.presenter.CoursesDetailsPresenter;
-import com.goodchef.liking.mvp.view.CoursesDetailsView;
+import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
+import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
+import com.goodchef.liking.storage.Preference;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/24 下午3:21
  */
-public class GroupLessonDetailsActivity extends AppBarActivity implements CoursesDetailsView, View.OnClickListener {
+public class GroupLessonDetailsActivity extends AppBarActivity implements GroupCourserDetailsView, View.OnClickListener {
     private HImageView mShopImageView;
     private TextView mShopNameTextView;
     private TextView mScheduleResultTextView;
@@ -45,7 +46,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements Course
 
     private RecyclerView mRecyclerView;
     private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
-    private CoursesDetailsPresenter mCoursesDetailsPresenter;
+    private GroupCoursesDetailsPresenter mGroupCoursesDetailsPresenter;
     private String scheduleId;
 
     @Override
@@ -91,14 +92,21 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements Course
     }
 
     private void requestData() {
-        mCoursesDetailsPresenter = new CoursesDetailsPresenter(this, this);
-        mCoursesDetailsPresenter.getGroupCoursesDetails(scheduleId);
+        mGroupCoursesDetailsPresenter = new GroupCoursesDetailsPresenter(this, this);
+        mGroupCoursesDetailsPresenter.getGroupCoursesDetails(scheduleId);
     }
 
 
     @Override
     public void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData) {
         setDetailsData(groupLessonData);
+    }
+
+    @Override
+    public void updateOrderGroupCourses() {
+        Intent intent = new Intent(this, LessonActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     /**
@@ -151,13 +159,14 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements Course
     }
 
     @Override
-    public void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData) {
-    }
-
-    @Override
     public void onClick(View v) {
         if (v == mImmediatelySubmitBtn) {
-            PopupUtils.showToast("开发中");
+            if (Preference.isLogin()) {
+                mGroupCoursesDetailsPresenter.orderGroupCourses(scheduleId, Preference.getToken());
+            } else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
         }
     }
 }
