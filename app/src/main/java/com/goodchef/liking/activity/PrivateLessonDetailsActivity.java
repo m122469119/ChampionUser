@@ -52,15 +52,19 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
+        setTitle(teacherName);
+        setRightMenu();
+        initView();
+        sendDetailsRequest();
+    }
+
+    private void setRightMenu() {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupUtils.showToast("开发中。。。");
             }
         });
-        setTitle(teacherName);
-        initView();
-        sendDetailsRequest();
     }
 
     private void initView() {

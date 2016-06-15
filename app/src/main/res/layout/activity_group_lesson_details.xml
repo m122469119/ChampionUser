@@ -3,26 +3,76 @@
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/app_content_background"
                 android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="42dp"
-        android:layout_height="match_parent">
+        android:background="@color/app_content_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:id="@+id/group_lesson_details_teach_image"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
+                android:layout_height="160dp">
+
+                <com.aaron.android.framework.library.imageloader.HImageView
+                    android:id="@+id/group_lesson_details_shop_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    fresco:failureImage="@drawable/linshi_back"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/linshi_back"
+                    fresco:placeholderImageScaleType="centerCrop"/>
+
+                <TextView
+                    android:layout_width="55dp"
+                    android:layout_height="23dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/icon_group_teach_lesson"
+                    android:gravity="center"
+                    android:text="团体课"
+                    android:textColor="@color/liking_lesson_group_text"
+                    android:textSize="12sp"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/lesson_details_layer">
+
+                    <TextView
+                        android:id="@+id/shop_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="凌空路"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_mirco"/>
+
+                    <TextView
+                        android:id="@+id/schedule_result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="预约已满"
+                        android:textStyle="bold"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_mirco"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,56 +85,65 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:text="@string/lesson_time"
-                    android:textSize="15sp"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
 
                 <TextView
+                    android:id="@+id/courses_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="今天 17：00 --20：40"
-                    android:textSize="15sp"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:text="@string/lesson_address"
-                    android:textSize="15sp"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
 
                 <TextView
+                    android:id="@+id/shop_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="凌空SOHO 8楼1102室"
-                    android:textSize="15sp"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:text="@string/lesson_teacher"
-                    android:textSize="15sp"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
 
                 <TextView
+                    android:id="@+id/group_teacher_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Hary"
-                    android:textSize="15sp"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
             </LinearLayout>
 
             <LinearLayout
@@ -96,17 +155,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="强度："
                     android:layout_marginRight="20dp"
-                    android:textSize="15sp"/>
+                    android:text="强度："
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
 
                 <RatingBar
-                    android:id="@+id/rating_kitchen"
+                    android:id="@+id/rating_courses"
                     style="@style/LikingItemRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
-                    android:rating="2" />
+                    />
 
             </LinearLayout>
 
@@ -125,35 +185,62 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/bg_dark_gray_text"
-                    android:text="课程介绍"/>
+                    android:text="课程介绍"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_small"/>
 
                 <TextView
+                    android:id="@+id/courses_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:lineSpacingExtra="3dp"
-                    android:textSize="13sp"
-                    android:text="这节课是团体课这节课是团体课这节课是团体课这节课是团体课这节课是团体课这节课是团体课"/>
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="13sp"/>
             </LinearLayout>
 
 
-            <com.aaron.android.framework.library.imageloader.HImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginTop="10dp"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
+                android:layout_height="160dp">
+
+                <com.aaron.android.framework.library.imageloader.HImageView
+                    android:id="@+id/teacher_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    fresco:failureImage="@drawable/linshi_back"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/linshi_back"
+                    fresco:placeholderImageScaleType="centerCrop"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/lesson_details_layer">
+
+                    <TextView
+                        android:id="@+id/train_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_mirco"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/teacher_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="13sp"
-                android:text="教练介绍教练介绍教练介绍教练介绍教练介绍教练介绍"/>
+                android:textColor="@color/liking_lesson_text"
+                android:textSize="13sp"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -163,31 +250,29 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="场馆介绍"
-                android:textSize="15sp"
                 android:padding="10dp"
-                android:textColor="@color/bg_dark_gray_text"/>
+                android:text="场馆介绍"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_small"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/group_lesson_details_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="有疑问？联系客服"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"/>
+
         </LinearLayout>
     </ScrollView>
 
     <TextView
+        android:id="@+id/group_immediately_submit_btn"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:textSize="15sp"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_card_green_background"
         android:gravity="center"
-        android:text="@string/immadetails_appointment"/>
+        android:text="@string/immadetails_appointment"
+        android:textColor="@color/white"
+        android:textSize="15sp"/>
 </RelativeLayout>
