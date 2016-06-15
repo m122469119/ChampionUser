@@ -2,14 +2,17 @@ package com.goodchef.liking.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
+import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
+import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -19,7 +22,6 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.mvp.presenter.CoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.CoursesDetailsView;
-import com.goodchef.liking.utils.ListViewUtil;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ import java.util.List;
  */
 public class PrivateLessonDetailsActivity extends AppBarActivity implements CoursesDetailsView, View.OnClickListener {
     private HImageView mTeacherHImageView;
-    private ListView mListView;
+    private RecyclerView mRecyclerView;
     private TextView mTeacherTagsTextView;
     private TextView mTeacherIntroduceTextView;
     private TextView mTrainPlanTextView;
@@ -70,7 +72,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
     private void initView() {
         mTeacherHImageView = (HImageView) findViewById(R.id.private_lesson_details_teach_image);
         mTeacherTagsTextView = (TextView) findViewById(R.id.teacher_tags);
-        mListView = (ListView) findViewById(R.id.private_lesson_listView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.private_lesson_listView);
         mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
         mTrainPlanTextView = (TextView) findViewById(R.id.train_plan);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.private_lesson_immediately_submit);
@@ -110,11 +112,12 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
         setListViewData(privateCoursesData.getPlanImgs());
     }
 
-    private void setListViewData(List<String> imageList) {
+    private void setListViewData(List<PrivateCoursesResult.PrivateCoursesData.PlanImageData> imageList) {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mPrivateCoursesDetailsAdapter = new PrivateCoursesDetailsAdapter(this);
         mPrivateCoursesDetailsAdapter.setData(imageList);
-        mListView.setAdapter(mPrivateCoursesDetailsAdapter);
-        ListViewUtil.setListViewHeightBasedOnChildren(mListView);
+        mRecyclerView.setAdapter(mPrivateCoursesDetailsAdapter);
     }
 
     @Override
@@ -125,7 +128,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
     }
 
 
-    public class PrivateCoursesDetailsAdapter extends HBaseAdapter<String> {
+    public class PrivateCoursesDetailsAdapter extends BaseRecycleViewAdapter<PrivateCoursesDetailsAdapter.GroupLessonViewHolder, PrivateCoursesResult.PrivateCoursesData.PlanImageData> {
 
         private Context mContext;
 
@@ -135,28 +138,34 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
         }
 
         @Override
-        protected BaseViewHolder<String> createViewHolder() {
-            return new GroupLessonViewHolder();
+        protected GroupLessonViewHolder createHeaderViewHolder() {
+            return null;
         }
 
-        class GroupLessonViewHolder extends BaseViewHolder<String> {
-            View mRootView;
+        @Override
+        protected GroupLessonViewHolder createViewHolder(ViewGroup parent) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_private_lesson, parent, false);
+            return new GroupLessonViewHolder(view);
+        }
+
+
+        public class GroupLessonViewHolder extends BaseRecycleViewHolder<PrivateCoursesResult.PrivateCoursesData.PlanImageData> {
             TextView mTitleTextView;
             HImageView mHImageView;
 
-            @Override
-            public View inflateItemView() {
-                mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_private_lesson, null, false);
-                mHImageView = (HImageView) mRootView.findViewById(R.id.private_lesson_details_hImageView);
-                mTitleTextView = (TextView) mRootView.findViewById(R.id.private_lesson_title);
-                return mRootView;
+            public GroupLessonViewHolder(View itemView) {
+                super(itemView);
+                mHImageView = (HImageView) itemView.findViewById(R.id.private_lesson_details_hImageView);
+                mTitleTextView = (TextView) itemView.findViewById(R.id.private_lesson_title);
             }
 
             @Override
-            public void bindViews(String object) {
-                if (!TextUtils.isEmpty(object)) {
-                    HImageLoaderSingleton.getInstance().requestImage(mHImageView, object);
+            public void bindViews(PrivateCoursesResult.PrivateCoursesData.PlanImageData object) {
+                String imageUrl = object.getUrl();
+                if (!TextUtils.isEmpty(imageUrl)) {
+                    HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
                 }
+                mTitleTextView.setText(object.getDesc());
             }
         }
     }

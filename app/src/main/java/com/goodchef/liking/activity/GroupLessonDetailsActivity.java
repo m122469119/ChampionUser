@@ -116,7 +116,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements Course
                 HImageLoaderSingleton.getInstance().requestImage(mShopImageView, coursesImageUrl);
             }
         }
-        mShopNameTextView.setText(groupLessonData.getGymAnnonce());
+        mScheduleResultTextView.setText(groupLessonData.getQuota());
+        mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress());
         mTeacherNameTextView.setText(groupLessonData.getTrainerName());

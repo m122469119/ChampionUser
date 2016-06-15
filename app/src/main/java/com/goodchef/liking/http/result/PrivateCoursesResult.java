@@ -46,7 +46,7 @@ public class PrivateCoursesResult extends BaseResult {
         @SerializedName("trainer_imgs")
         private List<String> trainerImgs;
         @SerializedName("plan_imgs")
-        private List<String> planImgs;
+        private List<PlanImageData> planImgs;
 
         public String getTrainerName() {
             return trainerName;
@@ -88,12 +88,41 @@ public class PrivateCoursesResult extends BaseResult {
             this.trainerImgs = trainerImgs;
         }
 
-        public List<String> getPlanImgs() {
+        public List<PlanImageData> getPlanImgs() {
             return planImgs;
         }
 
-        public void setPlanImgs(List<String> planImgs) {
+        public void setPlanImgs(List<PlanImageData> planImgs) {
             this.planImgs = planImgs;
+        }
+
+        public static class PlanImageData extends BaseData{
+
+            /**
+             * desc : 美男子式哑铃
+             * url :
+             */
+
+            @SerializedName("desc")
+            private String desc;
+            @SerializedName("url")
+            private String url;
+
+            public String getDesc() {
+                return desc;
+            }
+
+            public void setDesc(String desc) {
+                this.desc = desc;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
         }
     }
 }
