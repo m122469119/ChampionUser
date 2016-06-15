@@ -32,4 +32,7 @@
 
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
+    <string name="wifi">WiFi</string>
+    <string name="shower">淋浴</string>
+    <string name="hour_24">24小时</string>
 </resources>

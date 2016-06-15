@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/layout_liking_home_head"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginBottom="10dp">
+
+    <com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager
+        android:id="@+id/arena_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator
+        android:id="@+id/arena_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/public_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lesson_details_layer"
+        android:padding="10dp"
+        android:text="场馆公告"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_mirco"/>
+</RelativeLayout>

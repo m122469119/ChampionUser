@@ -18,6 +18,7 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.AboutActivity;
+import com.goodchef.liking.activity.ArenaActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.LessonActivity;
@@ -134,7 +135,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mMyOrderLayout) {//我的订单
 
         } else if (v == mMyBalanceLayout) {//我的余额
-
+            Intent intent = new Intent(getActivity(), ArenaActivity.class);
+            startActivity(intent);
         } else if (v == mInviteFriendsLayout) {//邀请好友
 
         } else if (v == mCouponsLayout) {//我的优惠券
