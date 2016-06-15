@@ -9,6 +9,6 @@
         android:drawable="@drawable/liking_ratting_gray"></item>
     <item
         android:id="@android:id/progress"
-        android:drawable="@drawable/liking_ratting_yellow" />
+        android:drawable="@drawable/liking_rating_light" />
 
 </layer-list>
