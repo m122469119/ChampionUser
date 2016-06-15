@@ -35,6 +35,8 @@ public class UrlList {
     public static final String PRIVATE_LESSON_DETAILS = getVersionHostUrl()+"/trainer/info";
     /**首页banner*/
     public static final String HOME_BANNER = getVersionHostUrl()+"/index/banner";
+    /**预约团体课*/
+    public static final String ORDER_GROUP_COURSES = getVersionHostUrl()+"/order/team-course-reserve";
 
 
 }

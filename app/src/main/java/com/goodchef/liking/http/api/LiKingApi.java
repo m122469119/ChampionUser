@@ -157,4 +157,15 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.HOME_BANNER, BannerResult.class, getCommonRequestParams(), callback);
     }
 
+    /**
+     * 团体课预约
+     *
+     * @param scheduleId 团体课排期id
+     * @param token       token
+     * @param callback    RequestCallback
+     */
+    public static void orderGroupCourses(String scheduleId, String token, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_GROUP_COURSES, BaseResult.class, getCommonRequestParams().append("schedule_id", scheduleId).append(KEY_TOKEN, token), callback);
+    }
+
 }

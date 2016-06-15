@@ -18,10 +18,9 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.LikingLessonFragment;
-import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
-import com.goodchef.liking.mvp.presenter.CoursesDetailsPresenter;
-import com.goodchef.liking.mvp.view.CoursesDetailsView;
+import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
+import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/24 下午5:55
  */
-public class PrivateLessonDetailsActivity extends AppBarActivity implements CoursesDetailsView, View.OnClickListener {
+public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, View.OnClickListener {
     private HImageView mTeacherHImageView;
     private RecyclerView mRecyclerView;
     private TextView mTeacherTagsTextView;
@@ -38,7 +37,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
     private TextView mTrainPlanTextView;
     private TextView mImmediatelySubmitBtn;
 
-    private CoursesDetailsPresenter mCoursesDetailsPresenter;
+    private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
 
@@ -81,14 +80,10 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Cour
     }
 
     private void sendDetailsRequest() {
-        mCoursesDetailsPresenter = new CoursesDetailsPresenter(this, this);
-        mCoursesDetailsPresenter.getPrivateCouresDetails(trainerId);
+        mCoursesDetailsPresenter = new PrivateCoursesDetailsPresenter(this, this);
+        mCoursesDetailsPresenter.getPrivateCoursesDetails(trainerId);
     }
 
-    @Override
-    public void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData) {
-
-    }
 
     @Override
     public void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData) {

@@ -3,24 +3,23 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.GroupCoursesResult;
-import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.mvp.view.CoursesDetailsView;
+import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
 
 /**
  * 说明:
  * Author shaozucheng
- * Time:16/6/12 下午6:35
+ * Time:16/6/15 下午5:30
  */
-public class CoursesDetailsPresenter extends BasePresenter<CoursesDetailsView> {
-
-    public CoursesDetailsPresenter(Context context, CoursesDetailsView mainView) {
+public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDetailsView> {
+    public GroupCoursesDetailsPresenter(Context context, GroupCourserDetailsView mainView) {
         super(context, mainView);
     }
 
@@ -43,14 +42,13 @@ public class CoursesDetailsPresenter extends BasePresenter<CoursesDetailsView> {
         });
     }
 
-
-    public void getPrivateCouresDetails(String trainerId) {
-        LiKingApi.getPrivateCoursesDetails(trainerId, new RequestUiLoadingCallback<PrivateCoursesResult>(mContext, R.string.loading_data) {
+    public void orderGroupCourses(String scheduleId, String token) {
+        LiKingApi.orderGroupCourses(scheduleId, token, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
             @Override
-            public void onSuccess(PrivateCoursesResult result) {
+            public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
-                    mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
+                    mView.updateOrderGroupCourses();
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }
