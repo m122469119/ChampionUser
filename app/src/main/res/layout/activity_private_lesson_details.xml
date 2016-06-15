@@ -109,12 +109,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:lineSpacingExtra="3dp"
-                    android:paddingBottom="10dp"
                     android:textColor="@color/lesson_details_gray_back"
                     android:textSize="13sp"/>
             </LinearLayout>
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/private_lesson_listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

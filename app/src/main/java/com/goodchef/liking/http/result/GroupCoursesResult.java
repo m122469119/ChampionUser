@@ -64,6 +64,10 @@ public class GroupCoursesResult extends BaseResult {
         private List<String> gymImgs;
         @SerializedName("trainer_imgs")
         private List<String> trainerImgs;
+        @SerializedName("quota")
+        private String quota;
+        @SerializedName("gym_name")
+        private String gymName;
 
         public String getCourseName() {
             return courseName;
@@ -159,6 +163,22 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setTrainerImgs(List<String> trainerImgs) {
             this.trainerImgs = trainerImgs;
+        }
+
+        public String getQuota() {
+            return quota;
+        }
+
+        public void setQuota(String quota) {
+            this.quota = quota;
+        }
+
+        public String getGymName() {
+            return gymName;
+        }
+
+        public void setGymName(String gymName) {
+            this.gymName = gymName;
         }
     }
 
