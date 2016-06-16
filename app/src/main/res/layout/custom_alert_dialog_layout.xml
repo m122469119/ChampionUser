@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center" >
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/sixteen"
+        android:layout_marginRight="@dimen/sixteen"
+        android:background="@drawable/shape_all_rounded_normal"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/sixteen"
+        android:scrollbars="vertical" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/eight"
+            android:layout_marginRight="@dimen/eight"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/eight"
+                android:layout_marginRight="@dimen/eight"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <include layout="@layout/layout_line_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/cancel_btn"
+                style="@style/custom_dialog_button"
+                android:background="@drawable/shape_bottom_left_rounded_selector" />
+
+            <include
+                android:id="@+id/single_line"
+                layout="@layout/layout_line_vertical" />
+
+            <Button
+                android:id="@+id/neutral_btn"
+                style="@style/custom_dialog_button"
+                android:background="@drawable/shape_none_rounded_selector" />
+
+            <include
+                android:id="@+id/second_line"
+                layout="@layout/layout_line_vertical" />
+
+            <Button
+                android:id="@+id/confirm_btn"
+                style="@style/custom_dialog_button"
+                android:background="@drawable/shape_bottom_right_rounded_selector" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

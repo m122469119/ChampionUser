@@ -23,7 +23,7 @@ public class PrivateCoursesConfirmResult extends BaseResult {
         this.data = data;
     }
 
-    public class PrivateCoursesConfirmData extends BaseData{
+    public class PrivateCoursesConfirmData extends BaseData {
         @SerializedName("people_num")
         private String peopleNum;
         @SerializedName("end_time")
@@ -65,7 +65,7 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             mCourses = courses;
         }
 
-       public class Courses extends BaseData {
+        public class Courses extends BaseData {
             @SerializedName("course_id")
             private String courseId;
             @SerializedName("name")
@@ -75,38 +75,48 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             @SerializedName("price")
             private String price;
 
-           public String getCourseId() {
-               return courseId;
-           }
+            private boolean isSelect;
 
-           public void setCourseId(String courseId) {
-               this.courseId = courseId;
-           }
+            public String getCourseId() {
+                return courseId;
+            }
 
-           public String getName() {
-               return name;
-           }
+            public void setCourseId(String courseId) {
+                this.courseId = courseId;
+            }
 
-           public void setName(String name) {
-               this.name = name;
-           }
+            public String getName() {
+                return name;
+            }
 
-           public String getTimes() {
-               return times;
-           }
+            public void setName(String name) {
+                this.name = name;
+            }
 
-           public void setTimes(String times) {
-               this.times = times;
-           }
+            public String getTimes() {
+                return times;
+            }
 
-           public String getPrice() {
-               return price;
-           }
+            public void setTimes(String times) {
+                this.times = times;
+            }
 
-           public void setPrice(String price) {
-               this.price = price;
-           }
-       }
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
+
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean select) {
+                isSelect = select;
+            }
+        }
     }
 
 

@@ -53,6 +53,20 @@
         <activity android:name=".activity.ArenaActivity"/>
         <!--私教课确认订单-->
         <activity android:name=".activity.OrderPrivateCoursesConfirmActivity"/>
+
+        <!--微信支付-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <!-- 微信分享回调-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
         <!-- 高德地图注册信息-->
         <meta-data
             android:name="com.amap.api.v2.apikey"

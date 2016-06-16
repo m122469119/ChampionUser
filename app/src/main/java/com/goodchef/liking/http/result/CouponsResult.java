@@ -46,20 +46,30 @@ public class CouponsResult extends BaseResult {
         }
 
         public static class Coupon extends BaseData {
-            @SerializedName("startTime")
+            @SerializedName("coupon_code")
+            private String couponCode;
+            @SerializedName("start_time")
             private String startTime;
-            @SerializedName("endTime")
+            @SerializedName("end_time")
             private String endTime;
             @SerializedName("title")
             private String title;
-            @SerializedName("couponStatus")
+            @SerializedName("coupon_status")
             private String couponStatus;
-            @SerializedName("couponType")
+            @SerializedName("coupon_type")
             private String couponType;
-            @SerializedName("minAmount")
+            @SerializedName("min_amount")
             private String minAmount;
             @SerializedName("amount")
             private String amount;
+
+            public String getCouponCode() {
+                return couponCode;
+            }
+
+            public void setCouponCode(String couponCode) {
+                this.couponCode = couponCode;
+            }
 
             public String getStartTime() {
                 return startTime;
