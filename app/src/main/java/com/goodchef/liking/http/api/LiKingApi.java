@@ -12,6 +12,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
@@ -161,11 +162,23 @@ public class LiKingApi {
      * 团体课预约
      *
      * @param scheduleId 团体课排期id
-     * @param token       token
-     * @param callback    RequestCallback
+     * @param token      token
+     * @param callback   RequestCallback
      */
     public static void orderGroupCourses(String scheduleId, String token, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_GROUP_COURSES, BaseResult.class, getCommonRequestParams().append("schedule_id", scheduleId).append(KEY_TOKEN, token), callback);
+    }
+
+    /**
+     * 私教课确认预约订单
+     *
+     * @param trainerId 教练ID
+     * @param token     token
+     * @param callback  RequestCallback
+     */
+    public static void orderPrivateCoursesConfirm(String trainerId, String token, RequestCallback<PrivateCoursesConfirmResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.PRIVATE_ORDER_CONFIRM, PrivateCoursesConfirmResult.class, getCommonRequestParams().append("trainer_id", trainerId)
+                .append(KEY_TOKEN, token), callback);
     }
 
 }

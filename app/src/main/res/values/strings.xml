@@ -35,4 +35,6 @@
     <string name="wifi">WiFi</string>
     <string name="shower">淋浴</string>
     <string name="hour_24">24小时</string>
+    <string name="pay_alipay_type">支付宝支付</string>
+    <string name="pay_wechat_type">微信支付</string>
 </resources>
