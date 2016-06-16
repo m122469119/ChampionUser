@@ -15,6 +15,7 @@ import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
+import com.goodchef.liking.http.result.SubmitCoursesResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -193,6 +194,21 @@ public class LiKingApi {
     public static void getCoupons(String courseId, String token, int page, RequestCallback<CouponsResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, getCommonRequestParams().append("course_id", courseId)
                 .append(KEY_TOKEN, token).append("page", page), callback);
+    }
+
+
+    /**
+     * 提交预约私教课
+     *
+     * @param token      token
+     * @param courseId   课程id
+     * @param couponCode 优惠券
+     * @param payType    支付方式
+     * @param callback   RequestCallback
+     */
+    public static void submitPrivateCourses(String token, String courseId, String couponCode, String payType, RequestCallback<SubmitCoursesResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_PRIVATE_COURSES_PAY, SubmitCoursesResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("course_id", courseId).append("coupon_code", couponCode).append("pay_type", payType), callback);
     }
 
 }

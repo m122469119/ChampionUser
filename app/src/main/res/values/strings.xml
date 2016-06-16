@@ -37,4 +37,11 @@
     <string name="hour_24">24小时</string>
     <string name="pay_alipay_type">支付宝支付</string>
     <string name="pay_wechat_type">微信支付</string>
+
+    <string name="share_success">分享成功</string>
+    <string name="share_user_cancel">取消分享</string>
+    <string name="share_fail">分享失败</string>
+
+    <string name="pay_success">支付成功</string>
+    <string name="pay_fail">支付失败</string>
 </resources>

@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@drawable/shape_card_background"
               android:orientation="vertical">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="46dp">
+        android:layout_height="48dp">
 
         <ImageView
             android:id="@+id/pay_type_alipy_icon"
@@ -44,9 +45,15 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/line"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="46dp">
+        android:layout_height="48dp">
 
         <ImageView
             android:id="@+id/pay_type_wechat_icon"

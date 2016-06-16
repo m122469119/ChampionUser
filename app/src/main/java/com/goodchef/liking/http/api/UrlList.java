@@ -41,6 +41,8 @@ public class UrlList {
     public static final String PRIVATE_ORDER_CONFIRM = getVersionHostUrl()+"/order/confirm";
     /**获取优惠券*/
     public static final String GET_COUPON = getVersionHostUrl()+"/coupon/fetch-coupon";
+    /**预约私教课支付*/
+    public static final String ORDER_PRIVATE_COURSES_PAY = getVersionHostUrl()+"/order/trainer-reserve";
 
 
 }

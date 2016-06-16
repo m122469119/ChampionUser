@@ -9,6 +9,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
+import com.goodchef.liking.http.result.SubmitCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
 import com.goodchef.liking.storage.Preference;
@@ -30,6 +31,25 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updatePrivateCoursesConfirm(result.getData());
+                } else {
+                    PopupUtils.showToast(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
+    }
+
+    public void submitPrivateCourses(String courseId, String couponCode, String payType) {
+        LiKingApi.submitPrivateCourses(Preference.getToken(), courseId, couponCode, payType, new RequestUiLoadingCallback<SubmitCoursesResult>(mContext, R.string.loading_data) {
+            @Override
+            public void onSuccess(SubmitCoursesResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    mView.updateSubmitOrderCourses(result.getPayData());
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }

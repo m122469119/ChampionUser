@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
+import com.goodchef.liking.http.result.data.PayData;
 
 /**
  * 说明:
@@ -10,4 +11,5 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
  */
 public interface PrivateCoursesConfirmView extends BaseView {
     void updatePrivateCoursesConfirm(PrivateCoursesConfirmResult.PrivateCoursesConfirmData coursesConfirmData);
+    void updateSubmitOrderCourses(PayData payData);
 }
