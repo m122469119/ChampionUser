@@ -39,6 +39,8 @@ public class UrlList {
     public static final String ORDER_GROUP_COURSES = getVersionHostUrl()+"/order/team-course-reserve";
     /**私教课确认预约*/
     public static final String PRIVATE_ORDER_CONFIRM = getVersionHostUrl()+"/order/confirm";
+    /**获取优惠券*/
+    public static final String GET_COUPON = getVersionHostUrl()+"/coupon/fetch-coupon";
 
 
 }

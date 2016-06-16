@@ -40,6 +40,8 @@
         <activity android:name=".widgets.camera.AlbumActivity"/>
         <!--课程-->
         <activity android:name=".activity.LessonActivity"/>
+        <!--我的优惠券-->
+        <activity android:name=".activity.CouponsActivity"/>
         <!--用户登录-->
         <activity
             android:name=".activity.LoginActivity"

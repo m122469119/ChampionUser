@@ -10,6 +10,7 @@ import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
@@ -179,6 +180,19 @@ public class LiKingApi {
     public static void orderPrivateCoursesConfirm(String trainerId, String token, RequestCallback<PrivateCoursesConfirmResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.PRIVATE_ORDER_CONFIRM, PrivateCoursesConfirmResult.class, getCommonRequestParams().append("trainer_id", trainerId)
                 .append(KEY_TOKEN, token), callback);
+    }
+
+    /**
+     * 获取优惠券
+     *
+     * @param courseId 私教课下单确认页需要传
+     * @param token    token
+     * @param page     页数
+     * @param callback RequestCallback
+     */
+    public static void getCoupons(String courseId, String token, int page, RequestCallback<CouponsResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, getCommonRequestParams().append("course_id", courseId)
+                .append(KEY_TOKEN, token).append("page", page), callback);
     }
 
 }
