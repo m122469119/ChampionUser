@@ -4,12 +4,83 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <include
-        android:id="@+id/alipay_pay_layout"
-        layout="@layout/layout_select_pay_type_item"/>
 
-    <include
-        android:id="@+id/wechat_pay_layout"
-        layout="@layout/layout_select_pay_type_item"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp">
 
+        <ImageView
+            android:id="@+id/pay_type_alipy_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/pay_alipay"
+            />
+
+        <TextView
+            android:id="@+id/tv_pay_alipay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/pay_type_alipy_icon"
+            android:text="@string/pay_alipay_type"
+            android:textColor="@color/bg_dark_gray_text"
+            android:textSize="@dimen/textsize_small"
+            />
+
+        <CheckBox
+            android:id="@+id/pay_Type_alipay_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp">
+
+        <ImageView
+            android:id="@+id/pay_type_wechat_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/pay_wechat"
+            />
+
+        <TextView
+            android:id="@+id/tv_pay_wechat_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/pay_type_wechat_icon"
+            android:text="@string/pay_wechat_type"
+            android:textColor="@color/bg_dark_gray_text"
+            android:textSize="@dimen/textsize_small"
+            />
+
+
+        <CheckBox
+            android:id="@+id/pay_Type_wechat_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+    </RelativeLayout>
 </LinearLayout>

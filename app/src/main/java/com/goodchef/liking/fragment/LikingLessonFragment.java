@@ -151,7 +151,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
-        if (list != null) {
+        if (list != null && list.size() > 0) {
             updateListView(list);
             if (bannerDataList != null && bannerDataList.size() > 0) {
                 mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);
