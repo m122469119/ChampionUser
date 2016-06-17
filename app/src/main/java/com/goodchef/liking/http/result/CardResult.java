@@ -1,0 +1,83 @@
+package com.goodchef.liking.http.result;
+
+import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+/**
+ * 说明:
+ * Author shaozucheng
+ * Time:16/6/17 上午11:41
+ */
+public class CardResult extends BaseResult {
+    @SerializedName("data")
+    private CardData mCardData;
+
+    public CardData getCardData() {
+        return mCardData;
+    }
+
+    public void setCardData(CardData cardData) {
+        mCardData = cardData;
+    }
+
+    public static class CardData extends BaseData {
+        @SerializedName("category")
+        List<Card> mCardList;
+
+        public List<Card> getCardList() {
+            return mCardList;
+        }
+
+        public void setCardList(List<Card> cardList) {
+            mCardList = cardList;
+        }
+
+        public static class Card extends BaseData {
+            @SerializedName("category_id")
+            private int categoryId;
+            @SerializedName("category_name")
+            private String categoryName;
+            @SerializedName("category_url")
+            private String categoryUrl;
+            @SerializedName("price")
+            private String price;
+
+            public int getCategoryId() {
+                return categoryId;
+            }
+
+            public void setCategoryId(int categoryId) {
+                this.categoryId = categoryId;
+            }
+
+            public String getCategoryName() {
+                return categoryName;
+            }
+
+            public void setCategoryName(String categoryName) {
+                this.categoryName = categoryName;
+            }
+
+            public String getCategoryUrl() {
+                return categoryUrl;
+            }
+
+            public void setCategoryUrl(String categoryUrl) {
+                this.categoryUrl = categoryUrl;
+            }
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
+        }
+    }
+
+
+}

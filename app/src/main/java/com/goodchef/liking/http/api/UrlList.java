@@ -43,6 +43,7 @@ public class UrlList {
     public static final String GET_COUPON = getVersionHostUrl()+"/coupon/fetch-coupon";
     /**预约私教课支付*/
     public static final String ORDER_PRIVATE_COURSES_PAY = getVersionHostUrl()+"/order/trainer-reserve";
-
+    /**健身卡列表*/
+    public static final String CARD_LIST = getVersionHostUrl()+"/card/list";
 
 }
