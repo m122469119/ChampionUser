@@ -1,7 +1,8 @@
 package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.goodchef.liking.http.result.data.PayData;
+
+import com.goodchef.liking.http.result.data.PayResultData;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,13 +12,13 @@ import com.google.gson.annotations.SerializedName;
  */
 public class SubmitCoursesResult extends BaseResult {
     @SerializedName("data")
-    private PayData mPayData;
+    private PayResultData mPayData;
 
-    public PayData getPayData() {
+    public PayResultData getPayData() {
         return mPayData;
     }
 
-    public void setPayData(PayData payData) {
+    public void setPayData(PayResultData payData) {
         mPayData = payData;
     }
 }

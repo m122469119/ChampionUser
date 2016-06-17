@@ -6,9 +6,10 @@ import com.google.gson.annotations.SerializedName;
 /**
  * 说明:
  * Author shaozucheng
- * Time:16/6/16 下午10:40
+ * Time:16/6/17 上午11:26
  */
-public class PayData extends BaseData {
+public class PayResultData extends BaseData{
+
     @SerializedName("order_id")
     private String orderId;
     @SerializedName("pay_type")
