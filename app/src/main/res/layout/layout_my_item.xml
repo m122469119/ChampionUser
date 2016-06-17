@@ -2,28 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginBottom="20dp"
+              android:layout_marginBottom="15dp"
+              android:layout_marginTop="5dp"
               android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/layout_practice_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="训练数据"/>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_my_course"
@@ -31,17 +13,21 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="10dp">
+        >
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"/>
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_courses"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="@dimen/textsize_small"
+            android:textColor="@color/lesson_details_dark_back"
             android:text="课程"/>
     </LinearLayout>
 
@@ -51,37 +37,66 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="10dp">
+        >
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"/>
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_order"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="@dimen/textsize_small"
+            android:textColor="@color/lesson_details_dark_back"
             android:text="订单"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_my_balance"
+        android:id="@+id/layout_member_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="10dp">
+        >
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="15dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+           android:src="@drawable/icon_card"
             android:layout_gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="余额"/>
+            android:textSize="@dimen/textsize_small"
+            android:textColor="@color/lesson_details_dark_back"
+            android:text="会员卡"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_coupons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_coupons"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_small"
+            android:textColor="@color/lesson_details_dark_back"
+            android:text="优惠券"/>
     </LinearLayout>
 </LinearLayout>

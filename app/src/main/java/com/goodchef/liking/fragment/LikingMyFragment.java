@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,19 +37,23 @@ import com.goodchef.liking.storage.Preference;
  */
 public class LikingMyFragment extends BaseFragment implements View.OnClickListener, LoginView {
     private LinearLayout mInviteFriendsLayout;//邀请好友
-    private LinearLayout mCouponsLayout;//我的优惠券
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mAboutUsLayout;//关于我们
-
     private RelativeLayout mHeadInfoLayout;//头像布局
+
     private HImageView mHeadHImageView;//头像
     private TextView mLoginOutBtn;//退出登录
 
-    private LinearLayout mPracticeDataLayout;//训练数据
     private LinearLayout mMyCourseLayout;//我的课程
     private LinearLayout mMyOrderLayout;//我的订单
-    private LinearLayout mMyBalanceLayout;//我的余额
+    private LinearLayout mMemberCardLayout;//会员卡
+    private LinearLayout mCouponsLayout;//我的优惠券
+
+    private TextView myTrainTime;
+    private TextView myTrainDistance;
+    private TextView myTrainCal;
+
 
     public static final String NULL_STRING = "";
 
@@ -67,7 +70,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private void initView(View view) {
         mHeadInfoLayout = (RelativeLayout) view.findViewById(R.id.layout_head_info);
         mInviteFriendsLayout = (LinearLayout) view.findViewById(R.id.layout_invite_friends);
-        mCouponsLayout = (LinearLayout) view.findViewById(R.id.layout_coupons);
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
         mAboutUsLayout = (LinearLayout) view.findViewById(R.id.layout_about_us);
@@ -75,42 +77,41 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
         mLoginOutBtn = (TextView) view.findViewById(R.id.login_out_btn);
 
-        mPracticeDataLayout = (LinearLayout) view.findViewById(R.id.layout_practice_data);
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
         mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
-        mMyBalanceLayout = (LinearLayout) view.findViewById(R.id.layout_my_balance);
-
+        mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
+        mCouponsLayout = (LinearLayout) view.findViewById(R.id.layout_coupons);
+        myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
+        myTrainDistance = (TextView) view.findViewById(R.id.my_train_distance);
+        myTrainCal = (TextView) view.findViewById(R.id.my_train_cal);
     }
 
     private void setViewOnClickListener() {
         mInviteFriendsLayout.setOnClickListener(this);
-        mCouponsLayout.setOnClickListener(this);
         mContactJoinLayout.setOnClickListener(this);
         mBecomeTeacherLayout.setOnClickListener(this);
         mAboutUsLayout.setOnClickListener(this);
         mHeadInfoLayout.setOnClickListener(this);
         mHeadHImageView.setOnClickListener(this);
         mLoginOutBtn.setOnClickListener(this);
-        mPracticeDataLayout.setOnClickListener(this);
+
         mMyCourseLayout.setOnClickListener(this);
         mMyOrderLayout.setOnClickListener(this);
-        mMyBalanceLayout.setOnClickListener(this);
+        mMemberCardLayout.setOnClickListener(this);
+        mCouponsLayout.setOnClickListener(this);
     }
 
 
     private void initViewIconAndText() {
-        setMySettingCard(mInviteFriendsLayout, 0, R.string.layout_invite_friends, true);
-        setMySettingCard(mCouponsLayout, 0, R.string.layout_coupons, true);
-        setMySettingCard(mContactJoinLayout, 0, R.string.layout_contact_join, true);
-        setMySettingCard(mBecomeTeacherLayout, 0, R.string.layout_become_teacher, true);
-        setMySettingCard(mAboutUsLayout, 0, R.string.layout_about_us, false);
+        setMySettingCard(mInviteFriendsLayout, R.string.layout_invite_friends, true);
+        setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
+        setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, true);
+        setMySettingCard(mAboutUsLayout, R.string.layout_about_us, false);
     }
 
-    private void setMySettingCard(View view, int drawableResId, int text, boolean isShowLine) {
-        ImageView icon = (ImageView) view.findViewById(R.id.standard_my_icon);
+    private void setMySettingCard(View view, int text, boolean isShowLine) {
         TextView textView = (TextView) view.findViewById(R.id.standard_my_text);
         View line = view.findViewById(R.id.standard_view_line);
-        // icon.setImageDrawable(getResources().getDrawable(drawableResId));
         textView.setText(text);
         if (isShowLine) {
             line.setVisibility(View.VISIBLE);
@@ -127,20 +128,18 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mHeadInfoLayout) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
-        } else if (v == mPracticeDataLayout) {//训练数据
-
         } else if (v == mMyCourseLayout) {//我的课程
             Intent intent = new Intent(getActivity(), LessonActivity.class);
             startActivity(intent);
         } else if (v == mMyOrderLayout) {//我的订单
-
-        } else if (v == mMyBalanceLayout) {//我的余额
+            PopupUtils.showToast("订单开发中");
+        } else if (v == mMemberCardLayout) {//会员卡
             Intent intent = new Intent(getActivity(), ArenaActivity.class);
             startActivity(intent);
         } else if (v == mInviteFriendsLayout) {//邀请好友
-
+            PopupUtils.showToast("邀请好友开发中");
         } else if (v == mCouponsLayout) {//我的优惠券
-
+            PopupUtils.showToast("优惠券开发中");
         } else if (v == mContactJoinLayout) {//联系加盟
             Intent intent = new Intent(getActivity(), ContactJonInActivity.class);
             startActivity(intent);
