@@ -91,6 +91,7 @@ public class LiKingVerifyUtils {
     private static boolean mBaseConfigInitSuccess = false; //BaseConfig未与服务器同步成功
     public static void initApi(final Context context) {
         if (mSyncTimestampIsLoading) {
+            EventBus.getDefault().post(new InitApiFinishedMessage(true));
             return;
         }
         LiKingApi.syncServerTimestamp(new RequestCallback<SyncTimestampResult>() {
