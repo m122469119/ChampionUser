@@ -10,6 +10,7 @@ import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
@@ -209,6 +210,15 @@ public class LiKingApi {
     public static void submitPrivateCourses(String token, String courseId, String couponCode, String payType, RequestCallback<SubmitCoursesResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_PRIVATE_COURSES_PAY, SubmitCoursesResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("course_id", courseId).append("coupon_code", couponCode).append("pay_type", payType), callback);
+    }
+
+    /**
+     * 获取健身卡列表
+     *
+     * @param callback RequestCallback
+     */
+    public static void getCardList(RequestCallback<CardResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CardResult.class, getCommonRequestParams(), callback);
     }
 
 }

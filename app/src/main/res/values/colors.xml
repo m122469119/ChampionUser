@@ -19,6 +19,8 @@
     <color name="lesson_details_gray_back">#888b9a</color>
     <color name="lesson_details_layer">#60000000</color>
     <color name="liking_green_btn_back">#34c86c</color>
-
     <color name="pressed">#EAEAEA</color>
+    <color name="buy_card_green_text">#3dc66f</color>
+    <color name="buy_card_prompt_background">#dee0e4</color>
+    <color name="buy_card_prompt_text">#888b99</color>
 </resources>

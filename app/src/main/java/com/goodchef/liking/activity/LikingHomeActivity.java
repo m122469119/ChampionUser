@@ -75,6 +75,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private void setViewOnClickListener() {
         mLikingLeftTitleTextView.setOnClickListener(this);
+        mLikingRightTitleTextView.setOnClickListener(this);
         mLeftImageView.setOnClickListener(this);
     }
 
@@ -117,6 +118,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingMiddleTitleTextTextView.setVisibility(View.GONE);
                     mMiddleImageView.setVisibility(View.VISIBLE);
                     mLeftImageView.setVisibility(View.VISIBLE);
+                    mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingLeftTitleTextView.setText("上海");
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
@@ -124,6 +126,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLeftImageView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setVisibility(View.VISIBLE);
                     mMiddleImageView.setVisibility(View.GONE);
+                    mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_nearby);
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
@@ -132,12 +135,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingMiddleTitleTextTextView.setVisibility(View.VISIBLE);
                     mMiddleImageView.setVisibility(View.GONE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_recharge);
+                    mLikingRightTitleTextView.setVisibility(View.VISIBLE);
+                    mLikingRightTitleTextView.setText("查看场馆");
                 } else if (tabId.equals(TAG_MY_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
                     mLeftImageView.setVisibility(View.INVISIBLE);
                     mMiddleImageView.setVisibility(View.GONE);
                     mLikingMiddleTitleTextTextView.setVisibility(View.VISIBLE);
+                    mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_my);
                 }
             }
@@ -147,10 +153,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView || v == mLeftImageView) {
-            String tag = fragmentTabHost.getCurrentTabTag();
             if (tag.equals(TAG_MAIN_TAB)) {
-                Intent intent = new Intent(this,LookStoreMapActivity.class);
+                Intent intent = new Intent(this, LookStoreMapActivity.class);
+                startActivity(intent);
+            }
+        } else if (v == mLikingRightTitleTextView) {
+            if (tag.equals(TAG_RECHARGE_TAB)) {
+                Intent intent = new Intent(this, LookStoreMapActivity.class);
                 startActivity(intent);
             }
         }
