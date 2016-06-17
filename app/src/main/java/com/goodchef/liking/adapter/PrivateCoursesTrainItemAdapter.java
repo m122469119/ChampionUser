@@ -53,7 +53,7 @@ public class PrivateCoursesTrainItemAdapter extends BaseRecycleViewAdapter<Priva
                 mTrainItemTextView.setTextColor(ResourceUtils.getColor(R.color.white));
             } else {
                 mTrainItemTextView.setBackgroundResource(R.drawable.shape_train_item_gray_back);
-                mTrainItemTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
+                mTrainItemTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
             }
             mTrainItemTextView.setText(object.getName());
             mTrainItemTextView.setTag(object);
