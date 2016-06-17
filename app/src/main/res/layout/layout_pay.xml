@@ -7,6 +7,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/layout_alipay"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
@@ -32,7 +33,7 @@
             />
 
         <CheckBox
-            android:id="@+id/pay_Type_alipay_checkBox"
+            android:id="@+id/pay_type_alipay_checkBox"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
@@ -52,6 +53,7 @@
         android:background="@color/line"/>
 
     <RelativeLayout
+        android:id="@+id/layout_wechat"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
@@ -78,7 +80,7 @@
 
 
         <CheckBox
-            android:id="@+id/pay_Type_wechat_checkBox"
+            android:id="@+id/pay_type_wechat_checkBox"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"

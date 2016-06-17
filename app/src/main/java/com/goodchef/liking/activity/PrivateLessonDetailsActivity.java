@@ -123,6 +123,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             if (Preference.isLogin()) {
                 Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID,trainerId);
+                intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME,teacherName);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);

@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
 import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
 import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
@@ -35,6 +37,7 @@ import java.util.List;
  */
 public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implements PrivateCoursesConfirmView, View.OnClickListener {
     private static final int INTENT_REQUEST_CODE_COUPON = 100;
+    private static final int PAY_TYPE = 3;//3 免金额支付
 
     private RecyclerView mRecyclerView;
     private TextView mCoursesPeopleTextView;
@@ -45,15 +48,23 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private TextView mCoursesMoneyTextView;
     private TextView mImmediatelyBuyBtn;
 
+    private RelativeLayout mAlipayLayout;
+    private RelativeLayout mWechatLayout;
+    private CheckBox mAlipayCheckBox;
+    private CheckBox mWechatCheckBox;
+
     private PrivateCoursesTrainItemAdapter mPrivateCoursesTrainItemAdapter;
     private PrivateCoursesConfirmPresenter mPrivateCoursesConfirmPresenter;
 
-    private String trainerId;
-    private String coursesId;
-    private CouponsResult.CouponData.Coupon mCoupon;
+    private String trainerId;//训练项目id
+    private String teacherName;//教练姓名
+    private String coursesId;//课程id
+    private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
+    private PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem;//训练项目对象
+    private int payType;//支付方式
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +73,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         initView();
         initData();
         initPayModule();
+        setViewOnClickListener();
     }
 
     private void initView() {
@@ -73,10 +85,18 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mCoursesMoneyTextView = (TextView) findViewById(R.id.courses_money);
         mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
         mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
+        mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
+        mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
+        mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
+        mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
 
+    }
+
+    private void setViewOnClickListener() {
         mCouponsLayout.setOnClickListener(this);
         mImmediatelyBuyBtn.setOnClickListener(this);
-        mCoursesMoneyTextView.setText("¥ 55.0");
+        mAlipayLayout.setOnClickListener(this);
+        mWechatLayout.setOnClickListener(this);
     }
 
     private void initPayModule() {
@@ -87,6 +107,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
+        teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
+        setTitle(teacherName);
         mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmPresenter(this, this);
         sendRequest();
     }
@@ -113,6 +135,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     trainItemList.get(i).setSelect(false);
                 }
             }
+            coursesId = trainItemList.get(0).getCourseId();
+            mCoursesNumberTextView.setText(trainItemList.get(0).getTimes() + " 次");
+            coursesItem = trainItemList.get(0);
+            mCoursesMoneyTextView.setText("¥ " + coursesItem.getPrice());
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mPrivateCoursesTrainItemAdapter = new PrivateCoursesTrainItemAdapter(this);
@@ -124,9 +150,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = mPrivateCoursesTrainItemAdapter.getDataList();
                     TextView tv = (TextView) view.findViewById(R.id.train_item_text);
                     if (tv != null) {
-                        PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem = (PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses) tv.getTag();
+                        coursesItem = (PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses) tv.getTag();
                         if (coursesItem != null) {
-                            coursesId = coursesItem.getCourseId();
+                            coursesId = coursesItem.getCourseId();//记录coursesId
+                            mCouponTitleTextView.setText("");//清空优惠券需要重新选择
                             mCoursesNumberTextView.setText(coursesItem.getTimes() + " 次");
                             for (int i = 0; i < trainItemList.size(); i++) {
                                 if (trainItemList.get(i).getCourseId().equals(coursesId)) {
@@ -136,6 +163,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                                 }
                             }
                         }
+                        mCoursesMoneyTextView.setText("¥ " + coursesItem.getPrice());
                         mPrivateCoursesTrainItemAdapter.notifyDataSetChanged();
                     }
                 }
@@ -151,15 +179,25 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     @Override
     public void onClick(View v) {
         if (v == mCouponsLayout) {
-            Intent intent = new Intent(this, CouponsActivity.class);
-            intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
-            startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
+            if (coursesId != null) {
+                Intent intent = new Intent(this, CouponsActivity.class);
+                intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
+                startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
+            }
         } else if (v == mImmediatelyBuyBtn) {
             if (mCoupon != null) {
                 mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), "1");
             } else {
                 mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", "1");
             }
+        } else if (v == mAlipayLayout) {
+            mAlipayCheckBox.setChecked(true);
+            mWechatCheckBox.setChecked(false);
+            payType = 1;
+        } else if (v == mWechatLayout) {
+            mAlipayCheckBox.setChecked(false);
+            mWechatCheckBox.setChecked(true);
+            payType = 0;
         }
     }
 
@@ -169,14 +207,50 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         if (resultCode == RESULT_OK) {
             if (requestCode == INTENT_REQUEST_CODE_COUPON) {
                 mCoupon = (CouponsResult.CouponData.Coupon) data.getSerializableExtra(CouponsActivity.INTENT_KEY_COUPONS_DATA);
-                mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + "元");
+                if (mCoupon != null) {
+                    handleCoupons(mCoupon);
+                }
             }
+        }
+    }
+
+
+    /**
+     * 处理优惠券
+     */
+    private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
+        String minAmountStr = mCoupon.getMinAmount();//优惠券最低使用标准
+        String couponAmountStr = mCoupon.getAmount();//优惠券的面额
+        String priceStr = coursesItem.getPrice();//课程价格
+        double coursesPrice = Double.parseDouble(priceStr);
+        double couponAmount = Double.parseDouble(couponAmountStr);
+        double minAmount = Double.parseDouble(minAmountStr);
+        if (coursesPrice > minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
+            if (coursesPrice > couponAmount) {
+                mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
+                //课程的价格大于优惠券的面额
+                double amount = coursesPrice - couponAmount;
+                if (amount > 0) {
+                    mCoursesMoneyTextView.setText("¥ " + amount);
+                }
+            } else {//课程的面额小于优惠券的面额
+                mCoursesMoneyTextView.setText("¥ " + "0.00");
+            }
+        } else {//优惠券不可用
+            mCouponTitleTextView.setText("");
+            PopupUtils.showToast("该优惠券未达使用范围请重新选择");
         }
     }
 
     @Override
     public void updateSubmitOrderCourses(PayData payData) {
-        handlePay(payData);
+        int payType = payData.getPayType();
+        if (payType == PAY_TYPE) {//3 免金额支付
+            PopupUtils.showToast("支付成功");
+            jumpToMyCoursesActivity();
+        } else {
+            handlePay(payData);
+        }
     }
 
     private void handlePay(PayData data) {
@@ -206,7 +280,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
         @Override
         public void onSuccess() {
-            //  jumpToOrderDetailActivity();
+            jumpToMyCoursesActivity();
         }
 
         @Override
@@ -243,6 +317,14 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
 
+    }
+
+    /**
+     * 跳转我的课程列表
+     */
+    private void jumpToMyCoursesActivity() {
+        Intent intent = new Intent(this, LessonActivity.class);
+        startActivity(intent);
     }
 
 }
