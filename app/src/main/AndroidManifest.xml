@@ -53,6 +53,8 @@
         <activity android:name=".activity.ArenaActivity"/>
         <!--私教课确认订单-->
         <activity android:name=".activity.OrderPrivateCoursesConfirmActivity"/>
+        <!--买卡确认页-->
+        <activity android:name=".activity.BuyCardConfirmActivity"/>
 
         <!--微信支付-->
         <activity

@@ -23,4 +23,5 @@
     <color name="buy_card_green_text">#3dc66f</color>
     <color name="buy_card_prompt_background">#dee0e4</color>
     <color name="buy_card_prompt_text">#888b99</color>
+    <color name="buy_card_confirm_leisure">#28ca68</color>
 </resources>
