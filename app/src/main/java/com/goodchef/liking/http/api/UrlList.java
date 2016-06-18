@@ -47,6 +47,8 @@ public class UrlList {
     public static final String CARD_LIST = getVersionHostUrl()+"/card/list";
     /**团体课列表*/
     public static final String MY_ORDER_COURSES_LIST = getVersionHostUrl()+"/order/team-course-list";
+    /**我的私教课列表*/
+    public static final String MY_ORDER_PRIVATE_LIST = getVersionHostUrl()+"/order/personal-course-list";
 
 
 }

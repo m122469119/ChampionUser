@@ -1,17 +1,11 @@
 package com.goodchef.liking.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-
-import com.aaron.android.framework.base.BaseFragment;
-import com.goodchef.liking.R;
+import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.goodchef.liking.adapter.PrivateLessonAdapter;
+import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.mvp.presenter.MyPrivateCoursesPresenter;
+import com.goodchef.liking.mvp.view.MyPrivateCoursesView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,27 +13,35 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:43
  */
-public class PrivateLessonFragment extends BaseFragment {
-    private ListView mListView;
+public class PrivateLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyPrivateCoursesView {
+
     private PrivateLessonAdapter mPrivateLessonAdapter;
 
-    @Nullable
+    private MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_lesson, container, false);
-        mListView = (ListView) view.findViewById(R.id.lesson_listView);
-        initData();
-        return view;
+    protected void requestData(int page) {
+        sendRequest(page);
     }
 
-    private void initData() {
-        List<String> list = new ArrayList<>();
-        for (int i = 1; i < 30; i++) {
-            list.add(i + "");
-        }
+    private void sendRequest(int page) {
+        mMyPrivateCoursesPresenter = new MyPrivateCoursesPresenter(getActivity(), this);
+        mMyPrivateCoursesPresenter.getMyPrivateCourses(page, PrivateLessonFragment.this);
+    }
 
-        mPrivateLessonAdapter = new PrivateLessonAdapter(getActivity());
-        mPrivateLessonAdapter.setData(list);
-        mListView.setAdapter(mPrivateLessonAdapter);
+
+    @Override
+    protected void initViews() {
+        setPullType(PullMode.PULL_BOTH);
+    }
+
+    @Override
+    public void updatePrivateCoursesView(MyPrivateCoursesResult.PrivateCoursesData privateCoursesData) {
+        List<MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> list = privateCoursesData.getPrivateCoursesList();
+        if (list != null && list.size() > 0) {
+            mPrivateLessonAdapter = new PrivateLessonAdapter(getActivity());
+            mPrivateLessonAdapter.setData(list);
+            setRecyclerAdapter(mPrivateLessonAdapter);
+        }
     }
 }
