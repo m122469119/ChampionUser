@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:background="@drawable/shape_card_background"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_whole_day"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/lesson_details_dark_back"
+            android:text="全天"
+            android:textSize="@dimen/textsize_small"/>
+
+        <CheckBox
+            android:id="@+id/whole_day_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/line"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_idle_hours"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/lesson_details_dark_back"
+            android:text="闲时"
+            android:textSize="@dimen/textsize_small"/>
+
+        <CheckBox
+            android:id="@+id/idle_hours_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/textsize_mirco"
+            android:textColor="@color/lesson_details_gray_back"
+            android:text="周一至周五 "/>
+
+        <TextView
+            android:id="@+id/buy_period_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/textsize_mirco"
+            android:text="上午11:00前 下午14:00-17:00 晚上 21:00以后"
+            android:textColor="@color/buy_card_confirm_leisure"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/textsize_mirco"
+            android:textColor="@color/lesson_details_gray_back"
+            android:text="周六、周日 "/>
+
+        <TextView
+            android:id="@+id/buy_all_day_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="全天"
+            android:textSize="@dimen/textsize_mirco"
+            android:textColor="@color/buy_card_confirm_leisure"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,9 +9,9 @@ import android.view.ViewGroup;
 
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 public class LikingBuyCardFragment extends BaseFragment implements CardListView {
 
+    public static final String KEY_CARD_CATEGORY = "key_card_category";
     private PullToRefreshRecyclerView mRecyclerView;
     private BuyCardAdapter mBuyCardAdapter;
     private CardListPresenter mCardListPresenter;
@@ -56,12 +58,17 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         if (list != null && list.size() > 0) {
             mBuyCardAdapter = new BuyCardAdapter(getActivity());
             mBuyCardAdapter.setData(list);
-            mBuyCardAdapter.setBuyCardListener(buyCardListener);
+            mBuyCardAdapter.setBuyCardListener(null);
             mRecyclerView.setAdapter(mBuyCardAdapter);
             mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    PopupUtils.showToast("卡片详情开发中。。。");
+                    CardResult.CardData.Card Card = mBuyCardAdapter.getDataList().get(position);
+                    if (Card != null) {
+                        Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
+                        intent.putExtra(KEY_CARD_CATEGORY, Card.getCategoryName());
+                        startActivity(intent);
+                    }
                 }
 
                 @Override
@@ -73,13 +80,4 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
 
-    /**
-     * 买卡事件
-     */
-    private View.OnClickListener buyCardListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            PopupUtils.showToast("开发中");
-        }
-    };
 }

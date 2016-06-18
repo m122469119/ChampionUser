@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/pay_type_alipy_icon"
             android:text="@string/pay_alipay_type"
-            android:textColor="@color/bg_dark_gray_text"
+            android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_small"
             />
 
@@ -74,7 +74,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/pay_type_wechat_icon"
             android:text="@string/pay_wechat_type"
-            android:textColor="@color/bg_dark_gray_text"
+            android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_small"
             />
 
