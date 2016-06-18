@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.aaron.android.framework.base.BaseActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.GroupLessonFragment;
+import com.goodchef.liking.fragment.MyGroupLessonFragment;
 import com.goodchef.liking.fragment.PrivateLessonFragment;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class LessonActivity extends BaseActivity {
 
     private TabFragmentPagerAdapter.FragmentBinder buildFragmentBinder(MyOrderTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
-                0, new GroupLessonFragment());
+                0, new MyGroupLessonFragment());
     }
 
     private TabFragmentPagerAdapter.FragmentBinder buildCommentFragmentBinder(MyOrderTab tab) {

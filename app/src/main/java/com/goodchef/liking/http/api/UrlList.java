@@ -45,5 +45,8 @@ public class UrlList {
     public static final String ORDER_PRIVATE_COURSES_PAY = getVersionHostUrl()+"/order/trainer-reserve";
     /**健身卡列表*/
     public static final String CARD_LIST = getVersionHostUrl()+"/card/list";
+    /**团体课列表*/
+    public static final String MY_ORDER_COURSES_LIST = getVersionHostUrl()+"/order/team-course-list";
+
 
 }
