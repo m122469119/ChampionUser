@@ -6,13 +6,13 @@ public class WeixinPayConstants {
     /**
      * AppId
      */
-    public static final String APP_ID = "wxab79e8b05ea65284";
+    public static final String APP_ID = "wxcd4095b6981affc6";
 
     /**
      * 商户ID
      */
-    public static final String PARTNER_ID = "1323111001";
+    public static final String PARTNER_ID = "1355827702";
 
-    public static final String SIGN_KEY = "ua8r9cj93z9A5plajsr3jxxm2pAm3A2d"; // wxd930ea5d5a258f4f
+    public static final String SIGN_KEY = "bd2608e54a1f39a4592146e33d4451d6"; // wxd930ea5d5a258f4f
 
 }

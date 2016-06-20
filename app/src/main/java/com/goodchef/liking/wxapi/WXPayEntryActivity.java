@@ -82,8 +82,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 if (payType == PAY_TYPE_ORDER) {
                     postEvent(new WechatPayMessage());
                     dialog.dismiss();
-                  //  startOrderDetailActivity(orderId);
                     orderId = "";
+                    finish();
                 }
             }
         });

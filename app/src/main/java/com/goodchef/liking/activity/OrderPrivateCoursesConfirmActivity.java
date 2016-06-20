@@ -64,7 +64,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
     private PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem;//训练项目对象
-    private int payType;//支付方式
+    private String payType = "-1";//支付方式
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,19 +185,23 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
             }
         } else if (v == mImmediatelyBuyBtn) {
+            if (payType.equals("-1")) {
+                PopupUtils.showToast("请选择支付方式");
+                return;
+            }
             if (mCoupon != null) {
-                mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), "1");
+                mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType);
             } else {
-                mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", "1");
+                mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType);
             }
         } else if (v == mAlipayLayout) {
             mAlipayCheckBox.setChecked(true);
             mWechatCheckBox.setChecked(false);
-            payType = 1;
+            payType = "1";
         } else if (v == mWechatLayout) {
             mAlipayCheckBox.setChecked(false);
             mWechatCheckBox.setChecked(true);
-            payType = 0;
+            payType = "0";
         }
     }
 
@@ -316,7 +320,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
-
+        jumpToMyCoursesActivity();
     }
 
     /**
