@@ -48,6 +48,7 @@ public class MyGroupLessonAdapter extends BaseRecycleViewAdapter<MyGroupLessonAd
         @Override
         public void bindViews(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses object) {
             mPeriodOfValidityTextView.setText(object.getCourseName());
+            mPeriodOfValidityTextView.setTag(object);
         }
 
 

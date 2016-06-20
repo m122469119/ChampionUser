@@ -264,13 +264,27 @@ public class LiKingApi {
 
     /**
      * 完成我的私教课
-     * @param token token
-     * @param orderId 订单id
+     *
+     * @param token    token
+     * @param orderId  订单id
      * @param callback RequestCallback
      */
-    public static void completerMyPrivateCourses(String token,String orderId,RequestCallback<BaseResult> callback){
-        VolleyHttpRequestClient.doPost(UrlList.COMPLETE_MY_PRIVATE_COURSES,BaseResult.class,getCommonRequestParams()
-        .append(KEY_TOKEN,token).append("order_id",orderId),callback);
+    public static void completerMyPrivateCourses(String token, String orderId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COMPLETE_MY_PRIVATE_COURSES, BaseResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("order_id", orderId), callback);
+    }
+
+
+    /**
+     * 取消团体课
+     *
+     * @param token    token
+     * @param orderId  订单id
+     * @param callback RequestCallback
+     */
+    public static void cancelGroupCourses(String token, String orderId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.CANCEL_GROUP_COURSES, BaseResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
 }
