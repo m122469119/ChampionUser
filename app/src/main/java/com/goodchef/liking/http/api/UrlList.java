@@ -51,6 +51,8 @@ public class UrlList {
     public static final String MY_ORDER_PRIVATE_LIST = getVersionHostUrl()+"/order/personal-course-list";
     /**我的私教课详情*/
     public static final String MY_ORDER_PRIVATE_DETAILS = getVersionHostUrl()+"/order/course-detail";
+    /**私教课确认完成*/
+    public static final String COMPLETE_MY_PRIVATE_COURSES = getVersionHostUrl()+"/order/complete-trainer-course";
 
 
 }

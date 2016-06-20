@@ -3,6 +3,7 @@ package com.goodchef.liking.activity;
 import android.os.Bundle;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
@@ -29,16 +30,26 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     private void initData() {
         orderId = getIntent().getStringExtra(MyPrivateCoursesFragment.KEY_ORDER_ID);
+        mCoursesDetailsPresenter = new MyPrivateCoursesDetailsPresenter(this, this);
         sendRequest();
+       // sendCompleteRequest();
     }
 
     private void sendRequest() {
-        mCoursesDetailsPresenter = new MyPrivateCoursesDetailsPresenter(this, this);
         mCoursesDetailsPresenter.getMyPrivateCoursesDetails(orderId);
+    }
+
+    private void sendCompleteRequest() {
+        mCoursesDetailsPresenter.completeMyPrivateCourses(orderId);
     }
 
     @Override
     public void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData myPrivateCoursesDetailsData) {
         myPrivateCoursesDetailsData.getCourseName();
+    }
+
+    @Override
+    public void updateComplete() {
+        PopupUtils.showToast("该课程以确定完成");
     }
 }

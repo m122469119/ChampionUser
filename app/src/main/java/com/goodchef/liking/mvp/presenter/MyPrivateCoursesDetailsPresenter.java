@@ -3,6 +3,7 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
@@ -30,6 +31,25 @@ public class MyPrivateCoursesDetailsPresenter extends BasePresenter<MyPrivateCou
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateMyPrivateCoursesDetailsView(result.getData());
+                } else {
+                    PopupUtils.showToast(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
+    }
+
+    public void completeMyPrivateCourses(String orderId) {
+        LiKingApi.completerMyPrivateCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
+            @Override
+            public void onSuccess(BaseResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    mView.updateComplete();
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }
