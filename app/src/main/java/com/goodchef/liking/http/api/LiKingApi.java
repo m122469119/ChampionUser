@@ -262,4 +262,15 @@ public class LiKingApi {
                 getCommonRequestParams().append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
+    /**
+     * 完成我的私教课
+     * @param token token
+     * @param orderId 订单id
+     * @param callback RequestCallback
+     */
+    public static void completerMyPrivateCourses(String token,String orderId,RequestCallback<BaseResult> callback){
+        VolleyHttpRequestClient.doPost(UrlList.COMPLETE_MY_PRIVATE_COURSES,BaseResult.class,getCommonRequestParams()
+        .append(KEY_TOKEN,token).append("order_id",orderId),callback);
+    }
+
 }

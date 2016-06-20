@@ -10,4 +10,5 @@ import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
  */
 public interface MyPrivateCoursesDetailsView extends BaseView {
     void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData myPrivateCoursesDetailsData);
+    void updateComplete();
 }
