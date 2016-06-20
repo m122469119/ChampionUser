@@ -48,6 +48,7 @@ public class PrivateLessonAdapter extends BaseRecycleViewAdapter<PrivateLessonAd
         @Override
         public void bindViews(MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses object) {
             mTeacherNameTextView.setText(object.getCourseName());
+            mTeacherNameTextView.setTag(object);
         }
     }
 }

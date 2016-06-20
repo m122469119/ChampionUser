@@ -10,7 +10,7 @@ import com.aaron.android.framework.base.BaseActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;
-import com.goodchef.liking.fragment.PrivateLessonFragment;
+import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class LessonActivity extends BaseActivity {
 
     private TabFragmentPagerAdapter.FragmentBinder buildCommentFragmentBinder(MyOrderTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
-                0, new PrivateLessonFragment());
+                0, new MyPrivateCoursesFragment());
     }
 
 

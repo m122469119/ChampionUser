@@ -57,6 +57,8 @@
             android:screenOrientation="portrait"/>
         <!--买卡确认页-->
         <activity android:name=".activity.BuyCardConfirmActivity"/>
+        <!--我的私教课订单详情-->
+        <activity android:name=".activity.MyPrivateCoursesDetailsActivity"/>
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

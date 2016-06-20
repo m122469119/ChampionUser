@@ -15,6 +15,7 @@ import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
+import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
@@ -246,6 +247,19 @@ public class LiKingApi {
     public static void getMyPrivateList(String token, int page, RequestCallback<MyPrivateCoursesResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.MY_ORDER_PRIVATE_LIST, MyPrivateCoursesResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("page", page), callback);
+    }
+
+
+    /***
+     * 获取我的私教课详情
+     *
+     * @param token    token
+     * @param orderId  订单id
+     * @param callback RequestCallback
+     */
+    public static void getMyPrivateCoursesDetails(String token, String orderId, RequestCallback<MyPrivateCoursesDetailsResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.MY_ORDER_PRIVATE_DETAILS, MyPrivateCoursesDetailsResult.class,
+                getCommonRequestParams().append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
 }
