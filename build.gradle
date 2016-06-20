@@ -37,8 +37,8 @@ def String getManifestVersionCode() {
 project.ext {
 //    build config
     compileSdkVersion = 23
-    buildToolsVersion = "23.0.3"
-    minSdkVersion = 14
+    buildToolsVersion = "23.0.2"
+    minSdkVersion = 17
     targetSdkVersion = 22
     versionCode = getManifestVersionCode().toInteger()
     versionName = getManifestVersionName()

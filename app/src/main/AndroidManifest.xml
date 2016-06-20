@@ -52,16 +52,28 @@
         <!--查看场馆-->
         <activity android:name=".activity.ArenaActivity"/>
         <!--私教课确认订单-->
-        <activity android:name=".activity.OrderPrivateCoursesConfirmActivity"/>
+        <activity
+            android:name=".activity.OrderPrivateCoursesConfirmActivity"
+            android:screenOrientation="portrait"/>
         <!--买卡确认页-->
         <activity android:name=".activity.BuyCardConfirmActivity"/>
 
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"/>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"/>
         <!--微信支付-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            />
         <!-- 微信分享回调-->
         <activity
             android:name=".wxapi.WXEntryActivity"

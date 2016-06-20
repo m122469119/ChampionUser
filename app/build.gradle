@@ -46,14 +46,15 @@ android {
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.myConfig
-            proguardFiles 'proguard-rules.pro'
+          // proguardFiles 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             buildConfigField BOOLEAN, TEST_MODE, TRUE
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://likingapp.ecookinn.com\""
-            applicationIdSuffix ".test"
-            versionNameSuffix ""
+            applicationIdSuffix ""
+//            versionNameSuffix ""
             signingConfig signingConfigs.myConfig
             proguardFiles 'proguard-rules.pro'
         }
