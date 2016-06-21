@@ -24,4 +24,10 @@
     <color name="buy_card_prompt_background">#dee0e4</color>
     <color name="buy_card_prompt_text">#888b99</color>
     <color name="buy_card_confirm_leisure">#28ca68</color>
+    <color name="coupons_green">#3dc66f</color>
+    <color name="coupons_orange">#ff8a00</color>
+    <color name="coupons_blue">#05b5ff</color>
+    <color name="coupons_gray">#dbdce0</color>
+    <color name="coupons_gray_text">#C2C0c0</color>
+
 </resources>
