@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
@@ -32,6 +33,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private PullToRefreshRecyclerView mRecyclerView;
     private BuyCardAdapter mBuyCardAdapter;
     private CardListPresenter mCardListPresenter;
+    private View mHeadView;
 
     @Nullable
     @Override
@@ -39,12 +41,19 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         View view = inflater.inflate(R.layout.fragment_buy_card, container, false);
         initView(view);
         initData();
+        initRecycleHeadView();
         return view;
     }
 
     private void initView(View view) {
         mRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.buy_card_RecyclerView);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
+    }
+
+    private void initRecycleHeadView() {
+        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, mRecyclerView, false);
+        TextView textView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
+        textView.setText("当前城市尚未开通服务");
     }
 
     private void initData() {
@@ -59,6 +68,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             mBuyCardAdapter = new BuyCardAdapter(getActivity());
             mBuyCardAdapter.setData(list);
             mBuyCardAdapter.setBuyCardListener(null);
+            mBuyCardAdapter.setHeaderView(mHeadView);
             mRecyclerView.setAdapter(mBuyCardAdapter);
             mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override

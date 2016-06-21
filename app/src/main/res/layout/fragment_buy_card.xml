@@ -4,16 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/buy_card_prompt_background"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="当前城市尚未开通服务"
-        android:textColor="@color/buy_card_prompt_text"
-        android:textSize="13sp"/>
-
     <com.goodchef.liking.widgets.PullToRefreshRecyclerView
         android:id="@+id/buy_card_RecyclerView"
         android:layout_width="match_parent"
