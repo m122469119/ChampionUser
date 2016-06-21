@@ -55,6 +55,8 @@ public class UrlList {
     public static final String COMPLETE_MY_PRIVATE_COURSES = getVersionHostUrl()+"/order/complete-trainer-course";
     /**取消团体课*/
     public static final String CANCEL_GROUP_COURSES = getVersionHostUrl()+"/order/cancel-team-course";
+    /**营养餐列表*/
+    public static final String FOOD_LIST = getVersionHostUrl()+"/food/list";
 
 
 }

@@ -19,7 +19,7 @@
 
 
         <com.aaron.android.framework.library.imageloader.HImageView
-            android:id="@+id/lesson_image"
+            android:id="@+id/food_image"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             fresco:failureImage="@drawable/linshi_back"
@@ -77,8 +77,8 @@
 
                 <ImageView
                     android:id="@+id/add_image"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/add"/>
 
@@ -90,14 +90,13 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@+id/add_image"
-                    android:text="45"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="15sp"/>
 
                 <ImageView
                     android:id="@+id/reduce_image"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_toLeftOf="@+id/food_buy_number"
                     android:src="@drawable/minus"
                     android:visibility="visible"/>

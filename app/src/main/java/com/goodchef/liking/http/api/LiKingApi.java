@@ -13,6 +13,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
+import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
@@ -288,6 +289,20 @@ public class LiKingApi {
     public static void cancelGroupCourses(String token, String orderId, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.CANCEL_GROUP_COURSES, BaseResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
+    }
+
+
+    /**
+     * 获取营养餐列表接口
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param cityId    城市id
+     * @param callback  RequestCallback
+     */
+    public static void getFoodList(double longitude, double latitude, String cityId, int page, RequestCallback<FoodListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_LIST, FoodListResult.class, getCommonRequestParams()
+                .append("longitude", longitude).append("latitude", latitude).append("city_id", cityId).append("page", page), callback);
     }
 
 }
