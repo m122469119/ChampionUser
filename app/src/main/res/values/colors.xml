@@ -29,5 +29,6 @@
     <color name="coupons_blue">#05b5ff</color>
     <color name="coupons_gray">#dbdce0</color>
     <color name="coupons_gray_text">#C2C0c0</color>
+    <color name="my_card_bottom_line">#23b05b</color>
 
 </resources>

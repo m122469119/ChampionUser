@@ -17,12 +17,12 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.AboutActivity;
-import com.goodchef.liking.activity.ArenaActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.LessonActivity;
 import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -135,7 +135,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mMyOrderLayout) {//我的订单
             PopupUtils.showToast("订单开发中");
         } else if (v == mMemberCardLayout) {//会员卡
-            Intent intent = new Intent(getActivity(), ArenaActivity.class);
+            Intent intent = new Intent(getActivity(), MyCardActivity.class);
             startActivity(intent);
         } else if (v == mInviteFriendsLayout) {//邀请好友
             PopupUtils.showToast("邀请好友开发中");
