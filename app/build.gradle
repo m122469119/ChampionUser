@@ -53,7 +53,7 @@ android {
             buildConfigField BOOLEAN, TEST_MODE, TRUE
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://likingapp.ecookinn.com\""
-            applicationIdSuffix ""
+            applicationIdSuffix ".test"
 //            versionNameSuffix ""
             signingConfig signingConfigs.myConfig
             proguardFiles 'proguard-rules.pro'
