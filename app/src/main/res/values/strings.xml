@@ -45,4 +45,9 @@
     <string name="pay_success">支付成功</string>
     <string name="pay_fail">支付失败</string>
     <string name="period_of_validity">有效期</string>
+    <string name="card_number">卡号</string>
+    <string name="buy_card_time">办卡时间</string>
+    <string name="use_time">使用时段</string>
+    <string name="promotion_card">升级卡</string>
+    <string name="flow_card">续卡</string>
 </resources>
