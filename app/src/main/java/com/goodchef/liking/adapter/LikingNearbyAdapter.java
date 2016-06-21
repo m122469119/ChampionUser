@@ -1,14 +1,19 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
+import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
+import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.FoodListResult;
 
 import java.util.List;
 
@@ -17,55 +22,48 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/25 下午2:33
  */
-public class LikingNearbyAdapter extends RecyclerView.Adapter<LikingNearbyAdapter.LikingNearbyViewHolder> {
+public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdapter.LikingNearbyViewHolder, FoodListResult.FoodData.Food> {
 
     private Context mContext;
-    private List<String> mList;
-
-    private OnItemClickListener mListener;
+    public View.OnClickListener addListener;
+    public View.OnClickListener reduceListener;
 
     public LikingNearbyAdapter(Context context) {
-        mContext = context;
+        super(context);
+        this.mContext = context;
     }
 
-    public List<String> getData() {
-        return mList;
+    public void setAddListener(View.OnClickListener listener) {
+        this.addListener = listener;
     }
 
-    public void setData(List<String> list) {
-        mList = list;
+    public void setReduceListener(View.OnClickListener listener) {
+        this.reduceListener = listener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
+
+    @Override
+    protected LikingNearbyViewHolder createHeaderViewHolder() {
+        return null;
     }
 
     @Override
-    public LikingNearbyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    protected LikingNearbyViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_liking_nearby, parent, false);
+        ImageView mReduceImageView = (ImageView) view.findViewById(R.id.reduce_image);
+        ImageView mAddImageView = (ImageView) view.findViewById(R.id.add_image);
+        if (addListener != null) {
+            mAddImageView.setOnClickListener(addListener);
+        }
+        if (reduceListener != null) {
+            mReduceImageView.setOnClickListener(reduceListener);
+        }
         return new LikingNearbyViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(LikingNearbyViewHolder holder, final int position) {
-        final String str = mList.get(position);
-        if (holder instanceof LikingNearbyViewHolder) {
-            holder.mDishesMoneyTextView.setText("¥ " + str);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onItemClick(position, str);
-                }
-            });
-        }
-    }
 
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    public static class LikingNearbyViewHolder extends RecyclerView.ViewHolder {
+    public static class LikingNearbyViewHolder extends BaseRecycleViewHolder<FoodListResult.FoodData.Food> {
+        HImageView mFoodHImageView;
         TextView mDishesNameTextView;//菜品名称
         TextView mSurplusNumberTextView;//剩余份数
         TextView mDishesMoneyTextView;//菜品价格
@@ -77,6 +75,7 @@ public class LikingNearbyAdapter extends RecyclerView.Adapter<LikingNearbyAdapte
 
         public LikingNearbyViewHolder(View itemView) {
             super(itemView);
+            mFoodHImageView = (HImageView) itemView.findViewById(R.id.food_image);
             mDishesNameTextView = (TextView) itemView.findViewById(R.id.dishes_name);
             mSurplusNumberTextView = (TextView) itemView.findViewById(R.id.surplus_number);
             mDishesMoneyTextView = (TextView) itemView.findViewById(R.id.dishes_money);
@@ -86,9 +85,27 @@ public class LikingNearbyAdapter extends RecyclerView.Adapter<LikingNearbyAdapte
             mReduceImageView = (ImageView) itemView.findViewById(R.id.reduce_image);
             mAddImageView = (ImageView) itemView.findViewById(R.id.add_image);
         }
+
+        @Override
+        public void bindViews(FoodListResult.FoodData.Food object) {
+            mDishesNameTextView.setText(object.getGoodsName());
+            mDishesMoneyTextView.setText("¥ " + object.getPrice());
+            mSurplusNumberTextView.setText("今日还剩" + object.getLeftNum() + "份");
+            List<String> tagList = object.getTags();
+            StringBuffer stringBuffer = new StringBuffer();
+            if (tagList != null && tagList.size() > 0) {
+                for (int i = 0; i < tagList.size(); i++) {
+                    stringBuffer.append("#" + tagList.get(i) + " ");
+                }
+            }
+            mDishesTypeTextView.setText(stringBuffer.toString());
+            mBuyPersonTextView.setText(object.getAllEat() + "人购买过");
+            String imgUrl = object.getCoverImg();
+            if (!StringUtils.isEmpty(imgUrl)) {
+                HImageLoaderSingleton.getInstance().requestImage(mFoodHImageView, imgUrl);
+            }
+        }
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int position, String data);
-    }
+
 }
