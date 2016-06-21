@@ -196,8 +196,11 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getCoupons(String courseId, String token, int page, RequestCallback<CouponsResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, getCommonRequestParams().append("course_id", courseId)
-                .append(KEY_TOKEN, token).append("page", page), callback);
+        RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("page", page);
+        if (!TextUtils.isEmpty(courseId)) {
+            params.append("course_id", courseId);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, params, callback);
     }
 
 

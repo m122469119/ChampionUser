@@ -20,6 +20,7 @@ import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.ArenaActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
+import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.LessonActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
@@ -139,7 +140,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mInviteFriendsLayout) {//邀请好友
             PopupUtils.showToast("邀请好友开发中");
         } else if (v == mCouponsLayout) {//我的优惠券
-            PopupUtils.showToast("优惠券开发中");
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), CouponsActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mContactJoinLayout) {//联系加盟
             Intent intent = new Intent(getActivity(), ContactJonInActivity.class);
             startActivity(intent);
