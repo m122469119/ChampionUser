@@ -7,6 +7,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.FoodDetailsResult;
+import com.goodchef.liking.mvp.presenter.FoodDetailsPresenter;
+import com.goodchef.liking.mvp.view.FoodDetailsView;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
@@ -18,7 +21,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/26 下午3:00
  */
-public class DishesDetailsActivity extends AppBarActivity {
+public class DishesDetailsActivity extends AppBarActivity implements FoodDetailsView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
@@ -26,6 +29,7 @@ public class DishesDetailsActivity extends AppBarActivity {
 
     private String mUserCityId;
     private String mGoodId;
+    private FoodDetailsPresenter mFoodDetailsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,13 @@ public class DishesDetailsActivity extends AppBarActivity {
         initView();
         initData();
         requestBanner();
+        sendFoodDetailsRequest();
+    }
+
+    //发送详情请求
+    private void sendFoodDetailsRequest() {
+        mFoodDetailsPresenter = new FoodDetailsPresenter(this, this);
+        mFoodDetailsPresenter.getFoodDetails(mUserCityId, mGoodId);
     }
 
     private void initData() {
@@ -74,6 +85,12 @@ public class DishesDetailsActivity extends AppBarActivity {
         mImageViewPager.setCurrentItem(0);
         mImageViewPager.startAutoScroll();
     }
+
+    @Override
+    public void updateFoodDetailsView(FoodDetailsResult.FoodDetailsData foodDetailsData) {
+        foodDetailsData.getGoodsName();
+    }
+
 
 
     @Override
