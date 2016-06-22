@@ -3,44 +3,95 @@
               xmlns:fresco="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="horizontal">
+              android:layout_marginTop="10dp"
+              android:background="@drawable/shape_card_background"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+
+        <com.aaron.android.framework.library.imageloader.HImageView
+            android:id="@+id/private_lesson_image"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            fresco:failureImage="@drawable/linshi_back"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/linshi_back"
+            fresco:placeholderImageScaleType="centerCrop"
+            />
 
 
-    <com.aaron.android.framework.library.imageloader.HImageView
-        android:id="@+id/group_lesson_image"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        fresco:failureImage="@drawable/linshi_back"
-        fresco:failureImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/linshi_back"
-        fresco:placeholderImageScaleType="centerCrop"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/private_lesson_image"
+            android:orientation="vertical">
 
-    <LinearLayout
+            <TextView
+                android:id="@+id/private_teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="教练名称"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_15"/>
+
+            <TextView
+                android:id="@+id/courses_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/lesson_details_gray_back"
+                android:text="增肌 , 减肥"
+                android:textSize="12sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="有效期："
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/period_of_validity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2016/05-2016/10"
+                    android:textColor="@color/my_group_green_text"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/private_courses_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/my_group_green_text"
+            android:layout_marginTop="10dp"
+            android:text="已支付"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/complete_courses_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/private_teacher_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="教练名称"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="增肌 , 减肥"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="有效期：2016/05-2016/10"/>
-    </LinearLayout>
+        android:background="@color/liking_green_btn_back"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="完成课程"
+        android:textColor="@color/white"/>
 </LinearLayout>
