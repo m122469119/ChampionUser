@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
+import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -23,6 +24,8 @@ public class DishesDetailsActivity extends AppBarActivity {
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
 
+    private String mUserCityId;
+    private String mGoodId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,9 @@ public class DishesDetailsActivity extends AppBarActivity {
     }
 
     private void initData() {
+        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
+        mGoodId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_GOOD_ID);
+
         mBannerPagerAdapter = new BannerPagerAdapter(this);
         mImageViewPager.setAdapter(mBannerPagerAdapter);
         mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
@@ -68,7 +74,6 @@ public class DishesDetailsActivity extends AppBarActivity {
         mImageViewPager.setCurrentItem(0);
         mImageViewPager.startAutoScroll();
     }
-
 
 
     @Override

@@ -26,6 +26,10 @@ public class FoodListResult extends BaseResult {
     public static class FoodData extends BaseData {
         @SerializedName("list")
         private List<Food> mFoodList;
+        @SerializedName("user_city_id")
+        private String userCityId;
+        @SerializedName("has_more")
+        private String hasMore;
 
         public List<Food> getFoodList() {
             return mFoodList;
@@ -33,6 +37,22 @@ public class FoodListResult extends BaseResult {
 
         public void setFoodList(List<Food> foodList) {
             mFoodList = foodList;
+        }
+
+        public String getUserCityId() {
+            return userCityId;
+        }
+
+        public void setUserCityId(String userCityId) {
+            this.userCityId = userCityId;
+        }
+
+        public String getHasMore() {
+            return hasMore;
+        }
+
+        public void setHasMore(String hasMore) {
+            this.hasMore = hasMore;
         }
 
         public static class Food extends BaseData {
