@@ -50,4 +50,9 @@
     <string name="use_time">使用时段</string>
     <string name="promotion_card">升级卡</string>
     <string name="flow_card">续卡</string>
+    <string name="cancel_appointment">取消预约</string>
+    <string name="not_start">未开始</string>
+    <string name="start_process">进行中</string>
+    <string name="courses_complete">已完成</string>
+    <string name="courses_cancel">已取消</string>
 </resources>

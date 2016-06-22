@@ -28,8 +28,8 @@ import java.util.List;
  * Time:16/5/31 下午4:42
  */
 public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyGroupCourseView {
-
-
+    public static final String INTENT_KEY_STATE = "intent_key_state";
+    public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupLessonAdapter mGroupLessonAdapter;
 
     private MyGroupCoursesPresenter mMyGroupCoursesPresenter;
@@ -57,6 +57,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
             mGroupLessonAdapter = new MyGroupLessonAdapter(getActivity());
             mGroupLessonAdapter.setData(myGroupCoursesDataList);
             setRecyclerAdapter(mGroupLessonAdapter);
+            mGroupLessonAdapter.setCancelListener(cancelListener);
             mGroupLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
@@ -64,8 +65,10 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                     if (textView != null) {
                         MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                         if (data != null) {
-                            // sendCancelCoursesRequest(data.getOrderId());
                             Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+                            intent.putExtra(INTENT_KEY_STATE,data.getStatus());
+                            intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID,data.getScheduleId());
+                            intent.putExtra(INTENT_KEY_ORDER_ID,data.getOrderId());
                             startActivity(intent);
                         }
                     }
@@ -80,6 +83,23 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
     }
 
+    /**
+     * 取消预约事件
+     */
+    private View.OnClickListener cancelListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView textView = (TextView) v.findViewById(R.id.cancel_order_btn);
+            if (textView != null) {
+                MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
+                if (data != null) {
+                    sendCancelCoursesRequest(data.getOrderId());
+                }
+            }
+        }
+    };
+
+    //发送取消请求
     private void sendCancelCoursesRequest(String orderId) {
         LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(getActivity(), R.string.loading_data) {
             @Override
@@ -87,6 +107,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(getActivity(), result)) {
                     PopupUtils.showToast("取消成功");
+                    loadHomePage();
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }
