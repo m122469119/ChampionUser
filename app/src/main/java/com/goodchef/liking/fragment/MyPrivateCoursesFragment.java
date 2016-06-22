@@ -11,7 +11,7 @@ import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecycle
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
-import com.goodchef.liking.adapter.PrivateLessonAdapter;
+import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
@@ -30,7 +30,7 @@ import java.util.List;
 public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyPrivateCoursesView {
 
     public static final String KEY_ORDER_ID = "key_order_id";
-    private PrivateLessonAdapter mPrivateLessonAdapter;
+    private MyPrivateCoursesAdapter mPrivateLessonAdapter;
     private MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
 
     @Override
@@ -53,7 +53,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
     public void updatePrivateCoursesView(MyPrivateCoursesResult.PrivateCoursesData privateCoursesData) {
         List<MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> list = privateCoursesData.getPrivateCoursesList();
         if (list != null && list.size() > 0) {
-            mPrivateLessonAdapter = new PrivateLessonAdapter(getActivity());
+            mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
             mPrivateLessonAdapter.setData(list);
             setRecyclerAdapter(mPrivateLessonAdapter);
             mPrivateLessonAdapter.setCompleteListener(mCompleteListener);

@@ -20,7 +20,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
  * Author shaozucheng
  * Time:16/5/31 下午5:01
  */
-public class MyGroupLessonAdapter extends BaseRecycleViewAdapter<MyGroupLessonAdapter.GroupLessonViewHolder, MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses> {
+public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCoursesAdapter.GroupLessonViewHolder, MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses> {
     private static final int COURSES_STATE_NOT_START = 0;// 未开始
     private static final int COURSES_STATE_PROCESS = 1;//进行中
     private static final int COURSES_STATE_OVER = 2;//已结束
@@ -30,7 +30,7 @@ public class MyGroupLessonAdapter extends BaseRecycleViewAdapter<MyGroupLessonAd
 
     private View.OnClickListener mCancelListener;
 
-    public MyGroupLessonAdapter(Context context) {
+    public MyGroupCoursesAdapter(Context context) {
         super(context);
         this.mContext = context;
     }

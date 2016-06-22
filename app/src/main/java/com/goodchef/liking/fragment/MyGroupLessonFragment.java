@@ -11,7 +11,7 @@ import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecycle
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
-import com.goodchef.liking.adapter.MyGroupLessonAdapter;
+import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
@@ -30,7 +30,7 @@ import java.util.List;
 public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyGroupCourseView {
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
-    private MyGroupLessonAdapter mGroupLessonAdapter;
+    private MyGroupCoursesAdapter mGroupLessonAdapter;
 
     private MyGroupCoursesPresenter mMyGroupCoursesPresenter;
 
@@ -54,7 +54,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
         List<MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses> myGroupCoursesDataList = myGroupCoursesData.getMyGroupCourses();
         if (myGroupCoursesDataList != null && myGroupCoursesDataList.size() > 0) {
             setPullType(PullMode.PULL_BOTH);
-            mGroupLessonAdapter = new MyGroupLessonAdapter(getActivity());
+            mGroupLessonAdapter = new MyGroupCoursesAdapter(getActivity());
             mGroupLessonAdapter.setData(myGroupCoursesDataList);
             setRecyclerAdapter(mGroupLessonAdapter);
             mGroupLessonAdapter.setCancelListener(cancelListener);
