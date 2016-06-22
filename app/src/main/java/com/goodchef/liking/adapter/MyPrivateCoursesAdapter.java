@@ -20,14 +20,14 @@ import com.goodchef.liking.http.result.MyPrivateCoursesResult;
  * Author shaozucheng
  * Time:16/5/31 下午5:31
  */
-public class PrivateLessonAdapter extends BaseRecycleViewAdapter<PrivateLessonAdapter.PrivateLessonViewHolder, MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> {
+public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCoursesAdapter.PrivateLessonViewHolder, MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> {
     private static final int COURSES_STATE_PAYED = 0;//0 已支付
     private static final int COURSES_STATE_COMPLETE = 1;//1 已完成
     private static final int COURSES_STATE_CANCEL = 2; //  2已取消
     private Context mContext;
     private View.OnClickListener mCompleteListener;
 
-    public PrivateLessonAdapter(Context context) {
+    public MyPrivateCoursesAdapter(Context context) {
         super(context);
         this.mContext = context;
     }
