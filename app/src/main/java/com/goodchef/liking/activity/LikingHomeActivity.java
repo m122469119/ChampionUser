@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.map.LocationListener;
 import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
@@ -77,6 +78,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mLikingLeftTitleTextView.setOnClickListener(this);
         mLikingRightTitleTextView.setOnClickListener(this);
         mLeftImageView.setOnClickListener(this);
+        mRightImageView.setOnClickListener(this);
     }
 
     private void initTabHost() {
@@ -120,6 +122,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLeftImageView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingLeftTitleTextView.setText("上海");
+                    mRightImageView.setVisibility(View.GONE);
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -128,6 +131,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mMiddleImageView.setVisibility(View.GONE);
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_nearby);
+                    mRightImageView.setVisibility(View.VISIBLE);
+                    mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -137,6 +142,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_recharge);
                     mLikingRightTitleTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setText("查看场馆");
+                    mRightImageView.setVisibility(View.GONE);
                 } else if (tabId.equals(TAG_MY_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -145,6 +151,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingMiddleTitleTextTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_my);
+                    mRightImageView.setVisibility(View.GONE);
                 }
             }
         });
@@ -162,6 +169,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         } else if (v == mLikingRightTitleTextView) {
             if (tag.equals(TAG_RECHARGE_TAB)) {
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
+                startActivity(intent);
+            }
+        }else if (v == mRightImageView){
+            if (tag.equals(TAG_NEARBY_TAB)){
+                Intent intent = new Intent(this,ShoppingCartActivity.class);
                 startActivity(intent);
             }
         }

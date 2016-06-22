@@ -61,6 +61,8 @@
         <activity android:name=".activity.MyPrivateCoursesDetailsActivity"/>
         <!--我的会员卡-->
         <activity android:name=".activity.MyCardActivity"/>
+        <!--购物车-->
+        <activity android:name=".activity.ShoppingCartActivity"/>
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

@@ -2,11 +2,13 @@ package com.goodchef.liking.fragment;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.goodchef.liking.R;
 import com.goodchef.liking.activity.DishesDetailsActivity;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
@@ -23,11 +25,13 @@ import java.util.List;
  * @version 1.0.0
  */
 public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment {
-
+    public static final String INTENT_KEY_USER_CITY_ID = "intent_key_user_city_id";
+    public static final String INTENT_KEY_GOOD_ID = "intent_key_good_id";
     private LikingNearbyAdapter mAdapter;
     private String mCityId = "310100";
     private double mLongitude = 0;
     private double mLatitude = 0;
+    private String mUserCityId;
 
     @Override
     protected void requestData(int page) {
@@ -55,10 +59,15 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
             public void onSuccess(FoodListResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    List<FoodListResult.FoodData.Food> list = result.getFoodData().getFoodList();
-                    if (list != null && list.size() > 0) {
-                        updateListView(list);
+                    FoodListResult.FoodData foodData = result.getFoodData();
+                    if (foodData != null) {
+                        mUserCityId = foodData.getUserCityId();
+                        List<FoodListResult.FoodData.Food> list = foodData.getFoodList();
+                        if (list != null && list.size() > 0) {
+                            updateListView(list);
+                        }
                     }
+
                 }
             }
 
@@ -78,8 +87,17 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
         mAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), DishesDetailsActivity.class);
-                startActivity(intent);
+                TextView textView = (TextView) view.findViewById(R.id.dishes_name);
+                if (textView != null) {
+                    FoodListResult.FoodData.Food foodData = (FoodListResult.FoodData.Food) textView.getTag();
+                    if (foodData != null) {
+                        Intent intent = new Intent(getActivity(), DishesDetailsActivity.class);
+                        intent.putExtra(INTENT_KEY_USER_CITY_ID, mUserCityId);
+                        intent.putExtra(INTENT_KEY_GOOD_ID, foodData.getGoodsId());
+                        startActivity(intent);
+                    }
+                }
+
             }
 
             @Override
