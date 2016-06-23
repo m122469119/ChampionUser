@@ -99,7 +99,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mReduceImageBtn = (ImageView) findViewById(R.id.reduce_image);
         mAddImageBtn = (ImageView) findViewById(R.id.add_image);
         mFoodBuyNumberTextView = (TextView) findViewById(R.id.food_buy_number);
-        mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
+        mImmediatelyBuyBtn = (TextView) findViewById(R.id.dishes_immediately_buy_btn);
     }
 
     private void setViewOnClickListener() {

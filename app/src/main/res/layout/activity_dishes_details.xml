@@ -325,7 +325,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/immediately_buy_btn"
+            android:id="@+id/dishes_immediately_buy_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
