@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_content_background"
+                android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="42dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="@string/get_meals_address"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_15"/>
+
+                    <TextView
+                        android:id="@+id/change_shop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="10dp"
+                        android:text="切换门店"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_15"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/having_meals_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="中山南二路美唤大酒店9楼"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="12sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/line"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="@string/get_meals_time"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/bg_right_arrow"/>
+
+                    <TextView
+                        android:id="@+id/get_meals_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/arrow"
+                        android:text="2016-05-19 10:00"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:id="@+id/layout_coupons_courses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingBottom="12dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="12dp"
+                        android:text="请选择优惠券"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <ImageView
+                        android:id="@+id/bg_right_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/bg_right_arrow"/>
+
+                    <TextView
+                        android:id="@+id/select_coupon_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/bg_right_arrow"
+                        android:textColor="@color/liking_green_btn_back"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <include layout="@layout/layout_pay"/>
+
+            <com.goodchef.liking.widgets.PullToRefreshRecyclerView
+                android:id="@+id/my_order_dishes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_card_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dishes_money"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:paddingLeft="10dp"
+            android:textColor="@color/liking_green_btn_back"
+            android:textSize="@dimen/textsize_small"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/immediately_buy_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/liking_green_btn_back"
+            android:gravity="center"
+            android:text="@string/immediately_pay"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_small"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/21 下午8:15
  */
-public class ShoppingCartActivity extends AppBarActivity implements View.OnClickListener{
+public class ShoppingCartActivity extends AppBarActivity implements View.OnClickListener {
     private PullToRefreshRecyclerView mRecyclerView;
     private ShoppingCartAdapter mShoppingCartAdapter;
     private TextView mMoneyTextView;
@@ -88,8 +89,9 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (v == mImmediatelyBuyBtn){
-
+        if (v == mImmediatelyBuyBtn) {
+            Intent intent = new Intent(this, DishesConfirmActivity.class);
+            startActivity(intent);
         }
     }
 }
