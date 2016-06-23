@@ -31,5 +31,6 @@
     <color name="coupons_gray_text">#C2C0c0</color>
     <color name="my_card_bottom_line">#23b05b</color>
     <color name="my_group_green_text">#28ca68</color>
+    <color name="dishes_details_tags">#a8abae</color>
 
 </resources>

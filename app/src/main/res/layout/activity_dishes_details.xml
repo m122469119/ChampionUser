@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="42dp"
-        android:layout_height="match_parent">
+        android:background="@color/app_content_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,51 +16,93 @@
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
-          <include layout="@layout/layout_liking_home_head"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:padding="10dp"
-                    android:text="菜品名称"
-                    android:textColor="@color/bg_dark_gray_text"
-                    android:textSize="15sp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="10dp"
-                    android:text="¥ 35"
-                    android:textColor="@color/bg_dark_gray_text"
-                    android:textSize="15sp"/>
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3dp"
-                android:padding="10dp"
-                android:text="菜品介绍菜品介绍菜品介绍菜品介绍菜品介绍菜品介绍菜品介绍菜品介绍菜品介绍菜品介绍"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="营养成分"
-                android:textColor="@color/bg_dark_gray_text"/>
+            <include layout="@layout/layout_dishes_details_head"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_card_stoke_bottom_background"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/dishes_details_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/surplus_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_toRightOf="@+id/dishes_details_name"
+                        android:textColor="@color/lesson_details_gray_back"
+                        android:textSize="13sp"/>
+
+                    <TextView
+                        android:id="@+id/dishes_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/dishes_describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="@dimen/textsize_15"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/dishes_tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/dishes_details_tags"
+                        android:textSize="13sp"/>
+
+                    <TextView
+                        android:id="@+id/how_number_buy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/dishes_details_tags"
+                        android:textSize="13sp"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:paddingBottom="20dp"
+                android:paddingTop="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,14 +115,37 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="卡路里"
+                        android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="6000卡"
-                        android:textSize="14sp"/>
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dishes_kcal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:textSize="23sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            android:text="Kcal"
+                            android:textColor="@color/lesson_details_dark_back"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -94,14 +159,36 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="蛋白质"
+                        android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="6000卡"
-                        android:textSize="14sp"/>
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dishes_protein"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:textSize="23sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="G"
+                            android:textColor="@color/lesson_details_dark_back"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -115,14 +202,36 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="碳水化合物"
+                        android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="6000卡"
-                        android:textSize="14sp"/>
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/carbon_and_water"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:textSize="23sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="G"
+                            android:textColor="@color/lesson_details_dark_back"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -136,98 +245,94 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="脂肪"
+                        android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="6000卡"
-                        android:textSize="14sp"/>
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dishes_fat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:textSize="23sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="G"
+                            android:textColor="@color/lesson_details_dark_back"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="适合人群：增肌"
-                android:textSize="14sp"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="今日剩余库存：59 份"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:text="1000人购买过"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/line"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="XXX菜"/>
-
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:visibility="visible"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="XXX菜"/>
-
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:visibility="visible"
-                fresco:failureImage="@drawable/linshi_back"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/linshi_back"
-                fresco:placeholderImageScaleType="centerCrop"/>
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="42dp"
         android:layout_alignParentBottom="true"
-        android:layout_height="42dp">
+        android:background="@color/white">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <ImageView
+                android:id="@+id/reduce_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icon_dishes_details_minus"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/food_buy_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toRightOf="@+id/reduce_image"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/add_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/food_buy_number"
+                android:src="@drawable/icon_dishes_details_add"/>
+        </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:text="立即购买"/>
-    </RelativeLayout>
+            android:id="@+id/immediately_buy_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/add_minus_dishes_text"
+            android:gravity="center"
+            android:text="@string/immediately_buy_btn"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_15"/>
+    </LinearLayout>
 </RelativeLayout>

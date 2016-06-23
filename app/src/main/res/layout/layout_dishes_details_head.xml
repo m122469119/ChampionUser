@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/layout_liking_home_head"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="140dp">
+
+    <com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager
+        android:id="@+id/liking_home_head_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator
+        android:id="@+id/liking_home_head_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp" />
+</RelativeLayout>

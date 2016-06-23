@@ -1,6 +1,9 @@
 package com.goodchef.liking.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
@@ -21,7 +24,25 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/26 下午3:00
  */
-public class DishesDetailsActivity extends AppBarActivity implements FoodDetailsView {
+public class DishesDetailsActivity extends AppBarActivity implements FoodDetailsView, View.OnClickListener {
+    private TextView mDishesDetailsNameTextView;//菜品名称
+    private TextView mSurplusNumberTextView;//剩余份数
+    private TextView mDishesMoneyTextView;//多少钱
+    private TextView mDishesDescribeTextView;//菜品介绍
+    private TextView mDishesTagsTextView;//tag
+    private TextView mHowNumberBuyTextView;//多少人买过
+
+    private TextView mDishesKcalTextView;//卡路里
+    private TextView mDishesProteinTextView;//蛋白质
+    private TextView mCarbonAndWaterTextView;//碳水化合物
+    private TextView mDishesFatTextView;//脂肪
+
+    private ImageView mReduceImageBtn;//减少
+    private ImageView mAddImageBtn;//添加
+    private TextView mFoodBuyNumberTextView;
+    private TextView mImmediatelyBuyBtn;//立即购买
+
+
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
@@ -41,6 +62,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         initData();
         requestBanner();
         sendFoodDetailsRequest();
+        setViewOnClickListener();
     }
 
     //发送详情请求
@@ -63,6 +85,27 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     private void initView() {
         mImageViewPager = (InfiniteViewPager) findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) findViewById(R.id.liking_home_head_indicator);
+
+        mDishesDetailsNameTextView = (TextView) findViewById(R.id.dishes_details_name);
+        mSurplusNumberTextView = (TextView) findViewById(R.id.surplus_number);
+        mDishesMoneyTextView = (TextView) findViewById(R.id.dishes_money);
+        mDishesDescribeTextView = (TextView) findViewById(R.id.dishes_describe);
+        mDishesTagsTextView = (TextView) findViewById(R.id.dishes_tags);
+        mHowNumberBuyTextView = (TextView) findViewById(R.id.how_number_buy);
+        mDishesKcalTextView = (TextView) findViewById(R.id.dishes_kcal);
+        mDishesProteinTextView = (TextView) findViewById(R.id.dishes_protein);
+        mCarbonAndWaterTextView = (TextView) findViewById(R.id.carbon_and_water);
+        mDishesFatTextView = (TextView) findViewById(R.id.dishes_fat);
+        mReduceImageBtn = (ImageView) findViewById(R.id.reduce_image);
+        mAddImageBtn = (ImageView) findViewById(R.id.add_image);
+        mFoodBuyNumberTextView = (TextView) findViewById(R.id.food_buy_number);
+        mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
+    }
+
+    private void setViewOnClickListener() {
+        mImmediatelyBuyBtn.setOnClickListener(this);
+        mAddImageBtn.setOnClickListener(this);
+        mReduceImageBtn.setOnClickListener(this);
     }
 
     private void requestBanner() {
@@ -88,9 +131,34 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
 
     @Override
     public void updateFoodDetailsView(FoodDetailsResult.FoodDetailsData foodDetailsData) {
-        foodDetailsData.getGoodsName();
+        mDishesDetailsNameTextView.setText(foodDetailsData.getGoodsName());
+        mSurplusNumberTextView.setText("还剩"+foodDetailsData.getLeftNum()+"份");
+        mDishesMoneyTextView.setText("¥"+foodDetailsData.getPrice());
+        mDishesDescribeTextView.setText(foodDetailsData.getGoodsDesc());
+        List<String> tagList =foodDetailsData.getTags();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i=0;i<tagList.size();i++){
+            stringBuffer.append("#"+tagList.get(0)+" ");
+        }
+        mDishesTagsTextView.setText(stringBuffer.toString());
+        mHowNumberBuyTextView.setText(foodDetailsData.getAllEat()+"人购买过");
+        mDishesKcalTextView.setText(foodDetailsData.getCalorie()+"");
+        mDishesProteinTextView.setText(foodDetailsData.getProteide()+"");
+        mCarbonAndWaterTextView.setText(foodDetailsData.getCarbohydrate()+"");
+        mDishesFatTextView.setText(foodDetailsData.getAxunge()+"");
     }
 
+
+    @Override
+    public void onClick(View v) {
+        if (v == mAddImageBtn) {
+
+        } else if (v == mReduceImageBtn) {
+
+        } else if (v == mImmediatelyBuyBtn) {
+
+        }
+    }
 
 
     @Override
@@ -108,5 +176,4 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
             mImageViewPager.stopAutoScroll();
         }
     }
-
 }

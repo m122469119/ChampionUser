@@ -55,4 +55,5 @@
     <string name="start_process">进行中</string>
     <string name="courses_complete">已完成</string>
     <string name="courses_cancel">已取消</string>
+    <string name="immediately_buy_btn">立即购买</string>
 </resources>
