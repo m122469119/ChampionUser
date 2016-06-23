@@ -63,6 +63,8 @@
         <activity android:name=".activity.MyCardActivity"/>
         <!--购物车-->
         <activity android:name=".activity.ShoppingCartActivity"/>
+        <!--确认订单页-->
+        <activity android:name=".activity.DishesConfirmActivity"/>
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

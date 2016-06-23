@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:background="@drawable/shape_card_background"
               android:orientation="vertical">
 
@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/layout_alipay"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="54dp">
 
         <ImageView
             android:id="@+id/pay_type_alipy_icon"
@@ -55,7 +55,7 @@
     <RelativeLayout
         android:id="@+id/layout_wechat"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="54dp">
 
         <ImageView
             android:id="@+id/pay_type_wechat_icon"

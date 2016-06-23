@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,7 +57,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_details);
-        setTitle("XXX菜");
 
         initView();
         initData();
@@ -131,21 +131,22 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
 
     @Override
     public void updateFoodDetailsView(FoodDetailsResult.FoodDetailsData foodDetailsData) {
+        setTitle(foodDetailsData.getGoodsName());
         mDishesDetailsNameTextView.setText(foodDetailsData.getGoodsName());
-        mSurplusNumberTextView.setText("还剩"+foodDetailsData.getLeftNum()+"份");
-        mDishesMoneyTextView.setText("¥"+foodDetailsData.getPrice());
+        mSurplusNumberTextView.setText("还剩" + foodDetailsData.getLeftNum() + "份");
+        mDishesMoneyTextView.setText("¥" + foodDetailsData.getPrice());
         mDishesDescribeTextView.setText(foodDetailsData.getGoodsDesc());
-        List<String> tagList =foodDetailsData.getTags();
+        List<String> tagList = foodDetailsData.getTags();
         StringBuffer stringBuffer = new StringBuffer();
-        for (int i=0;i<tagList.size();i++){
-            stringBuffer.append("#"+tagList.get(0)+" ");
+        for (int i = 0; i < tagList.size(); i++) {
+            stringBuffer.append("#" + tagList.get(0) + " ");
         }
         mDishesTagsTextView.setText(stringBuffer.toString());
-        mHowNumberBuyTextView.setText(foodDetailsData.getAllEat()+"人购买过");
-        mDishesKcalTextView.setText(foodDetailsData.getCalorie()+"");
-        mDishesProteinTextView.setText(foodDetailsData.getProteide()+"");
-        mCarbonAndWaterTextView.setText(foodDetailsData.getCarbohydrate()+"");
-        mDishesFatTextView.setText(foodDetailsData.getAxunge()+"");
+        mHowNumberBuyTextView.setText(foodDetailsData.getAllEat() + "人购买过");
+        mDishesKcalTextView.setText(foodDetailsData.getCalorie() + "");
+        mDishesProteinTextView.setText(foodDetailsData.getProteide() + "");
+        mCarbonAndWaterTextView.setText(foodDetailsData.getCarbohydrate() + "");
+        mDishesFatTextView.setText(foodDetailsData.getAxunge() + "");
     }
 
 
@@ -156,7 +157,8 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         } else if (v == mReduceImageBtn) {
 
         } else if (v == mImmediatelyBuyBtn) {
-
+            Intent intent = new Intent(this, DishesConfirmActivity.class);
+            startActivity(intent);
         }
     }
 
