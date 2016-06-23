@@ -19,6 +19,7 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SubmitCoursesResult;
@@ -317,6 +318,20 @@ public class LiKingApi {
     public static void getFoodDetails(String useCityId, String goodsId, RequestCallback<FoodDetailsResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.FOOD_DETAILS, FoodDetailsResult.class, getCommonRequestParams()
                 .append("user_city_id", useCityId).append("goods_id", goodsId), callback);
+    }
+
+
+    /**
+     * 购买营养餐确认订单
+     *
+     * @param token      token
+     * @param userCityId 城市id
+     * @param goodInfo   购买的信息
+     * @param callback   RequestCallback
+     */
+    public static void confirmFood(String token, String userCityId, String goodInfo, RequestCallback<NutritionMealConfirmResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_CONFIRM, NutritionMealConfirmResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("user_city_id", userCityId).append("good_info", goodInfo), callback);
     }
 
 }
