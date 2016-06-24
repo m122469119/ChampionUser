@@ -59,4 +59,6 @@
     <string name="get_meals_address">取餐地址</string>
     <string name="get_meals_time">取餐时间</string>
     <string name="immediately_pay">立即支付</string>
+
+    <string name="dialog_message_clear_shopping_cart">您是否确定清空购物车?</string>
 </resources>
