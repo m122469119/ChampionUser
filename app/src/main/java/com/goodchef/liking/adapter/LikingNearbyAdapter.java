@@ -13,7 +13,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.FoodListResult;
+import com.goodchef.liking.http.result.data.Food;
 
 import java.util.List;
 
@@ -22,23 +22,25 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/25 下午2:33
  */
-public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdapter.LikingNearbyViewHolder, FoodListResult.FoodData.Food> {
+public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdapter.LikingNearbyViewHolder, Food> {
 
     private Context mContext;
-    public View.OnClickListener addListener;
-    public View.OnClickListener reduceListener;
+    private ShoppingDishChangedListener dishChangedListener;
+
+    public interface ShoppingDishChangedListener {
+        void onShoppingDishAdded(Food foodData);
+
+        void onShoppingDishRemove(Food foodData);
+    }
 
     public LikingNearbyAdapter(Context context) {
         super(context);
+        try {
+            dishChangedListener = (ShoppingDishChangedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.getClass().getName() + " must implements ShoppingDishChangedListener");
+        }
         this.mContext = context;
-    }
-
-    public void setAddListener(View.OnClickListener listener) {
-        this.addListener = listener;
-    }
-
-    public void setReduceListener(View.OnClickListener listener) {
-        this.reduceListener = listener;
     }
 
 
@@ -50,19 +52,11 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
     @Override
     protected LikingNearbyViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_liking_nearby, parent, false);
-        ImageView mReduceImageView = (ImageView) view.findViewById(R.id.reduce_image);
-        ImageView mAddImageView = (ImageView) view.findViewById(R.id.add_image);
-        if (addListener != null) {
-            mAddImageView.setOnClickListener(addListener);
-        }
-        if (reduceListener != null) {
-            mReduceImageView.setOnClickListener(reduceListener);
-        }
         return new LikingNearbyViewHolder(view);
     }
 
 
-    public static class LikingNearbyViewHolder extends BaseRecycleViewHolder<FoodListResult.FoodData.Food> {
+      class LikingNearbyViewHolder extends BaseRecycleViewHolder<Food> {
         HImageView mFoodHImageView;
         TextView mDishesNameTextView;//菜品名称
         TextView mSurplusNumberTextView;//剩余份数
@@ -87,7 +81,8 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
         }
 
         @Override
-        public void bindViews(FoodListResult.FoodData.Food object) {
+        public void bindViews(Food object) {
+            ButtonClickListener buttonClickListener = new ButtonClickListener();
             mDishesNameTextView.setText(object.getGoodsName());
             mDishesMoneyTextView.setText("¥ " + object.getPrice());
             mSurplusNumberTextView.setText("今日还剩" + object.getLeftNum() + "份");
@@ -105,6 +100,58 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
                 HImageLoaderSingleton.getInstance().requestImage(mFoodHImageView, imgUrl);
             }
             mDishesNameTextView.setTag(object);
+            int restStock = object.getRestStock();
+            int selectNum = object.getSelectedOrderNum();
+            if (selectNum == 0) {
+                mReduceImageView.setVisibility(View.INVISIBLE);
+                mBuyNumberTextView.setVisibility(View.INVISIBLE);
+                mAddImageView.setVisibility(View.VISIBLE);
+                mAddImageView.setEnabled(true);
+            } else if (selectNum == restStock) {
+                mReduceImageView.setVisibility(View.VISIBLE);
+                mBuyNumberTextView.setVisibility(View.VISIBLE);
+                mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
+                mAddImageView.setEnabled(false);
+            } else {
+                mReduceImageView.setVisibility(View.VISIBLE);
+                mBuyNumberTextView.setVisibility(View.VISIBLE);
+                mAddImageView.setVisibility(View.VISIBLE);
+                mAddImageView.setEnabled(true);
+                mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
+            }
+            buttonClickListener.setData(object);
+            mReduceImageView.setOnClickListener(buttonClickListener);
+            mAddImageView.setOnClickListener(buttonClickListener);
+        }
+    }
+
+
+    class ButtonClickListener implements View.OnClickListener {
+        private Food data;
+
+        public void setData(Food data) {
+            this.data = data;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int selectedOrderNum = data.getSelectedOrderNum();
+            switch (v.getId()) {
+                case R.id.reduce_image:
+                    --selectedOrderNum;
+                    if (selectedOrderNum < 0) {
+                        selectedOrderNum = 0;
+                    }
+                    data.setSelectedOrderNum(selectedOrderNum);
+                    dishChangedListener.onShoppingDishRemove(data);
+                    notifyDataSetChanged();
+                    break;
+                case R.id.add_image:
+                    data.setSelectedOrderNum(++selectedOrderNum);
+                    dishChangedListener.onShoppingDishAdded(data);
+                    notifyDataSetChanged();
+                    break;
+            }
         }
     }
 

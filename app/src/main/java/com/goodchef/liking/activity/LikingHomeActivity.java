@@ -11,29 +11,36 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.map.LocationListener;
 import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 
-public class LikingHomeActivity extends BaseActivity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener {
 
     public static final String TAG_MAIN_TAB = "lesson";
     public static final String TAG_NEARBY_TAB = "nearby";
     public static final String TAG_RECHARGE_TAB = "recharge";
     public static final String TAG_MY_TAB = "my";
+    public static final String INTENT_KEY_BUY_LIST = "intent_key_buy_list";
 
     private TextView mLikingLeftTitleTextView;
     private TextView mLikingMiddleTitleTextTextView;
@@ -42,6 +49,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private TextView mLikingRightTitleTextView;
     private AppBarLayout mAppBarLayout;
     private ImageView mMiddleImageView;
+    public TextView mShoppingCartNumTextView;
 
     private FragmentTabHost fragmentTabHost;
     private AmapGDLocation mAmapGDLocation;
@@ -51,6 +59,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private String mCityId;
     private String mDistrictId;
 
+    LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
+    private ArrayList<Food> buyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +81,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mMiddleImageView = (ImageView) findViewById(R.id.liking_middle_title_image);
         mLikingRightTitleTextView = (TextView) findViewById(R.id.liking_right_title_text);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.liking_home_appBar);
+        mShoppingCartNumTextView = (TextView) findViewById(R.id.tv_shopping_cart_num);
         initTabHost();
     }
 
@@ -87,7 +98,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_MAIN_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_lesson), R.drawable.xml_tab_liking_home_lesson))
                 , LikingLessonFragment.class, null);
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_NEARBY_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_nearby), R.drawable.xml_tab_liking_home_nearby))
-                , LikingNearbyFragment.class, null);
+                , mLikingNearbyFragment.getClass(), null);
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_RECHARGE_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_recharge), R.drawable.xml_tab_liking_home_recharge))//setIndicator 设置标签样式
                 , LikingBuyCardFragment.class, null); //setContent 点击标签后触发
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_MY_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_my), R.drawable.xml_tab_liking_home_me))//setIndicator 设置标签样式
@@ -123,6 +134,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingLeftTitleTextView.setText("上海");
                     mRightImageView.setVisibility(View.GONE);
+                    mShoppingCartNumTextView.setVisibility(View.GONE);
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -133,6 +145,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_nearby);
                     mRightImageView.setVisibility(View.VISIBLE);
                     mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
+                    if (calcDishSize() > 0) {
+                        mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+                        mShoppingCartNumTextView.setText(calcDishSize() + "");
+                    } else {
+                        mShoppingCartNumTextView.setVisibility(View.GONE);
+                    }
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -143,6 +161,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setText("查看场馆");
                     mRightImageView.setVisibility(View.GONE);
+                    mShoppingCartNumTextView.setVisibility(View.GONE);
                 } else if (tabId.equals(TAG_MY_TAB)) {
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -152,6 +171,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_my);
                     mRightImageView.setVisibility(View.GONE);
+                    mShoppingCartNumTextView.setVisibility(View.GONE);
                 }
             }
         });
@@ -171,10 +191,17 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
                 startActivity(intent);
             }
-        }else if (v == mRightImageView){
-            if (tag.equals(TAG_NEARBY_TAB)){
-                Intent intent = new Intent(this,ShoppingCartActivity.class);
-                startActivity(intent);
+        } else if (v == mRightImageView) {
+            if (tag.equals(TAG_NEARBY_TAB)) {
+                if (buyList != null && buyList.size() > 0) {
+                    Intent intent = new Intent(this, ShoppingCartActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    PopupUtils.showToast("您还没有购买任何营养餐");
+                }
             }
         }
     }
@@ -237,4 +264,42 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         super.onDestroy();
         mAmapGDLocation.destroy();
     }
+
+    @Override
+    public void onShoppingDishAdded(Food foodData) {
+        int riceNum = foodData.getSelectedOrderNum();
+        if (riceNum >= foodData.getRestStock()) {
+            PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
+        }
+        if (!buyList.contains(foodData)) {
+            buyList.add(foodData);
+        }
+        if (calcDishSize() > 0) {
+            mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+        }
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
+    }
+
+    @Override
+    public void onShoppingDishRemove(Food foodData) {
+        if (foodData.getSelectedOrderNum() == 0) {//当
+            buyList.remove(foodData);
+        }
+        if (calcDishSize() == 0) {
+            mShoppingCartNumTextView.setVisibility(View.GONE);
+        }
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
+    }
+
+    private int calcDishSize() {
+        int num = 0;
+        if (!ListUtils.isEmpty(buyList)) {
+            for (Food data : buyList) {
+                int n = data.getSelectedOrderNum();
+                num += n;
+            }
+        }
+        return num;
+    }
+
 }
