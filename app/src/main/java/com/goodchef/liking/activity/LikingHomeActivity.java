@@ -22,7 +22,9 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
+import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
+import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
@@ -41,6 +43,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public static final String TAG_RECHARGE_TAB = "recharge";
     public static final String TAG_MY_TAB = "my";
     public static final String INTENT_KEY_BUY_LIST = "intent_key_buy_list";
+    public static final String INTENT_KEY_FOOD_OBJECT = "intent_key_food_object";
 
     private TextView mLikingLeftTitleTextView;
     private TextView mLikingMiddleTitleTextTextView;
@@ -61,6 +64,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     private ArrayList<Food> buyList = new ArrayList<>();
+    private String mUserCityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,10 +197,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
-                if (buyList != null && buyList.size() > 0) {
+                if (buyList != null && buyList.size() > 0 && calcDishSize() > 0) {
                     Intent intent = new Intent(this, ShoppingCartActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
+                    intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
@@ -302,4 +307,26 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         return num;
     }
 
+
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(UserCityIdMessage userCityIdMessage){
+        mUserCityId = userCityIdMessage.getUserCityId();
+    }
+
+    public void onEvent(JumpToDishesDetailsMessage jumpToDishesDetailsMessage) {
+        String mUserCityId = jumpToDishesDetailsMessage.getUserCityId();
+        Food foodData = jumpToDishesDetailsMessage.getFoodData();
+        Intent intent = new Intent(this, DishesDetailsActivity.class);
+        intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(INTENT_KEY_FOOD_OBJECT,foodData);
+        bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }

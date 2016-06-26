@@ -13,7 +13,9 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ShoppingCartAdapter;
+import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.data.Food;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
 import java.util.ArrayList;
@@ -24,12 +26,14 @@ import java.util.ArrayList;
  * Time:16/6/21 下午8:15
  */
 public class ShoppingCartActivity extends AppBarActivity implements View.OnClickListener, ShoppingCartAdapter.ShoppingDishChangedListener {
+    public static final String INTENT_KEY_CONFIRM_BUY_LIST = "intent_key_confirm_buy_List";
     private PullToRefreshRecyclerView mRecyclerView;
     private ShoppingCartAdapter mShoppingCartAdapter;
     private TextView mTotalPriceTextView;
     private TextView mImmediatelyBuyBtn;
     private ArrayList<Food> buyList;
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
+    private String mUserCityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +63,12 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     private void initData() {
+        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
         Bundle bundle = getIntent().getExtras();
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
         mShoppingCartAdapter = new ShoppingCartAdapter(this);
         mShoppingCartAdapter.setData(buyList);
-        if (buyList !=null){
+        if (buyList != null) {
             confirmBuyList = new ArrayList<>(buyList);
         }
         setNumAndPrice();
@@ -72,12 +77,20 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
 
-
     @Override
     public void onClick(View v) {
         if (v == mImmediatelyBuyBtn) {
-            Intent intent = new Intent(this, DishesConfirmActivity.class);
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(this, DishesConfirmActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
+                intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
