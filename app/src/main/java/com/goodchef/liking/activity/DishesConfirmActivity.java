@@ -10,11 +10,16 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
+import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.NutritionMealConfirmPresenter;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 /**
  * 说明:确认订单页
@@ -44,13 +49,15 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
     private NutritionMealConfirmPresenter mNutritionMealConfirmPresenter;
-    private String userCityId;
+    private String mUserCityId;
+    private ArrayList<Food> confirmBuyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_confirm);
         initView();
+        setViewOnClickListener();
         initData();
     }
 
@@ -80,13 +87,19 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     }
 
     private void initData() {
-       // sendRequest();
-        setViewOnClickListener();
+        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
+        Bundle bundle = getIntent().getExtras();
+        confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
+        sendRequest();
+
     }
 
     private void sendRequest() {
-        mNutritionMealConfirmPresenter = new NutritionMealConfirmPresenter(this, this);
-        mNutritionMealConfirmPresenter.confirmFood(userCityId, "");
+        if (confirmBuyList != null && confirmBuyList.size() > 0) {
+            mNutritionMealConfirmPresenter = new NutritionMealConfirmPresenter(this, this);
+            String confirmString = new Gson().toJson(confirmBuyList);
+            mNutritionMealConfirmPresenter.confirmFood(mUserCityId, confirmString);
+        }
     }
 
     @Override

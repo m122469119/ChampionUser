@@ -291,6 +291,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_weight="1">
 
 
@@ -300,6 +301,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/icon_dishes_details_minus"
                 android:visibility="visible"/>
@@ -320,6 +325,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:padding="12dp"
                 android:layout_toRightOf="@+id/food_buy_number"
                 android:src="@drawable/icon_dishes_details_add"/>
         </RelativeLayout>

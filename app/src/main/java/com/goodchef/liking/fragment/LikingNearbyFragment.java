@@ -1,6 +1,5 @@
 package com.goodchef.liking.fragment;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,9 +9,10 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.DishesDetailsActivity;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
+import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
+import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.data.Food;
@@ -92,6 +92,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                     FoodListResult.FoodData foodData = result.getFoodData();
                     if (foodData != null) {
                         mUserCityId = foodData.getUserCityId();
+                        postEvent(new UserCityIdMessage(mUserCityId));
                         List<Food> list = foodData.getFoodList();
                         if (list != null && list.size() > 0) {
                             for (Food food : list) {
@@ -121,10 +122,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                 if (textView != null) {
                     Food foodData = (Food) textView.getTag();
                     if (foodData != null) {
-                        Intent intent = new Intent(getActivity(), DishesDetailsActivity.class);
-                        intent.putExtra(INTENT_KEY_USER_CITY_ID, mUserCityId);
-                        intent.putExtra(INTENT_KEY_GOOD_ID, foodData.getGoodsId());
-                        startActivity(intent);
+                        postEvent(new JumpToDishesDetailsMessage(foodData,mUserCityId));
                     }
                 }
 

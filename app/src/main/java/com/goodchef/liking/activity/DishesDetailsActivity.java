@@ -7,11 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
+import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.FoodDetailsPresenter;
 import com.goodchef.liking.mvp.view.FoodDetailsView;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
@@ -51,7 +53,10 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
 
     private String mUserCityId;
     private String mGoodId;
+    private Food mFood;
+    private ArrayList<Food> buyList;
     private FoodDetailsPresenter mFoodDetailsPresenter;
+    private int mSelectNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,20 +70,16 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         setViewOnClickListener();
     }
 
-    //发送详情请求
-    private void sendFoodDetailsRequest() {
-        mFoodDetailsPresenter = new FoodDetailsPresenter(this, this);
-        mFoodDetailsPresenter.getFoodDetails(mUserCityId, mGoodId);
-    }
 
     private void initData() {
         mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
-        mGoodId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_GOOD_ID);
-
-        mBannerPagerAdapter = new BannerPagerAdapter(this);
-        mImageViewPager.setAdapter(mBannerPagerAdapter);
-        mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
-        mIconPageIndicator.setViewPager(mImageViewPager);
+        //  mGoodId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_GOOD_ID);
+        mFood = (Food) getIntent().getSerializableExtra(LikingHomeActivity.INTENT_KEY_FOOD_OBJECT);
+        Bundle bundle = getIntent().getExtras();
+        buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
+        mSelectNum = mFood.getSelectedOrderNum();
+        mFoodBuyNumberTextView.setText(String.valueOf(mSelectNum));
+        initBanner();
     }
 
 
@@ -106,6 +107,19 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mImmediatelyBuyBtn.setOnClickListener(this);
         mAddImageBtn.setOnClickListener(this);
         mReduceImageBtn.setOnClickListener(this);
+    }
+
+    private void initBanner() {
+        mBannerPagerAdapter = new BannerPagerAdapter(this);
+        mImageViewPager.setAdapter(mBannerPagerAdapter);
+        mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
+        mIconPageIndicator.setViewPager(mImageViewPager);
+    }
+
+    //发送详情请求
+    private void sendFoodDetailsRequest() {
+        mFoodDetailsPresenter = new FoodDetailsPresenter(this, this);
+        mFoodDetailsPresenter.getFoodDetails(mUserCityId, mFood.getGoodsId());
     }
 
     private void requestBanner() {
@@ -153,12 +167,61 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     @Override
     public void onClick(View v) {
         if (v == mAddImageBtn) {
-
+            mFood.setSelectedOrderNum(++mSelectNum);
+            mFoodBuyNumberTextView.setText(String.valueOf(mFood.getSelectedOrderNum()));
+            setAddBuyList();
         } else if (v == mReduceImageBtn) {
-
+            --mSelectNum;
+            if (mSelectNum < 0) {
+                mSelectNum = 0;
+            }
+            mFood.setSelectedOrderNum(mSelectNum);
+            mFoodBuyNumberTextView.setText(String.valueOf(mFood.getSelectedOrderNum()));
+            setReduceBuyList();
         } else if (v == mImmediatelyBuyBtn) {
-            Intent intent = new Intent(this, DishesConfirmActivity.class);
-            startActivity(intent);
+            if (buyList != null && buyList.size() > 0) {
+                Intent intent = new Intent(this, ShoppingCartActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+                intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                PopupUtils.showToast("您还没有添加任何营养餐");
+            }
+        }
+    }
+
+    private void setAddBuyList() {
+
+        if (buyList != null && buyList.size() > 0) {
+            boolean isBuyListExits = false;
+            for (int i = 0; i < buyList.size(); i++) {
+                if (buyList.get(i).getGoodsId().equals(mFood.getGoodsId())) {
+                    buyList.get(i).setSelectedOrderNum(mSelectNum);
+                    isBuyListExits = true;
+                    break;
+                }
+            }
+            if (!isBuyListExits) {
+                buyList.add(mFood);
+            }
+
+        } else {
+            buyList.add(mFood);
+        }
+    }
+
+    private void setReduceBuyList() {
+        if (buyList != null && buyList.size() > 0) {
+            for (int i = 0; i < buyList.size(); i++) {
+                if (buyList.get(i).getGoodsId().equals(mFood.getGoodsId())) {
+                    buyList.get(i).setSelectedOrderNum(mSelectNum);
+                    if (buyList.get(i).getSelectedOrderNum() == 0) {
+                        buyList.remove(buyList.get(i));
+                    }
+                }
+            }
         }
     }
 
