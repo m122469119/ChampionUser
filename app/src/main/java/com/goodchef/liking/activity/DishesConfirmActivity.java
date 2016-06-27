@@ -14,20 +14,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
+import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.thirdparty.pay.alipay.AliPay;
+import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
+import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
+import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.DishesConfirmAdapter;
 import com.goodchef.liking.adapter.MealTimeAdapter;
+import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.MealTimeData;
+import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.mvp.presenter.NutritionMealConfirmPresenter;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
+import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,22 +69,25 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private TextView mDishesMoneyextView;
     private TextView mImmediatelyPayBtn;
 
-    private String payType = "-1";//支付方式
-
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
     private NutritionMealConfirmPresenter mNutritionMealConfirmPresenter;
-    private String totalAmount;
 
-    private String mUserCityId;
+    private String totalAmount;//总金额
+    private String mUserCityId;//城市id
+
     private ArrayList<Food> confirmBuyList;
+    private List<MealTimeData> mealTimeList;//取餐时间集合
 
-    private List<MealTimeData> mealTimeList;
-    private String mSelectMealtime;
-
+    private String mSelectMealtime;//取餐时间
     private DishesConfirmAdapter mDishesConfirmAdapter;
-    private GymListResult.GymData.Shop myShop;
 
+    private GymListResult.GymData.Shop myShop;//门店对象
+
+    private String gymId;//门店id
+    private String payType = "-1";//支付方式
+    private AliPay mAliPay;//支付宝
+    private WeixinPay mWeixinPay;//微信
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +97,12 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         initView();
         setViewOnClickListener();
         initData();
+        initPayModule();
+    }
+
+    private void initPayModule() {
+        mAliPay = new AliPay(this, mOnAliPayListener);
+        mWeixinPay = new WeixinPay(this, mWeixinPayListener);
     }
 
     private void initView() {
@@ -116,6 +135,8 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     }
 
     private void initData() {
+        mNutritionMealConfirmPresenter = new NutritionMealConfirmPresenter(this, this);
+
         mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
         Bundle bundle = getIntent().getExtras();
         confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
@@ -154,7 +175,6 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
     private void sendRequest() {
         if (confirmBuyList != null && confirmBuyList.size() > 0) {
-            mNutritionMealConfirmPresenter = new NutritionMealConfirmPresenter(this, this);
             String confirmString = createDishesJson();
             mNutritionMealConfirmPresenter.confirmFood(mUserCityId, confirmString);
         }
@@ -181,7 +201,11 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             intent.putExtras(bundle);
             startActivityForResult(intent, INTENT_REQUEST_CODE_CHANGE_SHOP);
         } else if (v == mMealtimeLayout) {//选择取餐时间
-            showMealTimeDialog();
+            if (mealTimeList != null && mealTimeList.size() > 0) {
+                showMealTimeDialog();
+            } else {
+                PopupUtils.showToast("无取餐时间数据");
+            }
         } else if (v == mCouponsLayout) {//选择优惠券
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_COURSE_ID, "");
@@ -199,7 +223,20 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             mWechatCheckBox.setChecked(true);
             payType = "0";
         } else if (v == mImmediatelyPayBtn) {
-
+            String mealTime = mGetMealsTimeTextView.getText().toString();
+            if (StringUtils.isEmpty(mealTime)) {
+                PopupUtils.showToast("请选择就餐时间");
+                return;
+            }
+            if (payType.equals(-1)) {
+                PopupUtils.showToast("请选择支付方式");
+                return;
+            }
+            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+                mNutritionMealConfirmPresenter.submitFoodOrder(gymId, mSelectMealtime, mCoupon.getCouponCode(), createDishesJson(), payType);
+            } else {
+                mNutritionMealConfirmPresenter.submitFoodOrder(gymId, mSelectMealtime, null, createDishesJson(), payType);
+            }
         }
     }
 
@@ -216,6 +253,33 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 mealTimeData.setSelect(false);
                 mealTimeList.add(mealTimeData);
             }
+        }
+        gymId = confirmData.getStore().getGymId();
+    }
+
+    @Override
+    public void updateSubmitOrderView(PayResultData payResultData) {
+        int payType = payResultData.getPayType();
+        if (payType == 3) {//3 免金额支付
+            PopupUtils.showToast("支付成功");
+        } else {
+            handlePay(payResultData);
+        }
+    }
+
+    private void handlePay(PayResultData data) {
+        int payType = data.getPayType();
+        switch (payType) {
+            case PayType.PAY_TYPE_ALI://支付宝支付
+                mAliPay.setPayOrderInfo(data.getAliPayToken());
+                mAliPay.doPay();
+                break;
+            case PayType.PAY_TYPE_WECHAT://微信支付
+                WXPayEntryActivity.payType = WXPayEntryActivity.PAY_TYPE_DISHES_ORDER;
+                WXPayEntryActivity.orderId = data.getOrderId();
+                mWeixinPay.setPrePayId(data.getWxPrepayId());
+                mWeixinPay.doPay();
+                break;
         }
     }
 
@@ -275,6 +339,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 myShop = (GymListResult.GymData.Shop) data.getSerializableExtra(ChangeShopActivity.INTENT_KEY_SHOP_OBJECT);
                 if (myShop != null) {
                     mMealsAddressTextView.setText(myShop.getAddress());
+                    gymId = myShop.getGymId();
                 }
             }
         }
@@ -309,5 +374,55 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         }
     }
 
+    /**
+     * 支付宝支付结果处理
+     */
+    private final OnAliPayListener mOnAliPayListener = new OnAliPayListener() {
+        @Override
+        public void onStart() {
+            LogUtils.e(TAG, "alipay start");
+        }
+
+        @Override
+        public void onSuccess() {
+
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+
+        }
+
+        @Override
+        public void confirm() {
+        }
+    };
+
+    /**
+     * 微信支付结果处理
+     */
+    private WeixinPayListener mWeixinPayListener = new WeixinPayListener() {
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onSuccess() {
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+        }
+    };
+
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(DishesWechatPayMessage wechatMessage) {
+
+    }
 
 }

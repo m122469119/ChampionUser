@@ -102,7 +102,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initPayModule() {
         mAliPay = new AliPay(this, mOnAliPayListener);
         mWeixinPay = new WeixinPay(this, mWeixinPayListener);
-
     }
 
     private void initData() {

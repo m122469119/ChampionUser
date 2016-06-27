@@ -63,6 +63,8 @@ public class UrlList {
     public static final String FOOD_CONFIRM = getVersionHostUrl()+"/food/confirm";
     /**获取切换门店的列表*/
     public static final String FOOD_GET_GYM_LIST = getVersionHostUrl()+"/food/get-gym-list";
+    /**营养餐确认订单*/
+    public static final String FOOD_ODER_SUBMIT = getVersionHostUrl()+"/food/order-submit";
 
 
 

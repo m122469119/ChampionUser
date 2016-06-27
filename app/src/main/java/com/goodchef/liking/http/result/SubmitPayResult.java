@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/6/16 下午4:14
  */
-public class SubmitCoursesResult extends BaseResult {
+public class SubmitPayResult extends BaseResult {
     @SerializedName("data")
     private PayData mPayData;
 

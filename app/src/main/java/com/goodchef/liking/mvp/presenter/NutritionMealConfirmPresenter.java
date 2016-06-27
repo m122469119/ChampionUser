@@ -9,6 +9,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
 import com.goodchef.liking.storage.Preference;
@@ -30,6 +31,25 @@ public class NutritionMealConfirmPresenter extends BasePresenter<NutritionMealCo
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateNutritionMealConfirmView(result.getConfirmData());
+                } else {
+                    PopupUtils.showToast(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
+    }
+
+    public void submitFoodOrder(String gymId, String takeTime, String couponCode, String goodInfo, String payType) {
+        LiKingApi.submitDishesOrder(Preference.getToken(), gymId, takeTime, couponCode, goodInfo, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
+            @Override
+            public void onSuccess(SubmitPayResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    mView.updateSubmitOrderView(result.getPayData());
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }

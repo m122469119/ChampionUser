@@ -37,7 +37,7 @@ public class GymListResult extends BaseResult {
 
         public static class Shop extends BaseData{
             @SerializedName("gym_id")
-            private int gymId;
+            private String gymId;
             @SerializedName("name")
             private String name;
             @SerializedName("address")
@@ -49,11 +49,11 @@ public class GymListResult extends BaseResult {
 
             private boolean isSelect ;
 
-            public int getGymId() {
+            public String getGymId() {
                 return gymId;
             }
 
-            public void setGymId(int gymId) {
+            public void setGymId(String gymId) {
                 this.gymId = gymId;
             }
 
