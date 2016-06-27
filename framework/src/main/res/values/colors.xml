@@ -21,9 +21,10 @@
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
     <!-- base dialog-->
-    <color name="dialog_buttons_background_color">#e7be02</color>
+    <color name="dialog_buttons_background_color">#34c86c</color>
     <color name="dialog_title_text_color">#28292B</color>
     <color name="dialog_message_text_color">#000000</color>
     <color name="dialog_title_background_color">#fbce02</color>
     <color name="service_phone_text">#FF9C0F</color>
+    <color name="dialog_middle_line">#23b05b</color>
 </resources>
