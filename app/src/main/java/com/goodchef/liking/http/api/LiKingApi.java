@@ -6,6 +6,7 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -23,7 +24,7 @@ import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
-import com.goodchef.liking.http.result.SubmitCoursesResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -220,8 +221,8 @@ public class LiKingApi {
      * @param payType    支付方式
      * @param callback   RequestCallback
      */
-    public static void submitPrivateCourses(String token, String courseId, String couponCode, String payType, RequestCallback<SubmitCoursesResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.ORDER_PRIVATE_COURSES_PAY, SubmitCoursesResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+    public static void submitPrivateCourses(String token, String courseId, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_PRIVATE_COURSES_PAY, SubmitPayResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("course_id", courseId).append("coupon_code", couponCode).append("pay_type", payType), callback);
     }
 
@@ -349,5 +350,26 @@ public class LiKingApi {
     public static void getGymList(String userCityId, String good_info, RequestCallback<GymListResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.FOOD_GET_GYM_LIST, GymListResult.class, getCommonRequestParams()
                 .append("user_city_id", userCityId).append("good_info", good_info), callback);
+    }
+
+
+    /**
+     * 提交营养餐支付订单
+     *
+     * @param token       token
+     * @param gym_id      场馆id
+     * @param take_time   取餐时间
+     * @param coupon_code 优惠券code
+     * @param good_info   购买菜品
+     * @param pay_type    支付方式
+     * @param callback    RequestCallback
+     */
+    public static void submitDishesOrder(String token, String gym_id, String take_time, String coupon_code, String good_info, String pay_type, RequestCallback<SubmitPayResult> callback) {
+        RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("gym_id", gym_id)
+                .append("take_time", take_time).append("good_info", good_info).append("pay_type", pay_type);
+        if (!StringUtils.isEmpty(coupon_code)) {
+            params.append("coupon_code", coupon_code);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_ODER_SUBMIT, SubmitPayResult.class, params, callback);
     }
 }
