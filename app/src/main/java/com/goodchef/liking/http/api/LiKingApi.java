@@ -199,10 +199,13 @@ public class LiKingApi {
      * @param page     页数
      * @param callback RequestCallback
      */
-    public static void getCoupons(String courseId, String token, int page, RequestCallback<CouponsResult> callback) {
+    public static void getCoupons(String courseId, String goodInfo, String token, int page, RequestCallback<CouponsResult> callback) {
         RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("page", page);
         if (!TextUtils.isEmpty(courseId)) {
             params.append("course_id", courseId);
+        }
+        if (!TextUtils.isEmpty(goodInfo)) {
+            params.append("good_info", goodInfo);
         }
         VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, params, callback);
     }
@@ -338,12 +341,13 @@ public class LiKingApi {
 
     /**
      * 切换门店
+     *
      * @param userCityId 城市id
-     * @param good_info 选择的营养餐
-     * @param callback RequestCallback
+     * @param good_info  选择的营养餐
+     * @param callback   RequestCallback
      */
-    public static void getGymList(String userCityId,String good_info,RequestCallback<GymListResult> callback){
-      VolleyHttpRequestClient.doPost(UrlList.FOOD_GET_GYM_LIST,GymListResult.class,getCommonRequestParams()
-      .append("user_city_id",userCityId).append("good_info",good_info),callback);
+    public static void getGymList(String userCityId, String good_info, RequestCallback<GymListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_GET_GYM_LIST, GymListResult.class, getCommonRequestParams()
+                .append("user_city_id", userCityId).append("good_info", good_info), callback);
     }
 }

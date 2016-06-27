@@ -142,6 +142,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mCouponsLayout) {//我的优惠券
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), CouponsActivity.class);
+                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS,CouponsActivity.TYPE_MY_COUPONS);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

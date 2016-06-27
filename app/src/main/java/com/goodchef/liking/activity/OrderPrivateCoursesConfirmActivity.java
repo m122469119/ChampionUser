@@ -182,6 +182,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             if (coursesId != null) {
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
+                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS,"DishesConfirmActivity");
                 startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
             }
         } else if (v == mImmediatelyBuyBtn) {

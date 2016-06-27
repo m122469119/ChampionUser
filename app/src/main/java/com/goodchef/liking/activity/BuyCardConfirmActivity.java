@@ -112,6 +112,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             payType = 0;
         } else if (v == mCouponsLayout) {//选优惠券
             Intent intent = new Intent(this, CouponsActivity.class);
+            intent.putExtra(CouponsActivity.TYPE_MY_COUPONS,"BuyCardConfirmActivity");
             startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
         } else if (v == mImmediatelyBuyBtn) {
             PopupUtils.showToast("开发中");
