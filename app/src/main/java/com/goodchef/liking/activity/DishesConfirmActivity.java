@@ -64,6 +64,8 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
     private NutritionMealConfirmPresenter mNutritionMealConfirmPresenter;
+    private String totalAmount;
+
     private String mUserCityId;
     private ArrayList<Food> confirmBuyList;
 
@@ -73,10 +75,12 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private DishesConfirmAdapter mDishesConfirmAdapter;
     private GymListResult.GymData.Shop myShop;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_confirm);
+        setTitle(getString(R.string.title_dishes_confirm_order));
         initView();
         setViewOnClickListener();
         initData();
@@ -181,6 +185,10 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         } else if (v == mCouponsLayout) {//选择优惠券
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_COURSE_ID, "");
+            intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
+            intent.putExtras(bundle);
             startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
         } else if (v == mAlipayLayout) {
             mAlipayCheckBox.setChecked(true);
@@ -198,6 +206,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     @Override
     public void updateNutritionMealConfirmView(NutritionMealConfirmResult.NutritionMealConfirmData confirmData) {
         mMealsAddressTextView.setText(confirmData.getStore().getAddress());
+        totalAmount = confirmData.getTotalAmount();
         List<String> list = confirmData.getSelectDate();
         mealTimeList = new ArrayList<>();
         if (list != null && list.size() > 0) {
@@ -210,6 +219,9 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         }
     }
 
+    /**
+     * 选择取餐时间
+     */
     private void showMealTimeDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.layout_meal_time, null, false);
         ListView listView = (ListView) view.findViewById(R.id.meal_time_listView);
@@ -247,8 +259,6 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             }
         });
         builder.create().show();
-
-
     }
 
 
@@ -276,22 +286,25 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
         String minAmountStr = mCoupon.getMinAmount();//优惠券最低使用标准
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
-        double coursesPrice = Double.parseDouble("10");
+        double coursesPrice = Double.parseDouble(totalAmount);//订单的总价
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
-        if (coursesPrice > minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
+        if (coursesPrice > minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
+            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
             if (coursesPrice > couponAmount) {
-                mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
-                //课程的价格大于优惠券的面额
+                //订单的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
                 if (amount > 0) {
-                    //  mDishesMoneyextView.setText("¥ " + amount);
+                    mDishesCouponMoney.setText("已优惠" + mCoupon.getAmount());
+                    mDishesMoneyextView.setText("¥ " + amount);
                 }
-            } else {//课程的面额小于优惠券的面额
-                //  mDishesMoneyextView.setText("¥ " + "0.00");
+            } else {//订单的面额小于优惠券的面额
+                mDishesCouponMoney.setText("已优惠" + mCoupon.getAmount());
+                mDishesMoneyextView.setText("¥ " + "0.0.0");
             }
         } else {//优惠券不可用
-            // mCouponTitleTextView.setText("");
+            mDishesCouponMoney.setText("");
+            mCouponTitleTextView.setText("");
             PopupUtils.showToast("该优惠券未达使用范围请重新选择");
         }
     }

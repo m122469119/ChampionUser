@@ -62,4 +62,5 @@
 
     <string name="dialog_message_clear_shopping_cart">您是否确定清空购物车?</string>
     <string name="please_select_coupons">请选择优惠券</string>
+    <string name="title_dishes_confirm_order">确认订单</string>
 </resources>
