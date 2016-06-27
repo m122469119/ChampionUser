@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_change_shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/change_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LingFit凌空SoHo店"
+            android:textSize="@dimen/textsize_15"/>
+
+
+        <TextView
+            android:id="@+id/change_shop_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/change_shop_name"
+            android:layout_marginTop="2dp"
+            android:text="中山南二路107号美换大酒店9楼"
+            android:textSize="12sp"/>
+
+        <CheckBox
+            android:id="@+id/change_shop_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+        <TextView
+            android:id="@+id/change_shop_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="已售罄"
+            android:textColor="@color/change_shop_gray_back"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/line"/>
+</LinearLayout>

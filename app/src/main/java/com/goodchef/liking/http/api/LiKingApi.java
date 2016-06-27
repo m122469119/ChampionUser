@@ -16,6 +16,7 @@ import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
 import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
@@ -334,4 +335,15 @@ public class LiKingApi {
                 .append("user_city_id", userCityId).append("good_info", goodInfo), callback);
     }
 
+
+    /**
+     * 切换门店
+     * @param userCityId 城市id
+     * @param good_info 选择的营养餐
+     * @param callback RequestCallback
+     */
+    public static void getGymList(String userCityId,String good_info,RequestCallback<GymListResult> callback){
+      VolleyHttpRequestClient.doPost(UrlList.FOOD_GET_GYM_LIST,GymListResult.class,getCommonRequestParams()
+      .append("user_city_id",userCityId).append("good_info",good_info),callback);
+    }
 }

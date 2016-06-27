@@ -32,5 +32,6 @@
     <color name="my_card_bottom_line">#23b05b</color>
     <color name="my_group_green_text">#28ca68</color>
     <color name="dishes_details_tags">#a8abae</color>
+    <color name="change_shop_gray_back">#d1d2d9</color>
 
 </resources>
