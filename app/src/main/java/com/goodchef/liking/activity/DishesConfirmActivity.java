@@ -2,22 +2,25 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.DishesConfirmAdapter;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.NutritionMealConfirmPresenter;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
-import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -27,20 +30,23 @@ import java.util.ArrayList;
  * Time:16/6/23 下午6:14
  */
 public class DishesConfirmActivity extends AppBarActivity implements View.OnClickListener, NutritionMealConfirmView {
-    private static final int INTENT_REQUEST_CODE_COUPON = 102;
+    private static final int INTENT_REQUEST_CODE_COUPON = 112;
+    public static final int INTENT_REQUEST_CODE_CHANGE_SHOP = 113;
     private TextView mChangeShopTextView;
     private TextView mMealsAddressTextView;
     private TextView mGetMealsTimeTextView;
+    private TextView mDishesCouponMoney;
 
-    private RelativeLayout mCouponsLayout;
-    private TextView mCouponTitleTextView;
+    private RelativeLayout mCouponsLayout;//优惠券列表
+    private TextView mCouponTitleTextView;//优惠券
 
+    //支付相关
     private RelativeLayout mAlipayLayout;
     private RelativeLayout mWechatLayout;
     private CheckBox mAlipayCheckBox;
     private CheckBox mWechatCheckBox;
 
-    private PullToRefreshRecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private TextView mDishesMoneyextView;
     private TextView mImmediatelyPayBtn;
 
@@ -51,6 +57,9 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private NutritionMealConfirmPresenter mNutritionMealConfirmPresenter;
     private String mUserCityId;
     private ArrayList<Food> confirmBuyList;
+
+    private DishesConfirmAdapter mDishesConfirmAdapter;
+    private GymListResult.GymData.Shop myShop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +83,14 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
         mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
 
-        mRecyclerView = (PullToRefreshRecyclerView) findViewById(R.id.my_order_dishes);
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_order_dishes);
         mDishesMoneyextView = (TextView) findViewById(R.id.dishes_money);
+        mDishesCouponMoney = (TextView) findViewById(R.id.dishes_coupon_money);
         mImmediatelyPayBtn = (TextView) findViewById(R.id.immediately_buy_btn);
     }
 
     private void setViewOnClickListener() {
+        mChangeShopTextView.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
         mImmediatelyPayBtn.setOnClickListener(this);
         mAlipayLayout.setOnClickListener(this);
@@ -90,21 +101,69 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
         Bundle bundle = getIntent().getExtras();
         confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
+        if (confirmBuyList != null && confirmBuyList.size() > 0) {
+            setConfirmListView();
+            setNumAndPrice();
+        }
         sendRequest();
+    }
 
+    /**
+     * 计算并显示选择的菜品份数和总价格
+     */
+    private void setNumAndPrice() {
+        int num = 0;
+        float dishPrice = 0;
+        if (!ListUtils.isEmpty(confirmBuyList)) {
+            for (Food data : confirmBuyList) {
+                int n = data.getSelectedOrderNum();
+                float p = Float.parseFloat(data.getPrice()) * n;
+                num += n;
+                dishPrice += p;
+            }
+        }
+        mDishesMoneyextView.setText("¥ " + dishPrice);
+        mDishesCouponMoney.setText("已优惠10元");
+    }
+
+
+    private void setConfirmListView() {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mDishesConfirmAdapter = new DishesConfirmAdapter(this);
+        mDishesConfirmAdapter.setData(confirmBuyList);
+        mRecyclerView.setAdapter(mDishesConfirmAdapter);
     }
 
     private void sendRequest() {
         if (confirmBuyList != null && confirmBuyList.size() > 0) {
             mNutritionMealConfirmPresenter = new NutritionMealConfirmPresenter(this, this);
-            String confirmString = new Gson().toJson(confirmBuyList);
+            String confirmString = createDishesJson();
             mNutritionMealConfirmPresenter.confirmFood(mUserCityId, confirmString);
         }
     }
 
+    private String createDishesJson() {
+        StringBuilder builder = new StringBuilder("{");
+        for (Food food : confirmBuyList) {
+            builder.append("\"").append(food.getGoodsId()).append("\":");
+            builder.append(food.getSelectedOrderNum()).append(",");
+        }
+        builder.replace(builder.length() - 1, builder.length(), "}");
+        return builder.toString();
+    }
+
     @Override
     public void onClick(View v) {
-        if (v == mCouponsLayout) {
+        if (v == mChangeShopTextView) {//切换门店
+            Intent intent = new Intent(this, ChangeShopActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
+            intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+            bundle.putSerializable(ChangeShopActivity.INTENT_KEY_SHOP_OBJECT, myShop);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, INTENT_REQUEST_CODE_CHANGE_SHOP);
+        } else if (v == mCouponsLayout) {//选择优惠券
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_COURSE_ID, "");
             startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
@@ -126,10 +185,15 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == INTENT_REQUEST_CODE_COUPON) {
+            if (requestCode == INTENT_REQUEST_CODE_COUPON) {//选择优惠券
                 mCoupon = (CouponsResult.CouponData.Coupon) data.getSerializableExtra(CouponsActivity.INTENT_KEY_COUPONS_DATA);
                 if (mCoupon != null) {
                     handleCoupons(mCoupon);
+                }
+            } else if (requestCode == INTENT_REQUEST_CODE_CHANGE_SHOP) {//切换门店
+                myShop = (GymListResult.GymData.Shop) data.getSerializableExtra(ChangeShopActivity.INTENT_KEY_SHOP_OBJECT);
+                if (myShop != null) {
+                    mMealsAddressTextView.setText(myShop.getAddress());
                 }
             }
         }
@@ -150,19 +214,21 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 //课程的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
                 if (amount > 0) {
-                    mDishesMoneyextView.setText("¥ " + amount);
+                    //  mDishesMoneyextView.setText("¥ " + amount);
                 }
             } else {//课程的面额小于优惠券的面额
-                mDishesMoneyextView.setText("¥ " + "0.00");
+                //  mDishesMoneyextView.setText("¥ " + "0.00");
             }
         } else {//优惠券不可用
-            mCouponTitleTextView.setText("");
+            // mCouponTitleTextView.setText("");
             PopupUtils.showToast("该优惠券未达使用范围请重新选择");
         }
     }
 
     @Override
     public void updateNutritionMealConfirmView(NutritionMealConfirmResult.NutritionMealConfirmData confirmData) {
-
+        mMealsAddressTextView.setText(confirmData.getStore().getAddress());
     }
+
+
 }

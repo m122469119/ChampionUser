@@ -33,6 +33,9 @@ public class Food extends BaseData implements Parcelable {
     private int selectedOrderNum;
     private int restStock;
 
+    @SerializedName("num")
+    private int num;
+
     public String getGoodsId() {
         return goodsId;
     }
@@ -89,7 +92,6 @@ public class Food extends BaseData implements Parcelable {
         this.tags = tags;
     }
 
-
     public int getSelectedOrderNum() {
         return selectedOrderNum;
     }
@@ -104,6 +106,14 @@ public class Food extends BaseData implements Parcelable {
 
     public void setRestStock(int restStock) {
         this.restStock = restStock;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 
     @Override
@@ -122,6 +132,7 @@ public class Food extends BaseData implements Parcelable {
         dest.writeStringList(this.tags);
         dest.writeInt(this.selectedOrderNum);
         dest.writeInt(this.restStock);
+        dest.writeInt(this.num);
     }
 
     public Food() {
@@ -137,6 +148,7 @@ public class Food extends BaseData implements Parcelable {
         this.tags = in.createStringArrayList();
         this.selectedOrderNum = in.readInt();
         this.restStock = in.readInt();
+        this.num = in.readInt();
     }
 
     public static final Parcelable.Creator<Food> CREATOR = new Parcelable.Creator<Food>() {

@@ -57,8 +57,9 @@
     <string name="courses_cancel">已取消</string>
     <string name="immediately_buy_btn">立即购买</string>
     <string name="get_meals_address">取餐地址</string>
-    <string name="get_meals_time">取餐时间</string>
+    <string name="get_meals_time">请选择取餐时间</string>
     <string name="immediately_pay">立即支付</string>
 
     <string name="dialog_message_clear_shopping_cart">您是否确定清空购物车?</string>
+    <string name="please_select_coupons">请选择优惠券</string>
 </resources>

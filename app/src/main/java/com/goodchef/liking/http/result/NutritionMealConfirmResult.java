@@ -28,6 +28,8 @@ public class NutritionMealConfirmResult extends BaseResult {
         private String totalAmount;
         @SerializedName("selectDate")
         private List<String> selectDate;
+        @SerializedName("store")
+        private Store mStore;
 
         public String getTotalAmount() {
             return totalAmount;
@@ -43,6 +45,14 @@ public class NutritionMealConfirmResult extends BaseResult {
 
         public void setSelectDate(List<String> selectDate) {
             this.selectDate = selectDate;
+        }
+
+        public Store getStore() {
+            return mStore;
+        }
+
+        public void setStore(Store store) {
+            mStore = store;
         }
 
         public static class Store extends BaseData {
@@ -77,6 +87,8 @@ public class NutritionMealConfirmResult extends BaseResult {
                 this.address = address;
             }
         }
+
+
     }
 
 
