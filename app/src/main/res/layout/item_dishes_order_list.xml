@@ -182,7 +182,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:text="去支付"
+            android:text="@string/go_pay"
             android:textColor="@color/white"
             android:textSize="12sp"/>
 
@@ -200,7 +200,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/add_minus_dishes_text"
             android:textSize="12sp"/>
     </RelativeLayout>
@@ -215,7 +215,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="12dp"
-        android:text="确认领餐"
+        android:text="@string/confirm_get_meal"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_small"
         android:visibility="gone"/>
