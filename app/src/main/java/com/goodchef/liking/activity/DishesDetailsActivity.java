@@ -1,7 +1,9 @@
 package com.goodchef.liking.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import java.util.List;
  * Time:16/5/26 下午3:00
  */
 public class DishesDetailsActivity extends AppBarActivity implements FoodDetailsView, View.OnClickListener {
+    private static final int INTENT_REQUEST_CODE_DEISH_DETAILS_CART = 114;
     private TextView mDishesDetailsNameTextView;//菜品名称
     private TextView mSurplusNumberTextView;//剩余份数
     private TextView mDishesMoneyTextView;//多少钱
@@ -52,7 +55,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     private BannerPagerAdapter mBannerPagerAdapter;
 
     private String mUserCityId;
-    private String mGoodId;
     private Food mFood;
     private ArrayList<Food> buyList;
     private FoodDetailsPresenter mFoodDetailsPresenter;
@@ -68,12 +70,22 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         requestBanner();
         sendFoodDetailsRequest();
         setViewOnClickListener();
+        showHomeUpIcon(R.drawable.app_bar_back, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+                intent.putExtras(bundle);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
 
     private void initData() {
         mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
-        //  mGoodId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_GOOD_ID);
         mFood = (Food) getIntent().getSerializableExtra(LikingHomeActivity.INTENT_KEY_FOOD_OBJECT);
         Bundle bundle = getIntent().getExtras();
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
@@ -179,21 +191,26 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
             mFoodBuyNumberTextView.setText(String.valueOf(mFood.getSelectedOrderNum()));
             setReduceBuyList();
         } else if (v == mImmediatelyBuyBtn) {
-            if (buyList != null && buyList.size() > 0) {
-                Intent intent = new Intent(this, ShoppingCartActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
-                intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
-                intent.putExtras(bundle);
-                startActivity(intent);
+            int selectNum = mFood.getSelectedOrderNum();
+            if (selectNum > 0) {
+                if (buyList != null && buyList.size() > 0) {
+                    Intent intent = new Intent(this, ShoppingCartActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+                    intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, INTENT_REQUEST_CODE_DEISH_DETAILS_CART);
+                }
             } else {
                 PopupUtils.showToast("您还没有添加任何营养餐");
             }
         }
     }
 
+    /**
+     * 添加数据
+     */
     private void setAddBuyList() {
-
         if (buyList != null && buyList.size() > 0) {
             boolean isBuyListExits = false;
             for (int i = 0; i < buyList.size(); i++) {
@@ -212,14 +229,14 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         }
     }
 
+    /**
+     * 减少数据
+     */
     private void setReduceBuyList() {
         if (buyList != null && buyList.size() > 0) {
             for (int i = 0; i < buyList.size(); i++) {
                 if (buyList.get(i).getGoodsId().equals(mFood.getGoodsId())) {
                     buyList.get(i).setSelectedOrderNum(mSelectNum);
-                    if (buyList.get(i).getSelectedOrderNum() == 0) {
-                        buyList.remove(buyList.get(i));
-                    }
                 }
             }
         }
@@ -241,4 +258,45 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
             mImageViewPager.stopAutoScroll();
         }
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+            intent.putExtras(bundle);
+            setResult(Activity.RESULT_OK, intent);
+            this.finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == INTENT_REQUEST_CODE_DEISH_DETAILS_CART) {//从购物车回来时，带回购物车数据，从新计算购物车数量
+                Bundle bundle = data.getExtras();
+                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
+                refreshChangeData();
+            }
+        }
+    }
+
+
+    private void refreshChangeData() {
+        if (buyList != null && buyList.size() > 0) {
+            for (Food food : buyList) {
+                if (food.getGoodsId().equals(mFood.getGoodsId())) {
+                    mSelectNum = food.getSelectedOrderNum();
+                    food.setSelectedOrderNum(mSelectNum);
+                    mFood.setSelectedOrderNum(mSelectNum);
+                    mFoodBuyNumberTextView.setText(String.valueOf(food.getSelectedOrderNum()));
+                }
+            }
+        }
+    }
+
 }

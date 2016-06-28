@@ -126,6 +126,9 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
                     }
                     data.setSelectedOrderNum(selectedOrderNum);
                     dishChangedListener.onShoppingDishRemove(data);
+                    if (selectedOrderNum == 0) {
+                        getDataList().remove(data);
+                    }
                     notifyDataSetChanged();
                     break;
                 case R.id.add_image:

@@ -228,7 +228,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 PopupUtils.showToast("请选择就餐时间");
                 return;
             }
-            if (payType.equals(-1)) {
+            if (payType.equals("-1")) {
                 PopupUtils.showToast("请选择支付方式");
                 return;
             }
