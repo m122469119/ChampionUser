@@ -24,6 +24,7 @@ import com.goodchef.liking.activity.LessonActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
+import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
@@ -127,13 +128,23 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             Intent intent = new Intent(getActivity(), MyInfoActivity.class);
             startActivity(intent);
         } else if (v == mHeadInfoLayout) {
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                PopupUtils.showToast("您已登录状态");
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mMyCourseLayout) {//我的课程
             Intent intent = new Intent(getActivity(), LessonActivity.class);
             startActivity(intent);
         } else if (v == mMyOrderLayout) {//我的订单
-            PopupUtils.showToast("订单开发中");
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mMemberCardLayout) {//会员卡
             Intent intent = new Intent(getActivity(), MyCardActivity.class);
             startActivity(intent);
@@ -142,7 +153,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mCouponsLayout) {//我的优惠券
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), CouponsActivity.class);
-                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS,CouponsActivity.TYPE_MY_COUPONS);
+                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, CouponsActivity.TYPE_MY_COUPONS);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

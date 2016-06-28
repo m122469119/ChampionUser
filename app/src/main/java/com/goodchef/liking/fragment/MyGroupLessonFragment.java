@@ -1,7 +1,9 @@
 package com.goodchef.liking.fragment;
 
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
@@ -41,7 +43,26 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
     @Override
     protected void initViews() {
+        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
+        TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
+        TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
+        noDataImageView.setImageResource(R.drawable.no_order);
+        noDataText.setText("暂无数据");
+        refreshView.setText(R.string.refresh_btn_text);
+        refreshView.setOnClickListener(refreshOnClickListener);
+        getStateView().setNodataView(noDataView);
     }
+
+    /***
+     * 刷新事件
+     */
+    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            loadHomePage();
+        }
+    };
 
     private void sendRequest(int page) {
         mMyGroupCoursesPresenter = new MyGroupCoursesPresenter(getActivity(), this);

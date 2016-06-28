@@ -63,4 +63,13 @@
     <string name="dialog_message_clear_shopping_cart">您是否确定清空购物车?</string>
     <string name="please_select_coupons">请选择优惠券</string>
     <string name="title_dishes_confirm_order">确认订单</string>
+
+    <string name="tab_title_dishes">营养餐</string>
+    <string name="tab_title_my_card">会员卡</string>
+    <string name="get_meal_time">取餐时间：</string>
+    <string name="get_meal_address">取餐地址：</string>
+    <string name="dishes_order_state_submit">已提交</string>
+    <string name="dishes_order_state_payed">已支付</string>
+    <string name="dishes_order_state_cancel">已取消</string>
+    <string name="dishes_order_state_complete">已完成</string>
 </resources>

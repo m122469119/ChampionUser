@@ -14,6 +14,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
+import com.goodchef.liking.http.result.DishesOrderListResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
 import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
@@ -371,5 +372,17 @@ public class LiKingApi {
             params.append("coupon_code", coupon_code);
         }
         VolleyHttpRequestClient.doPost(UrlList.FOOD_ODER_SUBMIT, SubmitPayResult.class, params, callback);
+    }
+
+    /**
+     * 获取营养餐订单列表
+     *
+     * @param token    token
+     * @param page     页数
+     * @param callback RequestCallback
+     */
+    public static void getDishesOrderList(String token, int page, RequestCallback<DishesOrderListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_ORDER_LIST, DishesOrderListResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("page", page), callback);
     }
 }
