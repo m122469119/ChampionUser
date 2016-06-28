@@ -1,13 +1,16 @@
 package com.goodchef.liking.fragment;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.MyDishesOrderDetailsActivity;
 import com.goodchef.liking.adapter.MyDishesOrderAdapter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.DishesOrderListResult;
@@ -20,7 +23,7 @@ import com.goodchef.liking.storage.Preference;
  * Time:16/6/28 下午2:52
  */
 public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragment {
-
+    public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyDishesOrderAdapter mMyDishesOrderAdapter;
 
     @Override
@@ -40,9 +43,29 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
         refreshView.setOnClickListener(refreshOnClickListener);
         getStateView().setNodataView(noDataView);
 
+        setPullType(PullMode.PULL_BOTH);
         mMyDishesOrderAdapter = new MyDishesOrderAdapter(getActivity());
         setRecyclerAdapter(mMyDishesOrderAdapter);
         getPullToRefreshRecyclerView().setDividerDrawable(null);
+        mMyDishesOrderAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                TextView textView = (TextView) view.findViewById(R.id.order_number);
+                if (textView != null) {
+                    DishesOrderListResult.DishesOrderData.DishesOrder object = (DishesOrderListResult.DishesOrderData.DishesOrder) textView.getTag();
+                    if (object != null) {
+                        Intent intent = new Intent(getActivity(), MyDishesOrderDetailsActivity.class);
+                        intent.putExtra(INTENT_KEY_ORDER_ID,object.getOrderId());
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
     }
 
     /***

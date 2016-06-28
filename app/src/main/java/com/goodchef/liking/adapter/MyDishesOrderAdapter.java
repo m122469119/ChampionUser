@@ -57,6 +57,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
         TextView mDishesMoneyTextView;//菜品金额
         TextView mGetMealsTimeTextView;//取餐时间
         TextView mGetMealsAddressTextView;//取餐地址
+
         TextView mPaySurplusTimeTextView;//剩余支付时间
         TextView mGoPayBtn;//去支付
         TextView mCancelOrderBtn;//取消
@@ -99,6 +100,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
             mGoPayBtn.setOnClickListener(mClickListener);
             mCancelOrderBtn.setOnClickListener(mClickListener);
             mConfirmGetDishesBtn.setOnClickListener(mClickListener);
+            mOrderNumberTextView.setTag(object);
         }
 
         private void setOrderState(int state) {

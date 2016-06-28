@@ -67,6 +67,8 @@ public class UrlList {
     public static final String FOOD_ODER_SUBMIT = getVersionHostUrl()+"/food/order-submit";
     /**营养餐订单列表*/
     public static final String FOOD_ORDER_LIST = getVersionHostUrl()+"/food/food-order-list";
+    /**营养餐订单详情*/
+    public static final String FOOD_ORDER_DETAILS = getVersionHostUrl()+"/food/food-order-detail";
 
 
 

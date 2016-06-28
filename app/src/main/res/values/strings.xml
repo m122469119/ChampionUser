@@ -72,4 +72,13 @@
     <string name="dishes_order_state_payed">已支付</string>
     <string name="dishes_order_state_cancel">已取消</string>
     <string name="dishes_order_state_complete">已完成</string>
+    <string name="details_get_meals_shop">取餐门店</string>
+    <string name="eating_user_phone">手机号</string>
+    <string name="eating_user_name">姓名</string>
+    <string name="details_pay_type">支付方式</string>
+    <string name="pay_type_free_of">免金额支付</string>
+    <string name="title_dishes_details">订单详情</string>
+    <string name="confirm_get_meal">确认领餐</string>
+    <string name="go_pay">去支付</string>
+
 </resources>
