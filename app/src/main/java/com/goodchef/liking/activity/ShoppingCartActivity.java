@@ -1,8 +1,10 @@
 package com.goodchef.liking.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,6 +45,17 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
         setRightMenu();
         initView();
         initData();
+        showHomeUpIcon(R.drawable.app_bar_back, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+                intent.putExtras(bundle);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     private void setRightMenu() {
@@ -67,13 +80,27 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
         Bundle bundle = getIntent().getExtras();
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
         mShoppingCartAdapter = new ShoppingCartAdapter(this);
-        mShoppingCartAdapter.setData(buyList);
         if (buyList != null) {
             confirmBuyList = new ArrayList<>(buyList);
         }
+        totalBuyList();
+        mShoppingCartAdapter.setData(confirmBuyList);
         setNumAndPrice();
         mRecyclerView.setAdapter(mShoppingCartAdapter);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
+    }
+
+    /**
+     * 清楚购物车中数量为0的营养餐
+     */
+    private void totalBuyList() {
+        if (confirmBuyList != null && confirmBuyList.size() > 0) {
+            for (int i = 0; i < confirmBuyList.size(); i++) {
+                if (confirmBuyList.get(i).getSelectedOrderNum() == 0) {
+                    confirmBuyList.remove(confirmBuyList.get(i));
+                }
+            }
+        }
     }
 
 
@@ -104,7 +131,10 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
             confirmBuyList.add(foodData);
         }
         setNumAndPrice();
+        refreshChangeData();
     }
+
+
 
     @Override
     public void onShoppingDishRemove(Food foodData) {
@@ -112,6 +142,23 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
             confirmBuyList.remove(foodData);
         }
         setNumAndPrice();
+        refreshChangeData();
+    }
+
+
+    /**
+     * 当从购物车回来时对数据刷新
+     */
+    private void refreshChangeData() {
+        if (buyList != null && buyList.size() > 0 && confirmBuyList != null && confirmBuyList.size() > 0) {
+            for (Food mFood : buyList) {
+                for (Food buyFood : confirmBuyList) {
+                    if (mFood.getGoodsId().equals(buyFood.getGoodsId())) {
+                        mFood.setSelectedOrderNum(buyFood.getSelectedOrderNum());
+                    }
+                }
+            }
+        }
     }
 
 
@@ -157,13 +204,32 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
      * 清空购物车
      */
     private void clearShoppingCart() {
-        for (Food data : confirmBuyList) {
+        for (Food data : buyList) {
             data.setSelectedOrderNum(0);
         }
-        confirmBuyList.clear();
+     //   buyList.clear();
         setNumAndPrice();
         mShoppingCartAdapter.notifyDataSetChanged();
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+        intent.putExtras(bundle);
+        setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+            intent.putExtras(bundle);
+            setResult(Activity.RESULT_OK, intent);
+            this.finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

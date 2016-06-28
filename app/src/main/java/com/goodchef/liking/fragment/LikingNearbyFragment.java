@@ -18,6 +18,7 @@ import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment{
+public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment {
     public static final String INTENT_KEY_USER_CITY_ID = "intent_key_user_city_id";
     public static final String INTENT_KEY_GOOD_ID = "intent_key_good_id";
     private static final int SELECT_MAX = 5;//设置单个菜品最大购买数量
@@ -35,6 +36,8 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     private double mLongitude = 0;
     private double mLatitude = 0;
     private String mUserCityId;
+    private ArrayList<Food> buyLit;
+    private List<Food> mFoodList;
 
     public static LikingNearbyFragment newInstance() {
         LikingNearbyFragment fragment = new LikingNearbyFragment();
@@ -93,13 +96,14 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                     if (foodData != null) {
                         mUserCityId = foodData.getUserCityId();
                         postEvent(new UserCityIdMessage(mUserCityId));
-                        List<Food> list = foodData.getFoodList();
-                        if (list != null && list.size() > 0) {
-                            for (Food food : list) {
+                        mFoodList = foodData.getFoodList();
+                        if (mFoodList != null && mFoodList.size() > 0) {
+                            for (Food food : mFoodList) {
                                 food.setRestStock(SELECT_MAX);
                                 food.setSelectedOrderNum(0);
                             }
-                            updateListView(list);
+                            refreshChangeData();
+                            updateListView(mFoodList);
                         }
                     }
 
@@ -122,7 +126,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                 if (textView != null) {
                     Food foodData = (Food) textView.getTag();
                     if (foodData != null) {
-                        postEvent(new JumpToDishesDetailsMessage(foodData,mUserCityId));
+                        postEvent(new JumpToDishesDetailsMessage(foodData, mUserCityId));
                     }
                 }
 
@@ -136,5 +140,24 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     }
 
 
+    public void onEvent(RefreshChangeDataMessage refreshChangeDataMessage) {
+        buyLit = refreshChangeDataMessage.getBuyList();
+        refreshChangeData();
+    }
 
+    /**
+     * 当从购物车回来时对数据刷新
+     */
+    private void refreshChangeData() {
+        if (mFoodList != null && mFoodList.size() > 0 && buyLit != null && buyLit.size() > 0) {
+            for (Food mFood : mFoodList) {
+                for (Food buyFood : buyLit) {
+                    if (mFood.getGoodsId().equals(buyFood.getGoodsId())) {
+                        mFood.setSelectedOrderNum(buyFood.getSelectedOrderNum());
+                    }
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 }

@@ -29,6 +29,7 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.fragment.RefreshChangeDataMessage;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -44,6 +45,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public static final String TAG_MY_TAB = "my";
     public static final String INTENT_KEY_BUY_LIST = "intent_key_buy_list";
     public static final String INTENT_KEY_FOOD_OBJECT = "intent_key_food_object";
+
+    public static final int INTENT_REQUEST_CODE_SHOP_CART = 200;
+    private static final int INTENT_REQUEST_CODE_DISHES_DETIALS = 201;
 
     private TextView mLikingLeftTitleTextView;
     private TextView mLikingMiddleTitleTextTextView;
@@ -203,7 +207,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
                     intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    startActivityForResult(intent, INTENT_REQUEST_CODE_SHOP_CART);
                 } else {
                     PopupUtils.showToast("您还没有购买任何营养餐");
                 }
@@ -276,9 +280,28 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (riceNum >= foodData.getRestStock()) {
             PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
         }
-        if (!buyList.contains(foodData)) {
+
+        if (buyList != null && buyList.size() > 0) {
+            boolean isBuyListExits = false;
+            for (int i = 0; i < buyList.size(); i++) {
+                if (buyList.get(i).getGoodsId().equals(foodData.getGoodsId())) {
+                    buyList.get(i).setSelectedOrderNum(foodData.getSelectedOrderNum());
+                    isBuyListExits = true;
+                    break;
+                }
+            }
+            if (!isBuyListExits) {
+                buyList.add(foodData);
+            }
+
+        } else {
             buyList.add(foodData);
         }
+
+
+//        if (!buyList.contains(foodData)) {
+//            buyList.add(foodData);
+//        }
         if (calcDishSize() > 0) {
             mShoppingCartNumTextView.setVisibility(View.VISIBLE);
         }
@@ -287,9 +310,20 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onShoppingDishRemove(Food foodData) {
-        if (foodData.getSelectedOrderNum() == 0) {//当
-            buyList.remove(foodData);
+        if (buyList != null && buyList.size() > 0) {
+            for (int i = 0; i < buyList.size(); i++) {
+                if (buyList.get(i).getGoodsId().equals(foodData.getGoodsId())) {
+                    buyList.get(i).setSelectedOrderNum(foodData.getSelectedOrderNum());
+                    if (buyList.get(i).getSelectedOrderNum() == 0) {
+                        buyList.remove(buyList.get(i));
+                    }
+                }
+            }
         }
+
+//        if (foodData.getSelectedOrderNum() == 0) {//当
+//            buyList.remove(foodData);
+//        }
         if (calcDishSize() == 0) {
             mShoppingCartNumTextView.setVisibility(View.GONE);
         }
@@ -308,13 +342,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
 
-
     @Override
     protected boolean isEventTarget() {
         return true;
     }
 
-    public void onEvent(UserCityIdMessage userCityIdMessage){
+    public void onEvent(UserCityIdMessage userCityIdMessage) {
         mUserCityId = userCityIdMessage.getUserCityId();
     }
 
@@ -324,9 +357,37 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         Intent intent = new Intent(this, DishesDetailsActivity.class);
         intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(INTENT_KEY_FOOD_OBJECT,foodData);
+        bundle.putSerializable(INTENT_KEY_FOOD_OBJECT, foodData);
         bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
         intent.putExtras(bundle);
-        startActivity(intent);
+        startActivityForResult(intent, INTENT_REQUEST_CODE_DISHES_DETIALS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == INTENT_REQUEST_CODE_SHOP_CART) {//从购物车回来时，带回购物车数据，从新计算购物车数量
+                Bundle bundle = data.getExtras();
+                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
+                postEvent(new RefreshChangeDataMessage(buyList));
+                if (calcDishSize() > 0) {
+                    mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+                    mShoppingCartNumTextView.setText(calcDishSize() + "");
+                } else {
+                    mShoppingCartNumTextView.setVisibility(View.GONE);
+                }
+            } else if (requestCode == INTENT_REQUEST_CODE_DISHES_DETIALS) {//从单个商品详情回来，带回购买数据集合，从新计算购物车数量
+                Bundle bundle = data.getExtras();
+                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
+                postEvent(new RefreshChangeDataMessage(buyList));
+                if (calcDishSize() > 0) {
+                    mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+                    mShoppingCartNumTextView.setText(calcDishSize() + "");
+                } else {
+                    mShoppingCartNumTextView.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 }
