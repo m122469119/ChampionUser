@@ -67,6 +67,8 @@
         <activity android:name=".activity.DishesConfirmActivity"/>
         <!--切换门店-->
         <activity android:name=".activity.ChangeShopActivity"/>
+        <!--我的订单-->
+        <activity android:name=".activity.MyOrderActivity"/>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
