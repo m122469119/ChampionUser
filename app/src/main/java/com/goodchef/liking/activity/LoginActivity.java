@@ -50,6 +50,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         mSendCodeBtn.setText("发送");
         showHomeUpIcon(R.drawable.icon_screen_cancel);
         setViewOnClickListener();
+        mLoginPhoneEditText.setText("15618576553");
     }
 
     private void initView() {

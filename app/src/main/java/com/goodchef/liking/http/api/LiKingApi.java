@@ -458,4 +458,19 @@ public class LiKingApi {
         }
         VolleyHttpRequestClient.doPost(UrlList.CARD_CONFIRM, ConfirmBuyCardResult.class, params, callback);
     }
+
+    /***
+     * 提交买卡订单
+     *
+     * @param token      token
+     * @param cardId     cardId
+     * @param type       类型 1购卡页 2续卡 3升级卡
+     * @param couponCode 优惠券code
+     * @param payType    支付方式
+     * @param callback   RequestCallback
+     */
+    public static void submitBuyCardData(String token, int cardId, int type, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.CARD_SUBMIT_CARD, SubmitPayResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("card_id", cardId).append("type", type).append("coupon_code", couponCode).append("pay_type", payType), callback);
+    }
 }
