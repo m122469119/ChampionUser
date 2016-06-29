@@ -101,6 +101,9 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
             mCancelOrderBtn.setOnClickListener(mClickListener);
             mConfirmGetDishesBtn.setOnClickListener(mClickListener);
             mOrderNumberTextView.setTag(object);
+            mGoPayBtn.setTag(object);
+            mCancelOrderBtn.setTag(object);
+            mConfirmGetDishesBtn.setTag(object);
         }
 
         private void setOrderState(int state) {

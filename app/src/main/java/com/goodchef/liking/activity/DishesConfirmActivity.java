@@ -262,6 +262,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
             PopupUtils.showToast("支付成功");
+            jumpIntentDishesOrderList();
         } else {
             handlePay(payResultData);
         }
@@ -385,7 +386,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onSuccess() {
-
+            jumpIntentDishesOrderList();
         }
 
         @Override
@@ -422,7 +423,12 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     }
 
     public void onEvent(DishesWechatPayMessage wechatMessage) {
+        jumpIntentDishesOrderList();
+    }
 
+    private void jumpIntentDishesOrderList(){
+        Intent intent = new Intent(this,MyOrderActivity.class);
+        startActivity(intent);
     }
 
 }
