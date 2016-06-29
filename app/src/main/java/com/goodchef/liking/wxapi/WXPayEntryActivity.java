@@ -10,6 +10,8 @@ import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CustomAlertDialog;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
+import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
+import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -27,6 +29,8 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler {
     public static final int PAY_TYPE_ORDER = 1111;
     public static final int PAY_TYPE_DISHES_ORDER = 2222;
+    public static final int PAY_TYPE_MY_DISHES_LIST= 3333;
+    public static final int PAY_TYPE_MY_DISHES_DETAILS= 4444;
 
     private IWXAPI api;
     public static int payType;
@@ -88,6 +92,16 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     finish();
                 }else if (payType == PAY_TYPE_DISHES_ORDER){
                     postEvent(new DishesWechatPayMessage());
+                    dialog.dismiss();
+                    orderId = "";
+                    finish();
+                }else if (payType == PAY_TYPE_MY_DISHES_LIST){
+                    postEvent(new MyDishesListWechatMessage());
+                    dialog.dismiss();
+                    orderId = "";
+                    finish();
+                }else if (payType == PAY_TYPE_MY_DISHES_DETAILS){
+                    postEvent(new MyDishesDetailsWechatMessage());
                     dialog.dismiss();
                     orderId = "";
                     finish();

@@ -399,4 +399,42 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.FOOD_ORDER_DETAILS, MyDishesOrderDetailsResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
+
+
+    /**
+     * 营养餐立即支付
+     *
+     * @param orderId  订单id
+     * @param payType  支付方式
+     * @param callback RequestCallback
+     */
+    public static void myDishesOrderPay(String orderId, String payType, RequestCallback<SubmitPayResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_ORDER_PAY, SubmitPayResult.class, getCommonRequestParams().append("order_id", orderId)
+                .append("pay_type", payType), callback);
+    }
+
+
+    /***
+     * 取消营养餐
+     *
+     * @param token    token
+     * @param orderId  订单id
+     * @param callback RequestCallback
+     */
+    public static void cancelMyDishesOrder(String token, String orderId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_CANCEL_ORDER, BaseResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("order_id", orderId), callback);
+    }
+
+    /**
+     * 完成订单
+     *
+     * @param token    token
+     * @param orderId  订单id
+     * @param callback RequestCallback
+     */
+    public static void completeMyDishesOrder(String token, String orderId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_COMPLETE_ORDER, BaseResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("order_id", orderId), callback);
+    }
 }

@@ -8,16 +8,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.thirdparty.pay.alipay.AliPay;
+import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
+import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
+import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.MyDishesDetailsMenuAdapter;
+import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.fragment.MyDishesOrderFragment;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyDishesOrderDetailsResult;
+import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.mvp.presenter.MyDishesOrderPresenter;
+import com.goodchef.liking.mvp.view.MyDishesOrderView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.widgets.dialog.SelectPayTypeCustomDialog;
+import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
 
@@ -26,7 +38,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/28 下午5:51
  */
-public class MyDishesOrderDetailsActivity extends AppBarActivity {
+public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDishesOrderView, View.OnClickListener {
     private static final int ORDER_STATE_SUBMIT = 0;//0:已提交
     private static final int ORDER_STATE_PAYED = 1;//1:已支付
     private static final int ORDER_STATE_CANCEL = 2;// 2:已取消
@@ -45,7 +57,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity {
     private TextView mMealShop;//门店名称
     private TextView mMealShopAddress;//门店地址
 
-   private TextView mPaySurplusTimeTextView;//剩余支付时间
+    private TextView mPaySurplusTimeTextView;//剩余支付时间
     private TextView mGoPayBtn;//去支付
     private TextView mCancelOrderBtn;//取消
     private TextView mConfirmGetDishesBtn;//确认点餐
@@ -53,6 +65,10 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity {
 
     private String orderId;
     private MyDishesDetailsMenuAdapter mMyDishesDetailsMenuAdapter;
+    private MyDishesOrderPresenter mMyDishesOrderPresenter;
+
+    private AliPay mAliPay;//支付宝
+    private WeixinPay mWeixinPay;//微信
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +77,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity {
         setTitle(getString(R.string.title_dishes_details));
         initView();
         initData();
+        initPayModule();
     }
 
     private void initView() {
@@ -82,12 +99,23 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity {
         mCancelOrderBtn = (TextView) findViewById(R.id.details_cancel_order);
         mConfirmGetDishesBtn = (TextView) findViewById(R.id.details_confirm_get_dishes_btn);
         mPayLayout = (RelativeLayout) findViewById(R.id.layout_details_order_pay);
+
+        mGoPayBtn.setOnClickListener(this);
+        mCancelOrderBtn.setOnClickListener(this);
+        mConfirmGetDishesBtn.setOnClickListener(this);
     }
 
     private void initData() {
         orderId = getIntent().getStringExtra(MyDishesOrderFragment.INTENT_KEY_ORDER_ID);
         sendDetailsRequest();
+        mMyDishesOrderPresenter = new MyDishesOrderPresenter(this, this);
     }
+
+    private void initPayModule() {
+        mAliPay = new AliPay(this, mOnAliPayListener);
+        mWeixinPay = new WeixinPay(this, mWeixinPayListener);
+    }
+
 
     private void sendDetailsRequest() {
         LiKingApi.getDishesDetails(Preference.getToken(), orderId, new RequestUiLoadingCallback<MyDishesOrderDetailsResult>(this, R.string.loading_data) {
@@ -171,5 +199,134 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity {
         mMyDishesDetailsMenuAdapter.setData(list);
         mMenuRecyclerView.setAdapter(mMyDishesDetailsMenuAdapter);
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mGoPayBtn) {
+            showPayDialog(orderId);
+        } else if (v == mCancelOrderBtn) {
+            sendCancelOrderRequest(orderId);
+        } else if (v == mConfirmGetDishesBtn) {
+            sendCompleteOrderRequest(orderId);
+        }
+    }
+
+    private void sendCompleteOrderRequest(String orderId) {
+        mMyDishesOrderPresenter.completeDishesOrder(orderId);
+    }
+
+    private void sendCancelOrderRequest(String orderId) {
+        mMyDishesOrderPresenter.cancelMyDishesOrder(orderId);
+    }
+
+
+    private void showPayDialog(final String orderId) {
+        final SelectPayTypeCustomDialog customDialog = new SelectPayTypeCustomDialog(this, "");
+        customDialog.setViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.alipay_pay_layout) {//支付宝支付
+                    sendGoPayRequest(orderId, "1");
+                    customDialog.dismiss();
+                } else if (v.getId() == R.id.wechat_pay_layout) {//微信支付
+                    sendGoPayRequest(orderId, "0");
+                    customDialog.dismiss();
+                }
+            }
+        });
+    }
+
+    private void sendGoPayRequest(String payType, String orderId) {
+        mMyDishesOrderPresenter.myDishesOrderPay(payType, orderId);
+    }
+
+    @Override
+    public void updateMyDishesPayView(PayResultData payResultData) {
+        int payType = payResultData.getPayType();
+        if (payType == 3) {//3 免金额支付
+            PopupUtils.showToast("支付成功");
+            sendDetailsRequest();
+        } else {
+            handlePay(payResultData);
+        }
+    }
+
+    @Override
+    public void updateCancelDishesOrder() {
+        sendDetailsRequest();
+    }
+
+    @Override
+    public void updateCompleteDishesOrder() {
+        sendDetailsRequest();
+    }
+
+    private void handlePay(PayResultData data) {
+        int payType = data.getPayType();
+        switch (payType) {
+            case PayType.PAY_TYPE_ALI://支付宝支付
+                mAliPay.setPayOrderInfo(data.getAliPayToken());
+                mAliPay.doPay();
+                break;
+            case PayType.PAY_TYPE_WECHAT://微信支付
+                WXPayEntryActivity.payType = WXPayEntryActivity.PAY_TYPE_MY_DISHES_DETAILS;
+                WXPayEntryActivity.orderId = data.getOrderId();
+                mWeixinPay.setPrePayId(data.getWxPrepayId());
+                mWeixinPay.doPay();
+                break;
+        }
+    }
+
+
+    /**
+     * 支付宝支付结果处理
+     */
+    private final OnAliPayListener mOnAliPayListener = new OnAliPayListener() {
+        @Override
+        public void onStart() {
+            LogUtils.e(TAG, "alipay start");
+        }
+
+        @Override
+        public void onSuccess() {
+            sendDetailsRequest();
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+
+        }
+
+        @Override
+        public void confirm() {
+        }
+    };
+
+    /**
+     * 微信支付结果处理
+     */
+    private WeixinPayListener mWeixinPayListener = new WeixinPayListener() {
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onSuccess() {
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+        }
+    };
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(MyDishesDetailsWechatMessage wechatMessage) {
+        sendDetailsRequest();
+    }
+
 
 }
