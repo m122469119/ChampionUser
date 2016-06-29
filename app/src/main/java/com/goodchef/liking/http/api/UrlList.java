@@ -77,7 +77,7 @@ public class UrlList {
     public static final String FOOD_COMPLETE_ORDER = getVersionHostUrl()+"/food/complete-order";
     /**购卡确认*/
     public static final String CARD_CONFIRM = getVersionHostUrl()+"/card/confirm";
-
-
+    /**买卡提交确认*/
+    public static final String CARD_SUBMIT_CARD = getVersionHostUrl()+"/order/submit-card";
 
 }

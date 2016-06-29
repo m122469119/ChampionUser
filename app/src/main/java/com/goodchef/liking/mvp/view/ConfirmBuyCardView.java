@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
+import com.goodchef.liking.http.result.data.PayResultData;
 
 /**
  * 说明:
@@ -10,4 +11,5 @@ import com.goodchef.liking.http.result.ConfirmBuyCardResult;
  */
 public interface ConfirmBuyCardView extends BaseView{
     void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData);
+    void updateSubmitPayView(PayResultData payResultData);
 }

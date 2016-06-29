@@ -10,19 +10,29 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.thirdparty.pay.alipay.AliPay;
+import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
+import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
+import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
+import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.ConfirmCard;
+import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
+import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
 
@@ -51,11 +61,16 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private String mCardName;
     private int mCategoryId;
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
-    private int payType;//支付方式
+    private String payType = "-1";//支付方式
     private ConfirmBuyCardPresenter mConfirmBuyCardPresenter;
 
     private CardRecyclerAdapter mCardRecyclerAdapter;
     private List<ConfirmCard> confirmCardList;
+
+
+    private AliPay mAliPay;//支付宝
+    private WeixinPay mWeixinPay;//微信
+    private int mCardId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +79,12 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         initView();
         setViewOnClickListener();
         initData();
+        initPayModule();
+    }
+
+    private void initPayModule() {
+        mAliPay = new AliPay(this, mOnAliPayListener);
+        mWeixinPay = new WeixinPay(this, mWeixinPayListener);
     }
 
     private void initView() {
@@ -73,7 +94,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCardRecyclerView = (RecyclerView) findViewById(R.id.card_recyclerView);
 
         mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
-        mCoursesMoneyTextView = (TextView) findViewById(R.id.courses_money);
+        mCoursesMoneyTextView = (TextView) findViewById(R.id.select_coupon_title);
 
         mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
         mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
@@ -85,7 +106,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
     private void setViewOnClickListener() {
-
         mAlipayLayout.setOnClickListener(this);
         mWechatLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
@@ -110,18 +130,33 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         if (v == mAlipayLayout) {//选择支付宝
             mAlipayCheckBox.setChecked(true);
             mWechatCheckBox.setChecked(false);
-            payType = 1;
+            payType = "1";
         } else if (v == mWechatLayout) {//选择微信
             mAlipayCheckBox.setChecked(false);
             mWechatCheckBox.setChecked(true);
-            payType = 0;
+            payType = "0";
         } else if (v == mCouponsLayout) {//选优惠券
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
             startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
         } else if (v == mImmediatelyBuyBtn) {
-            PopupUtils.showToast("开发中");
+            if (Preference.isLogin()) {
+                if (payType.equals("-1")) {
+                    PopupUtils.showToast("请选择支付方式");
+                    return;
+                }
+                senSubmitRequest();
+            } else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
+
         }
+    }
+
+
+    private void senSubmitRequest() {
+        mConfirmBuyCardPresenter.submitBuyCardData(mCardId, 1, "", payType);
     }
 
     @Override
@@ -156,11 +191,22 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
         }
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
-        mCardMoneyTextView.setText(confirmBuyCardData.getPrice());
+        mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
 
         confirmCardList = confirmBuyCardData.getCardList();
         setCardView(confirmCardList);
         mCardRecyclerAdapter.setLayoutOnClickListner(mClickListener);
+    }
+
+    @Override
+    public void updateSubmitPayView(PayResultData payResultData) {
+        int payType = payResultData.getPayType();
+        if (payType == 3) {//3 免金额支付
+            PopupUtils.showToast("支付成功");
+            jumpOrderActivity();
+        } else {
+            handlePay(payResultData);
+        }
     }
 
     /**
@@ -181,6 +227,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                         }
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
+                    mCardMoneyTextView.setText("¥ " + object.getPrice());
+                    mCardId = object.getCardId();
                 }
             }
         }
@@ -195,6 +243,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             for (ConfirmCard data : confirmCardList) {
                 if (data.getType() == 2) {
                     data.setSelect(true);
+                    mCardMoneyTextView.setText("¥ " + data.getPrice());
+                    mCardId = data.getCardId();
                 } else {
                     data.setSelect(false);
                 }
@@ -204,6 +254,79 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mCardRecyclerAdapter.setData(confirmCardList);
             mCardRecyclerView.setAdapter(mCardRecyclerAdapter);
         }
+    }
+
+
+    private void handlePay(PayResultData data) {
+        int payType = data.getPayType();
+        switch (payType) {
+            case PayType.PAY_TYPE_ALI://支付宝支付
+                mAliPay.setPayOrderInfo(data.getAliPayToken());
+                mAliPay.doPay();
+                break;
+            case PayType.PAY_TYPE_WECHAT://微信支付
+                WXPayEntryActivity.payType = WXPayEntryActivity.PAY_TYPE_BUY_CARD;
+                WXPayEntryActivity.orderId = data.getOrderId();
+                mWeixinPay.setPrePayId(data.getWxPrepayId());
+                mWeixinPay.doPay();
+                break;
+        }
+    }
+
+
+    /**
+     * 支付宝支付结果处理
+     */
+    private final OnAliPayListener mOnAliPayListener = new OnAliPayListener() {
+        @Override
+        public void onStart() {
+            LogUtils.e(TAG, "alipay start");
+        }
+
+        @Override
+        public void onSuccess() {
+            jumpOrderActivity();
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+
+        }
+
+        @Override
+        public void confirm() {
+        }
+    };
+
+    /**
+     * 微信支付结果处理
+     */
+    private WeixinPayListener mWeixinPayListener = new WeixinPayListener() {
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onSuccess() {
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+        }
+    };
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(BuyCardWeChatMessage weChatMessage) {
+        jumpOrderActivity();
+    }
+
+    private void jumpOrderActivity() {
+        Intent intent = new Intent(this, MyOrderActivity.class);
+        startActivity(intent);
     }
 
 

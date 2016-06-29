@@ -9,6 +9,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.storage.Preference;
@@ -30,6 +31,25 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateConfirmBuyCardView(result.getData());
+                } else {
+                    PopupUtils.showToast(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
+    }
+
+    public void submitBuyCardData(int cardId, int type, String couponCode, String payType) {
+        LiKingApi.submitBuyCardData(Preference.getToken(), cardId, type, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
+            @Override
+            public void onSuccess(SubmitPayResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    mView.updateSubmitPayView(result.getPayData());
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }
