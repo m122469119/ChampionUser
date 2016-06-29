@@ -75,6 +75,8 @@ public class UrlList {
     public static final String FOOD_CANCEL_ORDER = getVersionHostUrl()+"/food/cancel-order";
     /**完成订单*/
     public static final String FOOD_COMPLETE_ORDER = getVersionHostUrl()+"/food/complete-order";
+    /**购卡确认*/
+    public static final String CARD_CONFIRM = getVersionHostUrl()+"/card/confirm";
 
 
 

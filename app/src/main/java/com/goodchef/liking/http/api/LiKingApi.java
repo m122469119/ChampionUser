@@ -12,6 +12,7 @@ import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.DishesOrderListResult;
@@ -233,8 +234,12 @@ public class LiKingApi {
      *
      * @param callback RequestCallback
      */
-    public static void getCardList(RequestCallback<CardResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CardResult.class, getCommonRequestParams(), callback);
+    public static void getCardList(String token, int type, RequestCallback<CardResult> callback) {
+        RequestParams params = getCommonRequestParams().append("type", type);
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CardResult.class, params, callback);
     }
 
     /**
@@ -436,5 +441,21 @@ public class LiKingApi {
     public static void completeMyDishesOrder(String token, String orderId, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.FOOD_COMPLETE_ORDER, BaseResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
+    }
+
+    /***
+     * 确认购卡
+     *
+     * @param token      token
+     * @param type       类型 1购卡页 2续卡 3升级卡
+     * @param categoryId 类别ID
+     * @param callback   RequestCallback
+     */
+    public static void confirmCard(String token, int type, int categoryId, RequestCallback<ConfirmBuyCardResult> callback) {
+        RequestParams params = getCommonRequestParams().append("type", type).append("category_id", categoryId);
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.CARD_CONFIRM, ConfirmBuyCardResult.class, params, callback);
     }
 }
