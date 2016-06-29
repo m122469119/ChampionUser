@@ -1,12 +1,15 @@
 package com.goodchef.liking.fragment;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
@@ -18,6 +21,10 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyDishesOrderDetailsActivity;
 import com.goodchef.liking.adapter.MyDishesOrderAdapter;
+import com.goodchef.liking.eventmessages.CancelMyDishesOrderMessage;
+import com.goodchef.liking.eventmessages.CompleteMyDishesOrderMessage;
+import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
+import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.DishesOrderListResult;
@@ -29,6 +36,9 @@ import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.widgets.dialog.SelectPayTypeCustomDialog;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 说明:
@@ -42,6 +52,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
+    private boolean mIsUpdateListTimeStarting = false;
 
     @Override
     protected void requestData(int page) {
@@ -95,6 +106,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 return false;
             }
         });
+        mMyDishesOrderAdapter.setClickListener(mClickListener);
     }
 
     /***
@@ -114,9 +126,8 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
             public void onSuccess(DishesOrderListResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    mMyDishesOrderAdapter.setData(result.getData().getOrderList());
-                    mMyDishesOrderAdapter.notifyDataSetChanged();
-                    mMyDishesOrderAdapter.setClickListener(mClickListener);
+                    List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList = result.getData().getOrderList();
+                    setOrderListData(orderList);
                 }
             }
 
@@ -126,6 +137,78 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
             }
         });
     }
+
+    private void setOrderListData(List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList){
+        if (orderList != null && orderList.size() > 0) {
+            for (int i = 0; i < orderList.size(); i++) {
+                long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
+                Log.e("serviceTime=", serviceTime + "");
+                String orderTime = orderList.get(i).getOrderTime();//下单时间String类型,
+                Log.e("orderTime=", orderTime + "");
+                Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
+                Log.e("oderDate=", oderDate + "");
+                long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
+                Log.e("orderDateLong=", orderDateLong + "");
+                //  long limitTime = (long) orderList.get(i).getLimitSecond();//限时时间
+                long limitTime = (long) 300;//暂时定死
+                long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
+                Log.e("orderOverdueTime=", orderOverdueTime + "");
+                long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
+                Log.e("orderSurplusTime=", orderSurplusTime + "");
+                long orderSurplusData = Math.abs(orderSurplusTime);
+                if (orderSurplusData > 0) {
+                    orderList.get(i).setOrderSurplusTime(orderSurplusData);
+                } else if (orderSurplusData <= 0) {
+                    orderList.get(i).setOrderSurplusTime(0);
+                }
+            }
+        }
+        updateListView(orderList);
+        if (!mIsUpdateListTimeStarting) {
+            mIsUpdateListTimeStarting = true;
+            startUpdateListTime();
+        }
+    }
+
+
+    Handler handler = new Handler();
+    private void startUpdateListTime() {
+        if (mUpdateListTimeRunnable != null) {
+            handler.postDelayed(mUpdateListTimeRunnable, 1000);
+        }
+    }
+
+    private Runnable mUpdateListTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            for (int i = 0; i < mMyDishesOrderAdapter.getDataList().size(); i++) {
+                DishesOrderListResult.DishesOrderData.DishesOrder order = mMyDishesOrderAdapter.getDataList().get(i);
+                //计算每一个item的倒计时时间
+                long time = Math.abs(order.getOrderSurplusTime());
+                if (time > 0) {//判断是否还有条目能够倒计时，如果能够倒计时的话，延迟一秒，让它接着倒计时
+                    order.setOrderSurplusTime(time - 1);
+                } else {
+                    order.setOrderSurplusTime(0);
+                    order.setOrderStatus(2);
+                }
+
+            }
+            mMyDishesOrderAdapter.notifyDataSetChanged();
+            startUpdateListTime();
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        if (handler != null) {
+            handler.removeCallbacks(mUpdateListTimeRunnable);
+            mUpdateListTimeRunnable = null;
+            mIsUpdateListTimeStarting = false;
+        }
+        super.onDestroy();
+    }
+
+
 
 
     /***
@@ -283,4 +366,21 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
     public void onEvent(MyDishesListWechatMessage wechatMessage) {
         loadHomePage();
     }
+
+    public void onEvent(MyDishesDetailsWechatMessage wechatMessage) {
+       loadHomePage();
+    }
+
+    public void onEvent(MyDishesOrderAlipayMessage orderAlipyMessage) {
+        loadHomePage();
+    }
+
+    public void onEvent(CancelMyDishesOrderMessage cancelMyDishesOrderMessage) {
+        loadHomePage();
+    }
+
+    public void onEvent(CompleteMyDishesOrderMessage completeMyDishesOrderMessage) {
+        loadHomePage();
+    }
+
 }

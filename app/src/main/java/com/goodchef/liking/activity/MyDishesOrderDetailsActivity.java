@@ -1,6 +1,7 @@
 package com.goodchef.liking.activity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -17,6 +19,9 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
 import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.MyDishesDetailsMenuAdapter;
+import com.goodchef.liking.eventmessages.CancelMyDishesOrderMessage;
+import com.goodchef.liking.eventmessages.CompleteMyDishesOrderMessage;
+import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.fragment.MyDishesOrderFragment;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -31,6 +36,7 @@ import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.widgets.dialog.SelectPayTypeCustomDialog;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +49,10 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     private static final int ORDER_STATE_PAYED = 1;//1:已支付
     private static final int ORDER_STATE_CANCEL = 2;// 2:已取消
     private static final int ORDER_STATE_GET_DEISHES = 3; //3:已取餐
+    private static final int PAY_TYPE_WECHAT = 0;
+    private static final int PAY_TYPE_ALIPY = 1;
+    private static final int PAY_TYPE_FREE = 3;
+
 
     private TextView mSerialNumberTextView;//流水号
     private TextView mOrderNumberTextView;//订单号
@@ -56,6 +66,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     private TextView mUserPhone;//手机
     private TextView mMealShop;//门店名称
     private TextView mMealShopAddress;//门店地址
+    private TextView mOrderTimeTextView;//下单时间
 
     private TextView mPaySurplusTimeTextView;//剩余支付时间
     private TextView mGoPayBtn;//去支付
@@ -69,6 +80,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
+    private OrderSurplusCountDownTimer mCountDownTimer;//倒计时
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +105,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         mUserPhone = (TextView) findViewById(R.id.eating_user_phone);
         mMealShop = (TextView) findViewById(R.id.details_get_meals_shop);
         mMealShopAddress = (TextView) findViewById(R.id.details_get_meals_address);
+        mOrderTimeTextView = (TextView) findViewById(R.id.details_order_time);
 
         mPaySurplusTimeTextView = (TextView) findViewById(R.id.details_pay_surplus_time);
         mGoPayBtn = (TextView) findViewById(R.id.details_go_pay);
@@ -139,13 +152,12 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     private void setDetailsData(MyDishesOrderDetailsResult.OrderDetailsData detailsData) {
         mSerialNumberTextView.setText("流水号：" + detailsData.getSerialNumber());
         mOrderNumberTextView.setText("订单号：" + detailsData.getOrderId());
-        int state = detailsData.getOrderStatus();
-        setOrderState(state);
+        //设置购买的食品清单
         List<MyDishesOrderDetailsResult.OrderDetailsData.FoodListData> menuList = detailsData.getFoodList();
         if (menuList != null && menuList.size() > 0) {
             setDishesMenuList(menuList);
         }
-
+        //设置优惠券
         String couponAmount = detailsData.getCouponAmount();
         if (Double.parseDouble(couponAmount) > 0) {
             mCouponLayout.setVisibility(View.VISIBLE);
@@ -153,15 +165,15 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         } else {
             mCouponLayout.setVisibility(View.GONE);
         }
-
+        //设置总价
         mActualDelivery.setText("¥ " + detailsData.getActualAmount());
-
+        //设置支付方式
         int payType = detailsData.getPayType();
-        if (payType == 0) {
+        if (payType == PAY_TYPE_WECHAT) {
             mPayType.setText(R.string.pay_wechat_type);
-        } else if (payType == 1) {
+        } else if (payType == PAY_TYPE_ALIPY) {
             mPayType.setText(R.string.pay_alipay_type);
-        } else if (payType == 3) {
+        } else if (payType == PAY_TYPE_FREE) {
             mPayType.setText(R.string.pay_type_free_of);
         }
 
@@ -169,22 +181,45 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         mUserPhone.setText(detailsData.getPhone());
         mMealShop.setText(detailsData.getGymName());
         mMealShopAddress.setText(detailsData.getGymAddress());
+        mOrderTimeTextView.setText(detailsData.getOrderTime());
+
+        //处理倒计时的
+        long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
+        String orderTime = detailsData.getOrderTime();//下单时间String类型,
+        Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
+        long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
+//        long limitTime = (long) detailsData.getLimitSecond();//限时时间
+        long limitTime = (long) 300;//限时时间
+        long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
+        long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
+        long orderSurplusData = Math.abs(orderSurplusTime);
+
+        int state = detailsData.getOrderStatus();
+        setOrderState(state, (int) orderSurplusData);
+
     }
 
-    private void setOrderState(int state) {
+    private void setOrderState(int state, int orderSurplusTime) {
         if (state == ORDER_STATE_SUBMIT) {//已提交
             mConfirmGetDishesBtn.setVisibility(View.GONE);
             mPayLayout.setVisibility(View.VISIBLE);
             mOrderStateTextView.setText(R.string.dishes_order_state_submit);
+            if (orderSurplusTime > 0) {
+                mCountDownTimer = new OrderSurplusCountDownTimer(orderSurplusTime * 1000, 1000);
+                mCountDownTimer.start();
+            }
         } else if (state == ORDER_STATE_PAYED) {//已支付
+            cancelCountDownTime();
             mConfirmGetDishesBtn.setVisibility(View.VISIBLE);
             mPayLayout.setVisibility(View.GONE);
             mOrderStateTextView.setText(R.string.dishes_order_state_payed);
         } else if (state == ORDER_STATE_CANCEL) {//已取消
+            cancelCountDownTime();
             mConfirmGetDishesBtn.setVisibility(View.GONE);
             mPayLayout.setVisibility(View.GONE);
             mOrderStateTextView.setText(R.string.dishes_order_state_cancel);
         } else if (state == ORDER_STATE_GET_DEISHES) {//已完成
+            cancelCountDownTime();
             mConfirmGetDishesBtn.setVisibility(View.GONE);
             mPayLayout.setVisibility(View.GONE);
             mOrderStateTextView.setText(R.string.dishes_order_state_complete);
@@ -254,11 +289,13 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     @Override
     public void updateCancelDishesOrder() {
         sendDetailsRequest();
+        postEvent(new CancelMyDishesOrderMessage());
     }
 
     @Override
     public void updateCompleteDishesOrder() {
         sendDetailsRequest();
+        postEvent(new CompleteMyDishesOrderMessage());
     }
 
     private void handlePay(PayResultData data) {
@@ -290,6 +327,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         @Override
         public void onSuccess() {
             sendDetailsRequest();
+            postEvent(new MyDishesOrderAlipayMessage());
         }
 
         @Override
@@ -328,5 +366,35 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         sendDetailsRequest();
     }
 
+    class OrderSurplusCountDownTimer extends CountDownTimer {
+
+        public OrderSurplusCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            String str = DateUtils.formatTime(millisUntilFinished);
+            mPaySurplusTimeTextView.setText("剩余支付时间: " + str);
+        }
+
+        @Override
+        public void onFinish() {
+            setOrderState(2,0);
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelCountDownTime();
+    }
+
+    private void cancelCountDownTime() {
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+        }
+    }
 
 }
