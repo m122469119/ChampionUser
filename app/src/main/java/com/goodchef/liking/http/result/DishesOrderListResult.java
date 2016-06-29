@@ -65,6 +65,10 @@ public class DishesOrderListResult extends BaseResult {
             private String orderAmount;
             @SerializedName("left_second")
             private String leftSecond;
+            @SerializedName("order_time")
+            private String orderTime;
+
+            private long orderSurplusTime;//订单过期时间
 
             public String getOrderId() {
                 return orderId;
@@ -136,6 +140,22 @@ public class DishesOrderListResult extends BaseResult {
 
             public void setLeftSecond(String leftSecond) {
                 this.leftSecond = leftSecond;
+            }
+
+            public String getOrderTime() {
+                return orderTime;
+            }
+
+            public void setOrderTime(String orderTime) {
+                this.orderTime = orderTime;
+            }
+
+            public long getOrderSurplusTime() {
+                return orderSurplusTime;
+            }
+
+            public void setOrderSurplusTime(long orderSurplusTime) {
+                this.orderSurplusTime = orderSurplusTime;
             }
         }
     }

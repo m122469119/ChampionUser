@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.DateUtils;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
@@ -91,12 +93,12 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
             mGetMealsTimeTextView.setText(object.getFetchTime());
             mGetMealsAddressTextView.setText(object.getGymAddress());
             int state = object.getOrderStatus();
-            setOrderState(state);
+            int orderSurplusTime = (int) object.getOrderSurplusTime();//获取剩余时间
+            setOrderState(state, orderSurplusTime);
             String imageUrl = object.getGymImg();
             if (!StringUtils.isEmpty(imageUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mDishesHImageView, imageUrl);
             }
-            mPaySurplusTimeTextView.setText("剩余支付时间：" + object.getLeftSecond());
             mGoPayBtn.setOnClickListener(mClickListener);
             mCancelOrderBtn.setOnClickListener(mClickListener);
             mConfirmGetDishesBtn.setOnClickListener(mClickListener);
@@ -104,13 +106,24 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
             mGoPayBtn.setTag(object);
             mCancelOrderBtn.setTag(object);
             mConfirmGetDishesBtn.setTag(object);
+
+
         }
 
-        private void setOrderState(int state) {
+        private void setOrderState(int state, int orderSurplusTime) {
             if (state == ORDER_STATE_SUBMIT) {//已提交
                 mConfirmGetDishesBtn.setVisibility(View.GONE);
                 mPayLayout.setVisibility(View.VISIBLE);
                 mOrderStateTextView.setText(R.string.dishes_order_state_submit);
+                if (orderSurplusTime > 0) {//倒计时未过
+                    String str = DateUtils.formatTime((long) orderSurplusTime * 1000);
+                    LogUtils.i("", "orderSurplusTime: " + orderSurplusTime + " str: " + str);
+                    mPaySurplusTimeTextView.setText("剩余支付时间：" + str);
+                } else if (orderSurplusTime == 0) {//倒计时时间已过
+                    mConfirmGetDishesBtn.setVisibility(View.GONE);
+                    mPayLayout.setVisibility(View.GONE);
+                    mOrderStateTextView.setText(R.string.dishes_order_state_cancel);
+                }
             } else if (state == ORDER_STATE_PAYED) {//已支付
                 mConfirmGetDishesBtn.setVisibility(View.VISIBLE);
                 mPayLayout.setVisibility(View.GONE);
@@ -125,5 +138,6 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
                 mOrderStateTextView.setText(R.string.dishes_order_state_complete);
             }
         }
+
     }
 }

@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/go_pay"
+                android:layout_toLeftOf="@+id/details_go_pay"
                 android:background="@drawable/shape_green_line_background"
                 android:gravity="center"
                 android:minWidth="60dp"
@@ -313,6 +313,36 @@
 
                     <TextView
                         android:id="@+id/details_get_meals_shop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:text="下单时间"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/details_order_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
