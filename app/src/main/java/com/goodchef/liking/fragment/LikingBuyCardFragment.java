@@ -30,10 +30,12 @@ import java.util.List;
 public class LikingBuyCardFragment extends BaseFragment implements CardListView {
 
     public static final String KEY_CARD_CATEGORY = "key_card_category";
+    public static final String KEY_CATEGORY_ID = "key_category_id";
     private PullToRefreshRecyclerView mRecyclerView;
     private BuyCardAdapter mBuyCardAdapter;
     private CardListPresenter mCardListPresenter;
     private View mHeadView;
+    private static final int TYPE_BUY = 1;
 
     @Nullable
     @Override
@@ -58,7 +60,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
     private void initData() {
         mCardListPresenter = new CardListPresenter(getActivity(), this);
-        mCardListPresenter.getCardList();
+        mCardListPresenter.getCardList(TYPE_BUY);
     }
 
     @Override
@@ -73,10 +75,11 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    CardResult.CardData.Card Card = mBuyCardAdapter.getDataList().get(position);
-                    if (Card != null) {
+                    CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
+                    if (card != null) {
                         Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
-                        intent.putExtra(KEY_CARD_CATEGORY, Card.getCategoryName());
+                        intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
+                        intent.putExtra(KEY_CATEGORY_ID,card.getCategoryId());
                         startActivity(intent);
                     }
                 }

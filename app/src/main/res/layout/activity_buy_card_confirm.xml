@@ -40,9 +40,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:text="@string/period_of_validity"
                     android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="@dimen/textsize_small"
-                    android:text="@string/period_of_validity"/>
+                    android:textSize="@dimen/textsize_small"/>
 
                 <TextView
                     android:id="@+id/period_of_validity"
@@ -51,14 +51,27 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:textSize="@dimen/textsize_small"
                     android:layout_marginRight="10dp"
-                    android:text="即日起 ~ 2016-09-13"/>
+                    android:textSize="@dimen/textsize_small"/>
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_buy_confirm_item"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/line"/>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/card_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line"/>
 
             <RelativeLayout
                 android:id="@+id/layout_coupons_courses"

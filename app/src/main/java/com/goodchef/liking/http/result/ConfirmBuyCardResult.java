@@ -1,0 +1,70 @@
+package com.goodchef.liking.http.result;
+
+import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.data.ConfirmCard;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+/**
+ * 说明:
+ * Author shaozucheng
+ * Time:16/6/29 下午4:28
+ */
+public class ConfirmBuyCardResult extends BaseResult {
+
+    @SerializedName("data")
+    private ConfirmBuyCardData data;
+
+    public ConfirmBuyCardData getData() {
+        return data;
+    }
+
+    public void setData(ConfirmBuyCardData data) {
+        this.data = data;
+    }
+
+    public static class ConfirmBuyCardData extends BaseData {
+        @SerializedName("ads_url")
+        private String adsUrl;
+        @SerializedName("deadline")
+        private String deadLine;
+        @SerializedName("price")
+        private String price;
+        @SerializedName("cards")
+        private List<ConfirmCard> mCardList;
+
+        public String getAdsUrl() {
+            return adsUrl;
+        }
+
+        public void setAdsUrl(String adsUrl) {
+            this.adsUrl = adsUrl;
+        }
+
+        public String getDeadLine() {
+            return deadLine;
+        }
+
+        public void setDeadLine(String deadLine) {
+            this.deadLine = deadLine;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
+        }
+
+        public List<ConfirmCard> getCardList() {
+            return mCardList;
+        }
+
+        public void setCardList(List<ConfirmCard> cardList) {
+            mCardList = cardList;
+        }
+    }
+}
