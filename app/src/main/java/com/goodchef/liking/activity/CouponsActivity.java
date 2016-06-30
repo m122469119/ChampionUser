@@ -16,6 +16,7 @@ import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.CouponsFragment;
+import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.data.Food;
@@ -40,6 +41,8 @@ public class CouponsActivity extends AppBarActivity {
     private String intentType = "";
     private String coursesId;
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
+    private int cardId;
+    private int type;
 
 
     @Override
@@ -62,6 +65,8 @@ public class CouponsActivity extends AppBarActivity {
         intentType = getIntent().getStringExtra(TYPE_MY_COUPONS);
         Bundle bundle = getIntent().getExtras();
         confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
+        cardId = getIntent().getIntExtra(BuyCardConfirmActivity.KEY_CARD_ID,0);
+        type = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE,0);
 
         if (intentType.equals(TYPE_MY_COUPONS)) {
             mExchangeCouponsLayout.setVisibility(View.VISIBLE);
@@ -80,6 +85,8 @@ public class CouponsActivity extends AppBarActivity {
         bundle.putString(KEY_COURSE_ID, coursesId);
         bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
         bundle.putString(TYPE_MY_COUPONS, intentType);
+        bundle.putInt(BuyCardConfirmActivity.KEY_CARD_ID,cardId);
+        bundle.putInt(LikingBuyCardFragment.KEY_BUY_TYPE,type);
         fragmentTransaction.add(R.id.my_coupons_fragment, CouponsFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }

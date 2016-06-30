@@ -16,6 +16,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.ShoppingCartActivity;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -45,6 +46,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private String intentType;
     private String courseId = "";
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
+    private int cardId;
+    private int type;
 
     private CouponsAdapter mCouponsAdapter;
 
@@ -68,6 +71,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
         confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
+        cardId = getArguments().getInt(BuyCardConfirmActivity.KEY_CARD_ID,0);
+        type = getArguments().getInt(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
 
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
             setPullType(PullMode.PULL_BOTH);
@@ -121,9 +126,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private void sendRequest(int page) {
         mCouponPresenter = new CouponPresenter(getActivity(), this);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getCoupons(null, null, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(null, null, null, null, page, CouponsFragment.this);
         } else {
-            mCouponPresenter.getCoupons(courseId, createDishesJson(), page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(courseId, createDishesJson(), cardId, type, page, CouponsFragment.this);
         }
     }
 
