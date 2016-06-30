@@ -473,4 +473,17 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.CARD_SUBMIT_CARD, SubmitPayResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("card_id", cardId).append("type", type).append("coupon_code", couponCode).append("pay_type", payType), callback);
     }
+
+
+    /**
+     * 兑换优惠券
+     *
+     * @param token        token
+     * @param exchangeCode 优惠券码
+     * @param callback     RequestCallback
+     */
+    public static void exchangeCoupon(String token, String exchangeCode, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COUPON_EXCHANGE_COUPON, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("exchange_code", exchangeCode), callback);
+    }
 }
