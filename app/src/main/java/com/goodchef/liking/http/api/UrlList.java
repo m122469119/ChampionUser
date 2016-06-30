@@ -79,5 +79,7 @@ public class UrlList {
     public static final String CARD_CONFIRM = getVersionHostUrl()+"/card/confirm";
     /**买卡提交确认*/
     public static final String CARD_SUBMIT_CARD = getVersionHostUrl()+"/order/submit-card";
+    /**兑换优惠券*/
+    public static final String COUPON_EXCHANGE_COUPON = getVersionHostUrl()+"/coupon/exchange-coupon";
 
 }

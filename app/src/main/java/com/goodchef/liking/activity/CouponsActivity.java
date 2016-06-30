@@ -8,10 +8,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.InputMethodManagerUtils;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.CouponsFragment;
+import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.data.Food;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.storage.Preference;
 
 import java.util.ArrayList;
 
@@ -39,6 +48,7 @@ public class CouponsActivity extends AppBarActivity {
         setContentView(R.layout.activity_coupons);
         initView();
         initData();
+        doExchangeCoupons();
     }
 
     private void initView() {
@@ -69,8 +79,45 @@ public class CouponsActivity extends AppBarActivity {
         Bundle bundle = new Bundle();
         bundle.putString(KEY_COURSE_ID, coursesId);
         bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
-        bundle.putString(TYPE_MY_COUPONS,intentType);
+        bundle.putString(TYPE_MY_COUPONS, intentType);
         fragmentTransaction.add(R.id.my_coupons_fragment, CouponsFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }
+
+    private void doExchangeCoupons() {
+        mExchangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManagerUtils.hideKeyboard(mEditCoupons);
+                String couponsNumber = mEditCoupons.getText().toString().trim();
+                if (StringUtils.isEmpty(couponsNumber)) {
+                    PopupUtils.showToast("请输入优惠券兑换码");
+                } else {
+                    sendExchangeCouponsRequest(couponsNumber);
+                }
+            }
+        });
+    }
+
+    private void sendExchangeCouponsRequest(String code) {
+        LiKingApi.exchangeCoupon(Preference.getToken(), code, new RequestUiLoadingCallback<BaseResult>(this, R.string.loading_data) {
+            @Override
+            public void onSuccess(BaseResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(CouponsActivity.this, result)) {
+                    PopupUtils.showToast("兑换成功");
+                    setCouponsFragment();
+                } else {
+                    PopupUtils.showToast(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+                PopupUtils.showToast("您的网络异常,请查看网络");
+            }
+        });
+    }
+
 }

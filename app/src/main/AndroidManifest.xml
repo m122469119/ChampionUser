@@ -41,7 +41,9 @@
         <!--课程-->
         <activity android:name=".activity.LessonActivity"/>
         <!--我的优惠券-->
-        <activity android:name=".activity.CouponsActivity"/>
+        <activity android:name=".activity.CouponsActivity"
+                  android:windowSoftInputMode="adjustUnspecified|stateHidden"
+                  android:configChanges="orientation|keyboardHidden"/>
         <!--用户登录-->
         <activity
             android:name=".activity.LoginActivity"
