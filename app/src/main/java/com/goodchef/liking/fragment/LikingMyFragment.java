@@ -146,8 +146,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         } else if (v == mMemberCardLayout) {//会员卡
-            Intent intent = new Intent(getActivity(), MyCardActivity.class);
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), MyCardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mInviteFriendsLayout) {//邀请好友
             PopupUtils.showToast("邀请好友开发中");
         } else if (v == mCouponsLayout) {//我的优惠券

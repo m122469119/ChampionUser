@@ -24,6 +24,7 @@ public class ConfirmCard extends BaseData {
     private int qulification;
 
     private boolean isSelect;
+    private boolean layoutViewEnable;
 
     @SerializedName("time_limit")
     private List<TimeLimitData> timeLimit;
@@ -82,5 +83,13 @@ public class ConfirmCard extends BaseData {
 
     public void setSelect(boolean select) {
         isSelect = select;
+    }
+
+    public boolean isLayoutViewEnable() {
+        return layoutViewEnable;
+    }
+
+    public void setLayoutViewEnable(boolean layoutViewEnable) {
+        this.layoutViewEnable = layoutViewEnable;
     }
 }
