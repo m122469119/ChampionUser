@@ -46,21 +46,23 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private static final int BUY_TYPE_BUY = 1;//买卡
     private static final int BUY_TYPE_CONTINUE = 2;//续卡
     private static final int BUY_TYPE_UPGRADE = 3;//升级
+    public static final String KEY_CARD_ID = "key_card_id";
 
     private HImageView mHImageView;
     private TextView mPeriodOfValidityTextView;//有效期
     private RecyclerView mCardRecyclerView;
 
     private RelativeLayout mCouponsLayout;
-    private TextView mCoursesMoneyTextView;
+    private TextView mCouponsMoneyTextView;
 
+    //支付相关
     private RelativeLayout mAlipayLayout;
     private RelativeLayout mWechatLayout;
     private CheckBox mAlipayCheckBox;
     private CheckBox mWechatCheckBox;
 
-    private TextView mCardMoneyTextView;
-    private TextView mImmediatelyBuyBtn;
+    private TextView mCardMoneyTextView;//
+    private TextView mImmediatelyBuyBtn;//立即支付
 
     private String mCardName;
     private int mCategoryId;
@@ -74,8 +76,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
-    private int mCardId;
+    private int mCardId;//会员卡ID
     private int buyType; //1 购卡  2 续卡  3 升级卡
+    private String cardPrice;//卡的金额
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCardRecyclerView = (RecyclerView) findViewById(R.id.card_recyclerView);
 
         mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
-        mCoursesMoneyTextView = (TextView) findViewById(R.id.select_coupon_title);
+        mCouponsMoneyTextView = (TextView) findViewById(R.id.select_coupon_title);
 
         mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
         mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
@@ -150,6 +153,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         } else if (v == mCouponsLayout) {//选优惠券
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
+            intent.putExtra(KEY_CARD_ID, mCardId);
+            intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType);
             startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
         } else if (v == mImmediatelyBuyBtn) {
             if (Preference.isLogin()) {
@@ -168,7 +173,11 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
 
     private void senSubmitRequest() {
-        mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType);
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCouponCode(), payType);
+        } else {
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType);
+        }
     }
 
     @Override
@@ -193,6 +202,22 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
+        double price = Double.parseDouble(cardPrice);
+        if (price > minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
+            mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
+            if (price > couponAmount) {
+                //订单的价格大于优惠券的面额
+                double amount = price - couponAmount;
+                if (amount > 0) {
+                    mCardMoneyTextView.setText("¥ " + amount);
+                }
+            } else {//订单的面额小于优惠券的面额
+                mCardMoneyTextView.setText("¥ " + "0.0.0");
+            }
+        } else {//优惠券不可用
+            mCouponsMoneyTextView.setText("");
+            PopupUtils.showToast("该优惠券未达使用范围请重新选择");
+        }
 
     }
 
@@ -212,6 +237,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
         if (buyType == BUY_TYPE_UPGRADE) {
+            cardPrice = confirmBuyCardData.getPrice();
             mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
         }
 
@@ -249,6 +275,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                         }
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
+                    cardPrice = object.getPrice();
                     mCardMoneyTextView.setText("¥ " + object.getPrice());
                     mCardId = object.getCardId();
                 }
@@ -268,6 +295,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 for (ConfirmCard card : confirmCardList) {
                     if (card.getType() == 2) {//全天卡。1闲时，2全天,当非登录或者没有卡是，默认选中全天卡
                         card.setSelect(true);
+                        cardPrice = card.getPrice();
+                        mCardId = card.getCardId();
                         mCardMoneyTextView.setText("¥ " + card.getPrice());
                     } else {
                         card.setSelect(false);
@@ -277,6 +306,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 if (buyType != BUY_TYPE_UPGRADE) {//当不是升级卡时，给买卡或者续卡默认选择状态的钱设置好
                     for (ConfirmCard card : confirmCardList) {
                         if (card.getQulification() == 1) {
+                            cardPrice = card.getPrice();
+                            mCardId = card.getCardId();
                             mCardMoneyTextView.setText("¥ " + card.getPrice());
                         }
                     }

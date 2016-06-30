@@ -19,7 +19,7 @@ public class ConfirmCard extends BaseData {
     @SerializedName("type")
     private int type;
     @SerializedName("price")
-    private int price;
+    private String price;
     @SerializedName("qulification")
     private int qulification;
 
@@ -53,11 +53,11 @@ public class ConfirmCard extends BaseData {
         this.type = type;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

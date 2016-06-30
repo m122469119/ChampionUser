@@ -203,13 +203,19 @@ public class LiKingApi {
      * @param page     页数
      * @param callback RequestCallback
      */
-    public static void getCoupons(String courseId, String goodInfo, String token, int page, RequestCallback<CouponsResult> callback) {
+    public static void getCoupons(String courseId, String goodInfo, Integer cardId, Integer type, String token, int page, RequestCallback<CouponsResult> callback) {
         RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("page", page);
         if (!TextUtils.isEmpty(courseId)) {
             params.append("course_id", courseId);
         }
         if (!TextUtils.isEmpty(goodInfo)) {
             params.append("good_info", goodInfo);
+        }
+        if (cardId != null) {
+            params.append("card_id", cardId);
+        }
+        if (type != null) {
+            params.append("type", type);
         }
         VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, params, callback);
     }
