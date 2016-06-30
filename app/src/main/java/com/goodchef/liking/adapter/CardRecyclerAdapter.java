@@ -33,7 +33,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
         this.mContext = context;
     }
 
-    public void setLayoutOnClickListner(View.OnClickListener listener) {
+    public void setLayoutOnClickListener(View.OnClickListener listener) {
         this.mClickListener = listener;
     }
 
@@ -48,11 +48,12 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
         return new CardRecyclerViewHolder(view);
     }
 
-     class CardRecyclerViewHolder extends BaseRecycleViewHolder<ConfirmCard> {
+    class CardRecyclerViewHolder extends BaseRecycleViewHolder<ConfirmCard> {
         TextView mCardNameTextView;
         RecyclerView mRecyclerView;
         CheckBox mCheckBox;
         LinearLayout mLayout;
+        TextView mExplainTextView;
 
         public CardRecyclerViewHolder(View itemView) {
             super(itemView);
@@ -60,6 +61,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.item_card_titel_recyclerView);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.whole_day_checkBox);
             mLayout = (LinearLayout) itemView.findViewById(R.id.layout_confirm_card);
+            mExplainTextView = (TextView) itemView.findViewById(R.id.explain);
         }
 
         @Override
@@ -71,6 +73,27 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
             } else {
                 mCheckBox.setChecked(false);
             }
+
+            boolean isViewLayoutEnable = object.isLayoutViewEnable();
+            if (isViewLayoutEnable){//判断是否可点击true是该条目可以点击
+                mLayout.setEnabled(true);
+                mExplainTextView.setVisibility(View.GONE);
+                mCheckBox.setVisibility(View.VISIBLE);
+            }else {//false 该条目点击状态更具qulification来判断
+                int qulification = object.getQulification();
+                if (qulification == 0) {//不能点击
+                    mLayout.setEnabled(false);
+                    mExplainTextView.setVisibility(View.VISIBLE);
+                    mCheckBox.setChecked(false);
+                    mCheckBox.setVisibility(View.GONE);
+                } else if (qulification == 1) {//可以点击，默认给他选中
+                    mLayout.setEnabled(false);
+                    mCheckBox.setVisibility(View.VISIBLE);
+                    mCheckBox.setChecked(true);
+                    mExplainTextView.setVisibility(View.GONE);
+                }
+            }
+
             List<TimeLimitData> limitDataList = object.getTimeLimit();
             if (limitDataList != null && limitDataList.size() > 0) {
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);

@@ -134,7 +134,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private void sendConfirmCardRequest() {
         mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
-        mConfirmBuyCardPresenter.confirmBuyCard(1, mCategoryId);
+        mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId);
     }
 
     @Override
@@ -199,7 +199,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     @Override
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData) {
         String imageUrl = confirmBuyCardData.getAdsUrl();
-
         if (buyType == BUY_TYPE_BUY) {
             mHImageView.setVisibility(View.VISIBLE);
             if (!StringUtils.isEmpty(imageUrl)) {
@@ -211,13 +210,14 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mHImageView.setVisibility(View.GONE);
         }
 
-
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
-        mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
+        if (buyType == BUY_TYPE_UPGRADE) {
+            mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
+        }
 
         confirmCardList = confirmBuyCardData.getCardList();
         setCardView(confirmCardList);
-        mCardRecyclerAdapter.setLayoutOnClickListner(mClickListener);
+        mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
     }
 
     @Override
@@ -261,21 +261,34 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 设置card
      */
     private void setCardView(List<ConfirmCard> confirmCardList) {
-        if (confirmCardList != null && confirmCardList.size() > 0) {
-            for (ConfirmCard data : confirmCardList) {
-                if (data.getType() == 2) {
-                    data.setSelect(true);
-                    mCardMoneyTextView.setText("¥ " + data.getPrice());
-                    mCardId = data.getCardId();
-                } else {
-                    data.setSelect(false);
+        if (confirmCardList != null && confirmCardList.size() >= 2) {
+            if (confirmCardList.get(0).getQulification() == 1 && confirmCardList.get(1).getQulification() == 1) {
+                confirmCardList.get(1).setLayoutViewEnable(true);
+                confirmCardList.get(0).setLayoutViewEnable(true);
+                for (ConfirmCard card : confirmCardList) {
+                    if (card.getType() == 2) {//全天卡。1闲时，2全天,当非登录或者没有卡是，默认选中全天卡
+                        card.setSelect(true);
+                        mCardMoneyTextView.setText("¥ " + card.getPrice());
+                    } else {
+                        card.setSelect(false);
+                    }
+                }
+            } else {
+                if (buyType != BUY_TYPE_UPGRADE) {//当不是升级卡时，给买卡或者续卡默认选择状态的钱设置好
+                    for (ConfirmCard card : confirmCardList) {
+                        if (card.getQulification() == 1) {
+                            mCardMoneyTextView.setText("¥ " + card.getPrice());
+                        }
+                    }
                 }
             }
+
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             mCardRecyclerView.setLayoutManager(mLayoutManager);
             mCardRecyclerAdapter.setData(confirmCardList);
             mCardRecyclerView.setAdapter(mCardRecyclerAdapter);
         }
+
     }
 
 
