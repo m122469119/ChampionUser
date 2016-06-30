@@ -80,5 +80,6 @@
     <string name="title_dishes_details">订单详情</string>
     <string name="confirm_get_meal">确认领餐</string>
     <string name="go_pay">去支付</string>
+    <string name="title_my_card">我的会员卡</string>
 
 </resources>

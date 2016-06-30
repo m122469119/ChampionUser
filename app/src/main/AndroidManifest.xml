@@ -71,6 +71,8 @@
         <activity android:name=".activity.MyOrderActivity"/>
         <!--营养餐订单详情-->
         <activity android:name=".activity.MyDishesOrderDetailsActivity"/>
+        <!--升级卡和续卡-->
+        <activity android:name=".activity.UpgradeAndContinueCardActivity"/>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"

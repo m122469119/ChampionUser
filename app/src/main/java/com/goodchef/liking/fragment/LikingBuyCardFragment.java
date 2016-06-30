@@ -28,9 +28,10 @@ import java.util.List;
  * @version 1.0.0
  */
 public class LikingBuyCardFragment extends BaseFragment implements CardListView {
-
     public static final String KEY_CARD_CATEGORY = "key_card_category";
     public static final String KEY_CATEGORY_ID = "key_category_id";
+    public static final String KEY_BUY_TYPE = "key_buy_type";
+
     private PullToRefreshRecyclerView mRecyclerView;
     private BuyCardAdapter mBuyCardAdapter;
     private CardListPresenter mCardListPresenter;
@@ -80,6 +81,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                         Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
                         intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
                         intent.putExtra(KEY_CATEGORY_ID,card.getCategoryId());
+                        intent.putExtra(KEY_BUY_TYPE,1);
                         startActivity(intent);
                     }
                 }
