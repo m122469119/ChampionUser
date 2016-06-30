@@ -21,6 +21,7 @@
                 android:id="@+id/buy_card_confirm_image"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
+                android:visibility="gone"
                 fresco:failureImage="@drawable/linshi_back"
                 fresco:failureImageScaleType="centerCrop"
                 fresco:placeholderImage="@drawable/linshi_back"

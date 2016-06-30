@@ -3,37 +3,34 @@
                                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                     android:layout_width="match_parent"
                                     android:layout_height="180dp"
+                                    android:orientation="vertical"
+                                    android:layout_marginTop="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:orientation="vertical"
                                     card_view:cardCornerRadius="10dp"
                                     card_view:cardElevation="10dp"
                                     card_view:cardPreventCornerOverlap="true">
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/card_back">
 
-
         <TextView
-            android:id="@+id/card_money"
+            android:id="@+id/upgrade_card_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
+            android:textStyle="bold"
             android:textColor="@color/buy_card_green_text"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
+            android:textSize="13sp"/>
 
         <TextView
-            android:id="@+id/card_type"
+            android:id="@+id/upgrade_card_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/card_money"
+            android:layout_above="@+id/upgrade_card_money"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/lesson_details_dark_back"
@@ -41,7 +38,7 @@
 
 
         <TextView
-            android:id="@+id/buy_card_btn"
+            android:id="@+id/upgrade_buy_card_btn"
             android:layout_width="85dp"
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
@@ -50,8 +47,8 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/icon_buy_background"
             android:gravity="center"
-            android:paddingBottom="3dp"
             android:text="购买"
+            android:paddingBottom="3dp"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </RelativeLayout>

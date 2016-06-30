@@ -43,6 +43,10 @@ import java.util.List;
  */
 public class BuyCardConfirmActivity extends AppBarActivity implements View.OnClickListener, ConfirmBuyCardView {
     private static final int INTENT_REQUEST_CODE_COUPON = 101;
+    private static final int BUY_TYPE_BUY = 1;//买卡
+    private static final int BUY_TYPE_CONTINUE = 2;//续卡
+    private static final int BUY_TYPE_UPGRADE = 3;//升级
+
     private HImageView mHImageView;
     private TextView mPeriodOfValidityTextView;//有效期
     private RecyclerView mCardRecyclerView;
@@ -71,6 +75,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
     private int mCardId;
+    private int buyType; //1 购卡  2 续卡  3 升级卡
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +119,15 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private void initData() {
         mCardName = getIntent().getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
-        mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, -1);
-        setTitle("购买" + mCardName);
+        mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
+        buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
+        if (buyType == BUY_TYPE_BUY) {
+            setTitle("购买" + mCardName);
+        } else if (buyType == BUY_TYPE_CONTINUE) {
+            setTitle("续" + mCardName);
+        } else if (buyType == BUY_TYPE_UPGRADE) {
+            setTitle("升级" + mCardName);
+        }
         mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         sendConfirmCardRequest();
     }
@@ -156,7 +168,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
 
     private void senSubmitRequest() {
-        mConfirmBuyCardPresenter.submitBuyCardData(mCardId, 1, "", payType);
+        mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType);
     }
 
     @Override
@@ -187,9 +199,19 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     @Override
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData) {
         String imageUrl = confirmBuyCardData.getAdsUrl();
-        if (!StringUtils.isEmpty(imageUrl)) {
-            HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+
+        if (buyType == BUY_TYPE_BUY) {
+            mHImageView.setVisibility(View.VISIBLE);
+            if (!StringUtils.isEmpty(imageUrl)) {
+                HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+            }
+        } else if (buyType == BUY_TYPE_CONTINUE) {
+            mHImageView.setVisibility(View.GONE);
+        } else if (buyType == BUY_TYPE_UPGRADE) {
+            mHImageView.setVisibility(View.GONE);
         }
+
+
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
         mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
 
