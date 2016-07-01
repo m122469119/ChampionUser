@@ -182,7 +182,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setTitle(groupLessonData.getCourseName());
 
         List<String> coursesImageList = groupLessonData.getCourseImgs();
-        if (coursesImageList != null) {
+        if (coursesImageList != null && coursesImageList.size()>0) {
             String coursesImageUrl = coursesImageList.get(0);
             if (!StringUtils.isEmpty(coursesImageUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mShopImageView, coursesImageUrl);
@@ -202,7 +202,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mTeacherIntroduceTextView.setText(groupLessonData.getTrainerDesc());
 
         List<String> trainsList = groupLessonData.getTrainerImgs();
-        if (trainsList != null) {
+        if (trainsList != null && trainsList.size()>0) {
             String trainsUrl = trainsList.get(0);
             if (!StringUtils.isEmpty(trainsUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mTeacherImageView, trainsUrl);
