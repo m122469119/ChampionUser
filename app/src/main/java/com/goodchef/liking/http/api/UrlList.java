@@ -83,5 +83,8 @@ public class UrlList {
     public static final String COUPON_EXCHANGE_COUPON = getVersionHostUrl()+"/coupon/exchange-coupon";
     /**获取我的会员卡订单列表*/
     public static final String GET_CARD_ORDER_LIST = getVersionHostUrl()+"/order/get-card-order-list";
+    /**我的会员卡详情*/
+    public static final String GET_CARD_ORDER_DETAILS = getVersionHostUrl()+"/order/get-card-order-detail";
+
 
 }

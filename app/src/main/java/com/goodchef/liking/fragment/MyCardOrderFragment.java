@@ -1,6 +1,7 @@
 package com.goodchef.liking.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.MyCardDetailsActivity;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.data.OrderCardData;
@@ -32,6 +34,7 @@ import java.util.List;
  */
 public class MyCardOrderFragment extends NetworkPagerLoaderRecyclerViewFragment {
 
+    public static final String KEY_ORDER_ID = "key_order_id";
     private MyCardOrderAdapter mMyCardOrderAdapter;
 
     @Override
@@ -71,7 +74,12 @@ public class MyCardOrderFragment extends NetworkPagerLoaderRecyclerViewFragment 
         mMyCardOrderAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                OrderCardData data =  mMyCardOrderAdapter.getDataList().get(position);
+                if (data !=null){
+                    Intent intent = new Intent(getActivity(), MyCardDetailsActivity.class);
+                    intent.putExtra(KEY_ORDER_ID,data.getOrderId());
+                    startActivity(intent);
+                }
             }
 
             @Override
