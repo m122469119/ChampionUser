@@ -41,9 +41,10 @@
         <!--课程-->
         <activity android:name=".activity.LessonActivity"/>
         <!--我的优惠券-->
-        <activity android:name=".activity.CouponsActivity"
-                  android:windowSoftInputMode="adjustUnspecified|stateHidden"
-                  android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name=".activity.CouponsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <!--用户登录-->
         <activity
             android:name=".activity.LoginActivity"
@@ -75,6 +76,9 @@
         <activity android:name=".activity.MyDishesOrderDetailsActivity"/>
         <!--升级卡和续卡-->
         <activity android:name=".activity.UpgradeAndContinueCardActivity"/>
+        <!--我的会员卡详情-->
+        <activity android:name=".activity.MyCardDetailsActivity"/>
+
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
