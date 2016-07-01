@@ -2,10 +2,9 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -17,6 +16,7 @@ import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.mvp.presenter.MyCardPresenter;
 import com.goodchef.liking.mvp.view.MyCardView;
+import com.goodchef.liking.utils.ListViewUtil;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     private TextView mCardNumberTextView;//卡号
     private TextView mBuyCardTimeTextView;//买卡时间
     private TextView mPeriodOfValidityTextView;//有效期
-    private RecyclerView mTimeLimitRecyclerView;
+    private ListView mListView;
     private LinearLayout mBottomLayout;
 
     private TextView mPromotionCardBtn;//升级卡
@@ -52,7 +52,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         mCardNumberTextView = (TextView) findViewById(R.id.card_number);
         mBuyCardTimeTextView = (TextView) findViewById(R.id.buy_card_time);
         mPeriodOfValidityTextView = (TextView) findViewById(R.id.period_of_validity);
-        mTimeLimitRecyclerView = (RecyclerView) findViewById(R.id.time_limit_recycleView);
+        mListView = (ListView) findViewById(R.id.time_limit_recycleView);
         mBottomLayout = (LinearLayout) findViewById(R.id.layout_my_card_bottom);
         mPromotionCardBtn = (TextView) findViewById(R.id.my_promotion_card);
         mFlowCardBtn = (TextView) findViewById(R.id.my_card_flow_card);
@@ -96,11 +96,10 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                 mPeriodOfValidityTextView.setText(myCard.getBuyTime() + " ~ " + myCard.getEndTime());
                 List<TimeLimitData> limitDataList = myCard.getTimeLimit();
                 if (limitDataList != null && limitDataList.size() > 0) {
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-                    mTimeLimitRecyclerView.setLayoutManager(mLayoutManager);
                     CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);
                     adapter.setData(limitDataList);
-                    mTimeLimitRecyclerView.setAdapter(adapter);
+                    mListView.setAdapter(adapter);
+                    ListViewUtil.setListViewHeightBasedOnChildren(mListView);
                 }
             }
         } else {
@@ -108,4 +107,5 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         }
 
     }
+
 }

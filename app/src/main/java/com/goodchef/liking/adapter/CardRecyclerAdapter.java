@@ -1,13 +1,12 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
@@ -15,6 +14,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.data.ConfirmCard;
 import com.goodchef.liking.http.result.data.TimeLimitData;
+import com.goodchef.liking.utils.ListViewUtil;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
 
     class CardRecyclerViewHolder extends BaseRecycleViewHolder<ConfirmCard> {
         TextView mCardNameTextView;
-        RecyclerView mRecyclerView;
+        ListView mListView;
         CheckBox mCheckBox;
         LinearLayout mLayout;
         TextView mExplainTextView;
@@ -58,7 +58,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
         public CardRecyclerViewHolder(View itemView) {
             super(itemView);
             mCardNameTextView = (TextView) itemView.findViewById(R.id.card_category_name);
-            mRecyclerView = (RecyclerView) itemView.findViewById(R.id.item_card_titel_recyclerView);
+            mListView = (ListView) itemView.findViewById(R.id.item_card_titel_recyclerView);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.whole_day_checkBox);
             mLayout = (LinearLayout) itemView.findViewById(R.id.layout_confirm_card);
             mExplainTextView = (TextView) itemView.findViewById(R.id.explain);
@@ -75,11 +75,11 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
             }
 
             boolean isViewLayoutEnable = object.isLayoutViewEnable();
-            if (isViewLayoutEnable){//判断是否可点击true是该条目可以点击
+            if (isViewLayoutEnable) {//判断是否可点击true是该条目可以点击
                 mLayout.setEnabled(true);
                 mExplainTextView.setVisibility(View.GONE);
                 mCheckBox.setVisibility(View.VISIBLE);
-            }else {//false 该条目点击状态更具qulification来判断
+            } else {//false 该条目点击状态更具qulification来判断
                 int qulification = object.getQulification();
                 if (qulification == 0) {//不能点击
                     mLayout.setEnabled(false);
@@ -96,11 +96,10 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
 
             List<TimeLimitData> limitDataList = object.getTimeLimit();
             if (limitDataList != null && limitDataList.size() > 0) {
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                mRecyclerView.setLayoutManager(mLayoutManager);
                 CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(mContext);
                 adapter.setData(limitDataList);
-                mRecyclerView.setAdapter(adapter);
+                mListView.setAdapter(adapter);
+                ListViewUtil.setListViewHeightBasedOnChildren(mListView);
             }
             mLayout.setTag(object);
             mLayout.setOnClickListener(mClickListener);
