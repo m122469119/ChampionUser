@@ -25,6 +25,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
+import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
@@ -491,5 +492,18 @@ public class LiKingApi {
     public static void exchangeCoupon(String token, String exchangeCode, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.COUPON_EXCHANGE_COUPON, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("exchange_code", exchangeCode), callback);
+    }
+
+
+    /***
+     * 获取我的会员卡列表
+     *
+     * @param token    token
+     * @param page     页数
+     * @param callback RequestCallback
+     */
+    public static void getCardOrderList(String token, int page, RequestCallback<OrderCardListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_CARD_ORDER_LIST, OrderCardListResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("page", page), callback);
     }
 }
