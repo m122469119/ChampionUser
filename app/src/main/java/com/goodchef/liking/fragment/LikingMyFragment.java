@@ -25,6 +25,7 @@ import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
+import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
@@ -52,6 +53,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LinearLayout mMemberCardLayout;//会员卡
     private LinearLayout mCouponsLayout;//我的优惠券
 
+    private RelativeLayout mTrainLayout;
     private TextView myTrainTime;
     private TextView myTrainDistance;
     private TextView myTrainCal;
@@ -83,6 +85,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
         mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
         mCouponsLayout = (LinearLayout) view.findViewById(R.id.layout_coupons);
+
+        mTrainLayout = (RelativeLayout) view.findViewById(R.id.layout_my_train);
         myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
         myTrainDistance = (TextView) view.findViewById(R.id.my_train_distance);
         myTrainCal = (TextView) view.findViewById(R.id.my_train_cal);
@@ -101,6 +105,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMyOrderLayout.setOnClickListener(this);
         mMemberCardLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
+        mTrainLayout.setOnClickListener(this);
     }
 
 
@@ -124,7 +129,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v == mHeadHImageView) {//头像
+        if (v == mTrainLayout) {
+            Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
+            startActivity(intent);
+        } else if (v == mHeadHImageView) {//头像
             Intent intent = new Intent(getActivity(), MyInfoActivity.class);
             startActivity(intent);
         } else if (v == mHeadInfoLayout) {
