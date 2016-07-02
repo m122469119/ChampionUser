@@ -87,15 +87,15 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
 
         private void setCoursesState(int state) {
             if (state == COURSES_STATE_PAYED) {//已支付
-                mCoursesStateTextView.setText("已支付");
+                mCoursesStateTextView.setText(R.string.courses_state_payed);
                 mCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.my_group_green_text));
                 mCompleteCoursesBtn.setVisibility(View.VISIBLE);
             } else if (state == COURSES_STATE_COMPLETE) {//已完成
-                mCoursesStateTextView.setText("已完成");
+                mCoursesStateTextView.setText(R.string.courses_state_complete);
                 mCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.my_group_green_text));
                 mCompleteCoursesBtn.setVisibility(View.GONE);
             } else if (state == COURSES_STATE_CANCEL) {//已取消
-                mCoursesStateTextView.setText("已取消");
+                mCoursesStateTextView.setText(R.string.courses_state_cancel);
                 mCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
                 mCompleteCoursesBtn.setVisibility(View.GONE);
             }

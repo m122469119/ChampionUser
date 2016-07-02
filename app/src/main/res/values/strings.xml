@@ -81,5 +81,10 @@
     <string name="confirm_get_meal">确认领餐</string>
     <string name="go_pay">去支付</string>
     <string name="title_my_card">我的会员卡</string>
+    <string name="pay_free_type">免金额支付</string>
+    <string name="courses_state_payed">已支付</string>
+    <string name="courses_state_complete">已完成</string>
+    <string name="courses_state_cancel">已取消</string>
+    <string name="title_courses_details">课程详情</string>
 
 </resources>

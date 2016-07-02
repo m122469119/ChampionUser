@@ -14,6 +14,7 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
+import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
@@ -135,5 +136,14 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
                 super.onFailure(error);
             }
         });
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(MyPrivateCoursesCompleteMessage message){
+        loadHomePage();
     }
 }
