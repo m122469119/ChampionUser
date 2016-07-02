@@ -12,6 +12,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
     private EditText mLoginPhoneEditText;//输入手机号
     private EditText mCodeEditText;//输入验证码
     private TextView mSendCodeBtn;//获取验证码按钮
+    private TextView mRegisterBtn;//注册协议
     private Button mLoginBtn;//登录按钮
 
     private String phoneStr;
@@ -47,7 +49,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         initView();
         mMyCountdownTime = new MyCountdownTime(60000, 1000);
         mLoginPresenter = new LoginPresenter(this, this);
-        mSendCodeBtn.setText("发送");
+        mSendCodeBtn.setText("获取验证码");
         showHomeUpIcon(R.drawable.icon_screen_cancel);
         setViewOnClickListener();
         mLoginPhoneEditText.setText("15618576553");
@@ -57,6 +59,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         mLoginPhoneEditText = (EditText) findViewById(R.id.et_login_phone);
         mCodeEditText = (EditText) findViewById(R.id.et_verification_code);
         mSendCodeBtn = (TextView) findViewById(R.id.send_verification_code_btn);
+        mRegisterBtn = (TextView) findViewById(R.id.register_agree_on);
         mLoginBtn = (Button) findViewById(R.id.login_btn);
     }
 
@@ -71,6 +74,8 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             getVerificationCode();
         } else if (v == mLoginBtn) {
             login();
+        }else if (v == mRegisterBtn){
+
         }
     }
 
@@ -140,7 +145,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setUserIconUrl(userLoginData.getAvatar());
             Preference.setUserPhone(userLoginData.getPhone());
             Preference.setIsNewUser(userLoginData.getNewUser());
-         //   postEvent(new LoginFinishMessage());
+            //   postEvent(new LoginFinishMessage());
             this.finish();
         }
     }
@@ -173,16 +178,14 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         public void onTick(long millisUntilFinished) {
             mSendCodeBtn.setClickable(false);
             mSendCodeBtn.setText("重新发送(" + millisUntilFinished / 1000 + "s" + ")");
-            mSendCodeBtn.setTextColor(LoginActivity.this.getResources().getColor(R.color.get_code_gray_dark));
-            mSendCodeBtn.setBackgroundResource(R.drawable.shape_gray_drak_radius_background);
+            mSendCodeBtn.setTextColor(ResourceUtils.getColor(R.color.get_code_gray_dark));
         }
 
         @Override
         public void onFinish() {
             mSendCodeBtn.setText("重新发送");
             mSendCodeBtn.setClickable(true);
-            mSendCodeBtn.setTextColor(LoginActivity.this.getResources().getColor(R.color.liking_lesson_group_text));
-            mSendCodeBtn.setBackgroundResource(R.drawable.shape_radius_green_btn_background);
+            mSendCodeBtn.setTextColor(ResourceUtils.getColor(R.color.bg_login_green_text));
         }
     }
 

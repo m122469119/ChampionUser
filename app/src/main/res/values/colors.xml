@@ -34,5 +34,7 @@
     <color name="dishes_details_tags">#a8abae</color>
     <color name="change_shop_gray_back">#d1d2d9</color>
     <color name="my_train_data_text">#05b5ff</color>
+    <color name="bg_login_green_text">#35ea81</color>
+    <color name="bg_login_gray_white">#a6aabc</color>
 
 </resources>

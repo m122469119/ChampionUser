@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/login_background"
+                android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,52 +16,43 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_login_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/et_login_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:hint="@string/hint_login_phone"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/bg_dark_gray_text"
-                    android:textColorHint="@color/bg_hint_gray"
-                    android:textCursorDrawable="@null"
-                    android:textSize="16sp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@color/line"/>
-            </LinearLayout>
+                android:background="@color/transparent"
+                android:hint="@string/hint_login_phone"
+                android:inputType="number"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/bg_login_gray_white"
+                android:textColorHint="@color/bg_hint_gray"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/send_verification_code_btn"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="2dp"
                 android:layout_weight="1.8"
-                android:background="@drawable/shape_radius_green_btn_background"
                 android:gravity="center"
-                android:textColor="@color/liking_lesson_group_text"
+                android:text="获取验证码"
+                android:textColor="@color/bg_login_green_text"
                 android:textSize="@dimen/textsize_small"/>
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +73,7 @@
                 android:hint="@string/hint_verification_code"
                 android:inputType="number"
                 android:padding="10dp"
-                android:textColor="@color/bg_dark_gray_text"
+                android:textColor="@color/bg_login_gray_white"
                 android:textColorHint="@color/bg_hint_gray"
                 android:textCursorDrawable="@null"
                 android:textSize="16sp"/>
@@ -96,17 +88,55 @@
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="登录即同意"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/register_agree_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingRight="20dp"
+                android:paddingTop="15dp"
+                android:text="《用户协议》"
+                android:textColor="@color/bg_login_green_text"/>
+
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/shape_radius_green_btn_background"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_login_btn_background"
             android:gravity="center"
             android:text="@string/login_btn_text"
-            android:textColor="@color/liking_lesson_group_text"
+            android:textColor="@color/white"
             android:textSize="17sp"/>
     </LinearLayout>
-</LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/login_logon_back"/>
+</RelativeLayout>
