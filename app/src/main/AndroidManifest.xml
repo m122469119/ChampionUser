@@ -78,6 +78,8 @@
         <activity android:name=".activity.UpgradeAndContinueCardActivity"/>
         <!--我的会员卡详情-->
         <activity android:name=".activity.MyCardDetailsActivity"/>
+        <!--我的训练数据-->
+        <activity android:name=".activity.MyTrainDataActivity"/>
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

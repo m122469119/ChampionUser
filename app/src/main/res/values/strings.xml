@@ -86,5 +86,6 @@
     <string name="courses_state_complete">已完成</string>
     <string name="courses_state_cancel">已取消</string>
     <string name="title_courses_details">课程详情</string>
+    <string name="title_my_train_data">训练数据</string>
 
 </resources>
