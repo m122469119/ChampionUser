@@ -28,6 +28,12 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
     public static final int TYPE_GROUP_LESSON = 1;//团体课
     public static final int TYPE_PRIVATE_LESSON = 2;//私教课
 
+    private View.OnClickListener mClickListener;
+
+    public void setGroupOnClickListener(View.OnClickListener listener) {
+        this.mClickListener = listener;
+    }
+
     class LessonViewHolder extends BaseRecycleViewHolder<CoursesResult.Courses.CoursesData> {
         private HImageView mHImageView;//底部图片
         private TextView mLessonNameTextView;//课程名称
@@ -39,6 +45,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
         private ImageView mImageView;
         private TextView mAddressTextView;//地址
         public TextView mDistanceTextView;
+        private RelativeLayout mGroupLessonLayout;
 
         public LessonViewHolder(View itemView) {
             super(itemView);
@@ -55,6 +62,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
             mImageView = (ImageView) itemView.findViewById(R.id.lesson_address_icon);
             mAddressTextView = (TextView) itemView.findViewById(R.id.lesson_address);
             mDistanceTextView = (TextView) itemView.findViewById(R.id.lesson_distance);
+            mGroupLessonLayout = (RelativeLayout) itemView.findViewById(R.id.layout_group_lesson);
         }
 
         @Override
@@ -89,6 +97,8 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 }
                 mSurplusPersonTextView.setVisibility(View.VISIBLE);
                 mSurplusPersonTextView.setText(object.getQuota());
+                mGroupLessonLayout.setOnClickListener(mClickListener);
+                mGroupLessonLayout.setTag(object);
             } else if (type == TYPE_PRIVATE_LESSON) {
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 mLessonTypeTextView.setText("私教课");
@@ -99,12 +109,13 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 mDistanceTextView.setText("");
                 mLessonTimeTextView.setText("");
                 mSurplusPersonTextView.setVisibility(View.INVISIBLE);
+                mGroupLessonLayout.setOnClickListener(null);
             }
 
             List<String> tagList = object.getTags();
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < tagList.size(); i++) {
-                stringBuffer.append("#" + tagList.get(i));
+                stringBuffer.append(" #" + tagList.get(i));
             }
             mLessonUseTextView.setText(stringBuffer.toString());
         }

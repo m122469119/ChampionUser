@@ -91,6 +91,11 @@ public class CoursesResult extends BaseResult {
             private String distance;
             @SerializedName("schedule_id")
             private String scheduleId;
+            @SerializedName("gym_id")
+            private String gymId;
+            @SerializedName("room_id")
+            private String roomId;
+
 
             public String getTrainerId() {
                 return trainerId;
@@ -226,6 +231,22 @@ public class CoursesResult extends BaseResult {
 
             public void setScheduleId(String scheduleId) {
                 this.scheduleId = scheduleId;
+            }
+
+            public String getGymId() {
+                return gymId;
+            }
+
+            public void setGymId(String gymId) {
+                this.gymId = gymId;
+            }
+
+            public String getRoomId() {
+                return roomId;
+            }
+
+            public void setRoomId(String roomId) {
+                this.roomId = roomId;
             }
         }
     }

@@ -19,6 +19,7 @@ import com.goodchef.liking.http.result.DishesOrderListResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
 import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.GymCoursesResult;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyDishesOrderDetailsResult;
@@ -531,5 +532,18 @@ public class LiKingApi {
      */
     public static void getMyCard(String token, RequestCallback<MyCardResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_MY_CARD, MyCardResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
+    }
+
+
+    /***
+     * 获取场馆团体课列表
+     *
+     * @param gymId    场馆id
+     * @param date     时间
+     * @param callback RequestCallback
+     */
+    public static void getGymCoursesList(String gymId, String date, RequestCallback<GymCoursesResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_GYM_COURESE, GymCoursesResult.class, getCommonRequestParams().append("gym_id", gymId)
+                .append("format", date), callback);
     }
 }
