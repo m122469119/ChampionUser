@@ -87,6 +87,8 @@ public class UrlList {
     public static final String GET_CARD_ORDER_DETAILS = getVersionHostUrl()+"/order/get-card-order-detail";
     /**获取我的会员卡*/
     public static final String GET_MY_CARD = getVersionHostUrl()+"/card/get-my-card";
+    /**获取团体课常光列表*/
+    public static final String GET_GYM_COURESE = getVersionHostUrl()+"/gym/course";
 
 
 }

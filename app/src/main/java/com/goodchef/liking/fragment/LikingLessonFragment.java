@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -12,6 +13,7 @@ import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecycle
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
+import com.goodchef.liking.activity.GymCoursesActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
@@ -35,6 +37,8 @@ import java.util.List;
  */
 public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements HomeCourseView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
+    public static final String KEY_GYM_ID = "key_gym_id";
+    public static final String KEY_GYM_NAME = "key_gym_name";
     private View mHeadView;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
@@ -103,7 +107,28 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 return false;
             }
         });
+        mLikingLessonRecyclerAdapter.setGroupOnClickListener(mClickListener);
     }
+
+
+    /***
+     * 查看团体课场馆
+     */
+    private View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.layout_group_lesson);
+            if (layout != null) {
+                CoursesResult.Courses.CoursesData data= (CoursesResult.Courses.CoursesData) layout.getTag();
+                if (data !=null){
+                    Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
+                    intent.putExtra(KEY_GYM_ID,data.getGymId());
+                    intent.putExtra(KEY_GYM_NAME,data.getName());
+                    startActivity(intent);
+                }
+            }
+        }
+    };
 
     private void initRecycleHeadView() {
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, getPullToRefreshRecyclerView(), false);
