@@ -134,6 +134,11 @@ public class Preference extends AbsPreference {
         return setObject(NICKNAME, nickName);
     }
 
+    public static String getNickName() {
+        String name = (String) getObject(NICKNAME, NULL_STRING);
+        return name;
+    }
+
     /**
      * 获取用户头像url
      *

@@ -2,18 +2,19 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
+import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class UpgradeAndContinueCardActivity extends AppBarActivity implements CardListView {
 
-    private RecyclerView mRecyclerView;
+    private PullToRefreshRecyclerView mRecyclerView;
     private int buyType;
     private String title;
 
@@ -40,7 +41,9 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     }
 
     private void initView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.upgrade_and_continue_recycleView);
+        mRecyclerView = (PullToRefreshRecyclerView) findViewById(R.id.upgrade_and_continue_recycleView);
+        mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
+        mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
     }
 
     private void initData() {
@@ -55,8 +58,6 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     public void updateCardListView(CardResult.CardData cardData) {
         List<CardResult.CardData.Card> list = cardData.getCardList();
         if (list != null && list.size() > 0) {
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            mRecyclerView.setLayoutManager(mLayoutManager);
             mUpgradeContinueCardAdapter = new UpgradeContinueCardAdapter(this);
             mUpgradeContinueCardAdapter.setData(list);
             mRecyclerView.setAdapter(mUpgradeContinueCardAdapter);

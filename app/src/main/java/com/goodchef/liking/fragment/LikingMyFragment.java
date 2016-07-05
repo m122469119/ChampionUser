@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
@@ -58,6 +60,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView myTrainDistance;
     private TextView myTrainCal;
 
+    private TextView mPersonNameTextView;
+    private TextView mPersonPhoneTextView;
+
 
     public static final String NULL_STRING = "";
 
@@ -69,6 +74,22 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         initViewIconAndText();
         setViewOnClickListener();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Preference.isLogin()) {
+            mLoginOutBtn.setVisibility(View.VISIBLE);
+            mPersonNameTextView.setText(Preference.getNickName());
+            mPersonPhoneTextView.setText(Preference.getUserPhone());
+            if (!StringUtils.isEmpty(Preference.getUserIconUrl())){
+                HImageLoaderSingleton.getInstance().requestImage(mHeadHImageView,Preference.getUserIconUrl());
+            }
+        } else {
+            mPersonNameTextView.setText("");
+            mPersonPhoneTextView.setText("登录");
+        }
     }
 
     private void initView(View view) {
@@ -90,6 +111,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
         myTrainDistance = (TextView) view.findViewById(R.id.my_train_distance);
         myTrainCal = (TextView) view.findViewById(R.id.my_train_cal);
+
+        mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
+        mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
     }
 
     private void setViewOnClickListener() {
@@ -233,6 +257,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void updateLoginOut() {
+        mLoginOutBtn.setVisibility(View.INVISIBLE);
+        mPersonNameTextView.setText("");
+        mPersonPhoneTextView.setText("登录");
         Preference.setToken(NULL_STRING);
         Preference.setNickName(NULL_STRING);
         Preference.setUserPhone(NULL_STRING);

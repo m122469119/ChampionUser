@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
@@ -60,7 +61,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
         getStateView().setNodataView(noDataView);
-
+        getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mAdapter = new LikingNearbyAdapter(getActivity());
         setRecyclerAdapter(mAdapter);
         initData();
