@@ -163,11 +163,13 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mDishesMoneyTextView.setText("¥" + foodDetailsData.getPrice());
         mDishesDescribeTextView.setText(foodDetailsData.getGoodsDesc());
         List<String> tagList = foodDetailsData.getTags();
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < tagList.size(); i++) {
-            stringBuffer.append("#" + tagList.get(0) + " ");
+        if (tagList != null && tagList.size() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0; i < tagList.size(); i++) {
+                stringBuffer.append("#" + tagList.get(0) + " ");
+            }
+            mDishesTagsTextView.setText(stringBuffer.toString());
         }
-        mDishesTagsTextView.setText(stringBuffer.toString());
         mHowNumberBuyTextView.setText(foodDetailsData.getAllEat() + "人购买过");
         mDishesKcalTextView.setText(foodDetailsData.getCalorie() + "");
         mDishesProteinTextView.setText(foodDetailsData.getProteide() + "");

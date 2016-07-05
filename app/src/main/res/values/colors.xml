@@ -36,5 +36,5 @@
     <color name="my_train_data_text">#05b5ff</color>
     <color name="bg_login_green_text">#35ea81</color>
     <color name="bg_login_gray_white">#a6aabc</color>
-
+    <color name="bg_gray_text">#6A6F75</color>
 </resources>
