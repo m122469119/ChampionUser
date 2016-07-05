@@ -67,7 +67,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
 
         initView();
         initData();
-        requestBanner();
         sendFoodDetailsRequest();
         setViewOnClickListener();
         showHomeUpIcon(R.drawable.app_bar_back, new View.OnClickListener() {
@@ -134,27 +133,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mFoodDetailsPresenter.getFoodDetails(mUserCityId, mFood.getGoodsId());
     }
 
-    private void requestBanner() {
-        List<BannerResult.BannerData.Banner> banners = new ArrayList<>();
-        BannerResult.BannerData.Banner banner = new BannerResult.BannerData.Banner();
-        banner.setImgUrl("http://bizhi.33lc.com/uploadfile/2014/0911/20140911092615146.jpg");
-        banner.setType("2");
-        banners.add(banner);
-
-        BannerResult.BannerData.Banner banner1 = new BannerResult.BannerData.Banner();
-        banner1.setImgUrl("http://thumbs.dreamstime.com/z/%BD%A1%C9%ED-34080752.jpg");
-        banner1.setType("2");
-        banners.add(banner1);
-
-        if (mBannerPagerAdapter != null) {
-            mBannerPagerAdapter.setData(banners);
-            mBannerPagerAdapter.notifyDataSetChanged();
-            mIconPageIndicator.notifyDataSetChanged();
-        }
-        mImageViewPager.setCurrentItem(0);
-        mImageViewPager.startAutoScroll();
-    }
-
     @Override
     public void updateFoodDetailsView(FoodDetailsResult.FoodDetailsData foodDetailsData) {
         setTitle(foodDetailsData.getGoodsName());
@@ -175,7 +153,30 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mDishesProteinTextView.setText(foodDetailsData.getProteide() + "");
         mCarbonAndWaterTextView.setText(foodDetailsData.getCarbohydrate() + "");
         mDishesFatTextView.setText(foodDetailsData.getAxunge() + "");
+
+        List<String> imgList = foodDetailsData.getImgs();
+        if (imgList != null && imgList.size() > 0) {
+            setBannerData(imgList);
+        }
     }
+
+    private void setBannerData(List<String> imgList) {
+        List<BannerResult.BannerData.Banner> banners = new ArrayList<>();
+        for (int i = 0; i < imgList.size(); i++) {
+            BannerResult.BannerData.Banner banner = new BannerResult.BannerData.Banner();
+            banner.setImgUrl(imgList.get(i));
+            banner.setType("2");
+            banners.add(banner);
+        }
+        if (mBannerPagerAdapter != null) {
+            mBannerPagerAdapter.setData(banners);
+            mBannerPagerAdapter.notifyDataSetChanged();
+            mIconPageIndicator.notifyDataSetChanged();
+        }
+        mImageViewPager.setCurrentItem(0);
+        mImageViewPager.startAutoScroll();
+    }
+
 
 
     @Override
