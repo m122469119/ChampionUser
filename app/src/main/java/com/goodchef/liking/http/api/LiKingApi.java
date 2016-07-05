@@ -33,6 +33,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
+import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -580,5 +581,9 @@ public class LiKingApi {
             params.append("height", height);
         }
         VolleyHttpRequestClient.doPost(UrlList.UPDATE_USER, BaseResult.class, params, callback);
+    }
+
+    public static void uploadUserImage(String img, RequestCallback<UserImageResult> callback){
+        VolleyHttpRequestClient.doPost(UrlList.UPLOAD_USER_IMAGE,UserImageResult.class,getCommonRequestParams().append("img",img),callback);
     }
 }
