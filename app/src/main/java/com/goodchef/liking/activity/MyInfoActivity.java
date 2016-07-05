@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.library.imageloader.HImageView;
 
@@ -97,15 +98,41 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         } else if (v == mSelectBirthdayTextView) {
             showSelectDateDialog();
         } else if (v == mFinishBtn) {
-
+            getChangeUpData();
         }
     }
 
-    private void showSelectDateDialog(){
-        SelectDateDialog  dateDialog = new SelectDateDialog(this);
+    private void getChangeUpData() {
+        String userName = mUserNameEditText.getText().toString().trim();
+        String birthday = mSelectBirthdayTextView.getText().toString().trim();
+        String height = mUserHeightEditText.getText().toString().trim();
+        String weight = mUserWeightEditText.getText().toString().trim();
 
+        mUserInfoPresenter.updateUserInfo(userName, "", gender, birthday, weight, height);
     }
 
+    private void showSelectDateDialog() {
+        final SelectDateDialog dateDialog = new SelectDateDialog(this);
+        dateDialog.setTextViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.dialog_date_cancel:
+                        dateDialog.dismiss();
+                        break;
+                    case R.id.dialog_date_confirm:
+                        String month = dateDialog.getMonth();
+                        if (Integer.parseInt(month) < 10) {
+                            month = "0" + month;
+                        }
+                        String str = dateDialog.getYear() + " - " + month + " - " + dateDialog.getDay();
+                        mSelectBirthdayTextView.setText(str);
+                        dateDialog.dismiss();
+                        break;
+                }
+            }
+        });
+    }
 
 
     private void showSelectSexDialog() {
@@ -116,12 +143,12 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 switch (v.getId()) {
                     case R.id.dialog_text_one:
                         mSelectSexTextView.setText(R.string.sex_man);
-                        gender = 0;
+                        gender = 1;
                         dialog.dismiss();
                         break;
                     case R.id.dialog_text_second:
                         mSelectSexTextView.setText(R.string.sex_men);
-                        gender = 1;
+                        gender = 0;
                         dialog.dismiss();
                         break;
                 }
@@ -180,10 +207,28 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     @Override
     public void updateGetUserInfoView(UserInfoResult.UserInfoData userInfoData) {
-        mUserNameEditText.setText(userInfoData.getName());
-        mSelectBirthdayTextView.setText(userInfoData.getBirthday());
-        mUserHeightEditText.setText(userInfoData.getHeight()+"");
-        mUserWeightEditText.setText(userInfoData.getWeight() + "");
+        String name = userInfoData.getName();
+        if (!StringUtils.isEmpty(name)) {
+            mUserNameEditText.setText(name);
+        }
+        String birthday = userInfoData.getBirthday();
+        if (!StringUtils.isEmpty(birthday)) {
+            mSelectBirthdayTextView.setText(birthday);
+        }
+        int height = userInfoData.getHeight();
+        if (height > 0) {
+            mUserHeightEditText.setText(String.valueOf(height));
+        }
+        double weight = userInfoData.getWeight();
+        if (weight > 0) {
+            mUserWeightEditText.setText(String.valueOf(weight));
+        }
+        gender = userInfoData.getGender();
+        if (gender == 0) {
+            mSelectSexTextView.setText(R.string.sex_men);
+        } else if (gender == 1) {
+            mSelectSexTextView.setText(R.string.sex_man);
+        }
     }
 
     @Override

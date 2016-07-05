@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:aigestudio="http://schemas.android.com/apk/res-auto"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -15,7 +16,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:padding="10dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="12dp"
             android:text="取消"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_15"/>
@@ -26,7 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:padding="10dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="12dp"
             android:text="确定"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_15"/>
@@ -35,13 +42,53 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/bg_hint_gray"/>
+        android:background="@color/line"/>
 
 
-    <DatePicker
-        android:id="@+id/dialog_date_picker"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"/>
+        android:orientation="horizontal">
+
+        <com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelYearPicker
+            android:id="@+id/wheel_year_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            aigestudio:wheel_item_index="8"
+            aigestudio:wheel_item_space="40dp"
+            aigestudio:wheel_text_color="@color/primary_text_light"
+            aigestudio:wheel_text_color_current="@color/primary_text_dark"
+            aigestudio:wheel_text_size="@dimen/textsize_huge"/>
+
+
+        <com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelMonthPicker
+            android:id="@+id/wheel_month_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            aigestudio:wheel_item_index="8"
+            aigestudio:wheel_item_space="40dp"
+            aigestudio:wheel_text_color="@color/primary_text_light"
+            aigestudio:wheel_text_color_current="@color/primary_text_dark"
+            aigestudio:wheel_text_size="@dimen/textsize_huge"/>
+
+        <com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelDayPicker
+            android:id="@+id/wheel_day_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            aigestudio:wheel_item_index="8"
+            aigestudio:wheel_item_space="40dp"
+            aigestudio:wheel_text_color="@color/primary_text_light"
+            aigestudio:wheel_text_color_current="@color/primary_text_dark"
+            aigestudio:wheel_text_size="@dimen/textsize_huge"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -117,7 +117,7 @@ public class LiKingApi {
      * @param callback       RequestCallback
      */
     public static void userLoginOut(String token, String registrationId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.LOGIN_OUT, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token).append("registrationId", registrationId), callback);
+        VolleyHttpRequestClient.doPost(UrlList.LOGIN_OUT, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token).append("registration_id", registrationId), callback);
     }
 
 
