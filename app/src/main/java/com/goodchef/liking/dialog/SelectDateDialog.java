@@ -6,12 +6,17 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.utils.NavigationBarUtil;
+import com.goodchef.liking.widgets.wheelpicker.core.AbstractWheelPicker;
+import com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelDayPicker;
+import com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelMonthPicker;
+import com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelYearPicker;
+
+import java.util.Calendar;
 
 /**
  * 说明:
@@ -24,9 +29,15 @@ public class SelectDateDialog {
     private Dialog mDialog;
     private TextView mCancelBtn;
     private TextView mConfirmBtn;
-    private DatePicker mDatePicker;
 
-    private String initDateTime;
+    WheelYearPicker mWheelYearPicker;
+    WheelMonthPicker mWheelMonthPicker;
+    WheelDayPicker mWheelDayPicker;
+
+    private String yearStr;
+    private String monthStr;
+    private String dayStr;
+
 
     public SelectDateDialog(Context context) {
         this.mContext = context;
@@ -52,15 +63,85 @@ public class SelectDateDialog {
 
         mCancelBtn = (TextView) window.findViewById(R.id.dialog_date_cancel);
         mConfirmBtn = (TextView) window.findViewById(R.id.dialog_date_confirm);
-        mDatePicker = (DatePicker) window.findViewById(R.id.dialog_date_picker);
+        mWheelYearPicker = (WheelYearPicker) window.findViewById(R.id.wheel_year_picker);
+        mWheelMonthPicker = (WheelMonthPicker) window.findViewById(R.id.wheel_month_picker);
+        mWheelDayPicker = (WheelDayPicker) window.findViewById(R.id.wheel_day_picker);
         initDate();
     }
 
 
-    private void initDate(){
-       
-
+    private void initDate() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        mWheelYearPicker.setYearRange(1950, year);
+        mWheelYearPicker.setCurrentYear(1990);
+        mWheelMonthPicker.setCurrentMonth(6);
+        mWheelDayPicker.setCurrentDay(15);
+        getYear();
+        getMonth();
+        getDay();
     }
+
+    public String getYear(){
+        mWheelYearPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
+            @Override
+            public void onWheelScrolling(float deltaX, float deltaY) {
+
+            }
+
+            @Override
+            public void onWheelSelected(int index, String data) {
+                yearStr = data;
+            }
+
+            @Override
+            public void onWheelScrollStateChanged(int state) {
+
+            }
+        });
+        return yearStr;
+    }
+
+    public String getMonth(){
+        mWheelMonthPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
+            @Override
+            public void onWheelScrolling(float deltaX, float deltaY) {
+
+            }
+
+            @Override
+            public void onWheelSelected(int index, String data) {
+                monthStr = data;
+            }
+
+            @Override
+            public void onWheelScrollStateChanged(int state) {
+
+            }
+        });
+        return monthStr;
+    }
+
+    public String getDay(){
+        mWheelDayPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
+            @Override
+            public void onWheelScrolling(float deltaX, float deltaY) {
+
+            }
+
+            @Override
+            public void onWheelSelected(int index, String data) {
+                dayStr = data;
+            }
+
+            @Override
+            public void onWheelScrollStateChanged(int state) {
+
+            }
+        });
+        return dayStr;
+    }
+
 
     public void setTextViewOnClickListener(View.OnClickListener listener) {
         mCancelBtn.setOnClickListener(listener);
