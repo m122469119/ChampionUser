@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
@@ -51,6 +52,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private void initView(View view) {
         mRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.buy_card_RecyclerView);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
+        mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
     }
 
     private void initRecycleHeadView() {

@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 
 
@@ -12,6 +13,7 @@ import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
  * Created by Lennon on 16/3/24.
  */
 public class PullToRefreshRecyclerView extends PullToRefreshBase<RecyclerView> {
+
     public PullToRefreshRecyclerView(Context context) {
         super(context);
     }
@@ -39,6 +41,18 @@ public class PullToRefreshRecyclerView extends PullToRefreshBase<RecyclerView> {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         return recyclerView;
+    }
+
+    /**
+     * 设置RecyclerView的Padding值
+     * @param left 左
+     * @param top 上
+     * @param right 右
+     * @param bottom 下
+     */
+    public void setRefreshViewPadding(int left, int top, int right, int bottom) {
+        mRefreshableView.setPadding(left, top, right, bottom);
+        mRefreshableView.setClipToPadding(false);
     }
 
     @Override
