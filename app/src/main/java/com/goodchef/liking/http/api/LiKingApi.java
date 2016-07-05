@@ -33,6 +33,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
+import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.storage.Preference;
@@ -545,5 +546,39 @@ public class LiKingApi {
     public static void getGymCoursesList(String gymId, String date, RequestCallback<GymCoursesResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_GYM_COURESE, GymCoursesResult.class, getCommonRequestParams().append("gym_id", gymId)
                 .append("format", date), callback);
+    }
+
+
+    /***
+     * 获取的个人信息
+     *
+     * @param token    token
+     * @param callback RequestCallback
+     */
+    public static void getUserInfo(String token, RequestCallback<UserInfoResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_USER_INFO, UserInfoResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
+    }
+
+    public static void updateUserInfo(String token, String name, String avatar, Integer gender, String birthday, String weight, String height, RequestCallback<BaseResult> callback) {
+        RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token);
+        if (!StringUtils.isEmpty(name)) {
+            params.append("name", name);
+        }
+        if (!StringUtils.isEmpty(avatar)) {
+            params.append("avatar", avatar);
+        }
+        if (gender != null) {
+            params.append("gender", gender);
+        }
+        if (!StringUtils.isEmpty(birthday)) {
+            params.append("birthday", birthday);
+        }
+        if (!StringUtils.isEmpty(weight)) {
+            params.append("weight", weight);
+        }
+        if (!StringUtils.isEmpty(height)) {
+            params.append("height", height);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.UPDATE_USER, BaseResult.class, params, callback);
     }
 }

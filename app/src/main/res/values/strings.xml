@@ -88,4 +88,7 @@
     <string name="title_courses_details">课程详情</string>
     <string name="title_my_train_data">训练数据</string>
 
+    <string name="sex_man">男</string>
+    <string name="sex_men">女</string>
+
 </resources>
