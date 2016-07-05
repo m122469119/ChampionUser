@@ -41,6 +41,18 @@ public class PullToRefreshRecyclerView extends PullToRefreshBase<RecyclerView> {
         return recyclerView;
     }
 
+    /**
+     * 设置RecyclerView的Padding值
+     * @param left 左
+     * @param top 上
+     * @param right 右
+     * @param bottom 下
+     */
+    public void setRefreshViewPadding(int left, int top, int right, int bottom) {
+        mRefreshableView.setPadding(left, top, right, bottom);
+        mRefreshableView.setClipToPadding(false);
+    }
+
     @Override
     protected boolean isReadyForPullEnd() {
         RecyclerView.Adapter adapter = mRefreshableView.getAdapter();
