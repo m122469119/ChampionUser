@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import com.goodchef.liking.storage.Preference;
  * Time:16/6/6 上午10:04
  */
 public class LoginActivity extends AppBarActivity implements View.OnClickListener, LoginView {
+    public static final String KEY_TITLE_SET_USER_INFO = "key_title_set_user_info";
     private EditText mLoginPhoneEditText;//输入手机号
     private EditText mCodeEditText;//输入验证码
     private TextView mSendCodeBtn;//获取验证码按钮
@@ -74,7 +76,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             getVerificationCode();
         } else if (v == mLoginBtn) {
             login();
-        }else if (v == mRegisterBtn){
+        } else if (v == mRegisterBtn) {
 
         }
     }
@@ -146,7 +148,14 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setUserPhone(userLoginData.getPhone());
             Preference.setIsNewUser(userLoginData.getNewUser());
             //   postEvent(new LoginFinishMessage());
+            int newUser = userLoginData.getNewUser();
+            if (newUser == 1){
+                Intent intent = new Intent(this,MyInfoActivity.class);
+                intent.putExtra(KEY_TITLE_SET_USER_INFO,"设置个人信息");
+                startActivity(intent);
+            }
             this.finish();
+
         }
     }
 

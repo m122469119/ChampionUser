@@ -134,6 +134,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             startActivity(intent);
         } else if (v == mHeadHImageView) {//头像
             Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+            intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
             startActivity(intent);
         } else if (v == mHeadInfoLayout) {
             if (Preference.isLogin()) {
