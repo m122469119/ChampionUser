@@ -1,5 +1,6 @@
 package com.goodchef.liking.http.api;
 
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
@@ -583,7 +584,29 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.UPDATE_USER, BaseResult.class, params, callback);
     }
 
-    public static void uploadUserImage(String img, RequestCallback<UserImageResult> callback){
-        VolleyHttpRequestClient.doPost(UrlList.UPLOAD_USER_IMAGE,UserImageResult.class,getCommonRequestParams().append("img",img),callback);
+    /***
+     * 上传头像
+     *
+     * @param img      头像base64 字符串
+     * @param callback RequestCallback
+     */
+    public static void uploadUserImage(String img, RequestCallback<UserImageResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.UPLOAD_USER_IMAGE, UserImageResult.class, getCommonRequestParams().append("img", img), callback);
+    }
+
+
+    /***
+     * 上传设备信息
+     *
+     * @param token           token
+     * @param device_id       设备id
+     * @param device_token    设备token
+     * @param registration_id 极光推送id
+     * @param callback        RequestCallback
+     */
+    public static void uploadUserDevice(String token, String device_id, String device_token, String registration_id, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_DEVICE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("device_id", device_id).append("device_token", device_token).append("registration_id", registration_id).append("os_version", Build.VERSION.RELEASE)
+                .append("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL), callback);
     }
 }

@@ -22,7 +22,7 @@ import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
-import com.goodchef.liking.activity.LessonActivity;
+import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
@@ -168,7 +168,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
-            Intent intent = new Intent(getActivity(), LessonActivity.class);
+            Intent intent = new Intent(getActivity(), MyLessonActivity.class);
             startActivity(intent);
         } else if (v == mMyOrderLayout) {//我的订单
             if (Preference.isLogin()) {
