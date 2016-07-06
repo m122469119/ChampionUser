@@ -21,6 +21,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
+import com.goodchef.liking.activity.InviteFriendsActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
@@ -83,8 +84,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mLoginOutBtn.setVisibility(View.VISIBLE);
             mPersonNameTextView.setText(Preference.getNickName());
             mPersonPhoneTextView.setText(Preference.getUserPhone());
-            if (!StringUtils.isEmpty(Preference.getUserIconUrl())){
-                HImageLoaderSingleton.getInstance().requestImage(mHeadHImageView,Preference.getUserIconUrl());
+            if (!StringUtils.isEmpty(Preference.getUserIconUrl())) {
+                HImageLoaderSingleton.getInstance().requestImage(mHeadHImageView, Preference.getUserIconUrl());
             }
         } else {
             mPersonNameTextView.setText("");
@@ -187,7 +188,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         } else if (v == mInviteFriendsLayout) {//邀请好友
-            PopupUtils.showToast("邀请好友开发中");
+            Intent intent = new Intent(getActivity(), InviteFriendsActivity.class);
+            startActivity(intent);
         } else if (v == mCouponsLayout) {//我的优惠券
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), CouponsActivity.class);

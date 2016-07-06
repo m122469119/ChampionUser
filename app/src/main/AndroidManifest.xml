@@ -157,7 +157,12 @@
             android:name=".activity.GymCoursesActivity"
             android:screenOrientation="portrait"/>
         <!--开门-->
-        <activity android:name=".activity.OpenTheDoorActivity"
+        <activity
+            android:name=".activity.OpenTheDoorActivity"
+            android:screenOrientation="portrait"/>
+        <!--邀请好友-->
+        <activity
+            android:name=".activity.InviteFriendsActivity"
             android:screenOrientation="portrait"/>
 
         <!--支付宝h5页面-->
