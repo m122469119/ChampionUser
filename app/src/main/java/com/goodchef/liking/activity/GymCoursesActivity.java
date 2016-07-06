@@ -185,11 +185,13 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
                 }
                 mLessonNameTextView.setText(object.getCourseName());
                 List<String> tagList = object.getTags();
-                StringBuffer stringBuffer = new StringBuffer();
-                for (int i = 0; i < tagList.size(); i++) {
-                    stringBuffer.append(" #" + tagList.get(i));
+                if (tagList != null && tagList.size() > 0) {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    for (int i = 0; i < tagList.size(); i++) {
+                        stringBuffer.append(" #" + tagList.get(i));
+                    }
+                    mLessonUseTextView.setText(stringBuffer.toString());
                 }
-                mLessonUseTextView.setText(stringBuffer.toString());
                 mLessonTimeTextView.setText(object.getCourseDate());
                 mSurplusPersonTextView.setText("剩余名额：" + object.getQuota());
             }

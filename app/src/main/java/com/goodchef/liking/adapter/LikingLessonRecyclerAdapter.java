@@ -90,7 +90,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 }
 
                 mImageView.setVisibility(View.VISIBLE);
-                mAddressTextView.setText(object.getGymAddress());
+                mAddressTextView.setText(object.getGymName());
                 String distance = object.getDistance();
                 if (!StringUtils.isEmpty(distance)) {
                     mDistanceTextView.setText(distance + " km");
@@ -103,7 +103,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 mLessonTypeTextView.setText("私教课");
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-                mLessonNameTextView.setText(object.getName());
+                mLessonNameTextView.setText(object.getCourseName());
                 mImageView.setVisibility(View.GONE);
                 mAddressTextView.setText(object.getDescription());
                 mDistanceTextView.setText("");
