@@ -156,7 +156,11 @@
         <activity
             android:name=".activity.GymCoursesActivity"
             android:screenOrientation="portrait"/>
+        <!--开门-->
+        <activity android:name=".activity.OpenTheDoorActivity"
+            android:screenOrientation="portrait"/>
 
+        <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"

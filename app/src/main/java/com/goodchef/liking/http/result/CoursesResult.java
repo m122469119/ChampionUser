@@ -37,30 +37,8 @@ public class CoursesResult extends BaseResult {
 
         public static class CoursesData extends BaseData {
 
-
-            /**
-             * trainer_id : 10000
-             * name : 雷达
-             * gender : 0
-             * phone : 13222222222
-             * description : 我是美男子
-             * quota : 100
-             * imgs : []
-             * tags : []
-             * type : 2
-             * course_name :
-             * course_id :
-             * room_id :
-             * gym_id :
-             * calorie :
-             * end_time :
-             * start_time :
-             */
-
             @SerializedName("trainer_id")
             private String trainerId;
-            @SerializedName("name")
-            private String name;
             @SerializedName("gender")
             private String gender;
             @SerializedName("phone")
@@ -85,8 +63,6 @@ public class CoursesResult extends BaseResult {
             private List<String> tags;
             @SerializedName("course_date")
             private String courseDate;
-            @SerializedName("gym_address")
-            private String gymAddress;
             @SerializedName("distance")
             private String distance;
             @SerializedName("schedule_id")
@@ -95,7 +71,8 @@ public class CoursesResult extends BaseResult {
             private String gymId;
             @SerializedName("room_id")
             private String roomId;
-
+            @SerializedName("gym_name")
+            private String gymName;
 
             public String getTrainerId() {
                 return trainerId;
@@ -105,12 +82,12 @@ public class CoursesResult extends BaseResult {
                 this.trainerId = trainerId;
             }
 
-            public String getName() {
-                return name;
+            public String getGymName() {
+                return gymName;
             }
 
-            public void setName(String name) {
-                this.name = name;
+            public void setGymName(String gymName) {
+                this.gymName = gymName;
             }
 
             public String getGender() {
@@ -209,13 +186,6 @@ public class CoursesResult extends BaseResult {
                 this.courseDate = courseDate;
             }
 
-            public String getGymAddress() {
-                return gymAddress;
-            }
-
-            public void setGymAddress(String gymAddress) {
-                this.gymAddress = gymAddress;
-            }
 
             public String getDistance() {
                 return distance;

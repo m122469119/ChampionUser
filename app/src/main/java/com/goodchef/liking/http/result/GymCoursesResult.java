@@ -63,8 +63,8 @@ public class GymCoursesResult extends BaseResult {
             private String quota;
             @SerializedName("type")
             private int type;
-            @SerializedName("gym_address")
-            private String gymAddress;
+            @SerializedName("gym_name")
+            private String gymName;
             @SerializedName("distance")
             private String distance;
             @SerializedName("phone")
@@ -73,8 +73,7 @@ public class GymCoursesResult extends BaseResult {
             private String desc;
             @SerializedName("gender")
             private String gender;
-            @SerializedName("name")
-            private String name;
+
             @SerializedName("imgs")
             private List<String> imgs;
             @SerializedName("tags")
@@ -144,14 +143,6 @@ public class GymCoursesResult extends BaseResult {
                 this.type = type;
             }
 
-            public String getGymAddress() {
-                return gymAddress;
-            }
-
-            public void setGymAddress(String gymAddress) {
-                this.gymAddress = gymAddress;
-            }
-
             public String getDistance() {
                 return distance;
             }
@@ -184,14 +175,6 @@ public class GymCoursesResult extends BaseResult {
                 this.gender = gender;
             }
 
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
             public List<String> getImgs() {
                 return imgs;
             }
@@ -206,6 +189,14 @@ public class GymCoursesResult extends BaseResult {
 
             public void setTags(List<String> tags) {
                 this.tags = tags;
+            }
+
+            public String getGymName() {
+                return gymName;
+            }
+
+            public void setGymName(String gymName) {
+                this.gymName = gymName;
             }
         }
 

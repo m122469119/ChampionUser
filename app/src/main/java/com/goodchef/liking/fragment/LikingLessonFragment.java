@@ -97,7 +97,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
-                    intent.putExtra(KEY_TEACHER_NAME, coursesData.getName());
+                    intent.putExtra(KEY_TEACHER_NAME, coursesData.getCourseName());
                     startActivity(intent);
                 }
             }
@@ -123,7 +123,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 if (data !=null){
                     Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
                     intent.putExtra(KEY_GYM_ID,data.getGymId());
-                    intent.putExtra(KEY_GYM_NAME,data.getName());
+                    intent.putExtra(KEY_GYM_NAME,data.getCourseName());
                     startActivity(intent);
                 }
             }

@@ -62,7 +62,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         mSendCodeBtn.setText("获取验证码");
         showHomeUpIcon(R.drawable.icon_screen_cancel);
         setViewOnClickListener();
-        mLoginPhoneEditText.setText("15618576553");
+     //   mLoginPhoneEditText.setText("15618576553");
     }
 
     private void initView() {

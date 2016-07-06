@@ -90,6 +90,7 @@
 
     <string name="sex_man">男</string>
     <string name="sex_men">女</string>
+    <string name="title_open_the_door">开门</string>
 
 
     <string-array name="WheelArrayDefault">
