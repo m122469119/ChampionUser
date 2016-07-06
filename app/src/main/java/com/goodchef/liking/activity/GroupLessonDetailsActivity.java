@@ -168,7 +168,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
     @Override
     public void updateOrderGroupCourses() {
-        Intent intent = new Intent(this, LessonActivity.class);
+        Intent intent = new Intent(this, MyLessonActivity.class);
         startActivity(intent);
         this.finish();
     }

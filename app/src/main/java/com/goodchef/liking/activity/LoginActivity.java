@@ -9,17 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
+import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:
@@ -147,7 +155,8 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setUserIconUrl(userLoginData.getAvatar());
             Preference.setUserPhone(userLoginData.getPhone());
             Preference.setIsNewUser(userLoginData.getNewUser());
-            //   postEvent(new LoginFinishMessage());
+            postEvent(new LoginFinishMessage());
+            uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
             if (newUser == 1){
                 Intent intent = new Intent(this,MyInfoActivity.class);
@@ -158,6 +167,28 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
 
         }
     }
+
+    /***
+     * 上传设备信息
+     */
+    private void uploadDeviceInfo(){
+        String jPushRegisterId = Preference.getJPushRegistrationId();
+        if (StringUtils.isEmpty(jPushRegisterId)) {
+            return;
+        }
+        LiKingApi.uploadUserDevice(Preference.getToken(),JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<BaseResult>() {
+            @Override
+            public void onSuccess(BaseResult result) {
+                LogUtils.i(TAG, "uploadDeviceInfo success!");
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                LogUtils.i(TAG, "uploadDeviceInfo fail!");
+            }
+        });
+    }
+
 
     @Override
     public void updateLoginOut() {

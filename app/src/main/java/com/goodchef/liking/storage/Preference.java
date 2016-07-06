@@ -19,7 +19,7 @@ public class Preference extends AbsPreference {
     public static final String SHOW_PHONE = "showPhone";
     public static final String IS_NEW_USER = "isNewUser";
     public static final String IS_GET_API_MESSAGE = "isGetApiFinishedMessage";
-
+    public static final String REGISTRATION_ID = "registration_id";
     private static final String TAG = "Preference";
     public static final String NULL_STRING = "";
 
@@ -229,5 +229,13 @@ public class Preference extends AbsPreference {
         return new Gson().fromJson(locationString, LocationData.class);
     }
 
+
+    public static boolean setJPushRegistrationId(String registrationId) {
+        return setObject(REGISTRATION_ID, registrationId);
+    }
+
+    public static String getJPushRegistrationId() {
+        return (String) getObject(REGISTRATION_ID, NULL_STRING);
+    }
 
 }

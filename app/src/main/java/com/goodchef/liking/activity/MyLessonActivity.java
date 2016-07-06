@@ -20,7 +20,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:32
  */
-public class LessonActivity extends BaseActivity {
+public class MyLessonActivity extends BaseActivity {
     private static final int INDEX_GROUP_LESSON = 0;//团体课
     private static final int INDEX_PRIVATE_LESSON = 1;//私教课
     private TabLayout mTableLayout;

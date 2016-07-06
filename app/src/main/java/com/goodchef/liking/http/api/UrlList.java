@@ -95,6 +95,10 @@ public class UrlList {
     public static final String UPDATE_USER = getVersionHostUrl()+"/user/update";
     /**上传图片*/  //测试环境上传图片域名testimg.likingfit.com，正式环境尚未给出
     public static final String UPLOAD_USER_IMAGE = "http://testimg.likingfit.com/upload/image";
+    /**上报手机信息*/
+    public static final String USER_DEVICE = getVersionHostUrl()+"/user/device";
+
+
 
 
 }

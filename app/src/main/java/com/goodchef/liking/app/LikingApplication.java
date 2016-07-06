@@ -5,6 +5,8 @@ import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.BuildConfig;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created on 16/5/20.
  *
@@ -15,6 +17,8 @@ public class LikingApplication extends BaseApplication {
     @Override
     protected void initialize() {
         LogUtils.i(TAG, "initialize---");
+        JPushInterface.setDebugMode(EnvironmentUtils.Config.isTestMode());
+        JPushInterface.init(this);
     }
 
     @Override

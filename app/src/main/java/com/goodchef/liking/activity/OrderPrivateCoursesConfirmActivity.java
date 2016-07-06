@@ -327,7 +327,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
      * 跳转我的课程列表
      */
     private void jumpToMyCoursesActivity() {
-        Intent intent = new Intent(this, LessonActivity.class);
+        Intent intent = new Intent(this, MyLessonActivity.class);
         startActivity(intent);
     }
 
