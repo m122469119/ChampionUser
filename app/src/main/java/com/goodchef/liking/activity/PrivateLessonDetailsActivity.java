@@ -3,8 +3,6 @@ package com.goodchef.liking.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,23 +25,23 @@ import com.goodchef.liking.storage.Preference;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:私教课详情
  * Author shaozucheng
  * Time:16/5/24 下午5:55
  */
 public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, View.OnClickListener {
     private HImageView mTeacherHImageView;
-    private RecyclerView mRecyclerView;
+    // private RecyclerView mRecyclerView;
     private TextView mTeacherTagsTextView;
     private TextView mTeacherIntroduceTextView;
-    private TextView mTrainPlanTextView;
+    //  private TextView mTrainPlanTextView;
     private TextView mImmediatelySubmitBtn;
 
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
 
-    private PrivateCoursesDetailsAdapter mPrivateCoursesDetailsAdapter;
+    //  private PrivateCoursesDetailsAdapter mPrivateCoursesDetailsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +71,9 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private void initView() {
         mTeacherHImageView = (HImageView) findViewById(R.id.private_lesson_details_teach_image);
         mTeacherTagsTextView = (TextView) findViewById(R.id.teacher_tags);
-        mRecyclerView = (RecyclerView) findViewById(R.id.private_lesson_listView);
+        //  mRecyclerView = (RecyclerView) findViewById(R.id.private_lesson_listView);
         mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
-        mTrainPlanTextView = (TextView) findViewById(R.id.train_plan);
+        //   mTrainPlanTextView = (TextView) findViewById(R.id.train_plan);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.private_lesson_immediately_submit);
 
         mImmediatelySubmitBtn.setOnClickListener(this);
@@ -100,30 +98,32 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
         StringBuffer stringBuffer = new StringBuffer();
         List<String> tags = privateCoursesData.getTags();
-        for (int i = 0; i < tags.size(); i++) {
-            stringBuffer.append("#" + tags.get(i) + "  ");
+        if (tags != null && tags.size() > 0) {
+            for (int i = 0; i < tags.size(); i++) {
+                stringBuffer.append("#" + tags.get(i) + "  ");
+            }
         }
         mTeacherTagsTextView.setText(stringBuffer.toString());
         mTeacherIntroduceTextView.setText(privateCoursesData.getDesc());
-        mTrainPlanTextView.setText(privateCoursesData.getPlan());
-        setListViewData(privateCoursesData.getPlanImgs());
+        //    mTrainPlanTextView.setText(privateCoursesData.getPlan());
+        // setListViewData(privateCoursesData.getPlanImgs());
     }
 
-    private void setListViewData(List<PrivateCoursesResult.PrivateCoursesData.PlanImageData> imageList) {
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mPrivateCoursesDetailsAdapter = new PrivateCoursesDetailsAdapter(this);
-        mPrivateCoursesDetailsAdapter.setData(imageList);
-        mRecyclerView.setAdapter(mPrivateCoursesDetailsAdapter);
-    }
+//    private void setListViewData(List<PrivateCoursesResult.PrivateCoursesData.PlanImageData> imageList) {
+//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mPrivateCoursesDetailsAdapter = new PrivateCoursesDetailsAdapter(this);
+//        mPrivateCoursesDetailsAdapter.setData(imageList);
+//        mRecyclerView.setAdapter(mPrivateCoursesDetailsAdapter);
+//    }
 
     @Override
     public void onClick(View v) {
         if (v == mImmediatelySubmitBtn) {
             if (Preference.isLogin()) {
                 Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
-                intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID,trainerId);
-                intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME,teacherName);
+                intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
+                intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);

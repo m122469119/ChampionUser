@@ -21,7 +21,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_height="300dp">
 
                 <com.aaron.android.framework.library.imageloader.HImageView
                     android:id="@+id/private_lesson_details_teach_image"
@@ -92,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:background="@drawable/shape_card_background"
                 android:orientation="vertical">
 
@@ -118,6 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:visibility="gone"
                 android:divider="@color/transparent"
                 android:listSelector="@color/transparent"/>
 
