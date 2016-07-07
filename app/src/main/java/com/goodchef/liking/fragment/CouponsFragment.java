@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
@@ -48,6 +49,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
     private int cardId;
     private int type;
+    private String couponId;
 
     private CouponsAdapter mCouponsAdapter;
 
@@ -71,9 +73,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
         confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
-        cardId = getArguments().getInt(BuyCardConfirmActivity.KEY_CARD_ID,0);
+        cardId = getArguments().getInt(BuyCardConfirmActivity.KEY_CARD_ID, 0);
         type = getArguments().getInt(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
-
+        couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
             setPullType(PullMode.PULL_BOTH);
         } else {
@@ -137,6 +139,15 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     public void updateCouponData(CouponsResult.CouponData couponData) {
         List<CouponsResult.CouponData.Coupon> list = couponData.getCouponList();
         if (list != null && list.size() > 0) {
+            if (!StringUtils.isEmpty(couponId)) {
+                for (CouponsResult.CouponData.Coupon coupon : list) {
+                    if (coupon.getCouponCode().equals(couponId)) {
+                        coupon.setSelect(true);
+                    } else {
+                        coupon.setSelect(false);
+                    }
+                }
+            }
             updateListView(list);
         }
     }
@@ -178,6 +189,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
             TextView mAmountTextView;//金额
             TextView mAmountYuanTextView;//提示
             ImageView mOverdueImageView;
+            LinearLayout mSelectCouponLayout;
+            TextView mSelectCouponTextView;
 
 
             public CouponsViewHolder(View itemView) {
@@ -192,6 +205,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                 mAmountTextView = (TextView) itemView.findViewById(R.id.coupon_amount);
                 mAmountYuanTextView = (TextView) itemView.findViewById(R.id.coupon_amount_yuan);
                 mOverdueImageView = (ImageView) itemView.findViewById(R.id.coupons_overdue_image);
+                mSelectCouponLayout = (LinearLayout) itemView.findViewById(R.id.layout_select_coupon);
+                mSelectCouponTextView = (TextView) itemView.findViewById(R.id.select_coupon);
             }
 
             @Override
@@ -200,28 +215,45 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                 String couponType = object.getCouponType();
                 String minAmount = object.getMinAmount();
                 if (couponsStatus.equals(COUPON_STATUS_NOT_USED)) {//没有使用
+                    boolean isSelct = object.isSelect();
                     setNotUsedBackGround(couponType, minAmount);
                     mOverdueImageView.setVisibility(View.GONE);
                     mRootCouponsLayout.setEnabled(true);
                     mRootCouponsLayout.setOnClickListener(mClickListener);
+                    setSelectCouponView(isSelct, object.getAmount());
                 } else if (couponsStatus.equals(COUPON_STATUS_USED)) {//使用过
                     setUsedBackGround(minAmount);
                     mOverdueImageView.setVisibility(View.VISIBLE);
                     mOverdueImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_icon_used));
                     mRootCouponsLayout.setEnabled(false);
+                    setSelectCouponView(false, "0");
                 } else if (couponsStatus.equals(COUPON_STATUS_OVERDUE)) {//过期
                     mOverdueImageView.setVisibility(View.VISIBLE);
                     setUsedBackGround(minAmount);
                     mOverdueImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_icon_overdue));
                     mRootCouponsLayout.setEnabled(false);
+                    setSelectCouponView(false, "0");
                 } else if (couponsStatus.equals(COUPON_STATUS_NO_SUBJECT)) {//不符合该项目
                     setNotProjectBackGround(couponType, minAmount);
                     mRootCouponsLayout.setEnabled(false);
+                    setSelectCouponView(false, "0");
                 }
                 mTitleTextView.setText(object.getTitle());
                 mAmountTextView.setText(object.getAmount());
                 mEndTimeTextView.setText(object.getEndTime() + " 到期");
                 mRootCouponsLayout.setTag(object);
+            }
+
+            //选择过的优惠券
+            private void setSelectCouponView(boolean isSelect, String amount) {
+                if (isSelect) {
+                    mSelectCouponLayout.setVisibility(View.VISIBLE);
+                    mSelectCouponTextView.setVisibility(View.VISIBLE);
+                    mSelectCouponTextView.setText("已选择" + amount + "元优惠券");
+                } else {
+                    mSelectCouponLayout.setVisibility(View.GONE);
+                    mSelectCouponTextView.setVisibility(View.GONE);
+                }
             }
 
             //设置没有使用过是的背景
