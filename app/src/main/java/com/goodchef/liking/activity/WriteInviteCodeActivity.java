@@ -76,7 +76,7 @@ public class WriteInviteCodeActivity extends AppBarActivity implements View.OnCl
     }
 
     private void sendConfirmRequest() {
-        LiKingApi.exchageInviteCode(Preference.getToken(), mWriteCode, new RequestUiLoadingCallback<BaseResult>(this, R.string.loading) {
+        LiKingApi.exchangeInviteCode(Preference.getToken(), mWriteCode, new RequestUiLoadingCallback<BaseResult>(this, R.string.loading) {
             @Override
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
