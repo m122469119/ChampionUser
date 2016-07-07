@@ -123,5 +123,10 @@
     <string name="share_invite_friend_title">分享标题</string>
     <string name="share_invite_friend_content">分享内容</string>
     <string name="title_write_invite_code">填写邀请码</string>
+    <string name="hint_input_name">请输入姓名</string>
+    <string name="hint_input_phone">请输入联系方式</string>
+    <string name="hint_input_city">请输入所在城市</string>
+    <string name="become_teacher_prompt">信息提交成功后工作人员会与您联系,请耐心等待</string>
+    <string name="title_become_private_teacher">成为教练</string>
 
 </resources>
