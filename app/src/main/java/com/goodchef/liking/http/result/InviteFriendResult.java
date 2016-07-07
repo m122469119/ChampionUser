@@ -25,6 +25,8 @@ public class InviteFriendResult extends BaseResult {
 
         @SerializedName("code")
         private String code;
+        @SerializedName("share_url")
+        private String shareUrl;
 
         public String getCode() {
             return code;
@@ -32,6 +34,14 @@ public class InviteFriendResult extends BaseResult {
 
         public void setCode(String code) {
             this.code = code;
+        }
+
+        public String getShareUrl() {
+            return shareUrl;
+        }
+
+        public void setShareUrl(String shareUrl) {
+            this.shareUrl = shareUrl;
         }
     }
 }

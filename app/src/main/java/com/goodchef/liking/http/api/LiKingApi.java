@@ -620,4 +620,16 @@ public class LiKingApi {
     public static void getInviteCode(String token, RequestCallback<InviteFriendResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_INVITE_CODE, InviteFriendResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
     }
+
+    /**
+     * 提交邀请码
+     *
+     * @param token    token
+     * @param code     邀请码
+     * @param callback RequestCallback
+     */
+    public static void exchageInviteCode(String token, String code, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.EXCHANGE_INVITE_CODE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("code", code), callback);
+    }
 }
