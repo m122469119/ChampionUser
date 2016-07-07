@@ -120,4 +120,7 @@
         <item>Amore, fratello.</item>
     </string-array>
 
+    <string name="share_invite_friend_title">分享标题</string>
+    <string name="share_invite_friend_content">分享内容</string>
+
 </resources>

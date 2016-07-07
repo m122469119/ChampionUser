@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.android.thirdparty.share.weixin.WeixinShare;
+import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
+import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.InviteFriendResult;
@@ -76,9 +79,43 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v == mInviteFriendsBtn) {
-
+             showShareDialog();
         } else if (v == mEditInviteCodeBtn) {
 
         }
+    }
+
+    private void showShareDialog(){
+        final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(this);
+        final String shareTitle = getString(R.string.share_invite_friend_title);
+        final String shareContent = getString(R.string.share_invite_friend_content);
+        shareCustomDialog.setViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeixinShare weixinShare = new WeixinShare(InviteFriendsActivity.this);
+                switch (v.getId()){
+                    case R.id.layout_wx_friend://微信好友
+                        WeixinShareData.WebPageData webPageData = new WeixinShareData.WebPageData();
+                        webPageData.setWebUrl("http://www.baidu.com");
+                        webPageData.setTitle(shareTitle);
+                        webPageData.setDescription(shareContent);
+                        webPageData.setWeixinSceneType(WeixinShareData.WeixinSceneType.FRIEND);
+                        webPageData.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.layout_wx_friend_circle://微信朋友圈
+                        WeixinShareData.WebPageData webPageData1 = new WeixinShareData.WebPageData();
+                        webPageData1.setWebUrl("http://www.baidu.com");
+                        webPageData1.setTitle(shareContent);
+                        webPageData1.setDescription(shareContent);
+                        webPageData1.setWeixinSceneType(WeixinShareData.WeixinSceneType.CIRCLE);
+                        webPageData1.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData1);
+                        shareCustomDialog.dismiss();
+                        break;
+                }
+            }
+        });
     }
 }
