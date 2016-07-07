@@ -18,6 +18,7 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
@@ -28,7 +29,6 @@ import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
-import com.goodchef.liking.activity.OpenTheDoorActivity;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
@@ -211,7 +211,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             Intent intent = new Intent(getActivity(), BecomeTeacherActivity.class);
             startActivity(intent);
         } else if (v == mAboutUsLayout) {//关于
-            Intent intent = new Intent(getActivity(), OpenTheDoorActivity.class);
+            Intent intent = new Intent(getActivity(), AboutActivity.class);
             startActivity(intent);
         } else if (v == mLoginOutBtn) {//退出登录
             if (Preference.isLogin()) {
