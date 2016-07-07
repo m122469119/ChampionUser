@@ -73,7 +73,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lesson_details);
-        setTitle("团体课详情");
+        setTitle(getString(R.string.title_gruop_detials));
         initData();
     }
 
