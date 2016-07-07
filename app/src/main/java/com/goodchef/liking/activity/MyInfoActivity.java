@@ -28,6 +28,7 @@ import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
 import com.goodchef.liking.mvp.view.UserInfoView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
@@ -58,6 +59,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     private String title;
     private boolean isChange = false;
     private UserInfoResult.UserInfoData mUserInfoData;
+    private String headUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,15 +203,20 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
-//        String originalName = mUserInfoData.getName();
-//        String originalBirthday = mUserInfoData.getBirthday();
-//        int originalHeight = mUserInfoData.getHeight();
-//        double originalWeight = mUserInfoData.getWeight();
-//        int originalGender = mUserInfoData.getGender();
+        int heightInt = Integer.parseInt(height);
+        if (heightInt < 50 || heightInt > 250) {
+            PopupUtils.showToast("您输入的身高不在正常范围,请重新输入");
+            return;
+        }
 
+        double weightInt = Double.parseDouble(weight);
+        if (weightInt < 25 || weightInt > 250) {
+            PopupUtils.showToast("您输入的体重不在正常范围,请重新输入");
+            return;
+        }
 
         if (isChange) {
-            mUserInfoPresenter.updateUserInfo(userName, "", gender, birthday, weight, height);
+            mUserInfoPresenter.updateUserInfo(userName, headUrl, gender, birthday, weight, height);
         }
     }
 
@@ -347,6 +354,10 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     @Override
     public void updateUserInfo() {
         PopupUtils.showToast("更新成功");
+        if (!StringUtils.isEmpty(headUrl)) {
+            Preference.setUserIconUrl(headUrl);
+        }
+        finish();
     }
 
 
@@ -356,9 +367,9 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             @Override
             public void onSuccess(UserImageResult result) {
                 if (LiKingVerifyUtils.isValid(MyInfoActivity.this, result)) {
-                    String imageUrl = result.getData().getUrl();
-                    if (!StringUtils.isEmpty(imageUrl)) {
-                        HImageLoaderSingleton.getInstance().requestImage(mHeadImage, imageUrl);
+                    headUrl = result.getData().getUrl();
+                    if (!StringUtils.isEmpty(headUrl)) {
+                        HImageLoaderSingleton.getInstance().requestImage(mHeadImage, headUrl);
                     }
                 }
             }

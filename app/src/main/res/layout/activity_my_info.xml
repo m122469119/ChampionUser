@@ -259,7 +259,7 @@
                 android:background="@color/transparent"
                 android:gravity="right"
                 android:hint="请输入体重"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textCursorDrawable="@null"
                 android:padding="10dp"
                 android:textColor="@color/lesson_details_dark_back"
