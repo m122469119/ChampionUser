@@ -49,6 +49,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private RelativeLayout mHeadInfoLayout;//头像布局
 
     private HImageView mHeadHImageView;//头像
+    private TextView mLoginPrompt;//登录提示
+    private TextView mPersonNameTextView;
+    private TextView mPersonPhoneTextView;
     private TextView mLoginOutBtn;//退出登录
 
     private LinearLayout mMyCourseLayout;//我的课程
@@ -60,9 +63,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView myTrainTime;
     private TextView myTrainDistance;
     private TextView myTrainCal;
-
-    private TextView mPersonNameTextView;
-    private TextView mPersonPhoneTextView;
 
 
     public static final String NULL_STRING = "";
@@ -80,16 +80,24 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
+        setLogonView();
+    }
+
+    private void setLogonView() {
         if (Preference.isLogin()) {
             mLoginOutBtn.setVisibility(View.VISIBLE);
+            mLoginPrompt.setVisibility(View.GONE);
+            mPersonNameTextView.setVisibility(View.VISIBLE);
+            mPersonPhoneTextView.setVisibility(View.VISIBLE);
             mPersonNameTextView.setText(Preference.getNickName());
             mPersonPhoneTextView.setText(Preference.getUserPhone());
             if (!StringUtils.isEmpty(Preference.getUserIconUrl())) {
                 HImageLoaderSingleton.getInstance().requestImage(mHeadHImageView, Preference.getUserIconUrl());
             }
         } else {
-            mPersonNameTextView.setText("");
-            mPersonPhoneTextView.setText("登录");
+            mLoginPrompt.setVisibility(View.VISIBLE);
+            mPersonNameTextView.setVisibility(View.GONE);
+            mPersonPhoneTextView.setVisibility(View.GONE);
         }
     }
 
@@ -101,6 +109,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mAboutUsLayout = (LinearLayout) view.findViewById(R.id.layout_about_us);
 
         mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
+        mLoginPrompt = (TextView) view.findViewById(R.id.person_login_prompt);
         mLoginOutBtn = (TextView) view.findViewById(R.id.login_out_btn);
 
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
@@ -158,19 +167,27 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
             startActivity(intent);
         } else if (v == mHeadHImageView) {//头像
-            Intent intent = new Intent(getActivity(), MyInfoActivity.class);
-            intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
-            startActivity(intent);
-        } else if (v == mHeadInfoLayout) {
             if (Preference.isLogin()) {
-                PopupUtils.showToast("您已登录状态");
-            } else {
+                Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+                intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        } else if (v == mHeadInfoLayout) {
+            if (!Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
-            Intent intent = new Intent(getActivity(), MyLessonActivity.class);
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), MyLessonActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mMyOrderLayout) {//我的订单
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), MyOrderActivity.class);
@@ -264,14 +281,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void updateLoginOut() {
-        mLoginOutBtn.setVisibility(View.INVISIBLE);
-        mPersonNameTextView.setText("");
-        mPersonPhoneTextView.setText("登录");
         Preference.setToken(NULL_STRING);
         Preference.setNickName(NULL_STRING);
         Preference.setUserPhone(NULL_STRING);
         Preference.setIsNewUser(null);
         Preference.setUserIconUrl(NULL_STRING);
         PopupUtils.showToast("退出成功");
+        setLogonView();
     }
 }
