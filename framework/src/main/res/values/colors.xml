@@ -10,7 +10,7 @@
     <color name="toolbar_home_icon_select">#30000000</color>
     <color name="work_table_cell">#90000000</color>
     <color name="work_table_day_text_hint">#999999</color>
-    <color name="app_bar_text_color">#ffffff</color>
+    <color name="app_bar_text_color">#23ec7d</color>
     <color name="app_bar_text_select_color">#676767</color>
     <color name="stateview_text_color">#6A6F75</color>
     <color name="stateview_button_select">#e7be02</color>
@@ -27,4 +27,5 @@
     <color name="dialog_title_background_color">#fbce02</color>
     <color name="service_phone_text">#FF9C0F</color>
     <color name="dialog_middle_line">#23b05b</color>
+
 </resources>

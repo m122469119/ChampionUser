@@ -60,7 +60,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         mMyCountdownTime = new MyCountdownTime(60000, 1000);
         mLoginPresenter = new LoginPresenter(this, this);
         mSendCodeBtn.setText("获取验证码");
-        showHomeUpIcon(R.drawable.icon_screen_cancel);
+        showHomeUpIcon(R.drawable.app_bar_left_quit);
         setViewOnClickListener();
      //   mLoginPhoneEditText.setText("15618576553");
     }
