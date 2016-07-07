@@ -77,7 +77,7 @@ public class ContactJonInActivity extends AppBarActivity implements View.OnClick
 
     @Override
     public void updateContactJoinView() {
-        PopupUtils.showToast("提交成功,请等待工作人员与您联系");
+        PopupUtils.showToast("提交成功,请等待商务人员与您联系");
         mNameEditText.setText("");
         mPhoneEditText.setText("");
         mCityEditText.setText("");
