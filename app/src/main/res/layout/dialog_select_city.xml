@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/dialog_location_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="定位城市：上海市"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="@dimen/textsize_small"/>
+
+        <TextView
+            android:id="@+id/get_city_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:text="获取定位城市"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="@dimen/textsize_small"/>
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/get_city_btn"
+            android:src="@drawable/icon_location"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/city_listView"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:divider="@color/transparent"
+        android:fadingEdge="none"
+        android:listSelector="@color/transparent"/>
+
+</LinearLayout>

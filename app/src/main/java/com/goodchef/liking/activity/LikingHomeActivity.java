@@ -1,12 +1,15 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTabHost;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -191,8 +195,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView || v == mLeftImageView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                Intent intent = new Intent(this, LookStoreMapActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, LookStoreMapActivity.class);
+//                startActivity(intent);
+                showSelectDialog();
             }
         } else if (v == mLikingRightTitleTextView) {
             if (tag.equals(TAG_RECHARGE_TAB)) {
@@ -215,7 +220,32 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    /**
+     * 展示选择城市dialog
+     */
+    private void showSelectDialog() {
+        final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_city, null, false);
+        TextView locationAddress = (TextView) findViewById(R.id.dialog_location_address);
+        TextView getCityBtn = (TextView) findViewById(R.id.get_city_btn);
+        ListView mCityListView = (ListView) findViewById(R.id.city_listView);
+        builder.setCustomView(view);
 
+
+        builder.setPositiveButton("查看场馆", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(LikingHomeActivity.this, LookStoreMapActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    /***
+     * 初始化定位
+     */
     private void initTitleLocation() {
         mAmapGDLocation = new AmapGDLocation(this);
         mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
