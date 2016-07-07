@@ -103,7 +103,8 @@ public class UrlList {
     public static final String EXCHANGE_INVITE_CODE = getVersionHostUrl()+"/user/exchange-code";
     /**联系加盟或者成为教练*/
     public static final String JOIN_APPLY = getVersionHostUrl()+"/user/join-apply";
-
+    /**场馆详情*/
+    public static final String GYM_INFO = getVersionHostUrl()+"/gym/info";
 
 
 

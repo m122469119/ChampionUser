@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
@@ -59,13 +60,14 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private TextView mStatePromptTextView;
     private TextView mCancelOrderBtn;
 
-
+    private RelativeLayout mGymIntroduceLayout;
     private RecyclerView mRecyclerView;
     private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
     private GroupCoursesDetailsPresenter mGroupCoursesDetailsPresenter;
     private String scheduleId;
     private int mCoursesState = -1;
     private String orderId;
+    private String gymId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.courses_introduce);
         mTrainNameTextView = (TextView) findViewById(R.id.train_name);
+
+        mGymIntroduceLayout = (RelativeLayout) findViewById(R.id.layout_gym_introduce);
         mRecyclerView = (RecyclerView) findViewById(R.id.group_lesson_details_recyclerView);
+
         mTeacherImageView = (HImageView) findViewById(R.id.teacher_imageView);
         mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.group_immediately_submit_btn);
@@ -113,6 +118,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mCancelOrderBtn = (TextView) findViewById(R.id.cancel_order_btn);
 
         mImmediatelySubmitBtn.setOnClickListener(this);
+        mGymIntroduceLayout.setOnClickListener(this);
     }
 
 
@@ -179,10 +185,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * @param groupLessonData
      */
     private void setDetailsData(GroupCoursesResult.GroupLessonData groupLessonData) {
+        gymId = groupLessonData.getGymId();
         setTitle(groupLessonData.getCourseName());
-
         List<String> coursesImageList = groupLessonData.getCourseImgs();
-        if (coursesImageList != null && coursesImageList.size()>0) {
+        if (coursesImageList != null && coursesImageList.size() > 0) {
             String coursesImageUrl = coursesImageList.get(0);
             if (!StringUtils.isEmpty(coursesImageUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mShopImageView, coursesImageUrl);
@@ -202,7 +208,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mTeacherIntroduceTextView.setText(groupLessonData.getTrainerDesc());
 
         List<String> trainsList = groupLessonData.getTrainerImgs();
-        if (trainsList != null && trainsList.size()>0) {
+        if (trainsList != null && trainsList.size() > 0) {
             String trainsUrl = trainsList.get(0);
             if (!StringUtils.isEmpty(trainsUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mTeacherImageView, trainsUrl);
@@ -233,6 +239,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             }
         } else if (v == mCancelOrderBtn) {//取消预定
             sendCancelCoursesRequest(orderId);
+        } else if (v == mGymIntroduceLayout) {
+            Intent intent = new Intent(this, ArenaActivity.class);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+            this.startActivity(intent);
+            this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         }
     }
 

@@ -22,8 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lesson_details_layer"
+        android:ellipsize="marquee"
         android:padding="10dp"
-        android:text="场馆公告"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_mirco"/>
 </RelativeLayout>

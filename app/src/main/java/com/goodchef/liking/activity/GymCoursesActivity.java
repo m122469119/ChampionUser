@@ -3,6 +3,7 @@ package com.goodchef.liking.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -134,7 +135,9 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
     public void onClick(View v) {
         if (v == mCheckGymBtn) {
             Intent intent = new Intent(this, ArenaActivity.class);
-            startActivity(intent);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+            this.startActivity(intent);
+            this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         }
     }
 
@@ -164,6 +167,7 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
             private TextView mLessonUseTextView;//课程用途
             private TextView mLessonTimeTextView;//课程时间
             private TextView mSurplusPersonTextView;//剩余名额
+            private CardView mCardView;
 
             public GymCoursesViewHolder(View itemView) {
                 super(itemView);
@@ -172,10 +176,11 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
                 mLessonUseTextView = (TextView) itemView.findViewById(R.id.gym_lesson_use);
                 mLessonTimeTextView = (TextView) itemView.findViewById(R.id.gym_lesson_time);
                 mSurplusPersonTextView = (TextView) itemView.findViewById(R.id.gym_surplus_person);
+                mCardView = (CardView) itemView.findViewById(R.id.gym_cardView);
             }
 
             @Override
-            public void bindViews(GymCoursesResult.GymCoursesData.Courses object) {
+            public void bindViews(final GymCoursesResult.GymCoursesData.Courses object) {
                 List<String> imageList = object.getImgs();
                 if (imageList != null && imageList.size() > 0) {
                     String imageUrl = imageList.get(0);
@@ -194,6 +199,14 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
                 }
                 mLessonTimeTextView.setText(object.getCourseDate());
                 mSurplusPersonTextView.setText("剩余名额：" + object.getQuota());
+                mCardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, GroupLessonDetailsActivity.class);
+                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, object.getScheduleId());
+                        startActivity(intent);
+                    }
+                });
             }
         }
     }
