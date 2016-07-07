@@ -99,6 +99,8 @@ public class UrlList {
     public static final String USER_DEVICE = getVersionHostUrl()+"/user/device";
     /**获取我的邀请码*/
     public static final String GET_INVITE_CODE = getVersionHostUrl()+"/user/get-my-invitate-code";
+    /**提交邀请码*/
+    public static final String EXCHANGE_INVITE_CODE = getVersionHostUrl()+"/user/exchange-code";
 
 
 

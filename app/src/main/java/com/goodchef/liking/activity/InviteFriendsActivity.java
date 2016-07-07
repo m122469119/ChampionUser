@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
@@ -32,6 +34,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     private TextView mEditInviteCodeBtn;
 
     private String mCode;
+    private String shareUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,8 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
 
     private void initData() {
         String text = "好友完成购卡，您将立刻获得50-100元可叠加无门槛购卡优惠券,优惠券金额无上限";
-        SpannableStringBuilder style=new SpannableStringBuilder(text);
-        style.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.add_minus_dishes_text)),13,20,Spannable.SPAN_EXCLUSIVE_INCLUSIVE);     //设置指定位置文字的颜色
+        SpannableStringBuilder style = new SpannableStringBuilder(text);
+        style.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.add_minus_dishes_text)), 13, 20, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);     //设置指定位置文字的颜色
         mInvitePromptTextView.setText(style);
 
         LiKingApi.getInviteCode(Preference.getToken(), new RequestUiLoadingCallback<InviteFriendResult>(this, R.string.loading_data) {
@@ -64,6 +67,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(InviteFriendsActivity.this, result)) {
                     mCode = result.getData().getCode();
+                    shareUrl = result.getData().getShareUrl();
                     mInviteCodeTextView.setText(mCode);
                 }
             }
@@ -79,13 +83,16 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v == mInviteFriendsBtn) {
-             showShareDialog();
+            if (!StringUtils.isEmpty(shareUrl)) {
+                showShareDialog();
+            }
         } else if (v == mEditInviteCodeBtn) {
-
+            Intent intent = new Intent(this, WriteInviteCodeActivity.class);
+            startActivity(intent);
         }
     }
 
-    private void showShareDialog(){
+    private void showShareDialog() {
         final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(this);
         final String shareTitle = getString(R.string.share_invite_friend_title);
         final String shareContent = getString(R.string.share_invite_friend_content);
@@ -93,10 +100,10 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 WeixinShare weixinShare = new WeixinShare(InviteFriendsActivity.this);
-                switch (v.getId()){
+                switch (v.getId()) {
                     case R.id.layout_wx_friend://微信好友
                         WeixinShareData.WebPageData webPageData = new WeixinShareData.WebPageData();
-                        webPageData.setWebUrl("http://www.baidu.com");
+                        webPageData.setWebUrl(shareUrl);
                         webPageData.setTitle(shareTitle);
                         webPageData.setDescription(shareContent);
                         webPageData.setWeixinSceneType(WeixinShareData.WeixinSceneType.FRIEND);
@@ -106,7 +113,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
                         break;
                     case R.id.layout_wx_friend_circle://微信朋友圈
                         WeixinShareData.WebPageData webPageData1 = new WeixinShareData.WebPageData();
-                        webPageData1.setWebUrl("http://www.baidu.com");
+                        webPageData1.setWebUrl(shareUrl);
                         webPageData1.setTitle(shareContent);
                         webPageData1.setDescription(shareContent);
                         webPageData1.setWeixinSceneType(WeixinShareData.WeixinSceneType.CIRCLE);
