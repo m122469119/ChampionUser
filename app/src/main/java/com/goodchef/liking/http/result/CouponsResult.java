@@ -63,6 +63,8 @@ public class CouponsResult extends BaseResult {
             @SerializedName("amount")
             private String amount;
 
+            private boolean isSelect;
+
             public String getCouponCode() {
                 return couponCode;
             }
@@ -125,6 +127,14 @@ public class CouponsResult extends BaseResult {
 
             public void setAmount(String amount) {
                 this.amount = amount;
+            }
+
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean select) {
+                isSelect = select;
             }
         }
     }

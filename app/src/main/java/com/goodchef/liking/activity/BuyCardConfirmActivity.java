@@ -155,6 +155,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
             intent.putExtra(KEY_CARD_ID, mCardId);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType);
+            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+            }
             startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
         } else if (v == mImmediatelyBuyBtn) {
             if (Preference.isLogin()) {

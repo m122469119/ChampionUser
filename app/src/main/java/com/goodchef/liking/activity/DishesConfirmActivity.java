@@ -210,6 +210,9 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_COURSE_ID, "");
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
+            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+            }
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
             intent.putExtras(bundle);
@@ -426,8 +429,8 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         jumpIntentDishesOrderList();
     }
 
-    private void jumpIntentDishesOrderList(){
-        Intent intent = new Intent(this,MyOrderActivity.class);
+    private void jumpIntentDishesOrderList() {
+        Intent intent = new Intent(this, MyOrderActivity.class);
         startActivity(intent);
     }
 

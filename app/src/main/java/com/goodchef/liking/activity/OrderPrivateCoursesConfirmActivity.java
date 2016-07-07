@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -181,7 +182,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             if (coursesId != null) {
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
-                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS,"DishesConfirmActivity");
+                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+                }
+                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
                 startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
             }
         } else if (v == mImmediatelyBuyBtn) {
