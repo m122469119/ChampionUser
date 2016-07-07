@@ -101,6 +101,8 @@ public class UrlList {
     public static final String GET_INVITE_CODE = getVersionHostUrl()+"/user/get-my-invitate-code";
     /**提交邀请码*/
     public static final String EXCHANGE_INVITE_CODE = getVersionHostUrl()+"/user/exchange-code";
+    /**联系加盟或者成为教练*/
+    public static final String JOIN_APPLY = getVersionHostUrl()+"/user/join-apply";
 
 
 

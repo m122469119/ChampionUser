@@ -1,78 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:fresco="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_content_background"
+                android:orientation="vertical">
 
-    <com.aaron.android.framework.library.imageloader.HImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        fresco:failureImage="@drawable/linshi_back"
-        fresco:failureImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/linshi_back"
-        fresco:placeholderImageScaleType="centerCrop"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="3dp"
-        android:padding="10dp"
-        android:text="提交信息后，工作人员会在2个工作日内与您联系，请耐心等待"
-        android:textColor="@color/bg_dark_gray_text"
-        android:textSize="15sp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/contact_join_back"/>
 
+        <EditText
+            android:id="@+id/name_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_four_card_background"
+            android:hint="请输入姓名"
+            android:inputType="text"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="12dp"
+            android:textColor="@color/bg_dark_gray_text"
+            android:textColorHint="@color/split_line_color"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"/>
 
-    <EditText
-        android:id="@+id/name_editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="姓名"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textColor="@color/bg_dark_gray_text"
-        android:textColorHint="@color/split_line_color"
-        android:textSize="15sp"/>
+        <EditText
+            android:id="@+id/phone_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_four_card_background"
+            android:hint="请输入联系方式"
+            android:inputType="phone"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="12dp"
+            android:textColor="@color/bg_dark_gray_text"
+            android:textColorHint="@color/split_line_color"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"/>
 
-    <EditText
-        android:id="@+id/phone_editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="联系方式"
-        android:inputType="phone"
-        android:padding="10dp"
-        android:textColor="@color/bg_dark_gray_text"
-        android:textColorHint="@color/split_line_color"
-        android:textSize="15sp"/>
+        <EditText
+            android:id="@+id/city_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_four_card_background"
+            android:hint="请输入所在城市"
+            android:inputType="text"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="12dp"
+            android:textColor="@color/bg_dark_gray_text"
+            android:textColorHint="@color/split_line_color"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"/>
 
-    <EditText
-        android:id="@+id/city_editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="所在城市"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textColor="@color/bg_dark_gray_text"
-        android:textColorHint="@color/split_line_color"
-        android:textSize="15sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:lineSpacingExtra="3dp"
+            android:padding="10dp"
+            android:text="信息提交成功后商务人员会与您联系,请耐心等待"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="13sp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/immediately_submit"
         android:layout_width="match_parent"
         android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="15dp"
+        android:background="@color/liking_green_btn_back"
         android:gravity="center"
-        android:background="@drawable/shape_card_background"
         android:text="@string/immediately_submit"
-        android:textColor="@color/bg_dark_gray_text"
-        android:textSize="15sp"/>
-</LinearLayout>
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
+</RelativeLayout>

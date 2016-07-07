@@ -628,8 +628,22 @@ public class LiKingApi {
      * @param code     邀请码
      * @param callback RequestCallback
      */
-    public static void exchageInviteCode(String token, String code, RequestCallback<BaseResult> callback) {
+    public static void exchangeInviteCode(String token, String code, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.EXCHANGE_INVITE_CODE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("code", code), callback);
+    }
+
+
+    /***
+     * 联系加盟或者成为私教
+     * @param name 姓名
+     * @param phone 手机号码
+     * @param city 所在城市
+     * @param type 类型 0加盟  1成为教练
+     * @param callback RequestCallback
+     */
+    public static void joinApply(String name, String phone, String city, int type, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.JOIN_APPLY, BaseResult.class, getCommonRequestParams().append("name", name)
+                .append("phone", phone).append("city", city).append("type", type), callback);
     }
 }

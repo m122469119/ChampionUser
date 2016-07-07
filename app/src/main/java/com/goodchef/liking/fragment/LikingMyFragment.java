@@ -188,8 +188,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         } else if (v == mInviteFriendsLayout) {//邀请好友
-            Intent intent = new Intent(getActivity(), InviteFriendsActivity.class);
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), InviteFriendsActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mCouponsLayout) {//我的优惠券
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), CouponsActivity.class);
