@@ -22,6 +22,7 @@ import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.GymCoursesResult;
 import com.goodchef.liking.http.result.GymListResult;
+import com.goodchef.liking.http.result.InviteFriendResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyDishesOrderDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
@@ -608,5 +609,15 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.USER_DEVICE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("device_id", device_id).append("device_token", device_token).append("registration_id", registration_id).append("os_version", Build.VERSION.RELEASE)
                 .append("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL), callback);
+    }
+
+    /***
+     * 获取我的邀请码
+     *
+     * @param token    token
+     * @param callback RequestCallback
+     */
+    public static void getInviteCode(String token, RequestCallback<InviteFriendResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_INVITE_CODE, InviteFriendResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
     }
 }

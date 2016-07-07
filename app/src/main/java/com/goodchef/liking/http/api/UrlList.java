@@ -97,6 +97,8 @@ public class UrlList {
     public static final String UPLOAD_USER_IMAGE = "http://testimg.likingfit.com/upload/image";
     /**上报手机信息*/
     public static final String USER_DEVICE = getVersionHostUrl()+"/user/device";
+    /**获取我的邀请码*/
+    public static final String GET_INVITE_CODE = getVersionHostUrl()+"/user/get-my-invitate-code";
 
 
 
