@@ -1,13 +1,18 @@
 package com.goodchef.liking.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.GymDetailsResult;
+import com.goodchef.liking.mvp.presenter.GymDetailsPresenter;
+import com.goodchef.liking.mvp.view.GymDetailsView;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
@@ -19,13 +24,16 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/15 下午1:54
  */
-public class ArenaActivity extends AppBarActivity {
+public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
 
     private TextView mAddressTextView;
+    private TextView mPublicNoticeTextView;
+    private String gymId;
+    private GymDetailsPresenter mGymDetailsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,51 +41,39 @@ public class ArenaActivity extends AppBarActivity {
         setContentView(R.layout.activity_arena);
         initView();
         initData();
-        requestBanner();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
     }
 
 
     @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
     }
 
     private void initData() {
-        setTitle("凌空SOHO店");
+        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        if (!StringUtils.isEmpty(gymId)) {
+            sendRequest();
+        }
         mBannerPagerAdapter = new BannerPagerAdapter(this);
         mImageViewPager.setAdapter(mBannerPagerAdapter);
         mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
         mIconPageIndicator.setViewPager(mImageViewPager);
     }
 
+    private void sendRequest() {
+        mGymDetailsPresenter = new GymDetailsPresenter(this, this);
+        mGymDetailsPresenter.getGymDetails(gymId);
+    }
+
     private void initView() {
         mImageViewPager = (InfiniteViewPager) findViewById(R.id.arena_viewpager);
         mIconPageIndicator = (IconPageIndicator) findViewById(R.id.arena_indicator);
         mAddressTextView = (TextView) findViewById(R.id.arena_address);
+        mPublicNoticeTextView = (TextView) findViewById(R.id.public_notice);
     }
 
-    private void requestBanner() {
-        List<BannerResult.BannerData.Banner> banners = new ArrayList<>();
-        BannerResult.BannerData.Banner banner = new BannerResult.BannerData.Banner();
-        banner.setImgUrl("http://bizhi.33lc.com/uploadfile/2014/0911/20140911092615146.jpg");
-        banner.setType("2");
-        banners.add(banner);
-
-        BannerResult.BannerData.Banner banner1 = new BannerResult.BannerData.Banner();
-        banner1.setImgUrl("http://thumbs.dreamstime.com/z/%BD%A1%C9%ED-34080752.jpg");
-        banner1.setType("2");
-        banners.add(banner1);
-
-        if (mBannerPagerAdapter != null) {
-            mBannerPagerAdapter.setData(banners);
-            mBannerPagerAdapter.notifyDataSetChanged();
-            mIconPageIndicator.notifyDataSetChanged();
-        }
-        mImageViewPager.setCurrentItem(0);
-        mImageViewPager.startAutoScroll();
-    }
 
     @Override
     public void onResume() {
@@ -93,6 +89,45 @@ public class ArenaActivity extends AppBarActivity {
         if (mImageViewPager != null && mImageViewPager.getChildCount() != 0) {
             mImageViewPager.stopAutoScroll();
         }
+    }
+
+    @Override
+    public void updateGymDetailsView(GymDetailsResult.GymDetailsData gymDetailsData) {
+        setTitle(gymDetailsData.getName());
+        mAddressTextView.setText("地点：" + gymDetailsData.getAddress());
+        String announcement = gymDetailsData.getAnnouncement();
+        if (!StringUtils.isEmpty(announcement)) {
+            mPublicNoticeTextView.setVisibility(View.VISIBLE);
+            mPublicNoticeTextView.setText("公告：" + gymDetailsData.getAnnouncement());
+        } else {
+            mPublicNoticeTextView.setVisibility(View.GONE);
+        }
+        List<GymDetailsResult.GymDetailsData.ImgsData> imgDataList = gymDetailsData.getImgs();
+        if (imgDataList != null && imgDataList.size() > 0) {
+            setBannerView(imgDataList);
+        }
+    }
+
+    /***
+     * 设置banner
+     *
+     * @param imgDataList 图片集合
+     */
+    private void setBannerView(List<GymDetailsResult.GymDetailsData.ImgsData> imgDataList) {
+        List<BannerResult.BannerData.Banner> banners = new ArrayList<>();
+        for (int i = 0; i < imgDataList.size(); i++) {
+            BannerResult.BannerData.Banner banner = new BannerResult.BannerData.Banner();
+            banner.setImgUrl(imgDataList.get(i).getUrl());
+            banner.setType("2");
+            banners.add(banner);
+        }
+        if (mBannerPagerAdapter != null) {
+            mBannerPagerAdapter.setData(banners);
+            mBannerPagerAdapter.notifyDataSetChanged();
+            mIconPageIndicator.notifyDataSetChanged();
+        }
+        mImageViewPager.setCurrentItem(0);
+        mImageViewPager.startAutoScroll();
     }
 
 }

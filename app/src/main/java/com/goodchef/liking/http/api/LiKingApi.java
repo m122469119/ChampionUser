@@ -21,6 +21,7 @@ import com.goodchef.liking.http.result.FoodDetailsResult;
 import com.goodchef.liking.http.result.FoodListResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.GymCoursesResult;
+import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.InviteFriendResult;
 import com.goodchef.liking.http.result.MyCardResult;
@@ -636,14 +637,26 @@ public class LiKingApi {
 
     /***
      * 联系加盟或者成为私教
-     * @param name 姓名
-     * @param phone 手机号码
-     * @param city 所在城市
-     * @param type 类型 0加盟  1成为教练
+     *
+     * @param name     姓名
+     * @param phone    手机号码
+     * @param city     所在城市
+     * @param type     类型 0加盟  1成为教练
      * @param callback RequestCallback
      */
     public static void joinApply(String name, String phone, String city, int type, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.JOIN_APPLY, BaseResult.class, getCommonRequestParams().append("name", name)
                 .append("phone", phone).append("city", city).append("type", type), callback);
+    }
+
+
+    /**
+     * 获取场馆详情
+     *
+     * @param gymId    场馆id
+     * @param callback RequestCallback
+     */
+    public static void getGymDetails(String gymId, RequestCallback<GymDetailsResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GYM_INFO, GymDetailsResult.class, getCommonRequestParams().append("gym_id", gymId), callback);
     }
 }
