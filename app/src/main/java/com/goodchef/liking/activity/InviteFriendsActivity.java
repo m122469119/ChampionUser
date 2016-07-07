@@ -1,14 +1,24 @@
 package com.goodchef.liking.activity;
 
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
+import com.goodchef.liking.http.result.InviteFriendResult;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.storage.Preference;
 
 /**
- * 说明:
+ * 说明:邀请好友
  * Author shaozucheng
  * Time:16/7/6 下午6:37
  */
@@ -18,6 +28,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     private TextView mInviteFriendsBtn;
     private TextView mEditInviteCodeBtn;
 
+    private String mCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +50,26 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     }
 
     private void initData() {
+        String text = "好友完成购卡，您将立刻获得50-100元可叠加无门槛购卡优惠券,优惠券金额无上限";
+        SpannableStringBuilder style=new SpannableStringBuilder(text);
+        style.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.add_minus_dishes_text)),13,20,Spannable.SPAN_EXCLUSIVE_INCLUSIVE);     //设置指定位置文字的颜色
+        mInvitePromptTextView.setText(style);
 
+        LiKingApi.getInviteCode(Preference.getToken(), new RequestUiLoadingCallback<InviteFriendResult>(this, R.string.loading_data) {
+            @Override
+            public void onSuccess(InviteFriendResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(InviteFriendsActivity.this, result)) {
+                    mCode = result.getData().getCode();
+                    mInviteCodeTextView.setText(mCode);
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
+            }
+        });
     }
 
 

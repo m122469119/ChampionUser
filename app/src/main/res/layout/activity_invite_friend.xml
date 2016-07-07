@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="cj987s"
                 android:textColor="@color/add_minus_dishes_text"
                 android:textSize="18sp"/>
 
@@ -67,7 +66,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
-            android:text="好友完成购卡，您将立刻获得50-100元可叠加无门槛购卡优惠券,优惠券金额无上限"
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="@dimen/textsize_small"/>
     </LinearLayout>
