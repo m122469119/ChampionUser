@@ -324,6 +324,11 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     @Override
     public void updateGetUserInfoView(UserInfoResult.UserInfoData userInfoData) {
+        String imageUrl = userInfoData.getAvatar();
+        if (!StringUtils.isEmpty(imageUrl)){
+            HImageLoaderSingleton.getInstance().requestImage(mHeadImage, imageUrl);
+            Preference.setUserIconUrl(imageUrl);
+        }
         mUserInfoData = userInfoData;
         String name = userInfoData.getName();
         if (!StringUtils.isEmpty(name)) {
@@ -354,10 +359,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     @Override
     public void updateUserInfo() {
         PopupUtils.showToast("更新成功");
-        if (!StringUtils.isEmpty(headUrl)) {
-            Preference.setUserIconUrl(headUrl);
-        }
-        finish();
+        mUserInfoPresenter.getUserInfo();
     }
 
 
@@ -369,7 +371,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 if (LiKingVerifyUtils.isValid(MyInfoActivity.this, result)) {
                     headUrl = result.getData().getUrl();
                     if (!StringUtils.isEmpty(headUrl)) {
-                        HImageLoaderSingleton.getInstance().requestImage(mHeadImage, headUrl);
+                        mUserInfoPresenter.updateUserInfo("", headUrl, null, "", "", "");
                     }
                 }
             }

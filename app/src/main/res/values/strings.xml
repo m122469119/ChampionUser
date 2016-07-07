@@ -128,5 +128,6 @@
     <string name="hint_input_city">请输入所在城市</string>
     <string name="become_teacher_prompt">信息提交成功后工作人员会与您联系,请耐心等待</string>
     <string name="title_become_private_teacher">成为教练</string>
+    <string name="title_gruop_detials">团体课详情</string>
 
 </resources>

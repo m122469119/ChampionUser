@@ -121,6 +121,9 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
                         weixinShare.shareWebPage(webPageData1);
                         shareCustomDialog.dismiss();
                         break;
+                    case R.id.cancel_image_button:
+                        shareCustomDialog.dismiss();
+                        break;
                 }
             }
         });
