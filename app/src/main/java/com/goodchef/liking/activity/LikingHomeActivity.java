@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
+import com.goodchef.liking.adapter.SelectCityAdapter;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
@@ -34,12 +36,14 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.fragment.RefreshChangeDataMessage;
+import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener {
 
@@ -73,6 +77,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
+    SelectCityAdapter mSelectCityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +85,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_liking_home);
         setTitle(R.string.activity_liking_home);
         initViews();
-        LiKingVerifyUtils.initApi(LikingHomeActivity.this);
+        //   LiKingVerifyUtils.initApi(LikingHomeActivity.this);
         setViewOnClickListener();
         initTitleLocation();
     }
@@ -226,12 +231,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void showSelectDialog() {
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_city, null, false);
-        TextView locationAddress = (TextView) findViewById(R.id.dialog_location_address);
-        TextView getCityBtn = (TextView) findViewById(R.id.get_city_btn);
-        ListView mCityListView = (ListView) findViewById(R.id.city_listView);
+        TextView locationAddress = (TextView) view.findViewById(R.id.dialog_location_address);
+        TextView getCityBtn = (TextView) view.findViewById(R.id.get_city_btn);
+        ListView mCityListView = (ListView) view.findViewById(R.id.city_listView);
+        setCityData(mCityListView, builder);
         builder.setCustomView(view);
-
-
         builder.setPositiveButton("查看场馆", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -242,6 +246,51 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         });
         builder.create().show();
     }
+
+    /**
+     * 设置选择城市的数据
+     *
+     * @param mCityListView
+     * @param builder
+     */
+    private void setCityData(ListView mCityListView, final HBaseDialog.Builder builder) {
+        List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
+        if (cityDataList != null && cityDataList.size() > 0) {
+            for (CityData cityData : cityDataList) {
+                if (cityData.getCityName().contains("上海市")) {
+                    cityData.setSelct(true);
+                } else {
+                    cityData.setSelct(false);
+                }
+            }
+            mSelectCityAdapter = new SelectCityAdapter(this, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RelativeLayout textView = (RelativeLayout) v.findViewById(R.id.layout_city);
+                    if (textView != null) {
+                        CityData cityData = (CityData) textView.getTag();
+                        if (cityData != null) {
+                            List<CityData> cityDataList = mSelectCityAdapter.getDataList();
+                            for (CityData dto : cityDataList) {
+                                if (dto.getCityId() == cityData.getCityId()) {
+                                    dto.setSelct(true);
+                                } else {
+                                    dto.setSelct(false);
+                                }
+                            }
+                            mSelectCityAdapter.notifyDataSetChanged();
+                            mLikingLeftTitleTextView.setText(cityData.getCityName());
+                            //重新发送请求
+                            builder.create().dismiss();
+                        }
+                    }
+                }
+            });
+            mSelectCityAdapter.setData(cityDataList);
+            mCityListView.setAdapter(mSelectCityAdapter);
+        }
+    }
+
 
     /***
      * 初始化定位

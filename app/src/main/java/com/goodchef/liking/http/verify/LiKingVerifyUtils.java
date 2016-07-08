@@ -15,9 +15,13 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.storage.Preference;
+
+import java.io.File;
 
 import de.greenrobot.event.EventBus;
 
@@ -30,10 +34,12 @@ import de.greenrobot.event.EventBus;
 public class LiKingVerifyUtils {
 
     public static final String TAG = "ChefStoveVerifyResultUtils";
+
     /**
      * 验证Result有效性,处理相关服务器响应的BaseResult错误码
+     *
      * @param context 上下文资源
-     * @param result 需要校验的BaseResult
+     * @param result  需要校验的BaseResult
      * @return 是否为正确有效的BaseResult
      */
     public static boolean isValid(final Context context, final BaseView view, BaseResult result) {
@@ -49,7 +55,7 @@ public class LiKingVerifyUtils {
             switch (errorCode) {
                 case LiKingRequestCode.LOGIN_TOKEN_INVALID:
                     if (view != null && view instanceof BaseLoginView) {
-                        ((BaseLoginView)view).updateNoLoginView();
+                        ((BaseLoginView) view).updateNoLoginView();
                     }
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:
@@ -87,11 +93,11 @@ public class LiKingVerifyUtils {
     }
 
     private static boolean mSyncTimestampIsLoading = false; //同步时间戳接口正在加载中
-  //  public static BaseConfigResult sBaseConfigResult = null;
+    public static BaseConfigResult sBaseConfigResult = null;
     private static boolean mBaseConfigInitSuccess = false; //BaseConfig未与服务器同步成功
+
     public static void initApi(final Context context) {
         if (mSyncTimestampIsLoading) {
-            EventBus.getDefault().post(new InitApiFinishedMessage(true));
             return;
         }
         LiKingApi.syncServerTimestamp(new RequestCallback<SyncTimestampResult>() {
@@ -108,68 +114,61 @@ public class LiKingVerifyUtils {
                     LiKingApi.sTimestampOffset = Long.parseLong(result.getData().getTimestamp())
                             + (currentSystemSeconds - LiKingApi.sRequestSyncTimestamp) / 2
                             - currentSystemSeconds;
-                   // getBaseConfig(context);
+                    getBaseConfig(context);
                     EventBus.getDefault().post(new InitApiFinishedMessage(true));
                 } else {
                     mSyncTimestampIsLoading = false;
-                   // sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
+                    sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
                 }
             }
 
             @Override
             public void onFailure(RequestError error) {
-              //  sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
+                sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
                 EventBus.getDefault().post(new InitApiFinishedMessage(false));
                 mSyncTimestampIsLoading = false;
             }
         });
     }
 
-//    public static void getBaseConfig(final Context context) {
-//        if (mBaseConfigInitSuccess && sBaseConfigResult != null) {
-//            EventBus.getDefault().post(new InitApiFinishedMessage(true));
-//            return;
-//        }
-//        ChefStoveApi.baseConfig(new RequestCallback<BaseConfigResult>()
-//        {
-//            @Override
-//            public void onStart()
-//            {
-//                super.onStart();
-//                mBaseConfigInitSuccess = true;
-//            }
-//
-//            @Override
-//            public void onSuccess(BaseConfigResult result)
-//            {
-//                if (isValid(context, result))
-//                {
-//                    sBaseConfigResult = result;
-//                    BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
-//                    if (baseConfigData != null)
-//                    {
-//                        UrlList.HOST_VERSION = File.separator + baseConfigData.getApiVersion();
-//                    }
-//                    Preference.setBaseConfig(result);
-//                    EventBus.getDefault().post(new InitApiFinishedMessage(true));
-//                } else
-//                {
-//                    sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
-//                }
-//                mBaseConfigInitSuccess = true;
-//                mSyncTimestampIsLoading = false;
-//            }
-//
-//            @Override
-//            public void onFailure(RequestError error)
-//            {
-//                mSyncTimestampIsLoading = false;
-//                mBaseConfigInitSuccess = false;
-//                sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
-//                EventBus.getDefault().post(new InitApiFinishedMessage(false));
-//            }
-//        });
-//    }
+    public static void getBaseConfig(final Context context) {
+        if (mBaseConfigInitSuccess && sBaseConfigResult != null) {
+            EventBus.getDefault().post(new InitApiFinishedMessage(true));
+            return;
+        }
+        LiKingApi.baseConfig(new RequestCallback<BaseConfigResult>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                mBaseConfigInitSuccess = true;
+            }
+
+            @Override
+            public void onSuccess(BaseConfigResult result) {
+                if (isValid(context, result)) {
+                    sBaseConfigResult = result;
+                    BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
+                    if (baseConfigData != null) {
+                        UrlList.HOST_VERSION = File.separator + baseConfigData.getApiVersion();
+                    }
+                    Preference.setBaseConfig(result);
+                    EventBus.getDefault().post(new InitApiFinishedMessage(true));
+                } else {
+                    sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
+                }
+                mBaseConfigInitSuccess = true;
+                mSyncTimestampIsLoading = false;
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                mSyncTimestampIsLoading = false;
+                mBaseConfigInitSuccess = false;
+                sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
+                EventBus.getDefault().post(new InitApiFinishedMessage(false));
+            }
+        });
+    }
 
     public static boolean checkLogin(Context context) {
         if (context == null) {
@@ -182,13 +181,13 @@ public class LiKingVerifyUtils {
         return true;
     }
 
-//    private static BaseConfigResult getLocalBaseConfig(Context context){
-//        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+    private static BaseConfigResult getLocalBaseConfig(Context context) {
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
 //        if(baseConfigResult == null){
 //            baseConfigResult = getBaseConfigFromAsset(context);
 //        }
-//        return baseConfigResult;
-//    }
+        return baseConfigResult;
+    }
 
 //    private static BaseConfigResult getBaseConfigFromAsset(Context context){
 //        try

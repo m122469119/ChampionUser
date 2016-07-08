@@ -2,11 +2,17 @@ package com.goodchef.liking.storage;
 
 import android.content.SharedPreferences;
 
+import com.aaron.android.codelibrary.utils.ConstantUtils;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.storage.AbsPreference;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.google.gson.Gson;
+
+import java.io.File;
 
 /**
  * 说明:
@@ -22,6 +28,9 @@ public class Preference extends AbsPreference {
     public static final String APP_VERSION = "app_version";
     public static final String IS_GET_API_MESSAGE = "isGetApiFinishedMessage";
     public static final String REGISTRATION_ID = "registration_id";
+    public static final String CUSTOMER_PHONE = "customer_phone";//客服电话
+    public static final String BUSINESS_PHONE = "business_phone";//商务合作电话
+    public static final String BASE_CONFIG = "base_config";
     private static final String TAG = "Preference";
     public static final String NULL_STRING = "";
 
@@ -250,6 +259,50 @@ public class Preference extends AbsPreference {
 
     public static String getAppVersion() {
         return (String) getObject(APP_VERSION,"");
+    }
+
+
+    public static boolean setCustomerServicePhone(String phone) {
+        return setObject(CUSTOMER_PHONE, phone);
+    }
+
+    public static String getCustomerServicePhone() {
+        return (String) getObject(CUSTOMER_PHONE, ConstantUtils.BLANK_STRING);
+    }
+
+    public static boolean setBusinessPhone(String phone) {
+        return setObject(BUSINESS_PHONE, phone);
+    }
+
+    public static String getBusinessServicePhone() {
+        return (String) getObject(BUSINESS_PHONE, ConstantUtils.BLANK_STRING);
+    }
+
+
+    public static boolean setBaseConfig(BaseConfigResult baseConfigResult) {
+        if (baseConfigResult != null && baseConfigResult.getBaseConfigData() != null) {
+            if (!setCustomerServicePhone(baseConfigResult.getBaseConfigData().getCustomerPhone())) {
+                return false;
+            }
+            if (!setBusinessPhone(baseConfigResult.getBaseConfigData().getBusinessPhone())) {
+                return false;
+            }
+            String apiVersion = baseConfigResult.getBaseConfigData().getApiVersion();
+            if (!StringUtils.isEmpty(apiVersion)) {
+                UrlList.HOST_VERSION = File.separator + apiVersion;
+            }
+        }
+        String baseConfig = new Gson().toJson(baseConfigResult);
+        if (!setObject(BASE_CONFIG, baseConfig)) {
+            return false;
+        }
+        LogUtils.i(TAG, "put baseConfig: " + baseConfig);
+        return true;
+    }
+
+    public static BaseConfigResult getBaseConfig() {
+        String baseConfig = (String) getObject(BASE_CONFIG, NULL_STRING);
+        return new Gson().fromJson(baseConfig, BaseConfigResult.class);
     }
 
 }

@@ -107,5 +107,4 @@ public class UrlList {
     public static final String GYM_INFO = getVersionHostUrl()+"/gym/info";
 
 
-
 }
