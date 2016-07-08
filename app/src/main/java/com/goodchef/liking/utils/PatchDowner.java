@@ -1,0 +1,76 @@
+package com.goodchef.liking.utils;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.text.TextUtils;
+
+import com.aaron.android.codelibrary.utils.LogUtils;
+import com.goodchef.liking.http.result.data.PatchData;
+import com.goodchef.liking.storage.Preference;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+/**
+ * Created by Lennon on 16/3/12.
+ */
+public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
+    private Context context;
+    private String patchDir;
+    String patchName = "";
+
+    public PatchDowner(Context context) {
+        this.context = context;
+        patchDir = context.getFilesDir().getAbsolutePath();
+    }
+
+    @Override
+    protected PatchData doInBackground(PatchData... params) {
+        String urlS = params[0].getPatchUrl();
+        if (!TextUtils.isEmpty(urlS)) {
+            patchName = urlS.substring(urlS.lastIndexOf("/"));
+            File patchFile = new File(patchDir, patchName);
+            if (patchFile.exists()) {
+                LogUtils.i("Dust", "补丁存在");
+                params[0].setPatchFile(patchFile.getAbsolutePath());
+                return params[0];
+            } else {
+                LogUtils.i("Dust", "补丁不存在，开始下载");
+                try {
+                    URL url = new URL(urlS);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == 200) {
+                        FileOutputStream fos = new FileOutputStream(patchFile);
+                        InputStream inStream = conn.getInputStream();
+                        byte[] buff = new byte[1024];
+                        int len = 0;
+                        while ((len = inStream.read(buff)) != -1) {
+                            fos.write(buff, 0, len);
+                        }
+                        inStream.close();
+                        fos.close();
+                        params[0].setPatchFile(patchFile.getAbsolutePath());
+                        return params[0];
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(PatchData s) {
+        if (s != null) {
+            LogUtils.i("Dust", s.toString());
+            Preference.savePatchData(s);
+        }
+    }
+}

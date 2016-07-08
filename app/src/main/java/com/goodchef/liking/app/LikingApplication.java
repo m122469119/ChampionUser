@@ -1,10 +1,14 @@
 package com.goodchef.liking.app;
 
+import android.content.Context;
+
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseApplication;
+import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.BuildConfig;
 
+import cn.jiajixin.nuwa.Nuwa;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -14,6 +18,14 @@ import cn.jpush.android.api.JPushInterface;
  * @version 1.0.0
  */
 public class LikingApplication extends BaseApplication {
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        /**初始化Hotfix修复框架*/
+        Nuwa.init(base);
+    }
+
     @Override
     protected void initialize() {
         LogUtils.i(TAG, "initialize---");
@@ -24,6 +36,7 @@ public class LikingApplication extends BaseApplication {
     @Override
     protected void backgroundInitialize() {
         LogUtils.i(TAG, "backgroundInitialize---");
+        DiskStorageManager.getInstance().init("LikingFit");
     }
 
     @Override

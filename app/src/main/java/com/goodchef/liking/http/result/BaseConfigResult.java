@@ -3,6 +3,7 @@ package com.goodchef.liking.http.result;
 import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.goodchef.liking.http.result.data.CityData;
+import com.goodchef.liking.http.result.data.PatchData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -35,9 +36,10 @@ public class BaseConfigResult extends BaseResult {
         private String countSecond;
         @SerializedName("api_version")
         private String apiVersion;
-
         @SerializedName("citys")
         private List<CityData> cityList;
+        @SerializedName("patch")
+        private PatchData patchData;
 
         public String getCustomerPhone() {
             return customerPhone;
@@ -79,6 +81,12 @@ public class BaseConfigResult extends BaseResult {
             this.cityList = cityList;
         }
 
+        public PatchData getPatchData() {
+            return patchData;
+        }
 
+        public void setPatchData(PatchData patchData) {
+            this.patchData = patchData;
+        }
     }
 }

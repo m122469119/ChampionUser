@@ -79,4 +79,5 @@ dependencies {
     compile project(':framework')
 //    compile 'io.reactivex:rxjava:1.1.5'
 //    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
 }
