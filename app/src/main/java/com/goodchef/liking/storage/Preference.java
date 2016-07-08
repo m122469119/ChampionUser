@@ -10,6 +10,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.http.result.data.PatchData;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class Preference extends AbsPreference {
     public static final String BUSINESS_PHONE = "business_phone";//商务合作电话
     public static final String BASE_CONFIG = "base_config";
     private static final String TAG = "Preference";
+    public static final String PATCH_DATA = "patchData";
     public static final String NULL_STRING = "";
 
 
@@ -303,6 +305,16 @@ public class Preference extends AbsPreference {
     public static BaseConfigResult getBaseConfig() {
         String baseConfig = (String) getObject(BASE_CONFIG, NULL_STRING);
         return new Gson().fromJson(baseConfig, BaseConfigResult.class);
+    }
+
+
+    public static boolean savePatchData(PatchData data){
+        String patchDataString = new Gson().toJson(data);
+        return setObject(PATCH_DATA,patchDataString);
+    }
+    public static PatchData getPatchData(){
+        String patchDataString = (String) getObject(PATCH_DATA,NULL_STRING);
+        return new Gson().fromJson(patchDataString,PatchData.class);
     }
 
 }
