@@ -1,10 +1,11 @@
 package com.goodchef.liking.activity;
 
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -13,18 +14,21 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptor;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
+import com.goodchef.liking.dialog.MapStoreDialog;
 
 /**
  * 说明:查看场馆
  * Author shaozucheng
  * Time:16/6/7 下午5:49
  */
-public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener {
+public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener ,AMap.OnMarkerClickListener,AMap.OnMapClickListener{
     private MapView mMapView;
     private AMap mAMap;
     //声明AMapLocationClient类对象
@@ -33,6 +37,12 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     private OnLocationChangedListener mListener;
     //声明mLocationOption对象
     public AMapLocationClientOption mLocationOption;
+
+    /**
+     * 添加的覆盖物标志
+     */
+    private Marker currentMarker;
+   private MapStoreDialog mMapStoreDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +72,15 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mAMap.setLocationSource(this);// 设置定位监听
         mAMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        mAMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(12));
 
         // 自定义系统定位蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         // 自定义定位蓝点图标
-        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.location_marke));
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_mark));
         // 自定义精度范围的圆形边框颜色
-        myLocationStyle.strokeColor(Color.BLUE);
+        myLocationStyle.strokeColor(ResourceUtils.getColor(R.color.map_radius_back));
+        myLocationStyle.radiusFillColor(ResourceUtils.getColor(R.color.map_radius_gray_back));
         //自定义精度范围的圆形边框宽度
         myLocationStyle.strokeWidth(2);
         // 将自定义的 myLocationStyle 对象添加到地图上
@@ -93,6 +104,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mLocationClient.setLocationOption(mLocationOption);
         //开启定位
         mLocationClient.startLocation();
+        mAMap.setOnMarkerClickListener(this);
 
         setMapMark();
     }
@@ -107,8 +119,24 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         otMarkerOptions.visible(true);//设置可见
         // otMarkerOptions.title("芜湖市").snippet("芜湖市：31.383755, 118.438321");//里面的内容自定义
         otMarkerOptions.draggable(true);
-        otMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_map_mark)));
+        //   otMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_map_mark)));
+
+        otMarkerOptions.icon(ImageNormal(0));
         mAMap.addMarker(otMarkerOptions);
+    }
+
+    /**
+     * 自定义标记物的图片（未选中状态）
+     *
+     * @param i
+     * @return
+     */
+    private BitmapDescriptor ImageNormal(int i) {
+        View view = getLayoutInflater().inflate(R.layout.layout_map_mark, null);
+        TextView tv = (TextView) view.findViewById(R.id.map_mark_title);
+        tv.setText("凌空SoHo店");
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromView(view);
+        return bitmap;
     }
 
 
@@ -171,5 +199,27 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
             }
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        currentMarker = marker;
+        showStoreDialog();
+        return false;
+    }
+
+    private void showStoreDialog(){
+        mMapStoreDialog = new MapStoreDialog(this);
+    }
+
+    private void dismissDialog(){
+        if (mMapStoreDialog !=null){
+            mMapStoreDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        dismissDialog();
     }
 }
