@@ -12,6 +12,7 @@ import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -77,6 +78,16 @@ public class LiKingApi {
         LogUtils.i(TAG, requestParams.getParams().toString());
         return requestParams;
     }
+
+    /**
+     * 基础配置信息
+     *
+     * @param callback RequestCallback
+     */
+    public static void baseConfig(RequestCallback<BaseConfigResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.BASE_CONFIG, BaseConfigResult.class, null, getCommonRequestParams(), callback);
+    }
+
 
     /**
      * 同步服务器时间戳
