@@ -43,7 +43,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LikingHomeActivity">
+        <activity android:name=".activity.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -51,6 +51,9 @@
             </intent-filter>
         </activity>
 
+        <!--首页-->
+        <activity android:name=".activity.LikingHomeActivity"
+            android:screenOrientation="portrait"/>
 
         <!--团体课程详情-->
         <activity

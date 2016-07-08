@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.storage.AbsPreference;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.google.gson.Gson;
 
@@ -18,6 +19,7 @@ public class Preference extends AbsPreference {
     public static final String USER_ICON_URL = "headimgurl";
     public static final String SHOW_PHONE = "showPhone";
     public static final String IS_NEW_USER = "isNewUser";
+    public static final String APP_VERSION = "app_version";
     public static final String IS_GET_API_MESSAGE = "isGetApiFinishedMessage";
     public static final String REGISTRATION_ID = "registration_id";
     private static final String TAG = "Preference";
@@ -236,6 +238,18 @@ public class Preference extends AbsPreference {
 
     public static String getJPushRegistrationId() {
         return (String) getObject(REGISTRATION_ID, NULL_STRING);
+    }
+
+    public static boolean isNewVersion() {
+        return !EnvironmentUtils.Config.getAppVersionName().equals(getAppVersion());
+    }
+
+    public static void setAppVersion(String appVersion) {
+        setObject(APP_VERSION,appVersion);
+    }
+
+    public static String getAppVersion() {
+        return (String) getObject(APP_VERSION,"");
     }
 
 }
