@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
+import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
@@ -47,7 +50,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
-        noDataImageView.setImageResource(R.drawable.no_order);
+        noDataImageView.setImageResource(R.drawable.icon_no_data);
         noDataText.setText("暂无数据");
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
@@ -87,9 +90,9 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                         MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                         if (data != null) {
                             Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
-                            intent.putExtra(INTENT_KEY_STATE,data.getStatus());
-                            intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID,data.getScheduleId());
-                            intent.putExtra(INTENT_KEY_ORDER_ID,data.getOrderId());
+                            intent.putExtra(INTENT_KEY_STATE, data.getStatus());
+                            intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());
+                            intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
                             startActivity(intent);
                         }
                     }
@@ -114,11 +117,33 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
             if (textView != null) {
                 MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                 if (data != null) {
-                    sendCancelCoursesRequest(data.getOrderId());
+                    showCancelCoursesDialog(data.getOrderId());
                 }
             }
         }
     };
+
+    /**
+     * 取消预约团体课
+     */
+    private void showCancelCoursesDialog(final String orderId) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
+        builder.setMessage("您确定取消预约？");
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendCancelCoursesRequest(orderId);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
     //发送取消请求
     private void sendCancelCoursesRequest(String orderId) {
@@ -139,5 +164,14 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 super.onFailure(error);
             }
         });
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(CancelGroupCoursesMessage cancelGroupCoursesMessage){
+        loadHomePage();
     }
 }

@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,12 +17,14 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
+import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -179,6 +182,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     @Override
     public void updateOrderGroupCourses() {
         Intent intent = new Intent(this, MyLessonActivity.class);
+        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM,1);
         startActivity(intent);
         this.finish();
     }
@@ -201,7 +205,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mScheduleResultTextView.setText(groupLessonData.getQuota());
         mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
-        mShopAddressTextView.setText(groupLessonData.getGymAddress());
+        mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
         mTeacherNameTextView.setText(groupLessonData.getTrainerName());
         String rat = groupLessonData.getIntensity();
         if (!TextUtils.isEmpty(rat)) {
@@ -242,13 +246,36 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 startActivity(intent);
             }
         } else if (v == mCancelOrderBtn) {//取消预定
-            sendCancelCoursesRequest(orderId);
+            showCancelCoursesDialog();
         } else if (v == mGymIntroduceLayout) {
             Intent intent = new Intent(this, ArenaActivity.class);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             this.startActivity(intent);
             this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         }
+    }
+
+
+    /**
+     * 取消预约团体课
+     */
+    private void showCancelCoursesDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage("您确定取消预约？");
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendCancelCoursesRequest(orderId);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 
@@ -260,6 +287,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(GroupLessonDetailsActivity.this, result)) {
                     PopupUtils.showToast("取消成功");
+                    postEvent(new CancelGroupCoursesMessage());
+                    mCoursesState = 3;
+                    setBottomCoursesState();
                     requestData();
                 } else {
                     PopupUtils.showToast(result.getMessage());
