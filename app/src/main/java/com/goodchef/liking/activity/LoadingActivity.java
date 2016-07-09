@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
@@ -38,7 +37,6 @@ public class LoadingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         getPackageInfo();
-        initView();
         previousPatchData = Preference.getPatchData();
         LiKingVerifyUtils.initApi(this);
     }
@@ -72,12 +70,6 @@ public class LoadingActivity extends BaseActivity {
     }
 
 
-    private void initView() {
-        TextView appNameTextView = (TextView) findViewById(R.id.appNameTextView);
-        TextView appVersionTextView = (TextView) findViewById(R.id.appVersionTextView);
-        appNameTextView.setText(appName);
-        appVersionTextView.setText(versionName);
-    }
 
     private void getPackageInfo() {
         try {
