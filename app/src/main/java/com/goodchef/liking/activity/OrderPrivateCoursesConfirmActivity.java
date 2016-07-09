@@ -75,6 +75,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         initData();
         initPayModule();
         setViewOnClickListener();
+        setPayDefaultType();
     }
 
     private void initView() {
@@ -103,6 +104,12 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initPayModule() {
         mAliPay = new AliPay(this, mOnAliPayListener);
         mWeixinPay = new WeixinPay(this, mWeixinPayListener);
+    }
+
+    private void setPayDefaultType(){
+        mAlipayCheckBox.setChecked(true);
+        mWechatCheckBox.setChecked(false);
+        payType = "1";
     }
 
     private void initData() {
@@ -332,6 +339,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
      */
     private void jumpToMyCoursesActivity() {
         Intent intent = new Intent(this, MyLessonActivity.class);
+        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM,2);
         startActivity(intent);
     }
 

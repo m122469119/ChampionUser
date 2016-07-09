@@ -54,7 +54,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
-        noDataImageView.setImageResource(R.drawable.no_order);
+        noDataImageView.setImageResource(R.drawable.icon_no_data);
         noDataText.setText("暂无数据");
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);

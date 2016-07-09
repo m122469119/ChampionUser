@@ -23,15 +23,22 @@ import java.util.List;
 public class MyLessonActivity extends BaseActivity {
     private static final int INDEX_GROUP_LESSON = 0;//团体课
     private static final int INDEX_PRIVATE_LESSON = 1;//私教课
+    public static final String KEY_CURRENT_ITEM = "key_current_item";
     private TabLayout mTableLayout;
     private ViewPager mViewPage;
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
     private ImageView mLeftImageView;
+    private int currentInt = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson);
+        initData();
         initView();
+    }
+
+    private void initData(){
+        currentInt = getIntent().getIntExtra(KEY_CURRENT_ITEM,1);
     }
 
     private void initView() {
@@ -64,6 +71,7 @@ public class MyLessonActivity extends BaseActivity {
         mViewPage.setOffscreenPageLimit(2);
         mTableLayout.setTabsFromPagerAdapter(mTabFragmentPagerAdapter);//给table设置适配器
         mTableLayout.setupWithViewPager(mViewPage);//设置table和viewPage联动
+        mViewPage.setCurrentItem(currentInt);
     }
 
     private List<TabFragmentPagerAdapter.FragmentBinder> myOrderFragmentList() {
