@@ -16,6 +16,7 @@ import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ShoppingCartAdapter;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;
+import com.goodchef.liking.eventmessages.DishesWechatPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.data.Food;
@@ -248,6 +249,10 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     public void onEvent(DishesAliPayMessage dishesAliPayMessage){
+        clearShoppingCart();
+    }
+
+    public void onEvent(DishesWechatPayFalse dishesWechatPayFalse){
         clearShoppingCart();
     }
 
