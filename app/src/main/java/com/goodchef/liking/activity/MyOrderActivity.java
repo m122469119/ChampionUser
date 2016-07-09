@@ -23,10 +23,12 @@ import java.util.List;
 public class MyOrderActivity extends BaseActivity {
     private static final int INDEX_DISHES = 0;//营养餐
     private static final int INDEX_MY_CARD = 1;//会员卡
+    public static String KEY_CURRENT_INDEX = "key_current_index";
     private TabLayout mTableLayout;
     private ViewPager mViewPage;
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
     private ImageView mLeftImageView;
+    private int mCurrentItem = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void initData() {
+        mCurrentItem = getIntent().getIntExtra(KEY_CURRENT_INDEX, 1);
         initTableLayout();
         initViewPage();
     }
@@ -57,6 +60,7 @@ public class MyOrderActivity extends BaseActivity {
     private void initTableLayout() {
         mTableLayout.addTab(mTableLayout.newTab().setText(R.string.tab_title_dishes));
         mTableLayout.addTab(mTableLayout.newTab().setText(R.string.tab_title_my_card));
+        mViewPage.setCurrentItem(mCurrentItem);
     }
 
     private void initViewPage() {

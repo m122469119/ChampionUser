@@ -13,7 +13,7 @@
     <color name="app_bar_text_color">#23ec7d</color>
     <color name="app_bar_text_select_color">#676767</color>
     <color name="stateview_text_color">#6A6F75</color>
-    <color name="stateview_button_select">#e7be02</color>
+    <color name="stateview_button_select">#34C86C</color>
     <color name="bg_gray_button_text">#4A3C01</color>
 
     <!--Base Color-->

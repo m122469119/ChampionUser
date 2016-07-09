@@ -218,7 +218,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
     }
 
-    private void setStadiumImage(List<String> stadiumImageList) {
+    private void setStadiumImage(List<GroupCoursesResult.GroupLessonData.GymImgsData> stadiumImageList) {
         if (stadiumImageList != null) {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerView.setLayoutManager(mLayoutManager);

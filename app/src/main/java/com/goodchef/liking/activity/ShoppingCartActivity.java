@@ -15,6 +15,8 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ShoppingCartAdapter;
+import com.goodchef.liking.eventmessages.DishesAliPayMessage;
+import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.storage.Preference;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
  */
 public class ShoppingCartActivity extends AppBarActivity implements View.OnClickListener, ShoppingCartAdapter.ShoppingDishChangedListener {
     public static final String INTENT_KEY_CONFIRM_BUY_LIST = "intent_key_confirm_buy_List";
+    public static final String KEY_CLEAR_CART = "key_clear_cart";
     private PullToRefreshRecyclerView mRecyclerView;
     private ShoppingCartAdapter mShoppingCartAdapter;
     private TextView mTotalPriceTextView;
@@ -41,7 +44,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-        setTitle("购物车");
+        setTitle(getString(R.string.title_shopping_cart));
         setRightMenu();
         initView();
         initData();
@@ -51,6 +54,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+                intent.putExtra(KEY_CLEAR_CART,false);
                 intent.putExtras(bundle);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -213,6 +217,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+        intent.putExtra(KEY_CLEAR_CART,true);//清空购物车
         intent.putExtras(bundle);
         setResult(Activity.RESULT_OK, intent);
         finish();
@@ -225,11 +230,25 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
+            intent.putExtra(KEY_CLEAR_CART,false);
             intent.putExtras(bundle);
             setResult(Activity.RESULT_OK, intent);
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(DishesWechatPayMessage wechatMessage) {
+       clearShoppingCart();
+    }
+
+    public void onEvent(DishesAliPayMessage dishesAliPayMessage){
+        clearShoppingCart();
     }
 
 }

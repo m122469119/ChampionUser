@@ -77,7 +77,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
-    SelectCityAdapter mSelectCityAdapter;
+    private SelectCityAdapter mSelectCityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_liking_home);
         setTitle(R.string.activity_liking_home);
         initViews();
-        //   LiKingVerifyUtils.initApi(LikingHomeActivity.this);
         setViewOnClickListener();
         initTitleLocation();
     }
@@ -126,8 +125,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         tabWidget.setPadding(0, DisplayUtils.dp2px(8), 0, DisplayUtils.dp2px(8));
         setHomeTabHost();
 
+        setMainTableView();
+    }
+
+    private void setMainTableView() {
         mLeftImageView.setVisibility(View.VISIBLE);
-        mLikingLeftTitleTextView.setText("上海");
+        mLikingLeftTitleTextView.setText("上海市");
+        mLikingRightTitleTextView.setVisibility(View.VISIBLE);
+        mLikingRightTitleTextView.setText("开门");
     }
 
     private View buildTabIndicatorCustomView(String tabTitle, int drawableResId) {
@@ -148,8 +153,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingMiddleTitleTextTextView.setVisibility(View.GONE);
                     mMiddleImageView.setVisibility(View.VISIBLE);
                     mLeftImageView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
-                    mLikingLeftTitleTextView.setText("上海");
+                    mLikingRightTitleTextView.setVisibility(View.VISIBLE);
+                    mLikingRightTitleTextView.setText("开门");
+                    mLikingLeftTitleTextView.setText("上海市");
                     mRightImageView.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {
@@ -200,12 +206,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView || v == mLeftImageView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-//                Intent intent = new Intent(this, LookStoreMapActivity.class);
-//                startActivity(intent);
                 showSelectDialog();
             }
         } else if (v == mLikingRightTitleTextView) {
-            if (tag.equals(TAG_RECHARGE_TAB)) {
+            if (tag.equals(TAG_MAIN_TAB)) {
+                Intent intent = new Intent(this, OpenTheDoorActivity.class);
+                startActivity(intent);
+            } else if (tag.equals(TAG_RECHARGE_TAB)) {
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
                 startActivity(intent);
             }
@@ -447,9 +454,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == INTENT_REQUEST_CODE_SHOP_CART) {//从购物车回来时，带回购物车数据，从新计算购物车数量
+                boolean isClearCart = data.getBooleanExtra(ShoppingCartActivity.KEY_CLEAR_CART, false);
                 Bundle bundle = data.getExtras();
                 buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
-                postEvent(new RefreshChangeDataMessage(buyList));
+                if (isClearCart){//如果是清空购物车，清除购买集合
+                    buyList.clear();
+                }
+                postEvent(new RefreshChangeDataMessage(buyList, isClearCart));
                 if (calcDishSize() > 0) {
                     mShoppingCartNumTextView.setVisibility(View.VISIBLE);
                     mShoppingCartNumTextView.setText(calcDishSize() + "");
@@ -459,7 +470,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             } else if (requestCode == INTENT_REQUEST_CODE_DISHES_DETIALS) {//从单个商品详情回来，带回购买数据集合，从新计算购物车数量
                 Bundle bundle = data.getExtras();
                 buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
-                postEvent(new RefreshChangeDataMessage(buyList));
+                postEvent(new RefreshChangeDataMessage(buyList, false));
                 if (calcDishSize() > 0) {
                     mShoppingCartNumTextView.setVisibility(View.VISIBLE);
                     mShoppingCartNumTextView.setText(calcDishSize() + "");

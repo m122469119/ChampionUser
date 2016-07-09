@@ -26,6 +26,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.DishesConfirmAdapter;
 import com.goodchef.liking.adapter.MealTimeAdapter;
+import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -98,6 +99,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         setViewOnClickListener();
         initData();
         initPayModule();
+        setPayDefultType();
     }
 
     private void initPayModule() {
@@ -145,6 +147,15 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             setNumAndPrice();
         }
         sendRequest();
+    }
+
+    /**
+     * 设置默认支付方式
+     */
+    private void setPayDefultType(){
+        mAlipayCheckBox.setChecked(true);
+        mWechatCheckBox.setChecked(false);
+        payType = "1";
     }
 
     /**
@@ -389,6 +400,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onSuccess() {
+            postEvent(new DishesAliPayMessage());
             jumpIntentDishesOrderList();
         }
 
@@ -431,6 +443,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
     private void jumpIntentDishesOrderList() {
         Intent intent = new Intent(this, MyOrderActivity.class);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX,1);
         startActivity(intent);
     }
 

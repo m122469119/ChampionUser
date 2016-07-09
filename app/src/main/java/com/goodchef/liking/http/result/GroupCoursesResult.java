@@ -40,6 +40,24 @@ public class GroupCoursesResult extends BaseResult {
     }
 
     public static class GroupLessonData  extends BaseData{
+
+
+        /**
+         * course_name : 俯卧撑
+         * course_date : 今天 15:30-16:30
+         * intensity : 2
+         * course_desc : dafdsgdsgdfasd
+         * quota : 还剩4个名额
+         * course_imgs : ["http://testimg.likingfit.com/img/2016/07/06/1467790905_577cb63945089.jpg"]
+         * gym_name : 凌空SOHO
+         * gym_address : 金钟路968号凌空SOHO2号楼一层
+         * gym_imgs : [{"object_id":"2","title":"","url":"http://testimg.likingfit.com//img/fuxing.jpg"}]
+         * gym_id : 2
+         * trainer_name : 雷达
+         * trainer_imgs : [""]
+         * trainer_desc : 雷达22，这是一个很厉害的教练，有多厉害呢，反正就是厉害到飞起，雷达22，这是一个很厉害的教练，有多厉害呢，反正就是厉害到飞起雷达22，这是一个很厉害的教练，有多厉害呢，反正就是厉害到飞起，雷达22，这是一个很厉害的教练，有多厉害呢，反正就是厉害到飞起
+         */
+
         @SerializedName("course_name")
         private String courseName;
         @SerializedName("course_date")
@@ -48,26 +66,30 @@ public class GroupCoursesResult extends BaseResult {
         private String intensity;
         @SerializedName("course_desc")
         private String courseDesc;
+        @SerializedName("quota")
+        private String quota;
+        @SerializedName("gym_name")
+        private String gymName;
         @SerializedName("gym_address")
         private String gymAddress;
         @SerializedName("gym_id")
         private String gymId;
-        @SerializedName("gym_annonce")
-        private String gymAnnonce;
         @SerializedName("trainer_name")
         private String trainerName;
         @SerializedName("trainer_desc")
         private String trainerDesc;
         @SerializedName("course_imgs")
         private List<String> courseImgs;
+        /**
+         * object_id : 2
+         * title :
+         * url : http://testimg.likingfit.com//img/fuxing.jpg
+         */
+
         @SerializedName("gym_imgs")
-        private List<String> gymImgs;
+        private List<GymImgsData> gymImgs;
         @SerializedName("trainer_imgs")
         private List<String> trainerImgs;
-        @SerializedName("quota")
-        private String quota;
-        @SerializedName("gym_name")
-        private String gymName;
 
         public String getCourseName() {
             return courseName;
@@ -101,6 +123,22 @@ public class GroupCoursesResult extends BaseResult {
             this.courseDesc = courseDesc;
         }
 
+        public String getQuota() {
+            return quota;
+        }
+
+        public void setQuota(String quota) {
+            this.quota = quota;
+        }
+
+        public String getGymName() {
+            return gymName;
+        }
+
+        public void setGymName(String gymName) {
+            this.gymName = gymName;
+        }
+
         public String getGymAddress() {
             return gymAddress;
         }
@@ -115,14 +153,6 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setGymId(String gymId) {
             this.gymId = gymId;
-        }
-
-        public String getGymAnnonce() {
-            return gymAnnonce;
-        }
-
-        public void setGymAnnonce(String gymAnnonce) {
-            this.gymAnnonce = gymAnnonce;
         }
 
         public String getTrainerName() {
@@ -149,11 +179,11 @@ public class GroupCoursesResult extends BaseResult {
             this.courseImgs = courseImgs;
         }
 
-        public List<String> getGymImgs() {
+        public List<GymImgsData> getGymImgs() {
             return gymImgs;
         }
 
-        public void setGymImgs(List<String> gymImgs) {
+        public void setGymImgs(List<GymImgsData> gymImgs) {
             this.gymImgs = gymImgs;
         }
 
@@ -165,20 +195,37 @@ public class GroupCoursesResult extends BaseResult {
             this.trainerImgs = trainerImgs;
         }
 
-        public String getQuota() {
-            return quota;
-        }
+        public static class GymImgsData {
+            @SerializedName("object_id")
+            private String objectId;
+            @SerializedName("title")
+            private String title;
+            @SerializedName("url")
+            private String url;
 
-        public void setQuota(String quota) {
-            this.quota = quota;
-        }
+            public String getObjectId() {
+                return objectId;
+            }
 
-        public String getGymName() {
-            return gymName;
-        }
+            public void setObjectId(String objectId) {
+                this.objectId = objectId;
+            }
 
-        public void setGymName(String gymName) {
-            this.gymName = gymName;
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
         }
     }
 
