@@ -339,8 +339,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
      */
     private void jumpToMyCoursesActivity() {
         Intent intent = new Intent(this, MyLessonActivity.class);
-        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM,2);
+        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM,1);
         startActivity(intent);
+        this.finish();
     }
 
 }

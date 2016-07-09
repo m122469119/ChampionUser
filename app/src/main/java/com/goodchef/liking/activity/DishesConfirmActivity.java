@@ -447,7 +447,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
     private void jumpIntentDishesOrderList() {
         Intent intent = new Intent(this, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX,1);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX,0);
         startActivity(intent);
     }
 
