@@ -96,7 +96,12 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                     mDistanceTextView.setText(distance + " km");
                 }
                 mSurplusPersonTextView.setVisibility(View.VISIBLE);
-                mSurplusPersonTextView.setText(object.getQuota());
+                String quota = object.getQuota();
+                if (StringUtils.isEmpty(quota)){
+                    mSurplusPersonTextView.setText("");
+                }else {
+                    mSurplusPersonTextView.setText(quota);
+                }
                 mGroupLessonLayout.setOnClickListener(mClickListener);
                 mGroupLessonLayout.setTag(object);
             } else if (type == TYPE_PRIVATE_LESSON) {
