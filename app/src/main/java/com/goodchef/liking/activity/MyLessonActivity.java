@@ -28,7 +28,7 @@ public class MyLessonActivity extends BaseActivity {
     private ViewPager mViewPage;
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
     private ImageView mLeftImageView;
-    private int currentInt = 1;
+    private int currentInt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class MyLessonActivity extends BaseActivity {
     }
 
     private void initData(){
-        currentInt = getIntent().getIntExtra(KEY_CURRENT_ITEM,1);
+        currentInt = getIntent().getIntExtra(KEY_CURRENT_ITEM,0);
     }
 
     private void initView() {
