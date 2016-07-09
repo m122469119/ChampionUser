@@ -9,6 +9,7 @@ import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.storage.Preference;
 
 /**
  * 说明:
@@ -38,7 +39,10 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
 
     private void initData() {
         mVersionNumberTextView.setText("版本: " + EnvironmentUtils.Config.getAppVersionName());
-        mCooperatePhoneTextView.setText("13345456780");
+        String phone = Preference.getBusinessServicePhone();
+        if (!StringUtils.isEmpty(phone)) {
+            mCooperatePhoneTextView.setText(phone);
+        }
     }
 
     @Override

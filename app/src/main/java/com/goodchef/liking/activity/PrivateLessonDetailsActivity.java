@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
@@ -63,7 +64,10 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupUtils.showToast("开发中。。。");
+                String phone = Preference.getCustomerServicePhone();
+                if (!StringUtils.isEmpty(phone)) {
+                    PhoneUtils.phoneCall(PrivateLessonDetailsActivity.this, phone);
+                }
             }
         });
     }

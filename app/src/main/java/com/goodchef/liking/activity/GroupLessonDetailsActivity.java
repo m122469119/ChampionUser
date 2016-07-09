@@ -18,6 +18,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
@@ -91,7 +92,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupUtils.showToast("开发中");
+                String phone = Preference.getCustomerServicePhone();
+                if (!StringUtils.isEmpty(phone)) {
+                    PhoneUtils.phoneCall(GroupLessonDetailsActivity.this, phone);
+                }
             }
         });
     }
