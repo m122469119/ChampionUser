@@ -43,5 +43,7 @@
     <color name="map_radius_back">#05b5ff</color>
     <color name="map_radius_gray_back">#1005b5ff</color>
     <color name="map_dialog_green_text">#23ec7d</color>
+    <color name="dishes_buy_btn_gray_background">#dfdddd</color>
+    <color name="dishes_buy_gray_text">#c2c0c0</color>
 
 </resources>

@@ -11,13 +11,14 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.GroupCoursesResult;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/5/24 下午4:25
  */
-public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLessonDetailsAdapter.GroupLessonDetailsViewHolder, String> {
+public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLessonDetailsAdapter.GroupLessonDetailsViewHolder, GroupCoursesResult.GroupLessonData.GymImgsData> {
 
     private Context mContext;
 
@@ -37,7 +38,7 @@ public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLesso
         return new GroupLessonDetailsViewHolder(view);
     }
 
-    public static class GroupLessonDetailsViewHolder extends BaseRecycleViewHolder<String> {
+    public static class GroupLessonDetailsViewHolder extends BaseRecycleViewHolder<GroupCoursesResult.GroupLessonData.GymImgsData> {
         HImageView mHImageView;
 
         public GroupLessonDetailsViewHolder(View itemView) {
@@ -46,9 +47,10 @@ public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLesso
         }
 
         @Override
-        public void bindViews(String object) {
-            if (!TextUtils.isEmpty(object)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHImageView, object);
+        public void bindViews(GroupCoursesResult.GroupLessonData.GymImgsData object) {
+            String url = object.getUrl();
+            if (!TextUtils.isEmpty(url)) {
+                HImageLoaderSingleton.getInstance().requestImage(mHImageView, url);
             }
         }
     }

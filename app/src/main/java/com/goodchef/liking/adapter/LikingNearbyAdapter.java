@@ -12,6 +12,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.data.Food;
 
@@ -56,7 +57,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
     }
 
 
-      class LikingNearbyViewHolder extends BaseRecycleViewHolder<Food> {
+    class LikingNearbyViewHolder extends BaseRecycleViewHolder<Food> {
         HImageView mFoodHImageView;
         TextView mDishesNameTextView;//菜品名称
         TextView mSurplusNumberTextView;//剩余份数
@@ -85,7 +86,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             ButtonClickListener buttonClickListener = new ButtonClickListener();
             mDishesNameTextView.setText(object.getGoodsName());
             mDishesMoneyTextView.setText("¥ " + object.getPrice());
-            mSurplusNumberTextView.setText("今日还剩" + object.getLeftNum() + "份");
+
             List<String> tagList = object.getTags();
             StringBuffer stringBuffer = new StringBuffer();
             if (tagList != null && tagList.size() > 0) {
@@ -102,23 +103,37 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             mDishesNameTextView.setTag(object);
             int restStock = object.getRestStock();
             int selectNum = object.getSelectedOrderNum();
-            if (selectNum == 0) {
+            int leftNum = object.getLeftNum();
+
+            if (leftNum > 0) {//剩余份数大于0时才能购买
+                mSurplusNumberTextView.setText("今日还剩" + leftNum + "份");
+                mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+                if (selectNum == 0) {
+                    mReduceImageView.setVisibility(View.INVISIBLE);
+                    mBuyNumberTextView.setVisibility(View.INVISIBLE);
+                    mAddImageView.setVisibility(View.VISIBLE);
+                    mAddImageView.setEnabled(true);
+                } else if (selectNum == restStock) {
+                    mReduceImageView.setVisibility(View.VISIBLE);
+                    mBuyNumberTextView.setVisibility(View.VISIBLE);
+                    mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
+                    mAddImageView.setEnabled(false);
+                } else {
+                    mReduceImageView.setVisibility(View.VISIBLE);
+                    mBuyNumberTextView.setVisibility(View.VISIBLE);
+                    mAddImageView.setVisibility(View.VISIBLE);
+                    mAddImageView.setEnabled(true);
+                    mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
+                }
+            } else {
+                mSurplusNumberTextView.setText("已售罄");
+                mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.bg_gray_text));
                 mReduceImageView.setVisibility(View.INVISIBLE);
                 mBuyNumberTextView.setVisibility(View.INVISIBLE);
-                mAddImageView.setVisibility(View.VISIBLE);
-                mAddImageView.setEnabled(true);
-            } else if (selectNum == restStock) {
-                mReduceImageView.setVisibility(View.VISIBLE);
-                mBuyNumberTextView.setVisibility(View.VISIBLE);
-                mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
+                mAddImageView.setVisibility(View.INVISIBLE);
                 mAddImageView.setEnabled(false);
-            } else {
-                mReduceImageView.setVisibility(View.VISIBLE);
-                mBuyNumberTextView.setVisibility(View.VISIBLE);
-                mAddImageView.setVisibility(View.VISIBLE);
-                mAddImageView.setEnabled(true);
-                mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
             }
+
             buttonClickListener.setData(object);
             mReduceImageView.setOnClickListener(buttonClickListener);
             mAddImageView.setOnClickListener(buttonClickListener);

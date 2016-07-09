@@ -12,9 +12,11 @@ import java.util.ArrayList;
  */
 public class RefreshChangeDataMessage extends BaseMessage {
     private ArrayList<Food> buyList;
+    private boolean isClearCart;
 
-    public RefreshChangeDataMessage(ArrayList<Food> buyList) {
+    public RefreshChangeDataMessage(ArrayList<Food> buyList, boolean isClearCart) {
         this.buyList = buyList;
+        this.isClearCart = isClearCart;
     }
 
     public ArrayList<Food> getBuyList() {
@@ -23,5 +25,13 @@ public class RefreshChangeDataMessage extends BaseMessage {
 
     public void setBuyList(ArrayList<Food> buyList) {
         this.buyList = buyList;
+    }
+
+    public boolean isClearCart() {
+        return isClearCart;
+    }
+
+    public void setClearCart(boolean clearCart) {
+        isClearCart = clearCart;
     }
 }

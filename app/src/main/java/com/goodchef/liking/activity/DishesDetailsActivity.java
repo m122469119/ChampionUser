@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
@@ -43,6 +45,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     private TextView mCarbonAndWaterTextView;//碳水化合物
     private TextView mDishesFatTextView;//脂肪
 
+    private RelativeLayout mAddReduceLayout;
     private ImageView mReduceImageBtn;//减少
     private ImageView mAddImageBtn;//添加
     private TextView mFoodBuyNumberTextView;
@@ -108,6 +111,8 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mDishesProteinTextView = (TextView) findViewById(R.id.dishes_protein);
         mCarbonAndWaterTextView = (TextView) findViewById(R.id.carbon_and_water);
         mDishesFatTextView = (TextView) findViewById(R.id.dishes_fat);
+
+        mAddReduceLayout = (RelativeLayout) findViewById(R.id.layout_add_reduce);
         mReduceImageBtn = (ImageView) findViewById(R.id.reduce_image);
         mAddImageBtn = (ImageView) findViewById(R.id.add_image);
         mFoodBuyNumberTextView = (TextView) findViewById(R.id.food_buy_number);
@@ -137,7 +142,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     public void updateFoodDetailsView(FoodDetailsResult.FoodDetailsData foodDetailsData) {
         setTitle(foodDetailsData.getGoodsName());
         mDishesDetailsNameTextView.setText(foodDetailsData.getGoodsName());
-        mSurplusNumberTextView.setText("还剩" + foodDetailsData.getLeftNum() + "份");
         mDishesMoneyTextView.setText("¥" + foodDetailsData.getPrice());
         mDishesDescribeTextView.setText(foodDetailsData.getGoodsDesc());
         List<String> tagList = foodDetailsData.getTags();
@@ -154,9 +158,35 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mCarbonAndWaterTextView.setText(foodDetailsData.getCarbohydrate() + "");
         mDishesFatTextView.setText(foodDetailsData.getAxunge() + "");
 
+        int leftNmu = foodDetailsData.getLeftNum();
+        setDishesLefNumView(leftNmu);
+
         List<String> imgList = foodDetailsData.getImgs();
         if (imgList != null && imgList.size() > 0) {
             setBannerData(imgList);
+        }
+    }
+
+    /**
+     * 设置库存状态
+     *
+     * @param leftNmu 库存
+     */
+    private void setDishesLefNumView(int leftNmu) {
+        if (leftNmu > 0) {
+            mSurplusNumberTextView.setText("还剩" + leftNmu + "份");
+            mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+            mAddReduceLayout.setVisibility(View.VISIBLE);
+            mImmediatelyBuyBtn.setBackgroundResource(R.color.add_minus_dishes_text);
+            mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+            mImmediatelyBuyBtn.setEnabled(true);
+        } else {
+            mSurplusNumberTextView.setText("已售罄");
+            mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.bg_gray_text));
+            mAddReduceLayout.setVisibility(View.GONE);
+            mImmediatelyBuyBtn.setBackgroundResource(R.color.dishes_buy_btn_gray_background);
+            mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.dishes_buy_gray_text));
+            mImmediatelyBuyBtn.setEnabled(false);
         }
     }
 
@@ -176,7 +206,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         mImageViewPager.setCurrentItem(0);
         mImageViewPager.startAutoScroll();
     }
-
 
 
     @Override

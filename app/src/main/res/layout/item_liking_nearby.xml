@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <com.aaron.android.framework.library.imageloader.HImageView
             android:id="@+id/food_image"
             android:layout_width="match_parent"
@@ -43,7 +42,6 @@
                     android:id="@+id/dishes_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="减肥沙拉"
                     android:textColor="@color/liking_lesson_text"
                     android:textSize="14sp"/>
 
@@ -54,7 +52,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="2dp"
                     android:layout_toRightOf="@+id/dishes_name"
-                    android:text="今日还剩15份"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="12sp"/>
 
@@ -64,7 +61,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dishes_name"
                     android:layout_marginTop="4dp"
-                    android:text="¥ 35"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="16sp"/>
             </RelativeLayout>
@@ -115,7 +111,6 @@
                 android:layout_alignParentLeft="true"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
-                android:text="#减肥 #塑性"
                 android:textColor="@color/nearby_item_gray_text"
                 android:textSize="12sp"/>
 
@@ -127,7 +122,6 @@
                 android:layout_marginRight="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
-                android:text="999人购买过"
                 android:textColor="@color/nearby_item_gray_text"
                 android:textSize="12sp"/>
 

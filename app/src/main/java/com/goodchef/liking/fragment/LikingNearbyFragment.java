@@ -30,7 +30,6 @@ import java.util.List;
  */
 public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment {
     public static final String INTENT_KEY_USER_CITY_ID = "intent_key_user_city_id";
-    public static final String INTENT_KEY_GOOD_ID = "intent_key_good_id";
     private static final int SELECT_MAX = 5;//设置单个菜品最大购买数量
     private LikingNearbyAdapter mAdapter;
     private String mCityId = "310100";
@@ -56,7 +55,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
-        noDataImageView.setImageResource(R.drawable.no_order);
+        noDataImageView.setImageResource(R.drawable.icon_no_data);
         noDataText.setText("暂无数据");
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
@@ -103,7 +102,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                                 food.setRestStock(SELECT_MAX);
                                 food.setSelectedOrderNum(0);
                             }
-                            refreshChangeData();
+                            refreshChangeData(false);
                             updateListView(mFoodList);
                         }
                     }
@@ -143,22 +142,31 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     public void onEvent(RefreshChangeDataMessage refreshChangeDataMessage) {
         buyLit = refreshChangeDataMessage.getBuyList();
-        refreshChangeData();
+        boolean isClearCart = refreshChangeDataMessage.isClearCart();
+        refreshChangeData(isClearCart);
     }
 
     /**
      * 当从购物车回来时对数据刷新
      */
-    private void refreshChangeData() {
-        if (mFoodList != null && mFoodList.size() > 0 && buyLit != null && buyLit.size() > 0) {
-            for (Food mFood : mFoodList) {
-                for (Food buyFood : buyLit) {
-                    if (mFood.getGoodsId().equals(buyFood.getGoodsId())) {
-                        mFood.setSelectedOrderNum(buyFood.getSelectedOrderNum());
+    private void refreshChangeData(boolean isClearCart) {
+        if (isClearCart) {//如果是清空购物车
+            buyLit.clear();
+            for (Food food : mFoodList) {
+                food.setRestStock(SELECT_MAX);
+                food.setSelectedOrderNum(0);
+            }
+        } else {//没有清空购物车
+            if (mFoodList != null && mFoodList.size() > 0 && buyLit != null && buyLit.size() > 0) {
+                for (Food mFood : mFoodList) {
+                    for (Food buyFood : buyLit) {
+                        if (mFood.getGoodsId().equals(buyFood.getGoodsId())) {
+                            mFood.setSelectedOrderNum(buyFood.getSelectedOrderNum());
+                        }
                     }
                 }
             }
-            mAdapter.notifyDataSetChanged();
         }
+        mAdapter.notifyDataSetChanged();
     }
 }
