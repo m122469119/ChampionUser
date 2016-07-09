@@ -10,6 +10,7 @@ import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CustomAlertDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
+import com.goodchef.liking.eventmessages.DishesWechatPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
@@ -67,6 +68,9 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
             paySuccess = true;
         } else {
+            if (payType == PAY_TYPE_DISHES_ORDER){
+                postEvent(new DishesWechatPayFalse());
+            }
             paySuccess = false;
         }
         showPayDialog(paySuccess);

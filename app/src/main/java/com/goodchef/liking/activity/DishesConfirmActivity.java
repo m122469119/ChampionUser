@@ -27,6 +27,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.DishesConfirmAdapter;
 import com.goodchef.liking.adapter.MealTimeAdapter;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;
+import com.goodchef.liking.eventmessages.DishesWechatPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -67,8 +68,8 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private CheckBox mWechatCheckBox;
 
     private RecyclerView mRecyclerView;
-    private TextView mDishesMoneyextView;
-    private TextView mImmediatelyPayBtn;
+    private TextView mDishesMoneyextView;//总价钱
+    private TextView mImmediatelyPayBtn;//立即支付
 
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
@@ -396,6 +397,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         @Override
         public void onStart() {
             LogUtils.e(TAG, "alipay start");
+            postEvent(new DishesAliPayMessage());
         }
 
         @Override
@@ -406,7 +408,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onFailure(String errorMessage) {
-
+            postEvent(new DishesAliPayMessage());
         }
 
         @Override
@@ -424,10 +426,12 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onSuccess() {
+            postEvent(new DishesWechatPayFalse());
         }
 
         @Override
         public void onFailure(String errorMessage) {
+            postEvent(new DishesWechatPayFalse());
         }
     };
 
