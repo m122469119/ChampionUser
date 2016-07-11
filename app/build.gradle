@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: "cn.jiajixin.nuwa"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -72,12 +73,14 @@ android {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.xml')
         exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
     }
+
+    nuwa {
+        excludeClass = ['com/aaron/android/framework/base/BaseApplication.class']
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':framework')
-//    compile 'io.reactivex:rxjava:1.1.5'
-//    compile 'io.reactivex:rxandroid:1.2.0'
     compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
 }

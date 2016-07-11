@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.storage.Preference;
 
@@ -19,13 +20,14 @@ import java.net.URL;
  * Created by Lennon on 16/3/12.
  */
 public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
+    private static final String TAG = "PatchDowner";
     private Context context;
     private String patchDir;
     String patchName = "";
 
     public PatchDowner(Context context) {
         this.context = context;
-        patchDir = context.getFilesDir().getAbsolutePath();
+        patchDir = DiskStorageManager.getInstance().getFilePath() + "path/";
     }
 
     @Override
@@ -35,8 +37,9 @@ public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
             patchName = urlS.substring(urlS.lastIndexOf("/"));
             File patchFile = new File(patchDir, patchName);
             if (patchFile.exists()) {
-                LogUtils.i("Dust", "补丁存在");
+                LogUtils.i(TAG, "补丁存在");
                 params[0].setPatchFile(patchFile.getAbsolutePath());
+                LogUtils.d(TAG, "patchFile: " + patchFile.getAbsolutePath());
                 return params[0];
             } else {
                 LogUtils.i("Dust", "补丁不存在，开始下载");
@@ -56,6 +59,7 @@ public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
                         inStream.close();
                         fos.close();
                         params[0].setPatchFile(patchFile.getAbsolutePath());
+                        LogUtils.d(TAG, "patchFile: " + patchFile.getAbsolutePath());
                         return params[0];
                     }
                 } catch (IOException e) {
