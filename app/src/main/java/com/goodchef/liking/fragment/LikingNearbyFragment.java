@@ -13,6 +13,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
+import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.FoodListResult;
@@ -51,19 +52,23 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     @Override
     protected void initViews() {
+        setNoDataView();
+        getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+        mAdapter = new LikingNearbyAdapter(getActivity());
+        setRecyclerAdapter(mAdapter);
+        initData();
+    }
+
+    private void setNoDataView(){
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
         noDataImageView.setImageResource(R.drawable.icon_no_data);
-        noDataText.setText("暂无数据");
+        noDataText.setText(R.string.no_data);
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
         getStateView().setNodataView(noDataView);
-        getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
-        mAdapter = new LikingNearbyAdapter(getActivity());
-        setRecyclerAdapter(mAdapter);
-        initData();
     }
 
     /***

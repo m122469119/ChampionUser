@@ -70,6 +70,29 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
 
     @Override
     protected void initViews() {
+        setNoDataView();
+        getIntentData();
+        initRecycleView();
+    }
+
+    /**
+     * 设置没有优惠券数据
+     */
+    private void setNoDataView(){
+        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
+        TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
+        TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
+        noDataImageView.setImageResource(R.drawable.icon_no_coupon);
+        noDataText.setText(R.string.no_coupons_data);
+        refreshView.setVisibility(View.INVISIBLE);
+        getStateView().setNodataView(noDataView);
+    }
+
+    /**
+     * 获取bundle对象传递的数据
+     */
+    private void getIntentData(){
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
         confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
@@ -81,7 +104,6 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
         } else {
             setPullType(PullMode.PULL_NONE);
         }
-        initRecycleView();
     }
 
     private String createDishesJson() {
@@ -265,8 +287,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                 mAmountYuanTextView.setTextColor(ResourceUtils.getColor(R.color.white));
                 double minAmountDouble = Double.parseDouble(minAmount);
                 if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
-                    mRightLayout.setBackgroundResource(R.drawable.coupons_right_green_background);
-                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
+                    mRightLayout.setBackgroundResource(R.drawable.coupons_right_orange_backround);
+                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
                     if (minAmountDouble > 0.00) {
                         mTypeTextView.setText("营养餐专用满" + minAmount + "可用");
                     } else {
@@ -281,8 +303,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                         mTypeTextView.setText("私教课专用,无门槛使用");
                     }
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
-                    mRightLayout.setBackgroundResource(R.drawable.coupons_right_orange_backround);
-                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
+                    mRightLayout.setBackgroundResource(R.drawable.coupons_right_green_background);
+                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
                     if (minAmountDouble > 0.00) {
                         mTypeTextView.setText("买卡专用满" + minAmount + "可用");
                     } else {

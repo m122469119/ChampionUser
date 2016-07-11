@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.eventmessages;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.goodchef.liking.http.result.data.Food;

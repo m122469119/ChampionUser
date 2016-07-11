@@ -44,19 +44,22 @@ public class MyCardOrderFragment extends NetworkPagerLoaderRecyclerViewFragment 
 
     @Override
     protected void initViews() {
+        setNoDataView();
+        mMyCardOrderAdapter = new MyCardOrderAdapter(getActivity());
+        setRecyclerAdapter(mMyCardOrderAdapter);
+        onItemClick();
+    }
+
+    private void setNoDataView(){
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
-        noDataImageView.setImageResource(R.drawable.icon_no_data);
-        noDataText.setText("暂无数据");
+        noDataImageView.setImageResource(R.drawable.icon_no_order);
+        noDataText.setText(R.string.no_card_data);
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
         getStateView().setNodataView(noDataView);
-
-        mMyCardOrderAdapter = new MyCardOrderAdapter(getActivity());
-        setRecyclerAdapter(mMyCardOrderAdapter);
-        onItemClick();
     }
 
     /***
