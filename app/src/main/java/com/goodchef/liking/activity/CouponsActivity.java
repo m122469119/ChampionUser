@@ -116,6 +116,7 @@ public class CouponsActivity extends AppBarActivity {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(CouponsActivity.this, result)) {
                     PopupUtils.showToast("兑换成功");
+                    mEditCoupons.setText("");//清空兑换码
                     setCouponsFragment();
                 } else {
                     PopupUtils.showToast(result.getMessage());
