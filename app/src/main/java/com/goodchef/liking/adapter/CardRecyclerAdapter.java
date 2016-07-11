@@ -27,6 +27,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
 
     private Context mContext;
     private View.OnClickListener mClickListener;
+    private View.OnClickListener mExplainClickListener;
 
     public CardRecyclerAdapter(Context context) {
         super(context);
@@ -35,6 +36,10 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
 
     public void setLayoutOnClickListener(View.OnClickListener listener) {
         this.mClickListener = listener;
+    }
+
+    public void setExplainClickListener(View.OnClickListener listener){
+        this.mExplainClickListener = listener;
     }
 
     @Override
@@ -78,6 +83,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
             if (isViewLayoutEnable) {//判断是否可点击true是该条目可以点击
                 mLayout.setEnabled(true);
                 mExplainTextView.setVisibility(View.GONE);
+                mExplainTextView.setOnClickListener(null);
                 mCheckBox.setVisibility(View.VISIBLE);
             } else {//false 该条目点击状态更具qulification来判断
                 int qulification = object.getQulification();
@@ -86,11 +92,16 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
                     mExplainTextView.setVisibility(View.VISIBLE);
                     mCheckBox.setChecked(false);
                     mCheckBox.setVisibility(View.GONE);
+                    if (mExplainClickListener !=null){
+                        mExplainTextView.setOnClickListener(mExplainClickListener);
+                        mExplainTextView.setTag(object);
+                    }
                 } else if (qulification == 1) {//可以点击，默认给他选中
                     mLayout.setEnabled(false);
                     mCheckBox.setVisibility(View.VISIBLE);
                     mCheckBox.setChecked(true);
                     mExplainTextView.setVisibility(View.GONE);
+                    mExplainTextView.setOnClickListener(null);
                 }
             }
 
@@ -102,7 +113,9 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
                 ListViewUtil.setListViewHeightBasedOnChildren(mListView);
             }
             mLayout.setTag(object);
-            mLayout.setOnClickListener(mClickListener);
+            if (mClickListener !=null){
+                mLayout.setOnClickListener(mClickListener);
+            }
         }
 
     }

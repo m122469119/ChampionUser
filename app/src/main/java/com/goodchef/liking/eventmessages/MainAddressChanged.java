@@ -14,12 +14,14 @@ public class MainAddressChanged extends BaseMessage {
     private double mLatitude;
     private String mCityId;
     private String mDistrictId;
+    private String mCityName;
 
-    public MainAddressChanged(double longitude, double latitude, String cityId, String districtId) {
+    public MainAddressChanged(double longitude, double latitude, String cityId, String districtId,String cityName) {
         mLongitude = longitude;
         mLatitude = latitude;
         mCityId = cityId;
         mDistrictId = districtId;
+        mCityName = cityName;
     }
 
     public double getLongitude() {
@@ -37,4 +39,9 @@ public class MainAddressChanged extends BaseMessage {
     public String getDistrictId() {
         return mDistrictId;
     }
+
+    public String getCityName() {
+        return mCityName;
+    }
+
 }

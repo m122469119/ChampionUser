@@ -33,7 +33,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     public static final int PAY_TYPE_DISHES_ORDER = 2222;
     public static final int PAY_TYPE_MY_DISHES_LIST = 3333;
     public static final int PAY_TYPE_MY_DISHES_DETAILS = 4444;
-    public static final int PAY_TYPE_BUY_CARD = 5555;
+    public static final int PAY_TYPE_BUY_CARD = 5555;//买卡
 
     private IWXAPI api;
     public static int payType;
@@ -111,7 +111,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     orderId = "";
                     finish();
                 }else if (payType == PAY_TYPE_BUY_CARD){
-                    postEvent(new BuyCardWeChatMessage());
+                    postEvent(new BuyCardWeChatMessage(paySuccess));
                     dialog.dismiss();
                     orderId = "";
                     finish();

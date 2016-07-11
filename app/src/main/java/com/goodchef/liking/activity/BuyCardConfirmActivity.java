@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -86,6 +88,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         setContentView(R.layout.activity_buy_card_confirm);
         initView();
         setViewOnClickListener();
+        setDefaultPayType();
         initData();
         initPayModule();
     }
@@ -118,6 +121,15 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mWechatLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
         mImmediatelyBuyBtn.setOnClickListener(this);
+    }
+
+    /**
+     * 设置默认支付方式
+     */
+    private void setDefaultPayType() {
+        mAlipayCheckBox.setChecked(true);
+        mWechatCheckBox.setChecked(false);
+        payType = "1";
     }
 
     private void initData() {
@@ -215,7 +227,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     mCardMoneyTextView.setText("¥ " + amount);
                 }
             } else {//订单的面额小于优惠券的面额
-                mCardMoneyTextView.setText("¥ " + "0.0.0");
+                mCardMoneyTextView.setText("¥ " + "0.00");
             }
         } else {//优惠券不可用
             mCouponsMoneyTextView.setText("");
@@ -247,6 +259,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         confirmCardList = confirmBuyCardData.getCardList();
         setCardView(confirmCardList);
         mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
+        mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
     }
 
     @Override
@@ -260,8 +273,34 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         }
     }
 
+
     /**
-     * 设置
+     * 设置不能点击 说明 文字事件
+     */
+    private View.OnClickListener mExplainClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ConfirmCard confirmCard = (ConfirmCard) v.getTag();
+            if (confirmCard != null) {
+                showExplainDialog("说明文字说明说明说明说明说明");
+            }
+        }
+    };
+
+    private void showExplainDialog(String explain) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(explain);
+        builder.setPositiveButton(getString(R.string.diaog_got_it), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    /**
+     * 设置闲时或者全天选择状态
      */
     private View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
@@ -306,15 +345,15 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     }
                 }
             } else {
-                if (buyType != BUY_TYPE_UPGRADE) {//当不是升级卡时，给买卡或者续卡默认选择状态的钱设置好
-                    for (ConfirmCard card : confirmCardList) {
-                        if (card.getQulification() == 1) {
-                            cardPrice = card.getPrice();
-                            mCardId = card.getCardId();
-                            mCardMoneyTextView.setText("¥ " + card.getPrice());
-                        }
+                //if (buyType != BUY_TYPE_UPGRADE) {//当 升级卡时，给买卡或者续卡默认选择状态的钱设置好
+                for (ConfirmCard card : confirmCardList) {
+                    if (card.getQulification() == 1) {
+                        cardPrice = card.getPrice();
+                        mCardId = card.getCardId();
+                        mCardMoneyTextView.setText("¥ " + card.getPrice());
                     }
                 }
+                // }
             }
 
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -390,12 +429,16 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
     public void onEvent(BuyCardWeChatMessage weChatMessage) {
-        jumpOrderActivity();
+        if (weChatMessage.isPaySuccess()) {
+            jumpOrderActivity();
+        }
     }
 
     private void jumpOrderActivity() {
         Intent intent = new Intent(this, MyOrderActivity.class);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
         startActivity(intent);
+        this.finish();
     }
 
 
