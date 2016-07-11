@@ -131,5 +131,9 @@
     <string name="title_gruop_detials">团体课详情</string>
     <string name="title_shopping_cart">购物车</string>
     <string name="no_dishes_order">暂无订单</string>
+    <string name="no_coupons_data">暂无优惠券</string>
+    <string name="no_card_data">暂无购卡订单</string>
+    <string name="no_courese_data">暂时没有课程</string>
+    <string name="no_data">暂无数据</string>
 
 </resources>
