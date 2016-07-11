@@ -315,7 +315,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 LogUtils.d(TAG, "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                 //  mTitleTextView.setText(StringUtils.isEmpty(locationAddress) ? getString(R.string.location_error) : object.getPoiName());
                 //  updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude());
-                updateLocationPoint(object.getProvince(), object.getDistrict(), object.getLongitude(), object.getLatitude());
+                updateLocationPoint(object.getProvince(), object.getDistrict(), object.getLongitude(), object.getLatitude(),object.getCity());
                 LiKingVerifyUtils.initApi(LikingHomeActivity.this);
                 mLeftImageView.setVisibility(View.VISIBLE);
                 mLikingLeftTitleTextView.setText(object.getCity());
@@ -333,12 +333,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAmapGDLocation.start();
     }
 
-    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude) {
+    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude,String cityName) {
         mLongitude = longitude;
         mLatitude = latitude;
         mCityId = cityId;
         mDistrictId = districtId;
-        postEvent(new MainAddressChanged(longitude, latitude, cityId, districtId));
+        postEvent(new MainAddressChanged(longitude, latitude, cityId, districtId,cityName));
         saveLocationInfo(cityId, districtId, longitude, latitude);
     }
 

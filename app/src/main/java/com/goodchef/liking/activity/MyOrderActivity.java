@@ -28,7 +28,7 @@ public class MyOrderActivity extends BaseActivity {
     private ViewPager mViewPage;
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
     private ImageView mLeftImageView;
-    private int mCurrentItem = 1;
+    private int mCurrentItem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void initData() {
-        mCurrentItem = getIntent().getIntExtra(KEY_CURRENT_INDEX, 1);
+        mCurrentItem = getIntent().getIntExtra(KEY_CURRENT_INDEX, 0);
         initTableLayout();
         initViewPage();
     }
@@ -60,7 +60,6 @@ public class MyOrderActivity extends BaseActivity {
     private void initTableLayout() {
         mTableLayout.addTab(mTableLayout.newTab().setText(R.string.tab_title_dishes));
         mTableLayout.addTab(mTableLayout.newTab().setText(R.string.tab_title_my_card));
-        mViewPage.setCurrentItem(mCurrentItem);
     }
 
     private void initViewPage() {
@@ -69,6 +68,7 @@ public class MyOrderActivity extends BaseActivity {
         mViewPage.setOffscreenPageLimit(2);
         mTableLayout.setTabsFromPagerAdapter(mTabFragmentPagerAdapter);//给table设置适配器
         mTableLayout.setupWithViewPager(mViewPage);//设置table和viewPage联动
+        mViewPage.setCurrentItem(mCurrentItem);
     }
 
     private List<TabFragmentPagerAdapter.FragmentBinder> myOrderFragmentList() {

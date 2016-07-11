@@ -34,7 +34,7 @@
             android:layout_toRightOf="@id/imageview_dialog_title_icon"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/dialog_title_text_color"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_medium"
             />
     </RelativeLayout>

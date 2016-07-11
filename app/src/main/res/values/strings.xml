@@ -135,5 +135,6 @@
     <string name="no_card_data">暂无购卡订单</string>
     <string name="no_courese_data">暂时没有课程</string>
     <string name="no_data">暂无数据</string>
+    <string name="diaog_got_it">知道了</string>
 
 </resources>
