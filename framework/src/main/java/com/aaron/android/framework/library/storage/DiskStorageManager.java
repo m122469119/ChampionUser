@@ -16,7 +16,9 @@ public class DiskStorageManager {
     protected static final String TAG = "DiskStorageManager";
     private String mAppStoragePath; //应用目录
     private String mImageStoragePath; //图片缓存目录
+    private String mFileStoragePath;
     private static final String PATH_STORAGE_IMAGE_CACHE = "/image/";
+    private static final String PATH_STORAGE_FILE ="/file/";
 
     /**
      * 使用静态内部类来生成DiskStorageManager单例,由jvm来保证线程的安全性
@@ -38,8 +40,10 @@ public class DiskStorageManager {
     public void init(String folderName) {
         mAppStoragePath = getDeviceRootPath() + File.separator + folderName;
         mImageStoragePath = mAppStoragePath + PATH_STORAGE_IMAGE_CACHE;
+        mFileStoragePath = mAppStoragePath + PATH_STORAGE_FILE;
         createAppFolder(mAppStoragePath);
         createAppFolder(mImageStoragePath);
+        createAppFolder(mFileStoragePath);
     }
 
     public String getImagePath() {
@@ -48,6 +52,10 @@ public class DiskStorageManager {
 
     public String getAppPath() {
         return mAppStoragePath;
+    }
+
+    public String getFilePath() {
+        return mFileStoragePath;
     }
 
     /**
