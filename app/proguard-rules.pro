@@ -175,6 +175,11 @@
 -dontwarn android.net.http.**
 -dontwarn com.android.volley.**
 -dontwarn org.android.agoo.**
+-dontwarn okio.**
+-dontwarn retrofit2.**
+-dontwarn com.amap.api.**
+-keep class okio.** { *; }
+-keep class retrofit2.** { *; }
 -dontwarn com.squareup.picasso.**
 -dontwarn cn.jpush.**
 -dontwarn com.google.**
