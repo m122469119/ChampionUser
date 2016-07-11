@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
+import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
@@ -29,8 +31,11 @@ import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
+import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
@@ -81,6 +86,42 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         setLogonView();
+        getUserExerciseData();
+    }
+
+    /**
+     * 获取我的锻炼数据
+     */
+    private void getUserExerciseData() {
+        if (Preference.isLogin()) {
+            LiKingApi.getUserExerciseData(Preference.getToken(), new RequestCallback<UserExerciseResult>() {
+                @Override
+                public void onSuccess(UserExerciseResult result) {
+                    if (LiKingVerifyUtils.isValid(getActivity(), result)) {
+                        UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
+                        if (exerciseData != null) {
+                            myTrainTime.setText(exerciseData.getTodayMin());
+                            myTrainDistance.setText(exerciseData.getTodayDistance());
+                            myTrainCal.setText(exerciseData.getTotalCal());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(RequestError error) {
+
+                }
+            });
+        }
+    }
+
+    /**
+     * 清除训练数据
+     */
+    private void clearExerciseData() {
+        myTrainTime.setText("0");
+        myTrainDistance.setText("0");
+        myTrainCal.setText("0");
     }
 
     private void setLogonView() {
@@ -164,14 +205,19 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == mTrainLayout) {
-            Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         } else if (v == mHeadHImageView) {//头像
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
                 startActivity(intent);
-            }else {
+            } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
@@ -288,5 +334,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         Preference.setUserIconUrl(NULL_STRING);
         PopupUtils.showToast("退出成功");
         setLogonView();
+        clearExerciseData();
     }
 }

@@ -37,6 +37,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
+import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
@@ -669,5 +670,16 @@ public class LiKingApi {
      */
     public static void getGymDetails(String gymId, RequestCallback<GymDetailsResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GYM_INFO, GymDetailsResult.class, getCommonRequestParams().append("gym_id", gymId), callback);
+    }
+
+
+    /***
+     * 获取我的运动数据
+     *
+     * @param token    token
+     * @param callback RequestCallback
+     */
+    public static void getUserExerciseData(String token, RequestCallback<UserExerciseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_USER_EXERCISE_DATA, UserExerciseResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
     }
 }

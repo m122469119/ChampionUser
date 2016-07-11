@@ -105,6 +105,8 @@ public class UrlList {
     public static final String JOIN_APPLY = getVersionHostUrl()+"/user/join-apply";
     /**场馆详情*/
     public static final String GYM_INFO = getVersionHostUrl()+"/gym/info";
+    /**获取的运动数据*/
+    public static final String GET_USER_EXERCISE_DATA = getVersionHostUrl()+"/user/get-exercise-data";
 
 
 }
