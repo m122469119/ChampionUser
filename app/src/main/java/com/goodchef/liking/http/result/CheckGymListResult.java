@@ -14,7 +14,7 @@ import java.util.List;
 public class CheckGymListResult extends BaseResult {
 
     @SerializedName("data")
-    private CheckGymData  data;
+    private CheckGymData data;
 
     public CheckGymData getData() {
         return data;
@@ -24,7 +24,7 @@ public class CheckGymListResult extends BaseResult {
         this.data = data;
     }
 
-    public class CheckGymData extends BaseData{
+    public class CheckGymData extends BaseData {
         @SerializedName("all_gym")
         private List<CheckGym> allGymList;
 
@@ -36,7 +36,7 @@ public class CheckGymListResult extends BaseResult {
             this.allGymList = allGymList;
         }
 
-        public class CheckGym extends BaseData{
+        public class CheckGym extends BaseData {
 
             /**
              * gym_id : 1
@@ -54,11 +54,13 @@ public class CheckGymListResult extends BaseResult {
             @SerializedName("gym_address")
             private String gymAddress;
             @SerializedName("longitude")
-            private String longitude;
+            private double longitude;
             @SerializedName("latitude")
-            private String latitude;
+            private double latitude;
             @SerializedName("img")
             private String img;
+
+            private boolean isSelect;
 
             public int getGymId() {
                 return gymId;
@@ -84,19 +86,19 @@ public class CheckGymListResult extends BaseResult {
                 this.gymAddress = gymAddress;
             }
 
-            public String getLongitude() {
+            public double getLongitude() {
                 return longitude;
             }
 
-            public void setLongitude(String longitude) {
+            public void setLongitude(double longitude) {
                 this.longitude = longitude;
             }
 
-            public String getLatitude() {
+            public double getLatitude() {
                 return latitude;
             }
 
-            public void setLatitude(String latitude) {
+            public void setLatitude(double latitude) {
                 this.latitude = latitude;
             }
 
@@ -106,6 +108,14 @@ public class CheckGymListResult extends BaseResult {
 
             public void setImg(String img) {
                 this.img = img;
+            }
+
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean select) {
+                isSelect = select;
             }
         }
     }

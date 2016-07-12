@@ -2,8 +2,11 @@ package com.goodchef.liking.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.amap.api.location.AMapLocation;
@@ -23,8 +26,12 @@ import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.MapStoreDialog;
 import com.goodchef.liking.http.result.CheckGymListResult;
+import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
 import com.goodchef.liking.mvp.view.CheckGymView;
+import com.goodchef.liking.storage.Preference;
+
+import java.util.List;
 
 /**
  * 说明:查看场馆
@@ -33,6 +40,7 @@ import com.goodchef.liking.mvp.view.CheckGymView;
  */
 public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener, AMap.OnMarkerClickListener, AMap.OnMapClickListener, CheckGymView {
     private MapView mMapView;
+    private LinearLayout mNoDataLayout;
     private AMap mAMap;
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient;
@@ -45,6 +53,8 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     private MapStoreDialog mMapStoreDialog;
 
     private CheckGymPresenter mCheckGymPresenter;
+    private int cityId;
+    private List<CheckGymListResult.CheckGymData.CheckGym> allGymList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +73,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
 
     private void initView() {
         mMapView = (MapView) findViewById(R.id.store_map);
+        mNoDataLayout = (LinearLayout) findViewById(R.id.layout_no_data);
     }
 
     private void initMap() {
@@ -75,7 +86,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mAMap.setLocationSource(this);// 设置定位监听
         mAMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        mAMap.moveCamera(CameraUpdateFactory.zoomTo(13));
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(12));
 
         // 自定义系统定位蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
@@ -96,7 +107,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         //设置是否返回地址信息（默认返回地址信息）
         mLocationOption.setNeedAddress(true);
         //设置是否只定位一次,默认为false
-        mLocationOption.setOnceLocation(false);
+        mLocationOption.setOnceLocation(true);
         //设置是否强制刷新WIFI，默认为强制刷新
         mLocationOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
@@ -109,33 +120,41 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mLocationClient.startLocation();
         mAMap.setOnMarkerClickListener(this);
 
-        setMapMark();
+
     }
 
     /**
      * 设置mark覆盖物标记
      */
-    private void setMapMark() {
-        LatLng latLng = new LatLng(31.1798261320, 121.4435724420);
+    private void setMapMark(CheckGymListResult.CheckGymData.CheckGym gym) {
+        LatLng latLng = new LatLng(gym.getLatitude(), gym.getLongitude());
         MarkerOptions otMarkerOptions = new MarkerOptions();
         otMarkerOptions.position(latLng);
         otMarkerOptions.visible(true);//设置可见
         otMarkerOptions.draggable(true);
-        //   otMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_map_mark)));
-        otMarkerOptions.icon(ImageNormal(0));
-        mAMap.addMarker(otMarkerOptions);
+        otMarkerOptions.icon(ImageNormal(gym));
+        Marker mark = mAMap.addMarker(otMarkerOptions);
+        mark.setObject(gym);
     }
 
     /**
      * 自定义标记物的图片（未选中状态）
      *
-     * @param i
+     * @param
      * @return
      */
-    private BitmapDescriptor ImageNormal(int i) {
+    private BitmapDescriptor ImageNormal(CheckGymListResult.CheckGymData.CheckGym gym) {
         View view = getLayoutInflater().inflate(R.layout.layout_map_mark, null);
         TextView tv = (TextView) view.findViewById(R.id.map_mark_title);
-        tv.setText("凌空SoHo店");
+        ImageView imageView = (ImageView) view.findViewById(R.id.map_mark_image);
+        if (gym.isSelect()) {
+            imageView.setImageResource(R.drawable.map_left_select);
+            // imageView.setBackgroundResource(R.drawable.map_left_select);
+        } else {
+            imageView.setImageResource(R.drawable.map_left_no_select);
+            // imageView.setBackgroundResource(R.drawable.map_left_no_select);
+        }
+        tv.setText(gym.getGymName());
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromView(view);
         return bitmap;
     }
@@ -198,19 +217,56 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
+                String currentCityName = aMapLocation.getCity();
+                if (!StringUtils.isEmpty(currentCityName)) {
+                    mNoDataLayout.setVisibility(View.GONE);
+                    setTitle(currentCityName);
+                    boolean isCityExit = false;
+                    List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
+                    if (cityDataList != null && cityDataList.size() > 0) {
+                        for (CityData cityData : cityDataList) {
+                            if (cityData.getCityName().contains(currentCityName)) {
+                                isCityExit = true;
+                                cityId = cityData.getCityId();
+                                break;
+                            }
+                        }
+                        if (isCityExit) {
+                            mCheckGymPresenter.getGymList(cityId);
+                        }
+                    }
+                } else {
+                    mNoDataLayout.setVisibility(View.VISIBLE);
+                }
+            } else {
+                mNoDataLayout.setVisibility(View.VISIBLE);
             }
         }
     }
 
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         currentMarker = marker;
-        showStoreDialog();
+        CheckGymListResult.CheckGymData.CheckGym gymDto = (CheckGymListResult.CheckGymData.CheckGym) currentMarker.getObject();
+        if (gymDto != null) {
+            for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
+                if (gym.getGymId() == gymDto.getGymId()) {
+                    gym.setSelect(true);
+                    gymDto.setSelect(true);
+                } else {
+                    gym.setSelect(false);
+                }
+            }
+            mAMap.clear();
+            setMapMarkView();
+            showStoreDialog(gymDto);
+        }
         return false;
     }
 
-    private void showStoreDialog() {
-        mMapStoreDialog = new MapStoreDialog(this);
+    private void showStoreDialog(CheckGymListResult.CheckGymData.CheckGym gymDto) {
+        mMapStoreDialog = new MapStoreDialog(this, gymDto);
     }
 
     private void dismissDialog() {
@@ -226,6 +282,22 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
 
     @Override
     public void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData) {
+        allGymList = checkGymData.getAllGymList();
+        if (allGymList != null && allGymList.size() > 0) {
+            mNoDataLayout.setVisibility(View.GONE);
+            for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
+                gym.setSelect(false);
+            }
+            setMapMarkView();
+        } else {
+            mNoDataLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
+
+    private void setMapMarkView() {
+        for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
+            setMapMark(gym);
+        }
     }
 }

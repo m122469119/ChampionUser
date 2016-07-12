@@ -7,9 +7,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.utils.NavigationBarUtil;
 
 /**
@@ -24,8 +27,11 @@ public class MapStoreDialog {
     private TextView mAddressTextView;
     private HImageView mHImageView;
 
-    public MapStoreDialog(Context context) {
+    private CheckGymListResult.CheckGymData.CheckGym mGymDto;
+
+    public MapStoreDialog(Context context, CheckGymListResult.CheckGymData.CheckGym gymDto) {
         this.mContext = context;
+        this.mGymDto = gymDto;
         mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
         WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
@@ -46,12 +52,25 @@ public class MapStoreDialog {
         window.setContentView(R.layout.dialog_store_map_detials);
         window.setWindowAnimations(R.style.my_dialog_enter_exit);  //添加dialog进入和退出的动画
 
+        iniView(window);
+        setGymData();
+    }
+
+    private void iniView(Window window) {
         mNameTextView = (TextView) window.findViewById(R.id.map_store_name);
         mAddressTextView = (TextView) window.findViewById(R.id.store_address);
         mHImageView = (HImageView) window.findViewById(R.id.store_image);
-
     }
 
+
+    private void setGymData() {
+        mNameTextView.setText(mGymDto.getGymName().trim());
+        mAddressTextView.setText(mGymDto.getGymAddress().trim());
+        String imageUrl = mGymDto.getImg();
+        if (!StringUtils.isEmpty(imageUrl)) {
+            HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+        }
+    }
 
 
     /**

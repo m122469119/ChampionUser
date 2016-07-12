@@ -12,7 +12,6 @@
         android:background="@color/main_app_dark_color"
         android:gravity="center|left"
         android:paddingLeft="10dp"
-        android:text="凌空so店"
         android:textColor="@color/map_dialog_green_text"
         android:textSize="@dimen/textsize_small"/>
 
@@ -24,9 +23,9 @@
             android:id="@+id/store_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            fresco:failureImage="@drawable/linshi_back"
+            fresco:failureImage="@drawable/bg_no_data_default_image"
             fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImage="@drawable/linshi_back"
+            fresco:placeholderImage="@drawable/bg_no_data_default_image"
             fresco:placeholderImageScaleType="centerCrop"/>
 
         <TextView
@@ -37,7 +36,6 @@
             android:background="@color/lesson_details_layer"
             android:gravity="center|left"
             android:paddingLeft="10dp"
-            android:text="凌空so店"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </RelativeLayout>

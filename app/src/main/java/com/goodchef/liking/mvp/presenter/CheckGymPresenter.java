@@ -23,7 +23,7 @@ public class CheckGymPresenter extends BasePresenter<CheckGymView> {
         super(context, mainView);
     }
 
-    public void getGymList(String cityId){
+    public void getGymList(int cityId){
         LiKingApi.getCheckGymList(cityId, new RequestUiLoadingCallback<CheckGymListResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(CheckGymListResult result) {

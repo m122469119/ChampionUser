@@ -15,8 +15,9 @@
         android:textColor="@color/white"
         android:textSize="12sp"/>
 
-    <TextView
+    <ImageView
+        android:id="@+id/map_mark_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/select_map_mark"/>
+       />
 </RelativeLayout>
