@@ -3,7 +3,6 @@
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/app_content_background"
                 android:orientation="vertical">
 
     <ScrollView
@@ -21,15 +20,15 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp">
+                android:layout_height="320dp">
 
                 <com.aaron.android.framework.library.imageloader.HImageView
                     android:id="@+id/private_lesson_details_teach_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    fresco:failureImage="@drawable/linshi_back"
+                    fresco:failureImage="@drawable/private_teacher_default_image"
                     fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@drawable/linshi_back"
+                    fresco:placeholderImage="@drawable/private_teacher_default_image"
                     fresco:placeholderImageScaleType="centerCrop"/>
 
                 <TextView
@@ -37,28 +36,11 @@
                     android:layout_height="23dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/icon_pivate_teach_lesson"
+                    android:background="@drawable/icon_private_teacher_details"
                     android:gravity="center"
                     android:text="私教课"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/lesson_details_layer">
-
-                    <TextView
-                        android:id="@+id/teacher_tags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/textsize_mirco"/>
-
-                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -68,60 +50,109 @@
                 android:background="@drawable/shape_card_background"
                 android:orientation="vertical">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="教练介绍"
-                    android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="15sp"/>
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/private_courses_teacher_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:text="成成"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="18sp"/>
+
+
+                    <TextView
+                        android:id="@+id/private_teacher_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/private_courses_teacher_name"
+                        android:paddingBottom="5dp"
+                        android:text="男"
+                        android:textColor="@color/lesson_details_gray_back"
+                        android:textSize="13sp"/>
+
+
+                    <LinearLayout
+                        android:id="@+id/layout_teacher_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/private_teacher_height"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="183"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="cm"
+                            android:textColor="@color/cardview_dark_background"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/private_teacher_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="75"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="kg"
+                            android:textColor="@color/cardview_dark_background"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/teacher_tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/layout_teacher_info"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="#健康训练 #康复训练"
+                        android:textColor="@color/add_minus_dishes_text"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/line"/>
 
                 <TextView
                     android:id="@+id/teacher_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:lineSpacingExtra="3dp"
-                    android:paddingBottom="10dp"
-                    android:textColor="@color/lesson_details_gray_back"
-                    android:textSize="13sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:background="@drawable/shape_card_background"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="训练计划"
-                    android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/train_plan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:lineSpacingExtra="3dp"
                     android:textColor="@color/lesson_details_gray_back"
-                    android:textSize="13sp"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/private_lesson_listView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:visibility="gone"
-                android:divider="@color/transparent"
-                android:listSelector="@color/transparent"/>
 
         </LinearLayout>
     </ScrollView>

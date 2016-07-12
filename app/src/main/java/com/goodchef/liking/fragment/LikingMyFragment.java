@@ -102,7 +102,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                         if (exerciseData != null) {
                             myTrainTime.setText(exerciseData.getTodayMin());
                             myTrainDistance.setText(exerciseData.getTodayDistance());
-                            myTrainCal.setText(exerciseData.getTotalCal());
+                            myTrainCal.setText(exerciseData.getTodayCal());
                         }
                     }
                 }

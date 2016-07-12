@@ -1,18 +1,13 @@
 package com.goodchef.liking.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
-import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PhoneUtils;
@@ -32,22 +27,25 @@ import java.util.List;
  */
 public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, View.OnClickListener {
     private HImageView mTeacherHImageView;
-    // private RecyclerView mRecyclerView;
-    private TextView mTeacherTagsTextView;
-    private TextView mTeacherIntroduceTextView;
-    //  private TextView mTrainPlanTextView;
+    private TextView mTeacherNameTextView;//教练名称
+    private TextView mTeacherSexTextView;//教性别练
+    private TextView mTeacherHeightTextView;//教练身高
+    private TextView mTeacherWeightTextView;//教练体重
+    private TextView mTeacherTagsTextView;//tag
+    private TextView mTeacherIntroduceTextView;//教练介绍
     private TextView mImmediatelySubmitBtn;
 
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
 
-    //  private PrivateCoursesDetailsAdapter mPrivateCoursesDetailsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_lesson_details);
+        initView();
+        setViewOnClickListener();
         initData();
     }
 
@@ -56,7 +54,6 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
         setTitle(teacherName);
         setRightMenu();
-        initView();
         sendDetailsRequest();
     }
 
@@ -74,12 +71,16 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     private void initView() {
         mTeacherHImageView = (HImageView) findViewById(R.id.private_lesson_details_teach_image);
+        mTeacherNameTextView = (TextView) findViewById(R.id.private_courses_teacher_name);
+        mTeacherSexTextView = (TextView) findViewById(R.id.private_teacher_sex);
+        mTeacherHeightTextView = (TextView) findViewById(R.id.private_teacher_height);
+        mTeacherWeightTextView = (TextView) findViewById(R.id.private_teacher_weight);
         mTeacherTagsTextView = (TextView) findViewById(R.id.teacher_tags);
-        //  mRecyclerView = (RecyclerView) findViewById(R.id.private_lesson_listView);
         mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
-        //   mTrainPlanTextView = (TextView) findViewById(R.id.train_plan);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.private_lesson_immediately_submit);
+    }
 
+    private void setViewOnClickListener() {
         mImmediatelySubmitBtn.setOnClickListener(this);
     }
 
@@ -109,17 +110,9 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         }
         mTeacherTagsTextView.setText(stringBuffer.toString());
         mTeacherIntroduceTextView.setText(privateCoursesData.getDesc());
-        //    mTrainPlanTextView.setText(privateCoursesData.getPlan());
-        // setListViewData(privateCoursesData.getPlanImgs());
+        mTeacherNameTextView.setText(teacherName);
     }
 
-//    private void setListViewData(List<PrivateCoursesResult.PrivateCoursesData.PlanImageData> imageList) {
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mPrivateCoursesDetailsAdapter = new PrivateCoursesDetailsAdapter(this);
-//        mPrivateCoursesDetailsAdapter.setData(imageList);
-//        mRecyclerView.setAdapter(mPrivateCoursesDetailsAdapter);
-//    }
 
     @Override
     public void onClick(View v) {
@@ -136,47 +129,5 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         }
     }
 
-
-    public class PrivateCoursesDetailsAdapter extends BaseRecycleViewAdapter<PrivateCoursesDetailsAdapter.GroupLessonViewHolder, PrivateCoursesResult.PrivateCoursesData.PlanImageData> {
-
-        private Context mContext;
-
-        public PrivateCoursesDetailsAdapter(Context context) {
-            super(context);
-            this.mContext = context;
-        }
-
-        @Override
-        protected GroupLessonViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
-        protected GroupLessonViewHolder createViewHolder(ViewGroup parent) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_private_lesson, parent, false);
-            return new GroupLessonViewHolder(view);
-        }
-
-
-        public class GroupLessonViewHolder extends BaseRecycleViewHolder<PrivateCoursesResult.PrivateCoursesData.PlanImageData> {
-            TextView mTitleTextView;
-            HImageView mHImageView;
-
-            public GroupLessonViewHolder(View itemView) {
-                super(itemView);
-                mHImageView = (HImageView) itemView.findViewById(R.id.private_lesson_details_hImageView);
-                mTitleTextView = (TextView) itemView.findViewById(R.id.private_lesson_title);
-            }
-
-            @Override
-            public void bindViews(PrivateCoursesResult.PrivateCoursesData.PlanImageData object) {
-                String imageUrl = object.getUrl();
-                if (!TextUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
-                }
-                mTitleTextView.setText(object.getDesc());
-            }
-        }
-    }
 
 }
