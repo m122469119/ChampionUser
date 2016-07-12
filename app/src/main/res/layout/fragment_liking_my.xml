@@ -9,8 +9,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:background="@color/app_content_background">
+        android:background="@color/app_content_background"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,9 +39,9 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        fresco:failureImage="@drawable/linshi_back"
+                        fresco:failureImage="@drawable/icon_head_default_image"
                         fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImage="@drawable/linshi_back"
+                        fresco:placeholderImage="@drawable/icon_head_default_image"
                         fresco:placeholderImageScaleType="centerCrop"
                         fresco:roundAsCircle="true"/>
 
@@ -68,19 +68,39 @@
                         android:id="@+id/person_login_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@+id/head_image"
-                        android:text="登录"
-                        android:textColor="@color/lesson_details_dark_back"
-                        android:layout_centerVertical="true"
+                        android:text="未登录"
+                        android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
+                    <TextView
+                        android:id="@+id/login_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/shape_radius_green_btn_background"
+                        android:gravity="center"
+                        android:minWidth="80dp"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="登录"
+                        android:visibility="visible"
+                        android:textColor="@color/white"/>
+
                     <ImageView
+                        android:id="@+id/login_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="12dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         android:layout_marginRight="10dp"
                         android:layout_weight="4"
                         android:src="@drawable/bg_right_arrow"/>
@@ -125,11 +145,11 @@
                 android:id="@+id/login_out_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_card_background"
                 android:gravity="center"
-                android:text="退出登录"
-                android:layout_marginBottom="10dp"
+                android:text="登出"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="14sp"/>
 
