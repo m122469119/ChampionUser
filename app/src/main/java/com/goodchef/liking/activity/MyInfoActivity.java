@@ -333,6 +333,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         String name = userInfoData.getName();
         if (!StringUtils.isEmpty(name)) {
             mUserNameEditText.setText(name);
+            Preference.setNickName(name);
         }
         String birthday = userInfoData.getBirthday();
         if (!StringUtils.isEmpty(birthday)) {

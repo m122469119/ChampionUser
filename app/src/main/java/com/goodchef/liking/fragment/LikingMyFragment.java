@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,13 +52,15 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mAboutUsLayout;//关于我们
-    private RelativeLayout mHeadInfoLayout;//头像布局
 
+    private RelativeLayout mHeadInfoLayout;//头像布局
     private HImageView mHeadHImageView;//头像
     private TextView mLoginPrompt;//登录提示
     private TextView mPersonNameTextView;
     private TextView mPersonPhoneTextView;
     private TextView mLoginOutBtn;//退出登录
+    private TextView mLoginBtn;
+    private ImageView mArrowImage;
 
     private LinearLayout mMyCourseLayout;//我的课程
     private LinearLayout mMyOrderLayout;//我的订单
@@ -126,6 +129,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     private void setLogonView() {
         if (Preference.isLogin()) {
+            mLoginBtn.setVisibility(View.GONE);
+            mArrowImage.setVisibility(View.VISIBLE);
             mLoginOutBtn.setVisibility(View.VISIBLE);
             mLoginPrompt.setVisibility(View.GONE);
             mPersonNameTextView.setVisibility(View.VISIBLE);
@@ -136,9 +141,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 HImageLoaderSingleton.getInstance().requestImage(mHeadHImageView, Preference.getUserIconUrl());
             }
         } else {
+            mLoginBtn.setVisibility(View.VISIBLE);
+            mArrowImage.setVisibility(View.GONE);
             mLoginPrompt.setVisibility(View.VISIBLE);
             mPersonNameTextView.setVisibility(View.GONE);
             mPersonPhoneTextView.setVisibility(View.GONE);
+            mLoginOutBtn.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -152,6 +160,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
         mLoginPrompt = (TextView) view.findViewById(R.id.person_login_prompt);
         mLoginOutBtn = (TextView) view.findViewById(R.id.login_out_btn);
+        mLoginBtn = (TextView) view.findViewById(R.id.login_text);
+        mArrowImage = (ImageView) view.findViewById(R.id.login_arrow);
 
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
         mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
@@ -175,6 +185,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mHeadInfoLayout.setOnClickListener(this);
         mHeadHImageView.setOnClickListener(this);
         mLoginOutBtn.setOnClickListener(this);
+        mLoginBtn.setOnClickListener(this);
 
         mMyCourseLayout.setOnClickListener(this);
         mMyOrderLayout.setOnClickListener(this);
@@ -212,18 +223,16 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
-        } else if (v == mHeadHImageView) {//头像
-            if (Preference.isLogin()) {
-                Intent intent = new Intent(getActivity(), MyInfoActivity.class);
-                intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
+        } else if (v == mLoginBtn) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
         } else if (v == mHeadInfoLayout) {
             if (!Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+                intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
