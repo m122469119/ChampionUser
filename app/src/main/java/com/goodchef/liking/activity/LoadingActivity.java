@@ -115,26 +115,32 @@ public class LoadingActivity extends BaseActivity {
                     PatchData patchData = baseConfigData.getPatchData();
                     if (patchData != null) {
                         if (previousPatchData == null) {
-                            if (patchData.isPatchNeed())//如果没有已下载好的补丁，并且当前补丁需要加载，去下载补丁{
+                            if (patchData.isPatchNeed())//如果没有已下载好的补丁，并且当前补丁需要加载，去下载补丁
                                 downPatch(patchData);
-                        }
-                    } else {
-                        int previousId = previousPatchData.getPatchId();
-                        int currentId = patchData.getPatchId();
-                        if (previousId == currentId) {
-                            //如果补丁文件已存在，并且是相同的补丁id,更新已存在补丁信息
-                            downPatch(patchData);
-                            if (patchData.isPatchNeed()) {
-                                //需要加载当前补丁
-                                patchData.setPatchFile(previousPatchData.getPatchFile());
-                                loadPatch(patchData);
+                        } else {
+                            int previousId = previousPatchData.getPatchId();
+                            int currentId = patchData.getPatchId();
+                            if (previousId == currentId) {
+                                if (patchData.isPatchNeed()) {
+                                    //需要加载当前补丁
+                                    patchData.setPatchFile(previousPatchData.getPatchFile());
+                                    loadPatch(patchData);
+                                } else {
+                                    //如果获取当前补丁信息失败，尝试加载老补丁
+                                    loadPatch(previousPatchData);
+                                    //如果补丁文件已存在，并且是相同的补丁id,更新已存在补丁信息
+                                    downPatch(patchData);
+                                }
+                            } else {   //如果已下载过的补丁和当前补丁id不同
+                                loadPatch(previousPatchData);//先加载老补丁
+                                downPatch(patchData);//下载新的补丁，下次重启app才能加载新补丁
                             }
-                        } else {   //如果已下载过的补丁和当前补丁id不同
-                            loadPatch(previousPatchData);//先加载老补丁
-                            downPatch(patchData);//下载新的补丁，下次重启app才能加载新补丁
                         }
                     }
                 }
+            } else {
+                //如果获取当前补丁信息失败，尝试加载老补丁
+                loadPatch(previousPatchData);
             }
         } else {
             //如果获取当前补丁信息失败，尝试加载老补丁

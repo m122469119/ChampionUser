@@ -16,9 +16,11 @@ public class DiskStorageManager {
     protected static final String TAG = "DiskStorageManager";
     private String mAppStoragePath; //应用目录
     private String mImageStoragePath; //图片缓存目录
-    private String mFileStoragePath;
+    private String mFileStoragePath;//file的文件总目录
+    private String mPatchStoragePath;//补丁下载目录
     private static final String PATH_STORAGE_IMAGE_CACHE = "/image/";
-    private static final String PATH_STORAGE_FILE ="/file/";
+    private static final String PATH_STORAGE_FILE = "/file/";
+    private static final String PATH_STORAGE_PATCH = "/file/patch/";
 
     /**
      * 使用静态内部类来生成DiskStorageManager单例,由jvm来保证线程的安全性
@@ -29,11 +31,13 @@ public class DiskStorageManager {
 
     /**
      * 单例
+     *
      * @return DiskStorageManager
      */
     public static DiskStorageManager getInstance() {
         return DemoDiskStorageManagerHolder.sDiskStorageManager;
     }
+
     /**
      * 磁盘存储初始化操作，主要是用来创建文件目录
      */
@@ -41,11 +45,18 @@ public class DiskStorageManager {
         mAppStoragePath = getDeviceRootPath() + File.separator + folderName;
         mImageStoragePath = mAppStoragePath + PATH_STORAGE_IMAGE_CACHE;
         mFileStoragePath = mAppStoragePath + PATH_STORAGE_FILE;
+        mPatchStoragePath = mAppStoragePath + PATH_STORAGE_PATCH;
         createAppFolder(mAppStoragePath);
         createAppFolder(mImageStoragePath);
         createAppFolder(mFileStoragePath);
+        createAppFolder(mPatchStoragePath);
     }
 
+    /**
+     * 获取图片存放目录
+     *
+     * @return
+     */
     public String getImagePath() {
         return mImageStoragePath;
     }
@@ -54,12 +65,27 @@ public class DiskStorageManager {
         return mAppStoragePath;
     }
 
+    /**
+     * 获取file文件总目录
+     *
+     * @return
+     */
     public String getFilePath() {
         return mFileStoragePath;
     }
 
     /**
+     * 获取补丁下载目录
+     *
+     * @return
+     */
+    public String getPatchPath() {
+        return mPatchStoragePath;
+    }
+
+    /**
      * 创建目录
+     *
      * @param path 目录路径
      */
     private static void createAppFolder(String path) {
@@ -72,7 +98,6 @@ public class DiskStorageManager {
     }
 
     /**
-     *
      * @return 返回应用存储根目录 sdcard存在的情况下返回sdcard目录，如果不存在返回手机本地data目录
      */
     private static String getDeviceRootPath() {
