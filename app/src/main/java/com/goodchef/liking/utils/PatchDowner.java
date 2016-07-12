@@ -27,7 +27,7 @@ public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
 
     public PatchDowner(Context context) {
         this.context = context;
-        patchDir = DiskStorageManager.getInstance().getFilePath() + "path/";
+        patchDir = DiskStorageManager.getInstance().getFilePath() + "patch/";
     }
 
     @Override
