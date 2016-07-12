@@ -22,13 +22,16 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.MapStoreDialog;
+import com.goodchef.liking.http.result.CheckGymListResult;
+import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
+import com.goodchef.liking.mvp.view.CheckGymView;
 
 /**
  * 说明:查看场馆
  * Author shaozucheng
  * Time:16/6/7 下午5:49
  */
-public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener ,AMap.OnMarkerClickListener,AMap.OnMapClickListener{
+public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener, AMap.OnMarkerClickListener, AMap.OnMapClickListener, CheckGymView {
     private MapView mMapView;
     private AMap mAMap;
     //声明AMapLocationClient类对象
@@ -37,25 +40,25 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     private OnLocationChangedListener mListener;
     //声明mLocationOption对象
     public AMapLocationClientOption mLocationOption;
-
-    /**
-     * 添加的覆盖物标志
-     */
+    //添加的覆盖物标志
     private Marker currentMarker;
-   private MapStoreDialog mMapStoreDialog;
+    private MapStoreDialog mMapStoreDialog;
+
+    private CheckGymPresenter mCheckGymPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_look_store);
+        initView();
+        initMap();
         initData();
-        setTitle("上海");
         mMapView.onCreate(savedInstanceState);
+        setTitle("上海市");
     }
 
     private void initData() {
-        initView();
-        initMap();
+        mCheckGymPresenter = new CheckGymPresenter(this, this);
     }
 
     private void initView() {
@@ -72,7 +75,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mAMap.setLocationSource(this);// 设置定位监听
         mAMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        mAMap.moveCamera(CameraUpdateFactory.zoomTo(12));
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(13));
 
         // 自定义系统定位蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
@@ -93,7 +96,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         //设置是否返回地址信息（默认返回地址信息）
         mLocationOption.setNeedAddress(true);
         //设置是否只定位一次,默认为false
-        mLocationOption.setOnceLocation(true);
+        mLocationOption.setOnceLocation(false);
         //设置是否强制刷新WIFI，默认为强制刷新
         mLocationOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
@@ -117,10 +120,8 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         MarkerOptions otMarkerOptions = new MarkerOptions();
         otMarkerOptions.position(latLng);
         otMarkerOptions.visible(true);//设置可见
-        // otMarkerOptions.title("芜湖市").snippet("芜湖市：31.383755, 118.438321");//里面的内容自定义
         otMarkerOptions.draggable(true);
         //   otMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_map_mark)));
-
         otMarkerOptions.icon(ImageNormal(0));
         mAMap.addMarker(otMarkerOptions);
     }
@@ -208,12 +209,12 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         return false;
     }
 
-    private void showStoreDialog(){
+    private void showStoreDialog() {
         mMapStoreDialog = new MapStoreDialog(this);
     }
 
-    private void dismissDialog(){
-        if (mMapStoreDialog !=null){
+    private void dismissDialog() {
+        if (mMapStoreDialog != null) {
             mMapStoreDialog.dismiss();
         }
     }
@@ -221,5 +222,10 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     @Override
     public void onMapClick(LatLng latLng) {
         dismissDialog();
+    }
+
+    @Override
+    public void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData) {
+
     }
 }

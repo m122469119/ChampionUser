@@ -14,6 +14,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -681,5 +682,16 @@ public class LiKingApi {
      */
     public static void getUserExerciseData(String token, RequestCallback<UserExerciseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_USER_EXERCISE_DATA, UserExerciseResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
+    }
+
+
+    /**
+     * 查看场馆
+     *
+     * @param cityId   城市id
+     * @param callback RequestCallback
+     */
+    public static void getCheckGymList(String cityId, RequestCallback<CheckGymListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_GYM_LIST, CheckGymListResult.class, getCommonRequestParams().append("city_id", cityId), callback);
     }
 }
