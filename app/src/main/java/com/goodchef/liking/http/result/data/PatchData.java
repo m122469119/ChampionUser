@@ -10,9 +10,9 @@ public class PatchData extends BaseData
 {
     @SerializedName("patch")
     private String patchUrl;
-    @SerializedName("patchId")
+    @SerializedName("patch_id")
     private int patchId;
-    @SerializedName("isNeed")//客户端是否要保留该补丁 0需要 1不需要，即删除
+    @SerializedName("is_need")//客户端是否要保留该补丁 0需要 1不需要，即删除
     private int isNeed;
 
     private String patchFile;
