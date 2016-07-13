@@ -52,7 +52,9 @@
         </activity>
 
         <!--首页-->
-        <activity android:name=".activity.LikingHomeActivity"
+        <activity
+            android:name=".activity.LikingHomeActivity"
+           android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <!--团体课程详情-->
@@ -323,15 +325,15 @@
         <!-- 友盟统计组件-->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5784523067e58eb7470009e4" >
+            android:value="5784523067e58eb7470009e4">
         </meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="3837120f438c55b3cfd60fe4fb68bf0b" >
+            android:value="3837120f438c55b3cfd60fe4fb68bf0b">
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="umeng" >
+            android:value="umeng">
         </meta-data>
 
     </application>

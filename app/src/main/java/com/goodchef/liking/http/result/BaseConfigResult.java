@@ -40,6 +40,8 @@ public class BaseConfigResult extends BaseResult {
         private List<CityData> cityList;
         @SerializedName("patch")
         private PatchData patchData;
+        @SerializedName("agree_url")
+        private String agreeUrl;
 
         public String getCustomerPhone() {
             return customerPhone;
@@ -87,6 +89,14 @@ public class BaseConfigResult extends BaseResult {
 
         public void setPatchData(PatchData patchData) {
             this.patchData = patchData;
+        }
+
+        public String getAgreeUrl() {
+            return agreeUrl;
+        }
+
+        public void setAgreeUrl(String agreeUrl) {
+            this.agreeUrl = agreeUrl;
         }
     }
 }

@@ -1,9 +1,6 @@
 package com.goodchef.liking.activity;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -26,8 +23,6 @@ import cn.jiajixin.nuwa.Nuwa;
  * Time:16/7/8 上午10:15
  */
 public class LoadingActivity extends BaseActivity {
-    private String appName = "";
-    private String versionName = "";
     private final int DURATION = 1500;
     private Handler handler = new Handler();
     private PatchData previousPatchData;
@@ -36,7 +31,6 @@ public class LoadingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        getPackageInfo();
         previousPatchData = Preference.getPatchData();
         LiKingVerifyUtils.initApi(this);
     }
@@ -67,19 +61,6 @@ public class LoadingActivity extends BaseActivity {
         Intent intent = new Intent(this, LikingHomeActivity.class);
         startActivity(intent);
         finish();
-    }
-
-
-    private void getPackageInfo() {
-        try {
-            PackageManager manager = this.getPackageManager();
-            PackageInfo packageInfo = manager.getPackageInfo(this.getPackageName(), 0);
-            ApplicationInfo appInfo = packageInfo.applicationInfo;
-            appName = appInfo.loadLabel(manager).toString();
-            versionName = packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadPatch(PatchData patchData) {
