@@ -129,8 +129,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void setMainTableView() {
         mLeftImageView.setVisibility(View.VISIBLE);
         mLikingLeftTitleTextView.setText("");
-        mLikingRightTitleTextView.setVisibility(View.VISIBLE);
-        mLikingRightTitleTextView.setText("开门");
+        mRightImageView.setVisibility(View.VISIBLE);
+        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_open));
     }
 
     private View buildTabIndicatorCustomView(String tabTitle, int drawableResId) {
@@ -145,21 +145,22 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         fragmentTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                if (tabId.equals(TAG_MAIN_TAB)) {
+                if (tabId.equals(TAG_MAIN_TAB)) {//首页
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingMiddleTitleTextTextView.setVisibility(View.GONE);
                     mMiddleImageView.setVisibility(View.VISIBLE);
                     mLeftImageView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setVisibility(View.VISIBLE);
+                    mLikingRightTitleTextView.setVisibility(View.GONE);
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     if (StringUtils.isEmpty(currentCityName)) {
                         mLikingLeftTitleTextView.setText("定位失败");
                     } else {
                         mLikingLeftTitleTextView.setText(currentCityName);
                     }
-                    mRightImageView.setVisibility(View.GONE);
+                    mRightImageView.setVisibility(View.VISIBLE);
+                    mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_open));
                     mShoppingCartNumTextView.setVisibility(View.GONE);
-                } else if (tabId.equals(TAG_NEARBY_TAB)) {
+                } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
                     mLeftImageView.setVisibility(View.INVISIBLE);
@@ -175,7 +176,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     } else {
                         mShoppingCartNumTextView.setVisibility(View.GONE);
                     }
-                } else if (tabId.equals(TAG_RECHARGE_TAB)) {
+                } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
                     mLeftImageView.setVisibility(View.INVISIBLE);
@@ -186,7 +187,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setText("查看场馆");
                     mRightImageView.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
-                } else if (tabId.equals(TAG_MY_TAB)) {
+                } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
                     mLeftImageView.setVisibility(View.INVISIBLE);
@@ -210,10 +211,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 showSelectDialog();
             }
         } else if (v == mLikingRightTitleTextView) {
-            if (tag.equals(TAG_MAIN_TAB)) {
-                Intent intent = new Intent(this, OpenTheDoorActivity.class);
-                startActivity(intent);
-            } else if (tag.equals(TAG_RECHARGE_TAB)) {
+            if (tag.equals(TAG_RECHARGE_TAB)) {
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
                 startActivity(intent);
             }
@@ -229,6 +227,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 } else {
                     PopupUtils.showToast("您还没有购买任何营养餐");
                 }
+            } else if (tag.equals(TAG_MAIN_TAB)) {
+                Intent intent = new Intent(this, OpenTheDoorActivity.class);
+                startActivity(intent);
             }
         }
     }

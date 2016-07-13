@@ -93,13 +93,13 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 mAddressTextView.setText(object.getGymName());
                 String distance = object.getDistance();
                 if (!StringUtils.isEmpty(distance)) {
-                    mDistanceTextView.setText(distance + " km");
+                    mDistanceTextView.setText(distance);
                 }
                 mSurplusPersonTextView.setVisibility(View.VISIBLE);
                 String quota = object.getQuota();
-                if (StringUtils.isEmpty(quota)){
+                if (StringUtils.isEmpty(quota)) {
                     mSurplusPersonTextView.setText("");
-                }else {
+                } else {
                     mSurplusPersonTextView.setText(quota);
                 }
                 mGroupLessonLayout.setOnClickListener(mClickListener);
@@ -120,7 +120,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
             List<String> tagList = object.getTags();
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < tagList.size(); i++) {
-                stringBuffer.append(" #" + tagList.get(i));
+                stringBuffer.append("#" + tagList.get(i) + " ");
             }
             mLessonUseTextView.setText(stringBuffer.toString());
         }
