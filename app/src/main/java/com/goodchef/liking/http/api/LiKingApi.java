@@ -691,7 +691,8 @@ public class LiKingApi {
      * @param cityId   城市id
      * @param callback RequestCallback
      */
-    public static void getCheckGymList(int cityId, RequestCallback<CheckGymListResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.GET_GYM_LIST, CheckGymListResult.class, getCommonRequestParams().append("city_id", cityId), callback);
+    public static void getCheckGymList(int cityId, double longitude, double latitude, RequestCallback<CheckGymListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_GYM_LIST, CheckGymListResult.class, getCommonRequestParams().append("city_id", cityId)
+                .append("longitude", longitude).append("latitude", latitude), callback);
     }
 }

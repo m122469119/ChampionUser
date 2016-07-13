@@ -2,9 +2,12 @@ package com.goodchef.liking.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -12,6 +15,8 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.GymCoursesActivity;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.utils.NavigationBarUtil;
 
@@ -26,6 +31,7 @@ public class MapStoreDialog {
     private TextView mNameTextView;
     private TextView mAddressTextView;
     private HImageView mHImageView;
+    private RelativeLayout mLayout;
 
     private CheckGymListResult.CheckGymData.CheckGym mGymDto;
 
@@ -60,6 +66,7 @@ public class MapStoreDialog {
         mNameTextView = (TextView) window.findViewById(R.id.map_store_name);
         mAddressTextView = (TextView) window.findViewById(R.id.store_address);
         mHImageView = (HImageView) window.findViewById(R.id.store_image);
+        mLayout = (RelativeLayout) window.findViewById(R.id.layout_store_image);
     }
 
 
@@ -70,6 +77,16 @@ public class MapStoreDialog {
         if (!StringUtils.isEmpty(imageUrl)) {
             HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
         }
+
+        mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, GymCoursesActivity.class);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymDto.getGymId()+"");
+                intent.putExtra(LikingLessonFragment.KEY_GYM_NAME, mGymDto.getGymName());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 
