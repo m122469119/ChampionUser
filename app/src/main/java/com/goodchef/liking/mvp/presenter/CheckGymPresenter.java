@@ -23,14 +23,14 @@ public class CheckGymPresenter extends BasePresenter<CheckGymView> {
         super(context, mainView);
     }
 
-    public void getGymList(int cityId){
-        LiKingApi.getCheckGymList(cityId, new RequestUiLoadingCallback<CheckGymListResult>(mContext, R.string.loading_data) {
+    public void getGymList(int cityId, double longitude, double latitude) {
+        LiKingApi.getCheckGymList(cityId, longitude, latitude, new RequestUiLoadingCallback<CheckGymListResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(CheckGymListResult result) {
                 super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateCheckGymView(result.getData());
-                }else {
+                } else {
                     PopupUtils.showToast(result.getMessage());
                 }
             }

@@ -149,10 +149,8 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         ImageView imageView = (ImageView) view.findViewById(R.id.map_mark_image);
         if (gym.isSelect()) {
             imageView.setImageResource(R.drawable.map_left_select);
-            // imageView.setBackgroundResource(R.drawable.map_left_select);
         } else {
             imageView.setImageResource(R.drawable.map_left_no_select);
-            // imageView.setBackgroundResource(R.drawable.map_left_no_select);
         }
         tv.setText(gym.getGymName());
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromView(view);
@@ -232,7 +230,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                             }
                         }
                         if (isCityExit) {
-                            mCheckGymPresenter.getGymList(cityId);
+                            mCheckGymPresenter.getGymList(cityId, aMapLocation.getLongitude(), aMapLocation.getLatitude());
                         }
                     }
                 } else {
@@ -285,10 +283,15 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         allGymList = checkGymData.getAllGymList();
         if (allGymList != null && allGymList.size() > 0) {
             mNoDataLayout.setVisibility(View.GONE);
-            for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
-                gym.setSelect(false);
+            for (int i = 0; i < allGymList.size(); i++) {
+                if (i == 0) {
+                    allGymList.get(i).setSelect(true);
+                } else {
+                    allGymList.get(i).setSelect(false);
+                }
             }
             setMapMarkView();
+            showStoreDialog(allGymList.get(0));
         } else {
             mNoDataLayout.setVisibility(View.VISIBLE);
         }
