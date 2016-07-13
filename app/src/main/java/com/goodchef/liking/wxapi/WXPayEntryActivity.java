@@ -29,7 +29,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
  * @version 1.0.0
  */
 public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler {
-    public static final int PAY_TYPE_ORDER = 1111;
+    public static final int PAY_TYPE_ORDER = 1111;//购买私教课
     public static final int PAY_TYPE_DISHES_ORDER = 2222;
     public static final int PAY_TYPE_MY_DISHES_LIST = 3333;
     public static final int PAY_TYPE_MY_DISHES_DETAILS = 4444;

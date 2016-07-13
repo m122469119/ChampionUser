@@ -252,6 +252,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 initTitleLocation();
+                builder.create().dismiss();
             }
         });
         setCityData(mCityListView, builder);
@@ -328,7 +329,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText(currentCityName);
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
-                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude());
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(),currentCityName);
                 } else {//定位失败
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText("定位失败");
@@ -352,12 +353,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAmapGDLocation.start();
     }
 
-    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude) {
-        saveLocationInfo(cityId, districtId, longitude, latitude);
+    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName) {
+        saveLocationInfo(cityId, districtId, longitude, latitude, cityName);
     }
 
-    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude) {
-        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude);
+    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude, String cityName) {
+        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName);
         Preference.setLocationData(locationData);
     }
 

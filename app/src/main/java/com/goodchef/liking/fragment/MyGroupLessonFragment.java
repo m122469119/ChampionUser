@@ -107,6 +107,8 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                     return false;
                 }
             });
+        }else {
+            setNoDataView();
         }
 
     }

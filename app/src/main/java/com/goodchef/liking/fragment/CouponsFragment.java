@@ -171,6 +171,8 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                 }
             }
             updateListView(list);
+        }else {
+            setNoDataView();
         }
     }
 

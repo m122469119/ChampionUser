@@ -1,27 +1,25 @@
 package com.goodchef.liking.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.BaseFragment;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.CityData;
+import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.storage.Preference;
-import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
 import java.util.List;
 
@@ -31,42 +29,84 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingBuyCardFragment extends BaseFragment implements CardListView {
+public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragment implements CardListView {
     public static final String KEY_CARD_CATEGORY = "key_card_category";
     public static final String KEY_CATEGORY_ID = "key_category_id";
     public static final String KEY_BUY_TYPE = "key_buy_type";
 
-    private PullToRefreshRecyclerView mRecyclerView;
     private BuyCardAdapter mBuyCardAdapter;
     private CardListPresenter mCardListPresenter;
     private View mHeadView;
     private static final int TYPE_BUY = 1;
     private TextView mCityOpenTextView;//当前城市是否开通
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_buy_card, container, false);
-        initView(view);
-        initData();
-        initRecycleHeadView();
-        return view;
+    protected void requestData(int page) {
+        sendBuyCardListRequest();
     }
 
-    private void initView(View view) {
-        mRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.buy_card_RecyclerView);
-        mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
-        mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+    @Override
+    protected void initViews() {
+        setPullType(PullMode.PULL_NONE);
+        setNoDataView();
+        mBuyCardAdapter = new BuyCardAdapter(getActivity());
+        getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+        setRecyclerAdapter(mBuyCardAdapter);
+        initRecycleHeadView();
+        setItemClickListener();
     }
+
+    private void setItemClickListener() {
+        mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
+                if (card != null) {
+                    Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
+                    intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
+                    intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
+                    intent.putExtra(KEY_BUY_TYPE, 1);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
+    }
+
+    private void setNoDataView() {
+        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
+        TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
+        TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
+        noDataImageView.setImageResource(R.drawable.icon_no_coureses_data);
+        noDataText.setText(R.string.no_data);
+        refreshView.setText(R.string.refresh_btn_text);
+        refreshView.setOnClickListener(refreshOnClickListener);
+        getStateView().setNodataView(noDataView);
+    }
+
+    /***
+     * 刷新事件
+     */
+    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            sendBuyCardListRequest();
+        }
+    };
 
     private void initRecycleHeadView() {
-        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, mRecyclerView, false);
+        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, getPullToRefreshRecyclerView(), false);
         mCityOpenTextView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
         mCityOpenTextView.setVisibility(View.VISIBLE);
         mCityOpenTextView.setText("当前城市尚未开通服务");
     }
 
-    private void initData() {
+    private void sendBuyCardListRequest() {
         mCardListPresenter = new CardListPresenter(getActivity(), this);
         mCardListPresenter.getCardList(TYPE_BUY);
     }
@@ -75,29 +115,16 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     public void updateCardListView(CardResult.CardData cardData) {
         List<CardResult.CardData.Card> list = cardData.getCardList();
         if (list != null && list.size() > 0) {
-            mBuyCardAdapter = new BuyCardAdapter(getActivity());
-            mBuyCardAdapter.setData(list);
-            mBuyCardAdapter.setBuyCardListener(null);
-            mBuyCardAdapter.setHeaderView(mHeadView);
-            mRecyclerView.setAdapter(mBuyCardAdapter);
-            mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
-                    if (card != null) {
-                        Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
-                        intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
-                        intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
-                        intent.putExtra(KEY_BUY_TYPE, 1);
-                        startActivity(intent);
-                    }
+            LocationData locationData = Preference.getLocationData();
+            if (locationData != null) {
+                String cityName = locationData.getCityName();
+                if (!StringUtils.isEmpty(cityName)) {
+                    setHeadNoLocationView(cityName);
                 }
-
-                @Override
-                public boolean onItemLongClick(View view, int position) {
-                    return false;
-                }
-            });
+            }
+            updateListView(list);
+        } else {
+            setNoDataView();
         }
     }
 
@@ -108,6 +135,12 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
     public void onEvent(MainAddressChanged mainAddressChanged) {
         String cityName = mainAddressChanged.getCityName();
+        if (!StringUtils.isEmpty(cityName)) {
+            setHeadNoLocationView(cityName);
+        }
+    }
+
+    private void setHeadNoLocationView(String cityName) {
         boolean isContains = false;
         List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
         if (cityDataList != null && cityDataList.size() > 0) {
@@ -118,10 +151,24 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                 }
             }
             if (isContains) {
-                mCityOpenTextView.setVisibility(View.GONE);
+                removeHeadView();
             } else {
-                mCityOpenTextView.setVisibility(View.VISIBLE);
-                mCityOpenTextView.setText("当前城市尚未开通服务");
+                if (mBuyCardAdapter != null) {
+                    if (mHeadView != null) {
+                        getPullToRefreshRecyclerView().removeView(mHeadView);
+                        mBuyCardAdapter.setHeaderView(mHeadView);
+                        mBuyCardAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
+
+    private void removeHeadView() {
+        if (mBuyCardAdapter != null) {
+            if (mHeadView != null) {
+                getPullToRefreshRecyclerView().removeView(mHeadView);
+                mBuyCardAdapter.notifyDataSetChanged();
             }
         }
     }
