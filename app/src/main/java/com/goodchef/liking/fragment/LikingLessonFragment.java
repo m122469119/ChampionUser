@@ -3,7 +3,6 @@ package com.goodchef.liking.fragment;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,14 +10,12 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
-import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.GymCoursesActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
-import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -79,6 +76,14 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         initRecycleView();
         initRecycleHeadView();
         setNoDataView();
+
+        getFailRefreshText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestBanner();
+                getCoursesRequest(1);
+            }
+        });
     }
 
     private void initRecycleView() {
@@ -120,11 +125,11 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         public void onClick(View v) {
             RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.layout_group_lesson);
             if (layout != null) {
-                CoursesResult.Courses.CoursesData data= (CoursesResult.Courses.CoursesData) layout.getTag();
-                if (data !=null){
+                CoursesResult.Courses.CoursesData data = (CoursesResult.Courses.CoursesData) layout.getTag();
+                if (data != null) {
                     Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
-                    intent.putExtra(KEY_GYM_ID,data.getGymId());
-                    intent.putExtra(KEY_GYM_NAME,data.getCourseName());
+                    intent.putExtra(KEY_GYM_ID, data.getGymId());
+                    intent.putExtra(KEY_GYM_NAME, data.getCourseName());
                     startActivity(intent);
                 }
             }
@@ -157,23 +162,17 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            requestBanner();
             loadHomePage();
         }
     };
 
     private void initImageSliderLayout() {
-        //   resizeImageSliderLayout();
         mBannerPagerAdapter = new BannerPagerAdapter(getActivity());
         mImageViewPager.setAdapter(mBannerPagerAdapter);
         mImageViewPager.setAutoScrollTime(IMAGE_SLIDER_SWITCH_DURATION);
         mIconPageIndicator.setViewPager(mImageViewPager);
     }
-
-    private void resizeImageSliderLayout() {
-        AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) mSliderParentLayout.getLayoutParams();
-        layoutParams.height = (int) (DisplayUtils.getWidthPixels() * 0.4);
-    }
-
 
     //发送banner请求
     private void requestBanner() {
@@ -197,6 +196,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
             updateListView(list);
             if (bannerDataList != null && bannerDataList.size() > 0) {
                 mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);
+                mLikingLessonRecyclerAdapter.notifyDataSetChanged();
             } else {
                 removeHeadView();
             }
@@ -215,9 +215,11 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
             }
             mImageViewPager.setCurrentItem(0);
             mImageViewPager.startAutoScroll();
+            mLikingLessonRecyclerAdapter.notifyDataSetChanged();
         } else {
             removeHeadView();
         }
+
     }
 
 
@@ -253,16 +255,13 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     public void onEvent(MainAddressChanged mainAddressChanged) {
         mLatitude = mainAddressChanged.getLatitude();
         mLongitude = mainAddressChanged.getLongitude();
+        mCityId = mainAddressChanged.getCityId();
+        mDistrictId = mainAddressChanged.getDistrictId();
+        LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
+        isFirstMessage = true;
+        requestBanner();
+        getCoursesRequest(1);
+
     }
 
-    public void onEvent(InitApiFinishedMessage message) {
-        if (message.isSuccess()) {
-            isFirstMessage = true;
-            requestBanner();
-            getCoursesRequest(1);
-            LogUtils.i("shouye", "onevent");
-        } else {
-
-        }
-    }
 }
