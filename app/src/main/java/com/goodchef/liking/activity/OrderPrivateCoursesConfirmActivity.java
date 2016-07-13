@@ -20,6 +20,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
 import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.PrivateCoursesTrainItemAdapter;
+import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
@@ -296,6 +297,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         @Override
         public void onSuccess() {
             jumpToMyCoursesActivity();
+            postEvent(new BuyPrivateCoursesMessage());
         }
 
         @Override

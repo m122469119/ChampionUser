@@ -12,11 +12,13 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
 
@@ -129,5 +131,17 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         }
     }
 
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
+       this.finish();
+    }
+
+    public void onEvent(BuyPrivateCoursesMessage message){
+        this.finish();
+    }
 
 }

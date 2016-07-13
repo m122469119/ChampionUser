@@ -102,6 +102,8 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
                     return false;
                 }
             });
+        }else {
+            setNoDataView();
         }
     }
 

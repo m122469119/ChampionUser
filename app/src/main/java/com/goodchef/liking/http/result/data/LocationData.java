@@ -8,12 +8,14 @@ public class LocationData {
     private String districtId;
     private double longitude;
     private double latitude;
+    private String cityName;
 
-    public LocationData(String cityId, String districtId, double longitude, double latitude) {
+    public LocationData(String cityId, String districtId, double longitude, double latitude,String cityName) {
         this.cityId = cityId;
         this.districtId = districtId;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.cityName = cityName;
     }
 
     public String getCityId() {
@@ -30,5 +32,9 @@ public class LocationData {
 
     public double getLatitude() {
         return latitude;
+    }
+
+    public String getCityName() {
+        return cityName;
     }
 }
