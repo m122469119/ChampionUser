@@ -36,9 +36,9 @@
                         android:id="@+id/gym_lesson_image"
                         android:layout_width="match_parent"
                         android:layout_height="130dp"
-                        fresco:failureImage="@drawable/linshi_back"
+                        fresco:failureImage="@drawable/bg_no_data_default_image"
                         fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImage="@drawable/linshi_back"
+                        fresco:placeholderImage="@drawable/bg_no_data_default_image"
                         fresco:placeholderImageScaleType="centerCrop"/>
 
                     <View

@@ -10,9 +10,9 @@
         android:id="@+id/group_lesson_gym_image"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        fresco:failureImage="@drawable/linshi_back"
+        fresco:failureImage="@drawable/bg_private_teacher_default"
         fresco:failureImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/linshi_back"
+        fresco:placeholderImage="@drawable/bg_private_teacher_default"
         fresco:placeholderImageScaleType="centerCrop"/>
 
 </LinearLayout>

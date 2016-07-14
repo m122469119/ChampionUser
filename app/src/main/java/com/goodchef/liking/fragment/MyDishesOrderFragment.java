@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -23,10 +24,11 @@ import com.goodchef.liking.activity.MyDishesOrderDetailsActivity;
 import com.goodchef.liking.adapter.MyDishesOrderAdapter;
 import com.goodchef.liking.eventmessages.CancelMyDishesOrderMessage;
 import com.goodchef.liking.eventmessages.CompleteMyDishesOrderMessage;
-import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
+import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.DishesOrderListResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -68,7 +70,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
         initPayModule();
     }
 
-    private void setNoDataView(){
+    private void setNoDataView() {
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
@@ -141,7 +143,8 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
         });
     }
 
-    private void setOrderListData(List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList){
+    private void setOrderListData(List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList) {
+        BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
         if (orderList != null && orderList.size() > 0) {
             for (int i = 0; i < orderList.size(); i++) {
                 long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
@@ -152,8 +155,17 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 Log.e("oderDate=", oderDate + "");
                 long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
                 Log.e("orderDateLong=", orderDateLong + "");
-                //  long limitTime = (long) orderList.get(i).getLimitSecond();//限时时间
-                long limitTime = (long) 300;//暂时定死
+                long limitTime;
+                if (baseConfigData != null) {
+                    String limitTimeStr = baseConfigData.getCountSecond();
+                    if (StringUtils.isEmpty(limitTimeStr)) {
+                        limitTime = (long) 300;
+                    } else {
+                        limitTime = Long.parseLong(limitTimeStr);
+                    }
+                } else {
+                    limitTime = (long) 300;
+                }
                 long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
                 Log.e("orderOverdueTime=", orderOverdueTime + "");
                 long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
@@ -175,6 +187,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
 
     Handler handler = new Handler();
+
     private void startUpdateListTime() {
         if (mUpdateListTimeRunnable != null) {
             handler.postDelayed(mUpdateListTimeRunnable, 1000);
@@ -210,8 +223,6 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
         }
         super.onDestroy();
     }
-
-
 
 
     /***
@@ -371,7 +382,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
     }
 
     public void onEvent(MyDishesDetailsWechatMessage wechatMessage) {
-       loadHomePage();
+        loadHomePage();
     }
 
     public void onEvent(MyDishesOrderAlipayMessage orderAlipyMessage) {

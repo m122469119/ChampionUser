@@ -16,11 +16,13 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
@@ -62,7 +64,6 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         mSendCodeBtn.setText("获取验证码");
         showHomeUpIcon(R.drawable.app_bar_left_quit);
         setViewOnClickListener();
-     //   mLoginPhoneEditText.setText("15618576553");
     }
 
     private void initView() {
@@ -85,7 +86,13 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         } else if (v == mLoginBtn) {
             login();
         } else if (v == mRegisterBtn) {
-
+            BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
+            if (baseConfigData != null) {
+                String agreeUrl = baseConfigData.getAgreeUrl();
+                if (!StringUtils.isEmpty(agreeUrl)) {
+                    HDefaultWebActivity.launch(this, agreeUrl, "用户协议");
+                }
+            }
         }
     }
 
@@ -158,9 +165,9 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             postEvent(new LoginFinishMessage());
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
-            if (newUser == 1){
-                Intent intent = new Intent(this,MyInfoActivity.class);
-                intent.putExtra(KEY_TITLE_SET_USER_INFO,"设置个人信息");
+            if (newUser == 1) {
+                Intent intent = new Intent(this, MyInfoActivity.class);
+                intent.putExtra(KEY_TITLE_SET_USER_INFO, "设置个人信息");
                 startActivity(intent);
             }
             this.finish();
@@ -171,12 +178,12 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
     /***
      * 上传设备信息
      */
-    private void uploadDeviceInfo(){
+    private void uploadDeviceInfo() {
         String jPushRegisterId = Preference.getJPushRegistrationId();
         if (StringUtils.isEmpty(jPushRegisterId)) {
             return;
         }
-        LiKingApi.uploadUserDevice(Preference.getToken(),JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<BaseResult>() {
+        LiKingApi.uploadUserDevice(Preference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<BaseResult>() {
             @Override
             public void onSuccess(BaseResult result) {
                 LogUtils.i(TAG, "uploadDeviceInfo success!");
