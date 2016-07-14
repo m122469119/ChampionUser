@@ -2,12 +2,11 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
-import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
@@ -24,10 +23,9 @@ public class PrivateCoursesDetailsPresenter extends BasePresenter<PrivateCourses
     }
 
     public void getPrivateCoursesDetails(String trainerId) {
-        LiKingApi.getPrivateCoursesDetails(trainerId, new RequestUiLoadingCallback<PrivateCoursesResult>(mContext, R.string.loading_data) {
+        LiKingApi.getPrivateCoursesDetails(trainerId, new RequestCallback<PrivateCoursesResult>() {
             @Override
             public void onSuccess(PrivateCoursesResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
                 } else {
@@ -37,7 +35,7 @@ public class PrivateCoursesDetailsPresenter extends BasePresenter<PrivateCourses
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }
