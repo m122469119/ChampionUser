@@ -48,7 +48,7 @@ public class ChangeShopActivity extends AppBarActivity implements ChangeShopView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_shop);
-        setTitle("选择门店");
+        setTitle(getString(R.string.title_change_shop));
         initView();
         initData();
     }
@@ -136,8 +136,8 @@ public class ChangeShopActivity extends AppBarActivity implements ChangeShopView
 
 
     public class ChangeShopAdapter extends BaseRecycleViewAdapter<ChangeShopAdapter.ChangeShopViewHolder, GymListResult.GymData.Shop> {
-        private static final int STOCK_LIMIT_NOT_SELL_OUT = 0;
-        private static final int STOCK_LIMIT_SELL_OUT = 1;
+        private static final int STOCK_LIMIT_NOT_SELL_OUT = 0;//没有售罄
+        private static final int STOCK_LIMIT_SELL_OUT = 1;//售罄
         private Context mContext;
         private View.OnClickListener listener;
 

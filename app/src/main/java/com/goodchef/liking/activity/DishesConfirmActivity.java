@@ -27,7 +27,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.DishesConfirmAdapter;
 import com.goodchef.liking.adapter.MealTimeAdapter;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;
-import com.goodchef.liking.eventmessages.DishesWechatPayFalse;
+import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -381,7 +381,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 }
             } else {//订单的面额小于优惠券的面额
                 mDishesCouponMoney.setText("已优惠" + mCoupon.getAmount());
-                mDishesMoneyextView.setText("¥ " + "0.0.0");
+                mDishesMoneyextView.setText("¥ " + "0.00");
             }
         } else {//优惠券不可用
             mDishesCouponMoney.setText("");
@@ -397,7 +397,6 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         @Override
         public void onStart() {
             LogUtils.e(TAG, "alipay start");
-            postEvent(new DishesAliPayMessage());
         }
 
         @Override
@@ -408,7 +407,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onFailure(String errorMessage) {
-            postEvent(new DishesAliPayMessage());
+            postEvent(new DishesPayFalse());
         }
 
         @Override
@@ -426,12 +425,11 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onSuccess() {
-            postEvent(new DishesWechatPayFalse());
+
         }
 
         @Override
         public void onFailure(String errorMessage) {
-            postEvent(new DishesWechatPayFalse());
         }
     };
 
@@ -442,13 +440,18 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     }
 
     public void onEvent(DishesWechatPayMessage wechatMessage) {
-        jumpIntentDishesOrderList();
+        if (wechatMessage.isBuySuccess()){
+            jumpIntentDishesOrderList();
+        }else {
+            postEvent(new DishesPayFalse());
+        }
     }
 
     private void jumpIntentDishesOrderList() {
         Intent intent = new Intent(this, MyOrderActivity.class);
         intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX,0);
         startActivity(intent);
+        this.finish();
     }
 
 }

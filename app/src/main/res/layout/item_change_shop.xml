@@ -15,7 +15,6 @@
             android:id="@+id/change_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LingFit凌空SoHo店"
             android:textSize="@dimen/textsize_15"/>
 
 
@@ -25,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/change_shop_name"
             android:layout_marginTop="2dp"
-            android:text="中山南二路107号美换大酒店9楼"
             android:textSize="12sp"/>
 
         <CheckBox
@@ -37,6 +35,7 @@
             android:background="@drawable/pay_radio_button_bg"
             android:button="@null"
             android:checked="false"
+            android:visibility="gone"
             android:clickable="false"/>
 
         <TextView
