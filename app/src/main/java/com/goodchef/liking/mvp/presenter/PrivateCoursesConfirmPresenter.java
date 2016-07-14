@@ -39,6 +39,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
             @Override
             public void onFailure(RequestError error) {
                 super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }
