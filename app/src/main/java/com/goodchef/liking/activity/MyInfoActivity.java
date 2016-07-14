@@ -42,7 +42,6 @@ import java.util.List;
  * Time:16/5/27 下午3:11
  */
 public class MyInfoActivity extends AppBarActivity implements View.OnClickListener, UserInfoView {
-    private static final String CONTENT_TYPE = "image/jpeg";
     private RelativeLayout mHeadImageLayout;
     private HImageView mHeadImage;
     private EditText mUserNameEditText;
@@ -65,7 +64,6 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
-        setTitle("修改个人信息");
         initView();
         setViewOnClickListener();
         initData();
@@ -113,7 +111,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                     if (s.toString().equals(mUserInfoData.getName())) {
                         isChange = false;
                     } else {
-                        isChange = false;
+                        isChange = true;
                     }
                 } else {
                     isChange = false;
@@ -310,8 +308,6 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             public void takePictureFromCamera(String imagePath) {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
                 sendImageFile(mBitmap);
-
-
             }
 
             @Override
