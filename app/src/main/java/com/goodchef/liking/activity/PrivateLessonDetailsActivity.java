@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PhoneUtils;
@@ -18,6 +19,7 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
@@ -40,7 +42,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
-
+    private LikingStateView mLikingStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     }
 
     private void initView() {
+        mLikingStateView = (LikingStateView) findViewById(R.id.private_courses_details_state_view);
         mTeacherHImageView = (HImageView) findViewById(R.id.private_lesson_details_teach_image);
         mTeacherNameTextView = (TextView) findViewById(R.id.private_courses_teacher_name);
         mTeacherSexTextView = (TextView) findViewById(R.id.private_teacher_sex);
@@ -80,6 +83,13 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         mTeacherTagsTextView = (TextView) findViewById(R.id.teacher_tags);
         mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.private_lesson_immediately_submit);
+        mLikingStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                sendDetailsRequest();
+            }
+        });
+
     }
 
     private void setViewOnClickListener() {
@@ -87,6 +97,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     }
 
     private void sendDetailsRequest() {
+        mLikingStateView.setState(StateView.State.LOADING);
         mCoursesDetailsPresenter = new PrivateCoursesDetailsPresenter(this, this);
         mCoursesDetailsPresenter.getPrivateCoursesDetails(trainerId);
     }
@@ -94,37 +105,47 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     @Override
     public void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData) {
-        setTitle(privateCoursesData.getTrainerName());
-        List<String> imageList = privateCoursesData.getTrainerImgs();
-        if (imageList != null) {
-            String imageUrl = imageList.get(0);
-            if (!TextUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mTeacherHImageView, imageUrl);
+        if (privateCoursesData != null) {
+            mLikingStateView.setState(StateView.State.SUCCESS);
+            setTitle(privateCoursesData.getTrainerName());
+            List<String> imageList = privateCoursesData.getTrainerImgs();
+            if (imageList != null) {
+                String imageUrl = imageList.get(0);
+                if (!TextUtils.isEmpty(imageUrl)) {
+                    HImageLoaderSingleton.getInstance().requestImage(mTeacherHImageView, imageUrl);
+                }
             }
-        }
 
-        StringBuffer stringBuffer = new StringBuffer();
-        List<String> tags = privateCoursesData.getTags();
-        if (tags != null && tags.size() > 0) {
-            for (int i = 0; i < tags.size(); i++) {
-                stringBuffer.append("#" + tags.get(i) + "  ");
+            StringBuffer stringBuffer = new StringBuffer();
+            List<String> tags = privateCoursesData.getTags();
+            if (tags != null && tags.size() > 0) {
+                for (int i = 0; i < tags.size(); i++) {
+                    stringBuffer.append("#" + tags.get(i) + "  ");
+                }
+                mTeacherTagsTextView.setVisibility(View.VISIBLE);
+                mTeacherTagsTextView.setText(stringBuffer.toString());
+            } else {
+                mTeacherTagsTextView.setVisibility(View.GONE);
             }
-            mTeacherTagsTextView.setVisibility(View.VISIBLE);
-            mTeacherTagsTextView.setText(stringBuffer.toString());
+            mTeacherIntroduceTextView.setText(privateCoursesData.getDesc());
+            mTeacherNameTextView.setText(privateCoursesData.getTrainerName());
+
+            int gender = privateCoursesData.getGender();
+            if (gender == 0) {
+                mTeacherSexTextView.setText(R.string.sex_men);
+            } else if (gender == 1) {
+                mTeacherSexTextView.setText(R.string.sex_man);
+            }
+            mTeacherHeightTextView.setText(privateCoursesData.getHeight());
+            mTeacherWeightTextView.setText(privateCoursesData.getWeight());
         } else {
-            mTeacherTagsTextView.setVisibility(View.GONE);
+            mLikingStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendDetailsRequest();
+                }
+            });
         }
-        mTeacherIntroduceTextView.setText(privateCoursesData.getDesc());
-        mTeacherNameTextView.setText(privateCoursesData.getTrainerName());
-
-        int gender = privateCoursesData.getGender();
-        if (gender == 0) {
-            mTeacherSexTextView.setText(R.string.sex_men);
-        } else if (gender == 1) {
-            mTeacherSexTextView.setText(R.string.sex_man);
-        }
-        mTeacherHeightTextView.setText(privateCoursesData.getHeight());
-        mTeacherWeightTextView.setText(privateCoursesData.getWeight());
     }
 
 
@@ -156,4 +177,8 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         this.finish();
     }
 
+    @Override
+    public void handleNetworkFailure() {
+        mLikingStateView.setState(StateView.State.FAILED);
+    }
 }
