@@ -10,7 +10,6 @@ import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CustomAlertDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
-import com.goodchef.liking.eventmessages.DishesWechatPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
@@ -30,7 +29,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
  */
 public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler {
     public static final int PAY_TYPE_ORDER = 1111;//购买私教课
-    public static final int PAY_TYPE_DISHES_ORDER = 2222;
+    public static final int PAY_TYPE_DISHES_ORDER = 2222;//购买营养餐
     public static final int PAY_TYPE_MY_DISHES_LIST = 3333;
     public static final int PAY_TYPE_MY_DISHES_DETAILS = 4444;
     public static final int PAY_TYPE_BUY_CARD = 5555;//买卡
@@ -68,9 +67,6 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
             paySuccess = true;
         } else {
-            if (payType == PAY_TYPE_DISHES_ORDER){
-                postEvent(new DishesWechatPayFalse());
-            }
             paySuccess = false;
         }
         showPayDialog(paySuccess);
@@ -96,7 +92,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     orderId = "";
                     finish();
                 } else if (payType == PAY_TYPE_DISHES_ORDER) {
-                    postEvent(new DishesWechatPayMessage());
+                    postEvent(new DishesWechatPayMessage(paySuccess));
                     dialog.dismiss();
                     orderId = "";
                     finish();

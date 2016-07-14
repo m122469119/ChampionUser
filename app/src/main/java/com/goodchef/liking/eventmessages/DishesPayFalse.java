@@ -7,5 +7,5 @@ import com.aaron.android.framework.base.eventbus.BaseMessage;
  * Author shaozucheng
  * Time:16/7/9 下午4:13
  */
-public class DishesWechatPayFalse extends BaseMessage {
+public class DishesPayFalse extends BaseMessage {
 }

@@ -136,5 +136,6 @@
     <string name="no_courese_data">暂时没有课程</string>
     <string name="no_data">暂无数据</string>
     <string name="diaog_got_it">知道了</string>
+    <string name="title_change_shop">选择门店</string>
 
 </resources>
