@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="120dp"
         android:background="@drawable/open_the_door_head_back"
         android:gravity="center"
         android:orientation="horizontal">
@@ -82,10 +82,20 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_radius_green_btn_background"
                 android:gravity="center"
-                android:text="获取开门密码"
+                android:text="获取出门密码"
                 android:textColor="@color/white"/>
 
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/user_code_fail_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="@color/user_auth_code_fail"
+            android:textSize="@dimen/textsize_15"/>
     </LinearLayout>
 
     <ImageView

@@ -38,6 +38,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
+import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
@@ -694,5 +695,18 @@ public class LiKingApi {
     public static void getCheckGymList(int cityId, double longitude, double latitude, RequestCallback<CheckGymListResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_GYM_LIST, CheckGymListResult.class, getCommonRequestParams().append("city_id", cityId)
                 .append("longitude", longitude).append("latitude", latitude), callback);
+    }
+
+
+    /**
+     * 获取开门密码
+     *
+     * @param token    token
+     * @param inout    获取类别 1进门 2出门
+     * @param callback RequestCallback
+     */
+    public static void getUserAuthCode(String token, int inout, RequestCallback<UserAuthCodeResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_USER_AUTHCODE, UserAuthCodeResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("inout", inout), callback);
     }
 }
