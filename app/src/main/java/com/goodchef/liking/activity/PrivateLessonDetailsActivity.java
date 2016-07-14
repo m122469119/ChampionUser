@@ -109,10 +109,22 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             for (int i = 0; i < tags.size(); i++) {
                 stringBuffer.append("#" + tags.get(i) + "  ");
             }
+            mTeacherTagsTextView.setVisibility(View.VISIBLE);
+            mTeacherTagsTextView.setText(stringBuffer.toString());
+        } else {
+            mTeacherTagsTextView.setVisibility(View.GONE);
         }
-        mTeacherTagsTextView.setText(stringBuffer.toString());
         mTeacherIntroduceTextView.setText(privateCoursesData.getDesc());
-        mTeacherNameTextView.setText(teacherName);
+        mTeacherNameTextView.setText(privateCoursesData.getTrainerName());
+
+        int gender = privateCoursesData.getGender();
+        if (gender == 0) {
+            mTeacherSexTextView.setText(R.string.sex_men);
+        } else if (gender == 1) {
+            mTeacherSexTextView.setText(R.string.sex_man);
+        }
+        mTeacherHeightTextView.setText(privateCoursesData.getHeight());
+        mTeacherWeightTextView.setText(privateCoursesData.getWeight());
     }
 
 
@@ -137,10 +149,10 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     }
 
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
-       this.finish();
+        this.finish();
     }
 
-    public void onEvent(BuyPrivateCoursesMessage message){
+    public void onEvent(BuyPrivateCoursesMessage message) {
         this.finish();
     }
 

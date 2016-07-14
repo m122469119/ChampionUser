@@ -47,7 +47,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_card_background"
+                android:background="@drawable/shape_card_stoke_bottom_background"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -61,7 +61,6 @@
                         android:layout_height="wrap_content"
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
-                        android:text="成成"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="18sp"/>
 
@@ -74,7 +73,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_toRightOf="@+id/private_courses_teacher_name"
                         android:paddingBottom="5dp"
-                        android:text="男"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="13sp"/>
 
@@ -92,7 +90,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            android:text="183"
                             android:textColor="@color/add_minus_dishes_text"
                             android:textSize="17sp"
                             android:textStyle="bold"/>
@@ -111,7 +108,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            android:text="75"
                             android:textColor="@color/add_minus_dishes_text"
                             android:textSize="17sp"
                             android:textStyle="bold"/>
@@ -135,7 +131,6 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="5dp"
-                        android:text="#健康训练 #康复训练"
                         android:textColor="@color/add_minus_dishes_text"/>
                 </RelativeLayout>
 

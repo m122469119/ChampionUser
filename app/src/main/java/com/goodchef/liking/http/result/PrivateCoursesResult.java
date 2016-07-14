@@ -26,27 +26,31 @@ public class PrivateCoursesResult extends BaseResult {
 
     public static class PrivateCoursesData extends BaseData {
 
+
         /**
          * trainer_name : 雷达
          * desc : 我是美男子
          * tags : []
          * trainer_imgs : [""]
-         * plan :
-         * plan_imgs : []
+         * gender : 0
+         * height : 165
+         * weight : 48
          */
 
         @SerializedName("trainer_name")
         private String trainerName;
         @SerializedName("desc")
         private String desc;
-        @SerializedName("plan")
-        private String plan;
+        @SerializedName("gender")
+        private int gender;
+        @SerializedName("height")
+        private String height;
+        @SerializedName("weight")
+        private String weight;
         @SerializedName("tags")
         private List<String> tags;
         @SerializedName("trainer_imgs")
         private List<String> trainerImgs;
-        @SerializedName("plan_imgs")
-        private List<PlanImageData> planImgs;
 
         public String getTrainerName() {
             return trainerName;
@@ -64,12 +68,28 @@ public class PrivateCoursesResult extends BaseResult {
             this.desc = desc;
         }
 
-        public String getPlan() {
-            return plan;
+        public int getGender() {
+            return gender;
         }
 
-        public void setPlan(String plan) {
-            this.plan = plan;
+        public void setGender(int gender) {
+            this.gender = gender;
+        }
+
+        public String getHeight() {
+            return height;
+        }
+
+        public void setHeight(String height) {
+            this.height = height;
+        }
+
+        public String getWeight() {
+            return weight;
+        }
+
+        public void setWeight(String weight) {
+            this.weight = weight;
         }
 
         public List<String> getTags() {
@@ -86,43 +106,6 @@ public class PrivateCoursesResult extends BaseResult {
 
         public void setTrainerImgs(List<String> trainerImgs) {
             this.trainerImgs = trainerImgs;
-        }
-
-        public List<PlanImageData> getPlanImgs() {
-            return planImgs;
-        }
-
-        public void setPlanImgs(List<PlanImageData> planImgs) {
-            this.planImgs = planImgs;
-        }
-
-        public static class PlanImageData extends BaseData{
-
-            /**
-             * desc : 美男子式哑铃
-             * url :
-             */
-
-            @SerializedName("desc")
-            private String desc;
-            @SerializedName("url")
-            private String url;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getUrl() {
-                return url;
-            }
-
-            public void setUrl(String url) {
-                this.url = url;
-            }
         }
     }
 }
