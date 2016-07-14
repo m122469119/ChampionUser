@@ -180,12 +180,14 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
             mImmediatelyBuyBtn.setBackgroundResource(R.color.add_minus_dishes_text);
             mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
             mImmediatelyBuyBtn.setEnabled(true);
+            mImmediatelyBuyBtn.setText(R.string.immediately_buy_btn);
         } else {
-            mSurplusNumberTextView.setText("已售罄");
+            mSurplusNumberTextView.setText(R.string.sold_out);
             mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.bg_gray_text));
             mAddReduceLayout.setVisibility(View.GONE);
             mImmediatelyBuyBtn.setBackgroundResource(R.color.dishes_buy_btn_gray_background);
             mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.dishes_buy_gray_text));
+            mImmediatelyBuyBtn.setText(R.string.sold_out);
             mImmediatelyBuyBtn.setEnabled(false);
         }
     }

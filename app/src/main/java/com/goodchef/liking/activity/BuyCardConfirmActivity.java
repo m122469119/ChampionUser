@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
@@ -26,6 +27,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.ConfirmCard;
@@ -39,7 +41,7 @@ import com.goodchef.liking.wxapi.WXPayEntryActivity;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:确认购买卡
  * Author shaozucheng
  * Time:16/6/17 下午5:55
  */
@@ -63,6 +65,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private CheckBox mAlipayCheckBox;
     private CheckBox mWechatCheckBox;
 
+    private LinearLayout mAgreeProtocolTextView;
     private TextView mCardMoneyTextView;//
     private TextView mImmediatelyBuyBtn;//立即支付
 
@@ -112,6 +115,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
         mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
 
+        mAgreeProtocolTextView = (LinearLayout) findViewById(R.id.buy_card_agree_protocol);
         mCardMoneyTextView = (TextView) findViewById(R.id.card_money);
         mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
     }
@@ -121,6 +125,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mWechatLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
         mImmediatelyBuyBtn.setOnClickListener(this);
+        mAgreeProtocolTextView.setOnClickListener(this);
     }
 
     /**
@@ -183,6 +188,14 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 startActivity(intent);
             }
 
+        } else if (v == mAgreeProtocolTextView) {
+            BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
+            if (baseConfigData != null) {
+                String serviceUrl = baseConfigData.getServiceUrl();
+                if (!StringUtils.isEmpty(serviceUrl)) {
+                    HDefaultWebActivity.launch(this, serviceUrl, "会员入会协议");
+                }
+            }
         }
     }
 
@@ -331,6 +344,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      */
     private void setCardView(List<ConfirmCard> confirmCardList) {
         if (confirmCardList != null && confirmCardList.size() >= 2) {
+            //当集合中 qulification 属性都为1时，表示都可以选，此时默认选中全天卡
             if (confirmCardList.get(0).getQulification() == 1 && confirmCardList.get(1).getQulification() == 1) {
                 confirmCardList.get(1).setLayoutViewEnable(true);
                 confirmCardList.get(0).setLayoutViewEnable(true);
@@ -344,8 +358,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                         card.setSelect(false);
                     }
                 }
-            } else {
-                //if (buyType != BUY_TYPE_UPGRADE) {//当 升级卡时，给买卡或者续卡默认选择状态的钱设置好
+            } else {//当集合中qulification 有1 或者0 的情况，为0的情况不可选
                 for (ConfirmCard card : confirmCardList) {
                     if (card.getQulification() == 1) {
                         cardPrice = card.getPrice();

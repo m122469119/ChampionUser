@@ -118,6 +118,32 @@
 
             <include
                 layout="@layout/layout_pay"/>
+
+            <LinearLayout
+                android:id="@+id/buy_card_agree_protocol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="购卡即同意"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《会员入会协议》"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
