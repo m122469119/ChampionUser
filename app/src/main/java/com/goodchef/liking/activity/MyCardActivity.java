@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -32,6 +34,8 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     private TextView mPeriodOfValidityTextView;//有效期
     private ListView mListView;
     private LinearLayout mBottomLayout;
+    private ScrollView mRootScrollView;
+    private RelativeLayout mNoCardLayout;
 
     private TextView mPromotionCardBtn;//升级卡
     private TextView mFlowCardBtn;//续卡
@@ -56,7 +60,8 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         mBottomLayout = (LinearLayout) findViewById(R.id.layout_my_card_bottom);
         mPromotionCardBtn = (TextView) findViewById(R.id.my_promotion_card);
         mFlowCardBtn = (TextView) findViewById(R.id.my_card_flow_card);
-
+        mRootScrollView = (ScrollView) findViewById(R.id.layout_my_card_root_view);
+        mNoCardLayout = (RelativeLayout) findViewById(R.id.layout_no_card);
     }
 
     private void setViewOnClickListener() {
@@ -88,6 +93,8 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     public void updateMyCardView(MyCardResult.MyCardData myCardData) {
         int hasCard = myCardData.getHasCard();
         if (hasCard == 1) {//有卡
+            mNoCardLayout.setVisibility(View.GONE);
+            mRootScrollView.setVisibility(View.VISIBLE);
             mBottomLayout.setVisibility(View.VISIBLE);
             MyCardResult.MyCardData.MyCard myCard = myCardData.getMyCard();
             if (myCard != null && !StringUtils.isEmpty(myCard.getCardNo()) && !StringUtils.isEmpty(myCard.getBuyTime())) {
@@ -102,10 +109,11 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                     ListViewUtil.setListViewHeightBasedOnChildren(mListView);
                 }
             }
-        } else {
+        } else {//没卡
+            mNoCardLayout.setVisibility(View.VISIBLE);
             mBottomLayout.setVisibility(View.GONE);
+            mRootScrollView.setVisibility(View.GONE);
         }
 
     }
-
 }
