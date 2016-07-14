@@ -64,7 +64,7 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
         @Override
         public void bindViews(final String dirPath) {
             ImageLoader.getInstance(3, ImageLoader.Type.LIFO).loadImage(mImageDirPath + "/" + dirPath, mImageView);
-            mImageButton.setImageResource(R.drawable.picture_unselected);
+            mImageButton.setImageResource(R.drawable.pay_radio_gray_uncheck);
             mImageView.setColorFilter(null);
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,14 +72,14 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
                     // 已经选择过该图片
                     if (mSelectedImage.contains(mImageDirPath + "/" + dirPath)) {
                         mSelectedImage.remove(mImageDirPath + "/" + dirPath);
-                        mImageButton.setImageResource(R.drawable.picture_unselected);
+                        mImageButton.setImageResource(R.drawable.pay_radio_gray_uncheck);
                         mImageView.setColorFilter(null);
                     } else {// 未选择该图片
                         if (mSelectedImage.size() >= mNeedSelectAmount) {
                             Toast.makeText(mContext, "最多可选择" + mNeedSelectAmount + "张图片", Toast.LENGTH_LONG).show();
                         } else {
                             mSelectedImage.add(mImageDirPath + "/" + dirPath);
-                            mImageButton.setImageResource(R.drawable.pictures_selected);
+                            mImageButton.setImageResource(R.drawable.pay_radio_green_check);
                             mImageView.setColorFilter(Color.parseColor("#77000000"));
                         }
                     }
