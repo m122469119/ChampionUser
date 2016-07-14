@@ -13,6 +13,7 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
 import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
@@ -28,6 +29,7 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
 import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
@@ -68,6 +70,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem;//训练项目对象
     private String payType = "-1";//支付方式
 
+    private LikingStateView mStateView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.private_courses_confirm_state_view);
         mRecyclerView = (RecyclerView) findViewById(R.id.confirm_recyclerView);
         mCoursesPeopleTextView = (TextView) findViewById(R.id.courses_people);
         mCoursesNumberTextView = (TextView) findViewById(R.id.courses_number);
@@ -92,7 +97,12 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
         mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
         mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
-
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                sendRequest();
+            }
+        });
     }
 
     private void setViewOnClickListener() {
@@ -107,7 +117,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mWeixinPay = new WeixinPay(this, mWeixinPayListener);
     }
 
-    private void setPayDefaultType(){
+    private void setPayDefaultType() {
         mAlipayCheckBox.setChecked(true);
         mWechatCheckBox.setChecked(false);
         payType = "1";
@@ -118,6 +128,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
         setTitle(teacherName);
         mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmPresenter(this, this);
+        mStateView.setState(StateView.State.LOADING);
         sendRequest();
     }
 
@@ -127,10 +138,20 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
     @Override
     public void updatePrivateCoursesConfirm(PrivateCoursesConfirmResult.PrivateCoursesConfirmData coursesConfirmData) {
-        List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = coursesConfirmData.getCourses();
-        setTrainItem(trainItemList);
-        mCoursesPeopleTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
-        mEndTimeTextView.setText(coursesConfirmData.getEndTime());
+        if (coursesConfirmData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = coursesConfirmData.getCourses();
+            setTrainItem(trainItemList);
+            mCoursesPeopleTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
+            mEndTimeTextView.setText(coursesConfirmData.getEndTime());
+        } else {
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendRequest();
+                }
+            });
+        }
     }
 
 
@@ -341,9 +362,13 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
      */
     private void jumpToMyCoursesActivity() {
         Intent intent = new Intent(this, MyLessonActivity.class);
-        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM,1);
+        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 1);
         startActivity(intent);
         this.finish();
     }
 
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
+    }
 }
