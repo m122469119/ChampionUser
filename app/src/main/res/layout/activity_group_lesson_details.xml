@@ -78,17 +78,17 @@
                 android:background="@drawable/shape_card_stoke_bottom_background"
                 android:orientation="vertical">
 
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/courses_time_details"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:layout_marginRight="10dp"
                         android:text="@string/lesson_time"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
@@ -97,12 +97,12 @@
                         android:id="@+id/courses_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toRightOf="@+id/courses_time_details"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -110,9 +110,10 @@
                     android:paddingRight="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/shop_address_details"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:layout_marginRight="10dp"
                         android:text="@string/lesson_address"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
@@ -121,13 +122,13 @@
                         android:id="@+id/shop_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toRightOf="@+id/shop_address_details"
                         android:gravity="left"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -136,9 +137,10 @@
                     android:paddingTop="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/group_teacher_name_details"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:layout_marginRight="10dp"
                         android:text="@string/lesson_teacher"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
@@ -147,22 +149,23 @@
                         android:id="@+id/group_teacher_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toRightOf="@+id/group_teacher_name_details"
                         android:gravity="left"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
                     <TextView
+                        android:id="@+id/rating_courses_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="26dp"
+                        android:layout_marginRight="10dp"
                         android:text="强度："
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
@@ -172,10 +175,11 @@
                         style="@style/LikingItemRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/rating_courses_details"
                         android:numStars="5"
                         />
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -245,9 +249,9 @@
                 android:id="@+id/teacher_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:background="@drawable/shape_card_stoke_bottom_background"
                 android:lineSpacingExtra="3dp"
+                android:padding="10dp"
                 android:textColor="@color/liking_lesson_text"
                 android:textSize="13sp"/>
 
