@@ -253,8 +253,15 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> e
      * 请求下一页数据
      */
     protected void loadNextPage() {
-        if (mPager.hasNext()) {
-            loadPageData(mPager.next());
+        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+            LogUtils.i(TAG, "Page Loader error, network is not available!");
+            mStateView.setState(StateView.State.FAILED);
+            requestFinished();
+            return;
+        }else {
+            if (mPager.hasNext()) {
+                loadPageData(mPager.next());
+            }
         }
     }
 
