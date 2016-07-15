@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
@@ -25,10 +26,9 @@ public class MyPrivateCoursesDetailsPresenter extends BasePresenter<MyPrivateCou
     }
 
     public void getMyPrivateCoursesDetails(String orderId) {
-        LiKingApi.getMyPrivateCoursesDetails(Preference.getToken(), orderId, new RequestUiLoadingCallback<MyPrivateCoursesDetailsResult>(mContext, R.string.loading_data) {
+        LiKingApi.getMyPrivateCoursesDetails(Preference.getToken(), orderId, new RequestCallback<MyPrivateCoursesDetailsResult>() {
             @Override
             public void onSuccess(MyPrivateCoursesDetailsResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateMyPrivateCoursesDetailsView(result.getData());
                 } else {
@@ -38,7 +38,7 @@ public class MyPrivateCoursesDetailsPresenter extends BasePresenter<MyPrivateCou
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }
