@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.UserExerciseResult;
 
 /**
@@ -8,6 +8,6 @@ import com.goodchef.liking.http.result.UserExerciseResult;
  * Author shaozucheng
  * Time:16/7/11 下午3:17
  */
-public interface UserExerciseView extends BaseView {
+public interface UserExerciseView extends BaseNetworkLoadView {
     void updateUserExerciseView(UserExerciseResult.ExerciseData exerciseData);
 }
