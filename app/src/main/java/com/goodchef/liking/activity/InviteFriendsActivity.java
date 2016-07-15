@@ -35,6 +35,8 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
 
     private String mCode;
     private String shareUrl;
+    private String shareTitle;
+    private String shareContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +68,14 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
             public void onSuccess(InviteFriendResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(InviteFriendsActivity.this, result)) {
-                    mCode = result.getData().getCode();
-                    shareUrl = result.getData().getShareUrl();
-                    mInviteCodeTextView.setText(mCode);
+                    InviteFriendResult.InviteFriendData data = result.getData();
+                    if (data !=null){
+                        mCode = data.getCode();
+                        shareUrl = data.getShareUrl();
+                        shareTitle = data.getShareTitle();
+                        shareContent = data.getShareContent();
+                        mInviteCodeTextView.setText(mCode);
+                    }
                 }
             }
 
@@ -94,8 +101,6 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
 
     private void showShareDialog() {
         final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(this);
-        final String shareTitle = getString(R.string.share_invite_friend_title);
-        final String shareContent = getString(R.string.share_invite_friend_content);
         shareCustomDialog.setViewOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
