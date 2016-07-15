@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
 import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
@@ -21,11 +24,11 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.MyDishesDetailsMenuAdapter;
 import com.goodchef.liking.eventmessages.CancelMyDishesOrderMessage;
 import com.goodchef.liking.eventmessages.CompleteMyDishesOrderMessage;
-import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
+import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
 import com.goodchef.liking.fragment.MyDishesOrderFragment;
 import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.MyDishesOrderDetailsResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -33,6 +36,7 @@ import com.goodchef.liking.mvp.presenter.MyDishesOrderPresenter;
 import com.goodchef.liking.mvp.view.MyDishesOrderView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.dialog.SelectPayTypeCustomDialog;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
@@ -81,6 +85,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
     private OrderSurplusCountDownTimer mCountDownTimer;//倒计时
+    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.my_dishes_order_details_state_view);
         mSerialNumberTextView = (TextView) findViewById(R.id.details_serial_number);
         mOrderNumberTextView = (TextView) findViewById(R.id.details_order_number);
         mOrderStateTextView = (TextView) findViewById(R.id.details_order_state);
@@ -116,6 +122,13 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         mGoPayBtn.setOnClickListener(this);
         mCancelOrderBtn.setOnClickListener(this);
         mConfirmGetDishesBtn.setOnClickListener(this);
+        mStateView.setState(StateView.State.LOADING);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                sendDetailsRequest();
+            }
+        });
     }
 
     private void initData() {
@@ -131,10 +144,9 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
 
 
     private void sendDetailsRequest() {
-        LiKingApi.getDishesDetails(Preference.getToken(), orderId, new RequestUiLoadingCallback<MyDishesOrderDetailsResult>(this, R.string.loading_data) {
+        LiKingApi.getDishesDetails(Preference.getToken(), orderId, new RequestCallback<MyDishesOrderDetailsResult>() {
             @Override
             public void onSuccess(MyDishesOrderDetailsResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(MyDishesOrderDetailsActivity.this, result)) {
                     setDetailsData(result.getOrderDetailsData());
                 } else {
@@ -144,59 +156,78 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mStateView.setState(StateView.State.FAILED);
             }
         });
     }
 
     private void setDetailsData(MyDishesOrderDetailsResult.OrderDetailsData detailsData) {
-        mSerialNumberTextView.setText("流水号：" + detailsData.getSerialNumber());
-        mOrderNumberTextView.setText("订单号：" + detailsData.getOrderId());
-        //设置购买的食品清单
-        List<MyDishesOrderDetailsResult.OrderDetailsData.FoodListData> menuList = detailsData.getFoodList();
-        if (menuList != null && menuList.size() > 0) {
-            setDishesMenuList(menuList);
-        }
-        //设置优惠券
-        String couponAmount = detailsData.getCouponAmount();
-        if (Double.parseDouble(couponAmount) > 0) {
-            mCouponLayout.setVisibility(View.VISIBLE);
-            mCouponAmount.setText("¥ " + couponAmount);
+        if (detailsData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            mSerialNumberTextView.setText("流水号：" + detailsData.getSerialNumber());
+            mOrderNumberTextView.setText("订单号：" + detailsData.getOrderId());
+            //设置购买的食品清单
+            List<MyDishesOrderDetailsResult.OrderDetailsData.FoodListData> menuList = detailsData.getFoodList();
+            if (menuList != null && menuList.size() > 0) {
+                setDishesMenuList(menuList);
+            }
+            //设置优惠券
+            String couponAmount = detailsData.getCouponAmount();
+            if (Double.parseDouble(couponAmount) > 0) {
+                mCouponLayout.setVisibility(View.VISIBLE);
+                mCouponAmount.setText("¥ " + couponAmount);
+            } else {
+                mCouponLayout.setVisibility(View.GONE);
+            }
+            //设置总价
+            mActualDelivery.setText("¥ " + detailsData.getActualAmount());
+            //设置支付方式
+            int payType = detailsData.getPayType();
+            if (payType == PAY_TYPE_WECHAT) {
+                mPayType.setText(R.string.pay_wechat_type);
+            } else if (payType == PAY_TYPE_ALIPY) {
+                mPayType.setText(R.string.pay_alipay_type);
+            } else if (payType == PAY_TYPE_FREE) {
+                mPayType.setText(R.string.pay_type_free_of);
+            }
+
+            mUsername.setText(detailsData.getName());
+            mUserPhone.setText(detailsData.getPhone());
+            mMealShop.setText(detailsData.getGymName());
+            mMealShopAddress.setText(detailsData.getGymAddress());
+            mOrderTimeTextView.setText(detailsData.getOrderTime());
+
+            //处理倒计时的
+            long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
+            String orderTime = detailsData.getOrderTime();//下单时间String类型,
+            Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
+            long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
+            BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
+            long limitTime;
+            if (baseConfigData != null) {
+                String limitTimeStr = baseConfigData.getCountSecond();
+                if (StringUtils.isEmpty(limitTimeStr)) {
+                    limitTime = (long) 300;
+                } else {
+                    limitTime = Long.parseLong(limitTimeStr);
+                }
+            } else {
+                limitTime = (long) 300;
+            }
+            long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
+            long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
+            long orderSurplusData = Math.abs(orderSurplusTime);
+
+            int state = detailsData.getOrderStatus();
+            setOrderState(state, (int) orderSurplusData);
         } else {
-            mCouponLayout.setVisibility(View.GONE);
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendDetailsRequest();
+                }
+            });
         }
-        //设置总价
-        mActualDelivery.setText("¥ " + detailsData.getActualAmount());
-        //设置支付方式
-        int payType = detailsData.getPayType();
-        if (payType == PAY_TYPE_WECHAT) {
-            mPayType.setText(R.string.pay_wechat_type);
-        } else if (payType == PAY_TYPE_ALIPY) {
-            mPayType.setText(R.string.pay_alipay_type);
-        } else if (payType == PAY_TYPE_FREE) {
-            mPayType.setText(R.string.pay_type_free_of);
-        }
-
-        mUsername.setText(detailsData.getName());
-        mUserPhone.setText(detailsData.getPhone());
-        mMealShop.setText(detailsData.getGymName());
-        mMealShopAddress.setText(detailsData.getGymAddress());
-        mOrderTimeTextView.setText(detailsData.getOrderTime());
-
-        //处理倒计时的
-        long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
-        String orderTime = detailsData.getOrderTime();//下单时间String类型,
-        Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
-        long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
-//        long limitTime = (long) detailsData.getLimitSecond();//限时时间
-        long limitTime = (long) 300;//限时时间
-        long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
-        long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
-        long orderSurplusData = Math.abs(orderSurplusTime);
-
-        int state = detailsData.getOrderStatus();
-        setOrderState(state, (int) orderSurplusData);
-
     }
 
     private void setOrderState(int state, int orderSurplusTime) {
@@ -380,7 +411,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
 
         @Override
         public void onFinish() {
-            setOrderState(2,0);
+            setOrderState(2, 0);
         }
     }
 

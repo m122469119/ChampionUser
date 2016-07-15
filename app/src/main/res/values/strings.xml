@@ -139,5 +139,6 @@
     <string name="title_change_shop">选择门店</string>
     <string name="sold_out">已售罄</string>
     <string name="state_view_no_login_text">您还未登录</string>
+    <string name="title_my_card_details">会员卡详情</string>
 
 </resources>
