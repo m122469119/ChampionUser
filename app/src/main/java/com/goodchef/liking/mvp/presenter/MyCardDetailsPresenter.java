@@ -2,12 +2,11 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
-import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.MyCardDetailsView;
@@ -24,10 +23,9 @@ public class MyCardDetailsPresenter extends BasePresenter<MyCardDetailsView> {
     }
 
     public void getCardDetails(String orderId) {
-        LiKingApi.getCardDetails(Preference.getToken(), orderId, new RequestUiLoadingCallback<MyOrderCardDetailsResult>(mContext, R.string.loading_data) {
+        LiKingApi.getCardDetails(Preference.getToken(), orderId, new RequestCallback<MyOrderCardDetailsResult>() {
             @Override
             public void onSuccess(MyOrderCardDetailsResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateMyCardDetailsView(result.getData());
                 } else {
@@ -37,7 +35,7 @@ public class MyCardDetailsPresenter extends BasePresenter<MyCardDetailsView> {
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }

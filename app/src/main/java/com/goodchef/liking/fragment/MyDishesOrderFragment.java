@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -246,7 +248,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
                     if (cancelText != null) {
                         DishesOrderListResult.DishesOrderData.DishesOrder object = (DishesOrderListResult.DishesOrderData.DishesOrder) cancelText.getTag();
                         if (object != null) {
-                            sendCancelOrderRequest(object.getOrderId());
+                            showCancelConfirmDialog(2, object.getOrderId(), "您确定取消该订单吗？");
                         }
                     }
                     break;
@@ -255,13 +257,37 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
                     if (confirmTextView != null) {
                         DishesOrderListResult.DishesOrderData.DishesOrder object = (DishesOrderListResult.DishesOrderData.DishesOrder) confirmTextView.getTag();
                         if (object != null) {
-                            sendCompleteOrderRequest(object.getOrderId());
+                            showCancelConfirmDialog(1, object.getOrderId(), "您确定完成该订单吗？");
                         }
                     }
                     break;
             }
         }
     };
+
+
+    private void showCancelConfirmDialog(final int type, final String orderId, String message) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (type == 1) {//完成订单
+                    sendCompleteOrderRequest(orderId);
+                } else if (type == 2) {//取消订单
+                    sendCancelOrderRequest(orderId);
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
     private void sendCompleteOrderRequest(String orderId) {
         mMyDishesOrderPresenter.completeDishesOrder(orderId);
