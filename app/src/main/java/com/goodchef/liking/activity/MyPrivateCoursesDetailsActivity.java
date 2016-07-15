@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PhoneUtils;
@@ -17,6 +18,7 @@ import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.mvp.presenter.MyPrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesDetailsView;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
  * 说明:
@@ -49,6 +51,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     private MyPrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String orderId;
     private String mTeacherPhone;
+    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.my_private_courses_state_view);
         mContactTeacherBtn = (TextView) findViewById(R.id.details_contact_teacher);
         mCompleteCoursesBtn = (TextView) findViewById(R.id.details_complete_courses_btn);
         mCoursesTitleTextView = (TextView) findViewById(R.id.details_courses_title);
@@ -79,6 +83,13 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
         mCompleteCoursesBtn.setOnClickListener(this);
         mContactTeacherBtn.setOnClickListener(this);
+        mStateView.setState(StateView.State.LOADING);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                sendRequest();
+            }
+        });
     }
 
     private void initData() {
@@ -97,40 +108,50 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     @Override
     public void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData data) {
-        mCoursesTitleTextView.setText("课程项目: "+data.getCourseName());
-        int state = data.getStatus();
-        if (state == COURSES_STATE_PAYED) {
-            mCoursesStateTextView.setText(R.string.courses_state_payed);
-            mBottomLayout.setVisibility(View.VISIBLE);
-        } else if (state == COURSES_STATE_COMPLETE) {
-            mCoursesStateTextView.setText(R.string.courses_state_complete);
-            mBottomLayout.setVisibility(View.GONE);
-        } else if (state == COURSES_STATE_CANCEL) {
-            mCoursesStateTextView.setText(R.string.courses_state_cancel);
-            mBottomLayout.setVisibility(View.GONE);
-        }
-        mPrivateTeacherNameTextView.setText(data.getTrainerName());
+        if (data != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            mCoursesTitleTextView.setText("课程项目: " + data.getCourseName());
+            int state = data.getStatus();
+            if (state == COURSES_STATE_PAYED) {
+                mCoursesStateTextView.setText(R.string.courses_state_payed);
+                mBottomLayout.setVisibility(View.VISIBLE);
+            } else if (state == COURSES_STATE_COMPLETE) {
+                mCoursesStateTextView.setText(R.string.courses_state_complete);
+                mBottomLayout.setVisibility(View.GONE);
+            } else if (state == COURSES_STATE_CANCEL) {
+                mCoursesStateTextView.setText(R.string.courses_state_cancel);
+                mBottomLayout.setVisibility(View.GONE);
+            }
+            mPrivateTeacherNameTextView.setText(data.getTrainerName());
 
-        mPeriodOfValidityTextView.setText(data.getStartTime() + " ~ " + data.getEndTime());
-        mOrderNumberTextView.setText(data.getOrderId());
-        mOrderTimeTextView.setText(data.getOrderTime());
-        mCoursesPersonNumberTextView.setText(data.getPeopleNum() + "");
-        mCoursesPriceTextView.setText("¥ " + data.getTotalAmount());
-        mFavourableTextView.setText("¥ " + data.getCouponAmount());
-        mRealityPriceTextView.setText("¥ " + data.getActualAmount());
+            mPeriodOfValidityTextView.setText(data.getStartTime() + " ~ " + data.getEndTime());
+            mOrderNumberTextView.setText(data.getOrderId());
+            mOrderTimeTextView.setText(data.getOrderTime());
+            mCoursesPersonNumberTextView.setText(data.getPeopleNum() + "");
+            mCoursesPriceTextView.setText("¥ " + data.getTotalAmount());
+            mFavourableTextView.setText("¥ " + data.getCouponAmount());
+            mRealityPriceTextView.setText("¥ " + data.getActualAmount());
 
-        int payTpe = data.getPayType();
-        if (payTpe == 0) {
-            mPayTypeTextView.setText(R.string.pay_wechat_type);
-        } else if (payTpe == 1) {
-            mPayTypeTextView.setText(R.string.pay_alipay_type);
-        } else if (payTpe == 3) {
-            mPayTypeTextView.setText(R.string.pay_free_type);
-        }
-        mTeacherPhone = data.getTrainerPhone();
-        String imageUrl = data.getTrainerAvatar();
-        if (!StringUtils.isEmpty(imageUrl)) {
-            HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+            int payTpe = data.getPayType();
+            if (payTpe == 0) {
+                mPayTypeTextView.setText(R.string.pay_wechat_type);
+            } else if (payTpe == 1) {
+                mPayTypeTextView.setText(R.string.pay_alipay_type);
+            } else if (payTpe == 3) {
+                mPayTypeTextView.setText(R.string.pay_free_type);
+            }
+            mTeacherPhone = data.getTrainerPhone();
+            String imageUrl = data.getTrainerAvatar();
+            if (!StringUtils.isEmpty(imageUrl)) {
+                HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+            }
+        } else {
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendRequest();
+                }
+            });
         }
     }
 
@@ -150,5 +171,10 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
                 PhoneUtils.phoneCall(this, mTeacherPhone);
             }
         }
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
 }
