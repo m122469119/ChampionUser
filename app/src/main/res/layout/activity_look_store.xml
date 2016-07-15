@@ -4,50 +4,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <FrameLayout
+    <com.goodchef.liking.widgets.base.LikingStateView
+        android:id="@+id/look_store_state_view"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.amap.api.maps2d.MapView
-            android:id="@+id/store_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.amap.api.maps2d.MapView>
-
-
-        <LinearLayout
-            android:id="@+id/layout_no_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/lesson_details_layer"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_map_no_select_logo"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="当前城市尚未开通"
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="敬请期待..."
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
-        </LinearLayout>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        app:success_view="@layout/layout_look_store_success"/>
 </RelativeLayout>
