@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
@@ -24,22 +25,22 @@ public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDeta
     }
 
     public void getGroupCoursesDetails(String scheduleId) {
-        LiKingApi.getGroupLessonDetails(scheduleId, new RequestUiLoadingCallback<GroupCoursesResult>(mContext, R.string.loading_data) {
-            @Override
-            public void onSuccess(GroupCoursesResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
-                    mView.updateGroupLessonDetailsView(result.getGroupLessonData());
-                } else {
-                    PopupUtils.showToast(result.getMessage());
-                }
-            }
+        LiKingApi.getGroupLessonDetails(scheduleId, new RequestCallback<GroupCoursesResult>() {
+                    @Override
+                    public void onSuccess(GroupCoursesResult result) {
+                        if (LiKingVerifyUtils.isValid(mContext, result)) {
+                            mView.updateGroupLessonDetailsView(result.getGroupLessonData());
+                        } else {
+                            PopupUtils.showToast(result.getMessage());
+                        }
+                    }
 
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-            }
-        });
+                    @Override
+                    public void onFailure(RequestError error) {
+                        mView.handleNetworkFailure();
+                    }
+                }
+        );
     }
 
     public void orderGroupCourses(String scheduleId, String token) {
