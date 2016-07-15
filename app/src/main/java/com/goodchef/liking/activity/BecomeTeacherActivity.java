@@ -58,6 +58,9 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
         if (StringUtils.isEmpty(name)) {
             PopupUtils.showToast("姓名不能为空");
             return;
+        } else if (name.length() > 15) {
+            PopupUtils.showToast("姓名不能超过15个字");
+            return;
         }
         if (StringUtils.isEmpty(phone)) {
             PopupUtils.showToast("手机号不能为空");
@@ -69,6 +72,9 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
         }
         if (StringUtils.isEmpty(city)) {
             PopupUtils.showToast("城市不能为空");
+            return;
+        } else if (city.length() > 20) {
+            PopupUtils.showToast("城市不能超过20个字");
             return;
         }
         mContactJoinPresenter = new ContactJoinPresenter(this, this);
