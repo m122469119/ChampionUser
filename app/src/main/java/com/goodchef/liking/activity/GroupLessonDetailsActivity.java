@@ -18,6 +18,7 @@ import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PhoneUtils;
@@ -34,6 +35,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
@@ -72,6 +74,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private int mCoursesState = -1;
     private String orderId;
     private String gymId;
+    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.group_courses_details_state_view);
         mShopImageView = (HImageView) findViewById(R.id.group_lesson_details_shop_image);
         mShopNameTextView = (TextView) findViewById(R.id.shop_name);
         mScheduleResultTextView = (TextView) findViewById(R.id.schedule_result);
@@ -124,8 +128,18 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mStatePromptTextView = (TextView) findViewById(R.id.courses_state_prompt);
         mCancelOrderBtn = (TextView) findViewById(R.id.cancel_order_btn);
 
+        setViewOnClickListener();
+    }
+
+    private void setViewOnClickListener(){
         mImmediatelySubmitBtn.setOnClickListener(this);
         mGymIntroduceLayout.setOnClickListener(this);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                requestData();
+            }
+        });
     }
 
 
@@ -169,6 +183,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     }
 
     private void requestData() {
+        mStateView.setState(StateView.State.LOADING);
         mGroupCoursesDetailsPresenter = new GroupCoursesDetailsPresenter(this, this);
         mGroupCoursesDetailsPresenter.getGroupCoursesDetails(scheduleId);
     }
@@ -176,13 +191,23 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
     @Override
     public void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData) {
-        setDetailsData(groupLessonData);
+        if (groupLessonData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            setDetailsData(groupLessonData);
+        } else {
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    requestData();
+                }
+            });
+        }
     }
 
     @Override
     public void updateOrderGroupCourses() {
         Intent intent = new Intent(this, MyLessonActivity.class);
-        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM,0);
+        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
         startActivity(intent);
         this.finish();
     }
@@ -301,5 +326,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 super.onFailure(error);
             }
         });
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
 }
