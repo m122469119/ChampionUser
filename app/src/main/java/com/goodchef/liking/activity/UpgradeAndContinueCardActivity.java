@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
@@ -15,6 +16,7 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
 
     private UpgradeContinueCardAdapter mUpgradeContinueCardAdapter;
     private CardListPresenter mCardListPresenter;
+    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +44,17 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.upgrade_continue_state_view);
         mRecyclerView = (PullToRefreshRecyclerView) findViewById(R.id.upgrade_and_continue_recycleView);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+        mStateView.setState(StateView.State.LOADING);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                mCardListPresenter.getCardList(buyType);
+            }
+        });
     }
 
     private void initData() {
@@ -57,15 +68,26 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     @Override
     public void updateCardListView(CardResult.CardData cardData) {
         List<CardResult.CardData.Card> list = cardData.getCardList();
-        if (list != null && list.size() > 0) {
-            mUpgradeContinueCardAdapter = new UpgradeContinueCardAdapter(this);
-            mUpgradeContinueCardAdapter.setData(list);
-            mRecyclerView.setAdapter(mUpgradeContinueCardAdapter);
-            setOnItemClickListener();
+        if (list != null) {
+            if (list.size() > 0) {
+                mStateView.setState(StateView.State.SUCCESS);
+                mUpgradeContinueCardAdapter = new UpgradeContinueCardAdapter(this);
+                mUpgradeContinueCardAdapter.setData(list);
+                mRecyclerView.setAdapter(mUpgradeContinueCardAdapter);
+                setOnItemClickListener();
+            } else {
+                setNoUpGradeCard();
+            }
+        } else {
+            setNoUpGradeCard();
         }
     }
 
-    private void  setOnItemClickListener(){
+    private void setNoUpGradeCard(){
+        mStateView.initNoDataView(R.drawable.icon_no_data,"暂无可升级的卡","刷新看看");
+    }
+
+    private void setOnItemClickListener() {
         mUpgradeContinueCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -73,8 +95,8 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
                 if (card != null) {
                     Intent intent = new Intent(UpgradeAndContinueCardActivity.this, BuyCardConfirmActivity.class);
                     intent.putExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY, card.getCategoryName());
-                    intent.putExtra(LikingBuyCardFragment.KEY_CATEGORY_ID,card.getCategoryId());
-                    intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE,buyType);
+                    intent.putExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, card.getCategoryId());
+                    intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType);
                     startActivity(intent);
                 }
             }
@@ -84,5 +106,10 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
                 return false;
             }
         });
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
 }
