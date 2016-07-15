@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -30,6 +31,7 @@ import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
 import com.goodchef.liking.mvp.view.CheckGymView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
@@ -41,6 +43,7 @@ import java.util.List;
 public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener, AMap.OnMarkerClickListener, AMap.OnMapClickListener, CheckGymView {
     private MapView mMapView;
     private LinearLayout mNoDataLayout;
+    private LikingStateView mStateView;
     private AMap mAMap;
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient;
@@ -72,8 +75,15 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.look_store_state_view);
         mMapView = (MapView) findViewById(R.id.store_map);
         mNoDataLayout = (LinearLayout) findViewById(R.id.layout_no_data);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                initMap();
+            }
+        });
     }
 
     private void initMap() {
@@ -237,8 +247,10 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                     mNoDataLayout.setVisibility(View.VISIBLE);
                 }
             } else {
-                mNoDataLayout.setVisibility(View.VISIBLE);
+               mStateView.setState(StateView.State.FAILED);
             }
+        }else {
+            mStateView.setState(StateView.State.FAILED);
         }
     }
 
@@ -281,19 +293,29 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     @Override
     public void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData) {
         allGymList = checkGymData.getAllGymList();
-        if (allGymList != null && allGymList.size() > 0) {
-            mNoDataLayout.setVisibility(View.GONE);
-            for (int i = 0; i < allGymList.size(); i++) {
-                if (i == 0) {
-                    allGymList.get(i).setSelect(true);
-                } else {
-                    allGymList.get(i).setSelect(false);
+        if (allGymList != null) {
+            if (allGymList.size() > 0) {
+                mStateView.setState(StateView.State.SUCCESS);
+                mNoDataLayout.setVisibility(View.GONE);
+                for (int i = 0; i < allGymList.size(); i++) {
+                    if (i == 0) {
+                        allGymList.get(i).setSelect(true);
+                    } else {
+                        allGymList.get(i).setSelect(false);
+                    }
                 }
+                setMapMarkView();
+                showStoreDialog(allGymList.get(0));
+            } else {
+                mNoDataLayout.setVisibility(View.VISIBLE);
             }
-            setMapMarkView();
-            showStoreDialog(allGymList.get(0));
         } else {
-            mNoDataLayout.setVisibility(View.VISIBLE);
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initMap();
+                }
+            });
         }
     }
 
@@ -302,5 +324,10 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
             setMapMark(gym);
         }
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
 }

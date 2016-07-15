@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.CheckGymListResult;
 
 /**
@@ -8,6 +8,6 @@ import com.goodchef.liking.http.result.CheckGymListResult;
  * Author shaozucheng
  * Time:16/7/12 下午2:19
  */
-public interface CheckGymView extends BaseView {
+public interface CheckGymView extends BaseNetworkLoadView {
     void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData);
 }
