@@ -123,8 +123,6 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 }
             }
             updateListView(list);
-        } else {
-            setNoDataView();
         }
     }
 

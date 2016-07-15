@@ -47,6 +47,31 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
     @Override
     protected void initViews() {
         setNoDataView();
+        setPullType(PullMode.PULL_BOTH);
+        mGroupLessonAdapter = new MyGroupCoursesAdapter(getActivity());
+        setRecyclerAdapter(mGroupLessonAdapter);
+        mGroupLessonAdapter.setCancelListener(cancelListener);
+        mGroupLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                TextView textView = (TextView) view.findViewById(R.id.group_lesson_period_of_validity);
+                if (textView != null) {
+                    MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
+                    if (data != null) {
+                        Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+                        intent.putExtra(INTENT_KEY_STATE, data.getStatus());
+                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());
+                        intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
     }
 
     private void setNoDataView(){
@@ -80,37 +105,9 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
     @Override
     public void updateMyGroupCoursesView(MyGroupCoursesResult.MyGroupCoursesData myGroupCoursesData) {
         List<MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses> myGroupCoursesDataList = myGroupCoursesData.getMyGroupCourses();
-        if (myGroupCoursesDataList != null && myGroupCoursesDataList.size() > 0) {
-            setPullType(PullMode.PULL_BOTH);
-            mGroupLessonAdapter = new MyGroupCoursesAdapter(getActivity());
-            mGroupLessonAdapter.setData(myGroupCoursesDataList);
-            setRecyclerAdapter(mGroupLessonAdapter);
-            mGroupLessonAdapter.setCancelListener(cancelListener);
-            mGroupLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    TextView textView = (TextView) view.findViewById(R.id.group_lesson_period_of_validity);
-                    if (textView != null) {
-                        MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
-                        if (data != null) {
-                            Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
-                            intent.putExtra(INTENT_KEY_STATE, data.getStatus());
-                            intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());
-                            intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
-                            startActivity(intent);
-                        }
-                    }
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, int position) {
-                    return false;
-                }
-            });
-        }else {
-            setNoDataView();
+        if (myGroupCoursesDataList != null) {
+           updateListView(myGroupCoursesDataList);
         }
-
     }
 
     /**

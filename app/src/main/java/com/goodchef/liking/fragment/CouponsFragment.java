@@ -78,7 +78,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     /**
      * 设置没有优惠券数据
      */
-    private void setNoDataView(){
+    private void setNoDataView() {
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
@@ -92,7 +92,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     /**
      * 获取bundle对象传递的数据
      */
-    private void getIntentData(){
+    private void getIntentData() {
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
         confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
@@ -160,19 +160,19 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     @Override
     public void updateCouponData(CouponsResult.CouponData couponData) {
         List<CouponsResult.CouponData.Coupon> list = couponData.getCouponList();
-        if (list != null && list.size() > 0) {
-            if (!StringUtils.isEmpty(couponId)) {
-                for (CouponsResult.CouponData.Coupon coupon : list) {
-                    if (coupon.getCouponCode().equals(couponId)) {
-                        coupon.setSelect(true);
-                    } else {
-                        coupon.setSelect(false);
+        if (list != null) {
+            if (list.size() > 0) {
+                if (!StringUtils.isEmpty(couponId)) {
+                    for (CouponsResult.CouponData.Coupon coupon : list) {
+                        if (coupon.getCouponCode().equals(couponId)) {
+                            coupon.setSelect(true);
+                        } else {
+                            coupon.setSelect(false);
+                        }
                     }
                 }
             }
             updateListView(list);
-        }else {
-            setNoDataView();
         }
     }
 
