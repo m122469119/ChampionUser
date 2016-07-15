@@ -78,4 +78,6 @@ public class LikingStateView extends StateView {
     public void initNoDataView(){
         setNodataView(buildStateCommonSubView(getContext(),R.drawable.icon_no_data,"暂无数据","刷新看看",mClickListener));
     }
+
+
 }

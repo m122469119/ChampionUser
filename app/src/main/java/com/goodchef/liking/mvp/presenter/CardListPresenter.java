@@ -2,12 +2,11 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
-import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CardListView;
@@ -24,10 +23,9 @@ public class CardListPresenter extends BasePresenter<CardListView> {
     }
 
     public void getCardList(int type) {
-        LiKingApi.getCardList(Preference.getToken(), type, new RequestUiLoadingCallback<CardResult>(mContext, R.string.loading_data) {
+        LiKingApi.getCardList(Preference.getToken(), type, new RequestCallback<CardResult>() {
             @Override
             public void onSuccess(CardResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateCardListView(result.getCardData());
                 } else {
@@ -37,7 +35,7 @@ public class CardListPresenter extends BasePresenter<CardListView> {
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }

@@ -170,4 +170,8 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
             }
         }
     }
+
+    @Override
+    public void handleNetworkFailure() {
+    }
 }
