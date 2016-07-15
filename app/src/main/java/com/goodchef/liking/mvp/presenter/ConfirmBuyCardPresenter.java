@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -25,10 +26,9 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
     }
 
     public void confirmBuyCard(int type, int categoryId) {
-        LiKingApi.confirmCard(Preference.getToken(), type, categoryId, new RequestUiLoadingCallback<ConfirmBuyCardResult>(mContext, R.string.loading_data) {
+        LiKingApi.confirmCard(Preference.getToken(), type, categoryId, new RequestCallback<ConfirmBuyCardResult>() {
             @Override
             public void onSuccess(ConfirmBuyCardResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateConfirmBuyCardView(result.getData());
                 } else {
@@ -38,7 +38,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }

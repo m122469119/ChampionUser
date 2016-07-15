@@ -16,6 +16,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -36,6 +37,7 @@ import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
@@ -84,6 +86,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private int mCardId;//会员卡ID
     private int buyType; //1 购卡  2 续卡  3 升级卡
     private String cardPrice;//卡的金额
+    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +105,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.buy_card_confirm_state_view);
         mHImageView = (HImageView) findViewById(R.id.buy_card_confirm_image);
         mPeriodOfValidityTextView = (TextView) findViewById(R.id.period_of_validity);
 
@@ -118,6 +122,14 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mAgreeProtocolTextView = (LinearLayout) findViewById(R.id.buy_card_agree_protocol);
         mCardMoneyTextView = (TextView) findViewById(R.id.card_money);
         mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
+
+        mStateView.setState(StateView.State.LOADING);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                sendConfirmCardRequest();
+            }
+        });
     }
 
     private void setViewOnClickListener() {
@@ -251,28 +263,39 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     @Override
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData) {
-        String imageUrl = confirmBuyCardData.getAdsUrl();
-        if (buyType == BUY_TYPE_BUY) {
-            mHImageView.setVisibility(View.VISIBLE);
-            if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+        if (confirmBuyCardData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            String imageUrl = confirmBuyCardData.getAdsUrl();
+            if (buyType == BUY_TYPE_BUY) {
+                mHImageView.setVisibility(View.VISIBLE);
+                if (!StringUtils.isEmpty(imageUrl)) {
+                    HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+                }
+            } else if (buyType == BUY_TYPE_CONTINUE) {
+                mHImageView.setVisibility(View.GONE);
+            } else if (buyType == BUY_TYPE_UPGRADE) {
+                mHImageView.setVisibility(View.GONE);
             }
-        } else if (buyType == BUY_TYPE_CONTINUE) {
-            mHImageView.setVisibility(View.GONE);
-        } else if (buyType == BUY_TYPE_UPGRADE) {
-            mHImageView.setVisibility(View.GONE);
+
+            mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
+            if (buyType == BUY_TYPE_UPGRADE) {
+                cardPrice = confirmBuyCardData.getPrice();
+                mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
+            }
+
+            confirmCardList = confirmBuyCardData.getCardList();
+            setCardView(confirmCardList);
+            mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
+            mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
+        } else {
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendConfirmCardRequest();
+                }
+            });
         }
 
-        mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
-        if (buyType == BUY_TYPE_UPGRADE) {
-            cardPrice = confirmBuyCardData.getPrice();
-            mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
-        }
-
-        confirmCardList = confirmBuyCardData.getCardList();
-        setCardView(confirmCardList);
-        mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
-        mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
     }
 
     @Override
@@ -455,4 +478,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
 
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
+    }
 }

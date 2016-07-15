@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 
@@ -9,7 +9,7 @@ import com.goodchef.liking.http.result.data.PayResultData;
  * Author shaozucheng
  * Time:16/6/29 下午4:47
  */
-public interface ConfirmBuyCardView extends BaseView{
+public interface ConfirmBuyCardView extends BaseNetworkLoadView{
     void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData);
     void updateSubmitPayView(PayResultData payResultData);
 }
