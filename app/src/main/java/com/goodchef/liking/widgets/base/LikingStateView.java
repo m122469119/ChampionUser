@@ -32,6 +32,7 @@ public class LikingStateView extends StateView {
         super(context, attrs, defStyle);
         initFailView();
         initNoLoginView();
+        initNoDataView();
         setState(State.LOADING);
     }
 
@@ -72,5 +73,9 @@ public class LikingStateView extends StateView {
 
     public void initNoDataView(int resId, String text, String refreshText) {
         setNodataView(buildStateCommonSubView(getContext(), resId, text, refreshText, mClickListener));
+    }
+
+    public void initNoDataView(){
+        setNodataView(buildStateCommonSubView(getContext(),R.drawable.icon_no_data,"暂无数据","刷新看看",mClickListener));
     }
 }

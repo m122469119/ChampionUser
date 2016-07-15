@@ -1,7 +1,6 @@
 package com.goodchef.liking.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
@@ -76,12 +75,7 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseV
             mTrainDistanceALL.setText(exerciseData.getTotalDistance());
             mTrainCalALl.setText(exerciseData.getTotalCal());
         } else {
-            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    iniData();
-                }
-            });
+            mStateView.setState(StateView.State.NO_DATA);
         }
 
     }

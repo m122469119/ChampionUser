@@ -146,12 +146,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
                 HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
             }
         } else {
-            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendRequest();
-                }
-            });
+            mStateView.setState(StateView.State.NO_DATA);
         }
     }
 

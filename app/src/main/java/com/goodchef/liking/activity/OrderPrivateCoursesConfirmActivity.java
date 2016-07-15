@@ -145,12 +145,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mCoursesPeopleTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
             mEndTimeTextView.setText(coursesConfirmData.getEndTime());
         } else {
-            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendRequest();
-                }
-            });
+            mStateView.setState(StateView.State.NO_DATA);
         }
     }
 
