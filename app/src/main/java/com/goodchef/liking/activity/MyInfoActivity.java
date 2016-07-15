@@ -15,6 +15,7 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -31,6 +32,7 @@ import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
+import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     private EditText mUserHeightEditText;
     private EditText mUserWeightEditText;
     private TextView mFinishBtn;
+    private LikingStateView mStateView;
 
     private CameraPhotoHelper mCameraPhotoHelper;
     private UserInfoPresenter mUserInfoPresenter;
@@ -80,6 +83,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
 
     private void initData() {
+        mUserInfoPresenter = new UserInfoPresenter(this, this);
         title = getIntent().getStringExtra(LoginActivity.KEY_TITLE_SET_USER_INFO);
         intentType = getIntent().getIntExtra(LoginActivity.KEY_INTENT_TYPE, 0);
         if (!StringUtils.isEmpty(title)) {
@@ -95,11 +99,15 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         } else if (intentType == 2) {
             showRightMenu("");
         }
-        mUserInfoPresenter = new UserInfoPresenter(this, this);
+        setInfoRequest();
+    }
+
+    private void setInfoRequest() {
         mUserInfoPresenter.getUserInfo();
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.my_info_state_view);
         mHeadImageLayout = (RelativeLayout) findViewById(R.id.layout_head_image);
         mHeadImage = (HImageView) findViewById(R.id.head_image);
         mUserNameEditText = (EditText) findViewById(R.id.edit_user_name);
@@ -109,6 +117,13 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         mUserWeightEditText = (EditText) findViewById(R.id.edit_weight);
         mFinishBtn = (TextView) findViewById(R.id.finish_btn);
         setFlag();
+        mStateView.setState(StateView.State.LOADING);
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                setInfoRequest();
+            }
+        });
     }
 
     private void setFlag() {
@@ -337,36 +352,46 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     @Override
     public void updateGetUserInfoView(UserInfoResult.UserInfoData userInfoData) {
-        String imageUrl = userInfoData.getAvatar();
-        if (!StringUtils.isEmpty(imageUrl)) {
-            HImageLoaderSingleton.getInstance().requestImage(mHeadImage, imageUrl);
-            Preference.setUserIconUrl(imageUrl);
-        }
-        mUserInfoData = userInfoData;
-        String name = userInfoData.getName();
-        if (!StringUtils.isEmpty(name)) {
-            mUserNameEditText.setText(name);
-            Preference.setNickName(name);
-        }
-        String birthday = userInfoData.getBirthday();
-        if (!StringUtils.isEmpty(birthday)) {
-            mSelectBirthdayTextView.setText(birthday);
-        }
-        int height = userInfoData.getHeight();
-        if (height > 0) {
-            mUserHeightEditText.setText(String.valueOf(height));
-        }
-        double weight = userInfoData.getWeight();
-        if (weight > 0) {
-            mUserWeightEditText.setText(String.valueOf(weight));
-        }
-        gender = userInfoData.getGender();
-        if (gender == 0) {
-            mSelectSexTextView.setText(R.string.sex_men);
-        } else if (gender == 1) {
-            mSelectSexTextView.setText(R.string.sex_man);
+        if (userInfoData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            String imageUrl = userInfoData.getAvatar();
+            if (!StringUtils.isEmpty(imageUrl)) {
+                HImageLoaderSingleton.getInstance().requestImage(mHeadImage, imageUrl);
+                Preference.setUserIconUrl(imageUrl);
+            }
+            mUserInfoData = userInfoData;
+            String name = userInfoData.getName();
+            if (!StringUtils.isEmpty(name)) {
+                mUserNameEditText.setText(name);
+                Preference.setNickName(name);
+            }
+            String birthday = userInfoData.getBirthday();
+            if (!StringUtils.isEmpty(birthday)) {
+                mSelectBirthdayTextView.setText(birthday);
+            }
+            int height = userInfoData.getHeight();
+            if (height > 0) {
+                mUserHeightEditText.setText(String.valueOf(height));
+            }
+            double weight = userInfoData.getWeight();
+            if (weight > 0) {
+                mUserWeightEditText.setText(String.valueOf(weight));
+            }
+            gender = userInfoData.getGender();
+            if (gender == 0) {
+                mSelectSexTextView.setText(R.string.sex_men);
+            } else if (gender == 1) {
+                mSelectSexTextView.setText(R.string.sex_man);
+            } else {
+                mSelectSexTextView.setText("请选择性别");
+            }
         } else {
-            mSelectSexTextView.setText("请选择性别");
+            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setInfoRequest();
+                }
+            });
         }
     }
 
@@ -398,4 +423,8 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     }
 
 
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
+    }
 }
