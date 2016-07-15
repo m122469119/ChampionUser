@@ -38,6 +38,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class LoginActivity extends AppBarActivity implements View.OnClickListener, LoginView {
     public static final String KEY_TITLE_SET_USER_INFO = "key_title_set_user_info";
+    public static final String KEY_INTENT_TYPE = "key_intent_type";
     private EditText mLoginPhoneEditText;//输入手机号
     private EditText mCodeEditText;//输入验证码
     private TextView mSendCodeBtn;//获取验证码按钮
@@ -77,6 +78,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
     private void setViewOnClickListener() {
         mSendCodeBtn.setOnClickListener(this);
         mLoginBtn.setOnClickListener(this);
+        mRegisterBtn.setOnClickListener(this);
     }
 
     @Override
@@ -168,6 +170,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             if (newUser == 1) {
                 Intent intent = new Intent(this, MyInfoActivity.class);
                 intent.putExtra(KEY_TITLE_SET_USER_INFO, "设置个人信息");
+                intent.putExtra(KEY_INTENT_TYPE,1);
                 startActivity(intent);
             }
             this.finish();

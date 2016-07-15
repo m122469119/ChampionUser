@@ -235,6 +235,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             } else {
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
+                intent.putExtra(LoginActivity.KEY_INTENT_TYPE,2);
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
