@@ -56,6 +56,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     private int gender = -1;
     private String title;
+    private int intentType;
     private boolean isChange = false;
     private UserInfoResult.UserInfoData mUserInfoData;
     private String headUrl = "";
@@ -67,6 +68,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         initView();
         setViewOnClickListener();
         initData();
+        showHomeUpIcon(R.drawable.app_bar_left_quit);
         mCameraPhotoHelper = new CameraPhotoHelper(this);
     }
 
@@ -79,8 +81,19 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     private void initData() {
         title = getIntent().getStringExtra(LoginActivity.KEY_TITLE_SET_USER_INFO);
+        intentType = getIntent().getIntExtra(LoginActivity.KEY_INTENT_TYPE, 0);
         if (!StringUtils.isEmpty(title)) {
             setTitle(title);
+        }
+        if (intentType == 1) {
+            showRightMenu("跳过", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        } else if (intentType == 2) {
+            showRightMenu("");
         }
         mUserInfoPresenter = new UserInfoPresenter(this, this);
         mUserInfoPresenter.getUserInfo();
@@ -201,16 +214,20 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
-        int heightInt = Integer.parseInt(height);
-        if (heightInt < 50 || heightInt > 250) {
-            PopupUtils.showToast("您输入的身高不在正常范围,请重新输入");
-            return;
+        if (!StringUtils.isEmpty(height)) {
+            int heightInt = Integer.parseInt(height);
+            if (heightInt < 50 || heightInt > 250) {
+                PopupUtils.showToast("您输入的身高不在正常范围,请重新输入");
+                return;
+            }
         }
 
-        double weightInt = Double.parseDouble(weight);
-        if (weightInt < 25 || weightInt > 250) {
-            PopupUtils.showToast("您输入的体重不在正常范围,请重新输入");
-            return;
+        if (!StringUtils.isEmpty(weight)) {
+            double weightInt = Double.parseDouble(weight);
+            if (weightInt < 25 || weightInt > 250) {
+                PopupUtils.showToast("您输入的体重不在正常范围,请重新输入");
+                return;
+            }
         }
 
         if (isChange) {
@@ -321,7 +338,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     @Override
     public void updateGetUserInfoView(UserInfoResult.UserInfoData userInfoData) {
         String imageUrl = userInfoData.getAvatar();
-        if (!StringUtils.isEmpty(imageUrl)){
+        if (!StringUtils.isEmpty(imageUrl)) {
             HImageLoaderSingleton.getInstance().requestImage(mHeadImage, imageUrl);
             Preference.setUserIconUrl(imageUrl);
         }
