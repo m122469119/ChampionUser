@@ -162,7 +162,7 @@ public class LiKingApi {
      * @param callback   RequestCallback
      */
     public static void getGroupLessonDetails(String scheduleId, RequestCallback<GroupCoursesResult> callback) {
-        RequestParams params = getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()).append("schedule_id", scheduleId);
+        RequestParams params = getCommonRequestParams().append("schedule_id", scheduleId);
         String token = Preference.getToken();
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
