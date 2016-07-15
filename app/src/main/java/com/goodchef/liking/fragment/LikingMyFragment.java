@@ -116,6 +116,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
                 }
             });
+        }else {
+            clearExerciseData();
         }
     }
 
@@ -123,9 +125,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 清除训练数据
      */
     private void clearExerciseData() {
-        myTrainTime.setText("0");
-        myTrainDistance.setText("0");
-        myTrainCal.setText("0");
+        myTrainTime.setText("-");
+        myTrainDistance.setText("-");
+        myTrainCal.setText("-");
     }
 
     private void setLogonView() {

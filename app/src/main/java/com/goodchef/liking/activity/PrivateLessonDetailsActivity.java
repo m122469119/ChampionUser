@@ -11,7 +11,6 @@ import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -19,6 +18,7 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
@@ -67,7 +67,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             public void onClick(View v) {
                 String phone = Preference.getCustomerServicePhone();
                 if (!StringUtils.isEmpty(phone)) {
-                    PhoneUtils.phoneCall(PrivateLessonDetailsActivity.this, phone);
+                    LikingCallUtil.showCallDialog(PrivateLessonDetailsActivity.this, "确定联系客服吗？", phone);
                 }
             }
         });
