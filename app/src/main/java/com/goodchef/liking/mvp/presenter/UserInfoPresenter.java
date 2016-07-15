@@ -2,6 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
+import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
@@ -24,33 +25,32 @@ public class UserInfoPresenter extends BasePresenter<UserInfoView> {
         super(context, mainView);
     }
 
-    public void getUserInfo(){
-        LiKingApi.getUserInfo(Preference.getToken(), new RequestUiLoadingCallback<UserInfoResult>(mContext, R.string.loading_data) {
+    public void getUserInfo() {
+        LiKingApi.getUserInfo(Preference.getToken(), new RequestCallback<UserInfoResult>() {
             @Override
             public void onSuccess(UserInfoResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateGetUserInfoView(result.getData());
-                }else {
+                } else {
                     PopupUtils.showToast(result.getMessage());
                 }
             }
 
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }
 
-    public void updateUserInfo(String name, String avatar, Integer gender, String birthday, String weight, String height){
-        LiKingApi.updateUserInfo(Preference.getToken(), name, avatar, gender, birthday, weight, height, new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading) {
+    public void updateUserInfo(String name, String avatar, Integer gender, String birthday, String weight, String height) {
+        LiKingApi.updateUserInfo(Preference.getToken(), name, avatar, gender, birthday, weight, height, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading) {
             @Override
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateUserInfo();
-                }else {
+                } else {
                     PopupUtils.showToast(result.getMessage());
                 }
             }
