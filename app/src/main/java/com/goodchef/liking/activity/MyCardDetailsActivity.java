@@ -127,12 +127,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
                 mTimeLimitRecyclerView.setAdapter(adapter);
             }
         } else {
-            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendCardDetailsRequest();
-                }
-            });
+            mStateView.setState(StateView.State.NO_DATA);
         }
     }
 

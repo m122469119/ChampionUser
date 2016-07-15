@@ -139,12 +139,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             mTeacherHeightTextView.setText(privateCoursesData.getHeight());
             mTeacherWeightTextView.setText(privateCoursesData.getWeight());
         } else {
-            mLikingStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendDetailsRequest();
-                }
-            });
+            mLikingStateView.setState(StateView.State.NO_DATA);
         }
     }
 

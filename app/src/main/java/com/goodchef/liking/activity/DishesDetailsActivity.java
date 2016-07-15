@@ -180,12 +180,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
                 setBannerData(imgList);
             }
         } else {
-            mStateView.initNoDataView(R.drawable.icon_no_data, "暂无数据", "刷新看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendFoodDetailsRequest();
-                }
-            });
+            mStateView.setState(StateView.State.NO_DATA);
         }
     }
 
