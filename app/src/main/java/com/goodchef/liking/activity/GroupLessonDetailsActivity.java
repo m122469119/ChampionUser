@@ -21,7 +21,6 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
@@ -35,6 +34,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
@@ -100,7 +100,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             public void onClick(View v) {
                 String phone = Preference.getCustomerServicePhone();
                 if (!StringUtils.isEmpty(phone)) {
-                    PhoneUtils.phoneCall(GroupLessonDetailsActivity.this, phone);
+                    LikingCallUtil.showCallDialog(GroupLessonDetailsActivity.this, "确定联系客服吗？", phone);
                 }
             }
         });

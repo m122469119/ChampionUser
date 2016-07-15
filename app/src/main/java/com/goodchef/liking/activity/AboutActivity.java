@@ -7,9 +7,9 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
  * 说明:
@@ -50,8 +50,10 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
         if (v == mCooperatePhoneTextView) {
             String phone = mCooperatePhoneTextView.getText().toString().trim();
             if (!StringUtils.isEmpty(phone)) {
-                PhoneUtils.phoneCall(this, phone);
+                LikingCallUtil.showCallDialog(AboutActivity.this, "确定联系商务人员吗？", phone);
             }
         }
     }
+
+
 }

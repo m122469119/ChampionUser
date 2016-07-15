@@ -10,7 +10,6 @@ import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
@@ -18,6 +17,7 @@ import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.mvp.presenter.MyPrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesDetailsView;
+import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
@@ -163,7 +163,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             sendCompleteRequest();
         } else if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
-                PhoneUtils.phoneCall(this, mTeacherPhone);
+                LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, "确定联系教练吗？", mTeacherPhone);
             }
         }
     }
