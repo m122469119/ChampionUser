@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -117,11 +119,30 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
             if (textView != null) {
                 MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses data = (MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses) textView.getTag();
                 if (data != null) {
-                    completeMyPrivateCourses(data.getOrderId());
+                    showCompleteDialog(data.getOrderId());
                 }
             }
         }
     };
+
+    private void showCompleteDialog(final String orderId) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
+        builder.setMessage("您确定完成该课程?");
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                completeMyPrivateCourses(orderId);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
     //发送完成课程请求
     public void completeMyPrivateCourses(String orderId) {
