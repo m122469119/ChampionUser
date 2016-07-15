@@ -51,9 +51,32 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
     protected void initViews() {
         setPullType(PullMode.PULL_BOTH);
         setNoDataView();
+
+        mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
+        setRecyclerAdapter(mPrivateLessonAdapter);
+        mPrivateLessonAdapter.setCompleteListener(mCompleteListener);
+        mPrivateLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                TextView textView = (TextView) view.findViewById(R.id.private_teacher_name);
+                if (textView != null) {
+                    MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses privateCourses = (MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses) textView.getTag();
+                    if (privateCourses != null) {
+                        Intent intent = new Intent(getActivity(), MyPrivateCoursesDetailsActivity.class);
+                        intent.putExtra(KEY_ORDER_ID, privateCourses.getOrderId());
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
     }
 
-    private void setNoDataView(){
+    private void setNoDataView() {
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
@@ -78,32 +101,8 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
     @Override
     public void updatePrivateCoursesView(MyPrivateCoursesResult.PrivateCoursesData privateCoursesData) {
         List<MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> list = privateCoursesData.getPrivateCoursesList();
-        if (list != null && list.size() > 0) {
-            mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
-            mPrivateLessonAdapter.setData(list);
-            setRecyclerAdapter(mPrivateLessonAdapter);
-            mPrivateLessonAdapter.setCompleteListener(mCompleteListener);
-            mPrivateLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    TextView textView = (TextView) view.findViewById(R.id.private_teacher_name);
-                    if (textView != null) {
-                        MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses privateCourses = (MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses) textView.getTag();
-                        if (privateCourses != null) {
-                            Intent intent = new Intent(getActivity(), MyPrivateCoursesDetailsActivity.class);
-                            intent.putExtra(KEY_ORDER_ID, privateCourses.getOrderId());
-                            startActivity(intent);
-                        }
-                    }
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, int position) {
-                    return false;
-                }
-            });
-        }else {
-            setNoDataView();
+        if (list != null) {
+            updateListView(list);
         }
     }
 
@@ -114,12 +113,12 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
     private View.OnClickListener mCompleteListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-           TextView textView = (TextView) v.findViewById(R.id.complete_courses_btn);
-            if (textView !=null){
+            TextView textView = (TextView) v.findViewById(R.id.complete_courses_btn);
+            if (textView != null) {
                 MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses data = (MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses) textView.getTag();
-                 if (data !=null){
-                     completeMyPrivateCourses(data.getOrderId());
-                 }
+                if (data != null) {
+                    completeMyPrivateCourses(data.getOrderId());
+                }
             }
         }
     };
@@ -131,7 +130,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                   loadHomePage();
+                    loadHomePage();
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }
@@ -149,7 +148,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
         return true;
     }
 
-    public void onEvent(MyPrivateCoursesCompleteMessage message){
+    public void onEvent(MyPrivateCoursesCompleteMessage message) {
         loadHomePage();
     }
 }
