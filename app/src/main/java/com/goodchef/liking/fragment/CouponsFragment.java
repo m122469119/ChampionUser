@@ -246,14 +246,14 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                     mRootCouponsLayout.setOnClickListener(mClickListener);
                     setSelectCouponView(isSelect, object.getAmount());
                 } else if (couponsStatus.equals(COUPON_STATUS_USED)) {//使用过
-                    setUsedBackGround(minAmount);
+                    setUsedBackGround(couponType,minAmount);
                     mOverdueImageView.setVisibility(View.VISIBLE);
                     mOverdueImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_icon_used));
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
                 } else if (couponsStatus.equals(COUPON_STATUS_OVERDUE)) {//过期
                     mOverdueImageView.setVisibility(View.VISIBLE);
-                    setUsedBackGround(minAmount);
+                    setUsedBackGround(couponType,minAmount);
                     mOverdueImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_icon_overdue));
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
@@ -316,7 +316,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
             }
 
             //设置已经使用过的优惠券
-            private void setUsedBackGround(String minAmount) {
+            private void setUsedBackGround(String couponType, String minAmount) {
                 mRightLayout.setBackgroundResource(R.drawable.coupons_right_gray_background);
                 mTitleTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
                 mEndTimeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
@@ -325,20 +325,25 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                 mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
                 mAmountYuanTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray_text));
                 double minAmountDouble = Double.parseDouble(minAmount);
-                if (minAmountDouble > 0.00) {
-                    mTypeTextView.setText("营养餐专用满" + minAmount + "可用");
-                } else {
-                    mTypeTextView.setText("营养餐专用,无门槛使用");
-                }
-                if (minAmountDouble > 0.00) {
-                    mTypeTextView.setText("私教课专用满" + minAmount + "可用");
-                } else {
-                    mTypeTextView.setText("私教课专用,无门槛使用");
-                }
-                if (minAmountDouble > 0.00) {
-                    mTypeTextView.setText("买卡专用满" + minAmount + "可用");
-                } else {
-                    mTypeTextView.setText("买卡专用,无门槛使用");
+
+                if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
+                    if (minAmountDouble > 0.00) {
+                        mTypeTextView.setText("营养餐专用满" + minAmount + "可用");
+                    } else {
+                        mTypeTextView.setText("营养餐专用,无门槛使用");
+                    }
+                } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
+                    if (minAmountDouble > 0.00) {
+                        mTypeTextView.setText("购买私教课可用满" + minAmount + "可用");
+                    } else {
+                        mTypeTextView.setText("私教课专用,无门槛使用");
+                    }
+                } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
+                    if (minAmountDouble > 0.00) {
+                        mTypeTextView.setText("买卡专用满" + minAmount + "可用");
+                    } else {
+                        mTypeTextView.setText("买卡专用,无门槛使用");
+                    }
                 }
             }
 
