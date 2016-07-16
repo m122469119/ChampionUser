@@ -29,6 +29,9 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.adapter.SelectCityAdapter;
+import com.goodchef.liking.eventmessages.DishesAliPayMessage;
+import com.goodchef.liking.eventmessages.DishesPayFalse;
+import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
@@ -492,5 +495,21 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 }
             }
         }
+    }
+
+
+    public void onEvent(DishesWechatPayMessage wechatMessage) {
+        buyList.clear();
+        postEvent(new RefreshChangeDataMessage(buyList, true));
+    }
+
+    public void onEvent(DishesAliPayMessage dishesAliPayMessage) {
+        buyList.clear();
+        postEvent(new RefreshChangeDataMessage(buyList, true));
+    }
+
+    public void onEvent(DishesPayFalse dishesWechatPayFalse) {
+        buyList.clear();
+        postEvent(new RefreshChangeDataMessage(buyList, true));
     }
 }

@@ -89,6 +89,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     public void onEvent(MainAddressChanged mainAddressChanged) {
         mLatitude = mainAddressChanged.getLatitude();
         mLongitude = mainAddressChanged.getLongitude();
+        mCityId = mainAddressChanged.getCityId();
     }
 
     private void sendRequest(int page) {
@@ -158,17 +159,21 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
         if (isClearCart) {//如果是清空购物车
             buyLit.clear();
             for (Food food : mFoodList) {
-                food.setRestStock(SELECT_MAX);
                 food.setSelectedOrderNum(0);
             }
         } else {//没有清空购物车
             if (mFoodList != null && mFoodList.size() > 0 && buyLit != null && buyLit.size() > 0) {
                 for (Food mFood : mFoodList) {
+                    mFood.setSelectedOrderNum(0);
                     for (Food buyFood : buyLit) {
                         if (mFood.getGoodsId().equals(buyFood.getGoodsId())) {
                             mFood.setSelectedOrderNum(buyFood.getSelectedOrderNum());
                         }
                     }
+                }
+            }else if (mFoodList != null && mFoodList.size() > 0){
+                for (Food food : mFoodList) {
+                    food.setSelectedOrderNum(0);
                 }
             }
         }

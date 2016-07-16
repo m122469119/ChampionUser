@@ -38,7 +38,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     private TextView mTotalPriceTextView;
     private TextView mImmediatelyBuyBtn;
     private ArrayList<Food> buyList;
-    private ArrayList<Food> confirmBuyList = new ArrayList<>();
+    // private ArrayList<Food> confirmBuyList = new ArrayList<>();
     private String mUserCityId;
 
     @Override
@@ -55,7 +55,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
-                intent.putExtra(KEY_CLEAR_CART,false);
+                intent.putExtra(KEY_CLEAR_CART, false);
                 intent.putExtras(bundle);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -86,10 +86,10 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
         mShoppingCartAdapter = new ShoppingCartAdapter(this);
         if (buyList != null) {
-            confirmBuyList = new ArrayList<>(buyList);
+            //  confirmBuyList = new ArrayList<>(buyList);
         }
-        totalBuyList();
-        mShoppingCartAdapter.setData(confirmBuyList);
+        //  totalBuyList();
+        mShoppingCartAdapter.setData(buyList);
         setNumAndPrice();
         mRecyclerView.setAdapter(mShoppingCartAdapter);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
@@ -99,23 +99,21 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
      * 清楚购物车中数量为0的营养餐
      */
     private void totalBuyList() {
-        if (confirmBuyList != null && confirmBuyList.size() > 0) {
-            for (int i = 0; i < confirmBuyList.size(); i++) {
-                if (confirmBuyList.get(i).getSelectedOrderNum() == 0) {
-                    confirmBuyList.remove(confirmBuyList.get(i));
+        if (buyList != null && buyList.size() > 0) {
+            for (int i = 0; i < buyList.size(); i++) {
+                if (buyList.get(i).getSelectedOrderNum() == 0) {
+                    buyList.remove(buyList.get(i));
                 }
             }
         }
     }
-
-
     @Override
     public void onClick(View v) {
         if (v == mImmediatelyBuyBtn) {
             if (Preference.isLogin()) {
                 Intent intent = new Intent(this, DishesConfirmActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
+                bundle.putParcelableArrayList(INTENT_KEY_CONFIRM_BUY_LIST, buyList);
                 intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -132,19 +130,18 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
         if (riceNum >= foodData.getRestStock()) {
             PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
         }
-        if (!confirmBuyList.contains(foodData)) {
-            confirmBuyList.add(foodData);
+        if (!buyList.contains(foodData)) {
+            buyList.add(foodData);
         }
         setNumAndPrice();
         refreshChangeData();
     }
 
 
-
     @Override
     public void onShoppingDishRemove(Food foodData) {
         if (foodData.getSelectedOrderNum() == 0) {//当某个菜品数量减少为0时，去掉他在这个集合中的数量
-            confirmBuyList.remove(foodData);
+            buyList.remove(foodData);
         }
         setNumAndPrice();
         refreshChangeData();
@@ -155,12 +152,10 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
      * 当从购物车回来时对数据刷新
      */
     private void refreshChangeData() {
-        if (buyList != null && buyList.size() > 0 && confirmBuyList != null && confirmBuyList.size() > 0) {
+        if (buyList != null && buyList.size() > 0) {
             for (Food mFood : buyList) {
-                for (Food buyFood : confirmBuyList) {
-                    if (mFood.getGoodsId().equals(buyFood.getGoodsId())) {
-                        mFood.setSelectedOrderNum(buyFood.getSelectedOrderNum());
-                    }
+                if (mFood.getGoodsId().equals(mFood.getGoodsId())) {
+                    mFood.setSelectedOrderNum(mFood.getSelectedOrderNum());
                 }
             }
         }
@@ -173,8 +168,8 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     private void setNumAndPrice() {
         int num = 0;
         float dishPrice = 0;
-        if (!ListUtils.isEmpty(confirmBuyList)) {
-            for (Food data : confirmBuyList) {
+        if (!ListUtils.isEmpty(buyList)) {
+            for (Food data : buyList) {
                 int n = data.getSelectedOrderNum();
                 float p = Float.parseFloat(data.getPrice()) * n;
                 num += n;
@@ -209,16 +204,16 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
      * 清空购物车
      */
     private void clearShoppingCart() {
-        for (Food data : buyList) {
-            data.setSelectedOrderNum(0);
-        }
-     //   buyList.clear();
+//        for (Food data : buyList) {
+//            data.setSelectedOrderNum(0);
+//        }
+        buyList.clear();
         setNumAndPrice();
         mShoppingCartAdapter.notifyDataSetChanged();
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
-        intent.putExtra(KEY_CLEAR_CART,true);//清空购物车
+        intent.putExtra(KEY_CLEAR_CART, true);//清空购物车
         intent.putExtras(bundle);
         setResult(Activity.RESULT_OK, intent);
         finish();
@@ -231,7 +226,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
-            intent.putExtra(KEY_CLEAR_CART,false);
+            intent.putExtra(KEY_CLEAR_CART, false);
             intent.putExtras(bundle);
             setResult(Activity.RESULT_OK, intent);
             this.finish();
@@ -245,14 +240,14 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     public void onEvent(DishesWechatPayMessage wechatMessage) {
-       clearShoppingCart();
-    }
-
-    public void onEvent(DishesAliPayMessage dishesAliPayMessage){
         clearShoppingCart();
     }
 
-    public void onEvent(DishesPayFalse dishesWechatPayFalse){
+    public void onEvent(DishesAliPayMessage dishesAliPayMessage) {
+        clearShoppingCart();
+    }
+
+    public void onEvent(DishesPayFalse dishesWechatPayFalse) {
         clearShoppingCart();
     }
 
