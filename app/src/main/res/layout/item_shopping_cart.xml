@@ -30,7 +30,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="70dp"
             android:padding="10dp">
 
 
@@ -43,7 +43,6 @@
                     android:id="@+id/dishes_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="减肥沙拉"
                     android:textColor="@color/liking_lesson_text"
                     android:textSize="15sp"/>
 
@@ -54,7 +53,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="2dp"
                     android:layout_toRightOf="@+id/dishes_name"
-                    android:text="今日还剩15份"
                     android:textColor="@color/nearby_item_gray_text"
                     android:textSize="12sp"/>
 
@@ -64,7 +62,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dishes_name"
                     android:layout_marginTop="5dp"
-                    android:text="¥ 35"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="17sp"/>
             </RelativeLayout>
@@ -73,12 +70,12 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true">
+                android:layout_marginTop="20dp">
 
                 <ImageView
                     android:id="@+id/add_image"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/add"/>
 
@@ -95,8 +92,8 @@
 
                 <ImageView
                     android:id="@+id/reduce_image"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_toLeftOf="@+id/food_buy_number"
                     android:src="@drawable/minus"
                     android:visibility="visible"/>

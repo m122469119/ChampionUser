@@ -95,7 +95,12 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
                 }
             }
             mDishesTypeTextView.setText(stringBuffer.toString());
-            mBuyPersonTextView.setText(object.getAllEat() + "人购买过");
+            String allEat = object.getAllEat();
+            if (Integer.parseInt(allEat)>0){
+                mBuyPersonTextView.setText(allEat + "人购买过");
+            }else {
+                mBuyPersonTextView.setText("等你首尝");
+            }
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mFoodHImageView, imgUrl);
@@ -106,7 +111,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             int leftNum = object.getLeftNum();
 
             if (leftNum > 0) {//剩余份数大于0时才能购买
-                mSurplusNumberTextView.setText("今日还剩" + leftNum + "份");
+                mSurplusNumberTextView.setText("还剩" + leftNum + "份");
                 mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
                 if (selectNum == 0) {
                     mReduceImageView.setVisibility(View.INVISIBLE);

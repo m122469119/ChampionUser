@@ -29,11 +29,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="70dp"
             android:padding="10dp">
 
-
             <RelativeLayout
+                android:id="@+id/layout_dishes_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dishes_name"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="16sp"/>
             </RelativeLayout>
@@ -69,12 +69,12 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true">
+                android:layout_marginTop="20dp">
 
                 <ImageView
                     android:id="@+id/add_image"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/add"/>
 
@@ -91,8 +91,8 @@
 
                 <ImageView
                     android:id="@+id/reduce_image"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_toLeftOf="@+id/food_buy_number"
                     android:src="@drawable/minus"
                     android:visibility="visible"/>

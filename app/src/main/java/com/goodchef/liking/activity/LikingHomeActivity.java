@@ -29,9 +29,11 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.adapter.SelectCityAdapter;
+import com.goodchef.liking.eventmessages.ClearCartMessage;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
+import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
@@ -332,7 +334,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText(currentCityName);
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
-                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(),currentCityName);
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName);
                 } else {//定位失败
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText("定位失败");
@@ -509,6 +511,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     public void onEvent(DishesPayFalse dishesWechatPayFalse) {
+        buyList.clear();
+        postEvent(new RefreshChangeDataMessage(buyList, true));
+    }
+
+    public void onEvent(FreePayMessage message) {
+        buyList.clear();
+        postEvent(new RefreshChangeDataMessage(buyList, true));
+    }
+
+    public void onEvent(ClearCartMessage message) {
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
     }

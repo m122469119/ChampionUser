@@ -29,6 +29,7 @@ import com.goodchef.liking.adapter.MealTimeAdapter;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
+import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.GymListResult;
@@ -277,6 +278,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
             PopupUtils.showToast("支付成功");
+            postEvent(new FreePayMessage());
             jumpIntentDishesOrderList();
         } else {
             handlePay(payResultData);

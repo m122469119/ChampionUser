@@ -11,6 +11,7 @@ import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecycle
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
+import com.goodchef.liking.eventmessages.ClearCartMessage;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
@@ -59,7 +60,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
         initData();
     }
 
-    private void setNoDataView(){
+    private void setNoDataView() {
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
@@ -109,8 +110,8 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                                 food.setSelectedOrderNum(0);
                             }
                             refreshChangeData(false);
-                            updateListView(mFoodList);
                         }
+                        updateListView(mFoodList);
                     }
 
                 }
@@ -171,11 +172,20 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
                         }
                     }
                 }
-            }else if (mFoodList != null && mFoodList.size() > 0){
+            } else if (mFoodList != null && mFoodList.size() > 0) {
                 for (Food food : mFoodList) {
                     food.setSelectedOrderNum(0);
                 }
             }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    public void onEvent(ClearCartMessage message) {
+        buyLit.clear();
+        for (Food food : mFoodList) {
+            food.setSelectedOrderNum(0);
         }
         mAdapter.notifyDataSetChanged();
     }
