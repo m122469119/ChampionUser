@@ -77,7 +77,7 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
             ButtonClickListener buttonClickListener = new ButtonClickListener();
             mDishesNameTextView.setText(object.getGoodsName());
             mDishesMoneyTextView.setText("¥ " + object.getPrice());
-            mSurplusNumberTextView.setText("今日还剩" + object.getLeftNum() + "份");
+            mSurplusNumberTextView.setText("还剩" + object.getLeftNum() + "份");
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mFoodHImageView, imgUrl);

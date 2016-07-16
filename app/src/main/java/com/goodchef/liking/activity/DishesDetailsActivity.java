@@ -15,6 +15,7 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
+import com.goodchef.liking.eventmessages.ClearCartMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
@@ -70,7 +71,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_details);
-
+        setTitle("商品详情");
         initView();
         initData();
         sendFoodDetailsRequest();
@@ -154,7 +155,6 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     public void updateFoodDetailsView(FoodDetailsResult.FoodDetailsData foodDetailsData) {
         if (foodDetailsData != null) {
             mStateView.setState(StateView.State.SUCCESS);
-            setTitle(foodDetailsData.getGoodsName());
             mDishesDetailsNameTextView.setText(foodDetailsData.getGoodsName());
             mDishesMoneyTextView.setText("¥" + foodDetailsData.getPrice());
             mDishesDescribeTextView.setText(foodDetailsData.getGoodsDesc());
@@ -355,11 +355,25 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
                     mFoodBuyNumberTextView.setText(String.valueOf(food.getSelectedOrderNum()));
                 }
             }
+        }else {
+            mFood.setSelectedOrderNum(0);
+            mFoodBuyNumberTextView.setText("0");
         }
     }
 
     @Override
     public void handleNetworkFailure() {
         mStateView.setState(StateView.State.FAILED);
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(ClearCartMessage message){
+        buyList.clear();
+        mFood.setSelectedOrderNum(0);
+        mFoodBuyNumberTextView.setText("0");
     }
 }

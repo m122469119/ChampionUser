@@ -15,9 +15,11 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ShoppingCartAdapter;
+import com.goodchef.liking.eventmessages.ClearCartMessage;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
+import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.storage.Preference;
@@ -38,7 +40,6 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     private TextView mTotalPriceTextView;
     private TextView mImmediatelyBuyBtn;
     private ArrayList<Food> buyList;
-    // private ArrayList<Food> confirmBuyList = new ArrayList<>();
     private String mUserCityId;
 
     @Override
@@ -85,28 +86,13 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
         Bundle bundle = getIntent().getExtras();
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
         mShoppingCartAdapter = new ShoppingCartAdapter(this);
-        if (buyList != null) {
-            //  confirmBuyList = new ArrayList<>(buyList);
-        }
-        //  totalBuyList();
         mShoppingCartAdapter.setData(buyList);
         setNumAndPrice();
         mRecyclerView.setAdapter(mShoppingCartAdapter);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
     }
 
-    /**
-     * 清楚购物车中数量为0的营养餐
-     */
-    private void totalBuyList() {
-        if (buyList != null && buyList.size() > 0) {
-            for (int i = 0; i < buyList.size(); i++) {
-                if (buyList.get(i).getSelectedOrderNum() == 0) {
-                    buyList.remove(buyList.get(i));
-                }
-            }
-        }
-    }
+
     @Override
     public void onClick(View v) {
         if (v == mImmediatelyBuyBtn) {
@@ -208,6 +194,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
 //            data.setSelectedOrderNum(0);
 //        }
         buyList.clear();
+        postEvent(new ClearCartMessage());
         setNumAndPrice();
         mShoppingCartAdapter.notifyDataSetChanged();
         Intent intent = new Intent();
@@ -248,6 +235,10 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     public void onEvent(DishesPayFalse dishesWechatPayFalse) {
+        clearShoppingCart();
+    }
+
+    public void onEvent(FreePayMessage message){
         clearShoppingCart();
     }
 
