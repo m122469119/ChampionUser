@@ -230,6 +230,10 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     @Override
     public void onClick(View v) {
         if (v == mAddImageBtn) {
+            if (mSelectNum == mFood.getRestStock()){
+                PopupUtils.showToast("单个最多只能购买" + mFood.getRestStock() + "份");
+                return;
+            }
             mFood.setSelectedOrderNum(++mSelectNum);
             mFoodBuyNumberTextView.setText(String.valueOf(mFood.getSelectedOrderNum()));
             setAddBuyList();
@@ -287,7 +291,11 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
         if (buyList != null && buyList.size() > 0) {
             for (int i = 0; i < buyList.size(); i++) {
                 if (buyList.get(i).getGoodsId().equals(mFood.getGoodsId())) {
-                    buyList.get(i).setSelectedOrderNum(mSelectNum);
+                    if (mFood.getSelectedOrderNum() == 0) {//当某个菜品数量减少为0时，去掉他在这个集合中的数量
+                        buyList.remove(buyList.get(i));
+                    }else {
+                        buyList.get(i).setSelectedOrderNum(mSelectNum);
+                    }
                 }
             }
         }
