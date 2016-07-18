@@ -132,7 +132,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
                 mConfirmGetDishesBtn.setVisibility(View.GONE);
                 mPayLayout.setVisibility(View.GONE);
                 mOrderStateTextView.setText(R.string.dishes_order_state_cancel);
-            } else if (state == ORDER_STATE_GET_DEISHES) {//已完成
+            } else if (state == ORDER_STATE_GET_DEISHES) {//已取餐
                 mConfirmGetDishesBtn.setVisibility(View.GONE);
                 mPayLayout.setVisibility(View.GONE);
                 mOrderStateTextView.setText(R.string.dishes_order_state_complete);
