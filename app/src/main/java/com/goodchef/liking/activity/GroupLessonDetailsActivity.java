@@ -22,6 +22,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
@@ -76,6 +77,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private String orderId;
     private String gymId;
     private LikingStateView mStateView;
+    private String guota;//预约人数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,6 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         initView();
         requestData();
         setRightMenu();
-        setBottomCoursesState();
     }
 
     private void setRightMenu() {
@@ -132,7 +133,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setViewOnClickListener();
     }
 
-    private void setViewOnClickListener(){
+    private void setViewOnClickListener() {
         mImmediatelySubmitBtn.setOnClickListener(this);
         mGymIntroduceLayout.setOnClickListener(this);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -151,6 +152,17 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         if (mCoursesState == -1) {
             mCoursesStateLayout.setVisibility(View.GONE);
             mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
+            if (!StringUtils.isEmpty(guota)) {
+                if (guota.equals("预约已满")) {
+                    mImmediatelySubmitBtn.setText(R.string.appointment_fill);
+                    mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
+                    mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+                } else {
+                    mImmediatelySubmitBtn.setText(R.string.immadetails_appointment);
+                    mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
+                    mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+                }
+            }
         } else if (mCoursesState == COURSES_STATE_NOT_START) {//未开始
             mCoursesStateLayout.setVisibility(View.VISIBLE);
             mImmediatelySubmitBtn.setVisibility(View.GONE);
@@ -224,7 +236,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 HImageLoaderSingleton.getInstance().requestImage(mShopImageView, coursesImageUrl);
             }
         }
-        mScheduleResultTextView.setText(groupLessonData.getQuota());
+        guota = groupLessonData.getQuota();
+        mScheduleResultTextView.setText(guota);
         mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
@@ -245,7 +258,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             }
         }
         setStadiumImage(groupLessonData.getGymImgs());
-
+        setBottomCoursesState();
     }
 
     private void setStadiumImage(List<GroupCoursesResult.GroupLessonData.GymImgsData> stadiumImageList) {

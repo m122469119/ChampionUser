@@ -305,7 +305,7 @@
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_card_green_background"
+        android:background="@color/liking_green_btn_back"
         android:gravity="center"
         android:text="@string/immadetails_appointment"
         android:textColor="@color/white"
