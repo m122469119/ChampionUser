@@ -1,0 +1,73 @@
+package com.goodchef.liking.dialog;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.aaron.android.framework.utils.DialogUtils;
+import com.goodchef.liking.R;
+
+/**
+ * 说明:
+ * Author shaozucheng
+ * Time:16/7/18 下午5:21
+ */
+public class AnnouncementDialog {
+
+    private Context context;
+    private Dialog mDialog;
+    private TextView mTextView;
+    private ImageButton mButton;
+
+    public AnnouncementDialog(Context context, String announcementStr) {
+        this.context = context;
+        mDialog = new android.app.AlertDialog.Builder(context, R.style.announcement_dialog_no_screen).create();
+        //这一行很重要
+        DialogUtils.resetDialogScreenPosition(mDialog, Gravity.CENTER, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+        mDialog.setCancelable(true);
+        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.show();
+        Window window = mDialog.getWindow();
+        window.setContentView(R.layout.dialog_announcement);
+        window.setWindowAnimations(R.style.my_dialog_enter_exit);  //添加dialog进入和退出的动画
+        mTextView = (TextView) window.findViewById(R.id.announcement);
+        mButton = (ImageButton) window.findViewById(R.id.announcement_cancel_image_button);
+        mTextView.setText(announcementStr);
+    }
+
+    public void setViewOnClickListener(View.OnClickListener onClickListener) {
+        mButton.setOnClickListener(onClickListener);
+    }
+
+
+    /**
+     * 设置是否可以关闭
+     *
+     * @param cancelable true或false
+     */
+    public void setCancelable(boolean cancelable) {
+        mDialog.setCancelable(cancelable);
+    }
+
+    /**
+     * 设置是否可以点击dialog外面关闭dialog
+     *
+     * @param canceledOnTouchOutside true或false
+     */
+    public void setCanceledOnTouchOutside(boolean canceledOnTouchOutside) {
+        mDialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
+    }
+
+    /**
+     * 关闭对话框
+     */
+    public void dismiss() {
+        mDialog.dismiss();
+    }
+}
