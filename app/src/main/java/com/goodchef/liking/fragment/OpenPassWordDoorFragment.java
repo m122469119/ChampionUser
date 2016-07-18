@@ -69,7 +69,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     }
 
     private void initData() {
-        String password = "aaaa";
+        String password = "aaaaaa";
         char[] pwd = password.toCharArray();
         mShowLayout.removeAllViews();
         mFailMessageTextView.setText("");
@@ -121,6 +121,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
         String password = userAuthCodeData.getAuthCode();
         if (!StringUtils.isEmpty(password)) {
             setPasswordChar(password);
+            mFailMessageTextView.setText(userAuthCodeData.getTips().trim());
         }
     }
 

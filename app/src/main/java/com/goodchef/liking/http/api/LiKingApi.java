@@ -149,7 +149,7 @@ public class LiKingApi {
      * @param currentPage 页数
      * @param callback    RequestCallback
      */
-    public static void getHomeData(double longitude, double latitude, String cityId, String districtId, int currentPage, RequestCallback<CoursesResult> callback) {
+    public static void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, RequestCallback<CoursesResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.HOME_INDEX, CoursesResult.class, getCommonRequestParams().append("longitude", longitude)
                 .append("latitude", latitude).append(KEY_CITY_ID, cityId).append(KEY_DISTRICT_ID, districtId).append(KEY_PAGE, currentPage), callback);
     }

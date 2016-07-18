@@ -30,6 +30,8 @@ public class UserAuthCodeResult extends BaseResult {
 
         @SerializedName("auth_code")
         private String authCode;
+        @SerializedName("tips")
+        private String tips;
 
         public String getAuthCode() {
             return authCode;
@@ -37,6 +39,14 @@ public class UserAuthCodeResult extends BaseResult {
 
         public void setAuthCode(String authCode) {
             this.authCode = authCode;
+        }
+
+        public String getTips() {
+            return tips;
+        }
+
+        public void setTips(String tips) {
+            this.tips = tips;
         }
     }
 }
