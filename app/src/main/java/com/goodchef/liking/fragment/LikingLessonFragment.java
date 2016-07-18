@@ -46,8 +46,8 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     private LikingLessonRecyclerAdapter mLikingLessonRecyclerAdapter;
     private HomeCoursesPresenter mCoursesPresenter;
 
-    private double mLongitude = 0.0;
-    private double mLatitude = 0.0;
+    private double mLongitude = 0;
+    private double mLatitude = 0;
     private String mCityId = "310100";
     private String mDistrictId = "310104";
 
@@ -130,7 +130,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 if (data != null) {
                     Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
                     intent.putExtra(KEY_GYM_ID, data.getGymId());
-                    intent.putExtra(KEY_DISTANCE,data.getDistance());
+                    intent.putExtra(KEY_DISTANCE, data.getDistance());
                     intent.putExtra(KEY_GYM_NAME, data.getGymName());
                     startActivity(intent);
                 }
@@ -183,10 +183,10 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     //发送首页数据
     private void getCoursesRequest(int page) {
-        if (mLongitude > 0.0 && mLatitude > 0.0) {
-            mCoursesPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingLessonFragment.this);
+        if (mLongitude > 0 && mLatitude > 0) {
+            mCoursesPresenter.getHomeData(mLongitude + "", mLatitude + "", mCityId, mDistrictId, page, LikingLessonFragment.this);
         } else {
-            mCoursesPresenter.getHomeData(0, 0, mCityId, mDistrictId, page, LikingLessonFragment.this);
+            mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, LikingLessonFragment.this);
         }
     }
 
@@ -194,7 +194,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
-        if (list !=null){
+        if (list != null) {
             updateListView(list);
             if (bannerDataList != null && bannerDataList.size() > 0) {
                 mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);

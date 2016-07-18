@@ -41,7 +41,7 @@ public class HomeCoursesPresenter extends BasePresenter<HomeCourseView> {
         });
     }
 
-    public void getHomeData(double longitude, double latitude, String cityId, String districtId, int currentPage, BasePagerLoaderViewFragment fragment) {
+    public void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, BasePagerLoaderViewFragment fragment) {
         LiKingApi.getHomeData(longitude, latitude, cityId, districtId, currentPage, new BasePagerLoaderViewFragment.PagerRequestCallback<CoursesResult>(fragment){
             @Override
             public void onSuccess(CoursesResult result) {
