@@ -245,10 +245,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         double price = Double.parseDouble(cardPrice);
         if (price > minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
             mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
-            if (price > couponAmount) {
+            if (price >= couponAmount) {
                 //订单的价格大于优惠券的面额
                 double amount = price - couponAmount;
-                if (amount > 0) {
+                if (amount >= 0 ) {
                     mCardMoneyTextView.setText("¥ " + amount);
                 }
             } else {//订单的面额小于优惠券的面额
@@ -256,7 +256,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             }
         } else {//优惠券不可用
             mCouponsMoneyTextView.setText("");
-            PopupUtils.showToast("该优惠券未达使用范围请重新选择");
         }
 
     }
