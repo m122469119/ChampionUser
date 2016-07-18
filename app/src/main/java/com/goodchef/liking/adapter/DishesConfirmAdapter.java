@@ -51,8 +51,10 @@ public class DishesConfirmAdapter extends BaseRecycleViewAdapter<DishesConfirmAd
         @Override
         public void bindViews(Food object) {
             mDishesNameTextView.setText(object.getGoodsName());
-            mDishesNumberTextView.setText("x " + object.getSelectedOrderNum());
-            mDishesMoneyTextView.setText("¥ " + object.getPrice());
+            int orderNum = object.getSelectedOrderNum();
+            mDishesNumberTextView.setText("x " + orderNum);
+            double money = Double.parseDouble(object.getPrice()) * orderNum;
+            mDishesMoneyTextView.setText("¥ " + money);
         }
     }
 }

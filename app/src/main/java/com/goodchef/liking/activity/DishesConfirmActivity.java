@@ -258,7 +258,8 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
 
     @Override
     public void updateNutritionMealConfirmView(NutritionMealConfirmResult.NutritionMealConfirmData confirmData) {
-        mMealsAddressTextView.setText(confirmData.getStore().getAddress());
+        NutritionMealConfirmResult.NutritionMealConfirmData.Store store = confirmData.getStore();
+        mMealsAddressTextView.setText(store.getAddress() + " " + store.getName());
         totalAmount = confirmData.getTotalAmount();
         List<String> list = confirmData.getSelectDate();
         mealTimeList = new ArrayList<>();
@@ -362,7 +363,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             } else if (requestCode == INTENT_REQUEST_CODE_CHANGE_SHOP) {//切换门店
                 myShop = (GymListResult.GymData.Shop) data.getSerializableExtra(ChangeShopActivity.INTENT_KEY_SHOP_OBJECT);
                 if (myShop != null) {
-                    mMealsAddressTextView.setText(myShop.getAddress());
+                    mMealsAddressTextView.setText(myShop.getAddress() + " " + myShop.getName());
                     gymId = myShop.getGymId();
                 }
             }
