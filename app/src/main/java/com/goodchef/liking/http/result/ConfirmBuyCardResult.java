@@ -34,6 +34,10 @@ public class ConfirmBuyCardResult extends BaseResult {
         private String price;
         @SerializedName("cards")
         private List<ConfirmCard> mCardList;
+        @SerializedName("purchase_type")
+        private int purchaseType;
+        @SerializedName("tips")
+        private String tips;
 
         public String getAdsUrl() {
             return adsUrl;
@@ -65,6 +69,22 @@ public class ConfirmBuyCardResult extends BaseResult {
 
         public void setCardList(List<ConfirmCard> cardList) {
             mCardList = cardList;
+        }
+
+        public int getPurchaseType() {
+            return purchaseType;
+        }
+
+        public void setPurchaseType(int purchaseType) {
+            this.purchaseType = purchaseType;
+        }
+
+        public String getTips() {
+            return tips;
+        }
+
+        public void setTips(String tips) {
+            this.tips = tips;
         }
     }
 }

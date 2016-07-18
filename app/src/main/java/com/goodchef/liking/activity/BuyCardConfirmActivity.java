@@ -87,6 +87,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private int buyType; //1 购卡  2 续卡  3 升级卡
     private String cardPrice;//卡的金额
     private LikingStateView mStateView;
+    private String explain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,13 +154,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCardName = getIntent().getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
         mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
-        if (buyType == BUY_TYPE_BUY) {
-            setTitle("购买" + mCardName);
-        } else if (buyType == BUY_TYPE_CONTINUE) {
-            setTitle("续" + mCardName);
-        } else if (buyType == BUY_TYPE_UPGRADE) {
-            setTitle("升级" + mCardName);
-        }
+
         mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         sendConfirmCardRequest();
     }
@@ -180,14 +175,19 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mWechatCheckBox.setChecked(true);
             payType = "0";
         } else if (v == mCouponsLayout) {//选优惠券
-            Intent intent = new Intent(this, CouponsActivity.class);
-            intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
-            intent.putExtra(KEY_CARD_ID, mCardId);
-            intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType);
-            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(this, CouponsActivity.class);
+                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
+                intent.putExtra(KEY_CARD_ID, mCardId);
+                intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType);
+                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+                }
+                startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
+            } else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
             }
-            startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
         } else if (v == mImmediatelyBuyBtn) {
             if (Preference.isLogin()) {
                 if (payType.equals("-1")) {
@@ -205,7 +205,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             if (baseConfigData != null) {
                 String serviceUrl = baseConfigData.getServiceUrl();
                 if (!StringUtils.isEmpty(serviceUrl)) {
-                    HDefaultWebActivity.launch(this, serviceUrl, "会员入会协议");
+                    HDefaultWebActivity.launch(this, serviceUrl, "平台会员协议");
                 }
             }
         }
@@ -264,6 +264,16 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     @Override
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData) {
         if (confirmBuyCardData != null) {
+            //1购卡 2续卡 3升级卡
+            int type = confirmBuyCardData.getPurchaseType();
+            explain = confirmBuyCardData.getTips();
+            if (type == BUY_TYPE_BUY) {
+                setTitle("购买" + mCardName);
+            } else if (type == BUY_TYPE_CONTINUE) {
+                setTitle("续" + mCardName);
+            } else if (type == BUY_TYPE_UPGRADE) {
+                setTitle("升级" + mCardName);
+            }
             mStateView.setState(StateView.State.SUCCESS);
             String imageUrl = confirmBuyCardData.getAdsUrl();
             if (buyType == BUY_TYPE_BUY) {
@@ -313,7 +323,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         public void onClick(View v) {
             ConfirmCard confirmCard = (ConfirmCard) v.getTag();
             if (confirmCard != null) {
-                showExplainDialog("说明文字说明说明说明说明说明");
+                showExplainDialog(explain);
             }
         }
     };
