@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -19,6 +20,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GymCoursesResult;
 import com.goodchef.liking.mvp.presenter.GymCoursesPresenter;
@@ -35,11 +37,13 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
     private LinearLayout mCoursesDataLayout;
     private RecyclerView mRecyclerView;
     private TextView mCheckGymBtn;
+    private RelativeLayout mNoCoursesLayout;
     private GymCoursesAdapter mGymCoursesAdapter;
 
     private GymCoursesPresenter mGymCoursesPresenter;
     private String gymId;
     private String gymName;
+    private String distance;
     private List<GymCoursesResult.GymCoursesData.GymDate> dateList;
     private boolean isCheck = true;
 
@@ -53,6 +57,7 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
     }
 
     private void initView() {
+        mNoCoursesLayout = (RelativeLayout) findViewById(R.id.layout_no_courses);
         mCoursesDataLayout = (LinearLayout) findViewById(R.id.gym_courses_date);
         mRecyclerView = (RecyclerView) findViewById(R.id.gym_courses_recyclerView);
         mCheckGymBtn = (TextView) findViewById(R.id.check_gym_courses_btn);
@@ -63,7 +68,9 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
     private void initData() {
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         gymName = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_NAME);
+        distance = getIntent().getStringExtra(LikingLessonFragment.KEY_DISTANCE);
         setTitle(gymName);
+        showRightMenu(distance);
         mGymCoursesPresenter = new GymCoursesPresenter(this, this);
         mGymCoursesPresenter.getGymCoursesList(gymId, "0");
     }
@@ -82,11 +89,19 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
 
     private void setGymCoursesList(List<GymCoursesResult.GymCoursesData.Courses> gymList) {
         if (gymList != null && gymList.size() > 0) {
+            mNoCoursesLayout.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mCheckGymBtn.setVisibility(View.VISIBLE);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mGymCoursesAdapter = new GymCoursesAdapter(this);
             mGymCoursesAdapter.setData(gymList);
             mRecyclerView.setAdapter(mGymCoursesAdapter);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mCheckGymBtn.setVisibility(View.GONE);
+            mNoCoursesLayout.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -139,6 +154,15 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
             this.startActivity(intent);
             this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         }
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(OrderGroupMessageSuccess orderGroupMessageSuccess){
+        this.finish();
     }
 
     public class GymCoursesAdapter extends BaseRecycleViewAdapter<GymCoursesAdapter.GymCoursesViewHolder, GymCoursesResult.GymCoursesData.Courses> {

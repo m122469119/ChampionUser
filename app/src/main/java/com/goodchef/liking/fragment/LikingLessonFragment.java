@@ -37,6 +37,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     public static final String KEY_GYM_ID = "key_gym_id";
     public static final String KEY_GYM_NAME = "key_gym_name";
+    public static final String KEY_DISTANCE = "key_distance";
     private View mHeadView;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
@@ -129,7 +130,8 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 if (data != null) {
                     Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
                     intent.putExtra(KEY_GYM_ID, data.getGymId());
-                    intent.putExtra(KEY_GYM_NAME, data.getCourseName());
+                    intent.putExtra(KEY_DISTANCE,data.getDistance());
+                    intent.putExtra(KEY_GYM_NAME, data.getGymName());
                     startActivity(intent);
                 }
             }

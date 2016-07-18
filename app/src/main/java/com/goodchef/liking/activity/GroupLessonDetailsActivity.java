@@ -25,6 +25,7 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
+import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -201,6 +202,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
     @Override
     public void updateOrderGroupCourses() {
+        postEvent(new OrderGroupMessageSuccess());
         Intent intent = new Intent(this, MyLessonActivity.class);
         intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
         startActivity(intent);
