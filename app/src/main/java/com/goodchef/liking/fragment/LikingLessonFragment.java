@@ -38,6 +38,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     public static final String KEY_GYM_ID = "key_gym_id";
     public static final String KEY_GYM_NAME = "key_gym_name";
     public static final String KEY_DISTANCE = "key_distance";
+    public static final String KEY_INTENT_TYPE = "key_intent_type";
     private View mHeadView;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
@@ -100,6 +101,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 if (type == TYPE_GROUP_LESSON) {
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
+                    intent.putExtra(KEY_INTENT_TYPE,"0");
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);

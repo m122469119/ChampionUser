@@ -141,5 +141,6 @@
     <string name="state_view_no_login_text">您还未登录</string>
     <string name="title_my_card_details">会员卡详情</string>
     <string name="vip_agreement">《平台会员协议》</string>
+    <string name="appointment_fill">预约已满</string>
 
 </resources>

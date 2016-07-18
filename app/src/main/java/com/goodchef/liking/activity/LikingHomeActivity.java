@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTabHost;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -81,6 +83,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
     private SelectCityAdapter mSelectCityAdapter;
+    private long firstTime = 0;//第一点击返回键
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -528,5 +531,21 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
         mShoppingCartNumTextView.setText(calcDishSize() + "");
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > 2000) {//如果两次按键时间间隔大于2秒，则不退出
+                PopupUtils.showToast("再按一次退出应用");//再按一次退出应用
+                firstTime = secondTime;//更新firstTime
+                return true;
+            } else {
+                BaseApplication.getInstance().exitApp();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
