@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/announcement_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/announcement"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="公告"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_15"
+        />
+
+    <TextView
+        android:id="@+id/announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_15"
+        />
+
+    <ImageButton
+        android:id="@+id/announcement_cancel_image_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/announcement"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="240dp"
+        android:background="@drawable/chef_head_anim_dismiss"/>
+</RelativeLayout>

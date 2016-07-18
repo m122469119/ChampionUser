@@ -54,7 +54,7 @@
         <!--首页-->
         <activity
             android:name=".activity.LikingHomeActivity"
-           android:launchMode="singleTask"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <!--团体课程详情-->
@@ -199,6 +199,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <!-- 高德地图注册信息-->
+        <!--测试key:d599392f8c7be8820ac37204819a453b  正式key :0cfa755090bd4282a06a7db550ab7cf3-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="d599392f8c7be8820ac37204819a453b"/>

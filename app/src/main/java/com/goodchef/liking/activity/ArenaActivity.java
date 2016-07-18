@@ -2,12 +2,14 @@ package com.goodchef.liking.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
+import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.GymDetailsResult;
@@ -24,7 +26,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/15 下午1:54
  */
-public class ArenaActivity extends AppBarActivity implements GymDetailsView {
+public class ArenaActivity extends AppBarActivity implements GymDetailsView, View.OnClickListener {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
@@ -34,6 +36,8 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     private TextView mPublicNoticeTextView;
     private String gymId;
     private GymDetailsPresenter mGymDetailsPresenter;
+    private RelativeLayout mAnnouncementLayout;
+    private String announcement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,8 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
         mIconPageIndicator = (IconPageIndicator) findViewById(R.id.arena_indicator);
         mAddressTextView = (TextView) findViewById(R.id.arena_address);
         mPublicNoticeTextView = (TextView) findViewById(R.id.public_notice);
+        mAnnouncementLayout = (RelativeLayout) findViewById(R.id.layout_area_announcement);
+        mAnnouncementLayout.setOnClickListener(this);
     }
 
 
@@ -95,7 +101,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     public void updateGymDetailsView(GymDetailsResult.GymDetailsData gymDetailsData) {
         setTitle(gymDetailsData.getName());
         mAddressTextView.setText("地点：" + gymDetailsData.getAddress());
-        String announcement = gymDetailsData.getAnnouncement();
+        announcement = gymDetailsData.getAnnouncement();
         if (!StringUtils.isEmpty(announcement)) {
             mPublicNoticeTextView.setVisibility(View.VISIBLE);
             mPublicNoticeTextView.setText("公告：" + gymDetailsData.getAnnouncement());
@@ -130,4 +136,20 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
         mImageViewPager.startAutoScroll();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == mAnnouncementLayout) {
+            final AnnouncementDialog dialog = new AnnouncementDialog(this, announcement);
+            dialog.setViewOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.announcement_cancel_image_button:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            });
+        }
+    }
 }

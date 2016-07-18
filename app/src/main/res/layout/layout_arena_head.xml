@@ -17,14 +17,35 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:id="@+id/public_notice"
+    <RelativeLayout
+        android:id="@+id/layout_area_announcement"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lesson_details_layer"
-        android:ellipsize="marquee"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_mirco"/>
+        android:layout_height="40dp"
+        android:background="@color/lesson_details_layer">
+
+        <ImageView
+            android:id="@+id/area_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:src="@drawable/app_bar_back_white"/>
+
+        <TextView
+            android:id="@+id/public_notice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/area_arrow"
+            android:ellipsize="marquee"
+            android:gravity="center|left"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_small"/>
+    </RelativeLayout>
+
+
 </RelativeLayout>
