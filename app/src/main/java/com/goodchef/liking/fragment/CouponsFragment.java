@@ -308,9 +308,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                     mRightLayout.setBackgroundResource(R.drawable.coupons_right_green_background);
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("买卡专用满" + minAmount + "可用");
+                        mTypeTextView.setText("购卡专用满" + minAmount + "可用");
                     } else {
-                        mTypeTextView.setText("买卡专用,无门槛使用");
+                        mTypeTextView.setText("购卡专用,无门槛使用");
                     }
                 }
             }
@@ -340,9 +340,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                     }
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("买卡专用满" + minAmount + "可用");
+                        mTypeTextView.setText("购卡专用满" + minAmount + "可用");
                     } else {
-                        mTypeTextView.setText("买卡专用,无门槛使用");
+                        mTypeTextView.setText("购卡专用,无门槛使用");
                     }
                 }
             }
@@ -373,9 +373,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("买卡专用满" + minAmount + "可用");
+                        mTypeTextView.setText("购卡专用满" + minAmount + "可用");
                     } else {
-                        mTypeTextView.setText("买卡专用,无门槛使用");
+                        mTypeTextView.setText("购卡专用,无门槛使用");
                     }
                 }
             }

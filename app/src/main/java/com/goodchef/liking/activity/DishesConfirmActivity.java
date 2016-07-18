@@ -259,7 +259,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     @Override
     public void updateNutritionMealConfirmView(NutritionMealConfirmResult.NutritionMealConfirmData confirmData) {
         NutritionMealConfirmResult.NutritionMealConfirmData.Store store = confirmData.getStore();
-        mMealsAddressTextView.setText(store.getAddress() + " " + store.getName());
+        mMealsAddressTextView.setText(store.getAddress() + "  " + store.getName());
         totalAmount = confirmData.getTotalAmount();
         List<String> list = confirmData.getSelectDate();
         mealTimeList = new ArrayList<>();
