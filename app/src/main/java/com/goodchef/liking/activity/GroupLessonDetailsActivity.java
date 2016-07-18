@@ -157,11 +157,18 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                     mImmediatelySubmitBtn.setText(R.string.appointment_fill);
                     mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
                     mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+                    mImmediatelySubmitBtn.setEnabled(false);
                 } else {
                     mImmediatelySubmitBtn.setText(R.string.immadetails_appointment);
                     mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                     mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+                    mImmediatelySubmitBtn.setEnabled(true);
                 }
+            } else {
+                mImmediatelySubmitBtn.setText(R.string.immadetails_appointment);
+                mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
+                mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+                mImmediatelySubmitBtn.setEnabled(true);
             }
         } else if (mCoursesState == COURSES_STATE_NOT_START) {//未开始
             mCoursesStateLayout.setVisibility(View.VISIBLE);
