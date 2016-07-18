@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView android:id="@+id/meal_time_listView"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="match_parent"
-          android:layout_height="180dp"
-          android:divider="@color/transparent"
-          android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:orientation="vertical">
 
-</ListView>
+
+    <ListView
+        android:id="@+id/meal_time_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/transparent"/>
+
+</LinearLayout>

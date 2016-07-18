@@ -503,25 +503,30 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public void onEvent(DishesWechatPayMessage wechatMessage) {
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
     public void onEvent(DishesAliPayMessage dishesAliPayMessage) {
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
     public void onEvent(DishesPayFalse dishesWechatPayFalse) {
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
     public void onEvent(FreePayMessage message) {
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
     public void onEvent(ClearCartMessage message) {
         buyList.clear();
         postEvent(new RefreshChangeDataMessage(buyList, true));
+        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 }

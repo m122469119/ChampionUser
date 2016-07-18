@@ -154,7 +154,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     /**
      * 设置默认支付方式
      */
-    private void setPayDefultType(){
+    private void setPayDefultType() {
         mAlipayCheckBox.setChecked(true);
         mWechatCheckBox.setChecked(false);
         payType = "1";
@@ -266,9 +266,15 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             for (int i = 0; i < list.size(); i++) {
                 MealTimeData mealTimeData = new MealTimeData();
                 mealTimeData.setMealTime(list.get(i));
-                mealTimeData.setSelect(false);
+                if (i == 0) {
+                    mealTimeData.setSelect(true);
+                } else {
+                    mealTimeData.setSelect(false);
+                }
                 mealTimeList.add(mealTimeData);
             }
+            mSelectMealtime = mealTimeList.get(0).getMealTime();
+            mGetMealsTimeTextView.setText(mSelectMealtime);
         }
         gymId = confirmData.getStore().getGymId();
     }
@@ -374,10 +380,10 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         double minAmount = Double.parseDouble(minAmountStr);
         if (coursesPrice > minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
             mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
-            if (coursesPrice > couponAmount) {
+            if (coursesPrice >= couponAmount) {
                 //订单的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
-                if (amount > 0) {
+                if (amount >= 0) {
                     mDishesCouponMoney.setText("已优惠" + mCoupon.getAmount());
                     mDishesMoneyextView.setText("¥ " + amount);
                 }
@@ -388,7 +394,6 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         } else {//优惠券不可用
             mDishesCouponMoney.setText("");
             mCouponTitleTextView.setText("");
-            PopupUtils.showToast("该优惠券未达使用范围请重新选择");
         }
     }
 
@@ -410,6 +415,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         @Override
         public void onFailure(String errorMessage) {
             postEvent(new DishesPayFalse());
+            jumpIntentDishesOrderList();
         }
 
         @Override
@@ -442,16 +448,17 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     }
 
     public void onEvent(DishesWechatPayMessage wechatMessage) {
-        if (wechatMessage.isBuySuccess()){
+        if (wechatMessage.isBuySuccess()) {
             jumpIntentDishesOrderList();
-        }else {
+        } else {
             postEvent(new DishesPayFalse());
+            jumpIntentDishesOrderList();
         }
     }
 
     private void jumpIntentDishesOrderList() {
         Intent intent = new Intent(this, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX,0);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 0);
         startActivity(intent);
         this.finish();
     }

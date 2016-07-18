@@ -258,11 +258,11 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
         if (coursesPrice > minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
-            if (coursesPrice > couponAmount) {
+            if (coursesPrice >= couponAmount) {
                 mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
                 //课程的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
-                if (amount > 0) {
+                if (amount >= 0) {
                     mCoursesMoneyTextView.setText("¥ " + amount);
                 }
             } else {//课程的面额小于优惠券的面额
@@ -270,7 +270,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             }
         } else {//优惠券不可用
             mCouponTitleTextView.setText("");
-            PopupUtils.showToast("该优惠券未达使用范围请重新选择");
         }
     }
 
