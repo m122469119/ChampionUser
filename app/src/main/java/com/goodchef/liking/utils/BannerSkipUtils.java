@@ -15,8 +15,8 @@ import com.goodchef.liking.http.result.BannerResult;
  */
 public class BannerSkipUtils {
 
-    public static final String SKIP_TYPE_H5 = "0";
-    public static final String SKIP_TYPE_NATIVE = "1";
+    public static final String SKIP_TYPE_H5 = "1";
+    public static final String SKIP_TYPE_NATIVE = "0";
     public static final String SKIP_TYPE_NOTING = "2";
 
     public static void skip(Context context, BannerResult.BannerData.Banner banner) {
@@ -29,7 +29,7 @@ public class BannerSkipUtils {
         }
         switch (type) {
             case SKIP_TYPE_H5: //跳转H5
-                HDefaultWebActivity.launch(context, banner.getLoadUrl(), "");
+                HDefaultWebActivity.launch(context, banner.getLoadUrl(), banner.getTitle());
                 break;
             case SKIP_TYPE_NATIVE: //跳转Native界面
                 break;
