@@ -17,10 +17,8 @@ public class DiskStorageManager {
     private String mAppStoragePath; //应用目录
     private String mImageStoragePath; //图片缓存目录
     private String mFileStoragePath;//file的文件总目录
-    private String mPatchStoragePath;//补丁下载目录
     private static final String PATH_STORAGE_IMAGE_CACHE = "/image/";
     private static final String PATH_STORAGE_FILE = "/file/";
-    private static final String PATH_STORAGE_PATCH = "/file/patch/";
 
     /**
      * 使用静态内部类来生成DiskStorageManager单例,由jvm来保证线程的安全性
@@ -45,11 +43,9 @@ public class DiskStorageManager {
         mAppStoragePath = getDeviceRootPath() + File.separator + folderName;
         mImageStoragePath = mAppStoragePath + PATH_STORAGE_IMAGE_CACHE;
         mFileStoragePath = mAppStoragePath + PATH_STORAGE_FILE;
-        mPatchStoragePath = mAppStoragePath + PATH_STORAGE_PATCH;
         createAppFolder(mAppStoragePath);
         createAppFolder(mImageStoragePath);
         createAppFolder(mFileStoragePath);
-        createAppFolder(mPatchStoragePath);
     }
 
     /**
@@ -74,14 +70,6 @@ public class DiskStorageManager {
         return mFileStoragePath;
     }
 
-    /**
-     * 获取补丁下载目录
-     *
-     * @return
-     */
-    public String getPatchPath() {
-        return mPatchStoragePath;
-    }
 
     /**
      * 创建目录

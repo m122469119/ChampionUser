@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import com.aaron.android.codelibrary.utils.FileUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.goodchef.liking.http.result.data.PatchData;
@@ -22,12 +23,18 @@ import java.net.URL;
 public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
     private static final String TAG = "PatchDowner";
     private Context context;
-    private String patchDir;
+    private String patchDirPath;
     String patchName = "";
 
     public PatchDowner(Context context) {
         this.context = context;
-        patchDir = DiskStorageManager.getInstance().getPatchPath();
+        patchDirPath = DiskStorageManager.getInstance().getFilePath() + "patch/" ;
+        File patchDir = FileUtils.createFolder(patchDirPath);
+        if (patchDir == null) {
+            LogUtils.e(TAG, "patchDir create fail");
+        } else {
+            LogUtils.e(TAG, "patchDir create success");
+        }
     }
 
     @Override
@@ -35,7 +42,7 @@ public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
         String urlS = params[0].getPatchUrl();
         if (!TextUtils.isEmpty(urlS)) {
             patchName = urlS.substring(urlS.lastIndexOf("/"));
-            File patchFile = new File(patchDir, patchName);
+            File patchFile = new File(patchDirPath, patchName);
             if (patchFile.exists()) {
                 LogUtils.i(TAG, "补丁存在");
                 params[0].setPatchFile(patchFile.getAbsolutePath());
