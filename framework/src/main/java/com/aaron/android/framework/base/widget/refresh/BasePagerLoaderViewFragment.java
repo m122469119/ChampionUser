@@ -19,6 +19,7 @@ import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 
 /**
@@ -31,7 +32,6 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> e
     private FrameLayout mRootView;
     private T mRefreshView;
     private StateView mStateView;
-    private TextView failRefreshText;
     private PullMode mPullMode = PullMode.PULL_DOWN;
     private boolean mIsLoading = false;
     private Pager mPager = new Pager();
@@ -61,7 +61,7 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> e
 
     private void initStatView() {
         mStateView = (StateView) mRootView.findViewById(R.id.state_view);
-        failRefreshText = (TextView) mRootView.findViewById(R.id.text_view_fail_refresh);
+        TextView failRefreshText = (TextView) mRootView.findViewById(R.id.text_view_fail_refresh);
         failRefreshText.setOnClickListener(mRefreshClickListener);
     }
 
@@ -75,10 +75,6 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> e
 
     public StateView getStateView() {
         return mStateView;
-    }
-
-    public TextView getFailRefreshText() {
-        return failRefreshText;
     }
 
     protected void setOverlayView(View view) {
@@ -156,6 +152,8 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> e
             LogUtils.i(TAG, "Page Loader error, network is not available!");
             if (page == mPager.getStart()) {
                 mStateView.setState(StateView.State.FAILED);
+            } else {
+                PopupUtils.showToast(R.string.network_no_connection);
             }
             requestFinished();
             return;
@@ -253,15 +251,8 @@ public abstract class BasePagerLoaderViewFragment<T extends PullToRefreshBase> e
      * 请求下一页数据
      */
     protected void loadNextPage() {
-        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            LogUtils.i(TAG, "Page Loader error, network is not available!");
-            mStateView.setState(StateView.State.FAILED);
-            requestFinished();
-            return;
-        }else {
-            if (mPager.hasNext()) {
-                loadPageData(mPager.next());
-            }
+        if (mPager.hasNext()) {
+            loadPageData(mPager.next());
         }
     }
 
