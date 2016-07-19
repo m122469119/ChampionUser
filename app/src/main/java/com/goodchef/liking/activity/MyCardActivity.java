@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
@@ -19,6 +20,7 @@ import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.mvp.presenter.MyCardPresenter;
 import com.goodchef.liking.mvp.view.MyCardView;
 import com.goodchef.liking.utils.ListViewUtil;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     private LinearLayout mBottomLayout;
     private ScrollView mRootScrollView;
     private RelativeLayout mNoCardLayout;
+    private LikingStateView mStateView;
 
     private TextView mPromotionCardBtn;//升级卡
     private TextView mFlowCardBtn;//续卡
@@ -49,10 +52,12 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         setTitle(getString(R.string.title_my_card));
         initView();
         setViewOnClickListener();
+        mMyCardPresenter = new MyCardPresenter(this, this);
         initData();
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.my_card_state_view);
         mCardNumberTextView = (TextView) findViewById(R.id.card_number);
         mBuyCardTimeTextView = (TextView) findViewById(R.id.buy_card_time);
         mPeriodOfValidityTextView = (TextView) findViewById(R.id.period_of_validity);
@@ -62,6 +67,13 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         mFlowCardBtn = (TextView) findViewById(R.id.my_card_flow_card);
         mRootScrollView = (ScrollView) findViewById(R.id.layout_my_card_root_view);
         mNoCardLayout = (RelativeLayout) findViewById(R.id.layout_no_card);
+
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                initData();
+            }
+        });
     }
 
     private void setViewOnClickListener() {
@@ -70,7 +82,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     }
 
     private void initData() {
-        mMyCardPresenter = new MyCardPresenter(this, this);
+        mStateView.setState(StateView.State.LOADING);
         mMyCardPresenter.sendMyCardRequest();
     }
 
@@ -91,29 +103,37 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     @Override
     public void updateMyCardView(MyCardResult.MyCardData myCardData) {
-        int hasCard = myCardData.getHasCard();
-        if (hasCard == 1) {//有卡
-            mNoCardLayout.setVisibility(View.GONE);
-            mRootScrollView.setVisibility(View.VISIBLE);
-            mBottomLayout.setVisibility(View.VISIBLE);
-            MyCardResult.MyCardData.MyCard myCard = myCardData.getMyCard();
-            if (myCard != null && !StringUtils.isEmpty(myCard.getCardNo()) && !StringUtils.isEmpty(myCard.getBuyTime())) {
-                mCardNumberTextView.setText(myCard.getCardNo());
-                mBuyCardTimeTextView.setText(myCard.getBuyTime());
-                mPeriodOfValidityTextView.setText(myCard.getBuyTime() + " ~ " + myCard.getEndTime());
-                List<TimeLimitData> limitDataList = myCard.getTimeLimit();
-                if (limitDataList != null && limitDataList.size() > 0) {
-                    CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);
-                    adapter.setData(limitDataList);
-                    mListView.setAdapter(adapter);
-                    ListViewUtil.setListViewHeightBasedOnChildren(mListView);
+        if (myCardData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            int hasCard = myCardData.getHasCard();
+            if (hasCard == 1) {//有卡
+                mNoCardLayout.setVisibility(View.GONE);
+                mRootScrollView.setVisibility(View.VISIBLE);
+                mBottomLayout.setVisibility(View.VISIBLE);
+                MyCardResult.MyCardData.MyCard myCard = myCardData.getMyCard();
+                if (myCard != null && !StringUtils.isEmpty(myCard.getCardNo()) && !StringUtils.isEmpty(myCard.getBuyTime())) {
+                    mCardNumberTextView.setText(myCard.getCardNo());
+                    mBuyCardTimeTextView.setText(myCard.getBuyTime());
+                    mPeriodOfValidityTextView.setText(myCard.getBuyTime() + " ~ " + myCard.getEndTime());
+                    List<TimeLimitData> limitDataList = myCard.getTimeLimit();
+                    if (limitDataList != null && limitDataList.size() > 0) {
+                        CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);
+                        adapter.setData(limitDataList);
+                        mListView.setAdapter(adapter);
+                        ListViewUtil.setListViewHeightBasedOnChildren(mListView);
+                    }
                 }
+            } else {//没卡
+                mNoCardLayout.setVisibility(View.VISIBLE);
+                mBottomLayout.setVisibility(View.GONE);
+                mRootScrollView.setVisibility(View.GONE);
             }
-        } else {//没卡
-            mNoCardLayout.setVisibility(View.VISIBLE);
-            mBottomLayout.setVisibility(View.GONE);
-            mRootScrollView.setVisibility(View.GONE);
         }
 
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
 }
