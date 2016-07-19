@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyCardResult;
 
 /**
@@ -8,6 +8,6 @@ import com.goodchef.liking.http.result.MyCardResult;
  * Author shaozucheng
  * Time:16/7/1 下午4:40
  */
-public interface MyCardView extends BaseView {
+public interface MyCardView extends BaseNetworkLoadView {
     void updateMyCardView(MyCardResult.MyCardData myCardData);
 }
