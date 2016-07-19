@@ -39,6 +39,7 @@ import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
+import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
@@ -196,6 +197,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setText("查看场馆");
                     mRightImageView.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
+                    postEvent(new OnCLickBuyCardFragmentMessage());
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
