@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView android:id="@+id/continue_card_view"
+                                    xmlns:android="http://schemas.android.com/apk/res/android"
                                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                     android:layout_width="match_parent"
                                     android:layout_height="180dp"
-                                    android:orientation="vertical"
-                                    android:layout_marginTop="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="vertical"
                                     card_view:cardCornerRadius="10dp"
-                                    card_view:cardElevation="10dp"
                                     card_view:cardPreventCornerOverlap="true">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,9 +23,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:textStyle="bold"
             android:textColor="@color/buy_card_green_text"
-            android:textSize="13sp"/>
+            android:textSize="13sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/upgrade_card_type"
@@ -47,8 +48,8 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/icon_buy_background"
             android:gravity="center"
-            android:text="购买"
             android:paddingBottom="3dp"
+            android:text="购买"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </RelativeLayout>

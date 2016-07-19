@@ -1,6 +1,8 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.goodchef.liking.http.result.CardResult;
 public class UpgradeContinueCardAdapter extends BaseRecycleViewAdapter<UpgradeContinueCardAdapter.UpgradeContinueCardViewHolder, CardResult.CardData.Card> {
 
     private Context mContext;
+
     public UpgradeContinueCardAdapter(Context context) {
         super(context);
         this.mContext = context;
@@ -39,12 +42,27 @@ public class UpgradeContinueCardAdapter extends BaseRecycleViewAdapter<UpgradeCo
         TextView mCardMoneyTextView;
         TextView mCardTypeTextView;
         TextView mBuyCardBtn;
+        CardView mCardView;
 
         public UpgradeContinueCardViewHolder(View itemView) {
             super(itemView);
             mCardMoneyTextView = (TextView) itemView.findViewById(R.id.upgrade_card_money);
             mCardTypeTextView = (TextView) itemView.findViewById(R.id.upgrade_card_type);
             mBuyCardBtn = (TextView) itemView.findViewById(R.id.upgrade_buy_card_btn);
+            mCardView = (CardView) itemView.findViewById(R.id.continue_card_view);
+            setCardView();
+        }
+
+        private void setCardView() {//设置兼容低版本
+            if (mCardView != null) {
+                if (Build.VERSION.SDK_INT < 21) {
+                    mCardView.setCardElevation(0);
+                    mCardView.setContentPadding(-10, -10, -10, -10);
+                } else {
+                    mCardView.setCardElevation(10);
+                    mCardView.setContentPadding(0, 0, 0, 0);
+                }
+            }
         }
 
         @Override

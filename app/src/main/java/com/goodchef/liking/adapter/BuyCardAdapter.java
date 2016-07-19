@@ -1,6 +1,8 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +47,17 @@ public class BuyCardAdapter extends BaseRecycleViewAdapter<BuyCardAdapter.BuyCar
         TextView mCardMoneyTextView;
         TextView mCardTypeTextView;
         TextView mBuyCardBtn;
+        CardView mCardView;
 
         public BuyCardViewHolder(View itemView) {
             super(itemView);
             mCardMoneyTextView = (TextView) itemView.findViewById(R.id.card_money);
             mCardTypeTextView = (TextView) itemView.findViewById(R.id.card_type);
             mBuyCardBtn = (TextView) itemView.findViewById(R.id.buy_card_btn);
+            mCardView = (CardView) itemView.findViewById(R.id.buy_card_card_view);
+            setCardView();
         }
+
 
         @Override
         public void bindViews(CardResult.CardData.Card object) {
@@ -59,6 +65,18 @@ public class BuyCardAdapter extends BaseRecycleViewAdapter<BuyCardAdapter.BuyCar
             mCardTypeTextView.setText(object.getCategoryName());
             if (mClickListener != null) {
                 mBuyCardBtn.setOnClickListener(mClickListener);
+            }
+        }
+
+        private void setCardView() {//设置兼容低版本
+            if (mCardView != null) {
+                if (Build.VERSION.SDK_INT < 21) {
+                    mCardView.setCardElevation(0);
+                    mCardView.setContentPadding(-10, -10, -10, -10);
+                } else {
+                    mCardView.setCardElevation(10);
+                    mCardView.setContentPadding(0, 0, 0, 0);
+                }
             }
         }
     }

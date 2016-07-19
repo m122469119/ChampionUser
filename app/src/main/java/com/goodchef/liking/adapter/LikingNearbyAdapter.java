@@ -1,6 +1,8 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
         TextView mBuyNumberTextView;//购买的数量
         ImageView mReduceImageView;//减按钮
         ImageView mAddImageView;//加按钮
+        CardView mCardView;
 
         public LikingNearbyViewHolder(View itemView) {
             super(itemView);
@@ -79,6 +82,18 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             mBuyNumberTextView = (TextView) itemView.findViewById(R.id.food_buy_number);
             mReduceImageView = (ImageView) itemView.findViewById(R.id.reduce_image);
             mAddImageView = (ImageView) itemView.findViewById(R.id.add_image);
+            mCardView = (CardView) itemView.findViewById(R.id.nearby_card_view);
+            setCardView();
+        }
+
+        private void setCardView() {//兼容低版本
+            if (mCardView != null) {
+                if (Build.VERSION.SDK_INT < 21) {
+                    mCardView.setCardElevation(0);
+                } else {
+                    mCardView.setCardElevation(10);
+                }
+            }
         }
 
         @Override
@@ -96,9 +111,9 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             }
             mDishesTypeTextView.setText(stringBuffer.toString());
             String allEat = object.getAllEat();
-            if (Integer.parseInt(allEat)>0){
+            if (Integer.parseInt(allEat) > 0) {
                 mBuyPersonTextView.setText(allEat + "人购买过");
-            }else {
+            } else {
                 mBuyPersonTextView.setText("等你首尝");
             }
             String imgUrl = object.getCoverImg();
