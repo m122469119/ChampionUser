@@ -14,6 +14,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
+import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.LocationData;
@@ -136,6 +137,10 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
         if (!StringUtils.isEmpty(cityName)) {
             setHeadNoLocationView(cityName);
         }
+    }
+
+    public void onEvent(OnCLickBuyCardFragmentMessage message){
+        sendBuyCardListRequest();
     }
 
     private void setHeadNoLocationView(String cityName) {

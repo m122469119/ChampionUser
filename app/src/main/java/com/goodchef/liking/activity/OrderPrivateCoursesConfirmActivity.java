@@ -189,6 +189,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                         }
                         mCoursesMoneyTextView.setText("¥ " + coursesItem.getPrice());
                         mPrivateCoursesTrainItemAdapter.notifyDataSetChanged();
+                        mCoupon = null;
                     }
                 }
 
@@ -257,9 +258,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         double coursesPrice = Double.parseDouble(priceStr);
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
-        if (coursesPrice > minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
+        if (coursesPrice >= minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
+            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
             if (coursesPrice >= couponAmount) {
-                mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
                 //课程的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
                 if (amount >= 0) {
