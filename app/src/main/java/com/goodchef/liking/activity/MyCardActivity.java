@@ -114,7 +114,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                 if (myCard != null && !StringUtils.isEmpty(myCard.getCardNo()) && !StringUtils.isEmpty(myCard.getBuyTime())) {
                     mCardNumberTextView.setText(myCard.getCardNo());
                     mBuyCardTimeTextView.setText(myCard.getBuyTime());
-                    mPeriodOfValidityTextView.setText(myCard.getBuyTime() + " ~ " + myCard.getEndTime());
+                    mPeriodOfValidityTextView.setText(myCard.getStartTime() + " ~ " + myCard.getEndTime());
                     List<TimeLimitData> limitDataList = myCard.getTimeLimit();
                     if (limitDataList != null && limitDataList.size() > 0) {
                         CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);

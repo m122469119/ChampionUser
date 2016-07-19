@@ -57,6 +57,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
         setItemClickListener();
     }
 
+
     private void setItemClickListener() {
         mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override

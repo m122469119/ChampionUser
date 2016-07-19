@@ -1,9 +1,12 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -46,6 +50,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
         private TextView mAddressTextView;//地址
         public TextView mDistanceTextView;
         private RelativeLayout mGroupLessonLayout;
+        private CardView mCardView;
 
         public LessonViewHolder(View itemView) {
             super(itemView);
@@ -63,10 +68,29 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
             mAddressTextView = (TextView) itemView.findViewById(R.id.lesson_address);
             mDistanceTextView = (TextView) itemView.findViewById(R.id.lesson_distance);
             mGroupLessonLayout = (RelativeLayout) itemView.findViewById(R.id.layout_group_lesson);
+            mCardView = (CardView) itemView.findViewById(R.id.home_lesson_card_view);
+            setCardView();
+        }
+
+        private void setCardView() {
+            if (mCardView != null && mLessonTypeLayout != null) {
+                if (Build.VERSION.SDK_INT < 21) {
+                    mCardView.setCardElevation(0);
+                    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mLessonTypeLayout.getLayoutParams();
+                    lp.setMargins(DisplayUtils.dp2px(0), DisplayUtils.dp2px(12), DisplayUtils.dp2px(10), DisplayUtils.dp2px(0));
+                    mLessonTypeLayout.setLayoutParams(lp);
+                } else {
+                    mCardView.setCardElevation(10);
+                    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mLessonTypeLayout.getLayoutParams();
+                    lp.setMargins(DisplayUtils.dp2px(0), DisplayUtils.dp2px(12), DisplayUtils.dp2px(8), DisplayUtils.dp2px(0));
+                    mLessonTypeLayout.setLayoutParams(lp);
+                }
+            }
         }
 
         @Override
         public void bindViews(CoursesResult.Courses.CoursesData object) {
+            setCardView();
             if (object == null) {
                 return;
             }
@@ -78,6 +102,8 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 }
             }
             int type = object.getType();
+
+
             if (type == TYPE_GROUP_LESSON) {
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 mLessonTypeTextView.setText("团体课");
