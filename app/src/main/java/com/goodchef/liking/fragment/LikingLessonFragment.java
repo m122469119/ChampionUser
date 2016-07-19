@@ -16,6 +16,7 @@ import com.goodchef.liking.activity.GymCoursesActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
+import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -82,8 +83,9 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         getFailRefreshText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestBanner();
-                getCoursesRequest(1);
+                postEvent(new LikingHomeNoNetWorkMessage());
+//                requestBanner();
+//                getCoursesRequest(1);
             }
         });
     }

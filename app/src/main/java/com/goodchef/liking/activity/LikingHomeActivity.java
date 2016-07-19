@@ -37,6 +37,7 @@ import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
+import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
@@ -533,6 +534,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
+    public void onEvent(LikingHomeNoNetWorkMessage message){
+        initTitleLocation();
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -548,4 +553,5 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }
