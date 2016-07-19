@@ -2,6 +2,7 @@ package com.goodchef.liking.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView myTrainTime;
     private TextView myTrainDistance;
     private TextView myTrainCal;
+    private TextView myTrainTimePrompt;
 
 
     public static final String NULL_STRING = "";
@@ -104,6 +106,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                     if (LiKingVerifyUtils.isValid(getActivity(), result)) {
                         UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
                         if (exerciseData != null) {
+                            Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
+                            myTrainTimePrompt.setVisibility(View.GONE);
+                            myTrainTime.setVisibility(View.VISIBLE);
+                            myTrainTime.setTypeface(typeFace);
+                            myTrainDistance.setTypeface(typeFace);
+                            myTrainCal.setTypeface(typeFace);
                             myTrainTime.setText(exerciseData.getTodayMin());
                             myTrainDistance.setText(exerciseData.getTodayDistance());
                             myTrainCal.setText(exerciseData.getTodayCal());
@@ -116,7 +124,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
                 }
             });
-        }else {
+        } else {
             clearExerciseData();
         }
     }
@@ -125,9 +133,15 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 清除训练数据
      */
     private void clearExerciseData() {
-        myTrainTime.setText("-");
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
+        myTrainDistance.setTypeface(typeFace);
+        myTrainCal.setTypeface(typeFace);
+        myTrainTime.setVisibility(View.GONE);
         myTrainDistance.setText("-");
         myTrainCal.setText("-");
+        myTrainTimePrompt.setVisibility(View.VISIBLE);
+        myTrainTimePrompt.setTypeface(typeFace);
+        myTrainTimePrompt.setText("-");
     }
 
     private void setLogonView() {
@@ -176,6 +190,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
         myTrainDistance = (TextView) view.findViewById(R.id.my_train_distance);
         myTrainCal = (TextView) view.findViewById(R.id.my_train_cal);
+        myTrainTimePrompt = (TextView) view.findViewById(R.id.my_train_time_prompt);
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
@@ -237,7 +252,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             } else {
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
-                intent.putExtra(LoginActivity.KEY_INTENT_TYPE,2);
+                intent.putExtra(LoginActivity.KEY_INTENT_TYPE, 2);
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程

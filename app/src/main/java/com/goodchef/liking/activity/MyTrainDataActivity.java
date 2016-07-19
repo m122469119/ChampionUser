@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -67,6 +68,15 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseV
     public void updateUserExerciseView(UserExerciseResult.ExerciseData exerciseData) {
         if (exerciseData != null) {
             mStateView.setState(StateView.State.SUCCESS);
+            Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/Impact.ttf");
+            mTrainTime.setTypeface(typeFace);
+            mTrainDistance.setTypeface(typeFace);
+            mTrainCal.setTypeface(typeFace);
+            mTrainCountAll.setTypeface(typeFace);
+            mTrainDistanceALL.setTypeface(typeFace);
+            mTrainCalALl.setTypeface(typeFace);
+            mTrainTimeAll.setTypeface(typeFace);
+
             mTrainTime.setText(exerciseData.getTodayMin());
             mTrainDistance.setText(exerciseData.getTodayDistance());
             mTrainCal.setText(exerciseData.getTodayCal());
