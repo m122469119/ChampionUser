@@ -142,5 +142,12 @@
     <string name="title_my_card_details">会员卡详情</string>
     <string name="vip_agreement">《平台会员协议》</string>
     <string name="appointment_fill">预约已满</string>
+    <string name="guide_intellect_exercise">智能健身房</string>
+    <string name="guide_intellect_explain">让健身这件事从此变得智能化</string>
+    <string name="guide_private_teacher">专属私教</string>
+    <string name="guide_private_teacher_explain">线上预定你的专属教练</string>
+    <string name="guide_data">健身数据</string>
+    <string name="guide_data_explain">一个APP连接店内所有智能设备</string>
+    <string name="guide_to_main_btn">开启智能之旅</string>
 
 </resources>

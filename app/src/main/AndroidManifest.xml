@@ -57,6 +57,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
+        <!--引导页-->
+        <activity
+            android:name=".activity.GuideActivity"
+            android:screenOrientation="portrait"/>
+
         <!--团体课程详情-->
         <activity
             android:name=".activity.GroupLessonDetailsActivity"
