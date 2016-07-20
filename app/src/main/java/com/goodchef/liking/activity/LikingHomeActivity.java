@@ -46,6 +46,7 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.fragment.NutrimealFragment;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
@@ -87,7 +88,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private String selectCityName = "";
     private boolean isLocation = false;
 
-    private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
+   // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
     private SelectCityAdapter mSelectCityAdapter;
@@ -128,7 +129,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_MAIN_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_lesson), R.drawable.xml_tab_liking_home_lesson))
                 , LikingLessonFragment.class, null);
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_NEARBY_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_nearby), R.drawable.xml_tab_liking_home_nearby))
-                , mLikingNearbyFragment.getClass(), null);
+                , NutrimealFragment.class, null);
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_RECHARGE_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_recharge), R.drawable.xml_tab_liking_home_recharge))//setIndicator 设置标签样式
                 , LikingBuyCardFragment.class, null); //setContent 点击标签后触发
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_MY_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_my), R.drawable.xml_tab_liking_home_me))//setIndicator 设置标签样式
@@ -184,14 +185,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mMiddleImageView.setVisibility(View.GONE);
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_nearby);
-                    mRightImageView.setVisibility(View.VISIBLE);
-                    mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
-                    if (calcDishSize() > 0) {
-                        mShoppingCartNumTextView.setVisibility(View.VISIBLE);
-                        mShoppingCartNumTextView.setText(calcDishSize() + "");
-                    } else {
-                        mShoppingCartNumTextView.setVisibility(View.GONE);
-                    }
+                    mRightImageView.setVisibility(View.GONE);
+                  //  mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
+//                    if (calcDishSize() > 0) {
+//                        mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+//                        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//                    } else {
+//                        mShoppingCartNumTextView.setVisibility(View.GONE);
+//                    }
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
