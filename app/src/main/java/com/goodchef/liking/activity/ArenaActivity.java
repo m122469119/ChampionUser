@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:查看场馆
+ * 说明:查看门店
  * Author shaozucheng
  * Time:16/6/15 下午1:54
  */

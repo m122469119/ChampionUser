@@ -46,20 +46,19 @@ public class LoadingActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                if (Preference.isNewVersion()) {
-//                    jumpToGuideActivity();
-//                } else {
-//                    jumpToMainActivity();
-//                }
-                jumpToMainActivity();
+                if (Preference.isNewVersion()) {
+                    jumpToGuideActivity();
+                } else {
+                    jumpToMainActivity();
+                }
             }
         }, DURATION);
     }
 
     private void jumpToGuideActivity() {
-//        Intent guideIntent = new Intent(this, GuideActivity.class);
-//        startActivity(guideIntent);
-//        finish();
+        Intent guideIntent = new Intent(this, GuideActivity.class);
+        startActivity(guideIntent);
+        finish();
     }
 
     private void jumpToMainActivity() {
@@ -111,7 +110,7 @@ public class LoadingActivity extends BaseActivity {
                                     //需要加载当前补丁
                                     patchData.setPatchFile(previousPatchData.getPatchFile());
                                     loadPatch(patchData);
-                                }else {
+                                } else {
                                     loadPatch(previousPatchData);//先加载老补丁
                                     downPatch(patchData);//下载新的补丁，下次重启app才能加载新补丁
                                 }
