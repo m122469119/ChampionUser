@@ -33,6 +33,13 @@ public class GymDetailsResult extends BaseResult {
         @SerializedName("imgs")
         private List<ImgsData> imgs;
 
+        @SerializedName("is_wifi")
+        private int isWifi;
+        @SerializedName("is_wash")
+        private int isWash;
+        @SerializedName("is_day")
+        private int isDay;
+
         public String getName() {
             return name;
         }
@@ -63,6 +70,30 @@ public class GymDetailsResult extends BaseResult {
 
         public void setImgs(List<ImgsData> imgs) {
             this.imgs = imgs;
+        }
+
+        public int getIsWifi() {
+            return isWifi;
+        }
+
+        public void setIsWifi(int isWifi) {
+            this.isWifi = isWifi;
+        }
+
+        public int getIsWash() {
+            return isWash;
+        }
+
+        public void setIsWash(int isWash) {
+            this.isWash = isWash;
+        }
+
+        public int getIsDay() {
+            return isDay;
+        }
+
+        public void setIsDay(int isDay) {
+            this.isDay = isDay;
         }
 
         public static class ImgsData {
