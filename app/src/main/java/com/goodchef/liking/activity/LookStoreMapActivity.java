@@ -13,12 +13,14 @@ import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
@@ -31,10 +33,8 @@ import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
-import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
 import com.goodchef.liking.mvp.view.CheckGymView;
-import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
@@ -65,10 +65,13 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     //添加的覆盖物标志
     private Marker currentMarker;
 
-
     private CheckGymPresenter mCheckGymPresenter;
     private int cityId;
     private List<CheckGymListResult.CheckGymData.CheckGym> allGymList;
+
+    private String selectCityName;
+    private String selectCityId;
+    private boolean isLoaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +81,25 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         initMap();
         initData();
         mMapView.onCreate(savedInstanceState);
-        setTitle("上海市");
     }
 
     private void initData() {
+        selectCityName = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY);
+        selectCityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
+        isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_START_LOCATION, false);
+        setTitle(selectCityName);
         mCheckGymPresenter = new CheckGymPresenter(this, this);
+        if (isLoaction) {
+            startLocation();
+        } else {
+            mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), 0, 0);
+        }
     }
 
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.look_store_state_view);
         mMapView = (MapView) findViewById(R.id.store_map);
         mNoDataLayout = (LinearLayout) findViewById(R.id.layout_no_data);
-
 
         mNameTextView = (TextView) findViewById(R.id.map_store_name);
         mAddressTextView = (TextView) findViewById(R.id.store_address);
@@ -104,6 +114,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
             }
         });
     }
+
 
     private void initMap() {
         //初始化定位
@@ -128,7 +139,12 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         myLocationStyle.strokeWidth(2);
         // 将自定义的 myLocationStyle 对象添加到地图上
         mAMap.setMyLocationStyle(myLocationStyle);
+        mAMap.setOnMarkerClickListener(this);
 
+    }
+
+
+    private void startLocation() {
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
@@ -145,11 +161,9 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
 //        mLocationOption.setInterval(5000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
+
         //开启定位
         mLocationClient.startLocation();
-        mAMap.setOnMarkerClickListener(this);
-
-
     }
 
     /**
@@ -244,35 +258,23 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-                String currentCityName = aMapLocation.getCity();
-                if (!StringUtils.isEmpty(currentCityName)) {
-                    mNoDataLayout.setVisibility(View.GONE);
-                    mGymLayout.setVisibility(View.VISIBLE);
-                    setTitle(currentCityName);
-                    boolean isCityExit = false;
-                    List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
-                    if (cityDataList != null && cityDataList.size() > 0) {
-                        for (CityData cityData : cityDataList) {
-                            if (cityData.getCityName().contains(currentCityName)) {
-                                isCityExit = true;
-                                cityId = cityData.getCityId();
-                                break;
-                            }
-                        }
-                        if (isCityExit) {
-                            mCheckGymPresenter.getGymList(cityId, aMapLocation.getLongitude(), aMapLocation.getLatitude());
-                        }
-                    }
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    mStateView.setState(StateView.State.FAILED);
                 } else {
-                    mGymLayout.setVisibility(View.GONE);
-                    mNoDataLayout.setVisibility(View.VISIBLE);
+                    mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), aMapLocation.getLongitude(), aMapLocation.getLatitude());
                 }
             } else {
-                mStateView.setState(StateView.State.FAILED);
+                setMapLocationView();
             }
         } else {
-            mStateView.setState(StateView.State.FAILED);
+            setMapLocationView();
         }
+    }
+
+    private void setMapLocationView() {
+        mStateView.setState(StateView.State.SUCCESS);
+        mGymLayout.setVisibility(View.GONE);
+        mNoDataLayout.setVisibility(View.GONE);
     }
 
 
@@ -317,17 +319,16 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     }
 
 
-
     @Override
     public void onMapClick(LatLng latLng) {
     }
 
     @Override
     public void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData) {
+        mStateView.setState(StateView.State.SUCCESS);
         allGymList = checkGymData.getAllGymList();
         if (allGymList != null) {
             if (allGymList.size() > 0) {
-                mStateView.setState(StateView.State.SUCCESS);
                 mNoDataLayout.setVisibility(View.GONE);
                 mGymLayout.setVisibility(View.VISIBLE);
                 for (int i = 0; i < allGymList.size(); i++) {
@@ -338,17 +339,25 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                     }
                 }
                 setMapMarkView();
+                if (!isLoaction) {//如果没有开启定位重新设置中心点
+                    //因为没有定位，所以设置获取到的数据中第一个数据为该城市的中心点
+                    LatLng latLng = new LatLng(allGymList.get(0).getLatitude(), allGymList.get(0).getLongitude());
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.changeLatLng(latLng);
+                    mAMap.moveCamera(cameraUpdate);
+                }
                 showGymView(allGymList.get(0));
             } else {
                 mGymLayout.setVisibility(View.GONE);
                 mNoDataLayout.setVisibility(View.VISIBLE);
             }
         } else {
-            mStateView.setState(StateView.State.NO_DATA);
+            mGymLayout.setVisibility(View.GONE);
+            mNoDataLayout.setVisibility(View.VISIBLE);
         }
     }
 
 
+    //设置所有门店覆盖物
     private void setMapMarkView() {
         for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
             setMapMark(gym);

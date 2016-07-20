@@ -66,6 +66,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public static final int INTENT_REQUEST_CODE_SHOP_CART = 200;
     private static final int INTENT_REQUEST_CODE_DISHES_DETIALS = 201;
+    public static final String KEY_SELECT_CITY = "key_select_city";
+    public static final String KEY_SELECT_CITY_ID = "key_select_city_id";
+    public static final String KEY_START_LOCATION = "key_start_location";
 
     private TextView mLikingLeftTitleTextView;
     private TextView mLikingMiddleTitleTextTextView;
@@ -80,6 +83,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private AmapGDLocation mAmapGDLocation;
 
     private String currentCityName = "";
+    private String selectCityId;
+    private String selectCityName = "";
+    private boolean isLocation = false;
 
     private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     private ArrayList<Food> buyList = new ArrayList<>();
@@ -224,6 +230,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         } else if (v == mLikingRightTitleTextView) {
             if (tag.equals(TAG_RECHARGE_TAB)) {
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
+                intent.putExtra(KEY_SELECT_CITY, selectCityName);
                 startActivity(intent);
             }
         } else if (v == mRightImageView) {
@@ -271,7 +278,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         builder.setPositiveButton("查看场馆", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
+                    isLocation = true;
+                } else {
+                    isLocation = false;
+                }
                 Intent intent = new Intent(LikingHomeActivity.this, LookStoreMapActivity.class);
+                intent.putExtra(KEY_SELECT_CITY, selectCityName);
+                intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
+                intent.putExtra(KEY_START_LOCATION, isLocation);
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -289,7 +304,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
         if (cityDataList != null && cityDataList.size() > 0) {
             for (CityData cityData : cityDataList) {
-                if (cityData.getCityName().contains(currentCityName)) {
+                if (cityData.getCityName().contains(selectCityName)) {
                     cityData.setSelct(true);
                 } else {
                     cityData.setSelct(false);
@@ -311,8 +326,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                                 }
                             }
                             mSelectCityAdapter.notifyDataSetChanged();
-                            mLikingLeftTitleTextView.setText(cityData.getCityName());
-                            //重新发送请求
+                            selectCityName = cityData.getCityName();
+                            selectCityId = cityData.getCityId() + "";
+                            mLikingLeftTitleTextView.setText(selectCityName);
+                            //发送消息更新首页数据
+                            postEvent(new MainAddressChanged(0, 0, cityData.getCityId() + "", "0", selectCityName, true));
                             builder.create().dismiss();
                         }
                     }
@@ -339,6 +357,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLeftImageView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText(currentCityName);
+                    selectCityName = currentCityName;//默认设置当前定位为选中城市
+                    selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName);
                 } else {//定位失败
@@ -536,7 +556,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
-    public void onEvent(LikingHomeNoNetWorkMessage message){
+    public void onEvent(LikingHomeNoNetWorkMessage message) {
         initTitleLocation();
     }
 
