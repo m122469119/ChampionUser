@@ -83,18 +83,6 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mMapView.onCreate(savedInstanceState);
     }
 
-    private void initData() {
-        selectCityName = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY);
-        selectCityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
-        isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_START_LOCATION, false);
-        setTitle(selectCityName);
-        mCheckGymPresenter = new CheckGymPresenter(this, this);
-        if (isLoaction) {
-            startLocation();
-        } else {
-            mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), 0, 0);
-        }
-    }
 
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.look_store_state_view);
@@ -111,8 +99,34 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
             @Override
             public void onRetryRequested() {
                 initMap();
+                setNetWorkView();
             }
         });
+    }
+
+    private void initData() {
+        selectCityName = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY);
+        selectCityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
+        isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_START_LOCATION, false);
+        setTitle(selectCityName);
+        mCheckGymPresenter = new CheckGymPresenter(this, this);
+        setNetWorkView();
+    }
+
+    private void setNetWorkView(){
+        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+            mStateView.setState(StateView.State.FAILED);
+        } else {
+            initMapData();
+        }
+    }
+
+    private void initMapData() {
+        if (isLoaction) {
+            startLocation();
+        } else {
+            mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), 0, 0);
+        }
     }
 
 
