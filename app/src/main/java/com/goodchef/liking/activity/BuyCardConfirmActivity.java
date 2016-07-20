@@ -199,7 +199,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
-
         } else if (v == mAgreeProtocolTextView) {
             BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
             if (baseConfigData != null) {
@@ -248,7 +247,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             if (price >= couponAmount) {
                 //订单的价格大于优惠券的面额
                 double amount = price - couponAmount;
-                if (amount >= 0 ) {
+                if (amount >= 0) {
                     mCardMoneyTextView.setText("¥ " + amount);
                 }
             } else {//订单的面额小于优惠券的面额
@@ -289,7 +288,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
             if (buyType == BUY_TYPE_UPGRADE) {
                 cardPrice = confirmBuyCardData.getPrice();
-                mCardMoneyTextView.setText("¥ " + confirmBuyCardData.getPrice());
+                mCardMoneyTextView.setText("¥ " + cardPrice);
             }
 
             confirmCardList = confirmBuyCardData.getCardList();
@@ -378,9 +377,11 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 for (ConfirmCard card : confirmCardList) {
                     if (card.getType() == 2) {//全天卡。1闲时，2全天,当非登录或者没有卡是，默认选中全天卡
                         card.setSelect(true);
-                        cardPrice = card.getPrice();
                         mCardId = card.getCardId();
-                        mCardMoneyTextView.setText("¥ " + card.getPrice());
+                        if (buyType != BUY_TYPE_UPGRADE) {
+                            cardPrice = card.getPrice();
+                            mCardMoneyTextView.setText("¥ " + cardPrice);
+                        }
                     } else {
                         card.setSelect(false);
                     }
@@ -388,12 +389,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             } else {//当集合中qulification 有1 或者0 的情况，为0的情况不可选
                 for (ConfirmCard card : confirmCardList) {
                     if (card.getQulification() == 1) {
-                        cardPrice = card.getPrice();
                         mCardId = card.getCardId();
-                        mCardMoneyTextView.setText("¥ " + card.getPrice());
+                        if (buyType != BUY_TYPE_UPGRADE) {
+                            cardPrice = card.getPrice();
+                            mCardMoneyTextView.setText("¥ " + cardPrice);
+                        }
                     }
                 }
-                // }
             }
 
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
