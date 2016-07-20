@@ -68,6 +68,8 @@ public class GroupCoursesResult extends BaseResult {
         private String courseDesc;
         @SerializedName("quota")
         private String quota;
+        @SerializedName("quota_desc")
+        private String quotaDesc;
         @SerializedName("gym_name")
         private String gymName;
         @SerializedName("gym_address")
@@ -129,6 +131,14 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setQuota(String quota) {
             this.quota = quota;
+        }
+
+        public String getQuotaDesc() {
+            return quotaDesc;
+        }
+
+        public void setQuotaDesc(String quotaDesc) {
+            this.quotaDesc = quotaDesc;
         }
 
         public String getGymName() {

@@ -59,9 +59,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private TextView mTeacherNameTextView;
     private RatingBar mRatingBar;
     private TextView mCoursesIntroduceTextView;
-    private TextView mTrainNameTextView;
-    private HImageView mTeacherImageView;
-    private TextView mTeacherIntroduceTextView;
+//    private TextView mTrainNameTextView;
+//    private HImageView mTeacherImageView;
+//    private TextView mTeacherIntroduceTextView;
     private TextView mImmediatelySubmitBtn;
 
     private LinearLayout mCoursesStateLayout;
@@ -118,13 +118,13 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mTeacherNameTextView = (TextView) findViewById(R.id.group_teacher_name);
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.courses_introduce);
-        mTrainNameTextView = (TextView) findViewById(R.id.train_name);
 
         mGymIntroduceLayout = (RelativeLayout) findViewById(R.id.layout_gym_introduce);
         mRecyclerView = (RecyclerView) findViewById(R.id.group_lesson_details_recyclerView);
 
-        mTeacherImageView = (HImageView) findViewById(R.id.teacher_imageView);
-        mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
+        // mTrainNameTextView = (TextView) findViewById(R.id.train_name);
+        //mTeacherImageView = (HImageView) findViewById(R.id.teacher_imageView);
+      //  mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.group_immediately_submit_btn);
         mCoursesStateLayout = (LinearLayout) findViewById(R.id.layout_group_state);
         mStatePromptTextView = (TextView) findViewById(R.id.courses_state_prompt);
@@ -153,7 +153,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mCoursesStateLayout.setVisibility(View.GONE);
             mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
             if (!StringUtils.isEmpty(guota)) {
-                if (guota.equals("预约已满")) {
+                if (Integer.parseInt(guota) == 0) {
                     mImmediatelySubmitBtn.setText(R.string.appointment_fill);
                     mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
                     mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
@@ -244,7 +244,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             }
         }
         guota = groupLessonData.getQuota();
-        mScheduleResultTextView.setText(guota);
+        mScheduleResultTextView.setText(groupLessonData.getQuotaDesc());
         mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
@@ -253,17 +253,18 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         if (!TextUtils.isEmpty(rat)) {
             mRatingBar.setRating(Float.parseFloat(rat));
         }
-        mTrainNameTextView.setText("教练：" + groupLessonData.getTrainerName());
         mCoursesIntroduceTextView.setText(groupLessonData.getCourseDesc());
-        mTeacherIntroduceTextView.setText(groupLessonData.getTrainerDesc());
 
-        List<String> trainsList = groupLessonData.getTrainerImgs();
-        if (trainsList != null && trainsList.size() > 0) {
-            String trainsUrl = trainsList.get(0);
-            if (!StringUtils.isEmpty(trainsUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mTeacherImageView, trainsUrl);
-            }
-        }
+//        mTrainNameTextView.setText("教练：" + groupLessonData.getTrainerName());
+//        mTeacherIntroduceTextView.setText(groupLessonData.getTrainerDesc());
+//        List<String> trainsList = groupLessonData.getTrainerImgs();
+//        if (trainsList != null && trainsList.size() > 0) {
+//            String trainsUrl = trainsList.get(0);
+//            if (!StringUtils.isEmpty(trainsUrl)) {
+//                HImageLoaderSingleton.getInstance().requestImage(mTeacherImageView, trainsUrl);
+//            }
+//        }
+
         setStadiumImage(groupLessonData.getGymImgs());
         setBottomCoursesState();
     }

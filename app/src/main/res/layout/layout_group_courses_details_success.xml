@@ -214,6 +214,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="160dp">
 
                 <com.aaron.android.framework.library.imageloader.HImageView
@@ -252,6 +253,7 @@
                 android:background="@drawable/shape_card_stoke_bottom_background"
                 android:lineSpacingExtra="3dp"
                 android:padding="10dp"
+                android:visibility="gone"
                 android:textColor="@color/liking_lesson_text"
                 android:textSize="13sp"/>
 
