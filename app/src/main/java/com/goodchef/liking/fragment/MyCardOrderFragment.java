@@ -2,6 +2,7 @@ package com.goodchef.liking.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,14 @@ public class MyCardOrderFragment extends NetworkPagerLoaderRecyclerViewFragment 
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyCardOrderAdapter mMyCardOrderAdapter;
+
+
+    public static MyCardOrderFragment newInstance() {
+        Bundle args = new Bundle();
+        MyCardOrderFragment fragment = new MyCardOrderFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected void requestData(int page) {
