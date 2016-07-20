@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:background="@color/main_app_color"
         android:fitsSystemWindows="true"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TabLayout
@@ -39,5 +40,14 @@
         android:id="@+id/my_order_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:overScrollMode="never"/>
+
+
+    <FrameLayout
+        android:id="@+id/my_card_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        />
 </LinearLayout>

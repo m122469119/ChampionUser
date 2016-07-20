@@ -2,11 +2,13 @@ package com.goodchef.liking.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyCardOrderFragment;
@@ -20,7 +22,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/28 下午2:41
  */
-public class MyOrderActivity extends BaseActivity {
+public class MyOrderActivity extends AppBarActivity {
     private static final int INDEX_DISHES = 0;//营养餐
     private static final int INDEX_MY_CARD = 1;//会员卡
     public static String KEY_CURRENT_INDEX = "key_current_index";
@@ -34,8 +36,18 @@ public class MyOrderActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
-        initWidget();
-        initData();
+        setTitle("会员卡");
+        //   initWidget();
+        //  initData();
+        setCouponsFragment();
+    }
+
+
+    private void setCouponsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.my_card_fragment, MyCardOrderFragment.newInstance());
+        fragmentTransaction.commit();
     }
 
     private void initData() {
