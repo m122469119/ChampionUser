@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,6 +38,9 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
     private String gymId;
     private GymDetailsPresenter mGymDetailsPresenter;
     private RelativeLayout mAnnouncementLayout;
+    private LinearLayout mWifiLayout;
+    private LinearLayout mWashLayout;
+    private LinearLayout mDayLayout;
     private String announcement;
 
     @Override
@@ -77,6 +81,9 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         mAddressTextView = (TextView) findViewById(R.id.arena_address);
         mPublicNoticeTextView = (TextView) findViewById(R.id.public_notice);
         mAnnouncementLayout = (RelativeLayout) findViewById(R.id.layout_area_announcement);
+        mWifiLayout = (LinearLayout) findViewById(R.id.layout_wifi);
+        mWashLayout = (LinearLayout) findViewById(R.id.layout_wash);
+        mDayLayout = (LinearLayout) findViewById(R.id.layout_day);
         mAnnouncementLayout.setOnClickListener(this);
     }
 
@@ -112,6 +119,28 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         if (imgDataList != null && imgDataList.size() > 0) {
             setBannerView(imgDataList);
         }
+        int isWifi = gymDetailsData.getIsWifi();
+        int isWash = gymDetailsData.getIsWash();
+        int isDay = gymDetailsData.getIsDay();
+
+        if (isWifi == 0) {
+            mWifiLayout.setVisibility(View.GONE);
+        } else if (isWifi == 1) {
+            mWifiLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (isWash == 0) {
+            mWashLayout.setVisibility(View.GONE);
+        } else if (isWash == 1) {
+            mWashLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (isDay == 0) {
+            mDayLayout.setVisibility(View.GONE);
+        } else if (isDay == 1) {
+            mDayLayout.setVisibility(View.VISIBLE);
+        }
+
     }
 
     /***
