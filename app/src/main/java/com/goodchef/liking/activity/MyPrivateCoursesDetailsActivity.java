@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -7,10 +8,12 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
@@ -160,12 +163,32 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     @Override
     public void onClick(View v) {
         if (v == mCompleteCoursesBtn) {
-            sendCompleteRequest();
+            showCompleteDialog();
         } else if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
                 LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, "确定联系教练吗？", mTeacherPhone);
             }
         }
+    }
+
+
+    private void showCompleteDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(ResourceUtils.getString(R.string.confirm_complete_courese));
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendCompleteRequest();
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     @Override

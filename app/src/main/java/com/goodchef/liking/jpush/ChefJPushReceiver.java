@@ -34,6 +34,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     private static final String EXTRA_KEY_DIRECT = "direct";
     private static final String EXTRA_KEY_DATA = "data";
     public static final String DIRECT_TYPE_NATIVE = "native";
+    public static final String DIRECT_TYPE_OUTER = "outer";
+
     public static final String DIRECT_UPDATE = "update";
     public static final String FOOD = "food";
     public static final String TEAM = "team";
@@ -70,9 +72,9 @@ public class ChefJPushReceiver extends BroadcastReceiver {
             LogUtils.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
             //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
 
-        } else if(JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
+        } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
             boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-            LogUtils.w(TAG, "[MyReceiver]" + intent.getAction() +" connected state change to "+connected);
+            LogUtils.w(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
         } else {
             LogUtils.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
@@ -98,7 +100,38 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                 return;
             }
             switch (directType) {
-                case DIRECT_TYPE_NATIVE: //跳转native
+                case DIRECT_TYPE_NATIVE: //跳转
+                    if (StringUtils.isEmpty(direct)) {
+                        return;
+                    }
+//                    if (DIRECT_UPDATE.equals(direct)) { //版本更新
+//                        if (StringUtils.isEmpty(data)) { //data为空的情况
+//                            Toast.makeText(context, "应用有新版本更新", Toast.LENGTH_SHORT).show();
+//                        } else { //data不为空的情况
+//                            JSONObject jsonObject = new JSONObject(data);
+//                            String url = jsonObject.getString("android_url");
+//                            if (!StringUtils.isEmpty(url)) {
+//                                HDefaultWebActivity.launch(context, url, "", Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            }
+//                        }
+//                    } else
+                    if (FOOD.equals(direct)) { //跳转到营养餐列表
+//                        if (StringUtils.isEmpty(data)) {
+//                            return;
+//                        }
+                        LogUtils.d(TAG, "data: " + data);
+                        toMyOrderList(context);
+                    } else if (TEAM.equals(direct)) { //跳转到课程列表
+                        toMyGroupCoursesList(context);
+                    }
+                    break;
+                case DIRECT_TYPE_HTML5:
+                    if (StringUtils.isEmpty(direct)) {
+                        return;
+                    }
+                    HDefaultWebActivity.launch(context, direct, "", Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    break;
+                case DIRECT_TYPE_OUTER://更新
                     if (StringUtils.isEmpty(direct)) {
                         return;
                     }
@@ -113,21 +146,6 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                             }
                         }
                     }
-                    else if (FOOD.equals(direct)) { //跳转到营养餐列表
-//                        if (StringUtils.isEmpty(data)) {
-//                            return;
-//                        }
-                        LogUtils.d(TAG, "data: " +  data);
-                        toMyOrderList(context);
-                    } else if (TEAM.equals(direct)) { //跳转到课程列表
-                        toMyGroupCoursesList(context);
-                    }
-                    break;
-                case DIRECT_TYPE_HTML5:
-                    if (StringUtils.isEmpty(direct)) {
-                        return;
-                    }
-                    HDefaultWebActivity.launch(context, direct, "", Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     break;
                 default:
                     break;
@@ -146,13 +164,12 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         context.startActivity(intent);
     }
 
-    private void toMyOrderList(Context context){
+    private void toMyOrderList(Context context) {
         LogUtils.d(TAG, "toGroupCourses");
         Intent intent = new Intent(context, MyOrderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
-
 
 
     // 打印所有的 intent extra 数据
@@ -161,7 +178,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         for (String key : bundle.keySet()) {
             if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
                 sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
-            }else if(key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)){
+            } else if (key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)) {
                 sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
             } else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
                 if (bundle.getString(JPushInterface.EXTRA_EXTRA).isEmpty()) {
@@ -171,12 +188,12 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 
                 try {
                     JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                    Iterator<String> it =  json.keys();
+                    Iterator<String> it = json.keys();
 
                     while (it.hasNext()) {
                         String myKey = it.next().toString();
                         sb.append("\nkey:" + key + ", value: [" +
-                                myKey + " - " +json.optString(myKey) + "]");
+                                myKey + " - " + json.optString(myKey) + "]");
                     }
                 } catch (JSONException e) {
                     LogUtils.e(TAG, "Get message extra JSON error!");
@@ -192,9 +209,9 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     //send msg to MainActivity
     private void processCustomMessage(Context context, Bundle bundle) {
 //        if (MainActivity.isForeground) {
-            String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            LogUtils.d(TAG, "message: " + message + " extras: " + extras);
+        String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+        LogUtils.d(TAG, "message: " + message + " extras: " + extras);
 //            Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
 //            msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
 //            if (!ExampleUtil.isEmpty(extras)) {

@@ -13,6 +13,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
@@ -127,7 +128,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
 
     private void showCompleteDialog(final String orderId) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
-        builder.setMessage("您确定完成该课程?");
+        builder.setMessage(ResourceUtils.getString(R.string.confirm_complete_courese));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
