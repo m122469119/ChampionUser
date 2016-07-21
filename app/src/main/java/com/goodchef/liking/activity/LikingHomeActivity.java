@@ -125,7 +125,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
             if (needUpdate == 0) {
                 HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-                builder.setTitle(updateData.getTitle());
+                View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
+                TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
+                textView.setText((updateData.getTitle()));
+                builder.setCustomTitle(view);
+                //  builder.setTitle(updateData.getTitle());
                 builder.setMessage(updateData.getContent());
                 builder.setNegativeButton(getString(R.string.dialog_know), new DialogInterface.OnClickListener() {
                     @Override
