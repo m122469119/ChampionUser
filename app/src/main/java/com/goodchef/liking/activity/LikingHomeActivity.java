@@ -230,8 +230,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         } else if (v == mLikingRightTitleTextView) {
             if (tag.equals(TAG_RECHARGE_TAB)) {
+                if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
+                    isLocation = true;
+                } else {
+                    isLocation = false;
+                }
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
                 intent.putExtra(KEY_SELECT_CITY, selectCityName);
+                intent.putExtra(KEY_START_LOCATION, isLocation);
+                intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
                 startActivity(intent);
             }
         } else if (v == mRightImageView) {
