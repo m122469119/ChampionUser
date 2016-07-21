@@ -66,6 +66,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     protected void requestData(int page) {
         if (isFirstMessage) {
             getCoursesRequest(page);
+            requestBanner();
             LogUtils.i("shouye", "shouye");
         }
     }
@@ -77,7 +78,6 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     private void initData() {
         mCoursesPresenter = new HomeCoursesPresenter(getActivity(), this);
-        requestBanner();
         initRecycleView();
         initRecycleHeadView();
         setNoDataView();
