@@ -111,6 +111,8 @@ public class UrlList {
     public static final String GET_GYM_LIST = getVersionHostUrl()+"/gym/get-all-gym";
     /**获取开门密码*/
     public static final String GET_USER_AUTHCODE = getVersionHostUrl()+"/user/authcode";
+    /**上报接口错误信息*/
+    public static final String UPLOAD_ERROR = getVersionHostUrl() + "/index/err-log";
 
 
 }

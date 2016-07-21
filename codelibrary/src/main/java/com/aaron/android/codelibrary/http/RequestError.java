@@ -1,6 +1,8 @@
 package com.aaron.android.codelibrary.http;
 
 
+import java.util.Map;
+
 /**
  * Created on 15/6/14.
  *
@@ -11,6 +13,8 @@ public class RequestError {
     private NetworkErrorResponse mErrorNetworkErrorResponse;
     private String mMessage;
     private long networkTimeMs;
+    private String mUrl;
+    private Map<String, Object> mRequestParams;
 
     public String getMessage() {
         return mMessage;
@@ -26,6 +30,22 @@ public class RequestError {
 
     public void setErrorType(ErrorType errorType) {
         mErrorType = errorType;
+    }
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
+    public Map<String, Object> getRequestParams() {
+        return mRequestParams;
+    }
+
+    public void setRequestParams(Map<String, Object> requestParams) {
+        mRequestParams = requestParams;
     }
 
     public NetworkErrorResponse getErrorNetworkErrorResponse() {

@@ -141,6 +141,8 @@ public class VolleyResultRequest<T extends BaseResult> extends Request<T> {
                     errorType = RequestError.ErrorType.NETWORK_ERROR;
                 }
                 requestError = new RequestError();
+                requestError.setUrl(getUrl());
+                requestError.setRequestParams(mParams);
                 requestError.setMessage(error.getMessage());
                 requestError.setNetworkTimeMs(error.getNetworkTimeMs());
                 requestError.setErrorType(errorType);
@@ -152,6 +154,9 @@ public class VolleyResultRequest<T extends BaseResult> extends Request<T> {
                 }
             }
             mRequestCallback.onFailure(requestError);
+            if (VolleyHttpRequestClient.sNetworkStatistics != null) {
+                VolleyHttpRequestClient.sNetworkStatistics.post(requestError);
+            }
         }
     }
 
