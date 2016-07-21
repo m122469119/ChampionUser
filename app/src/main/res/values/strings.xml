@@ -149,5 +149,9 @@
     <string name="guide_data">健身数据</string>
     <string name="guide_data_explain">一个APP连接店内所有智能设备</string>
     <string name="guide_to_main_btn">开启智能健身</string>
+    <string name="exit_login">登出登录</string>
+
+    <string name="dialog_know">知道了</string>
+    <string name="dialog_app_update">去升级</string>
 
 </resources>

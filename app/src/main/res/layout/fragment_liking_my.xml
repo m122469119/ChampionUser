@@ -85,13 +85,13 @@
                         android:background="@drawable/shape_radius_green_btn_background"
                         android:gravity="center"
                         android:minWidth="80dp"
-                        android:paddingRight="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="8dp"
                         android:paddingBottom="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="8dp"
                         android:text="登录"
-                        android:visibility="visible"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:visibility="visible"/>
 
                     <ImageView
                         android:id="@+id/login_arrow"
@@ -100,10 +100,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
-                        android:visibility="gone"
                         android:layout_marginRight="10dp"
                         android:layout_weight="4"
-                        android:src="@drawable/bg_right_arrow"/>
+                        android:src="@drawable/bg_right_arrow"
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
@@ -145,12 +145,23 @@
                 android:id="@+id/login_out_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_card_background"
                 android:gravity="center"
-                android:text="登出"
+                android:text="@string/exit_login"
                 android:textColor="@color/lesson_details_dark_back"
+                android:textSize="14sp"/>
+
+
+            <TextView
+                android:id="@+id/contact_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="联系客服"
+                android:textColor="@color/add_minus_dishes_text"
                 android:textSize="14sp"/>
 
         </LinearLayout>
