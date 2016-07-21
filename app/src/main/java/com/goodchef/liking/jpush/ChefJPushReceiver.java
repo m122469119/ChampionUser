@@ -107,7 +107,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                             Toast.makeText(context, "应用有新版本更新", Toast.LENGTH_SHORT).show();
                         } else { //data不为空的情况
                             JSONObject jsonObject = new JSONObject(data);
-                            String url = jsonObject.getString("url");
+                            String url = jsonObject.getString("android_url");
                             if (!StringUtils.isEmpty(url)) {
                                 HDefaultWebActivity.launch(context, url, "", Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             }

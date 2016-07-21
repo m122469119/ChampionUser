@@ -50,6 +50,7 @@ import com.goodchef.liking.fragment.NutrimealFragment;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.CityUtils;
 
@@ -87,12 +88,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private String selectCityId;
     private String selectCityName = "";
     private boolean isLocation = false;
+    private boolean isWhetherLocation = true;
 
-   // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
+    // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
     private SelectCityAdapter mSelectCityAdapter;
     private long firstTime = 0;//第一点击返回键
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +189,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextTextView.setText(R.string.tab_liking_home_nearby);
                     mRightImageView.setVisibility(View.GONE);
-                  //  mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
+                    //  mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
 //                    if (calcDishSize() > 0) {
 //                        mShoppingCartNumTextView.setVisibility(View.VISIBLE);
 //                        mShoppingCartNumTextView.setText(calcDishSize() + "");
@@ -230,16 +233,20 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         } else if (v == mLikingRightTitleTextView) {
             if (tag.equals(TAG_RECHARGE_TAB)) {
-                if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
-                    isLocation = true;
+                if (isWhetherLocation) {
+                    if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
+                        isLocation = true;
+                    } else {
+                        isLocation = false;
+                    }
+                    Intent intent = new Intent(this, LookStoreMapActivity.class);
+                    intent.putExtra(KEY_SELECT_CITY, selectCityName);
+                    intent.putExtra(KEY_START_LOCATION, isLocation);
+                    intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
+                    startActivity(intent);
                 } else {
-                    isLocation = false;
+                    PopupUtils.showToast("定位失败，无法获取城市地图");
                 }
-                Intent intent = new Intent(this, LookStoreMapActivity.class);
-                intent.putExtra(KEY_SELECT_CITY, selectCityName);
-                intent.putExtra(KEY_START_LOCATION, isLocation);
-                intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
-                startActivity(intent);
             }
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
@@ -286,16 +293,20 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         builder.setPositiveButton("查看场馆", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
-                    isLocation = true;
+                if (isWhetherLocation) {
+                    if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
+                        isLocation = true;
+                    } else {
+                        isLocation = false;
+                    }
+                    Intent intent = new Intent(LikingHomeActivity.this, LookStoreMapActivity.class);
+                    intent.putExtra(KEY_SELECT_CITY, selectCityName);
+                    intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
+                    intent.putExtra(KEY_START_LOCATION, isLocation);
+                    startActivity(intent);
                 } else {
-                    isLocation = false;
+                    PopupUtils.showToast("定位失败，无法获取城市地图");
                 }
-                Intent intent = new Intent(LikingHomeActivity.this, LookStoreMapActivity.class);
-                intent.putExtra(KEY_SELECT_CITY, selectCityName);
-                intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
-                intent.putExtra(KEY_START_LOCATION, isLocation);
-                startActivity(intent);
                 dialog.dismiss();
             }
         });
@@ -358,7 +369,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
             @Override
             public void receive(AMapLocation object) {
+                LiKingVerifyUtils.initApi(LikingHomeActivity.this);
                 if (object != null && object.getErrorCode() == 0) {//定位成功
+                    isWhetherLocation = true;
                     LogUtils.i("dust", "city: " + object.getCity() + " city code: " + object.getCityCode());
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
@@ -370,6 +383,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName);
                 } else {//定位失败
+                    isWhetherLocation = false;
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText("定位失败");
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
