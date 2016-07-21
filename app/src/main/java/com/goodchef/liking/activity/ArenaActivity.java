@@ -108,12 +108,12 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
     public void updateGymDetailsView(GymDetailsResult.GymDetailsData gymDetailsData) {
         setTitle(gymDetailsData.getName());
         mAddressTextView.setText("地点：" + gymDetailsData.getAddress());
-        announcement = gymDetailsData.getAnnouncement();
+        announcement = gymDetailsData.getAnnouncement().trim();
         if (!StringUtils.isEmpty(announcement)) {
-            mPublicNoticeTextView.setVisibility(View.VISIBLE);
+            mAnnouncementLayout.setVisibility(View.VISIBLE);
             mPublicNoticeTextView.setText("公告：" + gymDetailsData.getAnnouncement());
         } else {
-            mPublicNoticeTextView.setVisibility(View.GONE);
+            mAnnouncementLayout.setVisibility(View.GONE);
         }
         List<GymDetailsResult.GymDetailsData.ImgsData> imgDataList = gymDetailsData.getImgs();
         if (imgDataList != null && imgDataList.size() > 0) {
