@@ -339,13 +339,22 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             @Override
             public void takePictureFromCamera(String imagePath) {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
-                sendImageFile(mBitmap);
+                if (mBitmap !=null){
+                    sendImageFile(mBitmap);
+                }else {
+                    PopupUtils.showToast("请重新选图片");
+                }
             }
 
             @Override
             public void takePictureFromGallery(ArrayList<String> imagePathList) {
                 List<Bitmap> bitmapList = ImageEnviromentUtil.getAlbumBitmapList(imagePathList);
-                sendImageFile(bitmapList.get(0));
+                Bitmap mBitmap = bitmapList.get(0);
+                if (mBitmap != null) {
+                    sendImageFile(bitmapList.get(0));
+                } else {
+                    PopupUtils.showToast("请重新选图片");
+                }
             }
         });
     }
