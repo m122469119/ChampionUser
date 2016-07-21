@@ -42,6 +42,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
  * Created on 16/5/20.
@@ -74,6 +75,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView myTrainDistance;
     private TextView myTrainCal;
     private TextView myTrainTimePrompt;
+    private TextView mContactSetviceBtn;
 
 
     public static final String NULL_STRING = "";
@@ -194,6 +196,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
+        mContactSetviceBtn = (TextView) view.findViewById(R.id.contact_service);
     }
 
     private void setViewOnClickListener() {
@@ -211,6 +214,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMemberCardLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
         mTrainLayout.setOnClickListener(this);
+        mContactSetviceBtn.setOnClickListener(this);
     }
 
 
@@ -245,7 +249,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mLoginBtn) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
-        } else if (v == mHeadInfoLayout) {
+        } else if (v == mHeadInfoLayout || v == mHeadHImageView) {
             if (!Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
@@ -310,6 +314,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 showExitDialog();
             } else {
                 PopupUtils.showToast("您还没有登录");
+            }
+        }else if (v == mContactSetviceBtn){
+            String phone = Preference.getCustomerServicePhone();
+            if (!StringUtils.isEmpty(phone)) {
+                LikingCallUtil.showCallDialog(getActivity(), "确定联系客服吗？", phone);
             }
         }
     }

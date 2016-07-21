@@ -45,6 +45,9 @@ public class BaseConfigResult extends BaseResult {
         @SerializedName("service_url")
         private String serviceUrl;
 
+        @SerializedName("update")
+        private UpdateData mUpdateData;
+
         public String getCustomerPhone() {
             return customerPhone;
         }
@@ -108,5 +111,66 @@ public class BaseConfigResult extends BaseResult {
         public void setServiceUrl(String serviceUrl) {
             this.serviceUrl = serviceUrl;
         }
+
+
+        public UpdateData getUpdateData() {
+            return mUpdateData;
+        }
+
+        public void setUpdateData(UpdateData updateData) {
+            mUpdateData = updateData;
+        }
+
+        public static class UpdateData extends BaseData {
+
+            /**
+             * update : 0
+             * title : 更新提示
+             * content : app重磅更新，升级抢先体验
+             * url : http://sj.qq.com/myapp/detail.htm?apkName=com.vteam.cook
+             */
+
+            @SerializedName("update")
+            private int mUpdate;
+            @SerializedName("title")
+            private String mTitle;
+            @SerializedName("content")
+            private String mContent;
+            @SerializedName("url")
+            private String mUrl;
+
+            public void setUpdate(int update) {
+                this.mUpdate = update;
+            }
+
+            public void setTitle(String title) {
+                this.mTitle = title;
+            }
+
+            public void setContent(String content) {
+                this.mContent = content;
+            }
+
+            public void setUrl(String url) {
+                this.mUrl = url;
+            }
+
+            public int getUpdate() {
+                return mUpdate;
+            }
+
+            public String getTitle() {
+                return mTitle;
+            }
+
+            public String getContent() {
+                return mContent;
+            }
+
+            public String getUrl() {
+                return mUrl;
+            }
+        }
+
     }
 }

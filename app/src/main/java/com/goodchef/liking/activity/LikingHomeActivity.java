@@ -16,11 +16,13 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.ConstantUtils;
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseActivity;
 import com.aaron.android.framework.base.BaseApplication;
+import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -47,6 +49,7 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.fragment.NutrimealFragment;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
@@ -105,6 +108,39 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         initViews();
         setViewOnClickListener();
         initTitleLocation();
+    }
+
+
+    private void checkAppUpdate() {
+        if (LiKingVerifyUtils.sBaseConfigResult != null) {
+            final BaseConfigResult.BaseConfigData.UpdateData updateData = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData().getUpdateData();
+            if (updateData == null) {
+                return;
+            }
+            int needUpdate = updateData.getUpdate();
+            String title = updateData.getTitle();
+            String content = updateData.getContent();
+            if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content)) {
+                return;
+            }
+            if (needUpdate == 0) {
+                HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+                builder.setTitle(updateData.getTitle());
+                builder.setMessage(updateData.getContent());
+                builder.setNegativeButton(getString(R.string.dialog_know), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setPositiveButton(getString(R.string.dialog_app_update), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        HDefaultWebActivity.launch(LikingHomeActivity.this, updateData.getUrl(), ConstantUtils.BLANK_STRING);
+                    }
+                });
+                builder.show();
+            }
+        }
     }
 
     private void initViews() {
@@ -401,6 +437,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void end() {
                 LogUtils.i("dust", "定位结束...");
+                checkAppUpdate();
             }
         });
         mAmapGDLocation.start();

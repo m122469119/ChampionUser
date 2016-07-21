@@ -45,18 +45,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/invite_show_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="邀请好友，好友立刻获得"
+                android:gravity="center"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_15"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="50元优惠券"
-                android:textColor="@color/add_minus_dishes_text"
-                android:textSize="@dimen/textsize_15"/>
         </LinearLayout>
 
         <TextView

@@ -2,16 +2,13 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
 import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
@@ -32,6 +29,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     private TextView mInvitePromptTextView;
     private TextView mInviteFriendsBtn;
     private TextView mEditInviteCodeBtn;
+    private TextView mInviteFriendTitleTextView;
 
     private String mCode;
     private String shareUrl;
@@ -52,16 +50,18 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
         mInvitePromptTextView = (TextView) findViewById(R.id.invite_prompt);
         mInviteFriendsBtn = (TextView) findViewById(R.id.invite_friend_btn);
         mEditInviteCodeBtn = (TextView) findViewById(R.id.edit_invite_code_btn);
+        mInviteFriendTitleTextView = (TextView) findViewById(R.id.invite_show_title);
 
         mInviteFriendsBtn.setOnClickListener(this);
         mEditInviteCodeBtn.setOnClickListener(this);
     }
 
     private void initData() {
-        String text = "好友完成购卡，您将立刻获得50-100元可叠加无门槛购卡优惠券,优惠券金额无上限";
-        SpannableStringBuilder style = new SpannableStringBuilder(text);
-        style.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.add_minus_dishes_text)), 13, 20, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);     //设置指定位置文字的颜色
-        mInvitePromptTextView.setText(style);
+        // String text = "好友完成购卡，您将立刻获得50-100元可叠加无门槛购卡优惠券,优惠券金额无上限";
+        //  mInvitePromptTextView.setText(Html.fromHtml("好友完成购卡，您将立刻获得，<font color='#ff0000'>50-100</font>可叠加无门槛购卡优惠券,优惠券金额无上限"));
+//        SpannableStringBuilder style = new SpannableStringBuilder(text);
+//        style.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.add_minus_dishes_text)), 13, 20, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);     //设置指定位置文字的颜色
+//        mInvitePromptTextView.setText(style);
 
         LiKingApi.getInviteCode(Preference.getToken(), new RequestUiLoadingCallback<InviteFriendResult>(this, R.string.loading_data) {
             @Override
@@ -69,12 +69,14 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(InviteFriendsActivity.this, result)) {
                     InviteFriendResult.InviteFriendData data = result.getData();
-                    if (data !=null){
+                    if (data != null) {
                         mCode = data.getCode();
                         shareUrl = data.getShareUrl();
                         shareTitle = data.getShareTitle();
                         shareContent = data.getShareContent();
                         mInviteCodeTextView.setText(mCode);
+                        mInviteFriendTitleTextView.setText(Html.fromHtml(data.getShowTitle().trim()));
+                        mInvitePromptTextView.setText(Html.fromHtml(data.getShowContent().trim()));
                     }
                 }
             }
