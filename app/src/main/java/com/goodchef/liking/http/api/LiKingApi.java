@@ -2,13 +2,17 @@ package com.goodchef.liking.http.api;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Base64;
 
+import com.aaron.android.codelibrary.http.NetworkErrorResponse;
 import com.aaron.android.codelibrary.http.RequestCallback;
+import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.http.RequestParams;
+import com.aaron.android.framework.library.http.statistics.NetworkStatistics;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
@@ -46,6 +50,11 @@ import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.storage.Preference;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * 说明:
  * Author shaozucheng
@@ -67,6 +76,67 @@ public class LiKingApi {
     public static long sRequestSyncTimestamp = 0;
 
     public static RequestParams getCommonRequestParams() {
+        if (VolleyHttpRequestClient.sNetworkStatistics == null) {
+            VolleyHttpRequestClient.sNetworkStatistics = new NetworkStatistics() {
+                @Override
+                public void post(RequestError error) {
+                    if (error == null) {
+                        return;
+                    }
+                    StringBuilder urlStringBuffer = new StringBuilder();
+                    String url = error.getUrl();
+                    urlStringBuffer.append(url + "?");
+                    Map<String, Object> params = error.getRequestParams();
+                    Iterator<String> iterator = params.keySet().iterator();
+                    while (iterator.hasNext()) {
+                        String key = iterator.next();
+                        urlStringBuffer.append(key + "=" + params.get(key));
+                        if (iterator.hasNext()) {
+                            urlStringBuffer.append("&");
+                        }
+                    }
+                    url = urlStringBuffer.toString();
+                    LogUtils.d(TAG, "error url: " + url);
+                    if (StringUtils.isEmpty(url)) {
+                        return;
+                    }
+                    String urlEncodeUrl = null;
+                    try {
+                        urlEncodeUrl = URLEncoder.encode(url, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    LogUtils.d(TAG, "error encodeUrl: " + urlEncodeUrl);
+                    if (StringUtils.isEmpty(urlEncodeUrl)) {
+                        return;
+                    }
+                    String base64EncodeUrl = Base64.encodeToString(urlEncodeUrl.getBytes(), Base64.DEFAULT);
+                    LogUtils.d(TAG, "base64EncodeUrl: " + base64EncodeUrl);
+
+                    StringBuilder errorMessageString = new StringBuilder();
+                    errorMessageString.append("errorType: " + error.getErrorType() + ";");
+                    NetworkErrorResponse errorResponse = error.getErrorNetworkErrorResponse();
+                    if (errorResponse != null) {
+                        int statusCode = errorResponse.statusCode;
+                        errorMessageString.append("statusCode: " + statusCode + ";");
+                    }
+                    errorMessageString.append("errorMessage: " + error.getMessage());
+                    String errorMessage = errorMessageString.toString();
+                    LogUtils.d(TAG, "errorMessage: " + errorMessage);
+                    uploadNetworkError(base64EncodeUrl, errorMessage, new RequestCallback<BaseResult>() {
+                        @Override
+                        public void onSuccess(BaseResult result) {
+                            LogUtils.d(TAG, "upload error message success");
+                        }
+
+                        @Override
+                        public void onFailure(RequestError error) {
+                            LogUtils.d(TAG, "upload error message failure");
+                        }
+                    });
+                }
+            };
+        }
         sRequestTimestamp = DateUtils.currentDataSeconds() + sTimestampOffset;
         LogUtils.i(TAG, "request timestamp: " + DateUtils.formatDate(sRequestTimestamp * 1000L, 3, "-"));
         LogUtils.i(TAG, "current system timestamp: " + DateUtils.formatDate(DateUtils.currentDataSeconds() * 1000L, 3, "-"));
@@ -714,5 +784,15 @@ public class LiKingApi {
     public static void getUserAuthCode(String token, int inout, RequestCallback<UserAuthCodeResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_USER_AUTHCODE, UserAuthCodeResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("inout", inout), callback);
+    }
+
+    /**
+     * 上报错误接口
+     * @param url 请求链接
+     * @param errorMessage 错误信息
+     */
+    public static void uploadNetworkError(String url, String errorMessage, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.UPLOAD_ERROR, BaseResult.class, getCommonRequestParams().append("url", url)
+        .append("error_msg", errorMessage), callback);
     }
 }

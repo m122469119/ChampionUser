@@ -5,6 +5,7 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.http.RequestParams;
+import com.aaron.android.framework.library.http.statistics.NetworkStatistics;
 import com.android.volley.Request;
 
 import java.util.HashMap;
@@ -19,7 +20,8 @@ import java.util.Map;
  */
 public class VolleyHttpRequestClient implements HttpRequestClient<VolleyRequestObjects> {
 
-    private final static String TAG = "HRequest";
+    private final static String TAG = "VolleyHttpRequestClient";
+    public static NetworkStatistics sNetworkStatistics;
 
     /**
      * GET请求
