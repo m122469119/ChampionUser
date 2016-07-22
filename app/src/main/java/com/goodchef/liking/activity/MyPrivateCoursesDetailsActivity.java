@@ -43,6 +43,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     private TextView mOrderNumberTextView;//订单号
     private TextView mOrderTimeTextView;//下单时间
     private TextView mCoursesPersonNumberTextView;//上课人数
+    private TextView mTimesTextView;//上次数
     private TextView mCoursesPriceTextView;//价格
     private TextView mFavourableTextView;//优惠
     private TextView mRealityPriceTextView;//实际价格
@@ -77,6 +78,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         mOrderNumberTextView = (TextView) findViewById(R.id.details_order_number);
         mOrderTimeTextView = (TextView) findViewById(R.id.details_order_time);
         mCoursesPersonNumberTextView = (TextView) findViewById(R.id.details_courses_person_number);
+        mTimesTextView = (TextView) findViewById(R.id.details_courses_person_time);
         mCoursesPriceTextView = (TextView) findViewById(R.id.details_courses_price);
         mFavourableTextView = (TextView) findViewById(R.id.details_favourable);
         mRealityPriceTextView = (TextView) findViewById(R.id.details_reality_price);
@@ -148,6 +150,8 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             if (!StringUtils.isEmpty(imageUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
             }
+
+            mTimesTextView.setText(data.getTimes() + "次");
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
