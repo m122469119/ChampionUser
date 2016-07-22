@@ -1,10 +1,13 @@
 package com.goodchef.liking.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
@@ -15,6 +18,7 @@ import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.PatchDowner;
 
 import cn.jiajixin.nuwa.Nuwa;
@@ -28,11 +32,13 @@ public class LoadingActivity extends BaseActivity {
     private final int DURATION = 1500;
     private Handler handler = new Handler();
     private PatchData previousPatchData;
+    private LinearLayout mCompleteLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        mCompleteLayout = (LinearLayout) findViewById(R.id.company_info);
         //透明状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
@@ -40,6 +46,21 @@ public class LoadingActivity extends BaseActivity {
         previousPatchData = Preference.getPatchData();
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             LiKingVerifyUtils.initApi(this);
+        }
+        setCompleteLayoutView();
+    }
+
+    private void setCompleteLayoutView() {
+        WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
+        if (hasSoft) {
+            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(this);//获取虚拟键盘的高度
+            //这一行很重要，将dialog对话框设置在虚拟键盘上面
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCompleteLayout.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, (navigationBarHeight + 30));
+        } else {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCompleteLayout.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, 30);
         }
     }
 

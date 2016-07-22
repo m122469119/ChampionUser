@@ -8,6 +8,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.LikingCallUtil;
 
@@ -17,9 +18,10 @@ import com.goodchef.liking.utils.LikingCallUtil;
  * Time:16/5/26 下午2:02
  */
 public class AboutActivity extends AppBarActivity implements View.OnClickListener {
-    TextView mVersionNumberTextView;//版本号
-    TextView mWeChatPublicTextView;
-    TextView mCooperatePhoneTextView;
+    private TextView mVersionNumberTextView;//版本号
+    private TextView mWeChatPublicTextView;
+    private TextView mCooperatePhoneTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,10 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
         String phone = Preference.getBusinessServicePhone();
         if (!StringUtils.isEmpty(phone)) {
             mCooperatePhoneTextView.setText(phone);
+        }
+        BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
+        if (baseConfigData != null) {
+            mWeChatPublicTextView.setText(baseConfigData.getWechat().trim());
         }
     }
 
