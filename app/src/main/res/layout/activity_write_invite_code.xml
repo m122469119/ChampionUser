@@ -19,11 +19,11 @@
             android:textSize="@dimen/textsize_15"/>
 
         <TextView
+            android:id="@+id/invite_encourage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="输入好友邀请码，可获得50元优惠券"
             android:textColor="@color/add_minus_dishes_text"
             android:textSize="@dimen/textsize_15"/>
 

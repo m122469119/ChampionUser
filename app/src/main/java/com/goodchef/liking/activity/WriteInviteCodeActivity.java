@@ -28,6 +28,8 @@ public class WriteInviteCodeActivity extends AppBarActivity implements View.OnCl
     private TextView mConfirmTextView;
     private String mWriteCode;
     private TextView mErrorTextView;
+    private TextView mInviteEncourageTextView;
+    private String confirmTextStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,8 @@ public class WriteInviteCodeActivity extends AppBarActivity implements View.OnCl
         setContentView(R.layout.activity_write_invite_code);
         setTitle(getString(R.string.title_write_invite_code));
         iniView();
+        initData();
         writeCode();
-
     }
 
     private void iniView() {
@@ -46,8 +48,16 @@ public class WriteInviteCodeActivity extends AppBarActivity implements View.OnCl
         mGridPasswordView.performClick();
         mGridPasswordView.setPasswordType(PasswordType.TEXTVISIBLE);
         mGridPasswordView.setPasswordVisibility(true);
+        mInviteEncourageTextView = (TextView) findViewById(R.id.invite_encourage);
 
         mConfirmTextView.setOnClickListener(this);
+    }
+
+    private void initData() {
+        confirmTextStr = getIntent().getStringExtra(InviteFriendsActivity.KEY_INTENT_CONFIRM_TEXT);
+        if (!StringUtils.isEmpty(confirmTextStr)) {
+            mInviteEncourageTextView.setText(confirmTextStr);
+        }
     }
 
     private void writeCode() {

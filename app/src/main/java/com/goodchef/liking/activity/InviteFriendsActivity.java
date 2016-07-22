@@ -25,6 +25,7 @@ import com.goodchef.liking.storage.Preference;
  * Time:16/7/6 下午6:37
  */
 public class InviteFriendsActivity extends AppBarActivity implements View.OnClickListener {
+    public static final String KEY_INTENT_CONFIRM_TEXT = "key_intent_confirm_text";
     private TextView mInviteCodeTextView;
     private TextView mInvitePromptTextView;
     private TextView mInviteFriendsBtn;
@@ -35,6 +36,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     private String shareUrl;
     private String shareTitle;
     private String shareContent;
+    private String confirmText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,6 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     }
 
     private void initData() {
-        // String text = "好友完成购卡，您将立刻获得50-100元可叠加无门槛购卡优惠券,优惠券金额无上限";
-        //  mInvitePromptTextView.setText(Html.fromHtml("好友完成购卡，您将立刻获得，<font color='#ff0000'>50-100</font>可叠加无门槛购卡优惠券,优惠券金额无上限"));
-//        SpannableStringBuilder style = new SpannableStringBuilder(text);
-//        style.setSpan(new ForegroundColorSpan(ResourceUtils.getColor(R.color.add_minus_dishes_text)), 13, 20, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);     //设置指定位置文字的颜色
-//        mInvitePromptTextView.setText(style);
-
         LiKingApi.getInviteCode(Preference.getToken(), new RequestUiLoadingCallback<InviteFriendResult>(this, R.string.loading_data) {
             @Override
             public void onSuccess(InviteFriendResult result) {
@@ -77,6 +73,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
                         mInviteCodeTextView.setText(mCode);
                         mInviteFriendTitleTextView.setText(Html.fromHtml(data.getShowTitle().trim()));
                         mInvitePromptTextView.setText(Html.fromHtml(data.getShowContent().trim()));
+                        confirmText = data.getConfirmText();
                     }
                 }
             }
@@ -97,6 +94,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
             }
         } else if (v == mEditInviteCodeBtn) {
             Intent intent = new Intent(this, WriteInviteCodeActivity.class);
+            intent.putExtra(KEY_INTENT_CONFIRM_TEXT,confirmText);
             startActivity(intent);
         }
     }

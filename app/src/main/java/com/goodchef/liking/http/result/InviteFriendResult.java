@@ -35,6 +35,8 @@ public class InviteFriendResult extends BaseResult {
         private String showTitle;
         @SerializedName("show_content")
         private String showContent;
+        @SerializedName("confirm_text")
+        private String confirmText;
 
         public String getCode() {
             return code;
@@ -82,6 +84,14 @@ public class InviteFriendResult extends BaseResult {
 
         public void setShowContent(String showContent) {
             this.showContent = showContent;
+        }
+
+        public String getConfirmText() {
+            return confirmText;
+        }
+
+        public void setConfirmText(String confirmText) {
+            this.confirmText = confirmText;
         }
     }
 }
