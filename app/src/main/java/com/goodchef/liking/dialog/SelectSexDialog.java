@@ -1,7 +1,7 @@
 package com.goodchef.liking.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -19,20 +19,21 @@ import com.goodchef.liking.utils.NavigationBarUtil;
  */
 public class SelectSexDialog  {
     private Context mContext;
-    private Dialog mDialog;
+    private AppCompatDialog mDialog;
     private TextView mCancelButton;
     private TextView mTextViewOne;
     private TextView mTextViewTwo;
 
     public SelectSexDialog(Context context) {
         this.mContext = context;
-        mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
+      //  mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
+       mDialog = new AppCompatDialog(context,R.style.camera_dialog_no_screen);
         WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
         if (hasSoft) {
             int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);
             //这一行很重要
-            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, navigationBarHeight, WindowManager.LayoutParams.MATCH_PARENT,
+            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
         } else {
             DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
