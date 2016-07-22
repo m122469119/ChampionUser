@@ -57,7 +57,6 @@
                 android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingRight="10dp"
-                android:text="Liking健身"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="15sp"/>
         </LinearLayout>

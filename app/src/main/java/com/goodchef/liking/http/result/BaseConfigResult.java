@@ -47,6 +47,8 @@ public class BaseConfigResult extends BaseResult {
 
         @SerializedName("update")
         private UpdateData mUpdateData;
+        @SerializedName("wechat")
+        private String wechat;
 
         public String getCustomerPhone() {
             return customerPhone;
@@ -119,6 +121,14 @@ public class BaseConfigResult extends BaseResult {
 
         public void setUpdateData(UpdateData updateData) {
             mUpdateData = updateData;
+        }
+
+        public String getWechat() {
+            return wechat;
+        }
+
+        public void setWechat(String wechat) {
+            this.wechat = wechat;
         }
 
         public static class UpdateData extends BaseData {
