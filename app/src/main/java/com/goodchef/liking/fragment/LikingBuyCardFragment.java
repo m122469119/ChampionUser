@@ -9,7 +9,9 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
@@ -109,8 +111,12 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
     }
 
     private void sendBuyCardListRequest() {
-        mCardListPresenter = new CardListPresenter(getActivity(), this);
-        mCardListPresenter.getCardList(TYPE_BUY);
+        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+            getStateView().setState(StateView.State.FAILED);
+        } else {
+            mCardListPresenter = new CardListPresenter(getActivity(), this);
+            mCardListPresenter.getCardList(TYPE_BUY);
+        }
     }
 
     @Override
@@ -140,7 +146,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
         }
     }
 
-    public void onEvent(OnCLickBuyCardFragmentMessage message){
+    public void onEvent(OnCLickBuyCardFragmentMessage message) {
         sendBuyCardListRequest();
     }
 

@@ -5,6 +5,7 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -154,7 +155,7 @@ public class VolleyResultRequest<T extends BaseResult> extends Request<T> {
                 }
             }
             mRequestCallback.onFailure(requestError);
-            if (VolleyHttpRequestClient.sNetworkStatistics != null) {
+            if (EnvironmentUtils.Network.isNetWorkAvailable() && VolleyHttpRequestClient.sNetworkStatistics != null) {
                 VolleyHttpRequestClient.sNetworkStatistics.post(requestError);
             }
         }
