@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,12 +8,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.GuideFragment;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
 
@@ -38,7 +41,22 @@ public class GuideActivity extends AppBarActivity {
         hideAppBar();
         Preference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
         initView();
+        setIconPageIndicatorView();
         initData();
+    }
+
+    private void setIconPageIndicatorView(){
+        WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
+        if (hasSoft) {
+            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(this);//获取虚拟键盘的高度
+            //这一行很重要，将dialog对话框设置在虚拟键盘上面
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mIconPageIndicator.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, (navigationBarHeight + 30));
+        } else {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mIconPageIndicator.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, 30);
+        }
     }
 
     private void initView() {
