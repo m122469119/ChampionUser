@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 public class MyPrivateCoursesDetailsResult extends BaseResult {
 
     @SerializedName("data")
-    private  MyPrivateCoursesDetailsData data;
+    private MyPrivateCoursesDetailsData data;
 
     public MyPrivateCoursesDetailsData getData() {
         return data;
@@ -22,7 +22,7 @@ public class MyPrivateCoursesDetailsResult extends BaseResult {
         this.data = data;
     }
 
-    public static class MyPrivateCoursesDetailsData extends BaseData{
+    public static class MyPrivateCoursesDetailsData extends BaseData {
         @SerializedName("status")
         private int status;
         @SerializedName("trainer_name")
@@ -51,6 +51,8 @@ public class MyPrivateCoursesDetailsResult extends BaseResult {
         private int payType;
         @SerializedName("trainer_phone")
         private String trainerPhone;
+        @SerializedName("times")
+        private String times;
 
         public int getStatus() {
             return status;
@@ -162,6 +164,14 @@ public class MyPrivateCoursesDetailsResult extends BaseResult {
 
         public void setTrainerPhone(String trainerPhone) {
             this.trainerPhone = trainerPhone;
+        }
+
+        public String getTimes() {
+            return times;
+        }
+
+        public void setTimes(String times) {
+            this.times = times;
         }
     }
 }
