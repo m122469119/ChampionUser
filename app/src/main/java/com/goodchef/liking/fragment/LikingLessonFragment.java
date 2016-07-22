@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
-import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.GymCoursesActivity;
@@ -81,9 +80,9 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         initRecycleView();
         initRecycleHeadView();
         setNoDataView();
-        getStateView().setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+        getStateView().findViewById(R.id.text_view_fail_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRetryRequested() {
+            public void onClick(View v) {
                 postEvent(new LikingHomeNoNetWorkMessage());
             }
         });

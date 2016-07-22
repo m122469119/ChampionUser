@@ -17,7 +17,6 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.ConstantUtils;
-import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseActivity;
@@ -25,6 +24,7 @@ import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.map.LocationListener;
@@ -33,21 +33,13 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.adapter.SelectCityAdapter;
-import com.goodchef.liking.eventmessages.ClearCartMessage;
-import com.goodchef.liking.eventmessages.DishesAliPayMessage;
-import com.goodchef.liking.eventmessages.DishesPayFalse;
-import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
-import com.goodchef.liking.eventmessages.FreePayMessage;
-import com.goodchef.liking.eventmessages.JumpToDishesDetailsMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
-import com.goodchef.liking.eventmessages.RefreshChangeDataMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
-import com.goodchef.liking.fragment.LikingNearbyFragment;
 import com.goodchef.liking.fragment.NutrimealFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
@@ -57,7 +49,6 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.CityUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener {
@@ -91,10 +82,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private String selectCityId;
     private String selectCityName = "";
     private boolean isLocation = false;
-    private boolean isWhetherLocation = true;
+    private boolean isWhetherLocation = false;
 
     // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
-    private ArrayList<Food> buyList = new ArrayList<>();
+    //  private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
     private SelectCityAdapter mSelectCityAdapter;
     private long firstTime = 0;//第一点击返回键
@@ -107,7 +98,17 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setTitle(R.string.activity_liking_home);
         initViews();
         setViewOnClickListener();
-        initTitleLocation();
+        initData();
+    }
+
+    private void initData() {
+        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+            isWhetherLocation = false;
+            mLeftImageView.setVisibility(View.VISIBLE);
+            mLikingLeftTitleTextView.setText("定位失败");
+        } else {
+            initTitleLocation();
+        }
     }
 
 
@@ -290,16 +291,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
-                if (buyList != null && buyList.size() > 0 && calcDishSize() > 0) {
-                    Intent intent = new Intent(this, ShoppingCartActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
-                    intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
-                    intent.putExtras(bundle);
-                    startActivityForResult(intent, INTENT_REQUEST_CODE_SHOP_CART);
-                } else {
-                    PopupUtils.showToast("您还没有购买任何营养餐");
-                }
+//                if (buyList != null && buyList.size() > 0 && calcDishSize() > 0) {
+//                    Intent intent = new Intent(this, ShoppingCartActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
+//                    intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+//                    intent.putExtras(bundle);
+//                    startActivityForResult(intent, INTENT_REQUEST_CODE_SHOP_CART);
+//                } else {
+//                    PopupUtils.showToast("您还没有购买任何营养餐");
+//                }
             } else if (tag.equals(TAG_MAIN_TAB)) {
                 Intent intent = new Intent(this, OpenTheDoorActivity.class);
                 startActivity(intent);
@@ -459,80 +460,78 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onStop() {
         super.onStop();
-        mAmapGDLocation.stop();
+        if (mAmapGDLocation != null) {
+            mAmapGDLocation.stop();
+        }
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAmapGDLocation.destroy();
+        if (mAmapGDLocation != null) {
+            mAmapGDLocation.destroy();
+        }
     }
 
     @Override
     public void onShoppingDishAdded(Food foodData) {
-        int riceNum = foodData.getSelectedOrderNum();
-        if (riceNum >= foodData.getRestStock()) {
-            PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
-        }
-
-        if (buyList != null && buyList.size() > 0) {
-            boolean isBuyListExits = false;
-            for (int i = 0; i < buyList.size(); i++) {
-                if (buyList.get(i).getGoodsId().equals(foodData.getGoodsId())) {
-                    buyList.get(i).setSelectedOrderNum(foodData.getSelectedOrderNum());
-                    isBuyListExits = true;
-                    break;
-                }
-            }
-            if (!isBuyListExits) {
-                buyList.add(foodData);
-            }
-
-        } else {
-            buyList.add(foodData);
-        }
-//        if (!buyList.contains(foodData)) {
+//        int riceNum = foodData.getSelectedOrderNum();
+//        if (riceNum >= foodData.getRestStock()) {
+//            PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
+//        }
+//
+//        if (buyList != null && buyList.size() > 0) {
+//            boolean isBuyListExits = false;
+//            for (int i = 0; i < buyList.size(); i++) {
+//                if (buyList.get(i).getGoodsId().equals(foodData.getGoodsId())) {
+//                    buyList.get(i).setSelectedOrderNum(foodData.getSelectedOrderNum());
+//                    isBuyListExits = true;
+//                    break;
+//                }
+//            }
+//            if (!isBuyListExits) {
+//                buyList.add(foodData);
+//            }
+//
+//        } else {
 //            buyList.add(foodData);
 //        }
-        if (calcDishSize() > 0) {
-            mShoppingCartNumTextView.setVisibility(View.VISIBLE);
-        }
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//        if (calcDishSize() > 0) {
+//            mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+//        }
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
     @Override
     public void onShoppingDishRemove(Food foodData) {
-        if (buyList != null && buyList.size() > 0) {
-            for (int i = 0; i < buyList.size(); i++) {
-                if (buyList.get(i).getGoodsId().equals(foodData.getGoodsId())) {
-                    buyList.get(i).setSelectedOrderNum(foodData.getSelectedOrderNum());
-                    if (buyList.get(i).getSelectedOrderNum() == 0) {
-                        buyList.remove(buyList.get(i));
-                    }
-                }
-            }
-        }
-
-//        if (foodData.getSelectedOrderNum() == 0) {//当
-//            buyList.remove(foodData);
+//        if (buyList != null && buyList.size() > 0) {
+//            for (int i = 0; i < buyList.size(); i++) {
+//                if (buyList.get(i).getGoodsId().equals(foodData.getGoodsId())) {
+//                    buyList.get(i).setSelectedOrderNum(foodData.getSelectedOrderNum());
+//                    if (buyList.get(i).getSelectedOrderNum() == 0) {
+//                        buyList.remove(buyList.get(i));
+//                    }
+//                }
+//            }
 //        }
-        if (calcDishSize() == 0) {
-            mShoppingCartNumTextView.setVisibility(View.GONE);
-        }
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//
+//        if (calcDishSize() == 0) {
+//            mShoppingCartNumTextView.setVisibility(View.GONE);
+//        }
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
     }
 
-    private int calcDishSize() {
-        int num = 0;
-        if (!ListUtils.isEmpty(buyList)) {
-            for (Food data : buyList) {
-                int n = data.getSelectedOrderNum();
-                num += n;
-            }
-        }
-        return num;
-    }
+//    private int calcDishSize() {
+//        int num = 0;
+//        if (!ListUtils.isEmpty(buyList)) {
+//            for (Food data : buyList) {
+//                int n = data.getSelectedOrderNum();
+//                num += n;
+//            }
+//        }
+//        return num;
+//    }
 
 
     @Override
@@ -544,80 +543,80 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mUserCityId = userCityIdMessage.getUserCityId();
     }
 
-    public void onEvent(JumpToDishesDetailsMessage jumpToDishesDetailsMessage) {
-        String mUserCityId = jumpToDishesDetailsMessage.getUserCityId();
-        Food foodData = jumpToDishesDetailsMessage.getFoodData();
-        Intent intent = new Intent(this, DishesDetailsActivity.class);
-        intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(INTENT_KEY_FOOD_OBJECT, foodData);
-        bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, INTENT_REQUEST_CODE_DISHES_DETIALS);
-    }
+//    public void onEvent(JumpToDishesDetailsMessage jumpToDishesDetailsMessage) {
+//        String mUserCityId = jumpToDishesDetailsMessage.getUserCityId();
+//        Food foodData = jumpToDishesDetailsMessage.getFoodData();
+//        Intent intent = new Intent(this, DishesDetailsActivity.class);
+//        intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(INTENT_KEY_FOOD_OBJECT, foodData);
+//        bundle.putParcelableArrayList(INTENT_KEY_BUY_LIST, buyList);
+//        intent.putExtras(bundle);
+//        startActivityForResult(intent, INTENT_REQUEST_CODE_DISHES_DETIALS);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == INTENT_REQUEST_CODE_SHOP_CART) {//从购物车回来时，带回购物车数据，从新计算购物车数量
-                boolean isClearCart = data.getBooleanExtra(ShoppingCartActivity.KEY_CLEAR_CART, false);
-                Bundle bundle = data.getExtras();
-                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
-                if (isClearCart) {//如果是清空购物车，清除购买集合
-                    buyList.clear();
-                }
-                postEvent(new RefreshChangeDataMessage(buyList, isClearCart));
-                if (calcDishSize() > 0) {
-                    mShoppingCartNumTextView.setVisibility(View.VISIBLE);
-                    mShoppingCartNumTextView.setText(calcDishSize() + "");
-                } else {
-                    mShoppingCartNumTextView.setVisibility(View.GONE);
-                }
+//                boolean isClearCart = data.getBooleanExtra(ShoppingCartActivity.KEY_CLEAR_CART, false);
+//                Bundle bundle = data.getExtras();
+//                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
+//                if (isClearCart) {//如果是清空购物车，清除购买集合
+//                    buyList.clear();
+//                }
+//                postEvent(new RefreshChangeDataMessage(buyList, isClearCart));
+//                if (calcDishSize() > 0) {
+//                    mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+//                    mShoppingCartNumTextView.setText(calcDishSize() + "");
+//                } else {
+//                    mShoppingCartNumTextView.setVisibility(View.GONE);
+//                }
             } else if (requestCode == INTENT_REQUEST_CODE_DISHES_DETIALS) {//从单个商品详情回来，带回购买数据集合，从新计算购物车数量
-                Bundle bundle = data.getExtras();
-                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
-                postEvent(new RefreshChangeDataMessage(buyList, false));
-                if (calcDishSize() > 0) {
-                    mShoppingCartNumTextView.setVisibility(View.VISIBLE);
-                    mShoppingCartNumTextView.setText(calcDishSize() + "");
-                } else {
-                    mShoppingCartNumTextView.setVisibility(View.GONE);
-                }
+//                Bundle bundle = data.getExtras();
+//                buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
+//                postEvent(new RefreshChangeDataMessage(buyList, false));
+//                if (calcDishSize() > 0) {
+//                    mShoppingCartNumTextView.setVisibility(View.VISIBLE);
+//                    mShoppingCartNumTextView.setText(calcDishSize() + "");
+//                } else {
+//                    mShoppingCartNumTextView.setVisibility(View.GONE);
+//                }
             }
         }
     }
 
 
-    public void onEvent(DishesWechatPayMessage wechatMessage) {
-        buyList.clear();
-        postEvent(new RefreshChangeDataMessage(buyList, true));
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
-    }
+//    public void onEvent(DishesWechatPayMessage wechatMessage) {
+//        buyList.clear();
+//        postEvent(new RefreshChangeDataMessage(buyList, true));
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//    }
 
-    public void onEvent(DishesAliPayMessage dishesAliPayMessage) {
-        buyList.clear();
-        postEvent(new RefreshChangeDataMessage(buyList, true));
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
-    }
+//    public void onEvent(DishesAliPayMessage dishesAliPayMessage) {
+//        buyList.clear();
+//        postEvent(new RefreshChangeDataMessage(buyList, true));
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//    }
 
-    public void onEvent(DishesPayFalse dishesWechatPayFalse) {
-        buyList.clear();
-        postEvent(new RefreshChangeDataMessage(buyList, true));
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
-    }
+//    public void onEvent(DishesPayFalse dishesWechatPayFalse) {
+//        buyList.clear();
+//        postEvent(new RefreshChangeDataMessage(buyList, true));
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//    }
 
-    public void onEvent(FreePayMessage message) {
-        buyList.clear();
-        postEvent(new RefreshChangeDataMessage(buyList, true));
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
-    }
+//    public void onEvent(FreePayMessage message) {
+//        buyList.clear();
+//        postEvent(new RefreshChangeDataMessage(buyList, true));
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//    }
 
-    public void onEvent(ClearCartMessage message) {
-        buyList.clear();
-        postEvent(new RefreshChangeDataMessage(buyList, true));
-        mShoppingCartNumTextView.setText(calcDishSize() + "");
-    }
+//    public void onEvent(ClearCartMessage message) {
+//        buyList.clear();
+//        postEvent(new RefreshChangeDataMessage(buyList, true));
+//        mShoppingCartNumTextView.setText(calcDishSize() + "");
+//    }
 
     public void onEvent(LikingHomeNoNetWorkMessage message) {
         initTitleLocation();

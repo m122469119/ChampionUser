@@ -20,6 +20,7 @@ import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
@@ -102,30 +103,34 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      */
     private void getUserExerciseData() {
         if (Preference.isLogin()) {
-            LiKingApi.getUserExerciseData(Preference.getToken(), new RequestCallback<UserExerciseResult>() {
-                @Override
-                public void onSuccess(UserExerciseResult result) {
-                    if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                        UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
-                        if (exerciseData != null) {
-                            Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
-                            myTrainTimePrompt.setVisibility(View.GONE);
-                            myTrainTime.setVisibility(View.VISIBLE);
-                            myTrainTime.setTypeface(typeFace);
-                            myTrainDistance.setTypeface(typeFace);
-                            myTrainCal.setTypeface(typeFace);
-                            myTrainTime.setText(exerciseData.getTodayMin());
-                            myTrainDistance.setText(exerciseData.getTodayDistance());
-                            myTrainCal.setText(exerciseData.getTodayCal());
+            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                clearExerciseData();
+            } else {
+                LiKingApi.getUserExerciseData(Preference.getToken(), new RequestCallback<UserExerciseResult>() {
+                    @Override
+                    public void onSuccess(UserExerciseResult result) {
+                        if (LiKingVerifyUtils.isValid(getActivity(), result)) {
+                            UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
+                            if (exerciseData != null) {
+                                Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
+                                myTrainTimePrompt.setVisibility(View.GONE);
+                                myTrainTime.setVisibility(View.VISIBLE);
+                                myTrainTime.setTypeface(typeFace);
+                                myTrainDistance.setTypeface(typeFace);
+                                myTrainCal.setTypeface(typeFace);
+                                myTrainTime.setText(exerciseData.getTodayMin());
+                                myTrainDistance.setText(exerciseData.getTodayDistance());
+                                myTrainCal.setText(exerciseData.getTodayCal());
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(RequestError error) {
+                    @Override
+                    public void onFailure(RequestError error) {
 
-                }
-            });
+                    }
+                });
+            }
         } else {
             clearExerciseData();
         }
@@ -315,7 +320,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             } else {
                 PopupUtils.showToast("您还没有登录");
             }
-        }else if (v == mContactSetviceBtn){
+        } else if (v == mContactSetviceBtn) {
             String phone = Preference.getCustomerServicePhone();
             if (!StringUtils.isEmpty(phone)) {
                 LikingCallUtil.showCallDialog(getActivity(), "确定联系客服吗？", phone);

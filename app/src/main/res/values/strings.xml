@@ -154,5 +154,6 @@
     <string name="dialog_know">知道了</string>
     <string name="dialog_app_update">去升级</string>
     <string name="confirm_complete_courese">您确定完成该课程吗?</string>
+    <string name="network_contact_fail">网络连接异常,请检查网络</string>
 
 </resources>

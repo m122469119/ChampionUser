@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -37,7 +38,9 @@ public class LoadingActivity extends BaseActivity {
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         previousPatchData = Preference.getPatchData();
-        LiKingVerifyUtils.initApi(this);
+        if (EnvironmentUtils.Network.isNetWorkAvailable()) {
+            LiKingVerifyUtils.initApi(this);
+        }
     }
 
     @Override
