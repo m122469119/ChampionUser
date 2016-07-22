@@ -22,6 +22,8 @@ public class ConfirmCard extends BaseData {
     private String price;
     @SerializedName("qulification")
     private int qulification;
+    @SerializedName("can_select")
+    private int canSelect;
 
     private boolean isSelect;
     private boolean layoutViewEnable;
@@ -63,6 +65,14 @@ public class ConfirmCard extends BaseData {
 
     public int getQulification() {
         return qulification;
+    }
+
+    public int getCanSelect() {
+        return canSelect;
+    }
+
+    public void setCanSelect(int canSelect) {
+        this.canSelect = canSelect;
     }
 
     public void setQulification(int qulification) {

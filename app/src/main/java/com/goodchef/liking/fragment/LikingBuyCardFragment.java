@@ -15,6 +15,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
+import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.http.result.CardResult;
@@ -147,6 +148,10 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
     }
 
     public void onEvent(OnCLickBuyCardFragmentMessage message) {
+        sendBuyCardListRequest();
+    }
+
+    public void onEvent(BuyCardListMessage message) {
         sendBuyCardListRequest();
     }
 

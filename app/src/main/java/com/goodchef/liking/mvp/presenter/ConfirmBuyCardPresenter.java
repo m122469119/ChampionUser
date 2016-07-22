@@ -1,16 +1,21 @@
 package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.storage.Preference;
@@ -32,7 +37,23 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateConfirmBuyCardView(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    if (result.getCode() == LiKingRequestCode.BUY_CARD_CONFIRM) {
+                        HBaseDialog.Builder builder = new HBaseDialog.Builder(mContext);
+                        builder.setMessage(result.getMessage());
+                        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mContext != null && mContext instanceof BuyCardConfirmActivity) {
+                                    dialog.dismiss();
+                                    postEvent(new BuyCardListMessage());
+                                    ((BuyCardConfirmActivity) mContext).finish();
+                                }
+                            }
+                        });
+                        builder.create().show();
+                    } else {
+                        PopupUtils.showToast(result.getMessage());
+                    }
                 }
             }
 
