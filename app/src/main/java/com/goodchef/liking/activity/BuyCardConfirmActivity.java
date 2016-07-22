@@ -20,6 +20,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
 import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
 import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
@@ -27,6 +28,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
@@ -350,9 +352,11 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 if (object != null) {
                     for (ConfirmCard data : confirmCardList) {
                         if (data.getType() == object.getType()) {
-                            data.setSelect(true);
+//                            data.setSelect(true);
+                            data.setQulification(1);
                         } else {
-                            data.setSelect(false);
+//                            data.setSelect(false);
+                            data.setQulification(0);
                         }
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
@@ -369,40 +373,55 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 设置card
      */
     private void setCardView(List<ConfirmCard> confirmCardList) {
-        if (confirmCardList != null && confirmCardList.size() >= 2) {
-            //当集合中 qulification 属性都为1时，表示都可以选，此时默认选中全天卡
-            if (confirmCardList.get(0).getQulification() == 1 && confirmCardList.get(1).getQulification() == 1) {
-                confirmCardList.get(1).setLayoutViewEnable(true);
-                confirmCardList.get(0).setLayoutViewEnable(true);
-                for (ConfirmCard card : confirmCardList) {
-                    if (card.getType() == 2) {//全天卡。1闲时，2全天,当非登录或者没有卡是，默认选中全天卡
-                        card.setSelect(true);
-                        mCardId = card.getCardId();
-                        if (buyType != BUY_TYPE_UPGRADE) {
-                            cardPrice = card.getPrice();
-                            mCardMoneyTextView.setText("¥ " + cardPrice);
-                        }
-                    } else {
-                        card.setSelect(false);
-                    }
-                }
-            } else {//当集合中qulification 有1 或者0 的情况，为0的情况不可选
-                for (ConfirmCard card : confirmCardList) {
-                    if (card.getQulification() == 1) {
-                        mCardId = card.getCardId();
-                        if (buyType != BUY_TYPE_UPGRADE) {
-                            cardPrice = card.getPrice();
-                            mCardMoneyTextView.setText("¥ " + cardPrice);
-                        }
-                    }
+//        if (confirmCardList != null && confirmCardList.size() >= 2) {
+//            //当集合中 qulification 属性都为1时，表示都可以选，此时默认选中全天卡
+//            if (confirmCardList.get(0).getQulification() == 1 && confirmCardList.get(1).getQulification() == 1) {
+//                confirmCardList.get(1).setLayoutViewEnable(true);
+//                confirmCardList.get(0).setLayoutViewEnable(true);
+//                for (ConfirmCard card : confirmCardList) {
+//                    if (card.getType() == 2) {//全天卡。1闲时，2全天,当非登录或者没有卡是，默认选中全天卡
+//                        card.setSelect(true);
+//                        mCardId = card.getCardId();
+//                        if (buyType != BUY_TYPE_UPGRADE) {
+//                            cardPrice = card.getPrice();
+//                            mCardMoneyTextView.setText("¥ " + cardPrice);
+//                        }
+//                    } else {
+//                        card.setSelect(false);
+//                    }
+//                }
+//            } else {//当集合中qulification 有1 或者0 的情况，为0的情况不可选
+//                for (ConfirmCard card : confirmCardList) {
+//                    if (card.getQulification() == 1) {
+//                        mCardId = card.getCardId();
+//                        if (buyType != BUY_TYPE_UPGRADE) {
+//                            cardPrice = card.getPrice();
+//                            mCardMoneyTextView.setText("¥ " + cardPrice);
+//                        }
+//                    }
+//                }
+//            }
+
+
+        for (ConfirmCard card : confirmCardList) {
+            if (card.getQulification() == 1) {
+                mCardMoneyTextView.setVisibility(View.VISIBLE);
+                mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
+                mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+                mCardId = card.getCardId();
+                if (buyType != BUY_TYPE_UPGRADE) {
+                    cardPrice = card.getPrice();
+                    mCardMoneyTextView.setText("¥ " + cardPrice);
                 }
             }
-
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            mCardRecyclerView.setLayoutManager(mLayoutManager);
-            mCardRecyclerAdapter.setData(confirmCardList);
-            mCardRecyclerView.setAdapter(mCardRecyclerAdapter);
         }
+
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mCardRecyclerView.setLayoutManager(mLayoutManager);
+        mCardRecyclerAdapter.setData(confirmCardList);
+        mCardRecyclerView.setAdapter(mCardRecyclerAdapter);
+//        }
 
     }
 
@@ -481,6 +500,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
         startActivity(intent);
         this.finish();
+    }
+
+    public void onEvent(LoginFinishMessage message) {
+        sendConfirmCardRequest();
     }
 
 

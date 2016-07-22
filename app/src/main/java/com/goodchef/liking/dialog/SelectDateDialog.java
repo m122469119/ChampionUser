@@ -1,7 +1,7 @@
 package com.goodchef.liking.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.widgets.wheelpicker.core.AbstractWheelPicker;
 import com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelDayPicker;
 import com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelMonthPicker;
@@ -19,14 +18,14 @@ import com.goodchef.liking.widgets.wheelpicker.widget.curved.WheelYearPicker;
 import java.util.Calendar;
 
 /**
- * 说明:
+ * 说明:选择时间对话框
  * Author shaozucheng
  * Time:16/7/5 上午10:47
  */
 public class SelectDateDialog {
 
     private Context mContext;
-    private Dialog mDialog;
+    private AppCompatDialog mDialog;
     private TextView mCancelBtn;
     private TextView mConfirmBtn;
 
@@ -41,18 +40,21 @@ public class SelectDateDialog {
 
     public SelectDateDialog(Context context) {
         this.mContext = context;
-        mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
-        WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
-        if (hasSoft) {
-            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);
-            //这一行很重要
-            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, navigationBarHeight, WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT);
-        } else {
-            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT);
-        }
+//        mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
+        mDialog = new AppCompatDialog(context, R.style.camera_dialog_no_screen);
+//        WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+//        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
+//        if (hasSoft) {
+//            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);
+//            //这一行很重要
+//            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
+//                    WindowManager.LayoutParams.WRAP_CONTENT);
+//        } else {
+//
+//        }
+
+        DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
 
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(true);
@@ -82,7 +84,7 @@ public class SelectDateDialog {
         getDay();
     }
 
-    public String getYear(){
+    public String getYear() {
         mWheelYearPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
             @Override
             public void onWheelScrolling(float deltaX, float deltaY) {
@@ -102,7 +104,7 @@ public class SelectDateDialog {
         return yearStr;
     }
 
-    public String getMonth(){
+    public String getMonth() {
         mWheelMonthPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
             @Override
             public void onWheelScrolling(float deltaX, float deltaY) {
@@ -122,7 +124,7 @@ public class SelectDateDialog {
         return monthStr;
     }
 
-    public String getDay(){
+    public String getDay() {
         mWheelDayPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {
             @Override
             public void onWheelScrolling(float deltaX, float deltaY) {

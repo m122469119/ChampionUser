@@ -39,4 +39,6 @@ public interface LiKingRequestCode extends ServerRequestCode {
     public static final int LOGIN_TOKEN_INVALID = 10013;
     /**退出登录失败，请重试*/
     public static final int LOGOUT_FAILURE = 10014;
+    /**购买卡*/
+    public static final int BUY_CARD_CONFIRM = 23009;
 }

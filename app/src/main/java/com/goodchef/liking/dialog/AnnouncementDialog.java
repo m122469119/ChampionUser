@@ -1,7 +1,7 @@
 package com.goodchef.liking.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -13,20 +13,21 @@ import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 
 /**
- * 说明:
+ * 说明:查看门店
  * Author shaozucheng
  * Time:16/7/18 下午5:21
  */
 public class AnnouncementDialog {
 
     private Context context;
-    private Dialog mDialog;
+    private AppCompatDialog mDialog;
     private TextView mTextView;
     private ImageButton mButton;
 
     public AnnouncementDialog(Context context, String announcementStr) {
         this.context = context;
-        mDialog = new android.app.AlertDialog.Builder(context, R.style.announcement_dialog_no_screen).create();
+       // mDialog = new android.app.AlertDialog.Builder(context, R.style.announcement_dialog_no_screen).create();
+        mDialog = new AppCompatDialog(context,R.style.announcement_dialog_no_screen);
         //这一行很重要
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.CENTER, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);

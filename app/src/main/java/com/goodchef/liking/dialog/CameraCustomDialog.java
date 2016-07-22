@@ -1,7 +1,7 @@
 package com.goodchef.liking.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.utils.NavigationBarUtil;
 
 
 /**
@@ -21,25 +20,28 @@ import com.goodchef.liking.utils.NavigationBarUtil;
 public class CameraCustomDialog {
 
     private Context mContext;
-    private Dialog mDialog;
+    private AppCompatDialog mDialog;
     private TextView mCancelButton;//取消按钮
     private TextView mPhotographTextView;//拍照
     private TextView mAlbumTextView;//从相册中选择
 
     public CameraCustomDialog(Context context) {
         this.mContext = context;
-        mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
-        WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
-        if (hasSoft) {
-            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);//获取虚拟键盘的高度
-            //这一行很重要，将dialog对话框设置在虚拟键盘上面
-            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, navigationBarHeight, WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT);
-        } else {
-            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT);
-        }
+        //  mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
+        mDialog = new AppCompatDialog(context, R.style.camera_dialog_no_screen);
+//        WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+//        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
+//        if (hasSoft) {
+//            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);//获取虚拟键盘的高度
+//            //这一行很重要，将dialog对话框设置在虚拟键盘上面
+//            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
+//                    WindowManager.LayoutParams.WRAP_CONTENT);
+//        } else {
+//
+//        }
+
+        DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
 
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(true);
