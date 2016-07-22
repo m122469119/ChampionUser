@@ -39,7 +39,7 @@ android {
         def HTTP_HOST = "HTTP_HOST"
         def TRUE = "true"
         def FALSE = "false"
-        def appFlag = "\"goodChef\""
+        def appFlag = "\"LikingFit\""
         release {
             buildConfigField BOOLEAN, TEST_MODE, FALSE
             buildConfigField STRING, APP_FLAG, appFlag
