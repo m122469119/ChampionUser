@@ -36,7 +36,6 @@ public class LikingApplication extends BaseApplication {
     @Override
     protected void backgroundInitialize() {
         LogUtils.i(TAG, "backgroundInitialize---");
-        DiskStorageManager.getInstance().init("LikingFit");
     }
 
     @Override
