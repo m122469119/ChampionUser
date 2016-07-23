@@ -26,4 +26,13 @@ public class NativeMethod {
     public void phoneCall(String number) {
         PhoneUtils.phoneCall(mContext, number);
     }
+
+    /**
+     * 跳转拨号界面
+     */
+    @JavascriptInterface
+    public void skipPhoneDial(String number) {
+        PhoneUtils.skipPhoneDial(mContext, number);
+    }
+
 }

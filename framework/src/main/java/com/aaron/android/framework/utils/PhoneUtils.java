@@ -10,8 +10,27 @@ import android.text.TextUtils;
  */
 public class PhoneUtils {
 
+    /**
+     * 直接拨打电话
+     *
+     * @param context
+     * @param number
+     */
     public static void phoneCall(Context context, String number) {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+        context.startActivity(intent);
+    }
+
+
+    /**
+     * 调用拨号界面拨打电话
+     *
+     * @param context
+     * @param number
+     */
+    public static void skipPhoneDial(Context context, String number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
