@@ -26,6 +26,7 @@ import com.aaron.android.framework.R;
 public class HWebView extends WebView {
     private Context mContext;
     private HWebProtocolHelper mWebProtocolHelper;
+    private NativeMethod mNativeMethod;
     public HWebView(Context context) {
         super(context);
         init(context);
@@ -47,14 +48,15 @@ public class HWebView extends WebView {
         init(context);
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
     private void init(Context context) {
         mContext = context;
         WebSettings webSettings = getSettings();
         webSettings.setJavaScriptEnabled(true);
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); //始终不使用缓存
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         setWebViewClient(new HWebViewClient());
         setWebChromeClient(new HWebChromeClient());
+        addJavascriptInterface(new NativeMethod(getContext()), "NativeMethod");
     }
 
     class HWebViewClient extends WebViewClient {
@@ -77,6 +79,7 @@ public class HWebView extends WebView {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            /**使js中的alert调用android native系统弹框*/
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setMessage(message);
             builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
