@@ -26,7 +26,6 @@ import com.aaron.android.framework.R;
 public class HWebView extends WebView {
     private Context mContext;
     private HWebProtocolHelper mWebProtocolHelper;
-    private NativeMethod mNativeMethod;
     public HWebView(Context context) {
         super(context);
         init(context);
