@@ -51,6 +51,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private RelativeLayout mCouponsLayout;
     private TextView mCoursesMoneyTextView;
     private TextView mImmediatelyBuyBtn;
+    private TextView mCoursesAddressTextView;
 
     private RelativeLayout mAlipayLayout;
     private RelativeLayout mWechatLayout;
@@ -71,6 +72,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private String payType = "-1";//支付方式
 
     private LikingStateView mStateView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mCoursesMoneyTextView = (TextView) findViewById(R.id.courses_money);
         mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
         mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
+        mCoursesAddressTextView = (TextView) findViewById(R.id.courses_address);
         mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
         mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
         mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
@@ -144,6 +147,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             setTrainItem(trainItemList);
             mCoursesPeopleTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
             mEndTimeTextView.setText(coursesConfirmData.getEndTime());
+            mCoursesAddressTextView.setText(coursesConfirmData.getAddressText());
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
@@ -349,7 +353,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
-        if (wechatMessage.isPaySuccess()){
+        if (wechatMessage.isPaySuccess()) {
             jumpToMyCoursesActivity();
         }
     }

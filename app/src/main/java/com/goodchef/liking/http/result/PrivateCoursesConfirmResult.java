@@ -32,6 +32,8 @@ public class PrivateCoursesConfirmResult extends BaseResult {
         private String totalAmount;
         @SerializedName("course")
         private List<Courses> mCourses;
+        @SerializedName("address_text")
+        private String addressText;
 
         public String getPeopleNum() {
             return peopleNum;
@@ -63,6 +65,14 @@ public class PrivateCoursesConfirmResult extends BaseResult {
 
         public void setCourses(List<Courses> courses) {
             mCourses = courses;
+        }
+
+        public String getAddressText() {
+            return addressText;
+        }
+
+        public void setAddressText(String addressText) {
+            this.addressText = addressText;
         }
 
         public class Courses extends BaseData {

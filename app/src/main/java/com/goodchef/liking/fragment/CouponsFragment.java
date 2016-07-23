@@ -124,7 +124,11 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private void initRecycleView() {
         mCouponsAdapter = new CouponsAdapter(getActivity());
         setRecyclerAdapter(mCouponsAdapter);
-        mCouponsAdapter.setRootViewOnClickListener(mCouponsClickListener);
+        if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
+            mCouponsAdapter.setRootViewOnClickListener(null);
+        } else {
+            mCouponsAdapter.setRootViewOnClickListener(mCouponsClickListener);
+        }
     }
 
 
@@ -242,18 +246,22 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                     boolean isSelect = object.isSelect();
                     setNotUsedBackGround(couponType, minAmount);
                     mOverdueImageView.setVisibility(View.GONE);
-                    mRootCouponsLayout.setEnabled(true);
-                    mRootCouponsLayout.setOnClickListener(mClickListener);
+                    if (mClickListener != null) {
+                        mRootCouponsLayout.setEnabled(true);
+                        mRootCouponsLayout.setOnClickListener(mClickListener);
+                    }else {
+                        mRootCouponsLayout.setEnabled(false);
+                    }
                     setSelectCouponView(isSelect, object.getAmount());
                 } else if (couponsStatus.equals(COUPON_STATUS_USED)) {//使用过
-                    setUsedBackGround(couponType,minAmount);
+                    setUsedBackGround(couponType, minAmount);
                     mOverdueImageView.setVisibility(View.VISIBLE);
                     mOverdueImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_icon_used));
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
                 } else if (couponsStatus.equals(COUPON_STATUS_OVERDUE)) {//过期
                     mOverdueImageView.setVisibility(View.VISIBLE);
-                    setUsedBackGround(couponType,minAmount);
+                    setUsedBackGround(couponType, minAmount);
                     mOverdueImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_icon_overdue));
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
