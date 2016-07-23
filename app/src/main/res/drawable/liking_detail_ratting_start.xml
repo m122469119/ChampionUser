@@ -6,7 +6,7 @@
         android:drawable="@drawable/liking_ratting_gray" />
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/liking_ratting_gray"></item>
+        android:drawable="@drawable/liking_ratting_gray"/>
     <item
         android:id="@android:id/progress"
         android:drawable="@drawable/liking_rating_light" />
