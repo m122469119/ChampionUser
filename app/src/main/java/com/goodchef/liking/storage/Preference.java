@@ -35,6 +35,7 @@ public class Preference extends AbsPreference {
     private static final String TAG = "Preference";
     public static final String PATCH_DATA = "patchData";
     public static final String NULL_STRING = "";
+    public static final String APP_UPDATE = "appUpdate";
 
 
     /**
@@ -201,6 +202,28 @@ public class Preference extends AbsPreference {
     }
 
     /**
+     * 设置是否需要升级app
+     *
+     * @param isUpdate 升级标志
+     * @return
+     */
+    public static boolean setIsUpdateApp(boolean isUpdate) {
+        return setObject(APP_UPDATE, isUpdate);
+    }
+
+    /**
+     * 获取是否需要升级app
+     * 默认是true
+     *
+     * @return
+     */
+    public static boolean getIsUpdate() {
+        boolean isUpdate;
+        isUpdate = (boolean) getObject(APP_UPDATE, true);
+        return isUpdate;
+    }
+
+    /**
      * 判断用户是否是新用户
      *
      * @return true or  false
@@ -256,11 +279,11 @@ public class Preference extends AbsPreference {
     }
 
     public static void setAppVersion(String appVersion) {
-        setObject(APP_VERSION,appVersion);
+        setObject(APP_VERSION, appVersion);
     }
 
     public static String getAppVersion() {
-        return (String) getObject(APP_VERSION,"");
+        return (String) getObject(APP_VERSION, "");
     }
 
 
@@ -308,13 +331,14 @@ public class Preference extends AbsPreference {
     }
 
 
-    public static boolean savePatchData(PatchData data){
+    public static boolean savePatchData(PatchData data) {
         String patchDataString = new Gson().toJson(data);
-        return setObject(PATCH_DATA,patchDataString);
+        return setObject(PATCH_DATA, patchDataString);
     }
-    public static PatchData getPatchData(){
-        String patchDataString = (String) getObject(PATCH_DATA,NULL_STRING);
-        return new Gson().fromJson(patchDataString,PatchData.class);
+
+    public static PatchData getPatchData() {
+        String patchDataString = (String) getObject(PATCH_DATA, NULL_STRING);
+        return new Gson().fromJson(patchDataString, PatchData.class);
     }
 
 }

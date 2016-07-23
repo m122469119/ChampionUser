@@ -259,6 +259,7 @@
 
 
             <LinearLayout
+                android:id="@+id/layout_group_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"

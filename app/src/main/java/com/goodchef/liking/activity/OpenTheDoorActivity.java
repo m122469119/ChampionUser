@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.OpenPassWordDoorFragment;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
  * 说明:
@@ -22,6 +25,7 @@ public class OpenTheDoorActivity extends AppBarActivity {
     private ViewPager mViewPager;
     private MyFragmentPageAdapter mAdapter;
     private IconPageIndicator mIconPageIndicator;
+    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +33,29 @@ public class OpenTheDoorActivity extends AppBarActivity {
         setContentView(R.layout.activity_open_the_door);
         setTitle(getString(R.string.title_open_the_door));
         initView();
+        setView();
         initData();
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.open_the_door_state_view);
         mViewPager = (ViewPager) findViewById(R.id.open_viewpager);
         mIconPageIndicator = (IconPageIndicator)findViewById(R.id.open_indicator);
+
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                setView();
+            }
+        });
+    }
+
+    private void setView(){
+        if (EnvironmentUtils.Network.isNetWorkAvailable()){
+            mStateView.setState(StateView.State.SUCCESS);
+        }else {
+            mStateView.setState(StateView.State.FAILED);
+        }
     }
 
     private void initData() {

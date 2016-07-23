@@ -43,7 +43,7 @@ android {
         release {
             buildConfigField BOOLEAN, TEST_MODE, FALSE
             buildConfigField STRING, APP_FLAG, appFlag
-            buildConfigField STRING, HTTP_HOST, "\"http://manage.chushi007.com\""
+            buildConfigField STRING, HTTP_HOST, "\"http://app.likingfit.com\""
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.myConfig

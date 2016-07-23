@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class RequestParamsHelper {
     private static final String TAG = "RequestParamsHelper";
-    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isDebugMode() ? "testCcmsIam500QiangA" : "b0e2857fc739e9f2apk0"; //app签名key
+    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isDebugMode() ? "testCcmsIam500QiangA" : "gIhErwWVDaM4jefERmoR"; //app签名key
 
     //正式环境的支付公钥为(yGcNQznPTvusj7Y6rMI5)
     public static final String SET_PASSWORD_KEY = EnvironmentUtils.Config.isDebugMode() ? "vZr8m0erpGqLbLThv4ov" : "yGcNQznPTvusj7Y6rMI5";//测试环境支付公钥
