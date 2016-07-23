@@ -349,7 +349,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
-        jumpToMyCoursesActivity();
+        if (wechatMessage.isPaySuccess()){
+            jumpToMyCoursesActivity();
+        }
     }
 
     /**

@@ -148,6 +148,8 @@ public class BaseConfigResult extends BaseResult {
             private String mContent;
             @SerializedName("url")
             private String mUrl;
+             @SerializedName("lastest_ver")
+            private String lastestVer;
 
             public void setUpdate(int update) {
                 this.mUpdate = update;
@@ -179,6 +181,14 @@ public class BaseConfigResult extends BaseResult {
 
             public String getUrl() {
                 return mUrl;
+            }
+
+            public String getLastestVer() {
+                return lastestVer;
+            }
+
+            public void setLastestVer(String lastestVer) {
+                this.lastestVer = lastestVer;
             }
         }
 

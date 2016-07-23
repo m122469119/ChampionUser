@@ -321,7 +321,6 @@
 
         <!--  测试环境:  3aacb84f6265be5b84b19ba9
          正式环境:  f96c053a975781859180e16a  -->
-
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="3aacb84f6265be5b84b19ba9"/>
@@ -329,6 +328,7 @@
         <!-- JPush极光推送-->
 
         <!-- 友盟统计组件-->
+        <!--正式key: 5792d1a767e58ee14d002e2c 测试：5784523067e58eb7470009e4  -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5784523067e58eb7470009e4">

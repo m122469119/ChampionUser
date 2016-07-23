@@ -87,7 +87,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (payType == PAY_TYPE_ORDER) {
-                    postEvent(new WechatPayMessage());
+                    postEvent(new WechatPayMessage(paySuccess));
                     dialog.dismiss();
                     orderId = "";
                     finish();
@@ -119,6 +119,14 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     }
 
     public class WechatPayMessage extends BaseMessage {
+       boolean isPaySuccess;
 
+        public WechatPayMessage(boolean isPaySuccess) {
+            this.isPaySuccess = isPaySuccess;
+        }
+
+        public boolean isPaySuccess() {
+            return isPaySuccess;
+        }
     }
 }

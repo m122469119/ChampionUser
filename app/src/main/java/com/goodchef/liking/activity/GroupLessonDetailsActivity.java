@@ -18,6 +18,7 @@ import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
@@ -59,7 +60,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private TextView mTeacherNameTextView;
     private RatingBar mRatingBar;
     private TextView mCoursesIntroduceTextView;
-//    private TextView mTrainNameTextView;
+    //    private TextView mTrainNameTextView;
 //    private HImageView mTeacherImageView;
 //    private TextView mTeacherIntroduceTextView;
     private TextView mImmediatelySubmitBtn;
@@ -69,6 +70,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private TextView mCancelOrderBtn;
 
     private RelativeLayout mGymIntroduceLayout;
+    private LinearLayout mGymRootLayout;
     private RecyclerView mRecyclerView;
     private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
     private GroupCoursesDetailsPresenter mGroupCoursesDetailsPresenter;
@@ -119,12 +121,13 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.courses_introduce);
 
+        mGymRootLayout = (LinearLayout) findViewById(R.id.layout_group_details);
         mGymIntroduceLayout = (RelativeLayout) findViewById(R.id.layout_gym_introduce);
         mRecyclerView = (RecyclerView) findViewById(R.id.group_lesson_details_recyclerView);
 
         // mTrainNameTextView = (TextView) findViewById(R.id.train_name);
         //mTeacherImageView = (HImageView) findViewById(R.id.teacher_imageView);
-      //  mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
+        //  mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.group_immediately_submit_btn);
         mCoursesStateLayout = (LinearLayout) findViewById(R.id.layout_group_state);
         mStatePromptTextView = (TextView) findViewById(R.id.courses_state_prompt);
@@ -136,6 +139,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private void setViewOnClickListener() {
         mImmediatelySubmitBtn.setOnClickListener(this);
         mGymIntroduceLayout.setOnClickListener(this);
+        mGymRootLayout.setOnClickListener(this);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -276,6 +280,20 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mGroupLessonDetailsAdapter = new GroupLessonDetailsAdapter(this);
             mGroupLessonDetailsAdapter.setData(stadiumImageList);
             mRecyclerView.setAdapter(mGroupLessonDetailsAdapter);
+            mGroupLessonDetailsAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, int position) {
+                    return false;
+                }
+            });
         }
     }
 
@@ -290,7 +308,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             }
         } else if (v == mCancelOrderBtn) {//取消预定
             showCancelCoursesDialog();
-        } else if (v == mGymIntroduceLayout) {
+        } else if (v == mGymIntroduceLayout || v == mGymRootLayout) {//进入门店详情
             Intent intent = new Intent(this, ArenaActivity.class);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             this.startActivity(intent);

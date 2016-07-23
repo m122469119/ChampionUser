@@ -165,7 +165,9 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     }
 
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
-        this.finish();
+        if (wechatMessage.isPaySuccess()) {
+            this.finish();
+        }
     }
 
     public void onEvent(BuyPrivateCoursesMessage message) {
