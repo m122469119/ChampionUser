@@ -81,9 +81,6 @@ android {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
     }
 
-    nuwa {
-        excludeClass = ['com/aaron/android/framework/base/BaseApplication.class']
-    }
 }
 
 dependencies {
