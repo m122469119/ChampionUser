@@ -29,6 +29,9 @@ android {
             assets.srcDirs = ['src/main/assets']
             jniLibs.srcDirs = ['libs']
         }
+        debug {
+            manifest.srcFile 'src/debug/AndroidManifest.xml'
+        }
         androidTest.setRoot('src/androidTest')
     }
     buildTypes {
