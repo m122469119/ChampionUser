@@ -8,11 +8,11 @@
 
 
     <permission
-        android:name="com.goodchef.liking.test.permission.JPUSH_MESSAGE"
+        android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
 
     <!-- JPush极光推送-->
-    <uses-permission android:name="com.goodchef.liking.test.permission.JPUSH_MESSAGE"/>
+    <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -207,7 +207,7 @@
         <!--测试key:d599392f8c7be8820ac37204819a453b  正式key :0cfa755090bd4282a06a7db550ab7cf3-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="d599392f8c7be8820ac37204819a453b"/>
+            android:value="0cfa755090bd4282a06a7db550ab7cf3"/>
         <service android:name="com.amap.api.location.APSService"/>
 
 
@@ -228,7 +228,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="com.goodchef.liking.test"/>
+                <category android:name="com.goodchef.liking"/>
             </intent-filter>
         </activity>
         <!-- Required  SDK核心功能-->
@@ -260,7 +260,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService"/>
-                <category android:name="com.goodchef.liking.test"/>
+                <category android:name="com.goodchef.liking"/>
             </intent-filter>
 
         </service>
@@ -273,7 +273,7 @@
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
                 <!--Required  显示通知栏 -->
-                <category android:name="com.goodchef.liking.test"/>
+                <category android:name="com.goodchef.liking"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
@@ -311,7 +311,7 @@
                 <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
                 <action android:name="cn.jpush.android.intent.CONNECTION"/>
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.goodchef.liking.test"/>
+                <category android:name="com.goodchef.liking"/>
             </intent-filter>
         </receiver>
         <!-- Required  . Enable it you can get statistics data with channel -->
@@ -323,7 +323,7 @@
          正式环境:  e5358bc1d6c75830a71046ec  -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="3aacb84f6265be5b84b19ba9"/>
+            android:value="e5358bc1d6c75830a71046ec"/>
         <!--  </>值来自开发者平台取得的AppKey-->
         <!-- JPush极光推送-->
 
@@ -331,7 +331,7 @@
         <!--正式key: 5792d1a767e58ee14d002e2c 测试：5784523067e58eb7470009e4  -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5784523067e58eb7470009e4">
+            android:value="5792d1a767e58ee14d002e2c">
         </meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
