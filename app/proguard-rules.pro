@@ -155,6 +155,9 @@
     *;
 }
 
+-keep class com.aaron.android.framework.library.web.NativeMethod {
+*;}
+
 -keep class com.iflytek.**{*;}
 
 -keepclassmembers class ** {

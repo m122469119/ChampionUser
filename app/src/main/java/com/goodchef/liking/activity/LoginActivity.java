@@ -17,6 +17,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
@@ -151,6 +152,9 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
     public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
         mCodeEditText.setText("");
         PopupUtils.showToast("验证码已发送");
+        if (!EnvironmentUtils.Config.isDebugMode()) {
+            return;
+        }
         if (verificationCodeData != null && !TextUtils.isEmpty(verificationCodeData.getCaptcha())) {
             mCodeEditText.setText(verificationCodeData.getCaptcha());
         }
@@ -170,7 +174,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             if (newUser == 1) {
                 Intent intent = new Intent(this, MyInfoActivity.class);
                 intent.putExtra(KEY_TITLE_SET_USER_INFO, "设置个人信息");
-                intent.putExtra(KEY_INTENT_TYPE,1);
+                intent.putExtra(KEY_INTENT_TYPE, 1);
                 startActivity(intent);
             }
             this.finish();

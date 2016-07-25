@@ -19,7 +19,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             card_view:cardCornerRadius="0dp"
-            card_view:cardElevation="10dp"
             card_view:cardPreventCornerOverlap="true">
 
             <LinearLayout
@@ -101,7 +100,7 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_lesson_type"
+        android:id="@+id/layout_gym_lesson_type"
         android:layout_width="55dp"
         android:layout_height="23dp"
         android:layout_gravity="right"

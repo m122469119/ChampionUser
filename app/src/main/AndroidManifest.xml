@@ -320,7 +320,7 @@
             android:value="self"/>
 
         <!--  测试环境:  3aacb84f6265be5b84b19ba9
-         正式环境:  f96c053a975781859180e16a  -->
+         正式环境:  e5358bc1d6c75830a71046ec  -->
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="3aacb84f6265be5b84b19ba9"/>

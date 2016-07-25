@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -192,6 +195,7 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
             private TextView mLessonTimeTextView;//课程时间
             private TextView mSurplusPersonTextView;//剩余名额
             private CardView mCardView;
+            private RelativeLayout mLessonTypeLayout;//课程类型布局
 
             public GymCoursesViewHolder(View itemView) {
                 super(itemView);
@@ -199,12 +203,31 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
                 mLessonNameTextView = (TextView) itemView.findViewById(R.id.gym_lesson_name);
                 mLessonUseTextView = (TextView) itemView.findViewById(R.id.gym_lesson_use);
                 mLessonTimeTextView = (TextView) itemView.findViewById(R.id.gym_lesson_time);
+                mLessonTypeLayout = (RelativeLayout) itemView.findViewById(R.id.layout_gym_lesson_type);
                 mSurplusPersonTextView = (TextView) itemView.findViewById(R.id.gym_surplus_person);
                 mCardView = (CardView) itemView.findViewById(R.id.gym_cardView);
+                setCardView();
+            }
+
+            private void setCardView() {
+                if (mCardView != null && mLessonTypeLayout != null) {
+                    if (Build.VERSION.SDK_INT < 21) {
+                        mCardView.setCardElevation(0);
+                        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mLessonTypeLayout.getLayoutParams();
+                        lp.setMargins(DisplayUtils.dp2px(0), DisplayUtils.dp2px(12), DisplayUtils.dp2px(10), DisplayUtils.dp2px(0));
+                        mLessonTypeLayout.setLayoutParams(lp);
+                    } else {
+                        mCardView.setCardElevation(10);
+                        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mLessonTypeLayout.getLayoutParams();
+                        lp.setMargins(DisplayUtils.dp2px(0), DisplayUtils.dp2px(12), DisplayUtils.dp2px(8), DisplayUtils.dp2px(0));
+                        mLessonTypeLayout.setLayoutParams(lp);
+                    }
+                }
             }
 
             @Override
             public void bindViews(final GymCoursesResult.GymCoursesData.Courses object) {
+                setCardView();
                 List<String> imageList = object.getImgs();
                 if (imageList != null && imageList.size() > 0) {
                     String imageUrl = imageList.get(0);

@@ -96,7 +96,7 @@
                 android:gravity="center"
                 android:paddingRight="10dp"
                 android:textColor="@color/tab_indicator_color"
-                android:textSize="@dimen/textsize_small"
+                android:textSize="13sp"
                 android:visibility="invisible"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
