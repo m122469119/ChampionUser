@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Liking健身</string>
     <string name="activity_liking_home">Liking健身</string>
-    <string name="tab_liking_home_my">我的</string>
+    <string name="tab_liking_home_my">我</string>
     <string name="tab_liking_home_recharge">购卡</string>
     <string name="tab_liking_home_nearby">营养餐</string>
     <string name="tab_liking_home_lesson">约课</string>
@@ -155,5 +155,6 @@
     <string name="dialog_app_update">去升级</string>
     <string name="confirm_complete_courese">您确定完成该课程吗?</string>
     <string name="network_contact_fail">网络连接异常,请检查网络</string>
+    <string name="my_courses_details_complete">该课程已确定完成</string>
 
 </resources>

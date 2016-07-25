@@ -10,4 +10,5 @@
     <dimen name="WheelItemSpace">8dp</dimen>
     <dimen name="WheelPadding">8dp</dimen>
     <dimen name="WheelTextSize">20sp</dimen>
+    <dimen name="private_confirm_min_height">40dp</dimen>
 </resources>

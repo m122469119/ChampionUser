@@ -165,7 +165,7 @@
                         android:id="@+id/rating_courses_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="8dp"
                         android:text="强度："
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>

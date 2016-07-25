@@ -159,7 +159,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     @Override
     public void updateComplete() {
-        PopupUtils.showToast("该课程以确定完成");
+        PopupUtils.showToast(getString(R.string.my_courses_details_complete));
         postEvent(new MyPrivateCoursesCompleteMessage());
         sendRequest();
     }
