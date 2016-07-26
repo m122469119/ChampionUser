@@ -202,8 +202,22 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
             String orderTime = detailsData.getOrderTime();//下单时间String类型,
             Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
             long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
-            BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
-            long limitTime;
+            long orderOverdueTime = orderDateLong + getLimitTime();//订单过期时间 = 下单时间+限时时间
+            long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
+            long orderSurplusData = Math.abs(orderSurplusTime);
+
+            int state = detailsData.getOrderStatus();
+            setOrderState(state, (int) orderSurplusData);
+        } else {
+            mStateView.setState(StateView.State.NO_DATA);
+        }
+    }
+
+    private Long getLimitTime() {
+        long limitTime;
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        if (baseConfigResult != null) {
+            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {
                 String limitTimeStr = baseConfigData.getCountSecond();
                 if (StringUtils.isEmpty(limitTimeStr)) {
@@ -214,15 +228,10 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
             } else {
                 limitTime = (long) 300;
             }
-            long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
-            long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
-            long orderSurplusData = Math.abs(orderSurplusTime);
-
-            int state = detailsData.getOrderStatus();
-            setOrderState(state, (int) orderSurplusData);
         } else {
-            mStateView.setState(StateView.State.NO_DATA);
+            limitTime = (long) 300;
         }
+        return limitTime;
     }
 
     private void setOrderState(int state, int orderSurplusTime) {

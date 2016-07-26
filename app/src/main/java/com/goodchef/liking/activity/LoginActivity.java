@@ -89,13 +89,16 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         } else if (v == mLoginBtn) {
             login();
         } else if (v == mRegisterBtn) {
-            BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
-            if (baseConfigData != null) {
-                String agreeUrl = baseConfigData.getAgreeUrl();
-                if (!StringUtils.isEmpty(agreeUrl)) {
-                    HDefaultWebActivity.launch(this, agreeUrl, "用户协议");
-                }
-            }
+            BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+           if (baseConfigResult !=null){
+               BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+               if (baseConfigData != null) {
+                   String agreeUrl = baseConfigData.getAgreeUrl();
+                   if (!StringUtils.isEmpty(agreeUrl)) {
+                       HDefaultWebActivity.launch(this, agreeUrl, "用户协议");
+                   }
+               }
+           }
         }
     }
 

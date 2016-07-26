@@ -202,11 +202,14 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 startActivity(intent);
             }
         } else if (v == mAgreeProtocolTextView) {
-            BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
-            if (baseConfigData != null) {
-                String serviceUrl = baseConfigData.getServiceUrl();
-                if (!StringUtils.isEmpty(serviceUrl)) {
-                    HDefaultWebActivity.launch(this, serviceUrl, "平台会员协议");
+            BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+            if (baseConfigResult != null) {
+                BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                if (baseConfigData != null) {
+                    String serviceUrl = baseConfigData.getServiceUrl();
+                    if (!StringUtils.isEmpty(serviceUrl)) {
+                        HDefaultWebActivity.launch(this, serviceUrl, "平台会员协议");
+                    }
                 }
             }
         }

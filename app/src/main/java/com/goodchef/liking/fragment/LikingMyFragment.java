@@ -18,6 +18,7 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -35,6 +36,7 @@ import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
+import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
@@ -44,6 +46,7 @@ import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
  * Created on 16/5/20.
@@ -80,6 +83,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
 
     public static final String NULL_STRING = "";
+    private LikingStateView mStateView;
 
     @Nullable
     @Override
@@ -94,9 +98,15 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        setLogonView();
-        getUserExerciseData();
+        if (EnvironmentUtils.Network.isNetWorkAvailable()) {
+            mStateView.setState(StateView.State.SUCCESS);
+            setLogonView();
+            getUserExerciseData();
+        } else {
+            mStateView.setState(StateView.State.FAILED);
+        }
     }
+
 
     /**
      * 获取我的锻炼数据
@@ -176,6 +186,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initView(View view) {
+        mStateView = (LikingStateView) view.findViewById(R.id.my_state_view);
         mHeadInfoLayout = (RelativeLayout) view.findViewById(R.id.layout_head_info);
         mInviteFriendsLayout = (LinearLayout) view.findViewById(R.id.layout_invite_friends);
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
@@ -202,6 +213,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
         mContactSetviceBtn = (TextView) view.findViewById(R.id.contact_service);
+
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                LiKingVerifyUtils.initApi(getActivity());
+            }
+        });
     }
 
     private void setViewOnClickListener() {
@@ -378,5 +396,18 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         PopupUtils.showToast("退出成功");
         setLogonView();
         clearExerciseData();
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(InitApiFinishedMessage message) {
+        if (message.isSuccess()) {
+            mStateView.setState(StateView.State.SUCCESS);
+            setLogonView();
+            getUserExerciseData();
+        }
     }
 }
