@@ -129,7 +129,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
             if (needUpdate == 0) {//不需要强制更新
                 if (!StringUtils.isEmpty(lastVersion) && !lastVersion.equals(currentVersion)) {//升级
-                    if (Preference.getIsUpdate()){
+                    if (Preference.getIsUpdate()) {
                         showAppUpdateDialog(updateData);
                         Preference.setIsUpdateApp(false);
                     }
@@ -375,43 +375,49 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * @param builder
      */
     private void setCityData(ListView mCityListView, final HBaseDialog.Builder builder) {
-        List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
-        if (cityDataList != null && cityDataList.size() > 0) {
-            for (CityData cityData : cityDataList) {
-                if (cityData.getCityName().contains(selectCityName)) {
-                    cityData.setSelct(true);
-                } else {
-                    cityData.setSelct(false);
-                }
-            }
-            mSelectCityAdapter = new SelectCityAdapter(this, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RelativeLayout textView = (RelativeLayout) v.findViewById(R.id.layout_city);
-                    if (textView != null) {
-                        CityData cityData = (CityData) textView.getTag();
-                        if (cityData != null) {
-                            List<CityData> cityDataList = mSelectCityAdapter.getDataList();
-                            for (CityData dto : cityDataList) {
-                                if (dto.getCityId() == cityData.getCityId()) {
-                                    dto.setSelct(true);
-                                } else {
-                                    dto.setSelct(false);
-                                }
-                            }
-                            mSelectCityAdapter.notifyDataSetChanged();
-                            selectCityName = cityData.getCityName();
-                            selectCityId = cityData.getCityId() + "";
-                            mLikingLeftTitleTextView.setText(selectCityName);
-                            //发送消息更新首页数据
-                            postEvent(new MainAddressChanged(0, 0, cityData.getCityId() + "", "0", selectCityName, true));
-                            builder.create().dismiss();
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        if (baseConfigResult != null) {
+            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            if (baseConfigData != null) {
+                List<CityData> cityDataList = baseConfigData.getCityList();
+                if (cityDataList != null && cityDataList.size() > 0) {
+                    for (CityData cityData : cityDataList) {
+                        if (cityData.getCityName().contains(selectCityName)) {
+                            cityData.setSelct(true);
+                        } else {
+                            cityData.setSelct(false);
                         }
                     }
+                    mSelectCityAdapter = new SelectCityAdapter(this, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            RelativeLayout textView = (RelativeLayout) v.findViewById(R.id.layout_city);
+                            if (textView != null) {
+                                CityData cityData = (CityData) textView.getTag();
+                                if (cityData != null) {
+                                    List<CityData> cityDataList = mSelectCityAdapter.getDataList();
+                                    for (CityData dto : cityDataList) {
+                                        if (dto.getCityId() == cityData.getCityId()) {
+                                            dto.setSelct(true);
+                                        } else {
+                                            dto.setSelct(false);
+                                        }
+                                    }
+                                    mSelectCityAdapter.notifyDataSetChanged();
+                                    selectCityName = cityData.getCityName();
+                                    selectCityId = cityData.getCityId() + "";
+                                    mLikingLeftTitleTextView.setText(selectCityName);
+                                    //发送消息更新首页数据
+                                    postEvent(new MainAddressChanged(0, 0, cityData.getCityId() + "", "0", selectCityName, true));
+                                    builder.create().dismiss();
+                                }
+                            }
+                        }
+                    });
+                    mSelectCityAdapter.setData(cityDataList);
+                    mCityListView.setAdapter(mSelectCityAdapter);
                 }
-            });
-            mSelectCityAdapter.setData(cityDataList);
-            mCityListView.setAdapter(mSelectCityAdapter);
+            }
         }
     }
 

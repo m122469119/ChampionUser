@@ -16,11 +16,14 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
+import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.storage.Preference;
@@ -54,6 +57,12 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
         setPullType(PullMode.PULL_NONE);
         setNoDataView();
         mBuyCardAdapter = new BuyCardAdapter(getActivity());
+        getStateView().setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                LiKingVerifyUtils.initApi(getActivity());
+            }
+        });
         getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         setRecyclerAdapter(mBuyCardAdapter);
         initRecycleHeadView();
@@ -147,6 +156,12 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
         }
     }
 
+    public void onEvent(InitApiFinishedMessage message) {
+        if (message.isSuccess()) {
+            loadHomePage();
+        }
+    }
+
     public void onEvent(OnCLickBuyCardFragmentMessage message) {
         sendBuyCardListRequest();
     }
@@ -157,22 +172,28 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
     private void setHeadNoLocationView(String cityName) {
         boolean isContains = false;
-        List<CityData> cityDataList = Preference.getBaseConfig().getBaseConfigData().getCityList();
-        if (cityDataList != null && cityDataList.size() > 0) {
-            for (CityData data : cityDataList) {
-                if (data.getCityName().contains(cityName)) {
-                    isContains = true;
-                    break;
-                }
-            }
-            if (isContains) {
-                removeHeadView();
-            } else {
-                if (mBuyCardAdapter != null) {
-                    if (mHeadView != null) {
-                        getPullToRefreshRecyclerView().removeView(mHeadView);
-                        mBuyCardAdapter.setHeaderView(mHeadView);
-                        mBuyCardAdapter.notifyDataSetChanged();
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        if (baseConfigResult != null) {
+            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            if (baseConfigData != null) {
+                List<CityData> cityDataList = baseConfigData.getCityList();
+                if (cityDataList != null && cityDataList.size() > 0) {
+                    for (CityData data : cityDataList) {
+                        if (data.getCityName().contains(cityName)) {
+                            isContains = true;
+                            break;
+                        }
+                    }
+                    if (isContains) {
+                        removeHeadView();
+                    } else {
+                        if (mBuyCardAdapter != null) {
+                            if (mHeadView != null) {
+                                getPullToRefreshRecyclerView().removeView(mHeadView);
+                                mBuyCardAdapter.setHeaderView(mHeadView);
+                                mBuyCardAdapter.notifyDataSetChanged();
+                            }
+                        }
                     }
                 }
             }

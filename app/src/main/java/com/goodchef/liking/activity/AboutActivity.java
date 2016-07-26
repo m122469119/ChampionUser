@@ -45,9 +45,12 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
         if (!StringUtils.isEmpty(phone)) {
             mCooperatePhoneTextView.setText(phone);
         }
-        BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
-        if (baseConfigData != null) {
-            mWeChatPublicTextView.setText(baseConfigData.getWechat().trim());
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        if (baseConfigResult != null) {
+            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            if (baseConfigData != null) {
+                mWeChatPublicTextView.setText(baseConfigData.getWechat().trim());
+            }
         }
     }
 

@@ -146,44 +146,47 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
     }
 
     private void setOrderListData(List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList) {
-        BaseConfigResult.BaseConfigData baseConfigData = Preference.getBaseConfig().getBaseConfigData();
-        if (orderList != null && orderList.size() > 0) {
-            for (int i = 0; i < orderList.size(); i++) {
-                long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
-                Log.e("serviceTime=", serviceTime + "");
-                String orderTime = orderList.get(i).getOrderTime();//下单时间String类型,
-                Log.e("orderTime=", orderTime + "");
-                Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
-                Log.e("oderDate=", oderDate + "");
-                long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
-                Log.e("orderDateLong=", orderDateLong + "");
-                long limitTime;
-                if (baseConfigData != null) {
-                    String limitTimeStr = baseConfigData.getCountSecond();
-                    if (StringUtils.isEmpty(limitTimeStr)) {
-                        limitTime = (long) 300;
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        if (baseConfigResult != null) {
+            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            if (orderList != null && orderList.size() > 0) {
+                for (int i = 0; i < orderList.size(); i++) {
+                    long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间
+                    Log.e("serviceTime=", serviceTime + "");
+                    String orderTime = orderList.get(i).getOrderTime();//下单时间String类型,
+                    Log.e("orderTime=", orderTime + "");
+                    Date oderDate = DateUtils.parseString("yyyy-MM-dd HH:mm:ss", orderTime);//转换为时间格式
+                    Log.e("oderDate=", oderDate + "");
+                    long orderDateLong = oderDate.getTime() / 1000;//将订单时间转换为s
+                    Log.e("orderDateLong=", orderDateLong + "");
+                    long limitTime;
+                    if (baseConfigData != null) {
+                        String limitTimeStr = baseConfigData.getCountSecond();
+                        if (StringUtils.isEmpty(limitTimeStr)) {
+                            limitTime = (long) 300;
+                        } else {
+                            limitTime = Long.parseLong(limitTimeStr);
+                        }
                     } else {
-                        limitTime = Long.parseLong(limitTimeStr);
+                        limitTime = (long) 300;
                     }
-                } else {
-                    limitTime = (long) 300;
-                }
-                long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
-                Log.e("orderOverdueTime=", orderOverdueTime + "");
-                long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
-                Log.e("orderSurplusTime=", orderSurplusTime + "");
-                long orderSurplusData = Math.abs(orderSurplusTime);
-                if (orderSurplusData > 0) {
-                    orderList.get(i).setOrderSurplusTime(orderSurplusData);
-                } else if (orderSurplusData <= 0) {
-                    orderList.get(i).setOrderSurplusTime(0);
+                    long orderOverdueTime = orderDateLong + limitTime;//订单过期时间 = 下单时间+限时时间
+                    Log.e("orderOverdueTime=", orderOverdueTime + "");
+                    long orderSurplusTime = orderOverdueTime - serviceTime;// 订单剩余时间 = 服务器订单过期时间-服务器当前时间
+                    Log.e("orderSurplusTime=", orderSurplusTime + "");
+                    long orderSurplusData = Math.abs(orderSurplusTime);
+                    if (orderSurplusData > 0) {
+                        orderList.get(i).setOrderSurplusTime(orderSurplusData);
+                    } else if (orderSurplusData <= 0) {
+                        orderList.get(i).setOrderSurplusTime(0);
+                    }
                 }
             }
-        }
-        updateListView(orderList);
-        if (!mIsUpdateListTimeStarting) {
-            mIsUpdateListTimeStarting = true;
-            startUpdateListTime();
+            updateListView(orderList);
+            if (!mIsUpdateListTimeStarting) {
+                mIsUpdateListTimeStarting = true;
+                startUpdateListTime();
+            }
         }
     }
 
