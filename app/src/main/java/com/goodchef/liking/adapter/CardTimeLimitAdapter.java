@@ -10,7 +10,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 
 /**
- * 说明:
+ * 说明:购卡时间限制适配器
  * Author shaozucheng
  * Time:16/6/29 下午5:54
  */
