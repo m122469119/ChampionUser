@@ -72,39 +72,6 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
         @Override
         public void bindViews(ConfirmCard object) {
             mCardNameTextView.setText(object.getName());
-//            boolean isSelect = object.isSelect();
-//            if (isSelect) {
-//                mCheckBox.setChecked(true);
-//            } else {
-//                mCheckBox.setChecked(false);
-//            }
-
-//            boolean isViewLayoutEnable = object.isLayoutViewEnable();
-//            if (isViewLayoutEnable) {//判断是否可点击true是该条目可以点击
-//                mLayout.setEnabled(true);
-//                mExplainTextView.setVisibility(View.GONE);
-//                mExplainTextView.setOnClickListener(null);
-//                mCheckBox.setVisibility(View.VISIBLE);
-//            } else {//false 该条目点击状态更具qulification来判断
-//                int qulification = object.getQulification();
-//                if (qulification == 0) {//不能点击
-//                    mLayout.setEnabled(false);
-//                    mExplainTextView.setVisibility(View.VISIBLE);
-//                    mCheckBox.setChecked(false);
-//                    mCheckBox.setVisibility(View.GONE);
-//                    if (mExplainClickListener !=null){
-//                        mExplainTextView.setOnClickListener(mExplainClickListener);
-//                        mExplainTextView.setTag(object);
-//                    }
-//                } else if (qulification == 1) {//可以点击，默认给他选中
-//                    mLayout.setEnabled(false);
-//                    mCheckBox.setVisibility(View.VISIBLE);
-//                    mCheckBox.setChecked(true);
-//                    mExplainTextView.setVisibility(View.GONE);
-//                    mExplainTextView.setOnClickListener(null);
-//                }
-//            }
-
             int canSelect = object.getCanSelect();
             if (canSelect == 0) {//不能选择
                 mLayout.setEnabled(false);
