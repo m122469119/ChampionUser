@@ -38,9 +38,11 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -196,6 +198,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     PopupUtils.showToast("请选择支付方式");
                     return;
                 }
+                MobclickAgent.onEvent(BuyCardConfirmActivity.this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
                 senSubmitRequest();
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);

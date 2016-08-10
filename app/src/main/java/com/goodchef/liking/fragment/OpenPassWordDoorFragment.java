@@ -17,6 +17,8 @@ import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.mvp.presenter.UserAuthPresenter;
 import com.goodchef.liking.mvp.view.UserAuthView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 说明:
@@ -100,6 +102,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v == mGetIntoPasswordBtn) {
+            MobclickAgent.onEvent(getActivity(), UmengEventId.GET_INTO_PASSWORD_BUTTON);
             if (Preference.isLogin()) {
                 mUserAuthPresenter.getUserAuthCode(1);
             } else {
@@ -107,6 +110,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
                 startActivity(intent);
             }
         } else if (v == mGetOutPasswordBtn) {
+            MobclickAgent.onEvent(getActivity(), UmengEventId.GET_OUT_PASSWORD_BUTTON);
             if (Preference.isLogin()) {
                 mUserAuthPresenter.getUserAuthCode(2);
             } else {
