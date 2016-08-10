@@ -109,7 +109,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             mLikingStateView.setState(StateView.State.SUCCESS);
             setTitle(privateCoursesData.getTrainerName());
             List<String> imageList = privateCoursesData.getTrainerImgs();
-            if (imageList != null) {
+            if (imageList != null && imageList.size() > 0) {
                 String imageUrl = imageList.get(0);
                 if (!TextUtils.isEmpty(imageUrl)) {
                     HImageLoaderSingleton.getInstance().requestImage(mTeacherHImageView, imageUrl);

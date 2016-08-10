@@ -43,6 +43,8 @@ public class MyOrderCardDetailsResult extends BaseResult {
         private String orderAmount;
         @SerializedName("time_limit")
         private List<TimeLimitData> timeLimit;
+        @SerializedName("coupon_amount")
+        private String couponAmount;
 
         public String getOrderId() {
             return orderId;
@@ -116,6 +118,12 @@ public class MyOrderCardDetailsResult extends BaseResult {
             this.timeLimit = timeLimit;
         }
 
+        public String getCouponAmount() {
+            return couponAmount;
+        }
 
+        public void setCouponAmount(String couponAmount) {
+            this.couponAmount = couponAmount;
+        }
     }
 }

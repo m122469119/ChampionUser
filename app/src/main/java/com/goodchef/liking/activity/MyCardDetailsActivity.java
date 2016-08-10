@@ -7,8 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
@@ -45,9 +48,12 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     private TextView mBuyTypeTextView;
     private TextView mCardPriceTextView;
     private RecyclerView mTimeLimitRecyclerView;
+    private LinearLayout mFavourableLayout;
+    private TextView mFavourableNumberTextView;
+    private ImageView mImageViewLine;
     private LikingStateView mStateView;
 
-    private String orderId;
+    private String orderId;//订单id
 
     private MyCardDetailsPresenter mMyCardDetailsPresenter;
 
@@ -70,6 +76,9 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
         mBuyTypeTextView = (TextView) findViewById(R.id.card_buy_type);
         mCardPriceTextView = (TextView) findViewById(R.id.card_price);
         mTimeLimitRecyclerView = (RecyclerView) findViewById(R.id.card_limint_recyclerView);
+        mFavourableLayout = (LinearLayout) findViewById(R.id.layout_favourable);
+        mFavourableNumberTextView = (TextView) findViewById(R.id.favourable_number);
+        mImageViewLine = (ImageView) findViewById(R.id.favourable_line);
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -126,6 +135,22 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
                 adapter.setData(limitDataList);
                 mTimeLimitRecyclerView.setAdapter(adapter);
             }
+
+            String couponAmount = data.getCouponAmount();
+            if (!StringUtils.isEmpty(couponAmount)) {
+                if (couponAmount.equals("0")) {
+                    mFavourableLayout.setVisibility(View.GONE);
+                    mImageViewLine.setVisibility(View.GONE);
+                } else {
+                    mFavourableLayout.setVisibility(View.VISIBLE);
+                    mImageViewLine.setVisibility(View.VISIBLE);
+                    mFavourableNumberTextView.setText("¥ " + couponAmount);
+                }
+            } else {
+                mFavourableLayout.setVisibility(View.GONE);
+                mImageViewLine.setVisibility(View.GONE);
+            }
+
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
