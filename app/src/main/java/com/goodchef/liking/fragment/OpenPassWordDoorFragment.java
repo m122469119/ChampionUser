@@ -65,6 +65,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
         mShowLayout = (LinearLayout) view.findViewById(R.id.layout_show_password);
         initView();
         initData();
+        mFailMessageTextView.setText("");
         return view;
     }
 
@@ -72,7 +73,6 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
         String password = "aaaaaa";
         char[] pwd = password.toCharArray();
         mShowLayout.removeAllViews();
-        mFailMessageTextView.setText("");
         for (int i = 0; i < pwd.length; i++) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_item_open_password, mShowLayout, false);
             TextView mTextView = (TextView) view.findViewById(R.id.open_num);
@@ -128,8 +128,8 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     @Override
     public void updateFailCodeView(String message) {
         if (mShowLayout != null) {
+            initData();
             mFailMessageTextView.setText(message.trim());
-            mShowLayout.removeAllViews();
         }
     }
 
