@@ -28,9 +28,11 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -229,6 +231,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 PopupUtils.showToast("请选择支付方式");
                 return;
             }
+            MobclickAgent.onEvent(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
             if (mCoupon != null) {
                 mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType);
             } else {

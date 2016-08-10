@@ -20,8 +20,10 @@ import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.mvp.presenter.MyPrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesDetailsView;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 说明:
@@ -188,6 +190,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                MobclickAgent.onEvent(MyPrivateCoursesDetailsActivity.this, UmengEventId.COMPLETE_MYPRIVATE_COURSES);
                 sendCompleteRequest();
                 dialog.dismiss();
             }

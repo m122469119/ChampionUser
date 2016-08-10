@@ -37,8 +37,10 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -300,6 +302,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     @Override
     public void onClick(View v) {
         if (v == mImmediatelySubmitBtn) {
+            MobclickAgent.onEvent(GroupLessonDetailsActivity.this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
             if (Preference.isLogin()) {
                 mGroupCoursesDetailsPresenter.orderGroupCourses(scheduleId, Preference.getToken());
             } else {

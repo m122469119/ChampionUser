@@ -46,7 +46,9 @@ import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -283,7 +285,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView || v == mLeftImageView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                showSelectDialog();
+                MobclickAgent.onEvent(LikingHomeActivity.this, UmengEventId.CHECK_CITY);
+                showSelectCityDialog();
             }
         } else if (v == mLikingRightTitleTextView) {
             if (tag.equals(TAG_RECHARGE_TAB)) {
@@ -324,7 +327,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     /**
      * 展示选择城市dialog
      */
-    private void showSelectDialog() {
+    private void showSelectCityDialog() {
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_city, null, false);
         TextView locationAddress = (TextView) view.findViewById(R.id.dialog_location_address);
