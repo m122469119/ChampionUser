@@ -44,16 +44,17 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private static final int PAY_TYPE = 3;//3 免金额支付
 
     private RecyclerView mRecyclerView;
-    private TextView mCoursesPeopleTextView;
-    private TextView mCoursesNumberTextView;
-    private TextView mEndTimeTextView;
-    private TextView mCouponTitleTextView;
+    private TextView mCoursesPeopleTextView;//上课人数
+    private TextView mCoursesNumberTextView;//约课次数
+    private TextView mEndTimeTextView;//截止日期
+    private TextView mCouponTitleTextView;//优惠券信息
     private RelativeLayout mCouponsLayout;
-    private TextView mCoursesMoneyTextView;
-    private TextView mImmediatelyBuyBtn;
-    private TextView mCoursesAddressTextView;
+    private TextView mCoursesMoneyTextView;//课程金额
+    private TextView mImmediatelyBuyBtn;//立即购买
+    private TextView mCoursesAddressTextView;//课程地址
+    private TextView mCoursesTimeTextView;//课程时间
 
-    private RelativeLayout mAlipayLayout;
+    private RelativeLayout mAlipayLayout;//支付布局
     private RelativeLayout mWechatLayout;
     private CheckBox mAlipayCheckBox;
     private CheckBox mWechatCheckBox;
@@ -96,6 +97,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
         mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
         mCoursesAddressTextView = (TextView) findViewById(R.id.courses_address);
+        mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
+
         mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
         mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
         mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
@@ -147,7 +150,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             setTrainItem(trainItemList);
             mCoursesPeopleTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
             mEndTimeTextView.setText(coursesConfirmData.getEndTime());
-            mCoursesAddressTextView.setText(coursesConfirmData.getAddressText());
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
@@ -163,10 +165,13 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     trainItemList.get(i).setSelect(false);
                 }
             }
-            coursesId = trainItemList.get(0).getCourseId();
-            mCoursesNumberTextView.setText(trainItemList.get(0).getTimes() + " 次");
             coursesItem = trainItemList.get(0);
+            coursesId = coursesItem.getCourseId();
+            mCoursesNumberTextView.setText(coursesItem.getTimes() + " 次");
             mCoursesMoneyTextView.setText("¥ " + coursesItem.getPrice());
+            mCoursesTimeTextView.setText(coursesItem.getDuration());
+            mCoursesAddressTextView.setText(coursesItem.getCourseAddress());
+
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mPrivateCoursesTrainItemAdapter = new PrivateCoursesTrainItemAdapter(this);
@@ -192,6 +197,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                             }
                         }
                         mCoursesMoneyTextView.setText("¥ " + coursesItem.getPrice());
+                        mCoursesTimeTextView.setText(coursesItem.getDuration());
+                        mCoursesAddressTextView.setText(coursesItem.getCourseAddress());
                         mPrivateCoursesTrainItemAdapter.notifyDataSetChanged();
                         mCoupon = null;
                     }

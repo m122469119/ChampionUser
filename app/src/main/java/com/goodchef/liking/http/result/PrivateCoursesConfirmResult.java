@@ -84,6 +84,10 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             private String times;
             @SerializedName("price")
             private String price;
+            @SerializedName("course_addr")
+            private String courseAddress;
+            @SerializedName("duration")
+            private String duration;
 
             private boolean isSelect;
 
@@ -117,6 +121,22 @@ public class PrivateCoursesConfirmResult extends BaseResult {
 
             public void setPrice(String price) {
                 this.price = price;
+            }
+
+            public String getCourseAddress() {
+                return courseAddress;
+            }
+
+            public void setCourseAddress(String courseAddress) {
+                this.courseAddress = courseAddress;
+            }
+
+            public String getDuration() {
+                return duration;
+            }
+
+            public void setDuration(String duration) {
+                this.duration = duration;
             }
 
             public boolean isSelect() {

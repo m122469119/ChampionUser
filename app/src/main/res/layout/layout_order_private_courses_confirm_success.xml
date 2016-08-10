@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="10dp"
-                    android:text="训练项目"
+                    android:text="@string/train_project"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="10dp"
-                    android:text="上课人数"
+                    android:text="@string/attend_class_number"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -100,7 +100,41 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="10dp"
-                    android:text="预约课次"
+                    android:text="@string/courses_time"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_small"/>
+
+                <TextView
+                    android:id="@+id/courses_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="@dimen/textsize_small"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:padding="10dp"
+                    android:text="@string/order_courses_times"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -135,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="10dp"
-                    android:text="上课地点"
+                    android:text="@string/courses_address"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -170,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="10dp"
-                    android:text="截止日期"
+                    android:text="@string/end_time"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -209,7 +243,7 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
-                    android:text="请选择优惠券"
+                    android:text="@string/select_coupons_info"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -264,7 +298,7 @@
             android:layout_weight="2"
             android:background="@color/liking_green_btn_back"
             android:gravity="center"
-            android:text="立即购买"
+            android:text="@string/immediately_buy_btn"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </LinearLayout>
