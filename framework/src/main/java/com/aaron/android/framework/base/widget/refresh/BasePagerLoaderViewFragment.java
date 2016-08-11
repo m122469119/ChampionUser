@@ -17,7 +17,7 @@ import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.BaseApplication;
-import com.aaron.android.framework.base.BaseFragment;
+import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;

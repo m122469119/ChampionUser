@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
 import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;

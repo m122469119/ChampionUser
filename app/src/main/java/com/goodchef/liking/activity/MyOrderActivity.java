@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyCardOrderFragment;

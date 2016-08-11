@@ -1,4 +1,4 @@
-package com.aaron.android.framework.base;
+package com.aaron.android.framework.base.ui;
 
 import android.content.Intent;
 import android.os.Bundle;

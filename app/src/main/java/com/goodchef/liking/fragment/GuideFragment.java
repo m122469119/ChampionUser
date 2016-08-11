@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.BaseFragment;
+import com.aaron.android.framework.base.ui.BaseFragment;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
 

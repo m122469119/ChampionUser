@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.ConstantUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;

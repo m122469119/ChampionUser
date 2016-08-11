@@ -1,4 +1,4 @@
-package com.aaron.android.framework.base.actionbar;
+package com.aaron.android.framework.base.ui.actionbar;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.aaron.android.framework.utils.SDKVersionUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.R;
-import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.android.framework.utils.SDKVersionUtils;
 
 /**
  * Created on 15/6/26.
@@ -21,7 +21,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
  * @author ran.huang
  * @version 3.0.1
  */
-public class AppBarActivity extends BaseActivity {
+public class AppBarActivity extends SwipeBackActivity {
     private LinearLayout mRootView;
     private FrameLayout mContentView;
     private ToolBarController mToolBarController;
