@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;

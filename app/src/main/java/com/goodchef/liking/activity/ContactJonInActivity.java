@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.codelibrary.utils.ValidateUtils;
-import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.mvp.presenter.ContactJoinPresenter;

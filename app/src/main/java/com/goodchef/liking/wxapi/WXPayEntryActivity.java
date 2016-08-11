@@ -4,7 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.aaron.android.framework.base.BaseActivity;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;

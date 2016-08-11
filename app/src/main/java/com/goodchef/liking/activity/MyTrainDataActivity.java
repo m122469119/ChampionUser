@@ -4,7 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserExerciseResult;

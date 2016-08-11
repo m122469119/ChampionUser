@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.framework.base.BaseFragment;
+import com.aaron.android.framework.base.ui.BaseFragment;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.http.result.UserAuthCodeResult;

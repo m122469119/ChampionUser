@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aaron.android.framework.base.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.thirdparty.camera.ImageFolder;
 import com.aaron.android.thirdparty.camera.OnImageDirSelected;
 import com.aaron.android.thirdparty.camera.ScanPictureData;
