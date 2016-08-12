@@ -180,7 +180,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mLoginPrompt.setVisibility(View.VISIBLE);
             mPersonNameTextView.setVisibility(View.GONE);
             mPersonPhoneTextView.setVisibility(View.GONE);
-            mLoginOutBtn.setVisibility(View.INVISIBLE);
+            mLoginOutBtn.setVisibility(View.GONE);
             mHeadHImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_head_default_image));
         }
     }
