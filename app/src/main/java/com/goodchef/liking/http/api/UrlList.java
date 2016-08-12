@@ -94,7 +94,7 @@ public class UrlList {
     /**更新我的个人信息*/
     public static final String UPDATE_USER = getVersionHostUrl()+"/user/update";
     /**上传图片*/  //测试环境上传图片域名testimg.likingfit.com，正式环境尚未给出  正式：http://img.likingfit.com/upload/image
-    public static final String UPLOAD_USER_IMAGE = "http://img.likingfit.com/upload/image";
+    public static final String UPLOAD_USER_IMAGE = EnvironmentUtils.Config.isDebugMode() ? "http://testimg.likingfit.com/upload/image" : "http://img.likingfit.com/upload/image";
     /**上报手机信息*/
     public static final String USER_DEVICE = getVersionHostUrl()+"/user/device";
     /**获取我的邀请码*/
