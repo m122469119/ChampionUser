@@ -23,9 +23,9 @@ import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
 import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,11 +101,13 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position);
                 int type = coursesData.getType();
                 if (type == TYPE_GROUP_LESSON) {
+                    UMengCountUtil.UmengCount(getActivity(),UmengEventId.GROUPLESSONDETAILSACTIVITY);
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                     intent.putExtra(KEY_INTENT_TYPE,"0");
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
+                    UMengCountUtil.UmengCount(getActivity(),UmengEventId.PRIVATELESSONDETAILSACTIVITY);
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
                     intent.putExtra(KEY_TEACHER_NAME, coursesData.getCourseName());
@@ -132,7 +134,8 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
             if (layout != null) {
                 CoursesResult.Courses.CoursesData data = (CoursesResult.Courses.CoursesData) layout.getTag();
                 if (data != null) {
-                    MobclickAgent.onEvent(getActivity(), UmengEventId.CHECK_GYM_COURSES);
+                    UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.CHECK_GYM_COURSES);
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.GYMCOURSESACTIVITY);
                     Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
                     intent.putExtra(KEY_GYM_ID, data.getGymId());
                     intent.putExtra(KEY_DISTANCE, data.getDistance());

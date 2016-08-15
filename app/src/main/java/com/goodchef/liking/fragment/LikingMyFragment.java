@@ -45,7 +45,9 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
@@ -263,6 +265,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         if (v == mTrainLayout) {
             if (Preference.isLogin()) {
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYTRAINDATAACTIVITY);
                 Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
                 startActivity(intent);
             } else {
@@ -277,6 +280,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             } else {
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, "修改个人信息");
                 intent.putExtra(LoginActivity.KEY_INTENT_TYPE, 2);
@@ -284,6 +288,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mMyCourseLayout) {//我的课程
             if (Preference.isLogin()) {
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYLESSONACTIVITY);
                 Intent intent = new Intent(getActivity(), MyLessonActivity.class);
                 startActivity(intent);
             } else {
@@ -300,6 +305,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mMemberCardLayout) {//会员卡
             if (Preference.isLogin()) {
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYCARDACTIVITY);
                 Intent intent = new Intent(getActivity(), MyCardActivity.class);
                 startActivity(intent);
             } else {
@@ -316,6 +322,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mCouponsLayout) {//我的优惠券
             if (Preference.isLogin()) {
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(getActivity(), CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, CouponsActivity.TYPE_MY_COUPONS);
                 startActivity(intent);

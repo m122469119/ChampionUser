@@ -27,6 +27,8 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -76,6 +78,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
             public void onItemClick(View view, int position) {
                 CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
                 if (card != null) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
                     Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
                     intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
                     intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());

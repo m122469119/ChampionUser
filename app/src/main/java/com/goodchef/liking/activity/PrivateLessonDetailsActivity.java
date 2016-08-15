@@ -20,9 +20,9 @@ import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -149,7 +149,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     @Override
     public void onClick(View v) {
         if (v == mImmediatelySubmitBtn) {
-            MobclickAgent.onEvent(PrivateLessonDetailsActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_SUBMIT_BUTTON);
+            UMengCountUtil.UmengBtnCount(PrivateLessonDetailsActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_SUBMIT_BUTTON);
             if (Preference.isLogin()) {
                 Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);

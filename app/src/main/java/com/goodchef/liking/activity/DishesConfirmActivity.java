@@ -39,7 +39,9 @@ import com.goodchef.liking.http.result.data.MealTimeData;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.mvp.presenter.NutritionMealConfirmPresenter;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
@@ -220,6 +222,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 PopupUtils.showToast("无取餐时间数据");
             }
         } else if (v == mCouponsLayout) {//选择优惠券
+            UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_COURSE_ID, "");
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
