@@ -48,7 +48,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
-import com.umeng.analytics.MobclickAgent;
+import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -317,6 +317,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    PopupUtils.showToast("您还没有购买任何营养餐");
 //                }
             } else if (tag.equals(TAG_MAIN_TAB)) {
+                if (StringUtils.isEmpty(currentCityName)) {
+                    UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, "定位失败");
+                } else {
+                    UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, currentCityName);
+                }
                 Intent intent = new Intent(this, OpenTheDoorActivity.class);
                 startActivity(intent);
             }
@@ -327,7 +332,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 展示选择城市dialog
      */
     private void showSelectCityDialog() {
-        MobclickAgent.onEvent(LikingHomeActivity.this, UmengEventId.CHECK_CITY);
+        if (StringUtils.isEmpty(currentCityName)) {
+            UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_CITY, "定位失败");
+        } else {
+            UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_CITY, currentCityName);
+        }
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_city, null, false);
         TextView locationAddress = (TextView) view.findViewById(R.id.dialog_location_address);

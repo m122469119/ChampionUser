@@ -39,8 +39,8 @@ import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -285,6 +285,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mGroupLessonDetailsAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
+                    UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this,UmengEventId.ARENAACTIVITY);
                     Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
                     intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                     startActivity(intent);
@@ -302,7 +303,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     @Override
     public void onClick(View v) {
         if (v == mImmediatelySubmitBtn) {
-            MobclickAgent.onEvent(GroupLessonDetailsActivity.this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
+            UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
             if (Preference.isLogin()) {
                 mGroupCoursesDetailsPresenter.orderGroupCourses(scheduleId, Preference.getToken());
             } else {
@@ -312,6 +313,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         } else if (v == mCancelOrderBtn) {//取消预定
             showCancelCoursesDialog();
         } else if (v == mGymIntroduceLayout || v == mGymRootLayout) {//进入门店详情
+            UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this,UmengEventId.ARENAACTIVITY);
             Intent intent = new Intent(this, ArenaActivity.class);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             this.startActivity(intent);

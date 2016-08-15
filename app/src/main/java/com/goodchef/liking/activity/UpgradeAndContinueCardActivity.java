@@ -15,6 +15,8 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -93,6 +95,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
             public void onItemClick(View view, int position) {
                 CardResult.CardData.Card card = mUpgradeContinueCardAdapter.getDataList().get(position);
                 if (card != null) {
+                    UMengCountUtil.UmengCount(UpgradeAndContinueCardActivity.this, UmengEventId.BUYCARDCONFIRMACTIVITY);
                     Intent intent = new Intent(UpgradeAndContinueCardActivity.this, BuyCardConfirmActivity.class);
                     intent.putExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY, card.getCategoryName());
                     intent.putExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, card.getCategoryId());

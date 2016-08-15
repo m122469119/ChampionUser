@@ -26,7 +26,7 @@ import com.goodchef.liking.mvp.presenter.MyPrivateCoursesPresenter;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
-import com.umeng.analytics.MobclickAgent;
+import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -140,7 +140,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                MobclickAgent.onEvent(getActivity(), UmengEventId.COMPLETE_MYPRIVATE_COURSES);
+                UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.COMPLETE_MYPRIVATE_COURSES);
                 completeMyPrivateCourses(orderId);
                 dialog.dismiss();
             }

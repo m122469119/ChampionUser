@@ -30,9 +30,9 @@ import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -218,6 +218,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     public void onClick(View v) {
         if (v == mCouponsLayout) {
             if (coursesId != null) {
+                UMengCountUtil.UmengCount(this,UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
@@ -231,7 +232,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 PopupUtils.showToast("请选择支付方式");
                 return;
             }
-            MobclickAgent.onEvent(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
+            UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
             if (mCoupon != null) {
                 mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType);
             } else {

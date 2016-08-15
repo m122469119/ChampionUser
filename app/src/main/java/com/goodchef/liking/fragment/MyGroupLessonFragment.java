@@ -24,6 +24,8 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.MyGroupCoursesPresenter;
 import com.goodchef.liking.mvp.view.MyGroupCourseView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -58,6 +60,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 if (textView != null) {
                     MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                     if (data != null) {
+                        UMengCountUtil.UmengCount(getActivity(), UmengEventId.GROUPLESSONDETAILSACTIVITY);
                         Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                         intent.putExtra(INTENT_KEY_STATE, data.getStatus());
                         intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());

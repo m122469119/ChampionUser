@@ -35,6 +35,8 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
 import com.goodchef.liking.mvp.view.CheckGymView;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
@@ -324,6 +326,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
                 Intent intent = new Intent(LookStoreMapActivity.this, GymCoursesActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymDto.getGymId() + "");
                 intent.putExtra(LikingLessonFragment.KEY_GYM_NAME, mGymDto.getGymName());

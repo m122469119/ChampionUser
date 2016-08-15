@@ -19,7 +19,9 @@ import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.mvp.presenter.MyCardPresenter;
 import com.goodchef.liking.mvp.view.MyCardView;
+import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.ListViewUtil;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
@@ -88,6 +90,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        UMengCountUtil.UmengCount(this, UmengEventId.UPGRADEANDCONTINUECARDACTIVITY);
         if (v == mPromotionCardBtn) {//升级卡
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);

@@ -28,6 +28,8 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GymCoursesResult;
 import com.goodchef.liking.mvp.presenter.GymCoursesPresenter;
 import com.goodchef.liking.mvp.view.GymCoursesView;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -152,6 +154,7 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
     @Override
     public void onClick(View v) {
         if (v == mCheckGymBtn) {
+            UMengCountUtil.UmengCount(GymCoursesActivity.this,UmengEventId.ARENAACTIVITY);
             Intent intent = new Intent(this, ArenaActivity.class);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             this.startActivity(intent);
@@ -249,6 +252,7 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
                 mCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        UMengCountUtil.UmengCount(GymCoursesActivity.this, UmengEventId.GROUPLESSONDETAILSACTIVITY);
                         Intent intent = new Intent(mContext, GroupLessonDetailsActivity.class);
                         intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, object.getScheduleId());
                         startActivity(intent);
