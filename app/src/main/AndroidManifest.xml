@@ -178,6 +178,15 @@
         <activity
             android:name=".activity.WriteInviteCodeActivity"
             android:screenOrientation="portrait"/>
+        <!--填写名称-->
+        <activity
+            android:name=".activity.WriteNameActivity"
+            android:screenOrientation="portrait"/>
+        <!--上传头像-->
+        <activity android:name=".activity.UserHeadImageActivity"
+            android:screenOrientation="portrait"/>
+        <!--选择性别-->
+        <activity android:name=".activity.SexActivity"/>
 
         <!--支付宝h5页面-->
         <activity

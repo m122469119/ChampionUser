@@ -51,4 +51,11 @@ public class UmengEventId {
      */
     public static final String GET_OUT_PASSWORD_BUTTON = "mGetOutPasswordBtn";
 
+    /**
+     * banner
+     */
+    public static final String BANNER = "banner";
+
+
+
 }
