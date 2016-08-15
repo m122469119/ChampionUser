@@ -175,7 +175,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
             if (newUser == 1) {
-                Intent intent = new Intent(this, MyInfoActivity.class);
+                Intent intent = new Intent(this, WriteNameActivity.class);
                 intent.putExtra(KEY_TITLE_SET_USER_INFO, "设置个人信息");
                 intent.putExtra(KEY_INTENT_TYPE, 1);
                 startActivity(intent);

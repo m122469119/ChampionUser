@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.ConstantUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.BaseApplication;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
@@ -285,7 +285,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView || v == mLeftImageView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                MobclickAgent.onEvent(LikingHomeActivity.this, UmengEventId.CHECK_CITY);
                 showSelectCityDialog();
             }
         } else if (v == mLikingRightTitleTextView) {
@@ -328,6 +327,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 展示选择城市dialog
      */
     private void showSelectCityDialog() {
+        MobclickAgent.onEvent(LikingHomeActivity.this, UmengEventId.CHECK_CITY);
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_city, null, false);
         TextView locationAddress = (TextView) view.findViewById(R.id.dialog_location_address);

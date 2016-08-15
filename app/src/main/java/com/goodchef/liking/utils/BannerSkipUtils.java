@@ -5,6 +5,12 @@ import android.content.Context;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
 
 
 /**
@@ -29,6 +35,12 @@ public class BannerSkipUtils {
         }
         switch (type) {
             case SKIP_TYPE_H5: //跳转H5
+                LocationData locationData = Preference.getLocationData();
+                if (locationData != null && !StringUtils.isEmpty(locationData.getCityName())) {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("banner", locationData.getCityName() + "_" + banner.getLoadUrl());
+                    MobclickAgent.onEvent(context, UmengEventId.BANNER, map);
+                }
                 HDefaultWebActivity.launch(context, banner.getLoadUrl(), banner.getTitle());
                 break;
             case SKIP_TYPE_NATIVE: //跳转Native界面
