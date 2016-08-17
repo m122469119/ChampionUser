@@ -1,6 +1,7 @@
 package com.goodchef.liking.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,6 +33,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
     private TextView mNextButton;
 
     private String userName;
+    private String mLocalHeadImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,9 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
     private void initData() {
         userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
+        mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
         mUserNameTextView.setText(userName);
+        mHImageView.setImageURI(Uri.parse(mLocalHeadImageUrl));
 
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
@@ -94,6 +98,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         } else if (v == mNextButton) {
             Intent intent = new Intent(this, SelectBirthdayActivity.class);
             intent.putExtra(WriteNameActivity.KEY_USER_NAME,userName);
+            intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE,mLocalHeadImageUrl);
             startActivity(intent);
         }
     }
