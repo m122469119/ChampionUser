@@ -22,7 +22,7 @@
         android:textColor="@color/user_name_text"
         android:textColorHint="@color/bg_hint_gray"
         android:textCursorDrawable="@null"
-        android:textSize="@dimen/textsize_small"/>
+        android:textSize="@dimen/textsize_15"/>
 
     <View
         android:layout_width="match_parent"
