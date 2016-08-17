@@ -186,7 +186,15 @@
         <activity android:name=".activity.UserHeadImageActivity"
             android:screenOrientation="portrait"/>
         <!--选择性别-->
-        <activity android:name=".activity.SexActivity"/>
+        <activity android:name=".activity.SexActivity"
+            android:screenOrientation="portrait"/>
+        <!--选择生日-->
+        <activity android:name=".activity.SelectBirthdayActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--选择体重-->
+        <activity android:name=".activity.SelectWeightActivity"
+            android:screenOrientation="portrait"/>
 
         <!--支付宝h5页面-->
         <activity

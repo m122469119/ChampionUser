@@ -104,9 +104,8 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
             mRecyclerView.setAdapter(mGymCoursesAdapter);
         } else {
             mRecyclerView.setVisibility(View.GONE);
-            mCheckGymBtn.setVisibility(View.GONE);
+            mCheckGymBtn.setVisibility(View.VISIBLE);
             mNoCoursesLayout.setVisibility(View.VISIBLE);
-
         }
     }
 

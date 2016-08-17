@@ -46,5 +46,6 @@
     <color name="dishes_buy_btn_gray_background">#dfdddd</color>
     <color name="dishes_buy_gray_text">#c2c0c0</color>
     <color name="user_auth_code_fail">#ff6161</color>
+    <color name="user_name_text">#D7D7D7</color>
 
 </resources>
