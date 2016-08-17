@@ -131,30 +131,36 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             if (needUpdate == 0) {//不需要强制更新
                 if (!StringUtils.isEmpty(lastVersion) && !lastVersion.equals(currentVersion)) {//升级
                     if (Preference.getIsUpdate()) {
-                        showAppUpdateDialog(updateData);
+                        showAppUpdateDialog(updateData,needUpdate);
                         Preference.setIsUpdateApp(false);
                     }
                 }
             } else if (needUpdate == 1) {//需要强制更新
-                showAppUpdateDialog(updateData);
+                showAppUpdateDialog(updateData,needUpdate);
             }
 
         }
     }
 
-    private void showAppUpdateDialog(final BaseConfigResult.BaseConfigData.UpdateData updateData) {
+    private void showAppUpdateDialog(final BaseConfigResult.BaseConfigData.UpdateData updateData,int needUpdate) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
         textView.setText((updateData.getTitle()));
         builder.setCustomTitle(view);
         builder.setMessage(updateData.getContent());
-        builder.setNegativeButton(getString(R.string.dialog_know), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).setPositiveButton(getString(R.string.dialog_app_update), new DialogInterface.OnClickListener() {
+        if (needUpdate != 1) {
+            builder.create().setCancelable(true);
+            builder.setNegativeButton(getString(R.string.dialog_know), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }else {
+            builder.create().setCancelable(false);
+        }
+        builder.setPositiveButton(getString(R.string.dialog_app_update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 HDefaultWebActivity.launch(LikingHomeActivity.this, updateData.getUrl(), ConstantUtils.BLANK_STRING);
