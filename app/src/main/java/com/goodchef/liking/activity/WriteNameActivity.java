@@ -26,13 +26,19 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
     private EditText mWriteNameEditText;
     private TextView mNextBtn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_name);
         initView();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
+        setTitle("输入昵称");
+        showRightMenu("跳过", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         initData();
     }
 

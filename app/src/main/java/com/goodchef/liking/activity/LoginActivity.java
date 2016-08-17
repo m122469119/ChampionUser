@@ -90,15 +90,15 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             login();
         } else if (v == mRegisterBtn) {
             BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-           if (baseConfigResult !=null){
-               BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-               if (baseConfigData != null) {
-                   String agreeUrl = baseConfigData.getAgreeUrl();
-                   if (!StringUtils.isEmpty(agreeUrl)) {
-                       HDefaultWebActivity.launch(this, agreeUrl, "用户协议");
-                   }
-               }
-           }
+            if (baseConfigResult != null) {
+                BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                if (baseConfigData != null) {
+                    String agreeUrl = baseConfigData.getAgreeUrl();
+                    if (!StringUtils.isEmpty(agreeUrl)) {
+                        HDefaultWebActivity.launch(this, agreeUrl, "用户协议");
+                    }
+                }
+            }
         }
     }
 
@@ -174,6 +174,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             postEvent(new LoginFinishMessage());
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
+            LogUtils.i("newUser", newUser + "");
             if (newUser == 1) {
                 Intent intent = new Intent(this, WriteNameActivity.class);
                 intent.putExtra(KEY_TITLE_SET_USER_INFO, "设置个人信息");

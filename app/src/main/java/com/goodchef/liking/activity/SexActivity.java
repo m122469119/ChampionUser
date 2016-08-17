@@ -1,10 +1,16 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -13,8 +19,19 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * Author shaozucheng
  * Time:16/8/15 下午3:34
  */
-public class SexActivity extends AppBarActivity {
+public class SexActivity extends AppBarActivity implements View.OnClickListener {
     private LikingStateView mStateView;
+    private HImageView mHImageView;
+    private TextView mUserNameTextView;
+    private LinearLayout mSexManLayout;
+    private LinearLayout mSexWomenLayout;
+    private TextView mSexManImage;
+    private TextView mSexWomenImage;
+    private TextView mSexManTextView;
+    private TextView mSexWomenTextView;
+    private TextView mNextButton;
+
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +39,32 @@ public class SexActivity extends AppBarActivity {
         setContentView(R.layout.activity_sex);
         initView();
         initData();
+        setViewOnClickListener();
+        setTitle("选择性别");
     }
 
     private void initView() {
-        mStateView = (LikingStateView)findViewById(R.id.sex_state_view);
+        mStateView = (LikingStateView) findViewById(R.id.sex_state_view);
+        mHImageView = (HImageView) findViewById(R.id.head_image);
+        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
+        mSexManLayout = (LinearLayout) findViewById(R.id.layout_sex_man);
+        mSexWomenLayout = (LinearLayout) findViewById(R.id.layout_sex_women);
+        mSexManImage = (TextView) findViewById(R.id.sex_man_image);
+        mSexWomenImage = (TextView) findViewById(R.id.sex_women_image);
+        mSexManTextView = (TextView) findViewById(R.id.sex_man_text);
+        mSexWomenTextView = (TextView) findViewById(R.id.sex_women_text);
+        mNextButton = (TextView) findViewById(R.id.sex_next_btn);
+    }
+
+    private void setViewOnClickListener() {
+        mSexManLayout.setOnClickListener(this);
+        mSexWomenLayout.setOnClickListener(this);
+        mNextButton.setOnClickListener(this);
     }
 
     private void initData() {
+        userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
+        mUserNameTextView.setText(userName);
 
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
@@ -41,5 +77,24 @@ public class SexActivity extends AppBarActivity {
                 initData();
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mSexManLayout) {
+            mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_man));
+            mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+            mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_men));
+            mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+        } else if (v == mSexWomenLayout) {
+            mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_man));
+            mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+            mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_men));
+            mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+        } else if (v == mNextButton) {
+            Intent intent = new Intent(this, SelectBirthdayActivity.class);
+            intent.putExtra(WriteNameActivity.KEY_USER_NAME,userName);
+            startActivity(intent);
+        }
     }
 }
