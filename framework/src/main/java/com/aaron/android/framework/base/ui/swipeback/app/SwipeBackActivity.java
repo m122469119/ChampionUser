@@ -2,7 +2,6 @@
 package com.aaron.android.framework.base.ui.swipeback.app;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.aaron.android.framework.base.ui.BaseActivity;
