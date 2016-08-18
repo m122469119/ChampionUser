@@ -37,4 +37,16 @@
             <enum name="textWebPassword" value="3"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="RulerView">
+        <attr name="indicateColor" format="color|reference" />
+        <attr name="textColor" format="color|reference" />
+        <attr name="textSize" format="dimension|reference"/>
+        <attr name="begin" format="integer|reference" />
+        <attr name="end" format="integer|reference" />
+        <attr name="indicateWidth" format="dimension|reference" />
+        <attr name="indicatePadding" format="dimension|reference" />
+        <attr name="type" format="integer|reference"/>
+    </declare-styleable>
+
 </resources>
