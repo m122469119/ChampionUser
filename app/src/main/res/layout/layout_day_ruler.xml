@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ruler="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              ruler:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.goodchef.liking.widgets.RulerView
+                android:id="@+id/day_ruler_view"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="top"
+                android:gravity="top"
+                ruler:begin="1"
+                ruler:end="31"
+                ruler:indicateColor="@color/ruler_line"
+                ruler:indicatePadding="30dp"
+                ruler:indicateWidth="1dp"
+                ruler:textColor="@color/user_name_text"
+                ruler:textSize="15sp"
+                ruler:type="2"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/ruler_line"/>
+
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center|top"
+            android:background="@color/add_minus_dishes_text"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center|bottom"
+            android:background="@color/add_minus_dishes_text"/>
+    </FrameLayout>
+
+</LinearLayout>

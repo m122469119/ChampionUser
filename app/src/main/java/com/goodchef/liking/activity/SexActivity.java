@@ -21,6 +21,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * Time:16/8/15 下午3:34
  */
 public class SexActivity extends AppBarActivity implements View.OnClickListener {
+    public static final String KEY_SEX = "KEY_SEX";
     private LikingStateView mStateView;
     private HImageView mHImageView;
     private TextView mUserNameTextView;
@@ -34,6 +35,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
     private String userName;
     private String mLocalHeadImageUrl;
+    private int sex = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,25 +83,38 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
                 initData();
             }
         });
+
+        setSexManCheck();
     }
 
     @Override
     public void onClick(View v) {
         if (v == mSexManLayout) {
-            mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_man));
-            mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-            mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_men));
-            mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+            setSexManCheck();
         } else if (v == mSexWomenLayout) {
-            mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_man));
-            mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-            mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_men));
-            mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+            setWomenCheck();
         } else if (v == mNextButton) {
             Intent intent = new Intent(this, SelectBirthdayActivity.class);
-            intent.putExtra(WriteNameActivity.KEY_USER_NAME,userName);
-            intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE,mLocalHeadImageUrl);
+            intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
+            intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
+            intent.putExtra(KEY_SEX, sex);
             startActivity(intent);
         }
+    }
+
+    private void setSexManCheck() {
+        mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_man));
+        mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+        mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_men));
+        mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+        sex = 1;
+    }
+
+    private void setWomenCheck() {
+        mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_man));
+        mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+        mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_men));
+        mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+        sex = 2;
     }
 }
