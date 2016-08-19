@@ -94,7 +94,9 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
         if (sex == 1) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
+            mHeightRulerView.smoothScrollTo(117);
         } else if (sex == 2) {
+            mHeightRulerView.smoothScrollTo(112);
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
@@ -103,8 +105,6 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
     }
 
     private void setHeightRuler() {
-        mHeightRulerView.smoothScrollTo(117);
-
         mHeightRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
             @Override
             public void onScaleChanged(int scale) {

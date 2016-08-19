@@ -98,26 +98,22 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
         if (sex == 1) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
+            mWeightRulerView.smoothScrollTo(67);
         } else if (sex == 2) {
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
+            mWeightRulerView.smoothScrollTo(57);
         }
         mBirthdayTextView.setText("出生年月：" + mBirthdayStr);
         mHeightTextView.setText("身高：" + height +" cm");
     }
 
     private void setRulerView() {
-        mWeightRulerView.post(new Runnable() {
-            @Override
-            public void run() {
-                mWeightRulerView.smoothScrollTo(70);
-            }
-        });
         weightList = mWeightRulerView.getWeightList();
         mWeightRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
             @Override
             public void onScaleChanged(int scale) {
-                mWeightTextView.setText(weightList.get(scale) + " Kg");
+                mWeightTextView.setText(weightList.get(scale) + " kg");
             }
         });
     }
