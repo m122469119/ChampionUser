@@ -7,16 +7,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
- * 说明:
+ * 说明:首次登陆选择性别
  * Author shaozucheng
  * Time:16/8/15 下午3:34
  */
@@ -35,7 +37,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
     private String userName;
     private String mLocalHeadImageUrl;
-    private int sex = 1;
+    private int sex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,8 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         initView();
         initData();
         setViewOnClickListener();
-        setTitle("选择性别");
+        setTitle(getString(R.string.activity_title_sex));
+        getIntentData();
     }
 
     private void initView() {
@@ -67,11 +70,6 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
     }
 
     private void initData() {
-        userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
-        mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
-        mUserNameTextView.setText(userName);
-        mHImageView.setImageURI(Uri.parse(mLocalHeadImageUrl));
-
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
         } else {
@@ -83,8 +81,17 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
                 initData();
             }
         });
+    }
 
-        setSexManCheck();
+    private void getIntentData() {
+        userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
+        mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
+
+        mUserNameTextView.setText(userName);
+        if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
+            mHImageView.setImageURI(Uri.parse("file://" + mLocalHeadImageUrl));
+        }
+
     }
 
     @Override
@@ -94,6 +101,10 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         } else if (v == mSexWomenLayout) {
             setWomenCheck();
         } else if (v == mNextButton) {
+            if (sex == 0) {
+                PopupUtils.showToast("请选择性别");
+                return;
+            }
             Intent intent = new Intent(this, SelectBirthdayActivity.class);
             intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
             intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
@@ -114,7 +125,16 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         mSexManImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_man));
         mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.white));
         mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_men));
-        mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+        mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.sex_women));
         sex = 2;
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(UpDateUserInfoMessage message){
+        this.finish();
     }
 }

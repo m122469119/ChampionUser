@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:首次登陆添加头像
  * Author shaozucheng
  * Time:16/8/15 上午11:16
  */
@@ -44,10 +44,11 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_head_image);
-        setTitle("添加头像");
+        setTitle(getString(R.string.activity_title_userHeadImage));
         initView();
         setViewOnClickListener();
         initData();
+        getIntentData();
         mCameraPhotoHelper = new CameraPhotoHelper(this);
     }
 
@@ -55,7 +56,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
         if (!StringUtils.isEmpty(mLoaclHeadUrl)) {
-            mHImageView.setImageURI(Uri.parse(mLoaclHeadUrl));
+            mHImageView.setImageURI(Uri.parse("file://" + mLoaclHeadUrl));
         }
     }
 
@@ -74,9 +75,6 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
     }
 
     private void initData() {
-        userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
-        mUserNameTextView.setText(userName);
-
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
         } else {
@@ -90,14 +88,23 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
         });
     }
 
+    private void getIntentData(){
+        userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
+        mUserNameTextView.setText(userName);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == mHImageView || v == mSelectImageTextView) {
             showCameraDialog();
         } else if (v == mNextBtn) {
+            if (StringUtils.isEmpty(mLoaclHeadUrl)) {
+                PopupUtils.showToast("请选择头像");
+                return;
+            }
             Intent intent = new Intent(this, SexActivity.class);
             intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
-            intent.putExtra(KEY_HEAD_IMAGE,mLoaclHeadUrl);
+            intent.putExtra(KEY_HEAD_IMAGE, mLoaclHeadUrl);
             startActivity(intent);
         }
     }
@@ -137,8 +144,8 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
             public void takePictureFromCamera(String imagePath) {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
                 if (mBitmap != null) {
-                    mLoaclHeadUrl = "file://" + imagePath;
-                    mHImageView.setImageURI(Uri.parse(mLoaclHeadUrl));
+                    mLoaclHeadUrl = imagePath;
+                    mHImageView.setImageURI(Uri.parse("file://" + mLoaclHeadUrl));
                 } else {
                     PopupUtils.showToast("请重新选图片");
                 }
@@ -150,13 +157,23 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                 Bitmap mBitmap = bitmapList.get(0);
                 if (mBitmap != null) {
                     LogUtils.i("imagepath =", imagePathList.get(0));
-                    mLoaclHeadUrl = "file://" + imagePathList.get(0);
-                    mHImageView.setImageURI(Uri.parse(mLoaclHeadUrl));
+                    mLoaclHeadUrl = imagePathList.get(0);
+                    mHImageView.setImageURI(Uri.parse("file://" + mLoaclHeadUrl));
                 } else {
                     PopupUtils.showToast("请重新选图片");
                 }
             }
         });
+    }
+
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(UpDateUserInfoMessage message){
+        this.finish();
     }
 
 

@@ -48,5 +48,7 @@
     <color name="user_auth_code_fail">#ff6161</color>
     <color name="user_name_text">#D7D7D7</color>
     <color name="ruler_line">#10ffffff</color>
+    <color name="complete_user_info_layer">#10000000</color>
+    <color name="sex_women">#E22B68</color>
 
 </resources>

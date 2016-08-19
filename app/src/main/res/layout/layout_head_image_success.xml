@@ -45,9 +45,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="点击添加头像"
+            android:paddingTop="10dp"
+            android:text="@string/head_select_image_prompt"
             android:textColor="@color/user_name_text"
             android:textSize="12sp"/>
 
@@ -58,9 +58,9 @@
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
         android:background="@color/liking_green_btn_back"
-        android:textSize="@dimen/textsize_small"
+        android:gravity="center"
+        android:text="@string/head_image_next_btn"
         android:textColor="@color/white"
-        android:text="@string/head_image_next_btn"/>
+        android:textSize="@dimen/textsize_small"/>
 </RelativeLayout>
