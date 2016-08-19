@@ -167,5 +167,16 @@
     <string name="head_image_next_btn">下一步（2/6）</string>
     <string name="sex_next_btn">下一步（3/6）</string>
     <string name="select_birthday_next_btn">下一步（4/6）</string>
+    <string name="select_height_next_btn">下一步(5/6)</string>
+    <string name="skip">跳过</string>
+    <string name="activity_title_writename">输入昵称</string>
+    <string name="activity_title_userHeadImage">添加头像</string>
+    <string name="activity_title_sex">选择性别</string>
+    <string name="activity_title_select_birthday">选择出生日期</string>
+    <string name="activity_title_weight">选择体重</string>
+    <string name="select_weight_next_btn">下一步（6/6）</string>
+    <string name="complete_btn">完成</string>
+    <string name="activity_title_complete_userinfo">完成个人信息设置</string>
+    <string name="head_select_image_prompt">点击上传头像</string>
 
 </resources>

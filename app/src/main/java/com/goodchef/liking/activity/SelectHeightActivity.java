@@ -12,67 +12,59 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.utils.VerifyDateUtils;
 import com.goodchef.liking.widgets.RulerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
- * 说明:首次登陆选择出生日期
+ * 说明:首次登陆选择身高
  * Author shaozucheng
- * Time:16/8/16 下午3:25
+ * Time:16/8/19 上午10:12
  */
-public class SelectBirthdayActivity extends AppBarActivity implements View.OnClickListener {
-    public static final String KEY_BIRTHDAY = "key_birthday";
+public class SelectHeightActivity extends AppBarActivity implements View.OnClickListener {
+
+    public static final String KEY_HEIGHT = "key_height";
     private LikingStateView mStateView;
     private HImageView mHImageView;
     private TextView mUserNameTextView;
     private ImageView mSexManImage;
     private ImageView mSexWomenImage;
     private TextView mBirthdayTextView;
+    private TextView mHeightTextView;
+    private RulerView mHeightRulerView;
     private TextView mNextBtn;
 
     private String userName;
     private String mLocalHeadImageUrl;
     private int sex;
-
-    private RulerView mYearRulerView;
-    private RulerView mMontyRulerView;
-    private RulerView mDayRulerView;
-
-    private int year = 1950;
-    private int month = 1;
-    private int day = 1;
-
+    private String mBirthdayStr;
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_birthday);
-        setTitle(getString(R.string.activity_title_select_birthday));
-        iniView();
+        setContentView(R.layout.activity_select_height);
+        setTitle("选择身高");
+        initView();
         initData();
         getIntentData();
     }
 
-    private void iniView() {
-        mStateView = (LikingStateView) findViewById(R.id.select_birthady_state_view);
-        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
-        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
+    private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.select_height_state_view);
         mHImageView = (HImageView) findViewById(R.id.head_image);
+        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
         mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
         mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
-        mNextBtn = (TextView) findViewById(R.id.select_birthday_next_btn);
-
-        mYearRulerView = (RulerView) findViewById(R.id.year_ruler_view);
-        mMontyRulerView = (RulerView) findViewById(R.id.month_ruler_view);
-        mDayRulerView = (RulerView) findViewById(R.id.day_ruler_view);
+        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
+        mHeightTextView = (TextView) findViewById(R.id.height_text);
+        mHeightRulerView = (RulerView) findViewById(R.id.height_ruler_view);
+        mNextBtn = (TextView) findViewById(R.id.select_height_next_btn);
 
         mNextBtn.setOnClickListener(this);
-
-        setRuleView();
+        setHeightRuler();
     }
+
 
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -91,9 +83,11 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
     private void getIntentData() {
         userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
         mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
-        sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 0);
+        sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 1);
+        mBirthdayStr = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY);
 
         mUserNameTextView.setText(userName);
+
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
             mHImageView.setImageURI(Uri.parse("file://" + mLocalHeadImageUrl));
         }
@@ -104,76 +98,41 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
+        mBirthdayTextView.setText("出生年月：" + mBirthdayStr);
 
     }
 
-    private void setRuleView() {
-        mYearRulerView.smoothScrollTo(37);
-        mMontyRulerView.smoothScrollTo(2);
-        mDayRulerView.smoothScrollTo(11);
+    private void setHeightRuler() {
+        mHeightRulerView.smoothScrollTo(117);
 
-        mYearRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
+        mHeightRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
             @Override
             public void onScaleChanged(int scale) {
-                year = scale;
-                mBirthdayTextView.setText(year + "年" + month + "月" + day + "日");
-                checkDate();
+                height = scale;
+                mHeightTextView.setText(height + " cm");
             }
         });
-
-        mMontyRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
-            @Override
-            public void onScaleChanged(int scale) {
-                month = scale;
-                mBirthdayTextView.setText(year + "年" + month + "月" + day + "日");
-                checkDate();
-            }
-        });
-
-        mDayRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
-            @Override
-            public void onScaleChanged(int scale) {
-                day = scale;
-                mBirthdayTextView.setText(year + "年" + month + "月" + day + "日");
-                checkDate();
-            }
-        });
-    }
-
-    /**
-     * 校验日期是否正确
-     */
-    private void checkDate() {
-        if (VerifyDateUtils.isVerifyDate(year + "-" + month + "-" + day)) {
-            mNextBtn.setBackgroundColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-            mNextBtn.setEnabled(true);
-        } else {
-            mNextBtn.setBackgroundColor(ResourceUtils.getColor(R.color.dishes_details_tags));
-            mNextBtn.setEnabled(false);
-        }
     }
 
     @Override
     public void onClick(View v) {
         if (v == mNextBtn) {
-            Intent intent = new Intent(this, SelectHeightActivity.class);
+            Intent intent = new Intent(this, SelectWeightActivity.class);
             intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
             intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
             intent.putExtra(SexActivity.KEY_SEX, sex);
-            intent.putExtra(KEY_BIRTHDAY, mBirthdayTextView.getText().toString().trim());
+            intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY, mBirthdayStr);
+            intent.putExtra(KEY_HEIGHT,height);
             startActivity(intent);
         }
     }
-
 
     @Override
     protected boolean isEventTarget() {
         return true;
     }
 
-    public void onEvent(UpDateUserInfoMessage message) {
+    public void onEvent(UpDateUserInfoMessage message){
         this.finish();
     }
-
-
 }

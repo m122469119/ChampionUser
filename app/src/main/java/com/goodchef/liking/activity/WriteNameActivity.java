@@ -32,11 +32,11 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
         setContentView(R.layout.activity_write_name);
         initView();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
-        setTitle("输入昵称");
-        showRightMenu("跳过", new View.OnClickListener() {
+        setTitle(getString(R.string.activity_title_writename));
+        showRightMenu(getString(R.string.skip), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                finish();
             }
         });
         initData();
@@ -71,11 +71,23 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
                 PopupUtils.showToast("请输入名称");
                 return;
             }
+            if (nameStr.length() > 15) {
+                PopupUtils.showToast("昵称不能大于15个字");
+                return;
+            }
 
-            Intent intent = new Intent(this,UserHeadImageActivity.class);
-            intent.putExtra(KEY_USER_NAME,nameStr);
+            Intent intent = new Intent(this, UserHeadImageActivity.class);
+            intent.putExtra(KEY_USER_NAME, nameStr);
             startActivity(intent);
-
         }
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(UpDateUserInfoMessage message) {
+        this.finish();
     }
 }

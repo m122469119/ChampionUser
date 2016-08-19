@@ -80,9 +80,6 @@ public class RulerView extends View {
 
     //数据相关
     private List<String> weightList;//体重
-    private List<String> yearList;//年份
-    private List<String> montyList;//月份
-    private List<String> dayList;//天
 
     private static final int YEAR = 0;
     private static final int MONTY = 1;
@@ -153,6 +150,7 @@ public class RulerView extends View {
         mInnerWidth = (mEndRange - mBeginRange) * getIndicateWidth();
 
         mIndicateLoc = new Rect();
+        initWeightData();
     }
 
     @Override
@@ -174,8 +172,7 @@ public class RulerView extends View {
                 } else if (mType == DAY) {
                     drawText(canvas, position, String.valueOf(value));
                 } else if (mType == WEIGHT) {
-                    List<String> list = initWeightData(mBeginRange, mEndRange);
-                    drawText(canvas, position, list.get(value));
+                    drawText(canvas, position, weightList.get(value));
                 } else {
                     drawText(canvas, position, String.valueOf(value));
                 }
@@ -190,15 +187,13 @@ public class RulerView extends View {
     /**
      * 初始化体重数据
      *
-     * @param mBeginRange 开始体重
-     * @param mEndRange   结束体重
      * @return
      */
-    private List<String> initWeightData(int mBeginRange, int mEndRange) {
+    private List<String> initWeightData() {
         weightList = new ArrayList<>();
-        double decimal = 20;
+        double decimal = 25;
         double sum;
-        for (int i = 0; i <= 100; i++) {
+        for (int i = 0; i <= 300; i++) {
             if (i == 0) {
                 weightList.add(decimal + "");
             } else {
@@ -209,6 +204,9 @@ public class RulerView extends View {
         return weightList;
     }
 
+    public List<String> getWeightList() {
+        return weightList;
+    }
 
     private void drawIndicate(Canvas canvas, int position) {
         computeIndicateLoc(mIndicateLoc, position);
@@ -217,7 +215,7 @@ public class RulerView extends View {
         int top = mIndicateLoc.top;
         int bottom = mIndicateLoc.bottom;
 
-        Log.i(TAG, "mIndicatePadding=" + mIndicatePadding + "left =  " + left + " right =  " + right + " bottom =  " + bottom + " top =  " + top);
+      //  Log.i(TAG, "mIndicatePadding=" + mIndicatePadding + "left =  " + left + " right =  " + right + " bottom =  " + bottom + " top =  " + top);
 
 //先注释掉这段代码
 //        if (position % 1 != 0) {
