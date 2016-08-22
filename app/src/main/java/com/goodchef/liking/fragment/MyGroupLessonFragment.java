@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecycle
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
+import com.goodchef.liking.activity.MyChargeGroupCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -60,12 +61,12 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 if (textView != null) {
                     MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                     if (data != null) {
-                        UMengCountUtil.UmengCount(getActivity(), UmengEventId.GROUPLESSONDETAILSACTIVITY);
-                        Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
-                        intent.putExtra(INTENT_KEY_STATE, data.getStatus());
-                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());
-                        intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
-                        startActivity(intent);
+                        int isFree = data.getIsFee();
+                        if (isFree == 0) {//免费
+                            jumpFreeGroupDetails(data);
+                        } else if (isFree == 1) {//收费
+                            jumpMyChargeGroupCoursesDetails(data);
+                        }
                     }
                 }
             }
@@ -77,7 +78,32 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
         });
     }
 
-    private void setNoDataView(){
+    /**
+     * 跳转到免费团体课详情
+     *
+     * @param data 课程对象
+     */
+    private void jumpFreeGroupDetails(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data) {
+        UMengCountUtil.UmengCount(getActivity(), UmengEventId.GROUPLESSONDETAILSACTIVITY);
+        Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
+        intent.putExtra(INTENT_KEY_STATE, data.getStatus());
+        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());
+        intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
+        startActivity(intent);
+    }
+
+    /***
+     * 跳转到收费团体课详情页
+     * @param data 课程对象
+     */
+    private void jumpMyChargeGroupCoursesDetails(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data){
+        UMengCountUtil.UmengCount(getActivity(), UmengEventId.NOTFREEGROUPLESSONDETAILSACTIVITY);
+        Intent intent = new Intent(getActivity(), MyChargeGroupCoursesDetailsActivity.class);
+        intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
+        startActivity(intent);
+    }
+
+    private void setNoDataView() {
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
@@ -109,7 +135,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
     public void updateMyGroupCoursesView(MyGroupCoursesResult.MyGroupCoursesData myGroupCoursesData) {
         List<MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses> myGroupCoursesDataList = myGroupCoursesData.getMyGroupCourses();
         if (myGroupCoursesDataList != null) {
-           updateListView(myGroupCoursesDataList);
+            updateListView(myGroupCoursesDataList);
         }
     }
 
@@ -177,7 +203,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
         return true;
     }
 
-    public void onEvent(CancelGroupCoursesMessage cancelGroupCoursesMessage){
+    public void onEvent(CancelGroupCoursesMessage cancelGroupCoursesMessage) {
         loadHomePage();
     }
 }

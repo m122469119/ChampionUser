@@ -13,9 +13,14 @@ public class UmengEventId {
     public static final String OPENTHEDOORACTIVITY = "OpenTheDoorActivity";
 
     /***
-     * 团体课详情页面
+     * 免费团体课详情页面
      */
     public static final String GROUPLESSONDETAILSACTIVITY = "GroupLessonDetailsActivity";
+
+    /***
+     * 收费团体课详情页面
+     */
+    public static final String NOTFREEGROUPLESSONDETAILSACTIVITY = "notFreeGroupLessonDetailsActivity";
 
     /***
      * 私教课详情页面

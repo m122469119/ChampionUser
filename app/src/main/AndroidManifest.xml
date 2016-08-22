@@ -207,6 +207,10 @@
         <activity android:name=".activity.CompleteUserInfoActivity"
             android:screenOrientation="portrait"/>
 
+        <!--收费团体课详情界面-->
+        <activity android:name=".activity.MyChargeGroupCoursesDetailsActivity"
+            android:screenOrientation="portrait"/>
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

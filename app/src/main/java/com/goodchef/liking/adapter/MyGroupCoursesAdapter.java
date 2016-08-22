@@ -25,6 +25,8 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
     private static final int COURSES_STATE_PROCESS = 1;//进行中
     private static final int COURSES_STATE_OVER = 2;//已结束
     private static final int COURSES_STATE_CANCEL = 3;//已取消
+    private static final int TYPE_IS_FREE = 0;//免费
+    private static final int TYPE_NOT_FREE = 1;//收费
     private Context mContext;
 
 
@@ -61,6 +63,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         TextView mShopNameTextView;//门店名称
         TextView mGroupCoursesStateTextView;//课程状态
         TextView mShopAddressTextView;//门店地址
+        TextView mCoursesMoneyTextView;//课程金额
         TextView mCancelOrderBtn;//取消预约
 
 
@@ -73,6 +76,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mGroupCoursesStateTextView = (TextView) itemView.findViewById(R.id.group_courses_state);
             mShopAddressTextView = (TextView) itemView.findViewById(R.id.shop_address);
             mCancelOrderBtn = (TextView) itemView.findViewById(R.id.cancel_order_btn);
+            mCoursesMoneyTextView = (TextView) itemView.findViewById(R.id.courses_money);
         }
 
         @Override
@@ -89,6 +93,14 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             if (!StringUtils.isEmpty(imageUrl)) {
                 HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
             }
+            int isFree = object.getIsFee();
+            if (isFree == TYPE_IS_FREE) {//免费
+                mCoursesMoneyTextView.setVisibility(View.GONE);
+            } else if (isFree == TYPE_NOT_FREE) {//收费
+                mCoursesMoneyTextView.setVisibility(View.VISIBLE);
+                mCoursesMoneyTextView.setText("¥ " + object.getAmount());
+            }
+
         }
 
         private void setCoursesState(int state) {
