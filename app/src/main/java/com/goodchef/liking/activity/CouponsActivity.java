@@ -35,6 +35,8 @@ public class CouponsActivity extends AppBarActivity {
     public static final String TYPE_MY_COUPONS = "MyCoupons";
     public static final String INTENT_KEY_COUPONS_DATA = "intent_key_coupons_data";
     public static final String KEY_COUPON_ID = "key_coupon_id";
+    public static final String KEY_SCHEDULE_ID = "schedule_id";
+
     private EditText mEditCoupons;
     private TextView mExchangeButton;
     private LinearLayout mExchangeCouponsLayout;
@@ -45,6 +47,7 @@ public class CouponsActivity extends AppBarActivity {
     private int cardId;
     private int type;
     private String couponId;
+    private int scheduleId;
 
 
     @Override
@@ -70,6 +73,8 @@ public class CouponsActivity extends AppBarActivity {
         cardId = getIntent().getIntExtra(BuyCardConfirmActivity.KEY_CARD_ID,0);
         type = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE,0);
         couponId = getIntent().getStringExtra(KEY_COUPON_ID);
+        scheduleId = getIntent().getIntExtra(KEY_SCHEDULE_ID,0);
+
         if (intentType.equals(TYPE_MY_COUPONS)) {
             mExchangeCouponsLayout.setVisibility(View.VISIBLE);
             setTitle("我的优惠券");
@@ -89,6 +94,7 @@ public class CouponsActivity extends AppBarActivity {
         bundle.putString(TYPE_MY_COUPONS, intentType);
         bundle.putInt(BuyCardConfirmActivity.KEY_CARD_ID,cardId);
         bundle.putInt(LikingBuyCardFragment.KEY_BUY_TYPE,type);
+        bundle.putInt(KEY_SCHEDULE_ID,0);
         bundle.putString(KEY_COUPON_ID,couponId);
         fragmentTransaction.add(R.id.my_coupons_fragment, CouponsFragment.newInstance(bundle));
         fragmentTransaction.commit();
