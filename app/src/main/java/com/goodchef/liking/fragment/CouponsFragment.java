@@ -37,10 +37,13 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private static final String COUPON_TYPE_YINGYANGCANG = "1";//1营养餐
     private static final String COUPON_TYPE_PRIVATE_COURSES = "2";//2 私教课
     private static final String COUPON_TYPE_BUY_CARD = "3";// 3 购卡
+    private static final String COUPON_TYPE_GRUOP_COURSES = "4";//团体课优惠券
+
     private static final String COUPON_STATUS_NOT_USED = "0";//0未使用
     private static final String COUPON_STATUS_USED = "1";//1已使用
     private static final String COUPON_STATUS_OVERDUE = "2";// 2已过期
     private static final String COUPON_STATUS_NO_SUBJECT = "3";//不符合该项目
+
 
     private CouponPresenter mCouponPresenter;
 
@@ -50,6 +53,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private int cardId;
     private int type;
     private String couponId;
+    private int scheduleId;
 
     private CouponsAdapter mCouponsAdapter;
 
@@ -99,6 +103,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
         cardId = getArguments().getInt(BuyCardConfirmActivity.KEY_CARD_ID, 0);
         type = getArguments().getInt(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
+        scheduleId = getArguments().getInt(CouponsActivity.KEY_SCHEDULE_ID);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
             setPullType(PullMode.PULL_BOTH);
         } else {
@@ -154,9 +159,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private void sendRequest(int page) {
         mCouponPresenter = new CouponPresenter(getActivity(), this);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getCoupons(null, null, null, null, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(null, null, null, null, null, page, CouponsFragment.this);
         } else {
-            mCouponPresenter.getCoupons(courseId, createDishesJson(), cardId, type, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(courseId, createDishesJson(), cardId, type, scheduleId, page, CouponsFragment.this);
         }
     }
 
@@ -249,7 +254,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                     if (mClickListener != null) {
                         mRootCouponsLayout.setEnabled(true);
                         mRootCouponsLayout.setOnClickListener(mClickListener);
-                    }else {
+                    } else {
                         mRootCouponsLayout.setEnabled(false);
                     }
                     setSelectCouponView(isSelect, object.getAmount());
@@ -320,6 +325,14 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                     } else {
                         mTypeTextView.setText("购卡专用,无门槛使用");
                     }
+                } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
+                    mRightLayout.setBackgroundResource(R.drawable.coupons_right_blue_background);
+                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
+                    if (minAmountDouble > 0.00) {
+                        mTypeTextView.setText("团体课专用满" + minAmount + "可用");
+                    } else {
+                        mTypeTextView.setText("团体课专用,无门槛使用");
+                    }
                 }
             }
 
@@ -351,6 +364,12 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                         mTypeTextView.setText("购卡专用满" + minAmount + "可用");
                     } else {
                         mTypeTextView.setText("购卡专用,无门槛使用");
+                    }
+                } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
+                    if (minAmountDouble > 0.00) {
+                        mTypeTextView.setText("团体课专用满" + minAmount + "可用");
+                    } else {
+                        mTypeTextView.setText("团体课专用,无门槛使用");
                     }
                 }
             }
@@ -384,6 +403,13 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
                         mTypeTextView.setText("购卡专用满" + minAmount + "可用");
                     } else {
                         mTypeTextView.setText("购卡专用,无门槛使用");
+                    }
+                } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
+                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
+                    if (minAmountDouble > 0.00) {
+                        mTypeTextView.setText("团体课专用满" + minAmount + "可用");
+                    } else {
+                        mTypeTextView.setText("团体课专用,无门槛使用");
                     }
                 }
             }
