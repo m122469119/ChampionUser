@@ -113,6 +113,8 @@ public class UrlList {
     public static final String GET_USER_AUTHCODE = getVersionHostUrl()+"/user/authcode";
     /**上报接口错误信息*/
     public static final String UPLOAD_ERROR = getVersionHostUrl() + "/index/err-log";
+    /**获取我的付费团体课详情*/
+    public static final String ORDER_GET_COURSE_DETAIL = getVersionHostUrl() + "/order/get-course-detail";
 
 
 }

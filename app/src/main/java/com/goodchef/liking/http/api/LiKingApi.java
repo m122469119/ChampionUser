@@ -31,6 +31,7 @@ import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.InviteFriendResult;
 import com.goodchef.liking.http.result.MyCardResult;
+import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyDishesOrderDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
@@ -296,7 +297,7 @@ public class LiKingApi {
      * @param page     页数
      * @param callback RequestCallback
      */
-    public static void getCoupons(String courseId, String goodInfo, Integer cardId, Integer type, Integer scheduleId,String token, int page, RequestCallback<CouponsResult> callback) {
+    public static void getCoupons(String courseId, String goodInfo, Integer cardId, Integer type, Integer scheduleId, String token, int page, RequestCallback<CouponsResult> callback) {
         RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("page", page);
         if (!TextUtils.isEmpty(courseId)) {
             params.append("course_id", courseId);
@@ -310,8 +311,8 @@ public class LiKingApi {
         if (type != null) {
             params.append("type", type);
         }
-        if (scheduleId !=null){
-            params.append("schedule_id",scheduleId);
+        if (scheduleId != null) {
+            params.append("schedule_id", scheduleId);
         }
         VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, params, callback);
     }
@@ -791,11 +792,25 @@ public class LiKingApi {
 
     /**
      * 上报错误接口
-     * @param url 请求链接
+     *
+     * @param url          请求链接
      * @param errorMessage 错误信息
      */
     public static void uploadNetworkError(String url, String errorMessage, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.UPLOAD_ERROR, BaseResult.class, getCommonRequestParams().append("url", url)
-        .append("error_msg", errorMessage), callback);
+                .append("error_msg", errorMessage), callback);
+    }
+
+
+    /**
+     * 获取我的付费团体课详情
+     *
+     * @param token    token
+     * @param orderId  订单id
+     * @param callback RequestCallback
+     */
+    public static void getMyChargeGroupCoursesDetails(String token, String orderId, RequestCallback<MyChargeGroupCoursesDetailsResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_GET_COURSE_DETAIL, MyChargeGroupCoursesDetailsResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("order_id", orderId), callback);
     }
 }

@@ -54,6 +54,15 @@
                 android:textColor="@color/lesson_details_gray_back"
                 android:textSize="12sp"/>
 
+            <TextView
+                android:id="@+id/courses_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textColor="@color/lesson_details_gray_back"
+                android:textSize="12sp"/>
+
         </LinearLayout>
 
         <TextView
@@ -99,6 +108,7 @@
             android:background="@drawable/shape_green_line_background"
             android:gravity="center"
             android:minHeight="28dp"
+            android:visibility="invisible"
             android:minWidth="72dp"
             android:text="@string/cancel_appointment"
             android:textColor="@color/my_group_green_text"

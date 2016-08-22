@@ -68,6 +68,10 @@ public class MyGroupCoursesResult extends BaseResult {
             private String gymAddress;
             @SerializedName("course_url")
             private String courseUrl;
+            @SerializedName("is_fee")
+            private int isFee;
+            @SerializedName("amount")
+            private String amount;
 
             public String getOrderId() {
                 return orderId;
@@ -155,6 +159,22 @@ public class MyGroupCoursesResult extends BaseResult {
 
             public void setCourseUrl(String courseUrl) {
                 this.courseUrl = courseUrl;
+            }
+
+            public int getIsFee() {
+                return isFee;
+            }
+
+            public void setIsFee(int isFee) {
+                this.isFee = isFee;
+            }
+
+            public String getAmount() {
+                return amount;
+            }
+
+            public void setAmount(String amount) {
+                this.amount = amount;
             }
         }
     }
