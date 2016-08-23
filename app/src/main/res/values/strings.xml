@@ -158,9 +158,9 @@
     <string name="my_courses_details_complete">该课程已确定完成</string>
     <string name="attend_class_number">上课人数</string>
     <string name="courses_time">课程时间</string>
-    <string name="order_courses_times">预约课次</string>
+    <string name="order_courses_times">上课次数</string>
     <string name="courses_address">上课地点</string>
-    <string name="end_time">截止日期</string>
+    <string name="end_time">有效期</string>
     <string name="select_coupons_info">请选择优惠券</string>
     <string name="train_project">训练项目</string>
     <string name="next_text">下一步(1/6)</string>
@@ -178,5 +178,6 @@
     <string name="complete_btn">完成</string>
     <string name="activity_title_complete_userinfo">完成个人信息设置</string>
     <string name="head_select_image_prompt">点击上传头像</string>
+    <string name="activity_title_change_address">选择上课地址</string>
 
 </resources>

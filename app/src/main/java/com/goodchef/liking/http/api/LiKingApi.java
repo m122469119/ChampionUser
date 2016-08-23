@@ -38,6 +38,7 @@ import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
+import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
@@ -812,5 +813,19 @@ public class LiKingApi {
     public static void getMyChargeGroupCoursesDetails(String token, String orderId, RequestCallback<MyChargeGroupCoursesDetailsResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_GET_COURSE_DETAIL, MyChargeGroupCoursesDetailsResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("order_id", orderId), callback);
+    }
+
+
+    /***
+     * 计算私教课金额
+     *
+     * @param token       token
+     * @param courseId    课程id
+     * @param selectTimes 选择的课次
+     * @param callback    RequestCallback
+     */
+    public static void orderCalculate(String token, String courseId, String selectTimes, RequestCallback<OrderCalculateResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_CALCULATE, OrderCalculateResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+                .append("course_id", courseId).append("select_times", selectTimes), callback);
     }
 }

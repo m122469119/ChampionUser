@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -145,7 +148,9 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
                 if (mBitmap != null) {
                     mLoaclHeadUrl = imagePath;
-                    mHImageView.setImageURI(Uri.parse("file://" + mLoaclHeadUrl));
+                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
+                            .setLoadType(ImageLoader.LoaderType.FILE)
+                            .build());
                 } else {
                     PopupUtils.showToast("请重新选图片");
                 }
@@ -158,7 +163,9 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                 if (mBitmap != null) {
                     LogUtils.i("imagepath =", imagePathList.get(0));
                     mLoaclHeadUrl = imagePathList.get(0);
-                    mHImageView.setImageURI(Uri.parse("file://" + mLoaclHeadUrl));
+                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
+                            .setLoadType(ImageLoader.LoaderType.FILE)
+                            .build());
                 } else {
                     PopupUtils.showToast("请重新选图片");
                 }

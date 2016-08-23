@@ -115,6 +115,8 @@ public class UrlList {
     public static final String UPLOAD_ERROR = getVersionHostUrl() + "/index/err-log";
     /**获取我的付费团体课详情*/
     public static final String ORDER_GET_COURSE_DETAIL = getVersionHostUrl() + "/order/get-course-detail";
+    /**计算私教课金额*/
+    public static final String ORDER_CALCULATE = getVersionHostUrl() + "/order/calculate";
 
 
 }

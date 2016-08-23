@@ -1,6 +1,7 @@
 package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
+import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 
@@ -13,4 +14,5 @@ import com.goodchef.liking.http.result.data.PayResultData;
 public interface PrivateCoursesConfirmView extends BaseNetworkLoadView {
     void updatePrivateCoursesConfirm(PrivateCoursesConfirmResult.PrivateCoursesConfirmData coursesConfirmData);
     void updateSubmitOrderCourses(PayResultData payData);
+    void updateOrderCalculate(boolean isSuccess, OrderCalculateResult.OrderCalculateData orderCalculateData);
 }

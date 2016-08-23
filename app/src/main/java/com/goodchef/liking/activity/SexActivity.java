@@ -1,15 +1,17 @@
 package com.goodchef.liking.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -89,7 +91,9 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            mHImageView.setImageURI(Uri.parse("file://" + mLocalHeadImageUrl));
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
+                    .setLoadType(ImageLoader.LoaderType.FILE)
+                    .build());
         }
 
     }
