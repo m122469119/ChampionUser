@@ -97,7 +97,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
             setOrderState(state, orderSurplusTime);
             String imageUrl = object.getGymImg();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mDishesHImageView, imageUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mDishesHImageView, imageUrl);
             }
             mGoPayBtn.setOnClickListener(mClickListener);
             mCancelOrderBtn.setOnClickListener(mClickListener);

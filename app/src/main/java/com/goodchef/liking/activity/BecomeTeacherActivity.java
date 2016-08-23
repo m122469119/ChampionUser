@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.RegularUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
@@ -66,7 +66,7 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
             PopupUtils.showToast("手机号不能为空");
             return;
         }
-        if (!ValidateUtils.isMobile(phone)) {
+        if (!RegularUtils.isMobileExact(phone)) {
             PopupUtils.showToast("手机号码输入不正确");
             return;
         }

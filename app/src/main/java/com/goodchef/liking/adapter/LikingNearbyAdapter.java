@@ -118,7 +118,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             }
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mFoodHImageView, imgUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mFoodHImageView, imgUrl);
             }
             mDishesNameTextView.setTag(object);
             int restStock = object.getRestStock();

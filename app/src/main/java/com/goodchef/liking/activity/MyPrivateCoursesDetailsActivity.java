@@ -150,7 +150,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             mTeacherPhone = data.getTrainerPhone();
             String imageUrl = data.getTrainerAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
             }
 
             mTimesTextView.setText(data.getTimes() + "次");

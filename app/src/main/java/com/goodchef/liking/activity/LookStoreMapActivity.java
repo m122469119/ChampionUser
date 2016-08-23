@@ -320,7 +320,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mAddressTextView.setText(mGymDto.getGymAddress().trim());
         String imageUrl = mGymDto.getImg();
         if (!StringUtils.isEmpty(imageUrl)) {
-            HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+            HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
         }
 
         mLayout.setOnClickListener(new View.OnClickListener() {

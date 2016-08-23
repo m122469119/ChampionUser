@@ -114,7 +114,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             if (imageList != null && imageList.size() > 0) {
                 String imageUrl = imageList.get(0);
                 if (!TextUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().requestImage(mTeacherHImageView, imageUrl);
+                    HImageLoaderSingleton.getInstance().loadImage(mTeacherHImageView, imageUrl);
                 }
             }
 

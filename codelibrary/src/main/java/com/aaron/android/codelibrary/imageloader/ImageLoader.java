@@ -30,6 +30,8 @@ public interface ImageLoader {
 
     void loadImage(ImageView view, int res);
 
+    void loadImage(ImageView view, String url);
+
     enum LoaderType {
         NETWORK,
         FILE,

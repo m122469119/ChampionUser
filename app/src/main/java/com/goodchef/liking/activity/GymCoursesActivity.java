@@ -234,7 +234,7 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
                 if (imageList != null && imageList.size() > 0) {
                     String imageUrl = imageList.get(0);
                     if (!StringUtils.isEmpty(imageUrl)) {
-                        HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+                        HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
                     }
                 }
                 mLessonNameTextView.setText(object.getCourseName());

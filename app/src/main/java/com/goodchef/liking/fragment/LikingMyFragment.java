@@ -174,7 +174,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mPersonNameTextView.setText(Preference.getNickName());
             mPersonPhoneTextView.setText(Preference.getUserPhone());
             if (!StringUtils.isEmpty(Preference.getUserIconUrl())) {
-                HImageLoaderSingleton.getInstance().requestImage(mHeadHImageView, Preference.getUserIconUrl());
+                HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, Preference.getUserIconUrl());
             }
         } else {
             mLoginBtn.setVisibility(View.VISIBLE);

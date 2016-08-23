@@ -113,6 +113,11 @@ public class HImageLoader implements ImageLoader {
         loadImage(imageConfig);
     }
 
+    @Override
+    public void loadImage(ImageView view, String url) {
+        loadImage(view, url, null);
+    }
+
     private void setImageDraweeViewController(final HImageConfig config) {
         HImageView imageView = config.getImageView();
         ImageDecodeOptions decodeOptions = ImageDecodeOptions.newBuilder()
