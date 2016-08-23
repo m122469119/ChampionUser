@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private TextView mTeacherWeightTextView;//教练体重
     private TextView mTeacherTagsTextView;//tag
     private TextView mTeacherIntroduceTextView;//教练介绍
+    private RecyclerView mGymRecyclerView;
+    private RecyclerView mTrainItemRecyclerView;
     private TextView mImmediatelySubmitBtn;
 
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
@@ -84,6 +87,8 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         mTeacherWeightTextView = (TextView) findViewById(R.id.private_teacher_weight);
         mTeacherTagsTextView = (TextView) findViewById(R.id.teacher_tags);
         mTeacherIntroduceTextView = (TextView) findViewById(R.id.teacher_introduce);
+        mGymRecyclerView = (RecyclerView) findViewById(R.id.gym_recyclerView);
+        mTrainItemRecyclerView = (RecyclerView) findViewById(R.id.train_recyclerView);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.private_lesson_immediately_submit);
         mLikingStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override

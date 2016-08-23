@@ -2,6 +2,7 @@ package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.data.PlacesData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -26,14 +27,17 @@ public class PrivateCoursesConfirmResult extends BaseResult {
     public class PrivateCoursesConfirmData extends BaseData {
         @SerializedName("people_num")
         private String peopleNum;
-        @SerializedName("end_time")
-        private String endTime;
-        @SerializedName("total_amount")
-        private String totalAmount;
+        @SerializedName("duration")
+        private String duration;
+        @SerializedName("amount")
+        private String amount;
         @SerializedName("course")
         private List<Courses> mCourses;
-        @SerializedName("address_text")
-        private String addressText;
+        @SerializedName("end_time")
+        private String endTime;
+
+        @SerializedName("places")
+        private List<PlacesData> placesList;
 
         public String getPeopleNum() {
             return peopleNum;
@@ -51,13 +55,6 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             this.endTime = endTime;
         }
 
-        public String getTotalAmount() {
-            return totalAmount;
-        }
-
-        public void setTotalAmount(String totalAmount) {
-            this.totalAmount = totalAmount;
-        }
 
         public List<Courses> getCourses() {
             return mCourses;
@@ -67,12 +64,28 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             mCourses = courses;
         }
 
-        public String getAddressText() {
-            return addressText;
+        public String getDuration() {
+            return duration;
         }
 
-        public void setAddressText(String addressText) {
-            this.addressText = addressText;
+        public void setDuration(String duration) {
+            this.duration = duration;
+        }
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public List<PlacesData> getPlacesList() {
+            return placesList;
+        }
+
+        public void setPlacesList(List<PlacesData> placesList) {
+            this.placesList = placesList;
         }
 
         public class Courses extends BaseData {
@@ -80,14 +93,8 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             private String courseId;
             @SerializedName("name")
             private String name;
-            @SerializedName("times")
-            private String times;
-            @SerializedName("price")
-            private String price;
-            @SerializedName("course_addr")
-            private String courseAddress;
-            @SerializedName("duration")
-            private String duration;
+            @SerializedName("min_times")
+            private String minTimes;
 
             private boolean isSelect;
 
@@ -107,44 +114,20 @@ public class PrivateCoursesConfirmResult extends BaseResult {
                 this.name = name;
             }
 
-            public String getTimes() {
-                return times;
-            }
-
-            public void setTimes(String times) {
-                this.times = times;
-            }
-
-            public String getPrice() {
-                return price;
-            }
-
-            public void setPrice(String price) {
-                this.price = price;
-            }
-
-            public String getCourseAddress() {
-                return courseAddress;
-            }
-
-            public void setCourseAddress(String courseAddress) {
-                this.courseAddress = courseAddress;
-            }
-
-            public String getDuration() {
-                return duration;
-            }
-
-            public void setDuration(String duration) {
-                this.duration = duration;
-            }
-
             public boolean isSelect() {
                 return isSelect;
             }
 
             public void setSelect(boolean select) {
                 isSelect = select;
+            }
+
+            public String getMinTimes() {
+                return minTimes;
+            }
+
+            public void setMinTimes(String minTimes) {
+                this.minTimes = minTimes;
             }
         }
     }
