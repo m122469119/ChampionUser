@@ -3,8 +3,6 @@ package com.aaron.android.framework.library.imageloader;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
@@ -91,6 +89,11 @@ public class HImageLoader implements ImageLoader {
         }
     }
 
+    /**
+     * 提供一个简单的加载本地resouce资源图片的方法
+     * @param view
+     * @param res
+     */
     @Override
     public void loadImage(ImageView view, int res) {
         HImageConfig imageConfig = new HImageConfigBuilder(view, res)
@@ -113,6 +116,11 @@ public class HImageLoader implements ImageLoader {
         loadImage(imageConfig);
     }
 
+    /**
+     * 提供一个简单的加载网络图片的方法
+     * @param view ImageView
+     * @param url 请求地址
+     */
     @Override
     public void loadImage(ImageView view, String url) {
         loadImage(view, url, null);

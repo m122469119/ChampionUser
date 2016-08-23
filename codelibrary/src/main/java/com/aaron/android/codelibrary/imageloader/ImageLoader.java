@@ -28,8 +28,18 @@ public interface ImageLoader {
      */
     void loadImage(ImageView view, String url, ImageLoaderCallback imageLoaderCallback);
 
+    /**
+     * 提供一个简单的加载本地resouce资源图片的方法
+     * @param view
+     * @param res
+     */
     void loadImage(ImageView view, int res);
 
+    /**
+     * 提供一个简单的加载网络图片的方法
+     * @param view ImageView
+     * @param url 请求地址
+     */
     void loadImage(ImageView view, String url);
 
     enum LoaderType {
