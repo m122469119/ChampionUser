@@ -77,7 +77,7 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
             mPeriodOfValidityTextView.setText(object.getStartTime() + " ~ " + object.getEndTime());
             String imageUrl = object.getTrainerAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
             }
             int state = object.getStatus();
             setCoursesState(state);

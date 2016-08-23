@@ -286,7 +286,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             if (buyType == BUY_TYPE_BUY) {
                 mHImageView.setVisibility(View.VISIBLE);
                 if (!StringUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+                    HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
                 }
             } else if (buyType == BUY_TYPE_CONTINUE) {
                 mHImageView.setVisibility(View.GONE);

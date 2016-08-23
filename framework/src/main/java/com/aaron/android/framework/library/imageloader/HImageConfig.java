@@ -4,10 +4,7 @@ import android.net.Uri;
 
 import com.aaron.android.codelibrary.imageloader.ImageConfig;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
 
 /**
  * Created on 15/6/14.

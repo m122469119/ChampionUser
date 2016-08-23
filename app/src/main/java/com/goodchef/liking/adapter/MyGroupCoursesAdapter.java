@@ -91,7 +91,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mCancelOrderBtn.setTag(object);
             String imageUrl = object.getCourseUrl();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
             }
             int isFree = object.getIsFee();
             if (isFree == TYPE_IS_FREE) {//免费

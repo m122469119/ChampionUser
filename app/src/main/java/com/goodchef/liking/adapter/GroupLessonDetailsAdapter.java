@@ -50,7 +50,7 @@ public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLesso
         public void bindViews(GroupCoursesResult.GroupLessonData.GymImgsData object) {
             String url = object.getUrl();
             if (!TextUtils.isEmpty(url)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHImageView, url);
+                HImageLoaderSingleton.getInstance().loadImage(mHImageView, url);
             }
         }
     }

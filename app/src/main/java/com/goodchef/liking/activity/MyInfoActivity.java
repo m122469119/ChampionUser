@@ -365,7 +365,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             mStateView.setState(StateView.State.SUCCESS);
             String imageUrl = userInfoData.getAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mHeadImage, imageUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mHeadImage, imageUrl);
                 Preference.setUserIconUrl(imageUrl);
             }
             mUserInfoData = userInfoData;

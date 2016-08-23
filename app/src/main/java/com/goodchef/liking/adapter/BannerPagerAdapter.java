@@ -90,7 +90,7 @@ public class BannerPagerAdapter extends InfinitePagerAdapter implements IconPage
                 return;
             }
             mBanner = banner;
-            HImageLoaderSingleton.getInstance().requestImage(mBannerImageView, banner.getImgUrl());
+            HImageLoaderSingleton.getInstance().loadImage(mBannerImageView, banner.getImgUrl());
         }
 
         public BannerResult.BannerData.Banner getBanner() {

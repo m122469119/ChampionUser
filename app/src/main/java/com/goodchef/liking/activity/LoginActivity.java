@@ -14,13 +14,13 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.codelibrary.utils.ValidateUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.aaron.android.codelibrary.utils.RegularUtils;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -144,7 +144,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             PopupUtils.showToast("请输入手机号码");
             return false;
         }
-        if (!ValidateUtils.isMobile(phoneStr)) {
+        if (!RegularUtils.isMobileExact(phoneStr)) {
             PopupUtils.showToast("您手机号码格式不正确");
             return false;
         }

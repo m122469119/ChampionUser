@@ -182,7 +182,7 @@ public class MyCardOrderFragment extends NetworkPagerLoaderRecyclerViewFragment 
                 mOrderMoneyTextView.setText("¥ "+object.getOrderAmount());
                 String imageUrl = object.getCardImg();
                 if (!StringUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().requestImage(mCardHImageView, imageUrl);
+                    HImageLoaderSingleton.getInstance().loadImage(mCardHImageView, imageUrl);
                 }
             }
         }

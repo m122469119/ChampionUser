@@ -1,7 +1,6 @@
 package com.aaron.android.framework.library.imageloader;
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.widget.ImageView;
 
 import com.aaron.android.codelibrary.imageloader.ImageConfigBuilder;

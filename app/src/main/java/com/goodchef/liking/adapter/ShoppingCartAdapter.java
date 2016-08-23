@@ -80,7 +80,7 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
             mSurplusNumberTextView.setText("还剩" + object.getLeftNum() + "份");
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
-                HImageLoaderSingleton.getInstance().requestImage(mFoodHImageView, imgUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mFoodHImageView, imgUrl);
             }
             int restStock = object.getRestStock();
             int selectNum = object.getSelectedOrderNum();

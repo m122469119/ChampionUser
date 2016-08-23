@@ -2,8 +2,6 @@ package com.aaron.android.codelibrary.imageloader;
 
 import android.widget.ImageView;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
-
 /**
  * Created on 16/8/19.
  *
