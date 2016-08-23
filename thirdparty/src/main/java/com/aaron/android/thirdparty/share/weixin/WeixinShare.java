@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
-import com.aaron.android.codelibrary.utils.ApkUtils;
 import com.aaron.android.thirdparty.R;
+import com.aaron.android.thirdparty.pay.Utils;
 import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.aaron.android.thirdparty.share.Share;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
@@ -42,7 +42,7 @@ public class WeixinShare extends Share {
     }
 
     public void shareWebPage(WeixinShareData.WebPageData webPageData) {
-        if (!ApkUtils.isAppInstalled(mContext, COM_TENCENT_MM)) {
+        if (!Utils.isAppInstalled(mContext, COM_TENCENT_MM)) {
             Toast.makeText(mContext, R.string.weixin_pay_no_install, Toast.LENGTH_SHORT).show();
             return;
         }

@@ -3,7 +3,7 @@ package com.aaron.android.framework.library.imageloader;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.drawee.view.GenericDraweeView;
 
 /**
  * Created on 15/6/16.
@@ -11,7 +11,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
  * @author ran.huang
  * @version 3.0.1
  */
-public class HImageView extends SimpleDraweeView {
+public class HImageView extends GenericDraweeView {
 
     public HImageView(Context context) {
         super(context);

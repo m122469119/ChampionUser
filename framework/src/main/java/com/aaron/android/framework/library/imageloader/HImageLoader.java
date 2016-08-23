@@ -1,24 +1,30 @@
 package com.aaron.android.framework.library.imageloader;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
-import android.view.View;
+import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
 import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
 import com.aaron.android.codelibrary.imageloader.ImageConfig;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.codelibrary.imageloader.ImageLoaderCallback;
 import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.imageloader.Supplier.MemorySupplier;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.imagepipeline.common.ImageDecodeOptions;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.imagepipeline.request.BasePostprocessor;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.facebook.imagepipeline.request.Postprocessor;
 
 import java.io.File;
 
@@ -27,112 +33,111 @@ import java.io.File;
  * Created on 15/6/14.
  *
  * @author HuangRan
- * TODO requestImage需要修改,现在只能从xml读取图片的相关加载属性
+ *         TODO requestImage需要修改,现在只能从xml读取图片的相关加载属性
  */
 public class HImageLoader implements ImageLoader {
 
-    private HImageConfig mImageConfig;
-    private ImageRequest mImageRequest;
-    private ImageLoaderCallback mImageLoaderCallback;
-    private final BasePostprocessor mBasePostprocessor = new BasePostprocessor() {
+    private static final String TAG = "HImageLoader";
+    private final BaseControllerListener<ImageInfo> mControllerListener = new BaseControllerListener<ImageInfo>() {
         @Override
-        public void process(Bitmap bitmap) {
-            mImageLoaderCallback.finish(bitmap);
+        public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+            super.onFinalImageSet(id, imageInfo, animatable);
+            if (imageInfo == null) {
+                return;
+            }
+            QualityInfo qualityInfo = imageInfo.getQualityInfo();
+            LogUtils.d(TAG, "Final image received! " +
+                            "Size %d x %d" +
+                            " Quality level %d, good enough: %s, full quality: %s, animatable : %s",
+                    imageInfo.getWidth(),
+                    imageInfo.getHeight(),
+                    qualityInfo.getQuality(),
+                    qualityInfo.isOfGoodEnoughQuality(),
+                    qualityInfo.isOfFullQuality(),
+                    animatable);
+        }
+
+        @Override
+        public void onFailure(String id, Throwable throwable) {
+            super.onFailure(id, throwable);
+            LogUtils.e(TAG, "Error loading %s", id);
         }
     };
 
-    @Override
-    public void initialize(ImageCacheParams params) {
-        Fresco.initialize(params.getContext(), initImageLoaderConfig(params));
-    }
-
     private ImagePipelineConfig initImageLoaderConfig(ImageCacheParams params) {
         LogUtils.i("aaron", "imageLoader cache directory: " + BaseApplication.getInstance().getExternalCacheDir());
-        ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(BaseApplication.getInstance())
-                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder()
+        return ImagePipelineConfig.newBuilder(BaseApplication.getInstance())
+                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(BaseApplication.getInstance())
                         .setBaseDirectoryPath(new File(params.getDirectoryPath()))
                         .setBaseDirectoryName(params.getDirectoryName())
                         .setMaxCacheSize(params.getMaxDiskCacheSize())
                         .build())
                 .setBitmapMemoryCacheParamsSupplier(new MemorySupplier(params.getMaxMemoryCacheSize()))
                 .build();
-        return imagePipelineConfig;
     }
 
+    @Override
+    public void initialize(ImageCacheParams params) {
+        Fresco.initialize(params.getContext(), initImageLoaderConfig(params));
+    }
 
-    /**
-     * 加载图片
-     *
-     * @param view 图片占位图
-     * @param url  加载图片地址
-     */
-    public void requestImage(HImageView view, String url) {
-        if (StringUtils.isEmpty(url)) {
-            throw new IllegalArgumentException("url must be not empty!");
+    @Override
+    public void loadImage(ImageConfig imageConfig) {
+        if (imageConfig == null) {
+            throw new NullPointerException("request imageConfig argument must not be null");
         }
-        requestImage(view, Uri.parse(url), null, null);
+        if (imageConfig instanceof HImageConfig) {
+            setImageDraweeViewController((HImageConfig) imageConfig);
+        }
+    }
+
+    @Override
+    public void loadImage(ImageView view, int res) {
+        HImageConfig imageConfig = new HImageConfigBuilder(view, res)
+                .build();
+        loadImage(imageConfig);
     }
 
     /**
      * 加载图片
      *
      * @param view                图片占位图
-     * @param url                 加载图片地址
+     * @param url                 请求Url
      * @param imageLoaderCallback 图片加载完成后回调(后处理器)
      */
-    public void requestImage(HImageView view, String url, ImageConfig imageConfig, ImageLoaderCallback imageLoaderCallback) {
-        if (StringUtils.isEmpty(url)) {
-            throw new IllegalArgumentException("url must be not empty!");
-        }
-        requestImage(view, Uri.parse(url), imageConfig, imageLoaderCallback);
-    }
-
     @Override
-    public void requestImage(View view, Uri uri, ImageConfig imageConfig, final ImageLoaderCallback imageLoaderCallback) {
-        if (uri == null) {
-            throw new NullPointerException("request Uri argument must not be null");
-        }
-        if (view instanceof HImageView) {
-            HImageView hImageView = (HImageView) view;
-            buildNewImageConfig(imageConfig);
-            buildImageRequest(uri, imageLoaderCallback);
-            setImageDraweeViewHierarchyBuilder(hImageView);
-            setImageDraweeViewController(hImageView);
-        } else {
-            throw new IllegalArgumentException("request image fail, it isn't a DraweeView, please check!");
-        }
+    public void loadImage(ImageView view, String url, ImageLoaderCallback imageLoaderCallback) {
+        HImageConfig imageConfig = new HImageConfigBuilder(view, url)
+                .setImageLoaderCallback(imageLoaderCallback)
+                .build();
+        loadImage(imageConfig);
     }
 
-    private void setImageDraweeViewController(HImageView hImageView) {
-        hImageView.setController(mImageConfig.getDraweeControllerBuilder()
-                .setImageRequest(mImageRequest)
-                .setOldController(hImageView
-                        .getController()).build());
-    }
-
-    private void setImageDraweeViewHierarchyBuilder(HImageView view) {
-        if (mImageConfig != null && mImageConfig.getDraweeHierarchyBuilder() != null) {
-            view.setHierarchy(mImageConfig.getDraweeHierarchyBuilder().build());
-        }
-    }
-
-    private void buildNewImageConfig(ImageConfig imageConfig) {
-        if (imageConfig == null) {
-            mImageConfig = new HImageConfig();
-        } else {
-            mImageConfig = (HImageConfig) imageConfig;
-        }
-    }
-
-    private ImageRequest buildImageRequest(Uri uri, final ImageLoaderCallback imageLoaderCallback) {
-        mImageLoaderCallback = imageLoaderCallback;
-        ImageRequestBuilder mImageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
-        Postprocessor postprocessor = mImageLoaderCallback == null ? null : mBasePostprocessor;
-        if (postprocessor != null) {
-            mImageRequestBuilder.setPostprocessor(postprocessor);
-        }
-        mImageRequest = mImageRequestBuilder.build();
-        return mImageRequest;
+    private void setImageDraweeViewController(final HImageConfig config) {
+        HImageView imageView = config.getImageView();
+        ImageDecodeOptions decodeOptions = ImageDecodeOptions.newBuilder()
+                .setBackgroundColor(Color.TRANSPARENT)
+                .build();
+        ImageRequest request = ImageRequestBuilder
+                .newBuilderWithSource(config.getUri())
+                .setPostprocessor(config.getImageLoaderCallback() == null ? null : new BasePostprocessor() {
+                    @Override
+                    public void process(Bitmap bitmap) {
+                        super.process(bitmap);
+                        config.getImageLoaderCallback().finish(bitmap);
+                    }
+                }) //设置图片请求完成的后处理器
+                .setImageDecodeOptions(decodeOptions) //解码相关设置
+                .setAutoRotateEnabled(true) //是否支持自动旋转
+                .setLocalThumbnailPreviewsEnabled(true)
+                .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH) //允许设置一个最低请求级别
+                .setProgressiveRenderingEnabled(true) //是否支持渐进式加载
+                .build();
+        AbstractDraweeControllerBuilder draweeControllerBuilder = config.getDraweeControllerBuilder();
+        draweeControllerBuilder.setImageRequest(request);
+        draweeControllerBuilder.setControllerListener(mControllerListener);
+        draweeControllerBuilder.setOldController(imageView.getController());
+        imageView.setController(draweeControllerBuilder.build());
     }
 
 }

@@ -2,7 +2,12 @@ package com.aaron.android.codelibrary.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
+
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -468,5 +473,86 @@ public class SecurityUtils {
     //        byte[] raw = secretKey.getEncoded();
     //        return raw;
     //    }
+    }
+
+    public static class DES {
+        /*********************** DES加密相关 ***********************/
+        /**
+         * 生成密钥key对象
+         *
+         * @param key 秘钥字节数组
+         * @return 秘钥对象
+         * @throws Exception
+         */
+        private static SecretKey keyGenerator(byte[] key) throws Exception {
+            DESKeySpec desKey = new DESKeySpec(key);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+            return keyFactory.generateSecret(desKey);
+        }
+
+        /**
+         * DES加密后再经Base64编码
+         *
+         * @param data           明文
+         * @param key            秘钥
+         * @param transformation 算法名称/加密模式/填充方式，详见ConstUtils之DES加密相关常量
+         * @return 经Base64编码后的密文
+         */
+        public static byte[] encryptDESWithBase64(byte[] data, byte[] key, String transformation) {
+            return EncodeUtils.base64Encode(encryptDES(data, key, transformation));
+        }
+
+        /**
+         * DES加密
+         *
+         * @param data           明文
+         * @param key            秘钥
+         * @param transformation 算法名称/加密模式/填充方式，详见ConstUtils之DES加密相关常量
+         * @return 密文
+         */
+        public static byte[] encryptDES(byte[] data, byte[] key, String transformation) {
+            try {
+                SecretKey secretKey = keyGenerator(key);
+                Cipher cipher = Cipher.getInstance(transformation);
+                SecureRandom random = new SecureRandom();
+                cipher.init(Cipher.ENCRYPT_MODE, secretKey, random);
+                return cipher.doFinal(data);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        /**
+         * DES解密带有Base64编码后的DES密文
+         *
+         * @param data           带有Base64编码后的DES密文
+         * @param key            秘钥
+         * @param transformation 算法名称/加密模式/填充方式，详见ConstUtils之DES加密相关常量
+         * @return 明文
+         */
+        public static byte[] decryptDESWithBase64(byte[] data, byte[] key, String transformation) {
+            return decryptDES(EncodeUtils.base64Decode(data), key, transformation);
+        }
+
+        /**
+         * DES解密
+         *
+         * @param data           密文
+         * @param key            秘钥
+         * @param transformation 算法名称/加密模式/填充方式，详见ConstUtils之DES加密相关常量
+         * @return 明文
+         */
+        public static byte[] decryptDES(byte[] data, byte[] key, String transformation) {
+            try {
+                SecretKey secretKey = keyGenerator(key);
+                Cipher cipher = Cipher.getInstance(transformation);
+                cipher.init(Cipher.DECRYPT_MODE, secretKey);
+                return cipher.doFinal(data);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

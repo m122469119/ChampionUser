@@ -74,7 +74,7 @@ public class AppBarActivity extends SwipeBackActivity {
      */
     private void initToolBar() {
         mToolBarController = new ToolBarController(this);
-        showHomeUpIcon(R.drawable.app_bar_back);
+        showHomeUpIcon(R.drawable.back);
         mRootView.addView(mToolBarController.getRootView());
         setSupportActionBar(mToolBarController.getToolbar());
     }

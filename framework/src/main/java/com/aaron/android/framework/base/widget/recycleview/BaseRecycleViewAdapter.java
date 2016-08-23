@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>, T>
         extends RecyclerView.Adapter<VH> implements View.OnClickListener, View.OnLongClickListener {
 
-    private static final String TAG = "BaseRecycleViewAdapter";
+    protected final String TAG = getClass().getSimpleName();;
     private List<T> mDataList = new ArrayList<>();
 
     private Context mContext;

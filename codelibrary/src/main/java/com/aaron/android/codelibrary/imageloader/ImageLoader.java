@@ -1,7 +1,6 @@
 package com.aaron.android.codelibrary.imageloader;
 
-import android.net.Uri;
-import android.view.View;
+import android.widget.ImageView;
 
 /**
  * 图片加载器
@@ -17,10 +16,25 @@ public interface ImageLoader {
 
     /**
      * 图片加载
-     * @param view 占位图片
-     * @param uri 图片资源Uri
      * @param imageConfig 图片加载配置
-     * @param imageLoaderCallback 图片加载回调
      */
-    void requestImage(View view, Uri uri, ImageConfig imageConfig, ImageLoaderCallback imageLoaderCallback);
+    void loadImage(ImageConfig imageConfig);
+
+    /**
+     * 图片加载--网络
+     * @param view ImageView
+     * @param url 请求url
+     * @param imageLoaderCallback 请求回调
+     */
+    void loadImage(ImageView view, String url, ImageLoaderCallback imageLoaderCallback);
+
+    void loadImage(ImageView view, int res);
+
+    enum LoaderType {
+        NETWORK,
+        FILE,
+        RESOURCE,
+        CONTENT_PROVIDER,
+        ASSET,
+    }
 }
