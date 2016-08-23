@@ -3,11 +3,11 @@ package com.aaron.android.thirdparty.pay.weixin;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.aaron.android.codelibrary.utils.ApkUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.SecurityUtils;
 import com.aaron.android.thirdparty.R;
 import com.aaron.android.thirdparty.pay.Pay;
+import com.aaron.android.thirdparty.pay.Utils;
 import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -49,7 +49,7 @@ public class WeixinPay extends Pay<IWXAPI> {
 
     @Override
     public void doPay() {
-        if (!ApkUtils.isAppInstalled(mContext, PACKAGENAME_WEIXIN)) {
+        if (!Utils.isAppInstalled(mContext, PACKAGENAME_WEIXIN)) {
             Toast.makeText(mContext, R.string.weixin_pay_no_install, Toast.LENGTH_SHORT).show();
             return;
         }

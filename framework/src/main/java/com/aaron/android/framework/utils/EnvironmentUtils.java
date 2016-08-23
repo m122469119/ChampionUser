@@ -121,7 +121,7 @@ public class EnvironmentUtils {
     /**
      * @author ran.huang
      * @version 7.0.0
-     *          配置信息，来自与assets/config，build，channel文件
+     *          配置信息，来自与assets/config，obtainBuild，channel文件
      */
     public static class Config {
         private static final String TAG = "Config";
