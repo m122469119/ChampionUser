@@ -116,11 +116,11 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 }
 
                 mImageView.setVisibility(View.VISIBLE);
-                mAddressTextView.setText(object.getGymName());
-                String distance = object.getDistance();
-                if (!StringUtils.isEmpty(distance)) {
-                    mDistanceTextView.setText(distance);
-                }
+//                mAddressTextView.setText(object.getGymName());
+//                String distance = object.getDistance();
+//                if (!StringUtils.isEmpty(distance)) {
+//                    mDistanceTextView.setText(distance);
+//                }
                 mSurplusPersonTextView.setVisibility(View.VISIBLE);
                 String quota = object.getQuota();
                 if (StringUtils.isEmpty(quota)) {

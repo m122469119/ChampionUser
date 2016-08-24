@@ -221,9 +221,14 @@ public class LiKingApi {
      * @param currentPage 页数
      * @param callback    RequestCallback
      */
-    public static void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, RequestCallback<CoursesResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.HOME_INDEX, CoursesResult.class, getCommonRequestParams().append("longitude", longitude)
-                .append("latitude", latitude).append(KEY_CITY_ID, cityId).append(KEY_DISTRICT_ID, districtId).append(KEY_PAGE, currentPage), callback);
+    public static void getHomeData(String token, String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId, RequestCallback<CoursesResult> callback) {
+        RequestParams params = getCommonRequestParams().append("longitude", longitude)
+                .append("latitude", latitude).append(KEY_CITY_ID, cityId)
+                .append(KEY_DISTRICT_ID, districtId).append(KEY_PAGE, currentPage).append("gym_id", gymId);
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.HOME_INDEX, CoursesResult.class, params, callback);
     }
 
 
