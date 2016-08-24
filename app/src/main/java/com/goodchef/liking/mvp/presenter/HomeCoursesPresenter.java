@@ -12,6 +12,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.HomeCourseView;
+import com.goodchef.liking.storage.Preference;
 
 /**
  * 说明:
@@ -23,13 +24,13 @@ public class HomeCoursesPresenter extends BasePresenter<HomeCourseView> {
         super(context, mainView);
     }
 
-    public void  getBanner(){
+    public void getBanner() {
         LiKingApi.getBanner(new RequestCallback<BannerResult>() {
             @Override
             public void onSuccess(BannerResult result) {
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateBanner(result.getBannerData());
-                }else {
+                } else {
                     PopupUtils.showToast(result.getMessage());
                 }
             }
@@ -41,8 +42,8 @@ public class HomeCoursesPresenter extends BasePresenter<HomeCourseView> {
         });
     }
 
-    public void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, BasePagerLoaderViewFragment fragment) {
-        LiKingApi.getHomeData(longitude, latitude, cityId, districtId, currentPage, new BasePagerLoaderViewFragment.PagerRequestCallback<CoursesResult>(fragment){
+    public void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId, BasePagerLoaderViewFragment fragment) {
+        LiKingApi.getHomeData(Preference.getToken(), longitude, latitude, cityId, districtId, currentPage, gymId, new BasePagerLoaderViewFragment.PagerRequestCallback<CoursesResult>(fragment) {
             @Override
             public void onSuccess(CoursesResult result) {
                 super.onSuccess(result);

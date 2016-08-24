@@ -54,6 +54,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     private double mLatitude = 0;
     private String mCityId = "310100";
     private String mDistrictId = "310104";
+    private String gymId ="0";
 
     public static final String KEY_TRAINER_ID = "trainerId";
     public static final String KEY_SCHEDULE_ID = "scheduleId";
@@ -101,13 +102,13 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                 CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position);
                 int type = coursesData.getType();
                 if (type == TYPE_GROUP_LESSON) {
-                    UMengCountUtil.UmengCount(getActivity(),UmengEventId.GROUPLESSONDETAILSACTIVITY);
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.GROUPLESSONDETAILSACTIVITY);
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
-                    intent.putExtra(KEY_INTENT_TYPE,"0");
+                    intent.putExtra(KEY_INTENT_TYPE, "0");
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
-                    UMengCountUtil.UmengCount(getActivity(),UmengEventId.PRIVATELESSONDETAILSACTIVITY);
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.PRIVATELESSONDETAILSACTIVITY);
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
                     intent.putExtra(KEY_TEACHER_NAME, coursesData.getCourseName());
@@ -137,9 +138,9 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
                     UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.CHECK_GYM_COURSES);
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.GYMCOURSESACTIVITY);
                     Intent intent = new Intent(getActivity(), GymCoursesActivity.class);
-                    intent.putExtra(KEY_GYM_ID, data.getGymId());
-                    intent.putExtra(KEY_DISTANCE, data.getDistance());
-                    intent.putExtra(KEY_GYM_NAME, data.getGymName());
+//                    intent.putExtra(KEY_GYM_ID, data.getGymId());
+//                    intent.putExtra(KEY_DISTANCE, data.getDistance());
+//                    intent.putExtra(KEY_GYM_NAME, data.getGymName());
                     startActivity(intent);
                 }
             }
@@ -192,9 +193,9 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     //发送首页数据
     private void getCoursesRequest(int page) {
         if (mLongitude > 0 && mLatitude > 0) {
-            mCoursesPresenter.getHomeData(mLongitude + "", mLatitude + "", mCityId, mDistrictId, page, LikingLessonFragment.this);
+            mCoursesPresenter.getHomeData(mLongitude + "", mLatitude + "", mCityId, mDistrictId, page, gymId, LikingLessonFragment.this);
         } else {
-            mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, LikingLessonFragment.this);
+            mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, gymId, LikingLessonFragment.this);
         }
     }
 

@@ -2,7 +2,6 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -59,7 +58,9 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
         if (!StringUtils.isEmpty(mLoaclHeadUrl)) {
-            mHImageView.setImageURI(Uri.parse("file://" + mLoaclHeadUrl));
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
+                    .setLoadType(ImageLoader.LoaderType.FILE)
+                    .build());
         }
     }
 
