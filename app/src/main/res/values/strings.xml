@@ -157,7 +157,7 @@
     <string name="network_contact_fail">网络连接异常,请检查网络</string>
     <string name="my_courses_details_complete">该课程已确定完成</string>
     <string name="attend_class_number">上课人数</string>
-    <string name="courses_time">课程时间</string>
+    <string name="courses_time">课程时长</string>
     <string name="order_courses_times">上课次数</string>
     <string name="courses_address">上课地点</string>
     <string name="end_time">有效期</string>

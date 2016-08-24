@@ -303,10 +303,13 @@ public class LiKingApi {
      * @param page     页数
      * @param callback RequestCallback
      */
-    public static void getCoupons(String courseId, String goodInfo, Integer cardId, Integer type, Integer scheduleId, String token, int page, RequestCallback<CouponsResult> callback) {
+    public static void getCoupons(String courseId, Integer selectTimes, String goodInfo, Integer cardId, Integer type, Integer scheduleId, String token, int page, RequestCallback<CouponsResult> callback) {
         RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("page", page);
         if (!TextUtils.isEmpty(courseId)) {
             params.append("course_id", courseId);
+        }
+        if (selectTimes != null) {
+            params.append("select_times", selectTimes);
         }
         if (!TextUtils.isEmpty(goodInfo)) {
             params.append("good_info", goodInfo);
@@ -333,9 +336,10 @@ public class LiKingApi {
      * @param payType    支付方式
      * @param callback   RequestCallback
      */
-    public static void submitPrivateCourses(String token, String courseId, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
+    public static void submitPrivateCourses(String token, String courseId, String couponCode, String payType, int selectTimes, String gymId, RequestCallback<SubmitPayResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_PRIVATE_COURSES_PAY, SubmitPayResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
-                .append("course_id", courseId).append("coupon_code", couponCode).append("pay_type", payType), callback);
+                .append("course_id", courseId).append("coupon_code", couponCode).append("pay_type", payType).append("select_times", selectTimes)
+                .append("gym_id", gymId), callback);
     }
 
     /**

@@ -22,8 +22,8 @@ public class CouponPresenter extends BasePresenter<CouponView> {
         super(context, mainView);
     }
 
-    public void getCoupons(String courseId, String goodInfo, Integer cardId, Integer type, Integer scheduleId, int page, BasePagerLoaderViewFragment fragment) {
-        LiKingApi.getCoupons(courseId, goodInfo, cardId, type, scheduleId, Preference.getToken(), page, new BasePagerLoaderViewFragment.PagerRequestCallback<CouponsResult>(fragment) {
+    public void getCoupons(String courseId, Integer selectTimes,String goodInfo, Integer cardId, Integer type, Integer scheduleId, int page, BasePagerLoaderViewFragment fragment) {
+        LiKingApi.getCoupons(courseId,selectTimes, goodInfo, cardId, type, scheduleId, Preference.getToken(), page, new BasePagerLoaderViewFragment.PagerRequestCallback<CouponsResult>(fragment) {
             @Override
             public void onSuccess(CouponsResult result) {
                 super.onSuccess(result);

@@ -57,17 +57,18 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     public static final String KEY_CHANGE_ADDRESS = "key_change_address";
 
     private RecyclerView mRecyclerView;
-    private TextView mCoursesPeopleTextView;//上课人数
-    private TextView mCoursesNumberTextView;//约课次数
+    private TextView mCoursesTimesTextView;//上课次数
+    private TextView mCoursesNumberTextView;//上课人数
     private TextView mEndTimeTextView;//截止日期
     private TextView mCouponTitleTextView;//优惠券信息
     private RelativeLayout mCouponsLayout;
     private TextView mCoursesMoneyTextView;//课程金额
     private TextView mImmediatelyBuyBtn;//立即购买
     private TextView mCoursesAddressTextView;//课程地址
-    private TextView mCoursesTimeTextView;//课程时间
-    private ImageView mMinusImageView;
-    private ImageView mAddImageView;
+    private TextView mCoursesTimeTextView;//课程时长
+    private TextView mCoursesTimesPrompt;//课程次数提示
+    private ImageView mMinusImageView;//减号
+    private ImageView mAddImageView;//加号
 
     private RelativeLayout mAlipayLayout;//支付布局
     private RelativeLayout mWechatLayout;
@@ -88,9 +89,15 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private String payType = "-1";//支付方式
 
     private LikingStateView mStateView;
-    private int mPeopleNum = 0;
-    private ArrayList<PlacesData> mPlacesDataList;
-    private String gymId;
+    private int mCoursesTimes = 0;//上课次数
+    private int mCoursesMinTimes;//上课最小次数
+    private int mCoursesMaxTimes;//上课最大次数
+    private boolean isGetMoneySuccess = true;//加或者减请求后台金额返回是否成功
+    private String mAmountCount;//课程总金额
+
+    private ArrayList<PlacesData> mPlacesDataList;//上课地点集合
+    private String gymId;//场馆id
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +113,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.private_courses_confirm_state_view);
         mRecyclerView = (RecyclerView) findViewById(R.id.confirm_recyclerView);
-        mCoursesPeopleTextView = (TextView) findViewById(R.id.courses_people);
+        mCoursesTimesTextView = (TextView) findViewById(R.id.courses_times);
+        mCoursesTimesPrompt = (TextView) findViewById(R.id.courses_times_prompt);
         mCoursesNumberTextView = (TextView) findViewById(R.id.courses_number);
         mEndTimeTextView = (TextView) findViewById(R.id.end_time);
         mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
@@ -170,16 +178,21 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mStateView.setState(StateView.State.SUCCESS);
             List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = coursesConfirmData.getCourses();
             setTrainItem(trainItemList);
-            mCoursesPeopleTextView.setText(coursesConfirmData.getPeopleNum() + "");
             mEndTimeTextView.setText(coursesConfirmData.getEndTime());
             mPlacesDataList = (ArrayList<PlacesData>) coursesConfirmData.getPlacesList();
             setPlacesDataListData();
-            mCoursesTimeTextView.setText(coursesConfirmData.getDuration());
+            mCoursesTimeTextView.setText(coursesConfirmData.getDuration() + " min");
+            mCoursesNumberTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
+            mAmountCount = coursesConfirmData.getAmount();
+            mCoursesMoneyTextView.setText("¥ " + mAmountCount);
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
     }
 
+    /**
+     * 设置上课地址
+     */
     private void setPlacesDataListData() {
         if (mPlacesDataList != null && mPlacesDataList.size() > 0) {
             for (int i = 0; i < mPlacesDataList.size(); i++) {
@@ -194,7 +207,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         }
     }
 
-
+    /**
+     * 设置训练项目
+     * @param trainItemList 训练项目列表
+     */
     private void setTrainItem(List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList) {
         if (trainItemList != null && trainItemList.size() > 0) {
             for (int i = 0; i < trainItemList.size(); i++) {
@@ -206,46 +222,60 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             }
             coursesItem = trainItemList.get(0);
             coursesId = coursesItem.getCourseId();
-            mCoursesNumberTextView.setText(coursesItem.getMinTimes() + " 次");
+            mCoursesMinTimes = Integer.parseInt(coursesItem.getMinTimes());//获取上课最低次数
+            mCoursesMaxTimes = Integer.parseInt(coursesItem.getMaxTimes());//获取上课最高次数
+            mCoursesTimes = Integer.parseInt(coursesItem.getMinTimes());
+            mCoursesTimesTextView.setText(mCoursesMinTimes + "");
+            mCoursesTimesPrompt.setText(coursesItem.getPrompt());
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mPrivateCoursesTrainItemAdapter = new PrivateCoursesTrainItemAdapter(this);
             mPrivateCoursesTrainItemAdapter.setData(trainItemList);
             mRecyclerView.setAdapter(mPrivateCoursesTrainItemAdapter);
-            mPrivateCoursesTrainItemAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = mPrivateCoursesTrainItemAdapter.getDataList();
-                    TextView tv = (TextView) view.findViewById(R.id.train_item_text);
-                    if (tv != null) {
-                        coursesItem = (PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses) tv.getTag();
-                        if (coursesItem != null) {
-                            coursesId = coursesItem.getCourseId();//记录coursesId
-                            mCouponTitleTextView.setText("");//清空优惠券需要重新选择
-                            mCoursesNumberTextView.setText(coursesItem.getMinTimes() + " 次");
-                            for (int i = 0; i < trainItemList.size(); i++) {
-                                if (trainItemList.get(i).getCourseId().equals(coursesId)) {
-                                    trainItemList.get(i).setSelect(true);
-                                } else {
-                                    trainItemList.get(i).setSelect(false);
-                                }
-                            }
-                        }
-//                        mCoursesMoneyTextView.setText("¥ " + coursesItem.getPrice());
-//                        mCoursesTimeTextView.setText(coursesItem.getDuration());
-//                        mCoursesAddressTextView.setText(coursesItem.getCourseAddress());
-                        mPrivateCoursesTrainItemAdapter.notifyDataSetChanged();
-                        mCoupon = null;
-                    }
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, int position) {
-                    return false;
-                }
-            });
+            setTrainItemListener();
         }
     }
+
+    /**
+     * 设置训练项目点击事件
+     */
+    private void setTrainItemListener(){
+        mPrivateCoursesTrainItemAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = mPrivateCoursesTrainItemAdapter.getDataList();
+                TextView tv = (TextView) view.findViewById(R.id.train_item_text);
+                if (tv != null) {
+                    coursesItem = (PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses) tv.getTag();
+                    if (coursesItem != null) {
+                        coursesId = coursesItem.getCourseId();//记录coursesId
+                        mCouponTitleTextView.setText("");//清空优惠券需要重新选择
+                        mCoursesMinTimes = Integer.parseInt(coursesItem.getMinTimes());
+                        mCoursesMaxTimes = Integer.parseInt(coursesItem.getMaxTimes());
+                        mCoursesTimes = Integer.parseInt(coursesItem.getMinTimes());
+                        mCoursesTimesTextView.setText(mCoursesMinTimes + "");
+                        mCoursesTimesPrompt.setText(coursesItem.getPrompt());
+                        for (int i = 0; i < trainItemList.size(); i++) {
+                            if (trainItemList.get(i).getCourseId().equals(coursesId)) {
+                                trainItemList.get(i).setSelect(true);
+                            } else {
+                                trainItemList.get(i).setSelect(false);
+                            }
+                        }
+                    }
+                    mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                    mPrivateCoursesTrainItemAdapter.notifyDataSetChanged();
+                    mCoupon = null;//置空优惠券
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -254,6 +284,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
+                intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }
@@ -261,16 +292,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
             }
         } else if (v == mImmediatelyBuyBtn) {
-            if (payType.equals("-1")) {
-                PopupUtils.showToast("请选择支付方式");
-                return;
-            }
-            UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
-            if (mCoupon != null) {
-                mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType);
-            } else {
-                mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType);
-            }
+            sendBuyCoursesRequest();
         } else if (v == mAlipayLayout) {
             mAlipayCheckBox.setChecked(true);
             mWechatCheckBox.setChecked(false);
@@ -280,17 +302,66 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mWechatCheckBox.setChecked(true);
             payType = "0";
         } else if (v == mMinusImageView) {
-            ++mPeopleNum;
-            mCoursesPeopleTextView.setText(mPeopleNum + "");
+            doMinusCoursesTimes();
         } else if (v == mAddImageView) {
-            --mPeopleNum;
-            mCoursesPeopleTextView.setText(mPeopleNum + "");
+            doAddCoursesTimes();
         } else if (v == mCoursesAddressTextView) {
             Intent intent = new Intent(this, ChangeAddressActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(KEY_CHANGE_ADDRESS, mPlacesDataList);
             intent.putExtras(bundle);
             startActivityForResult(intent, INTENT_REQUEST_CODE_CHANGE_PLACE);
+        }
+    }
+
+
+    /**
+     * 发送购买私教课请求
+     */
+    private void sendBuyCoursesRequest() {
+        if (payType.equals("-1")) {
+            PopupUtils.showToast("请选择支付方式");
+            return;
+        }
+        UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
+        if (mCoupon != null) {
+            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType, mCoursesTimes, gymId);
+        } else {
+            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType, mCoursesTimes, gymId);
+        }
+    }
+
+    /**
+     * 计算上课次数 - 减法
+     */
+    private void doMinusCoursesTimes() {
+        if (isGetMoneySuccess) {
+            if (mCoursesTimes > mCoursesMinTimes) {
+                mCoursesTimes--;
+                mCoursesTimesTextView.setText(mCoursesTimes + "");
+                mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                mCouponTitleTextView.setText("");//清空优惠券需要重新选择
+                mCoupon = null;
+            } else {
+                PopupUtils.showToast("为保证上课质量，最少购买" + mCoursesMinTimes + "次课");
+            }
+        }
+    }
+
+    /**
+     * 计算上课次数 - 加法
+     */
+    private void doAddCoursesTimes() {
+        if (isGetMoneySuccess) {
+            if (mCoursesTimes < mCoursesMaxTimes) {
+                mCoursesTimes++;
+                mCoursesTimesTextView.setText(mCoursesTimes + "");
+                mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                mCouponTitleTextView.setText("");//清空优惠券需要重新选择
+                mCoupon = null;
+            } else {
+                PopupUtils.showToast("为保证上课质量，单次最多能购买" + mCoursesMaxTimes + "次课");
+            }
         }
     }
 
@@ -327,9 +398,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
         String minAmountStr = mCoupon.getMinAmount();//优惠券最低使用标准
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
-//        String priceStr = coursesItem.getPrice();//课程价格
-        String priceStr = "20";
-        double coursesPrice = Double.parseDouble(priceStr);
+        double coursesPrice = Double.parseDouble(mAmountCount);
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
         if (coursesPrice >= minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
@@ -364,8 +433,14 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 =======
     @Override
     public void updateOrderCalculate(boolean isSuccess, OrderCalculateResult.OrderCalculateData orderCalculateData) {
-        if (isSuccess){
-
+        if (isSuccess) {
+            isGetMoneySuccess = isSuccess;
+            mAmountCount = orderCalculateData.getAmount();
+            mCoursesMoneyTextView.setText("¥ " + mAmountCount);
+            mEndTimeTextView.setText(orderCalculateData.getEndTime());
+            mCoursesTimeTextView.setText(orderCalculateData.getDuration() + " min");
+        } else {
+            isGetMoneySuccess = false;
         }
     }
 
