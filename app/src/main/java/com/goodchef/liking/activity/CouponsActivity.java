@@ -36,6 +36,8 @@ public class CouponsActivity extends AppBarActivity {
     public static final String INTENT_KEY_COUPONS_DATA = "intent_key_coupons_data";
     public static final String KEY_COUPON_ID = "key_coupon_id";
     public static final String KEY_SCHEDULE_ID = "schedule_id";
+    public static final String KEY_SELECT_TIMES = "select_times";
+
 
     private EditText mEditCoupons;
     private TextView mExchangeButton;
@@ -43,6 +45,7 @@ public class CouponsActivity extends AppBarActivity {
 
     private String intentType = "";
     private String coursesId;
+    private int selectTimes;
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
     private int cardId;
     private int type;
@@ -67,6 +70,7 @@ public class CouponsActivity extends AppBarActivity {
 
     private void initData() {
         coursesId = getIntent().getStringExtra(KEY_COURSE_ID);
+        selectTimes = getIntent().getIntExtra(KEY_SELECT_TIMES,0);
         intentType = getIntent().getStringExtra(TYPE_MY_COUPONS);
         Bundle bundle = getIntent().getExtras();
         confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
@@ -90,6 +94,7 @@ public class CouponsActivity extends AppBarActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_COURSE_ID, coursesId);
+        bundle.putInt(KEY_SELECT_TIMES,selectTimes);
         bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
         bundle.putString(TYPE_MY_COUPONS, intentType);
         bundle.putInt(BuyCardConfirmActivity.KEY_CARD_ID,cardId);

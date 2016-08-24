@@ -44,8 +44,8 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
         });
     }
 
-    public void submitPrivateCourses(String courseId, String couponCode, String payType) {
-        LiKingApi.submitPrivateCourses(Preference.getToken(), courseId, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
+    public void submitPrivateCourses(String courseId, String couponCode, String payType,int selectTimes,String gymId) {
+        LiKingApi.submitPrivateCourses(Preference.getToken(), courseId, couponCode, payType,selectTimes,gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);
@@ -64,22 +64,19 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
     }
 
     public void orderCalculate(String courseId, String selectTimes) {
-        LiKingApi.orderCalculate(Preference.getToken(), courseId, selectTimes, new RequestUiLoadingCallback<OrderCalculateResult>(mContext, R.string.loading) {
+        LiKingApi.orderCalculate(Preference.getToken(), courseId, selectTimes, new RequestCallback<OrderCalculateResult>() {
             @Override
             public void onSuccess(OrderCalculateResult result) {
-                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
-                    mView.updateOrderCalculate(true,result.getData());
+                    mView.updateOrderCalculate(true, result.getData());
                 } else {
-                    mView.updateOrderCalculate(false,result.getData());
+                    mView.updateOrderCalculate(false, result.getData());
                     PopupUtils.showToast(result.getMessage());
                 }
             }
-
             @Override
             public void onFailure(RequestError error) {
-                super.onFailure(error);
-                mView.updateOrderCalculate(false,null);
+                mView.updateOrderCalculate(false, null);
             }
         });
     }

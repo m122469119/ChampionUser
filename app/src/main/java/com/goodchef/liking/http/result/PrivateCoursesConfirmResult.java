@@ -95,6 +95,10 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             private String name;
             @SerializedName("min_times")
             private String minTimes;
+            @SerializedName("max_time")
+            private String maxTimes;
+            @SerializedName("prompt")
+            private String prompt;
 
             private boolean isSelect;
 
@@ -128,6 +132,22 @@ public class PrivateCoursesConfirmResult extends BaseResult {
 
             public void setMinTimes(String minTimes) {
                 this.minTimes = minTimes;
+            }
+
+            public String getMaxTimes() {
+                return maxTimes;
+            }
+
+            public void setMaxTimes(String maxTimes) {
+                this.maxTimes = maxTimes;
+            }
+
+            public String getPrompt() {
+                return prompt;
+            }
+
+            public void setPrompt(String prompt) {
+                this.prompt = prompt;
             }
         }
     }

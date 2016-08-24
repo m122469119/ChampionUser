@@ -49,6 +49,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
 
     private String intentType;
     private String courseId = "";
+    private int selectTimes;
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
     private int cardId;
     private int type;
@@ -98,6 +99,7 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
      */
     private void getIntentData() {
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
+        selectTimes = getArguments().getInt(CouponsActivity.KEY_SELECT_TIMES);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
         confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
         cardId = getArguments().getInt(BuyCardConfirmActivity.KEY_CARD_ID, 0);
@@ -159,9 +161,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
     private void sendRequest(int page) {
         mCouponPresenter = new CouponPresenter(getActivity(), this);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getCoupons(null, null, null, null, null, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(null, null, null, null, null, null, page, CouponsFragment.this);
         } else {
-            mCouponPresenter.getCoupons(courseId, createDishesJson(), cardId, type, scheduleId, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, CouponsFragment.this);
         }
     }
 
