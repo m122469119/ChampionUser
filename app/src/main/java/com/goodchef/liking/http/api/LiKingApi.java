@@ -18,6 +18,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -836,5 +837,31 @@ public class LiKingApi {
     public static void orderCalculate(String token, String courseId, String selectTimes, RequestCallback<OrderCalculateResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_CALCULATE, OrderCalculateResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("course_id", courseId).append("select_times", selectTimes), callback);
+    }
+
+    /***
+     * 付费团体课确认订单
+     *
+     * @param scheduleId 排期id
+     * @param callback   RequestCallback
+     */
+    public static void chargeGroupCoursesConfirm(String token, String scheduleId, RequestCallback<ChargeGroupConfirmResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_CHANGE_GROUP_CONFIRM, ChargeGroupConfirmResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("schedule_id", scheduleId), callback);
+    }
+
+
+    /***
+     * 付费团体课提交订单获取支付数据
+     *
+     * @param token      token
+     * @param scheduleId 排期id
+     * @param couponCode 优惠券吗
+     * @param payType    支付方式
+     * @param callback   RequestCallback
+     */
+    public static void chargeGroupCoursesImmediately(String token, String scheduleId, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_SUBMIT_TEAM_COURSE, SubmitPayResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("schedule_id", scheduleId).append("coupon_code", couponCode).append("pay_type", payType), callback);
     }
 }

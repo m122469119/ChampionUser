@@ -117,6 +117,10 @@ public class UrlList {
     public static final String ORDER_GET_COURSE_DETAIL = getVersionHostUrl() + "/order/get-course-detail";
     /**计算私教课金额*/
     public static final String ORDER_CALCULATE = getVersionHostUrl() + "/order/calculate";
+    /**付费团体课确认订单*/
+    public static final String ORDER_CHANGE_GROUP_CONFIRM = getVersionHostUrl() + "/order/team-course-confirm";
+    /**收费团体课购买*/
+    public static final String ORDER_SUBMIT_TEAM_COURSE = getVersionHostUrl() + "/order/submit-team-course";
 
 
 }

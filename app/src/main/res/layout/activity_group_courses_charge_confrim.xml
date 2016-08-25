@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.goodchef.liking.widgets.base.LikingStateView android:id="@+id/charge_group_courses_state_view"
+                                                  xmlns:android="http://schemas.android.com/apk/res/android"
+                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="match_parent"
+                                                  android:orientation="vertical"
+                                                  app:success_view="@layout/layout_group_courses_charge_confirm_success">
+
+</com.goodchef.liking.widgets.base.LikingStateView>

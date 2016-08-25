@@ -99,7 +99,7 @@ public class CouponsActivity extends AppBarActivity {
         bundle.putString(TYPE_MY_COUPONS, intentType);
         bundle.putInt(BuyCardConfirmActivity.KEY_CARD_ID,cardId);
         bundle.putInt(LikingBuyCardFragment.KEY_BUY_TYPE,type);
-        bundle.putInt(KEY_SCHEDULE_ID,0);
+        bundle.putInt(KEY_SCHEDULE_ID,scheduleId);
         bundle.putString(KEY_COUPON_ID,couponId);
         fragmentTransaction.add(R.id.my_coupons_fragment, CouponsFragment.newInstance(bundle));
         fragmentTransaction.commit();
