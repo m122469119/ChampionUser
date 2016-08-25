@@ -14,7 +14,8 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -33,7 +34,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/28 下午2:54
  */
-public class MyCardOrderFragment extends NetworkPagerLoaderRecyclerViewFragment {
+public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment {
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyCardOrderAdapter mMyCardOrderAdapter;

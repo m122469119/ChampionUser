@@ -14,7 +14,8 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
@@ -33,7 +34,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/16 下午2:28
  */
-public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment implements CouponView {
+public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponView {
     private static final String COUPON_TYPE_YINGYANGCANG = "1";//1营养餐
     private static final String COUPON_TYPE_PRIVATE_COURSES = "2";//2 私教课
     private static final String COUPON_TYPE_BUY_CARD = "3";// 3 购卡
@@ -107,9 +108,9 @@ public class CouponsFragment extends NetworkPagerLoaderRecyclerViewFragment impl
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
         scheduleId = getArguments().getInt(CouponsActivity.KEY_SCHEDULE_ID);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            setPullType(PullMode.PULL_BOTH);
+            setPullMode(PullMode.PULL_BOTH);
         } else {
-            setPullType(PullMode.PULL_NONE);
+            setPullMode(PullMode.PULL_NONE);
         }
     }
 

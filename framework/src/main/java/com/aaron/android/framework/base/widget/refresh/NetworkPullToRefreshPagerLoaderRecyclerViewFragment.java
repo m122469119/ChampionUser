@@ -21,7 +21,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public abstract class NetworkPagerLoaderRecyclerViewFragment extends BasePagerLoaderViewFragment<PullToRefreshRecyclerView> {
+public abstract class NetworkPullToRefreshPagerLoaderRecyclerViewFragment extends BasePullToRefreshPagerLoaderViewFragment<PullToRefreshRecyclerView> {
     private PullToRefreshRecyclerView mRecyclerView;
     private BaseRecycleViewAdapter mRecyclerViewAdapter;
 
@@ -130,6 +130,18 @@ public abstract class NetworkPagerLoaderRecyclerViewFragment extends BasePagerLo
      */
     public PullToRefreshRecyclerView getPullToRefreshRecyclerView() {
         return mRecyclerView;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView.getRefreshableView();
+    }
+
+    public void setRecyclerViewPadding(int left, int top, int right, int bottom) {
+        RecyclerView recyclerView = mRecyclerView.getRefreshableView();
+        if (recyclerView != null) {
+            recyclerView.setPadding(left, top, right, bottom);
+            recyclerView.setClipToPadding(false);
+        }
     }
 
 }

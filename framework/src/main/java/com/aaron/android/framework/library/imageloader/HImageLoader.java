@@ -31,7 +31,6 @@ import java.io.File;
  * Created on 15/6/14.
  *
  * @author HuangRan
- *         TODO requestImage需要修改,现在只能从xml读取图片的相关加载属性
  */
 public class HImageLoader implements ImageLoader {
 

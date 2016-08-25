@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderViewFragment;
+import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
@@ -23,8 +24,8 @@ public class MyPrivateCoursesPresenter extends BasePresenter<MyPrivateCoursesVie
         super(context, mainView);
     }
 
-    public void getMyPrivateCourses(int page, BasePagerLoaderViewFragment fragment) {
-        LiKingApi.getMyPrivateList(Preference.getToken(), page, new BasePagerLoaderViewFragment.PagerRequestCallback<MyPrivateCoursesResult>(fragment) {
+    public void getMyPrivateCourses(int page, BasePagerLoaderFragment fragment) {
+        LiKingApi.getMyPrivateList(Preference.getToken(), page, new PagerRequestCallback<MyPrivateCoursesResult>(fragment) {
             @Override
             public void onSuccess(MyPrivateCoursesResult result) {
                 super.onSuccess(result);

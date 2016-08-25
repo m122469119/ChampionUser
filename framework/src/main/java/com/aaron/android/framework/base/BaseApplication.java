@@ -25,7 +25,7 @@ import com.facebook.common.util.ByteConstants;
  */
 public abstract class BaseApplication extends Application {
 
-    private static final int MAX_DISK_CACHE_SIZE = 50 * ByteConstants.MB;
+    private static final int MAX_DISK_CACHE_SIZE = 10 * ByteConstants.MB;
     private static BaseApplication sApplication;
     protected final String TAG = getClass().getSimpleName();
 

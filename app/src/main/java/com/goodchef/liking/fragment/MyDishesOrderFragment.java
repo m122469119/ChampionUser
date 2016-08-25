@@ -15,7 +15,9 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
 import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
@@ -49,7 +51,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/28 下午2:52
  */
-public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyDishesOrderView {
+public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyDishesOrderView {
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyDishesOrderAdapter mMyDishesOrderAdapter;
     private MyDishesOrderPresenter mMyDishesOrderPresenter;
@@ -65,7 +67,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
     @Override
     protected void initViews() {
-        setPullType(PullMode.PULL_BOTH);
+        setPullMode(PullMode.PULL_BOTH);
         setNoDataView();
         mMyDishesOrderPresenter = new MyDishesOrderPresenter(getActivity(), this);
         initRecycleViewData();
@@ -93,7 +95,7 @@ public class MyDishesOrderFragment extends NetworkPagerLoaderRecyclerViewFragmen
     private void initRecycleViewData() {
         mMyDishesOrderAdapter = new MyDishesOrderAdapter(getActivity());
         setRecyclerAdapter(mMyDishesOrderAdapter);
-        getPullToRefreshRecyclerView().setDividerDrawable(null);
+//        getPullToRefreshRecyclerView().setDividerDrawable(null);
         mMyDishesOrderAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
