@@ -160,6 +160,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
+        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(teacherName);
         mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmPresenter(this, this);
         mStateView.setState(StateView.State.LOADING);
@@ -167,7 +168,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     private void sendRequest() {
-        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(trainerId);
+        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(gymId,trainerId);
     }
 
     @Override

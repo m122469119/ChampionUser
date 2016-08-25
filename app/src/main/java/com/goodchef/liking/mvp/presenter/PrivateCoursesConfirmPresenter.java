@@ -26,8 +26,8 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
         super(context, mainView);
     }
 
-    public void orderPrivateCoursesConfirm(String trainerId) {
-        LiKingApi.orderPrivateCoursesConfirm(trainerId, Preference.getToken(), new RequestCallback<PrivateCoursesConfirmResult>() {
+    public void orderPrivateCoursesConfirm(String gymId,String trainerId) {
+        LiKingApi.orderPrivateCoursesConfirm(gymId,trainerId, Preference.getToken(), new RequestCallback<PrivateCoursesConfirmResult>() {
             @Override
             public void onSuccess(PrivateCoursesConfirmResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

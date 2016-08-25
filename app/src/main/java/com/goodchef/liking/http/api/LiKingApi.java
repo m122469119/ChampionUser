@@ -291,9 +291,9 @@ public class LiKingApi {
      * @param token     token
      * @param callback  RequestCallback
      */
-    public static void orderPrivateCoursesConfirm(String trainerId, String token, RequestCallback<PrivateCoursesConfirmResult> callback) {
+    public static void orderPrivateCoursesConfirm(String gymId,String trainerId, String token, RequestCallback<PrivateCoursesConfirmResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.PRIVATE_ORDER_CONFIRM, PrivateCoursesConfirmResult.class, getCommonRequestParams().append("trainer_id", trainerId)
-                .append(KEY_TOKEN, token), callback);
+                .append(KEY_TOKEN, token).append("gym_id",gymId), callback);
     }
 
     /**

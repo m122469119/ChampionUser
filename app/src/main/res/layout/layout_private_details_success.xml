@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -41,6 +41,30 @@
                     android:text="私教课"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_private_courses_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/icon_share"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="分享"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"/>
+                </LinearLayout>
 
             </RelativeLayout>
 
