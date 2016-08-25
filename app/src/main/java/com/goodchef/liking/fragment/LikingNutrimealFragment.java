@@ -7,7 +7,9 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
@@ -29,8 +31,9 @@ import java.util.List;
  *
  * @author aaron.huang
  * @version 1.0.0
+ * 营养餐Fragment
  */
-public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment {
+public class LikingNutrimealFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment {
     public static final String INTENT_KEY_USER_CITY_ID = "intent_key_user_city_id";
     private static final int SELECT_MAX = 5;//设置单个菜品最大购买数量
     private LikingNearbyAdapter mAdapter;
@@ -41,8 +44,8 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     private ArrayList<Food> buyLit;
     private List<Food> mFoodList;
 
-    public static LikingNearbyFragment newInstance() {
-        LikingNearbyFragment fragment = new LikingNearbyFragment();
+    public static LikingNutrimealFragment newInstance() {
+        LikingNutrimealFragment fragment = new LikingNutrimealFragment();
         return fragment;
     }
 
@@ -54,7 +57,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     @Override
     protected void initViews() {
         setNoDataView();
-        getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+        setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mAdapter = new LikingNearbyAdapter(getActivity());
         setRecyclerAdapter(mAdapter);
         initData();
@@ -94,7 +97,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     }
 
     private void sendRequest(int page) {
-        LiKingApi.getFoodList(mLongitude, mLatitude, mCityId, page, new PagerRequestCallback<FoodListResult>(LikingNearbyFragment.this) {
+        LiKingApi.getFoodList(mLongitude, mLatitude, mCityId, page, new PagerRequestCallback<FoodListResult>(LikingNutrimealFragment.this) {
             @Override
             public void onSuccess(FoodListResult result) {
                 super.onSuccess(result);
@@ -125,7 +128,7 @@ public class LikingNearbyFragment extends NetworkPagerLoaderRecyclerViewFragment
     }
 
     private void initData() {
-        setPullType(PullMode.PULL_BOTH);
+        setPullMode(PullMode.PULL_BOTH);
         mAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

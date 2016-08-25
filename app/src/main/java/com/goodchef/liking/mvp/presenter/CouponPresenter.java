@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderViewFragment;
+import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -22,8 +23,8 @@ public class CouponPresenter extends BasePresenter<CouponView> {
         super(context, mainView);
     }
 
-    public void getCoupons(String courseId, Integer selectTimes,String goodInfo, Integer cardId, Integer type, Integer scheduleId, int page, BasePagerLoaderViewFragment fragment) {
-        LiKingApi.getCoupons(courseId,selectTimes, goodInfo, cardId, type, scheduleId, Preference.getToken(), page, new BasePagerLoaderViewFragment.PagerRequestCallback<CouponsResult>(fragment) {
+    public void getCoupons(String courseId, Integer selectTimes,String goodInfo, Integer cardId, Integer type, Integer scheduleId, int page, BasePagerLoaderFragment fragment) {
+        LiKingApi.getCoupons(courseId,selectTimes, goodInfo, cardId, type, scheduleId, Preference.getToken(), page, new PagerRequestCallback<CouponsResult>(fragment) {
             @Override
             public void onSuccess(CouponsResult result) {
                 super.onSuccess(result);

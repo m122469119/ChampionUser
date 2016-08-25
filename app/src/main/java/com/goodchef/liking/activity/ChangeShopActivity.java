@@ -18,7 +18,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.ChangeShopPresenter;
@@ -58,7 +58,7 @@ public class ChangeShopActivity extends AppBarActivity implements ChangeShopView
     }
 
     private void initData() {
-        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
+        mUserCityId = getIntent().getStringExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID);
         Bundle bundle = getIntent().getExtras();
         confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
         myShop = (GymListResult.GymData.Shop) getIntent().getSerializableExtra(INTENT_KEY_SHOP_OBJECT);

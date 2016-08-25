@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -38,7 +39,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragment implements CardListView {
+public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CardListView {
     public static final String KEY_CARD_CATEGORY = "key_card_category";
     public static final String KEY_CATEGORY_ID = "key_category_id";
     public static final String KEY_BUY_TYPE = "key_buy_type";
@@ -56,7 +57,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
 
     @Override
     protected void initViews() {
-        setPullType(PullMode.PULL_NONE);
+        setPullMode(PullMode.PULL_NONE);
         setNoDataView();
         mBuyCardAdapter = new BuyCardAdapter(getActivity());
         getStateView().setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -65,7 +66,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
                 LiKingVerifyUtils.initApi(getActivity());
             }
         });
-        getPullToRefreshRecyclerView().setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+        setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         setRecyclerAdapter(mBuyCardAdapter);
         initRecycleHeadView();
         setItemClickListener();
@@ -117,7 +118,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
     };
 
     private void initRecycleHeadView() {
-        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, getPullToRefreshRecyclerView(), false);
+        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, getRecyclerView(), false);
         mCityOpenTextView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
         mCityOpenTextView.setVisibility(View.VISIBLE);
         mCityOpenTextView.setText("当前城市尚未开通服务");
@@ -192,7 +193,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
                     } else {
                         if (mBuyCardAdapter != null) {
                             if (mHeadView != null) {
-                                getPullToRefreshRecyclerView().removeView(mHeadView);
+                                getRecyclerView().removeView(mHeadView);
                                 mBuyCardAdapter.setHeaderView(mHeadView);
                                 mBuyCardAdapter.notifyDataSetChanged();
                             }
@@ -206,7 +207,7 @@ public class LikingBuyCardFragment extends NetworkPagerLoaderRecyclerViewFragmen
     private void removeHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                getPullToRefreshRecyclerView().removeView(mHeadView);
+                getRecyclerView().removeView(mHeadView);
                 mBuyCardAdapter.notifyDataSetChanged();
             }
         }

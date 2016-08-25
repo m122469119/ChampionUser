@@ -11,7 +11,8 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
@@ -35,7 +36,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:43
  */
-public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyPrivateCoursesView {
+public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyPrivateCoursesView {
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyPrivateCoursesAdapter mPrivateLessonAdapter;
@@ -54,7 +55,7 @@ public class MyPrivateCoursesFragment extends NetworkPagerLoaderRecyclerViewFrag
 
     @Override
     protected void initViews() {
-        setPullType(PullMode.PULL_BOTH);
+        setPullMode(PullMode.PULL_BOTH);
         setNoDataView();
 
         mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());

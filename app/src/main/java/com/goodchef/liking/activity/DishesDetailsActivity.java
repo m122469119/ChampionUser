@@ -16,7 +16,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.eventmessages.ClearCartMessage;
-import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
 import com.goodchef.liking.http.result.data.Food;
@@ -91,7 +91,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
 
 
     private void initData() {
-        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
+        mUserCityId = getIntent().getStringExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID);
         mFood = (Food) getIntent().getSerializableExtra(LikingHomeActivity.INTENT_KEY_FOOD_OBJECT);
         Bundle bundle = getIntent().getExtras();
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
@@ -252,7 +252,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
                     Intent intent = new Intent(this, ShoppingCartActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST, buyList);
-                    intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+                    intent.putExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
                     intent.putExtras(bundle);
                     startActivityForResult(intent, INTENT_REQUEST_CODE_DEISH_DETAILS_CART);
                 }

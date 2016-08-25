@@ -30,7 +30,7 @@ import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
-import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
@@ -143,7 +143,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     private void initData() {
         mNutritionMealConfirmPresenter = new NutritionMealConfirmPresenter(this, this);
 
-        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
+        mUserCityId = getIntent().getStringExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID);
         Bundle bundle = getIntent().getExtras();
         confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
         if (confirmBuyList != null && confirmBuyList.size() > 0) {
@@ -211,7 +211,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             Intent intent = new Intent(this, ChangeShopActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
-            intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+            intent.putExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
             bundle.putSerializable(ChangeShopActivity.INTENT_KEY_SHOP_OBJECT, myShop);
             intent.putExtras(bundle);
             startActivityForResult(intent, INTENT_REQUEST_CODE_CHANGE_SHOP);

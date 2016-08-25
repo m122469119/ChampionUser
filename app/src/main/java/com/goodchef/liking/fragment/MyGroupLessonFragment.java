@@ -11,7 +11,8 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
@@ -35,7 +36,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:42
  */
-public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements MyGroupCourseView {
+public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyGroupCourseView {
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupCoursesAdapter mGroupLessonAdapter;
@@ -50,7 +51,7 @@ public class MyGroupLessonFragment extends NetworkPagerLoaderRecyclerViewFragmen
     @Override
     protected void initViews() {
         setNoDataView();
-        setPullType(PullMode.PULL_BOTH);
+        setPullMode(PullMode.PULL_BOTH);
         mGroupLessonAdapter = new MyGroupCoursesAdapter(getActivity());
         setRecyclerAdapter(mGroupLessonAdapter);
         mGroupLessonAdapter.setCancelListener(cancelListener);

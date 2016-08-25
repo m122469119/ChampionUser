@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkPagerLoaderRecyclerViewFragment;
+import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.GymCoursesActivity;
@@ -36,7 +37,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment implements HomeCourseView {
+public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements HomeCourseView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     public static final String KEY_GYM_ID = "key_gym_id";
     public static final String KEY_GYM_NAME = "key_gym_name";
@@ -66,10 +67,13 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     @Override
     protected void requestData(int page) {
+        LogUtils.d(TAG, "swipeRefresh page: " + page);
         if (isFirstMessage) {
             getCoursesRequest(page);
             requestBanner();
             LogUtils.i("shouye", "shouye");
+        } else {
+            setLoading(false);
         }
     }
 
@@ -92,7 +96,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     }
 
     private void initRecycleView() {
-        setPullType(PullMode.PULL_BOTH);
+        setPullMode(PullMode.PULL_BOTH);
         mLikingLessonRecyclerAdapter = new LikingLessonRecyclerAdapter(getActivity());
         setRecyclerAdapter(mLikingLessonRecyclerAdapter);
         mLikingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
@@ -148,7 +152,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
     };
 
     private void initRecycleHeadView() {
-        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, getPullToRefreshRecyclerView(), false);
+        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, getRecyclerView(), false);
         mSliderParentLayout = mHeadView.findViewById(R.id.layout_liking_home_head);
         mImageViewPager = (InfiniteViewPager) mHeadView.findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) mHeadView.findViewById(R.id.liking_home_head_indicator);
@@ -236,7 +240,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
 
     private void removeHeadView() {
         if (mHeadView != null) {
-            getPullToRefreshRecyclerView().removeView(mHeadView);
+            getRecyclerView().removeView(mHeadView);
             mLikingLessonRecyclerAdapter.notifyDataSetChanged();
         }
     }
@@ -270,8 +274,7 @@ public class LikingLessonFragment extends NetworkPagerLoaderRecyclerViewFragment
         mDistrictId = mainAddressChanged.getDistrictId();
         LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
         isFirstMessage = true;
-        requestBanner();
-        getCoursesRequest(1);
+        loadHomePage();
 
     }
 

@@ -22,7 +22,7 @@ import java.util.List;
  * @author ran.huang
  * @version 1.0.0
  */
-public abstract class NetworkPagerLoaderListViewFragment extends BasePagerLoaderViewFragment<PullToRefreshListView> {
+public abstract class NetworkPullToRefreshPagerLoaderListViewFragment extends BasePullToRefreshPagerLoaderViewFragment<PullToRefreshListView> {
 
     protected PullToRefreshListView mListView;
     private HBaseAdapter mListAdapter;

@@ -20,7 +20,7 @@ import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
-import com.goodchef.liking.fragment.LikingNearbyFragment;
+import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -82,7 +82,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     private void initData() {
-        mUserCityId = getIntent().getStringExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID);
+        mUserCityId = getIntent().getStringExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID);
         Bundle bundle = getIntent().getExtras();
         buyList = bundle.getParcelableArrayList(LikingHomeActivity.INTENT_KEY_BUY_LIST);
         mShoppingCartAdapter = new ShoppingCartAdapter(this);
@@ -100,7 +100,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
                 Intent intent = new Intent(this, DishesConfirmActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList(INTENT_KEY_CONFIRM_BUY_LIST, buyList);
-                intent.putExtra(LikingNearbyFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
+                intent.putExtra(LikingNutrimealFragment.INTENT_KEY_USER_CITY_ID, mUserCityId);
                 intent.putExtras(bundle);
                 startActivity(intent);
             } else {
