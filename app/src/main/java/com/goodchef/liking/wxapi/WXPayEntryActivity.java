@@ -10,6 +10,7 @@ import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CustomAlertDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
+import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
@@ -33,6 +34,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     public static final int PAY_TYPE_MY_DISHES_LIST = 3333;
     public static final int PAY_TYPE_MY_DISHES_DETAILS = 4444;
     public static final int PAY_TYPE_BUY_CARD = 5555;//买卡
+    public static final int PAY_TYPE_BUY_GROUP_COURSES = 6666;//购买付费团体课
+
 
     private IWXAPI api;
     public static int payType;
@@ -108,6 +111,11 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     finish();
                 }else if (payType == PAY_TYPE_BUY_CARD){
                     postEvent(new BuyCardWeChatMessage(paySuccess));
+                    dialog.dismiss();
+                    orderId = "";
+                    finish();
+                }else if (payType == PAY_TYPE_BUY_GROUP_COURSES){
+                    postEvent(new BuyGroupCoursesWechatMessage(paySuccess));
                     dialog.dismiss();
                     orderId = "";
                     finish();

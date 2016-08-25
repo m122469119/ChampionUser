@@ -105,6 +105,14 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
 
 
             if (type == TYPE_GROUP_LESSON) {
+                int isFree = object.getIsFee();
+
+                if (isFree == 0){//免费
+                    mAddressTextView.setText("免费");
+                }else if (isFree ==1){//收费
+                    mAddressTextView.setText("收费");
+                }
+
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 mLessonTypeTextView.setText("团体课");
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));

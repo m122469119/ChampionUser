@@ -204,15 +204,23 @@
             android:screenOrientation="portrait"/>
 
         <!--完成个人信息-->
-        <activity android:name=".activity.CompleteUserInfoActivity"
+        <activity
+            android:name=".activity.CompleteUserInfoActivity"
             android:screenOrientation="portrait"/>
 
         <!--收费团体课详情界面-->
-        <activity android:name=".activity.MyChargeGroupCoursesDetailsActivity"
+        <activity
+            android:name=".activity.MyChargeGroupCoursesDetailsActivity"
             android:screenOrientation="portrait"/>
 
         <!--选择课程地址-->
-        <activity android:name=".activity.ChangeAddressActivity"
+        <activity
+            android:name=".activity.ChangeAddressActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--付费团体课确认订单-->
+        <activity
+            android:name=".activity.GroupCoursesChargeConfirmActivity"
             android:screenOrientation="portrait"/>
 
         <!--支付宝h5页面-->

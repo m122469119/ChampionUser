@@ -179,5 +179,6 @@
     <string name="activity_title_complete_userinfo">完成个人信息设置</string>
     <string name="head_select_image_prompt">点击上传头像</string>
     <string name="activity_title_change_address">选择上课地址</string>
+    <string name="activity_title_confirm_buy_group_courses">确认购买团体课</string>
 
 </resources>

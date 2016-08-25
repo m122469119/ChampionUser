@@ -39,7 +39,7 @@ public class GroupCoursesResult extends BaseResult {
         mGroupLessonData = groupLessonData;
     }
 
-    public static class GroupLessonData  extends BaseData{
+    public static class GroupLessonData extends BaseData {
 
 
         /**
@@ -82,6 +82,11 @@ public class GroupCoursesResult extends BaseResult {
         private String trainerDesc;
         @SerializedName("course_imgs")
         private List<String> courseImgs;
+        @SerializedName("is_fee")
+        private int isFree;
+        @SerializedName("price")
+        private String price;
+
         /**
          * object_id : 2
          * title :
@@ -203,6 +208,22 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setTrainerImgs(List<String> trainerImgs) {
             this.trainerImgs = trainerImgs;
+        }
+
+        public int getIsFree() {
+            return isFree;
+        }
+
+        public void setIsFree(int isFree) {
+            this.isFree = isFree;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
         }
 
         public static class GymImgsData {

@@ -60,8 +60,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private TextView mCoursesTimesTextView;//上课次数
     private TextView mCoursesNumberTextView;//上课人数
     private TextView mEndTimeTextView;//截止日期
-    private TextView mCouponTitleTextView;//优惠券信息
+
     private RelativeLayout mCouponsLayout;
+    private TextView mCouponTitleTextView;//优惠券信息
+
     private TextView mCoursesMoneyTextView;//课程金额
     private TextView mImmediatelyBuyBtn;//立即购买
     private TextView mCoursesAddressTextView;//课程地址
@@ -85,8 +87,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
-    private PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem;//训练项目对象
     private String payType = "-1";//支付方式
+    private PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem;//训练项目对象
 
     private LikingStateView mStateView;
     private int mCoursesTimes = 0;//上课次数
@@ -118,9 +120,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mCoursesNumberTextView = (TextView) findViewById(R.id.courses_number);
         mEndTimeTextView = (TextView) findViewById(R.id.end_time);
         mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
+        mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
         mCoursesMoneyTextView = (TextView) findViewById(R.id.courses_money);
         mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
-        mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
         mCoursesAddressTextView = (TextView) findViewById(R.id.courses_address);
         mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
         mMinusImageView = (ImageView) findViewById(R.id.courses_time_minus);
@@ -181,7 +183,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mEndTimeTextView.setText(coursesConfirmData.getEndTime());
             mPlacesDataList = (ArrayList<PlacesData>) coursesConfirmData.getPlacesList();
             setPlacesDataListData();
-            mCoursesTimeTextView.setText(coursesConfirmData.getDuration() + " min");
+            mCoursesTimeTextView.setText(coursesConfirmData.getDuration());
             mCoursesNumberTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
             mAmountCount = coursesConfirmData.getAmount();
             mCoursesMoneyTextView.setText("¥ " + mAmountCount);
@@ -422,6 +424,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         int payType = payData.getPayType();
         if (payType == PAY_TYPE) {//3 免金额支付
             PopupUtils.showToast("支付成功");
+            postEvent(new BuyPrivateCoursesMessage());
             jumpToMyCoursesActivity();
         } else {
             handlePay(payData);
@@ -438,7 +441,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mAmountCount = orderCalculateData.getAmount();
             mCoursesMoneyTextView.setText("¥ " + mAmountCount);
             mEndTimeTextView.setText(orderCalculateData.getEndTime());
-            mCoursesTimeTextView.setText(orderCalculateData.getDuration() + " min");
+            mCoursesTimeTextView.setText(orderCalculateData.getDuration());
         } else {
             isGetMoneySuccess = false;
         }

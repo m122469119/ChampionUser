@@ -122,6 +122,11 @@ public class UmengEventId {
      */
     public static final String BANNER = "banner";
 
+    /***
+     * 收费团体课立即购买
+     */
+    public static final String GROUPCOURSESCHARGECONFIRMACTIVITY = "mGroupCoursesChargeConfirmActivity";
+
 
 
 }
