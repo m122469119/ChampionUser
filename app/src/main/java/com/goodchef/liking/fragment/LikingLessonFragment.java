@@ -116,6 +116,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
                     intent.putExtra(KEY_TEACHER_NAME, coursesData.getCourseName());
+                    intent.putExtra(KEY_GYM_ID,gymId);
                     startActivity(intent);
                 }
             }
@@ -206,6 +207,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
+        if (courses.getGym() !=null){
+            gymId = courses.getGym().getGymId();
+        }
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
         if (list != null) {
             updateListView(list);

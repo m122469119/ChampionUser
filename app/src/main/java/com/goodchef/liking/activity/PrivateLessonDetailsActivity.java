@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -39,21 +40,24 @@ import java.util.List;
  */
 public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, View.OnClickListener {
     private HImageView mTeacherHImageView;
+    private LinearLayout mShareLayout;//分享布局
     private TextView mTeacherNameTextView;//教练名称
     private TextView mTeacherSexTextView;//教性别练
     private TextView mTeacherHeightTextView;//教练身高
     private TextView mTeacherWeightTextView;//教练体重
     private TextView mTeacherTagsTextView;//tag
     private TextView mTeacherIntroduceTextView;//教练介绍
-    private RecyclerView mGymRecyclerView;
-    private RecyclerView mTrainItemRecyclerView;
-    private TextView mCardRuleTextView;
-    private TextView mImmediatelySubmitBtn;
+    private RecyclerView mGymRecyclerView;//健身房场馆布局
+    private RecyclerView mTrainItemRecyclerView;//训练项目布局
+    private TextView mCardRuleTextView;//规则
+    private TextView mImmediatelySubmitBtn;//立即支付
 
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
+    private String gymId;
     private LikingStateView mLikingStateView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
+        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(teacherName);
         setRightMenu();
         sendDetailsRequest();
@@ -86,6 +91,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     private void initView() {
         mLikingStateView = (LikingStateView) findViewById(R.id.private_courses_details_state_view);
+        mShareLayout = (LinearLayout) findViewById(R.id.layout_private_courses_share);
         mTeacherHImageView = (HImageView) findViewById(R.id.private_lesson_details_teach_image);
         mTeacherNameTextView = (TextView) findViewById(R.id.private_courses_teacher_name);
         mTeacherSexTextView = (TextView) findViewById(R.id.private_teacher_sex);
@@ -108,6 +114,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     private void setViewOnClickListener() {
         mImmediatelySubmitBtn.setOnClickListener(this);
+        mShareLayout.setOnClickListener(this);
     }
 
     private void sendDetailsRequest() {
@@ -188,11 +195,14 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
                 intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID,gymId);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
+        } else if (v == mShareLayout) {
+
         }
     }
 
