@@ -2,6 +2,8 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,9 +15,12 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.GymAdapter;
+import com.goodchef.liking.adapter.TrainItemAdapter;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
+import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
@@ -42,6 +47,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private TextView mTeacherIntroduceTextView;//教练介绍
     private RecyclerView mGymRecyclerView;
     private RecyclerView mTrainItemRecyclerView;
+    private TextView mCardRuleTextView;
     private TextView mImmediatelySubmitBtn;
 
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
@@ -90,6 +96,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         mGymRecyclerView = (RecyclerView) findViewById(R.id.gym_recyclerView);
         mTrainItemRecyclerView = (RecyclerView) findViewById(R.id.train_recyclerView);
         mImmediatelySubmitBtn = (TextView) findViewById(R.id.private_lesson_immediately_submit);
+        mCardRuleTextView = (TextView) findViewById(R.id.card_rule);
         mLikingStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -145,9 +152,31 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             }
             mTeacherHeightTextView.setText(privateCoursesData.getHeight());
             mTeacherWeightTextView.setText(privateCoursesData.getWeight());
+            mCardRuleTextView.setText(privateCoursesData.getCardRule());
+            setGymRecyclerData(privateCoursesData.getGymDataList());
+            setTrainItemRecyclerData(privateCoursesData.getCoursesDataList());
         } else {
             mLikingStateView.setState(StateView.State.NO_DATA);
         }
+    }
+
+
+    /**
+     * 设置场馆
+     */
+    private void setGymRecyclerData(List<GymData> mGymDataList) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mGymRecyclerView.setLayoutManager(layoutManager);
+        GymAdapter gymAdapter = new GymAdapter(this);
+        gymAdapter.setData(mGymDataList);
+        mGymRecyclerView.setAdapter(gymAdapter);
+    }
+
+    private void setTrainItemRecyclerData(List<PrivateCoursesResult.PrivateCoursesData.CoursesData> coursesDataList) {
+        mTrainItemRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        TrainItemAdapter trainItemAdapter = new TrainItemAdapter(this);
+        trainItemAdapter.setData(coursesDataList);
+        mTrainItemRecyclerView.setAdapter(trainItemAdapter);
     }
 
 

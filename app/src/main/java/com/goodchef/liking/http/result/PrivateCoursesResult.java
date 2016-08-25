@@ -2,6 +2,7 @@ package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.data.GymData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -51,6 +52,12 @@ public class PrivateCoursesResult extends BaseResult {
         private List<String> tags;
         @SerializedName("trainer_imgs")
         private List<String> trainerImgs;
+         @SerializedName("gyms")
+        private List<GymData> mGymDataList;
+        @SerializedName("courses")
+        private List<CoursesData> mCoursesDataList;
+        @SerializedName("card_rule")
+        private String cardRule;
 
         public String getTrainerName() {
             return trainerName;
@@ -107,5 +114,61 @@ public class PrivateCoursesResult extends BaseResult {
         public void setTrainerImgs(List<String> trainerImgs) {
             this.trainerImgs = trainerImgs;
         }
+
+        public List<GymData> getGymDataList() {
+            return mGymDataList;
+        }
+
+        public void setGymDataList(List<GymData> gymDataList) {
+            mGymDataList = gymDataList;
+        }
+
+        public List<CoursesData> getCoursesDataList() {
+            return mCoursesDataList;
+        }
+
+        public void setCoursesDataList(List<CoursesData> coursesDataList) {
+            mCoursesDataList = coursesDataList;
+        }
+
+        public String getCardRule() {
+            return cardRule;
+        }
+
+        public void setCardRule(String cardRule) {
+            this.cardRule = cardRule;
+        }
+
+        public static class CoursesData extends BaseData{
+
+            /**
+             * name : 综合训练-60min
+             * course_id : 10001001
+             */
+
+            @SerializedName("name")
+            private String name;
+            @SerializedName("course_id")
+            private String courseId;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getCourseId() {
+                return courseId;
+            }
+
+            public void setCourseId(String courseId) {
+                this.courseId = courseId;
+            }
+        }
+
     }
+
+
 }
