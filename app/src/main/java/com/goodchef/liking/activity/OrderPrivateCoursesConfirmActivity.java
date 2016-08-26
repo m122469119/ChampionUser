@@ -1,11 +1,14 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -145,6 +149,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mMinusImageView.setOnClickListener(this);
         mAddImageView.setOnClickListener(this);
         mCoursesAddressTextView.setOnClickListener(this);
+        mCoursesTimesTextView.setOnClickListener(this);
     }
 
     private void initPayModule() {
@@ -169,7 +174,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     private void sendRequest() {
-        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(gymId,trainerId);
+        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(gymId, trainerId);
     }
 
     @Override
@@ -209,6 +214,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
     /**
      * 设置训练项目
+     *
      * @param trainItemList 训练项目列表
      */
     private void setTrainItem(List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList) {
@@ -239,7 +245,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     /**
      * 设置训练项目点击事件
      */
-    private void setTrainItemListener(){
+    private void setTrainItemListener() {
         mPrivateCoursesTrainItemAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -305,13 +311,43 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             doMinusCoursesTimes();
         } else if (v == mAddImageView) {
             doAddCoursesTimes();
-        } else if (v == mCoursesAddressTextView) {
-            Intent intent = new Intent(this, ChangeAddressActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(KEY_CHANGE_ADDRESS, mPlacesDataList);
-            intent.putExtras(bundle);
-            startActivityForResult(intent, INTENT_REQUEST_CODE_CHANGE_PLACE);
+        } else if (v == mCoursesTimesTextView) {
+            showCoursesTimesDialog();
         }
+
+//        else if (v == mCoursesAddressTextView) {
+//            Intent intent = new Intent(this, ChangeAddressActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList(KEY_CHANGE_ADDRESS, mPlacesDataList);
+//            intent.putExtras(bundle);
+//            startActivityForResult(intent, INTENT_REQUEST_CODE_CHANGE_PLACE);
+//        }
+    }
+
+    private void showCoursesTimesDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_courses_time, null, false);
+        final EditText mEditView = (EditText) view.findViewById(R.id.courses_times_editText);
+        builder.setCustomView(view);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String times = mEditView.getText().toString();
+                mCoursesTimes = Integer.parseInt(times);
+                mCoursesTimesTextView.setText(mCoursesTimes + "");
+                mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                mCouponTitleTextView.setText("");//清空优惠券需要重新选择
+                mCoupon = null;
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 
@@ -512,7 +548,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         }
     }
 
-    public void onEvent(CoursesErrorMessage message){
+    public void onEvent(CoursesErrorMessage message) {
         this.finish();
     }
 
