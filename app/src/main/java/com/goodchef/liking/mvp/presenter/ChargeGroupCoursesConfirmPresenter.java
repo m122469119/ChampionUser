@@ -26,13 +26,13 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
         super(context, mainView);
     }
 
-    public void getChargeGroupCoursesConfirmData(String scheduleId) {
-        LiKingApi.chargeGroupCoursesConfirm(Preference.getToken(), scheduleId, new RequestCallback<ChargeGroupConfirmResult>() {
+    public void getChargeGroupCoursesConfirmData(String gymId, String scheduleId) {
+        LiKingApi.chargeGroupCoursesConfirm(Preference.getToken(), gymId, scheduleId, new RequestCallback<ChargeGroupConfirmResult>() {
             @Override
             public void onSuccess(ChargeGroupConfirmResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateChargeGroupCoursesView(result.getData());
-                }else if (result.getCode() == 22018){//不能重复购买
+                } else if (result.getCode() == 22018) {//不能重复购买
                     mView.updateBuyCoursesErrorView();
                     PopupUtils.showToast(result.getMessage());
                 } else {
@@ -47,13 +47,15 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
         });
     }
 
-    public void chargeGroupCoursesImmediately(String scheduleId, String couponCode, String payType) {
-        LiKingApi.chargeGroupCoursesImmediately(Preference.getToken(), scheduleId, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
+    public void chargeGroupCoursesImmediately(String gymId, String scheduleId, String couponCode, String payType) {
+        LiKingApi.chargeGroupCoursesImmediately(Preference.getToken(), gymId, scheduleId, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updatePaySubmitView(result.getPayData());
+                } else {
+                    PopupUtils.showToast(result.getMessage());
                 }
             }
 

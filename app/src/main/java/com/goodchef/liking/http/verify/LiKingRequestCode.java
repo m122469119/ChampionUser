@@ -41,4 +41,6 @@ public interface LiKingRequestCode extends ServerRequestCode {
     public static final int LOGOUT_FAILURE = 10014;
     /**购买卡*/
     public static final int BUY_CARD_CONFIRM = 23009;
+    /**购买私教课团体课*/
+    public static final int BUY_COURSES_ERROR =221009;
 }

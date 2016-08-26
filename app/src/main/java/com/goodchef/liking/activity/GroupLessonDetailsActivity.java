@@ -29,6 +29,7 @@ import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;
@@ -100,6 +101,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
         mCoursesState = getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1);
         orderId = getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID);
+        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         initView();
         requestData();
         setRightMenu();
@@ -312,7 +314,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         if (v == mImmediatelySubmitBtn) {
             UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
             if (Preference.isLogin()) {
-                mGroupCoursesDetailsPresenter.orderGroupCourses(scheduleId, Preference.getToken());
+                mGroupCoursesDetailsPresenter.orderGroupCourses(gymId,scheduleId, Preference.getToken());
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
@@ -323,6 +325,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             } else if (isFree == COURSES_NOT_FREE) {//收费
                 Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID,gymId);
                 startActivity(intent);
             }
         } else if (v == mGymIntroduceLayout || v == mGymRootLayout) {//进入门店详情
@@ -400,6 +403,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     }
 
     public void onEvent(BuyGroupCoursesAliPayMessage message) {
+        this.finish();
+    }
+
+    public void onEvent(CoursesErrorMessage message){
         this.finish();
     }
 

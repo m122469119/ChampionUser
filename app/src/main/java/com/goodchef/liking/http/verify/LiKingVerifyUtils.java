@@ -1,6 +1,7 @@
 package com.goodchef.liking.http.verify;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
@@ -10,9 +11,13 @@ import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
@@ -70,6 +75,9 @@ public class LiKingVerifyUtils {
                     if (view != null && view instanceof BaseNetworkLoadView) {
                         ((BaseNetworkLoadView) view).handleNetworkFailure();
                     }
+                    break;
+                case LiKingRequestCode.BUY_COURSES_ERROR:
+                    showBuyCoursesErrorDialog(context, result.getMessage());
                     break;
                 case LiKingRequestCode.INVALID_MOBOLE_NUMBER:
                 case LiKingRequestCode.GET_VERIFICATION_CODE_FAILURE:
@@ -208,5 +216,19 @@ public class LiKingVerifyUtils {
 //        return null;
 //    }
 
+    public static void showBuyCoursesErrorDialog(final Context context, String message) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(context, LikingHomeActivity.class);
+                context.startActivity(intent);
+                EventBus.getDefault().post(new CoursesErrorMessage());
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
 }

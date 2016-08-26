@@ -20,6 +20,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -66,6 +67,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     private String payType = "-1";//支付方式
 
     private String scheduleId;//排期id
+    private String gymId;
     private ChargeGroupCoursesConfirmPresenter mChargeGroupCoursesPresenter;
 
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
@@ -124,11 +126,12 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
     private void getIntentData() {
         scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
+        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
     }
 
     private void initData() {
         mChargeGroupCoursesPresenter = new ChargeGroupCoursesConfirmPresenter(this, this);
-        mChargeGroupCoursesPresenter.getChargeGroupCoursesConfirmData(scheduleId);
+        mChargeGroupCoursesPresenter.getChargeGroupCoursesConfirmData(gymId, scheduleId);
     }
 
     private void initPayModule() {
@@ -191,7 +194,6 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     }
 
 
-
     /**
      * 发送购买私教课请求
      */
@@ -202,9 +204,9 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMACTIVITY);
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(scheduleId, mCoupon.getCouponCode(), payType);
+            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(gymId, scheduleId, mCoupon.getCouponCode(), payType);
         } else {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(scheduleId, "", payType);
+            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(gymId, scheduleId, "", payType);
         }
     }
 
@@ -241,7 +243,6 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
                 break;
         }
     }
-
 
 
     @Override
@@ -335,6 +336,11 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
             jumpToMyCoursesActivity();
         }
     }
+
+    public void onEvent(CoursesErrorMessage message){
+        this.finish();
+    }
+
 
     /**
      * 跳转我的课程列表

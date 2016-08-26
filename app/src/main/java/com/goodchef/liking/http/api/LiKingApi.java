@@ -281,8 +281,8 @@ public class LiKingApi {
      * @param token      token
      * @param callback   RequestCallback
      */
-    public static void orderGroupCourses(String scheduleId, String token, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.ORDER_GROUP_COURSES, BaseResult.class, getCommonRequestParams().append("schedule_id", scheduleId).append(KEY_TOKEN, token), callback);
+    public static void orderGroupCourses(String gymId, String scheduleId, String token, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_GROUP_COURSES, BaseResult.class, getCommonRequestParams().append("gym_id", gymId).append("schedule_id", scheduleId).append(KEY_TOKEN, token), callback);
     }
 
     /**
@@ -846,9 +846,9 @@ public class LiKingApi {
      * @param scheduleId 排期id
      * @param callback   RequestCallback
      */
-    public static void chargeGroupCoursesConfirm(String token, String scheduleId, RequestCallback<ChargeGroupConfirmResult> callback) {
+    public static void chargeGroupCoursesConfirm(String token, String gymId, String scheduleId, RequestCallback<ChargeGroupConfirmResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_CHANGE_GROUP_CONFIRM, ChargeGroupConfirmResult.class, getCommonRequestParams()
-                .append(KEY_TOKEN, token).append("schedule_id", scheduleId), callback);
+                .append(KEY_TOKEN, token).append("schedule_id", scheduleId).append("gym_id", gymId), callback);
     }
 
 
@@ -861,9 +861,10 @@ public class LiKingApi {
      * @param payType    支付方式
      * @param callback   RequestCallback
      */
-    public static void chargeGroupCoursesImmediately(String token, String scheduleId, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
+    public static void chargeGroupCoursesImmediately(String token, String gymId, String scheduleId, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_SUBMIT_TEAM_COURSE, SubmitPayResult.class, getCommonRequestParams()
-                .append(KEY_TOKEN, token).append("schedule_id", scheduleId).append("coupon_code", couponCode).append("pay_type", payType), callback);
+                .append(KEY_TOKEN, token).append("schedule_id", scheduleId)
+                .append("gym_id", gymId).append("coupon_code", couponCode).append("pay_type", payType), callback);
     }
 
 
