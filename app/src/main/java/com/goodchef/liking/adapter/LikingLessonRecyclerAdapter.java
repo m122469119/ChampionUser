@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ import com.goodchef.liking.http.result.CoursesResult;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:约课适配器
  * Author shaozucheng
  * Time:16/5/24 上午10:48
  */
@@ -46,9 +45,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
         private RelativeLayout mLessonTypeLayout;//课程类型布局
         private TextView mLessonTimeTextView;//课程时间
         private TextView mSurplusPersonTextView;//剩余名额
-        private ImageView mImageView;
-        private TextView mAddressTextView;//地址
-        public TextView mDistanceTextView;
+        private TextView mCoursesMoneyTextView;
         private RelativeLayout mGroupLessonLayout;
         private CardView mCardView;
 
@@ -64,9 +61,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
             mLessonTypeLayout = (RelativeLayout) itemView.findViewById(R.id.layout_lesson_type);
             mLessonTimeTextView = (TextView) itemView.findViewById(R.id.lesson_time);
             mSurplusPersonTextView = (TextView) itemView.findViewById(R.id.surplus_person);
-            mImageView = (ImageView) itemView.findViewById(R.id.lesson_address_icon);
-            mAddressTextView = (TextView) itemView.findViewById(R.id.lesson_address);
-            mDistanceTextView = (TextView) itemView.findViewById(R.id.lesson_distance);
+            mCoursesMoneyTextView = (TextView) itemView.findViewById(R.id.courses_money);
             mGroupLessonLayout = (RelativeLayout) itemView.findViewById(R.id.layout_group_lesson);
             mCardView = (CardView) itemView.findViewById(R.id.home_lesson_card_view);
             setCardView();
@@ -102,33 +97,23 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 }
             }
             int type = object.getType();
-
-
             if (type == TYPE_GROUP_LESSON) {
                 int isFree = object.getIsFee();
-
-                if (isFree == 0){//免费
-                    mAddressTextView.setText("免费");
-                }else if (isFree ==1){//收费
-                    mAddressTextView.setText("收费");
-                }
-
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
-                mLessonTypeTextView.setText("团体课");
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
+                if (isFree == 0) {//免费
+                    mLessonTypeTextView.setText("团体课 FREE");
+                    mCoursesMoneyTextView.setVisibility(View.GONE);
+                } else if (isFree == 1) {//收费
+                    mLessonTypeTextView.setText("付费团体课");
+                    mCoursesMoneyTextView.setVisibility(View.VISIBLE);
+                    mCoursesMoneyTextView.setText("¥ " + object.getPrice());
+                }
                 mLessonNameTextView.setText(object.getCourseName());
-
                 String courseDate = object.getCourseDate();
                 if (!StringUtils.isEmpty(courseDate)) {
                     mLessonTimeTextView.setText(courseDate);
                 }
-
-                mImageView.setVisibility(View.VISIBLE);
-//                mAddressTextView.setText(object.getGymName());
-//                String distance = object.getDistance();
-//                if (!StringUtils.isEmpty(distance)) {
-//                    mDistanceTextView.setText(distance);
-//                }
                 mSurplusPersonTextView.setVisibility(View.VISIBLE);
                 String quota = object.getQuota();
                 if (StringUtils.isEmpty(quota)) {
@@ -136,18 +121,18 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 } else {
                     mSurplusPersonTextView.setText(quota);
                 }
-                mGroupLessonLayout.setOnClickListener(mClickListener);
+                if (mClickListener != null) {
+                    mGroupLessonLayout.setOnClickListener(mClickListener);
+                }
                 mGroupLessonLayout.setTag(object);
             } else if (type == TYPE_PRIVATE_LESSON) {
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
                 mLessonTypeTextView.setText("私教课");
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
                 mLessonNameTextView.setText(object.getCourseName());
-                mImageView.setVisibility(View.GONE);
-                mAddressTextView.setText(object.getDescription());
-                mDistanceTextView.setText("");
-                mLessonTimeTextView.setText("");
-                mSurplusPersonTextView.setVisibility(View.INVISIBLE);
+                mLessonTimeTextView.setText(object.getDescription());
+                mSurplusPersonTextView.setVisibility(View.GONE);
+                mCoursesMoneyTextView.setVisibility(View.GONE);
                 mGroupLessonLayout.setOnClickListener(null);
             }
 

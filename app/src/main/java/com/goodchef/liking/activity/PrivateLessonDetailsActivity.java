@@ -166,7 +166,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             }
             mTeacherHeightTextView.setText(privateCoursesData.getHeight());
             mTeacherWeightTextView.setText(privateCoursesData.getWeight());
-            mCardRuleTextView.setText(privateCoursesData.getCardRule());
+            mCardRuleTextView.setText(privateCoursesData.getPurchaseRule());
             setGymRecyclerData(privateCoursesData.getGymDataList());
             setTrainItemRecyclerData(privateCoursesData.getCoursesDataList());
         } else {

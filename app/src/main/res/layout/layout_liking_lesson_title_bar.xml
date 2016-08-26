@@ -32,38 +32,37 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:textColor="@color/tab_indicator_color"
-                android:textSize="@dimen/textsize_15"/>
-
-            <ImageView
-                android:id="@+id/title_down_arrow"
-                android:layout_width="14dp"
-                android:layout_height="9dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/liking_left_title_text"
-                android:contentDescription="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/lesson_title_down_arrow"
+                android:textSize="@dimen/textsize_15"
                 android:visibility="visible"/>
 
-            <TextView
-                android:id="@+id/liking_middle_title_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="60dp"
                 android:gravity="center"
-                android:visibility="gone"
-                android:textColor="@color/tab_indicator_color"
-                android:textSize="@dimen/textsize_15"/>
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/liking_middle_title_image"
-                android:layout_width="60dp"
-                android:layout_height="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/liking_home_title_logo"/>
+                <TextView
+                    android:id="@+id/liking_middle_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/tab_indicator_color"
+                    android:textSize="@dimen/textsize_15"
+                    android:visibility="visible"/>
+                <TextView
+                    android:id="@+id/liking_distance_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="@dimen/textsize_mirco"
+                    android:visibility="visible"/>
+            </LinearLayout>
 
 
             <ImageView
@@ -78,11 +77,11 @@
                 android:id="@+id/tv_shopping_cart_num"
                 android:layout_width="wrap_content"
                 android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/shopping_cart_num_bg"
                 android:gravity="center"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:visibility="gone"/>

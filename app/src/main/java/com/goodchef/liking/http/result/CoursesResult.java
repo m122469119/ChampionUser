@@ -66,6 +66,8 @@ public class CoursesResult extends BaseResult {
             private int type;
             @SerializedName("is_fee")
             private int isFee;
+            @SerializedName("price")
+            private String price;
             @SerializedName("gender")
             private String gender;
             @SerializedName("phone")
@@ -129,8 +131,6 @@ public class CoursesResult extends BaseResult {
                 this.courseName = courseName;
             }
 
-
-
             public List<String> getImgs() {
                 return imgs;
             }
@@ -166,6 +166,14 @@ public class CoursesResult extends BaseResult {
 
             public String getScheduleId() {
                 return scheduleId;
+            }
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
             }
 
             public void setScheduleId(String scheduleId) {
