@@ -15,15 +15,21 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.thirdparty.share.weixin.WeixinShare;
+import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GymAdapter;
 import com.goodchef.liking.adapter.TrainItemAdapter;
+import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
+import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
+import com.goodchef.liking.mvp.presenter.SharePresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
+import com.goodchef.liking.mvp.view.ShareView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
@@ -38,7 +44,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/24 下午5:55
  */
-public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, View.OnClickListener {
+public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, ShareView, View.OnClickListener {
     private HImageView mTeacherHImageView;
     private LinearLayout mShareLayout;//分享布局
     private TextView mTeacherNameTextView;//教练名称
@@ -57,6 +63,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private String teacherName;
     private String gymId;
     private LikingStateView mLikingStateView;
+    private SharePresenter mSharePresenter;
 
 
     @Override
@@ -195,14 +202,15 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
                 intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID,gymId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
         } else if (v == mShareLayout) {
-
+            mSharePresenter = new SharePresenter(this, this);
+            mSharePresenter.getPrivateShareData(trainerId);
         }
     }
 
@@ -224,5 +232,45 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     @Override
     public void handleNetworkFailure() {
         mLikingStateView.setState(StateView.State.FAILED);
+    }
+
+    @Override
+    public void updateShareView(ShareData shareData) {
+        showShareDialog(shareData);
+    }
+
+    private void showShareDialog(final ShareData shareData) {
+        final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(this);
+        shareCustomDialog.setViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeixinShare weixinShare = new WeixinShare(PrivateLessonDetailsActivity.this);
+                switch (v.getId()) {
+                    case R.id.layout_wx_friend://微信好友
+                        WeixinShareData.WebPageData webPageData = new WeixinShareData.WebPageData();
+                        webPageData.setWebUrl(shareData.getUrl());
+                        webPageData.setTitle(shareData.getTitle());
+                        webPageData.setDescription(shareData.getContent());
+                        webPageData.setWeixinSceneType(WeixinShareData.WeixinSceneType.FRIEND);
+                        webPageData.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.layout_wx_friend_circle://微信朋友圈
+                        WeixinShareData.WebPageData webPageData1 = new WeixinShareData.WebPageData();
+                        webPageData1.setWebUrl(shareData.getUrl());
+                        webPageData1.setTitle(shareData.getTitle());
+                        webPageData1.setDescription(shareData.getContent());
+                        webPageData1.setWeixinSceneType(WeixinShareData.WeixinSceneType.CIRCLE);
+                        webPageData1.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData1);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.cancel_image_button:
+                        shareCustomDialog.dismiss();
+                        break;
+                }
+            }
+        });
     }
 }

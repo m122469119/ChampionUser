@@ -121,6 +121,7 @@ public class UrlList {
     public static final String ORDER_CHANGE_GROUP_CONFIRM = getVersionHostUrl() + "/order/team-course-confirm";
     /**收费团体课购买*/
     public static final String ORDER_SUBMIT_TEAM_COURSE = getVersionHostUrl() + "/order/submit-team-course";
-
+    /**私教课分享*/
+    public static final String TRAINER_SHARE = getVersionHostUrl() + "/user/trainer-share";
 
 }
