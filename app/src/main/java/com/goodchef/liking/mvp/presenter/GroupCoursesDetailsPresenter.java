@@ -43,8 +43,8 @@ public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDeta
         );
     }
 
-    public void orderGroupCourses(String scheduleId, String token) {
-        LiKingApi.orderGroupCourses(scheduleId, token, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
+    public void orderGroupCourses(String gymId, String scheduleId, String token) {
+        LiKingApi.orderGroupCourses(gymId, scheduleId, token, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);

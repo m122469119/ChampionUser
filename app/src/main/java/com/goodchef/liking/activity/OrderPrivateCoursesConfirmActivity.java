@@ -23,6 +23,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.PrivateCoursesTrainItemAdapter;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
@@ -517,6 +518,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         if (wechatMessage.isPaySuccess()) {
             jumpToMyCoursesActivity();
         }
+    }
+
+    public void onEvent(CoursesErrorMessage message){
+        this.finish();
     }
 
     /**

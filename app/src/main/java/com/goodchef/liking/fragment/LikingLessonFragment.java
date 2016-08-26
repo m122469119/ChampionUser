@@ -17,6 +17,7 @@ import com.goodchef.liking.activity.GymCoursesActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
@@ -110,6 +111,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                     intent.putExtra(KEY_INTENT_TYPE, "0");
+                    intent.putExtra(KEY_GYM_ID,gymId);
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.PRIVATELESSONDETAILSACTIVITY);
@@ -280,6 +282,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         isFirstMessage = true;
         loadHomePage();
 
+    }
+
+    public void onEvent(CoursesErrorMessage message){
+        gymId = "0";
+        loadHomePage();
     }
 
 }
