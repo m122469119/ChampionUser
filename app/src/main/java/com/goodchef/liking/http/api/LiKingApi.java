@@ -43,6 +43,7 @@ import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
+import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
@@ -291,9 +292,9 @@ public class LiKingApi {
      * @param token     token
      * @param callback  RequestCallback
      */
-    public static void orderPrivateCoursesConfirm(String gymId,String trainerId, String token, RequestCallback<PrivateCoursesConfirmResult> callback) {
+    public static void orderPrivateCoursesConfirm(String gymId, String trainerId, String token, RequestCallback<PrivateCoursesConfirmResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.PRIVATE_ORDER_CONFIRM, PrivateCoursesConfirmResult.class, getCommonRequestParams().append("trainer_id", trainerId)
-                .append(KEY_TOKEN, token).append("gym_id",gymId), callback);
+                .append(KEY_TOKEN, token).append("gym_id", gymId), callback);
     }
 
     /**
@@ -863,5 +864,17 @@ public class LiKingApi {
     public static void chargeGroupCoursesImmediately(String token, String scheduleId, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.ORDER_SUBMIT_TEAM_COURSE, SubmitPayResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("schedule_id", scheduleId).append("coupon_code", couponCode).append("pay_type", payType), callback);
+    }
+
+
+    /***
+     * 私教课分享
+     *
+     * @param trainerId 教练id
+     * @param callback  RequestCallback
+     */
+    public static void getPrivateCoursesShare(String trainerId, RequestCallback<ShareResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.TRAINER_SHARE, ShareResult.class, getCommonRequestParams()
+                .append("trainer_id", trainerId), callback);
     }
 }
