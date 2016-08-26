@@ -56,8 +56,8 @@ public class PrivateCoursesResult extends BaseResult {
         private List<GymData> mGymDataList;
         @SerializedName("courses")
         private List<CoursesData> mCoursesDataList;
-        @SerializedName("card_rule")
-        private String cardRule;
+        @SerializedName("purchase_rule")
+        private String purchaseRule;
 
         public String getTrainerName() {
             return trainerName;
@@ -131,12 +131,12 @@ public class PrivateCoursesResult extends BaseResult {
             mCoursesDataList = coursesDataList;
         }
 
-        public String getCardRule() {
-            return cardRule;
+        public String getPurchaseRule() {
+            return purchaseRule;
         }
 
-        public void setCardRule(String cardRule) {
-            this.cardRule = cardRule;
+        public void setPurchaseRule(String purchaseRule) {
+            this.purchaseRule = purchaseRule;
         }
 
         public static class CoursesData extends BaseData{
