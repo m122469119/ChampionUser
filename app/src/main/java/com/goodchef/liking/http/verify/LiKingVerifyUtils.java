@@ -216,6 +216,11 @@ public class LiKingVerifyUtils {
 //        return null;
 //    }
 
+    /**
+     * 购买私教课 团体课，预约团体课
+     * @param context
+     * @param message
+     */
     public static void showBuyCoursesErrorDialog(final Context context, String message) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
         builder.setMessage(message);
