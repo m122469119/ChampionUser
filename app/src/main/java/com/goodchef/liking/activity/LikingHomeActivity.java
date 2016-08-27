@@ -33,6 +33,7 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.adapter.SelectCityAdapter;
+import com.goodchef.liking.dialog.HomeRightDialog;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
@@ -303,22 +304,48 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    PopupUtils.showToast("您还没有购买任何营养餐");
 //                }
             } else if (tag.equals(TAG_MAIN_TAB)) {
-                if (StringUtils.isEmpty(currentCityName)) {
-                    UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, "定位失败");
-                } else {
-                    UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, currentCityName);
-                }
-                Intent intent = new Intent(this, OpenTheDoorActivity.class);
-                startActivity(intent);
+                showRightMenuDialog();
             }
         }
+    }
+
+    private void showRightMenuDialog() {
+        HomeRightDialog dialog = new HomeRightDialog(this);
+        dialog.setAnchor(mRightImageView);
+        dialog.setViewOnClikListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.layout_notice:
+                        break;
+                    case R.id.layout_open_door:
+                        jumpOpenTheDoorActivity();
+                        break;
+
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    /**
+     * 开门
+     */
+    private void jumpOpenTheDoorActivity() {
+        if (StringUtils.isEmpty(currentCityName)) {
+            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, "定位失败");
+        } else {
+            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, currentCityName);
+        }
+        Intent intent = new Intent(this, OpenTheDoorActivity.class);
+        startActivity(intent);
     }
 
 
     /**
      * 切换场馆
      */
-    private void changeGym(){
+    private void changeGym() {
         if (isWhetherLocation) {
             if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
                 isLocation = true;

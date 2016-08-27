@@ -50,5 +50,6 @@
     <color name="ruler_line">#10ffffff</color>
     <color name="complete_user_info_layer">#10000000</color>
     <color name="sex_women">#E22B68</color>
-
+    <color name="home_right_dialog_line">#6f717d</color>
+    <color name="home_right_dialog_text">#23EC7D</color>
 </resources>
