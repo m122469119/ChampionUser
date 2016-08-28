@@ -31,8 +31,9 @@
                     fresco:placeholderImageScaleType="centerCrop"/>
 
                 <TextView
-                    android:layout_width="55dp"
-                    android:layout_height="23dp"
+                    android:id="@+id/group_courses_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/icon_group_courses_details"
@@ -48,14 +49,30 @@
                     android:layout_alignParentBottom="true"
                     android:background="@color/lesson_details_layer">
 
-                    <TextView
-                        android:id="@+id/shop_name"
+                    <LinearLayout
+                        android:id="@+id/layout_group_courses_share"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/textsize_mirco"/>
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/icon_share"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="分享"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:paddingTop="2dp"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/schedule_result"
@@ -214,8 +231,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="160dp">
+                android:layout_height="160dp"
+                android:visibility="gone">
 
                 <com.aaron.android.framework.library.imageloader.HImageView
                     android:id="@+id/teacher_imageView"
@@ -253,9 +270,9 @@
                 android:background="@drawable/shape_card_stoke_bottom_background"
                 android:lineSpacingExtra="3dp"
                 android:padding="10dp"
-                android:visibility="gone"
                 android:textColor="@color/liking_lesson_text"
-                android:textSize="13sp"/>
+                android:textSize="13sp"
+                android:visibility="gone"/>
 
 
             <LinearLayout

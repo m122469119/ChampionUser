@@ -123,5 +123,10 @@ public class UrlList {
     public static final String ORDER_SUBMIT_TEAM_COURSE = getVersionHostUrl() + "/order/submit-team-course";
     /**私教课分享*/
     public static final String TRAINER_SHARE = getVersionHostUrl() + "/user/trainer-share";
+    /**团体课分享*/
+    public static final String USER_TEAM_SHARE = getVersionHostUrl() + "/user/team-share";
+    /**运动数据分享*/
+    public static final String USER_EXERCISE_SHARE = getVersionHostUrl() + "/user/exercise-share";
+
 
 }
