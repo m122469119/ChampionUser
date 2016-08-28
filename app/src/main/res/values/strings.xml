@@ -184,5 +184,8 @@
     <string name="not_free_group_courses">付费团体课</string>
     <string name="free_group_courses">团体课 FREE</string>
     <string name="share">分享</string>
+    <string name="gym_address">场馆地址</string>
+    <string name="gym_name">场馆名称</string>
+    <string name="buy_card_agree">购卡即同意</string>
 
 </resources>
