@@ -15,6 +15,7 @@ import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
+import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
@@ -55,7 +56,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private double mLatitude = 0;
     private String mCityId = "310100";
     private String mDistrictId = "310104";
-    private String gymId ="0";
+    private String gymId = "0";
 
     public static final String KEY_TRAINER_ID = "trainerId";
     public static final String KEY_SCHEDULE_ID = "scheduleId";
@@ -64,8 +65,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
     private boolean isFirstMessage = false;
     private List<BannerResult.BannerData.Banner> bannerDataList = new ArrayList<>();
-
-
 
 
     @Override
@@ -113,14 +112,14 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                     intent.putExtra(KEY_INTENT_TYPE, "0");
-                    intent.putExtra(KEY_GYM_ID,gymId);
+                    intent.putExtra(KEY_GYM_ID, gymId);
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.PRIVATELESSONDETAILSACTIVITY);
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
                     intent.putExtra(KEY_TEACHER_NAME, coursesData.getCourseName());
-                    intent.putExtra(KEY_GYM_ID,gymId);
+                    intent.putExtra(KEY_GYM_ID, gymId);
                     startActivity(intent);
                 }
             }
@@ -132,7 +131,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         });
         mLikingLessonRecyclerAdapter.setGroupOnClickListener(null);
     }
-
 
 
     private void initRecycleHeadView() {
@@ -190,7 +188,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
-        if (courses.getGym() !=null){
+        if (courses.getGym() != null) {
             gymId = courses.getGym().getGymId();
             postEvent(new getGymDataMessage(courses.getGym()));
         }
@@ -266,8 +264,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     }
 
-    public void onEvent(CoursesErrorMessage message){
+    public void onEvent(CoursesErrorMessage message) {
         gymId = "0";
+        loadHomePage();
+    }
+
+    public void onEvent(ChangGymMessage message) {
+        gymId = message.getGymId();
         loadHomePage();
     }
 

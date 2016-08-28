@@ -72,6 +72,8 @@ public class MyGroupCoursesResult extends BaseResult {
             private int isFee;
             @SerializedName("amount")
             private String amount;
+            @SerializedName("cancel_btn_show")
+            private int cancelBtnShow;
 
             public String getOrderId() {
                 return orderId;
@@ -175,6 +177,14 @@ public class MyGroupCoursesResult extends BaseResult {
 
             public void setAmount(String amount) {
                 this.amount = amount;
+            }
+
+            public int getCancelBtnShow() {
+                return cancelBtnShow;
+            }
+
+            public void setCancelBtnShow(int cancelBtnShow) {
+                this.cancelBtnShow = cancelBtnShow;
             }
         }
     }

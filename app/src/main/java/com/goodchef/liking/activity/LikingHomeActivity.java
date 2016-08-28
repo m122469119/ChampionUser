@@ -260,15 +260,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    }
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
                     mAppBarLayout.setVisibility(View.VISIBLE);
-                    mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingDistanceTextView.setVisibility(View.GONE);
-                    mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_recharge);
-                    mLikingRightTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setText("查看场馆");
+                    mLikingDistanceTextView.setVisibility(View.VISIBLE);
+                    mLikingRightTitleTextView.setVisibility(View.GONE);
+                    mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
                     mRightImageView.setVisibility(View.GONE);
                     mRedPoint.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
+                    setHomeTitle();
                     postEvent(new OnCLickBuyCardFragmentMessage());
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     mAppBarLayout.setVisibility(View.VISIBLE);
@@ -292,12 +292,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (v == mLikingLeftTitleTextView) {
             if (tag.equals(TAG_MAIN_TAB)) {
                 changeGym();
-            }
-        } else if (v == mLikingRightTitleTextView) {
-            if (tag.equals(TAG_RECHARGE_TAB)) {
+            }else if (tag.equals(TAG_RECHARGE_TAB)){
                 changeGym();
             }
-        } else if (v == mRightImageView) {
+        }  else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
 //                if (buyList != null && buyList.size() > 0 && calcDishSize() > 0) {
 //                    Intent intent = new Intent(this, ShoppingCartActivity.class);
