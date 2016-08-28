@@ -75,6 +75,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private ImageView mRightImageView;//右边图片
     private TextView mLikingRightTitleTextView;//右边文字
     private TextView mLikingDistanceTextView;//距离
+    private TextView mRedPoint;//红色点点
     private AppBarLayout mAppBarLayout;
 
     public TextView mShoppingCartNumTextView;
@@ -177,10 +178,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mLikingMiddleTitleTextView = (TextView) findViewById(R.id.liking_middle_title_text);
         mLikingDistanceTextView = (TextView) findViewById(R.id.liking_distance_text);
         mRightImageView = (ImageView) findViewById(R.id.liking_right_imageView);
-
         mLikingRightTitleTextView = (TextView) findViewById(R.id.liking_right_title_text);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.liking_home_appBar);
         mShoppingCartNumTextView = (TextView) findViewById(R.id.tv_shopping_cart_num);
+        mRedPoint = (TextView) findViewById(R.id.home_notice_prompt);
         initTabHost();
     }
 
@@ -213,6 +214,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void setMainTableView() {
         mLikingLeftTitleTextView.setText(R.string.home_left_menu);
         mRightImageView.setVisibility(View.VISIBLE);
+        mRedPoint.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
     }
 
@@ -236,6 +238,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setText(R.string.home_left_menu);
                     mRightImageView.setVisibility(View.VISIBLE);
+                    mRedPoint.setVisibility(View.VISIBLE);
                     mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                     setHomeTitle();
@@ -246,6 +249,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_nearby);
                     mRightImageView.setVisibility(View.GONE);
+                    mRedPoint.setVisibility(View.GONE);
                     mLikingDistanceTextView.setVisibility(View.GONE);
                     //  mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
 //                    if (calcDishSize() > 0) {
@@ -263,6 +267,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setText("查看场馆");
                     mRightImageView.setVisibility(View.GONE);
+                    mRedPoint.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                     postEvent(new OnCLickBuyCardFragmentMessage());
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
@@ -273,6 +278,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
                     mRightImageView.setVisibility(View.GONE);
+                    mRedPoint.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                 }
             }
@@ -312,7 +318,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void showRightMenuDialog() {
         HomeRightDialog dialog = new HomeRightDialog(this);
         dialog.setAnchor(mRightImageView);
-        dialog.setViewOnClikListener(new View.OnClickListener() {
+        dialog.setViewOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
