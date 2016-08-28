@@ -46,6 +46,15 @@ public class AnnouncementDialog {
         mButton.setOnClickListener(onClickListener);
     }
 
+    public void setButtonDismiss(){
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
 
     /**
      * 设置是否可以关闭

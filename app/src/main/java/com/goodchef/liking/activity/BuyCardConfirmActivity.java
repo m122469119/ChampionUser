@@ -17,8 +17,6 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
-import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
@@ -27,6 +25,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPay;
 import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
+import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
@@ -58,7 +57,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private static final int BUY_TYPE_UPGRADE = 3;//升级
     public static final String KEY_CARD_ID = "key_card_id";
 
-    private HImageView mHImageView;
+
+    private TextView mBuyCardNoticeTextView;//活动
+    private TextView mGymNameTextView;//场馆名称
+    private TextView mGymAddressTextView;//场馆地址
     private TextView mPeriodOfValidityTextView;//有效期
     private RecyclerView mCardRecyclerView;
 
@@ -111,7 +113,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.buy_card_confirm_state_view);
-        mHImageView = (HImageView) findViewById(R.id.buy_card_confirm_image);
+        mBuyCardNoticeTextView = (TextView) findViewById(R.id.buy_card_notice);
+        mGymNameTextView = (TextView) findViewById(R.id.gym_name);
+        mGymAddressTextView = (TextView) findViewById(R.id.gym_address);
+
         mPeriodOfValidityTextView = (TextView) findViewById(R.id.period_of_validity);
 
         mCardRecyclerView = (RecyclerView) findViewById(R.id.card_recyclerView);
@@ -143,6 +148,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCouponsLayout.setOnClickListener(this);
         mImmediatelyBuyBtn.setOnClickListener(this);
         mAgreeProtocolTextView.setOnClickListener(this);
+        mBuyCardNoticeTextView.setOnClickListener(this);
     }
 
     /**
@@ -180,7 +186,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             payType = "0";
         } else if (v == mCouponsLayout) {//选优惠券
             if (Preference.isLogin()) {
-                UMengCountUtil.UmengCount(this,UmengEventId.COUPONSACTIVITY);
+                UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                 intent.putExtra(KEY_CARD_ID, mCardId);
@@ -216,6 +222,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     }
                 }
             }
+        } else if (v == mBuyCardNoticeTextView) {//公告
+            final AnnouncementDialog dialog = new AnnouncementDialog(this, "公告");
+            dialog.setButtonDismiss();
         }
     }
 
@@ -271,6 +280,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     @Override
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData) {
         if (confirmBuyCardData != null) {
+            mStateView.setState(StateView.State.SUCCESS);
             //1购卡 2续卡 3升级卡
             int type = confirmBuyCardData.getPurchaseType();
             explain = confirmBuyCardData.getTips();
@@ -281,17 +291,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             } else if (type == BUY_TYPE_UPGRADE) {
                 setTitle("升级" + mCardName);
             }
-            mStateView.setState(StateView.State.SUCCESS);
-            String imageUrl = confirmBuyCardData.getAdsUrl();
+
             if (buyType == BUY_TYPE_BUY) {
-                mHImageView.setVisibility(View.VISIBLE);
-                if (!StringUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
-                }
+
             } else if (buyType == BUY_TYPE_CONTINUE) {
-                mHImageView.setVisibility(View.GONE);
+
             } else if (buyType == BUY_TYPE_UPGRADE) {
-                mHImageView.setVisibility(View.GONE);
+
             }
 
             mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
@@ -359,10 +365,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 if (object != null) {
                     for (ConfirmCard data : confirmCardList) {
                         if (data.getType() == object.getType()) {
-//                            data.setSelect(true);
                             data.setQulification(1);
                         } else {
-//                            data.setSelect(false);
                             data.setQulification(0);
                         }
                     }
@@ -380,36 +384,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 设置card
      */
     private void setCardView(List<ConfirmCard> confirmCardList) {
-//        if (confirmCardList != null && confirmCardList.size() >= 2) {
-//            //当集合中 qulification 属性都为1时，表示都可以选，此时默认选中全天卡
-//            if (confirmCardList.get(0).getQulification() == 1 && confirmCardList.get(1).getQulification() == 1) {
-//                confirmCardList.get(1).setLayoutViewEnable(true);
-//                confirmCardList.get(0).setLayoutViewEnable(true);
-//                for (ConfirmCard card : confirmCardList) {
-//                    if (card.getType() == 2) {//全天卡。1闲时，2全天,当非登录或者没有卡是，默认选中全天卡
-//                        card.setSelect(true);
-//                        mCardId = card.getCardId();
-//                        if (buyType != BUY_TYPE_UPGRADE) {
-//                            cardPrice = card.getPrice();
-//                            mCardMoneyTextView.setText("¥ " + cardPrice);
-//                        }
-//                    } else {
-//                        card.setSelect(false);
-//                    }
-//                }
-//            } else {//当集合中qulification 有1 或者0 的情况，为0的情况不可选
-//                for (ConfirmCard card : confirmCardList) {
-//                    if (card.getQulification() == 1) {
-//                        mCardId = card.getCardId();
-//                        if (buyType != BUY_TYPE_UPGRADE) {
-//                            cardPrice = card.getPrice();
-//                            mCardMoneyTextView.setText("¥ " + cardPrice);
-//                        }
-//                    }
-//                }
-//            }
-
-
         for (ConfirmCard card : confirmCardList) {
             if (card.getQulification() == 1) {
                 mCardMoneyTextView.setVisibility(View.VISIBLE);
@@ -422,14 +396,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 }
             }
         }
-
-
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCardRecyclerView.setLayoutManager(mLayoutManager);
         mCardRecyclerAdapter.setData(confirmCardList);
         mCardRecyclerView.setAdapter(mCardRecyclerAdapter);
-//        }
-
     }
 
 

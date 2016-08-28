@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -13,49 +12,143 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
-
-            <com.aaron.android.framework.library.imageloader.HImageView
-                android:id="@+id/buy_card_confirm_image"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:visibility="gone"
-                fresco:failureImage="@drawable/bg_no_data_default_image"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/bg_no_data_default_image"
-                fresco:placeholderImageScaleType="centerCrop"/>
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/shape_card_background">
-
+                android:layout_height="wrap_content"
+                android:background="@color/liking_green_btn_back">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/buy_card_notice"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/period_of_validity"
-                    android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="@dimen/textsize_small"/>
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    />
 
-                <TextView
-                    android:id="@+id/period_of_validity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:textSize="@dimen/textsize_small"/>
-
+                    android:src="@drawable/bg_right_arrow"/>
             </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/gym_name"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/gym_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/gym_address"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/gym_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/period_of_validity"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/period_of_validity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -90,7 +183,7 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
-                    android:text="请选择优惠券"
+                    android:text="@string/please_select_coupons"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -131,7 +224,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="购卡即同意"
+                    android:text="@string/buy_card_agree"
                     android:textColor="@color/lesson_details_gray_back"
                     android:textSize="13sp"/>
 
@@ -173,7 +266,7 @@
             android:layout_weight="2"
             android:background="@color/liking_green_btn_back"
             android:gravity="center"
-            android:text="立即购买"
+            android:text="@string/immediately_buy_btn"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </LinearLayout>
