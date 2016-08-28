@@ -24,8 +24,11 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.android.thirdparty.share.weixin.WeixinShare;
+import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
+import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
@@ -36,9 +39,12 @@ import com.goodchef.liking.fragment.MyGroupLessonFragment;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
+import com.goodchef.liking.mvp.presenter.SharePresenter;
 import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
+import com.goodchef.liking.mvp.view.ShareView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
@@ -52,7 +58,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/24 下午3:21
  */
-public class GroupLessonDetailsActivity extends AppBarActivity implements GroupCourserDetailsView, View.OnClickListener {
+public class GroupLessonDetailsActivity extends AppBarActivity implements GroupCourserDetailsView, View.OnClickListener ,ShareView{
     private static final int COURSES_STATE_NOT_START = 0;// 未开始
     private static final int COURSES_STATE_PROCESS = 1;//进行中
     private static final int COURSES_STATE_OVER = 2;//已结束
@@ -61,14 +67,16 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private static final int COURSES_NOT_FREE = 1;//收费费团体课
 
     private HImageView mShopImageView;
-    private TextView mShopNameTextView;
-    private TextView mScheduleResultTextView;
-    private TextView mCoursesTimeTextView;
-    private TextView mShopAddressTextView;
-    private TextView mTeacherNameTextView;
-    private RatingBar mRatingBar;
-    private TextView mCoursesIntroduceTextView;
-    private TextView mImmediatelySubmitBtn;
+    //  private TextView mShopNameTextView;//门店名称
+    private TextView mScheduleResultTextView;//排期
+    private TextView mCoursesTimeTextView;//时间
+    private TextView mShopAddressTextView;//地址
+    private TextView mTeacherNameTextView;//教练名称
+    private RatingBar mRatingBar;//强度
+    private TextView mCoursesIntroduceTextView;//课程介绍
+    private TextView mImmediatelySubmitBtn;//立即购买
+    private TextView mGroupCoursesTagTextView;//课程Tag 付费和免费
+    private LinearLayout mShareLayout;
 
     private LinearLayout mCoursesStateLayout;
     private TextView mStatePromptTextView;
@@ -88,6 +96,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private String guota;//预约人数
     private int isFree;//是否免费
     private String price;//价格
+    private SharePresenter mSharePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +131,15 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.group_courses_details_state_view);
         mShopImageView = (HImageView) findViewById(R.id.group_lesson_details_shop_image);
-        mShopNameTextView = (TextView) findViewById(R.id.shop_name);
+        //   mShopNameTextView = (TextView) findViewById(R.id.shop_name);
         mScheduleResultTextView = (TextView) findViewById(R.id.schedule_result);
         mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
         mShopAddressTextView = (TextView) findViewById(R.id.shop_address);
         mTeacherNameTextView = (TextView) findViewById(R.id.group_teacher_name);
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.courses_introduce);
+        mGroupCoursesTagTextView = (TextView) findViewById(R.id.group_courses_tag);
+        mShareLayout = (LinearLayout) findViewById(R.id.layout_group_courses_share);
 
         mGymRootLayout = (LinearLayout) findViewById(R.id.layout_group_details);
         mGymIntroduceLayout = (RelativeLayout) findViewById(R.id.layout_gym_introduce);
@@ -146,6 +157,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mImmediatelySubmitBtn.setOnClickListener(this);
         mGymIntroduceLayout.setOnClickListener(this);
         mGymRootLayout.setOnClickListener(this);
+        mShareLayout.setOnClickListener(this);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -163,6 +175,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             if (isFree == COURSES_IS_FREE) {//免费
                 mCoursesStateLayout.setVisibility(View.GONE);
                 mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
+                mGroupCoursesTagTextView.setText(R.string.free_group_courses);
                 if (!StringUtils.isEmpty(guota)) {
                     if (Integer.parseInt(guota) == 0) {
                         mImmediatelySubmitBtn.setText(R.string.appointment_fill);
@@ -184,6 +197,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             } else if (isFree == COURSES_NOT_FREE) {//收费
                 mImmediatelySubmitBtn.setVisibility(View.GONE);
                 mCoursesStateLayout.setVisibility(View.VISIBLE);
+                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
                 mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
                 mStatePromptTextView.setText("¥ " + price);
                 mCancelOrderBtn.setText(R.string.immediately_buy_btn);
@@ -269,7 +283,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
         guota = groupLessonData.getQuota();
         mScheduleResultTextView.setText(groupLessonData.getQuotaDesc());
-        mShopNameTextView.setText(groupLessonData.getGymName());
+        //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
         mTeacherNameTextView.setText(groupLessonData.getTrainerName());
@@ -314,7 +328,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         if (v == mImmediatelySubmitBtn) {
             UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
             if (Preference.isLogin()) {
-                mGroupCoursesDetailsPresenter.orderGroupCourses(gymId,scheduleId, Preference.getToken());
+                mGroupCoursesDetailsPresenter.orderGroupCourses(gymId, scheduleId, Preference.getToken());
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
@@ -325,7 +339,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             } else if (isFree == COURSES_NOT_FREE) {//收费
                 Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID,gymId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 startActivity(intent);
             }
         } else if (v == mGymIntroduceLayout || v == mGymRootLayout) {//进入门店详情
@@ -334,6 +348,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             this.startActivity(intent);
             this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+        } else if (v == mShareLayout) {//分享
+            mSharePresenter = new SharePresenter(this, this);
+            mSharePresenter.getGroupShareData(scheduleId);
         }
     }
 
@@ -406,8 +423,47 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         this.finish();
     }
 
-    public void onEvent(CoursesErrorMessage message){
+    public void onEvent(CoursesErrorMessage message) {
         this.finish();
     }
 
+    @Override
+    public void updateShareView(ShareData shareData) {
+        showShareDialog(shareData);
+    }
+
+    private void showShareDialog(final ShareData shareData) {
+        final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(this);
+        shareCustomDialog.setViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeixinShare weixinShare = new WeixinShare(GroupLessonDetailsActivity.this);
+                switch (v.getId()) {
+                    case R.id.layout_wx_friend://微信好友
+                        WeixinShareData.WebPageData webPageData = new WeixinShareData.WebPageData();
+                        webPageData.setWebUrl(shareData.getUrl());
+                        webPageData.setTitle(shareData.getTitle());
+                        webPageData.setDescription(shareData.getContent());
+                        webPageData.setWeixinSceneType(WeixinShareData.WeixinSceneType.FRIEND);
+                        webPageData.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.layout_wx_friend_circle://微信朋友圈
+                        WeixinShareData.WebPageData webPageData1 = new WeixinShareData.WebPageData();
+                        webPageData1.setWebUrl(shareData.getUrl());
+                        webPageData1.setTitle(shareData.getTitle());
+                        webPageData1.setDescription(shareData.getContent());
+                        webPageData1.setWeixinSceneType(WeixinShareData.WeixinSceneType.CIRCLE);
+                        webPageData1.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData1);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.cancel_image_button:
+                        shareCustomDialog.dismiss();
+                        break;
+                }
+            }
+        });
+    }
 }

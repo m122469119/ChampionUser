@@ -878,4 +878,27 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.TRAINER_SHARE, ShareResult.class, getCommonRequestParams()
                 .append("trainer_id", trainerId), callback);
     }
+
+
+    /**
+     * 团体课分享
+     *
+     * @param scheduleId 排期id
+     * @param callback   RequestCallback
+     */
+    public static void getGroupCoursesShare(String scheduleId, RequestCallback<ShareResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_TEAM_SHARE, ShareResult.class, getCommonRequestParams()
+                .append("schedule_id", scheduleId), callback);
+    }
+
+    /**
+     * 我的运动数据分享
+     *
+     * @param token    token
+     * @param callback RequestCallback
+     */
+    public static void getUserShare(String token, RequestCallback<ShareResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_EXERCISE_SHARE, ShareResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token), callback);
+    }
 }

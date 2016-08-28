@@ -181,5 +181,8 @@
     <string name="activity_title_change_address">选择上课地址</string>
     <string name="activity_title_confirm_buy_group_courses">确认购买团体课</string>
     <string name="home_left_menu">[切换]</string>
+    <string name="not_free_group_courses">付费团体课</string>
+    <string name="free_group_courses">团体课 FREE</string>
+    <string name="share">分享</string>
 
 </resources>
