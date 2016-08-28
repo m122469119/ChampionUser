@@ -31,7 +31,7 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
 import com.goodchef.liking.mvp.view.CheckGymView;
@@ -327,9 +327,8 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
             @Override
             public void onClick(View v) {
                 UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
-                Intent intent = new Intent(LookStoreMapActivity.this, GymCoursesActivity.class);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymDto.getGymId() + "");
-                intent.putExtra(LikingLessonFragment.KEY_GYM_NAME, mGymDto.getGymName());
+                Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
+                postEvent(new ChangGymMessage(mGymDto.getGymId() + ""));
                 startActivity(intent);
             }
         });

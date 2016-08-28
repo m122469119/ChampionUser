@@ -17,6 +17,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
+import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
@@ -49,6 +50,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     private View mHeadView;
     private static final int TYPE_BUY = 1;
     private TextView mCityOpenTextView;//当前城市是否开通
+    private String gymId;
 
     @Override
     protected void requestData(int page) {
@@ -172,6 +174,12 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     public void onEvent(BuyCardListMessage message) {
         sendBuyCardListRequest();
+    }
+
+
+    public void onEvent(ChangGymMessage message) {
+        gymId = message.getGymId();
+        loadHomePage();
     }
 
     private void setHeadNoLocationView(String cityName) {

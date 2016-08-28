@@ -86,7 +86,9 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mShopNameTextView.setText(object.getGymName());
             mShopAddressTextView.setText(object.getGymAddress());
             int state = object.getStatus();
+            int showCalcel = object.getCancelBtnShow();
             setCoursesState(state);
+            showCancelBtn(showCalcel);
             mPeriodOfValidityTextView.setTag(object);
             mCancelOrderBtn.setTag(object);
             String imageUrl = object.getCourseUrl();
@@ -103,27 +105,31 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
 
         }
 
+        private void showCancelBtn(int showCalcel){
+           if (showCalcel ==0){
+               mCancelOrderBtn.setVisibility(View.INVISIBLE);
+           }else if (showCalcel==1){
+               mCancelOrderBtn.setVisibility(View.VISIBLE);
+           }
+        }
+
         private void setCoursesState(int state) {
             if (state == COURSES_STATE_NOT_START) {//未开始
                 mGroupCoursesStateTextView.setText(R.string.not_start);
                 mGroupCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.my_group_green_text));
                 mGroupCoursesNameTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
-                mCancelOrderBtn.setVisibility(View.VISIBLE);
             } else if (state == COURSES_STATE_PROCESS) {//进行中
                 mGroupCoursesStateTextView.setText(R.string.start_process);
                 mGroupCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.my_group_green_text));
                 mGroupCoursesNameTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-                mCancelOrderBtn.setVisibility(View.INVISIBLE);
             } else if (state == COURSES_STATE_OVER) {//已结束
                 mGroupCoursesStateTextView.setText(R.string.courses_complete);
                 mGroupCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.my_group_green_text));
                 mGroupCoursesNameTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-                mCancelOrderBtn.setVisibility(View.INVISIBLE);
             } else if (state == COURSES_STATE_CANCEL) {//已取消
                 mGroupCoursesStateTextView.setText(R.string.courses_cancel);
                 mGroupCoursesStateTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
                 mGroupCoursesNameTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-                mCancelOrderBtn.setVisibility(View.INVISIBLE);
             }
         }
 
