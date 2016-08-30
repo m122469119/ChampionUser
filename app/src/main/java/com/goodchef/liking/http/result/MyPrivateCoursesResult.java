@@ -62,6 +62,8 @@ public class MyPrivateCoursesResult extends BaseResult {
             private String startTime;
             @SerializedName("end_time")
             private String endTime;
+            @SerializedName("left_times")
+            private String leftTimes;
 
             public String getOrderId() {
                 return orderId;
@@ -117,6 +119,14 @@ public class MyPrivateCoursesResult extends BaseResult {
 
             public void setEndTime(String endTime) {
                 this.endTime = endTime;
+            }
+
+            public String getLeftTimes() {
+                return leftTimes;
+            }
+
+            public void setLeftTimes(String leftTimes) {
+                this.leftTimes = leftTimes;
             }
         }
     }

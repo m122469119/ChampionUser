@@ -53,6 +53,16 @@ public class MyPrivateCoursesDetailsResult extends BaseResult {
         private String trainerPhone;
         @SerializedName("times")
         private String times;
+        @SerializedName("prompt")
+        private String prompt;
+        @SerializedName("left_times")
+        private String left_times;
+        @SerializedName("miss_times")
+        private String miss_times;
+        @SerializedName("destroy_times")
+        private String destroy_times;
+        @SerializedName("duration")
+        private String duration;
 
         public int getStatus() {
             return status;
@@ -172,6 +182,46 @@ public class MyPrivateCoursesDetailsResult extends BaseResult {
 
         public void setTimes(String times) {
             this.times = times;
+        }
+
+        public String getPrompt() {
+            return prompt;
+        }
+
+        public void setPrompt(String prompt) {
+            this.prompt = prompt;
+        }
+
+        public String getLeft_times() {
+            return left_times;
+        }
+
+        public void setLeft_times(String left_times) {
+            this.left_times = left_times;
+        }
+
+        public String getMiss_times() {
+            return miss_times;
+        }
+
+        public void setMiss_times(String miss_times) {
+            this.miss_times = miss_times;
+        }
+
+        public String getDestroy_times() {
+            return destroy_times;
+        }
+
+        public void setDestroy_times(String destroy_times) {
+            this.destroy_times = destroy_times;
+        }
+
+        public String getDuration() {
+            return duration;
+        }
+
+        public void setDuration(String duration) {
+            this.duration = duration;
         }
     }
 }

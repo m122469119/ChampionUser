@@ -32,7 +32,7 @@ import com.goodchef.liking.utils.UMengCountUtil;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:我的私教列表
  * Author shaozucheng
  * Time:16/5/31 下午4:43
  */

@@ -157,6 +157,7 @@
                     <ImageView
                         android:layout_width="8dp"
                         android:layout_height="12dp"
+                        android:visibility="gone"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/bg_right_arrow"/>
