@@ -32,6 +32,7 @@ import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
+import com.goodchef.liking.utils.VerifyDateUtils;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 
@@ -63,6 +64,9 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     private boolean isChange = false;
     private UserInfoResult.UserInfoData mUserInfoData;
     private String headUrl = "";
+    private String yearStr = "";
+    private String monthStr = "";
+    private String dayStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,7 +256,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
 
     private void showSelectDateDialog() {
-        final SelectDateDialog dateDialog = new SelectDateDialog(this);
+        final SelectDateDialog dateDialog = new SelectDateDialog(this, yearStr, monthStr, dayStr);
         dateDialog.setTextViewOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,14 +266,24 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                         isChange = false;
                         break;
                     case R.id.dialog_date_confirm:
+                        yearStr = dateDialog.getYear();
                         String month = dateDialog.getMonth();
+                        monthStr = month;
+                        dayStr = dateDialog.getDay();
                         if (Integer.parseInt(month) < 10) {
                             month = "0" + month;
                         }
-                        String str = dateDialog.getYear() + "-" + month + "-" + dateDialog.getDay();
-                        mSelectBirthdayTextView.setText(str);
-                        isChange = true;
-                        dateDialog.dismiss();
+                        String str = yearStr + "-" + month + "-" + dayStr;
+                        if (VerifyDateUtils.isVerifyDate(str)) {
+                            mSelectBirthdayTextView.setText(str);
+                            isChange = true;
+                            dateDialog.dismiss();
+                        } else {
+                            yearStr = "";
+                            monthStr = "";
+                            dayStr = "";
+                            PopupUtils.showToast("您选择的日期不正确");
+                        }
                         break;
                 }
             }
@@ -339,9 +353,9 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             @Override
             public void takePictureFromCamera(String imagePath) {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
-                if (mBitmap !=null){
+                if (mBitmap != null) {
                     sendImageFile(mBitmap);
-                }else {
+                } else {
                     PopupUtils.showToast("请重新选图片");
                 }
             }

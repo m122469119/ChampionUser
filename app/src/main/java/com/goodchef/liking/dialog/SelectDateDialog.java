@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.widgets.wheelpicker.core.AbstractWheelPicker;
@@ -38,21 +39,9 @@ public class SelectDateDialog {
     private String dayStr;
 
 
-    public SelectDateDialog(Context context) {
+    public SelectDateDialog(Context context, String year, String month, String day) {
         this.mContext = context;
-//        mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
         mDialog = new AppCompatDialog(context, R.style.camera_dialog_no_screen);
-//        WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-//        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
-//        if (hasSoft) {
-//            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);
-//            //这一行很重要
-//            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
-//                    WindowManager.LayoutParams.WRAP_CONTENT);
-//        } else {
-//
-//        }
-
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -68,21 +57,40 @@ public class SelectDateDialog {
         mWheelYearPicker = (WheelYearPicker) window.findViewById(R.id.wheel_year_picker);
         mWheelMonthPicker = (WheelMonthPicker) window.findViewById(R.id.wheel_month_picker);
         mWheelDayPicker = (WheelDayPicker) window.findViewById(R.id.wheel_day_picker);
-        initDate();
+        initDate(year, month, day);
     }
 
 
-    private void initDate() {
+    private void initDate(String year, String month, String day) {
         Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        mWheelYearPicker.setYearRange(1950, year);
-        mWheelYearPicker.setCurrentYear(1990);
-        mWheelMonthPicker.setCurrentMonth(6);
-        mWheelDayPicker.setCurrentDay(15);
+        int CurrentYear = c.get(Calendar.YEAR);
+        mWheelYearPicker.setYearRange(1950, CurrentYear);
+        setDefaultDate(year, month, day);
         getYear();
         getMonth();
         getDay();
     }
+
+
+    /**
+     * 设置默认时间
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     */
+    public void setDefaultDate(String year, String month, String day) {
+        if (!StringUtils.isEmpty(year) && !StringUtils.isEmpty(month) && !StringUtils.isEmpty(day)) {
+            mWheelYearPicker.setCurrentYear(Integer.parseInt(year));
+            mWheelMonthPicker.setCurrentMonth(Integer.parseInt(month));
+            mWheelDayPicker.setCurrentDay(Integer.parseInt(day));
+        } else {
+            mWheelYearPicker.setCurrentYear(1990);
+            mWheelMonthPicker.setCurrentMonth(6);
+            mWheelDayPicker.setCurrentDay(15);
+        }
+    }
+
 
     public String getYear() {
         mWheelYearPicker.setOnWheelChangeListener(new AbstractWheelPicker.OnWheelChangeListener() {

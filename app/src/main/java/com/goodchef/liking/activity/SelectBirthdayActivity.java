@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -62,7 +63,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
         mStateView = (LikingStateView) findViewById(R.id.select_birthady_state_view);
         mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
         mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
-        mHImageView = (HImageView) findViewById(R.id.head_image);
+        mHImageView = (HImageView) findViewById(R.id.select_birthday_head_image);
         mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
         mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
         mNextBtn = (TextView) findViewById(R.id.select_birthday_next_btn);
@@ -93,18 +94,19 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
     private void getIntentData() {
         userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
         mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
-        sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 0);
+        sex = getIntent().getIntExtra(SexActivity.KEY_SEX, -1);
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
+            LogUtils.i(TAG,mLocalHeadImageUrl);
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
-        if (sex == 1) {
+        if (sex == 0) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
-        } else if (sex == 2) {
+        } else if (sex == 1) {
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
