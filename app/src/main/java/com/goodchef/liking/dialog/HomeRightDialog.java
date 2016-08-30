@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.goodchef.liking.R;
 
 /**
- * 说明:
+ * 说明:首页右边的按钮对话框
  * Author shaozucheng
  * Time:16/8/26 下午6:11
  */
@@ -37,6 +37,10 @@ public class HomeRightDialog {
 
     public void show() {
         mDialog.show();
+    }
+
+    public void dismiss(){
+        mDialog.dismiss();
     }
 
     private void initDialogView() {

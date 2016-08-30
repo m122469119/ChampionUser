@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +77,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private TextView mLikingRightTitleTextView;//右边文字
     private TextView mLikingDistanceTextView;//距离
     private TextView mRedPoint;//红色点点
+    private LinearLayout mMiddleLayout;
     private AppBarLayout mAppBarLayout;
 
     public TextView mShoppingCartNumTextView;
@@ -95,6 +97,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private SelectCityAdapter mSelectCityAdapter;
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;
+    private HomeRightDialog RightMenuDialog;//右边加好
 
 
     @Override
@@ -102,6 +105,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liking_home);
         setTitle(R.string.activity_liking_home);
+        RightMenuDialog = new HomeRightDialog(this);
         initViews();
         setViewOnClickListener();
         initData();
@@ -182,6 +186,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAppBarLayout = (AppBarLayout) findViewById(R.id.liking_home_appBar);
         mShoppingCartNumTextView = (TextView) findViewById(R.id.tv_shopping_cart_num);
         mRedPoint = (TextView) findViewById(R.id.home_notice_prompt);
+        mMiddleLayout = (LinearLayout) findViewById(R.id.layout_home_middle);
         initTabHost();
     }
 
@@ -189,6 +194,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mLikingLeftTitleTextView.setOnClickListener(this);
         mLikingRightTitleTextView.setOnClickListener(this);
         mRightImageView.setOnClickListener(this);
+        mMiddleLayout.setOnClickListener(this);
     }
 
     private void initTabHost() {
@@ -214,7 +220,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void setMainTableView() {
         mLikingLeftTitleTextView.setText(R.string.home_left_menu);
         mRightImageView.setVisibility(View.VISIBLE);
-        mRedPoint.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
     }
 
@@ -242,6 +247,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                     setHomeTitle();
+                    setHomeMenuReadNotice();
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -292,10 +298,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (v == mLikingLeftTitleTextView) {
             if (tag.equals(TAG_MAIN_TAB)) {
                 changeGym();
-            }else if (tag.equals(TAG_RECHARGE_TAB)){
+            } else if (tag.equals(TAG_RECHARGE_TAB)) {
                 changeGym();
             }
-        }  else if (v == mRightImageView) {
+        } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
 //                if (buyList != null && buyList.size() > 0 && calcDishSize() > 0) {
 //                    Intent intent = new Intent(this, ShoppingCartActivity.class);
@@ -308,28 +314,84 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    PopupUtils.showToast("您还没有购买任何营养餐");
 //                }
             } else if (tag.equals(TAG_MAIN_TAB)) {
+                String announcementId = Preference.getAnnouncementId();
+                if (!StringUtils.isEmpty(announcementId) || !StringUtils.isEmpty(mGym.getAnnouncementId())) {
+                    if (mGym.getAnnouncementId().equals(announcementId)) {
+                        RightMenuDialog.setRedPromptShow(false);
+                        mRedPoint.setVisibility(View.GONE);
+                    } else {
+                        RightMenuDialog.setRedPromptShow(true);
+                        mRedPoint.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (!StringUtils.isEmpty(mGym.getAnnouncementId())) {
+                        RightMenuDialog.setRedPromptShow(true);
+                        mRedPoint.setVisibility(View.VISIBLE);
+                    }
+                }
                 showRightMenuDialog();
+            }
+        } else if (v == mMiddleLayout) {
+            if (tag.equals(TAG_MAIN_TAB)) {
+                if (isWhetherLocation) {//定位成功时查看门店
+                    if (!StringUtils.isEmpty(mGym.getGymId())) {
+                        UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
+                        Intent intent = new Intent(this, ArenaActivity.class);
+                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+                        this.startActivity(intent);
+                        this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+                    }
+                } else {//定位失败是，重新定位
+                    initTitleLocation();
+                }
+
             }
         }
     }
 
     private void showRightMenuDialog() {
-        HomeRightDialog dialog = new HomeRightDialog(this);
-        dialog.setAnchor(mRightImageView);
-        dialog.setViewOnClickListener(new View.OnClickListener() {
+        RightMenuDialog.setAnchor(mRightImageView);
+        RightMenuDialog.setViewOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.layout_notice:
+                    case R.id.layout_notice://公告
+                        if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
+                            showNoticeDialog();
+                            RightMenuDialog.dismiss();
+                        }
                         break;
-                    case R.id.layout_open_door:
+                    case R.id.layout_open_door://开门
                         jumpOpenTheDoorActivity();
+                        RightMenuDialog.dismiss();
                         break;
 
                 }
             }
         });
-        dialog.show();
+        RightMenuDialog.show();
+    }
+
+
+    /**
+     * 查看公告
+     */
+    private void showNoticeDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
+        TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
+        textView.setText(R.string.notice);
+        builder.setCustomTitle(view);
+        builder.setMessage(mGym.getAnnouncementInfo());
+        builder.setNegativeButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Preference.setAnnouncementId(mGym.getAnnouncementId());
+                mRedPoint.setVisibility(View.GONE);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     /**
@@ -356,11 +418,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             } else {
                 isLocation = false;
             }
-            Intent intent = new Intent(this, LookStoreMapActivity.class);
-            intent.putExtra(KEY_SELECT_CITY, selectCityName);
-            intent.putExtra(KEY_START_LOCATION, isLocation);
-            intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
-            startActivity(intent);
+            if (!StringUtils.isEmpty(mGym.getGymId())) {
+                Intent intent = new Intent(this, LookStoreMapActivity.class);
+                intent.putExtra(KEY_SELECT_CITY, selectCityName);
+                intent.putExtra(KEY_START_LOCATION, isLocation);
+                intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+                startActivity(intent);
+            }
         } else {
             PopupUtils.showToast("定位失败，无法获取城市地图");
         }
@@ -489,8 +554,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName);
                 } else {//定位失败
-                    mLikingMiddleTitleTextView.setText("定位失败");
-                    mLikingDistanceTextView.setVisibility(View.GONE);
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
                 }
@@ -607,14 +670,39 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public void onEvent(getGymDataMessage message) {
         mGym = message.getGym();
         setHomeTitle();
+        setHomeMenuReadNotice();
     }
 
     /**
      * 设置首页标题
      */
     private void setHomeTitle() {
-        mLikingDistanceTextView.setText(mGym.getDistance());
-        mLikingMiddleTitleTextView.setText(mGym.getName());
+        if (isWhetherLocation) {
+            mLikingDistanceTextView.setText(mGym.getDistance());
+            mLikingMiddleTitleTextView.setText(mGym.getName());
+        } else {
+            mLikingMiddleTitleTextView.setText("定位失败");
+            mLikingDistanceTextView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 设置是否读取过公告
+     */
+    private void setHomeMenuReadNotice() {
+        String announcementId = Preference.getAnnouncementId();
+        Log.i(TAG, "announcementId = " + announcementId);
+        if (!StringUtils.isEmpty(announcementId) && !StringUtils.isEmpty(mGym.getAnnouncementId())) {
+            if (mGym.getAnnouncementId().equals(announcementId)) {
+                mRedPoint.setVisibility(View.GONE);
+            } else {
+                mRedPoint.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (!StringUtils.isEmpty(mGym.getAnnouncementId())) {
+                mRedPoint.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 //    public void onEvent(JumpToDishesDetailsMessage jumpToDishesDetailsMessage) {

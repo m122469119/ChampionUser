@@ -36,6 +36,7 @@ public class Preference extends AbsPreference {
     public static final String PATCH_DATA = "patchData";
     public static final String NULL_STRING = "";
     public static final String APP_UPDATE = "appUpdate";
+    public static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
 
 
     /**
@@ -265,13 +266,37 @@ public class Preference extends AbsPreference {
         return new Gson().fromJson(locationString, LocationData.class);
     }
 
-
+    /**
+     * 设置jPush ID
+     * @param registrationId
+     * @return
+     */
     public static boolean setJPushRegistrationId(String registrationId) {
         return setObject(REGISTRATION_ID, registrationId);
     }
 
+    /**
+     * 获取Jpush ID
+     * @return
+     */
     public static String getJPushRegistrationId() {
         return (String) getObject(REGISTRATION_ID, NULL_STRING);
+    }
+
+    /**
+     * 设置公告id
+     */
+    public static boolean setAnnouncementId(String announcementId) {
+        return setObject(ANNOUNCEMENT_ID, announcementId);
+    }
+
+    /***
+     * 获取公告id
+     *
+     * @return
+     */
+    public static String getAnnouncementId() {
+        return (String) getObject(ANNOUNCEMENT_ID, NULL_STRING);
     }
 
     public static boolean isNewVersion() {
@@ -286,19 +311,41 @@ public class Preference extends AbsPreference {
         return (String) getObject(APP_VERSION, "");
     }
 
-
+    /**
+     * 设置客服电话
+     *
+     * @param phone
+     * @return
+     */
     public static boolean setCustomerServicePhone(String phone) {
         return setObject(CUSTOMER_PHONE, phone);
     }
 
+    /**
+     * 获取客服电话
+     *
+     * @return
+     */
     public static String getCustomerServicePhone() {
         return (String) getObject(CUSTOMER_PHONE, ConstantUtils.BLANK_STRING);
     }
 
+    /**
+     * 设置商务合作电话
+     *
+     * @param phone
+     * @return
+     */
     public static boolean setBusinessPhone(String phone) {
         return setObject(BUSINESS_PHONE, phone);
     }
 
+
+    /***
+     * 获取商务合作电话
+     *
+     * @return
+     */
     public static String getBusinessServicePhone() {
         return (String) getObject(BUSINESS_PHONE, ConstantUtils.BLANK_STRING);
     }
