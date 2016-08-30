@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:修改个人信息
  * Author shaozucheng
  * Time:16/5/27 下午3:11
  */

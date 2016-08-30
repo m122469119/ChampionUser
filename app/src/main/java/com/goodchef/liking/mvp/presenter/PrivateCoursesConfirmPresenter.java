@@ -26,8 +26,8 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
         super(context, mainView);
     }
 
-    public void orderPrivateCoursesConfirm(String gymId,String trainerId) {
-        LiKingApi.orderPrivateCoursesConfirm(gymId,trainerId, Preference.getToken(), new RequestCallback<PrivateCoursesConfirmResult>() {
+    public void orderPrivateCoursesConfirm(String gymId, String trainerId) {
+        LiKingApi.orderPrivateCoursesConfirm(gymId, trainerId, Preference.getToken(), new RequestCallback<PrivateCoursesConfirmResult>() {
             @Override
             public void onSuccess(PrivateCoursesConfirmResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -44,14 +44,14 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
         });
     }
 
-    public void submitPrivateCourses(String courseId, String couponCode, String payType,int selectTimes,String gymId) {
-        LiKingApi.submitPrivateCourses(Preference.getToken(), courseId, couponCode, payType,selectTimes,gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
+    public void submitPrivateCourses(String courseId, String couponCode, String payType, int selectTimes, String gymId) {
+        LiKingApi.submitPrivateCourses(Preference.getToken(), courseId, couponCode, payType, selectTimes, gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateSubmitOrderCourses(result.getPayData());
-                } else {
+                } else if (result.getCode() != 221009) {
                     PopupUtils.showToast(result.getMessage());
                 }
             }
@@ -74,6 +74,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
                     PopupUtils.showToast(result.getMessage());
                 }
             }
+
             @Override
             public void onFailure(RequestError error) {
                 mView.updateOrderCalculate(false, null);
