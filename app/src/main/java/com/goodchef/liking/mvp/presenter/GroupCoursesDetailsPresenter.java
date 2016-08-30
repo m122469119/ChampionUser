@@ -50,7 +50,7 @@ public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDeta
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateOrderGroupCourses();
-                } else {
+                } else if (result.getCode() != 221009) {
                     PopupUtils.showToast(result.getMessage());
                 }
             }
