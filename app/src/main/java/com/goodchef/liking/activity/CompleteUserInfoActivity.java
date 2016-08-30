@@ -48,7 +48,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
 
     private String userName;
     private String mLocalHeadImageUrl;
-    private int sex = 1;
+    private int sex = -1;
     private String mBirthdayStr;
     private int height;
     private String weight;
@@ -70,7 +70,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
 
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.complete_userInfo_state_view);
-        mHImageView = (HImageView) findViewById(R.id.head_image);
+        mHImageView = (HImageView) findViewById(R.id.complete_user_head_image);
         mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
         mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
         mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
@@ -111,10 +111,10 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
-        if (sex == 1) {
+        if (sex == 0) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
-        } else if (sex == 2) {
+        } else if (sex == 1) {
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
         }

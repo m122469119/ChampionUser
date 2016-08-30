@@ -39,7 +39,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
     private String userName;
     private String mLocalHeadImageUrl;
-    private int sex = 0;
+    private int sex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
@@ -105,7 +105,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         } else if (v == mSexWomenLayout) {
             setWomenCheck();
         } else if (v == mNextButton) {
-            if (sex == 0) {
+            if (sex == -1) {
                 PopupUtils.showToast("请选择性别");
                 return;
             }
@@ -122,7 +122,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
         mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_men));
         mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-        sex = 1;
+        sex = 0;
     }
 
     private void setWomenCheck() {
@@ -130,7 +130,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.white));
         mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_men));
         mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.sex_women));
-        sex = 2;
+        sex = 1;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         return true;
     }
 
-    public void onEvent(UpDateUserInfoMessage message){
+    public void onEvent(UpDateUserInfoMessage message) {
         this.finish();
     }
 }

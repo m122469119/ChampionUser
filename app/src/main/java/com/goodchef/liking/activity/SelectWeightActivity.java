@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -40,7 +41,7 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
 
     private String userName;
     private String mLocalHeadImageUrl;
-    private int sex = 1;
+    private int sex ;
     private String mBirthdayStr;
     private int height;
 
@@ -58,7 +59,7 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
 
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.select_weight_state_view);
-        mHImageView = (HImageView) findViewById(R.id.head_image);
+        mHImageView = (HImageView) findViewById(R.id.select_weight_head_image);
         mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
         mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
         mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
@@ -95,15 +96,16 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
+            LogUtils.i(TAG,mLocalHeadImageUrl);
             HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
-        if (sex == 1) {
+        if (sex == 0) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
             mWeightRulerView.smoothScrollTo(67);
-        } else if (sex == 2) {
+        } else if (sex == 1) {
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
             mWeightRulerView.smoothScrollTo(57);
