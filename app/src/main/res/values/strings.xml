@@ -187,5 +187,7 @@
     <string name="gym_address">场馆地址</string>
     <string name="gym_name">场馆名称</string>
     <string name="buy_card_agree">购卡即同意</string>
+    <string name="notice">公告</string>
+    <string name="open_the_door">开门</string>
 
 </resources>

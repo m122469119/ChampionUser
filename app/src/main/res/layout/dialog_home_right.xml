@@ -36,7 +36,7 @@
             android:paddingBottom="12dp"
             android:paddingRight="10dp"
             android:paddingTop="12dp"
-            android:text="公告"
+            android:text="@string/notice"
             android:textColor="@color/home_right_dialog_text"/>
     </RelativeLayout>
 
@@ -65,7 +65,7 @@
             android:paddingBottom="12dp"
             android:paddingRight="10dp"
             android:paddingTop="12dp"
-            android:text="开门"
+            android:text="@string/open_the_door"
             android:textColor="@color/home_right_dialog_text"/>
     </LinearLayout>
 

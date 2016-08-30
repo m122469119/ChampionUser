@@ -189,6 +189,10 @@ public class CoursesResult extends BaseResult {
             private String distance;
             @SerializedName("gym_id")
             private String gymId;
+            @SerializedName("announcement_id")
+            private String announcementId;
+            @SerializedName("announcement_info")
+            private String announcementInfo;
 
             public String getName() {
                 return name;
@@ -212,6 +216,22 @@ public class CoursesResult extends BaseResult {
 
             public void setGymId(String gymId) {
                 this.gymId = gymId;
+            }
+
+            public String getAnnouncementId() {
+                return announcementId;
+            }
+
+            public void setAnnouncementId(String announcementId) {
+                this.announcementId = announcementId;
+            }
+
+            public String getAnnouncementInfo() {
+                return announcementInfo;
+            }
+
+            public void setAnnouncementInfo(String announcementInfo) {
+                this.announcementInfo = announcementInfo;
             }
         }
     }
