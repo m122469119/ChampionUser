@@ -340,10 +340,16 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             public void onClick(DialogInterface dialog, int which) {
                 String times = mEditView.getText().toString();
                 mCoursesTimes = Integer.parseInt(times);
-                mCoursesTimesTextView.setText(mCoursesTimes + "");
-                mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
-                mCouponTitleTextView.setText("");//清空优惠券需要重新选择
-                mCoupon = null;
+                if (mCoursesTimes < mCoursesMinTimes) {
+                    PopupUtils.showToast("为保证上课质量，最少购买" + mCoursesMinTimes + "次课");
+                } else if (mCoursesTimes > mCoursesMaxTimes) {
+                    PopupUtils.showToast("为保证上课质量，单次最多能购买" + mCoursesMaxTimes + "次课");
+                } else {
+                    mCoursesTimesTextView.setText(mCoursesTimes + "");
+                    mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                    mCouponTitleTextView.setText("");//清空优惠券需要重新选择
+                    mCoupon = null;
+                }
                 dialog.dismiss();
             }
         });
