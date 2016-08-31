@@ -54,7 +54,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
-                mCardListPresenter.getCardList(buyType);
+                mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
             }
         });
     }
@@ -64,7 +64,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         title = getIntent().getStringExtra(MyCardActivity.KEY_INTENT_TITLE);
         setTitle(title);
         mCardListPresenter = new CardListPresenter(this, this);
-        mCardListPresenter.getCardList(buyType);
+        mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
     }
 
     @Override
@@ -85,8 +85,8 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         }
     }
 
-    private void setNoUpGradeCard(){
-        mStateView.initNoDataView(R.drawable.icon_no_data,"暂无可升级的卡","刷新看看");
+    private void setNoUpGradeCard() {
+        mStateView.initNoDataView(R.drawable.icon_no_data, "暂无可升级的卡", "刷新看看");
     }
 
     private void setOnItemClickListener() {

@@ -50,12 +50,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
     private String intentType;
     private String courseId = "";
-    private int selectTimes;
+    private String selectTimes;
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
-    private int cardId;
-    private int type;
+    private String cardId;
+    private String type;
     private String couponId;
-    private int scheduleId;
+    private String scheduleId;
 
     private CouponsAdapter mCouponsAdapter;
 
@@ -100,13 +100,13 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
      */
     private void getIntentData() {
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
-        selectTimes = getArguments().getInt(CouponsActivity.KEY_SELECT_TIMES);
+        selectTimes = getArguments().getString(CouponsActivity.KEY_SELECT_TIMES);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
         confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
-        cardId = getArguments().getInt(BuyCardConfirmActivity.KEY_CARD_ID, 0);
-        type = getArguments().getInt(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
+        cardId = getArguments().getString(BuyCardConfirmActivity.KEY_CARD_ID);
+        type = getArguments().getString(LikingBuyCardFragment.KEY_BUY_TYPE);
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
-        scheduleId = getArguments().getInt(CouponsActivity.KEY_SCHEDULE_ID);
+        scheduleId = getArguments().getString(CouponsActivity.KEY_SCHEDULE_ID);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
             setPullMode(PullMode.PULL_BOTH);
         } else {

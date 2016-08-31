@@ -57,7 +57,7 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
     protected void initViews() {
         setPullMode(PullMode.PULL_BOTH);
         setNoDataView();
-
+        getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
         mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
         setRecyclerAdapter(mPrivateLessonAdapter);
         mPrivateLessonAdapter.setCompleteListener(mCompleteListener);

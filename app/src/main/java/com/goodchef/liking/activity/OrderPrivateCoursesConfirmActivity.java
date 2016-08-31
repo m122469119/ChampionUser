@@ -290,7 +290,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
-                intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes);
+                intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes + "");
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }

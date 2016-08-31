@@ -305,24 +305,24 @@ public class LiKingApi {
      * @param page     页数
      * @param callback RequestCallback
      */
-    public static void getCoupons(String courseId, Integer selectTimes, String goodInfo, Integer cardId, Integer type, Integer scheduleId, String token, int page, RequestCallback<CouponsResult> callback) {
+    public static void getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, String token, int page, RequestCallback<CouponsResult> callback) {
         RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token).append("page", page);
         if (!TextUtils.isEmpty(courseId)) {
             params.append("course_id", courseId);
         }
-        if (selectTimes != null) {
+        if (!TextUtils.isEmpty(selectTimes)) {
             params.append("select_times", selectTimes);
         }
         if (!TextUtils.isEmpty(goodInfo)) {
             params.append("good_info", goodInfo);
         }
-        if (cardId != null) {
+        if (!TextUtils.isEmpty(cardId)) {
             params.append("card_id", cardId);
         }
-        if (type != null) {
+        if (!TextUtils.isEmpty(type)) {
             params.append("type", type);
         }
-        if (scheduleId != null) {
+        if (!TextUtils.isEmpty(scheduleId)) {
             params.append("schedule_id", scheduleId);
         }
         VolleyHttpRequestClient.doPost(UrlList.GET_COUPON, CouponsResult.class, params, callback);
@@ -349,11 +349,28 @@ public class LiKingApi {
      *
      * @param callback RequestCallback
      */
-    public static void getCardList(String token, int type, RequestCallback<CardResult> callback) {
+    public static void getCardList(String token, String longitude, String latitude, String cityId, String districtId, String gymId, int type, RequestCallback<CardResult> callback) {
         RequestParams params = getCommonRequestParams().append("type", type);
+
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
         }
+        if (!TextUtils.isEmpty(longitude)) {
+            params.append("longitude", longitude);
+        }
+        if (!TextUtils.isEmpty(latitude)) {
+            params.append("latitude", latitude);
+        }
+        if (!TextUtils.isEmpty(cityId)) {
+            params.append(KEY_CITY_ID, cityId);
+        }
+        if (!TextUtils.isEmpty(districtId)) {
+            params.append(KEY_DISTRICT_ID, districtId);
+        }
+        if (!TextUtils.isEmpty(gymId)) {
+            params.append("gym_id", gymId);
+        }
+
         VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CardResult.class, params, callback);
     }
 

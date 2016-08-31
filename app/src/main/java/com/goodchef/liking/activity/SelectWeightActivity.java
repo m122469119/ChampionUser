@@ -101,11 +101,11 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
-        if (sex == 0) {
+        if (sex == 1) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
             mWeightRulerView.smoothScrollTo(67);
-        } else if (sex == 1) {
+        } else if (sex == 0) {
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
             mWeightRulerView.smoothScrollTo(57);

@@ -99,7 +99,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CoursesResult.Courses.Gym mGym;
     private HomeRightDialog RightMenuDialog;//右边加好
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -556,6 +555,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName);
                 }
             }
 
@@ -799,5 +799,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
 
 }

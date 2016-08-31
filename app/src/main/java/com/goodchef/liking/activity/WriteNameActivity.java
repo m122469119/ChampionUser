@@ -40,6 +40,7 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
             }
         });
         initData();
+        setViewOnRetryRequestListener();
     }
 
     private void initView() {
@@ -55,6 +56,9 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
         } else {
             mStateView.setState(StateView.State.FAILED);
         }
+    }
+
+    private void setViewOnRetryRequestListener(){
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {

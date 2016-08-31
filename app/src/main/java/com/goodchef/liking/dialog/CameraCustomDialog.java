@@ -27,22 +27,9 @@ public class CameraCustomDialog {
 
     public CameraCustomDialog(Context context) {
         this.mContext = context;
-        //  mDialog = new android.app.AlertDialog.Builder(context, R.style.camera_dialog_no_screen).create();
         mDialog = new AppCompatDialog(context, R.style.camera_dialog_no_screen);
-//        WindowManager wmManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-//        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
-//        if (hasSoft) {
-//            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(context);//获取虚拟键盘的高度
-//            //这一行很重要，将dialog对话框设置在虚拟键盘上面
-//            DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
-//                    WindowManager.LayoutParams.WRAP_CONTENT);
-//        } else {
-//
-//        }
-
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
-
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.show();
@@ -53,8 +40,6 @@ public class CameraCustomDialog {
         mCancelButton = (TextView) window.findViewById(R.id.dialog_cancel_btn);
         mPhotographTextView = (TextView) window.findViewById(R.id.dialog_photograph);
         mAlbumTextView = (TextView) window.findViewById(R.id.dialog_album);
-
-
     }
 
     public void setTextViewOnClickListener(View.OnClickListener listener) {
