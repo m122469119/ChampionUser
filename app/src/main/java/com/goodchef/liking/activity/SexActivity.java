@@ -1,16 +1,16 @@
 package com.goodchef.liking.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.imageloader.ImageLoader;
+import com.aaron.android.codelibrary.imageloader.ImageLoaderCallback;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -91,9 +91,19 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
-                    .setLoadType(ImageLoader.LoaderType.FILE)
-                    .build());
+//            Bitmap bitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
+//            mHImageView.setImageBitmap(bitmap);
+
+//            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
+//                    .setLoadType(ImageLoader.LoaderType.FILE)
+//                    .build());
+            HImageLoaderSingleton.getInstance().loadImage(mHImageView, mLocalHeadImageUrl, new ImageLoaderCallback() {
+                @Override
+                public void finish(Bitmap bitmap) {
+                    
+                }
+            });
+            //mHImageView.setImageURI(Uri.parse("file://" + mLocalHeadImageUrl));
         }
 
     }
@@ -122,7 +132,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
         mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_no_select_men));
         mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-        sex = 0;
+        sex = 1;
     }
 
     private void setWomenCheck() {
@@ -130,7 +140,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
         mSexManTextView.setTextColor(ResourceUtils.getColor(R.color.white));
         mSexWomenImage.setBackground(ResourceUtils.getDrawable(R.drawable.check_select_men));
         mSexWomenTextView.setTextColor(ResourceUtils.getColor(R.color.sex_women));
-        sex = 1;
+        sex = 0;
     }
 
     @Override

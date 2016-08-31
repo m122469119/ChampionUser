@@ -45,9 +45,6 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
     protected PrivateLessonViewHolder createViewHolder(ViewGroup parent) {
         View mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_private_my_lesson, parent, false);
         TextView mCompleteCoursesBtn = (TextView) mRootView.findViewById(R.id.complete_courses_btn);
-        if (mCompleteListener != null) {
-            mCompleteCoursesBtn.setOnClickListener(mCompleteListener);
-        }
         return new PrivateLessonViewHolder(mRootView);
     }
 
@@ -83,6 +80,13 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
             setCoursesState(state);
             mTeacherNameTextView.setTag(object);
             mCompleteCoursesBtn.setTag(object);
+            String leftTimes = object.getLeftTimes();
+            if (Integer.parseInt(leftTimes) > 0) {
+                mCompleteCoursesBtn.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+            } else if (Integer.parseInt(leftTimes) == 0) {
+                mCompleteCoursesBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
+            }
+            mCompleteCoursesBtn.setText("剩余上课次数：" + object.getLeftTimes() + "次");
         }
 
         private void setCoursesState(int state) {

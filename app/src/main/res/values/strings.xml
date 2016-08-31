@@ -189,5 +189,7 @@
     <string name="buy_card_agree">购卡即同意</string>
     <string name="notice">公告</string>
     <string name="open_the_door">开门</string>
+    <string name="my_card_gym_name">健身房名称</string>
+    <string name="my_card_gym_address">健身房地址</string>
 
 </resources>

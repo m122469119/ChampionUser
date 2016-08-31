@@ -107,14 +107,14 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
-        if (sex == 0) {
+        if (sex == 1) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
-        } else if (sex == 1) {
+        } else if (sex == 0) {
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
         }

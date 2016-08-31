@@ -38,6 +38,7 @@ public class AlbumActivity extends AppBarActivity implements OnImageDirSelected 
     private AlbumAdapter mAlbumAdapter;//展示图片适配器
     private int mNeedSelectAmount = 1;//选择选择的图片数量
     private ImageDirListDialog mImageDirListDialog;//展示图片文件夹目录的对话框
+    private ScanPictureTask scanPictureTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class AlbumActivity extends AppBarActivity implements OnImageDirSelected 
         showRightMenu("完成", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CameraPhotoHelper.selectAlbumEnter(AlbumActivity.this,mAlbumAdapter.getSelectImageFormAlbum());
+                CameraPhotoHelper.selectAlbumEnter(AlbumActivity.this, mAlbumAdapter.getSelectImageFormAlbum());
             }
         });
     }
@@ -74,12 +75,13 @@ public class AlbumActivity extends AppBarActivity implements OnImageDirSelected 
             Toast.makeText(this, "暂无外部存储", Toast.LENGTH_SHORT).show();
             return;
         }
-        ScanPictureTask scanPictureTask = new ScanPictureTask(AlbumActivity.this, new ScanPictureTask.ScanPictureCallBack() {
+        scanPictureTask = new ScanPictureTask(AlbumActivity.this, new ScanPictureTask.ScanPictureCallBack() {
             @Override
             public void ScanPictureComplete(ScanPictureData scanPictureData) {
-                mImageFolders=scanPictureData.getImageFolders();
+                mImageFolders = scanPictureData.getImageFolders();
                 mImgDir = scanPictureData.getPictureMaximumDir();
                 initGridViewData();
+                scanPictureTask.cancel(true);
             }
         });
         scanPictureTask.execute();
@@ -99,7 +101,7 @@ public class AlbumActivity extends AppBarActivity implements OnImageDirSelected 
         //可以看到文件夹的路径和图片的路径分开保存，极大的减少了内存的消耗；
         mAlbumAdapter = new AlbumAdapter(this);
         mAlbumAdapter.setData(mImgDirPicture);
-        mAlbumAdapter.setImageDirPath(mImgDir.getAbsolutePath(),mNeedSelectAmount);
+        mAlbumAdapter.setImageDirPath(mImgDir.getAbsolutePath(), mNeedSelectAmount);
         mGirdView.setAdapter(mAlbumAdapter);
 
         mImageCount.setText(mImgDirPicture.size() + "张");

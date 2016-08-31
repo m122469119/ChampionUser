@@ -22,8 +22,8 @@ public class CardListPresenter extends BasePresenter<CardListView> {
         super(context, mainView);
     }
 
-    public void getCardList(int type) {
-        LiKingApi.getCardList(Preference.getToken(), type, new RequestCallback<CardResult>() {
+    public void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
+        LiKingApi.getCardList(Preference.getToken(), longitude, latitude, cityId, districtId, gymId, type, new RequestCallback<CardResult>() {
             @Override
             public void onSuccess(CardResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

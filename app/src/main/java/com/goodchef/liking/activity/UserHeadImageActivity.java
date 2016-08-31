@@ -102,6 +102,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
         if (v == mHImageView || v == mSelectImageTextView) {
             showCameraDialog();
         } else if (v == mNextBtn) {
+            mLoaclHeadUrl = "/storage/emulated/0/DCIM/P60801-172014.jpg";
             if (StringUtils.isEmpty(mLoaclHeadUrl)) {
                 PopupUtils.showToast("请选择头像");
                 return;

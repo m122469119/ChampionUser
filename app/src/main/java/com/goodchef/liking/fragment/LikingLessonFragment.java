@@ -57,6 +57,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private String mCityId = "310100";
     private String mDistrictId = "310104";
     private String gymId = "0";
+    private CoursesResult.Courses.Gym mGym;
 
     public static final String KEY_TRAINER_ID = "trainerId";
     public static final String KEY_SCHEDULE_ID = "scheduleId";
@@ -112,14 +113,14 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                     intent.putExtra(KEY_INTENT_TYPE, "0");
-                    intent.putExtra(KEY_GYM_ID, gymId);
+                    intent.putExtra(KEY_GYM_ID, mGym.getGymId());
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.PRIVATELESSONDETAILSACTIVITY);
                     Intent intent = new Intent(getActivity(), PrivateLessonDetailsActivity.class);
                     intent.putExtra(KEY_TRAINER_ID, coursesData.getTrainerId());
                     intent.putExtra(KEY_TEACHER_NAME, coursesData.getCourseName());
-                    intent.putExtra(KEY_GYM_ID, gymId);
+                    intent.putExtra(KEY_GYM_ID, mGym.getGymId());
                     startActivity(intent);
                 }
             }
@@ -189,7 +190,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         if (courses.getGym() != null) {
-            gymId = courses.getGym().getGymId();
+            mGym = courses.getGym();
             postEvent(new getGymDataMessage(courses.getGym()));
         }
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();

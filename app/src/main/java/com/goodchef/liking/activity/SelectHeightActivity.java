@@ -97,11 +97,11 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
-        if (sex == 0) {
+        if (sex == 1) {
             mSexManImage.setVisibility(View.VISIBLE);
             mSexWomenImage.setVisibility(View.GONE);
             mHeightRulerView.smoothScrollTo(117);
-        } else if (sex == 1) {
+        } else if (sex == 0) {
             mHeightRulerView.smoothScrollTo(112);
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);

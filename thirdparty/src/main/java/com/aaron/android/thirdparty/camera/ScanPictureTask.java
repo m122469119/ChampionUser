@@ -118,6 +118,7 @@ public class ScanPictureTask extends AsyncTask<Void, Boolean, ScanPictureData> {
         mDirPaths = null;
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
+            mProgressDialog.cancel();
         }
         mScanPictureCallBack.ScanPictureComplete(scanPictureData);
     }

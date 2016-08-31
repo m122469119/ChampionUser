@@ -50,7 +50,11 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     private View mHeadView;
     private static final int TYPE_BUY = 1;
     private TextView mCityOpenTextView;//当前城市是否开通
-    private String gymId;
+    private String gymId = "0";
+    private String longitude = "0";
+    private String latitude = "0";
+    private String cityId = "310100";
+    private String districtId = "310104";
 
     @Override
     protected void requestData(int page) {
@@ -72,6 +76,16 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         setRecyclerAdapter(mBuyCardAdapter);
         initRecycleHeadView();
         setItemClickListener();
+    }
+
+    private void getLocationData() {
+        LocationData locationData = Preference.getLocationData();
+        if (locationData != null) {
+            longitude = locationData.getLongitude() + "";
+            latitude = locationData.getLatitude() + "";
+            cityId = locationData.getCityId();
+            districtId = locationData.getDistrictId();
+        }
     }
 
 
@@ -130,8 +144,9 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             getStateView().setState(StateView.State.FAILED);
         } else {
+            getLocationData();
             mCardListPresenter = new CardListPresenter(getActivity(), this);
-            mCardListPresenter.getCardList(TYPE_BUY);
+            mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, gymId, TYPE_BUY);
         }
     }
 
@@ -160,6 +175,11 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         if (!StringUtils.isEmpty(cityName)) {
             setHeadNoLocationView(cityName);
         }
+        latitude = mainAddressChanged.getLatitude() + "";
+        longitude = mainAddressChanged.getLongitude() + "";
+        cityId = mainAddressChanged.getCityId();
+        districtId = mainAddressChanged.getDistrictId();
+        loadHomePage();
     }
 
     public void onEvent(InitApiFinishedMessage message) {
@@ -224,4 +244,5 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     @Override
     public void handleNetworkFailure() {
     }
+
 }

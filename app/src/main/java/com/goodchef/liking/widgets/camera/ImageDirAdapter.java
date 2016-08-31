@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
 import com.aaron.android.thirdparty.camera.ImageFolder;
-import com.aaron.android.thirdparty.camera.ImageLoader;
 import com.goodchef.liking.R;
 
 /**
@@ -47,7 +46,7 @@ public class ImageDirAdapter extends HBaseAdapter<ImageFolder> {
 
         @Override
         public void bindViews(ImageFolder object) {
-            ImageLoader.getInstance(3, ImageLoader.Type.LIFO).loadImage(object.getFirstImagePath(), mImageView);
+          //  ImageLoader.getInstance(3, ImageLoader.Type.LIFO).loadImage(object.getFirstImagePath(), mImageView);
             mDirNameTextView.setText(object.getName());
             mDirCountTextView.setText(object.getCount() + "张");
         }
