@@ -28,6 +28,7 @@ public class MyChargeGroupCoursesDetailsPresenter extends BasePresenter<MyCharge
             @Override
             public void onFailure(RequestError error) {
                 super.onFailure(error);
+                mView.handleNetworkFailure();
             }
 
             @Override

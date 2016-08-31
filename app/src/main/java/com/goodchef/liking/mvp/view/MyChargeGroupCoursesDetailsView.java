@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 
 /**
@@ -8,6 +8,6 @@ import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
  * Author shaozucheng
  * Time:16/8/22 下午3:56
  */
-public interface MyChargeGroupCoursesDetailsView extends BaseView {
+public interface MyChargeGroupCoursesDetailsView extends BaseNetworkLoadView {
     void updateMyChargeGroupCoursesDetailsView(MyChargeGroupCoursesDetailsResult.MyChargeGroupCoursesDetails groupCoursesDetails);
 }

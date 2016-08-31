@@ -1,143 +1,432 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_content_background"
+                android:orientation="vertical">
+
     <LinearLayout
+        android:id="@+id/layout_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_card_stoke_bottom_background"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_card_background"
         android:orientation="vertical">
 
-        <RelativeLayout
+
+        <TextView
+            android:id="@+id/order_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/charge_courses_name_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="名称："
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-
-            <TextView
-                android:id="@+id/charge_courses_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/charge_courses_name_details"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <TextView
-                android:id="@+id/courses_time_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/lesson_time"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-
-            <TextView
-                android:id="@+id/courses_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/courses_time_details"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/shop_address_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/lesson_address"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-
-            <TextView
-                android:id="@+id/shop_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/shop_address_details"
-                android:gravity="left"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/group_teacher_name_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/lesson_teacher"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-
-            <TextView
-                android:id="@+id/group_teacher_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/group_teacher_name_details"
-                android:gravity="left"
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/rating_courses_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:text="强度："
-                android:textColor="@color/liking_lesson_text"
-                android:textSize="@dimen/textsize_small"/>
-
-            <RatingBar
-                android:id="@+id/rating_courses"
-                style="@style/LikingItemRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/rating_courses_details"
-                android:numStars="5"
-                />
-
-        </RelativeLayout>
-
+            android:paddingTop="12dp"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="@dimen/textsize_small"/>
     </LinearLayout>
-</LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_state"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/charge_courses_name_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="课程名称"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/charge_courses_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/charge_courses_name_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/charge_courses_teacher_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="课程教练"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/charge_courses_teacher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/charge_courses_teacher_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/courses_time_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="课程时长"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/courses_length"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/courses_time_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/rating_courses_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:padding="10dp"
+                        android:text="课程强度"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <RatingBar
+                        android:id="@+id/rating_courses"
+                        style="@style/LikingItemRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:numStars="5"
+                        />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/group_teacher_name_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="上课时间"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/courses_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/group_teacher_name_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/shop_address_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="上课地点"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/shop_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/shop_address_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/order_number_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="订单号"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/order_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/order_number_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/order_time_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="下单时间"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/order_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/order_time_details"
+                        android:gravity="right"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/order_price_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="价格"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/order_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/order_price_details"
+                        android:gravity="right"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/order_coupons_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="优惠"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/order_coupons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/order_coupons_details"
+                        android:gravity="right"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/order_amount_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="实付"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/order_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/order_amount_details"
+                        android:gravity="right"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:text="支付方式"
+                    android:textColor="@color/liking_lesson_text"
+                    android:textSize="@dimen/textsize_small"/>
+
+                <TextView
+                    android:id="@+id/order_pay_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="@dimen/textsize_small"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.goodchef.liking.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -45,13 +46,20 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     private TextView mOrderNumberTextView;//订单号
     private TextView mOrderTimeTextView;//下单时间
     private TextView mCoursesPersonNumberTextView;//上课人数
-    private TextView mTimesTextView;//上次数
+    private TextView mTimesTextView;//上课时长
     private TextView mCoursesPriceTextView;//价格
     private TextView mFavourableTextView;//优惠
     private TextView mRealityPriceTextView;//实际价格
     private TextView mPayTypeTextView;//支付方式
     private HImageView mHImageView;
     private LinearLayout mBottomLayout;
+
+    private TextView CoursesNotice;//公告
+    private TextView mSurplusCoursesTimesTextView;//剩余课次
+    private TextView mBuyCoursesTimesTextView;//购买次数
+    private TextView mGoClassTimesTextView;//上课次数
+    private TextView mCancelCoursesTimesTextView;//消课次数
+    private TextView mBreakPromiseTimesTextView;//失约次数
 
 
     private MyPrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
@@ -88,6 +96,13 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         mHImageView = (HImageView) findViewById(R.id.details_private_lesson_image);
         mBottomLayout = (LinearLayout) findViewById(R.id.layout_bottom);
 
+        CoursesNotice = (TextView) findViewById(R.id.courses_notice);
+        mSurplusCoursesTimesTextView = (TextView) findViewById(R.id.surplus_courses_times);
+        mBuyCoursesTimesTextView = (TextView) findViewById(R.id.buy_courses_times);
+        mGoClassTimesTextView = (TextView) findViewById(R.id.do_class_times);
+        mCancelCoursesTimesTextView = (TextView) findViewById(R.id.cancel_courses_times);
+        mBreakPromiseTimesTextView = (TextView) findViewById(R.id.break_a_promise_times);
+
         mCompleteCoursesBtn.setOnClickListener(this);
         mContactTeacherBtn.setOnClickListener(this);
         mStateView.setState(StateView.State.LOADING);
@@ -117,6 +132,20 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     public void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData data) {
         if (data != null) {
             mStateView.setState(StateView.State.SUCCESS);
+            Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/Impact.ttf");
+            mSurplusCoursesTimesTextView.setTypeface(typeFace);
+            mBuyCoursesTimesTextView.setTypeface(typeFace);
+            mCancelCoursesTimesTextView.setTypeface(typeFace);
+            mGoClassTimesTextView.setTypeface(typeFace);
+            mBreakPromiseTimesTextView.setTypeface(typeFace);
+
+            CoursesNotice.setText(data.getPrompt());
+            mSurplusCoursesTimesTextView.setText(data.getLeft_times());
+            //  mBuyCoursesTimesTextView.setText(data.getTimes());
+            mCancelCoursesTimesTextView.setText(data.getDestroy_times());
+            mGoClassTimesTextView.setText(data.getTimes());
+            mBreakPromiseTimesTextView.setText(data.getMiss_times());
+
             mCoursesTitleTextView.setText("课程项目: " + data.getCourseName());
             int state = data.getStatus();
             if (state == COURSES_STATE_PAYED) {
@@ -153,7 +182,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
                 HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
             }
 
-            mTimesTextView.setText(data.getTimes() + "次");
+            mTimesTextView.setText(data.getDuration());
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
