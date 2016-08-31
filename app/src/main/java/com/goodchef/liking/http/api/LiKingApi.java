@@ -583,8 +583,9 @@ public class LiKingApi {
      * @param categoryId 类别ID
      * @param callback   RequestCallback
      */
-    public static void confirmCard(String token, int type, int categoryId, RequestCallback<ConfirmBuyCardResult> callback) {
-        RequestParams params = getCommonRequestParams().append("type", type).append("category_id", categoryId);
+    public static void confirmCard(String token, int type, int categoryId, String gymId, RequestCallback<ConfirmBuyCardResult> callback) {
+        RequestParams params = getCommonRequestParams().append("type", type).append("category_id", categoryId)
+                .append("gym_id", gymId);
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
         }

@@ -38,6 +38,13 @@ public class ConfirmBuyCardResult extends BaseResult {
         private int purchaseType;
         @SerializedName("tips")
         private String tips;
+        @SerializedName("purchase_activity")
+        private String purchaseActivity;
+        @SerializedName("gym_name")
+        private String gymName;
+        @SerializedName("gym_address")
+        private String gymAddress;
+
 
         public String getAdsUrl() {
             return adsUrl;
@@ -85,6 +92,30 @@ public class ConfirmBuyCardResult extends BaseResult {
 
         public void setTips(String tips) {
             this.tips = tips;
+        }
+
+        public String getPurchaseActivity() {
+            return purchaseActivity;
+        }
+
+        public void setPurchaseActivity(String purchaseActivity) {
+            this.purchaseActivity = purchaseActivity;
+        }
+
+        public String getGymName() {
+            return gymName;
+        }
+
+        public void setGymName(String gymName) {
+            this.gymName = gymName;
+        }
+
+        public String getGymAddress() {
+            return gymAddress;
+        }
+
+        public void setGymAddress(String gymAddress) {
+            this.gymAddress = gymAddress;
         }
     }
 }

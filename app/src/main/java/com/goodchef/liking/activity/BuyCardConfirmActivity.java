@@ -29,6 +29,7 @@ import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -94,6 +95,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private String cardPrice;//卡的金额
     private LikingStateView mStateView;
     private String explain;
+    private String gymId = "0";
+    private String noticeActivity;//活动
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,14 +167,14 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCardName = getIntent().getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
         mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
-
+        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         sendConfirmCardRequest();
     }
 
     private void sendConfirmCardRequest() {
         mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
-        mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId);
+        mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, gymId);
     }
 
     @Override
@@ -190,7 +193,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                 intent.putExtra(KEY_CARD_ID, mCardId);
-                intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType+"");
+                intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }
@@ -223,7 +226,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 }
             }
         } else if (v == mBuyCardNoticeTextView) {//公告
-            final AnnouncementDialog dialog = new AnnouncementDialog(this, "公告");
+            final AnnouncementDialog dialog = new AnnouncementDialog(this, noticeActivity);
             dialog.setButtonDismiss();
         }
     }
@@ -310,6 +313,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             setCardView(confirmCardList);
             mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
             mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
+            mGymNameTextView.setText(confirmBuyCardData.getGymName());
+            mGymAddressTextView.setText(confirmBuyCardData.getGymAddress());
+            noticeActivity = confirmBuyCardData.getPurchaseActivity();
+            mBuyCardNoticeTextView.setText(noticeActivity);
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }

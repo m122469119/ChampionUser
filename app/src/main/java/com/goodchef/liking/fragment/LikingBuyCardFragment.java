@@ -100,6 +100,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
                     intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
                     intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
                     intent.putExtra(KEY_BUY_TYPE, 1);
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID,gymId);
                     startActivity(intent);
                 }
             }

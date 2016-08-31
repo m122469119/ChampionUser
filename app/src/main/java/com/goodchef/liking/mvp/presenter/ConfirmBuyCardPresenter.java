@@ -30,8 +30,8 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
         super(context, mainView);
     }
 
-    public void confirmBuyCard(int type, int categoryId) {
-        LiKingApi.confirmCard(Preference.getToken(), type, categoryId, new RequestCallback<ConfirmBuyCardResult>() {
+    public void confirmBuyCard(int type, int categoryId, String gymId) {
+        LiKingApi.confirmCard(Preference.getToken(), type, categoryId, gymId, new RequestCallback<ConfirmBuyCardResult>() {
             @Override
             public void onSuccess(ConfirmBuyCardResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
