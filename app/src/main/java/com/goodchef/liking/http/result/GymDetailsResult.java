@@ -32,13 +32,15 @@ public class GymDetailsResult extends BaseResult {
         private String address;
         @SerializedName("imgs")
         private List<ImgsData> imgs;
+        @SerializedName("tags")
+        private List<TagData> mTagDataList;
+        public List<TagData> getTagDataList() {
+            return mTagDataList;
+        }
 
-        @SerializedName("is_wifi")
-        private int isWifi;
-        @SerializedName("is_wash")
-        private int isWash;
-        @SerializedName("is_day")
-        private int isDay;
+        public void setTagDataList(List<TagData> tagDataList) {
+            mTagDataList = tagDataList;
+        }
 
         public String getName() {
             return name;
@@ -72,30 +74,6 @@ public class GymDetailsResult extends BaseResult {
             this.imgs = imgs;
         }
 
-        public int getIsWifi() {
-            return isWifi;
-        }
-
-        public void setIsWifi(int isWifi) {
-            this.isWifi = isWifi;
-        }
-
-        public int getIsWash() {
-            return isWash;
-        }
-
-        public void setIsWash(int isWash) {
-            this.isWash = isWash;
-        }
-
-        public int getIsDay() {
-            return isDay;
-        }
-
-        public void setIsDay(int isDay) {
-            this.isDay = isDay;
-        }
-
         public static class ImgsData {
             @SerializedName("title")
             private String title;
@@ -116,6 +94,34 @@ public class GymDetailsResult extends BaseResult {
 
             public void setUrl(String url) {
                 this.url = url;
+            }
+        }
+
+        public static class TagData extends BaseData{
+            /**
+             * name : 24小时
+             * img_url : http://testapp.likingfit.com/images/appicon/icon_24.png
+             */
+
+            @SerializedName("name")
+            private String name;
+            @SerializedName("img_url")
+            private String imgUrl;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
             }
         }
     }

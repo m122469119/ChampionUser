@@ -11,7 +11,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <include layout="@layout/layout_arena_head"/>
@@ -27,83 +27,11 @@
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
-            <LinearLayout
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tag_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/layout_wifi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:src="@drawable/icon_wifi"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="@string/wifi"
-                        android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_small"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_wash"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:src="@drawable/icon_shower"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="@string/shower"
-                        android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_small"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_day"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:visibility="visible"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="28dp"
-                        android:src="@drawable/icon_24"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="@string/hour_24"
-                        android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_small"/>
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
