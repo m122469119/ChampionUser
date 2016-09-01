@@ -47,6 +47,8 @@ public class UserExerciseResult extends BaseResult {
         private String totalDistance;
         @SerializedName("total_cal")
         private String totalCal;
+        @SerializedName("is_vip")
+        private int isVip;
 
         public String getTodayMin() {
             return todayMin;
@@ -102,6 +104,14 @@ public class UserExerciseResult extends BaseResult {
 
         public void setTotalCal(String totalCal) {
             this.totalCal = totalCal;
+        }
+
+        public int getIsVip() {
+            return isVip;
+        }
+
+        public void setIsVip(int isVip) {
+            this.isVip = isVip;
         }
     }
 }
