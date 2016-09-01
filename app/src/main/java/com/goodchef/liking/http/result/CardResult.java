@@ -2,6 +2,7 @@ package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.data.GymData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -24,8 +25,12 @@ public class CardResult extends BaseResult {
     }
 
     public static class CardData extends BaseData {
+
         @SerializedName("category")
         List<Card> mCardList;
+
+        @SerializedName("gym")
+        private GymData mGymData;
 
         public List<Card> getCardList() {
             return mCardList;
@@ -33,6 +38,14 @@ public class CardResult extends BaseResult {
 
         public void setCardList(List<Card> cardList) {
             mCardList = cardList;
+        }
+
+        public GymData getGymData() {
+            return mGymData;
+        }
+
+        public void setGymData(GymData gymData) {
+            mGymData = gymData;
         }
 
         public static class Card extends BaseData {

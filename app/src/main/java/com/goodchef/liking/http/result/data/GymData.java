@@ -20,6 +20,8 @@ public class GymData extends BaseData {
     private String gymId;
     @SerializedName("name")
     private String name;
+    @SerializedName("distance")
+    private String distance;
 
     public String getGymId() {
         return gymId;
@@ -35,5 +37,13 @@ public class GymData extends BaseData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }
