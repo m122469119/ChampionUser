@@ -602,10 +602,10 @@ public class LiKingApi {
      * @param payType    支付方式
      * @param callback   RequestCallback
      */
-    public static void submitBuyCardData(String token, int cardId, int type, String couponCode, String payType,String gymId, RequestCallback<SubmitPayResult> callback) {
+    public static void submitBuyCardData(String token, int cardId, int type, String couponCode, String payType, String gymId, RequestCallback<SubmitPayResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.CARD_SUBMIT_CARD, SubmitPayResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("card_id", cardId).append("type", type).append("coupon_code", couponCode).append("pay_type", payType)
-                .append("gym_id",gymId), callback);
+                .append("gym_id", gymId), callback);
     }
 
 
@@ -797,13 +797,16 @@ public class LiKingApi {
      * @param cityId   城市id
      * @param callback RequestCallback
      */
-    public static void getCheckGymList(int cityId, double longitude, double latitude, RequestCallback<CheckGymListResult> callback) {
+    public static void getCheckGymList(String token, int cityId, double longitude, double latitude, RequestCallback<CheckGymListResult> callback) {
         RequestParams params = getCommonRequestParams().append("city_id", cityId);
         if (longitude > 0.0) {
             params.append("longitude", longitude);
         }
         if (latitude > 0.0) {
             params.append("latitude", latitude);
+        }
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
         }
         VolleyHttpRequestClient.doPost(UrlList.GET_GYM_LIST, CheckGymListResult.class, params, callback);
     }

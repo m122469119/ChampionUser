@@ -27,6 +27,8 @@ public class CheckGymListResult extends BaseResult {
     public class CheckGymData extends BaseData {
         @SerializedName("all_gym")
         private List<CheckGym> allGymList;
+        @SerializedName("my_gym")
+        private MyGymData mMyGymData;
 
         public List<CheckGym> getAllGymList() {
             return allGymList;
@@ -34,6 +36,14 @@ public class CheckGymListResult extends BaseResult {
 
         public void setAllGymList(List<CheckGym> allGymList) {
             this.allGymList = allGymList;
+        }
+
+        public MyGymData getMyGymData() {
+            return mMyGymData;
+        }
+
+        public void setMyGymData(MyGymData myGymData) {
+            mMyGymData = myGymData;
         }
 
         public class CheckGym extends BaseData {
@@ -116,6 +126,39 @@ public class CheckGymListResult extends BaseResult {
 
             public void setSelect(boolean select) {
                 isSelect = select;
+            }
+        }
+
+        public class MyGymData extends BaseData{
+            @SerializedName("gym_id")
+            private String gymId;
+            @SerializedName("gym_name")
+            private String gymName;
+            @SerializedName("gym_addr")
+            private String gymAddress;
+
+            public String getGymId() {
+                return gymId;
+            }
+
+            public void setGymId(String gymId) {
+                this.gymId = gymId;
+            }
+
+            public String getGymName() {
+                return gymName;
+            }
+
+            public void setGymName(String gymName) {
+                this.gymName = gymName;
+            }
+
+            public String getGymAddress() {
+                return gymAddress;
+            }
+
+            public void setGymAddress(String gymAddress) {
+                this.gymAddress = gymAddress;
             }
         }
     }

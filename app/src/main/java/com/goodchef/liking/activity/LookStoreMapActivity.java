@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
-import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.amap.api.location.AMapLocation;
@@ -47,16 +44,13 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/7 下午5:49
  */
-public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener, AMap.OnMarkerClickListener, AMap.OnMapClickListener, CheckGymView {
+public class LookStoreMapActivity extends AppBarActivity implements LocationSource, AMapLocationListener, AMap.OnMarkerClickListener, AMap.OnMapClickListener, CheckGymView, View.OnClickListener {
     private MapView mMapView;
     private LinearLayout mNoDataLayout;
     private LikingStateView mStateView;
-
-    private TextView mNameTextView;
-    private TextView mAddressTextView;
-    private HImageView mHImageView;
-    private RelativeLayout mLayout;
-    private LinearLayout mGymLayout;
+    private TextView mAddressTextView;//我的地址
+    private LinearLayout mGymLayout;//我的健身房
+    private LinearLayout mLocationLayout;//定位布局
 
     private AMap mAMap;
     //声明AMapLocationClient类对象
@@ -76,7 +70,8 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     private String selectCityId;
     private boolean isLoaction;
     private String gymId;
-    private CheckGymListResult.CheckGymData.CheckGym mCheckGym;
+    private CheckGymListResult.CheckGymData.CheckGym mCheckGym;//每个场馆对象
+    private CheckGymListResult.CheckGymData.MyGymData myGymData;//我的场馆对象
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +88,9 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         mStateView = (LikingStateView) findViewById(R.id.look_store_state_view);
         mMapView = (MapView) findViewById(R.id.store_map);
         mNoDataLayout = (LinearLayout) findViewById(R.id.layout_no_data);
-
-        mNameTextView = (TextView) findViewById(R.id.map_store_name);
-        mAddressTextView = (TextView) findViewById(R.id.store_address);
-        mHImageView = (HImageView) findViewById(R.id.store_image);
-        mLayout = (RelativeLayout) findViewById(R.id.layout_store_image);
+        mAddressTextView = (TextView) findViewById(R.id.map_gym_address);
         mGymLayout = (LinearLayout) findViewById(R.id.layout_gym);
+        mLocationLayout = (LinearLayout) findViewById(R.id.layout_gym_location);
 
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -107,6 +99,9 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                 setNetWorkView();
             }
         });
+
+        mLocationLayout.setOnClickListener(this);
+        mGymLayout.setOnClickListener(this);
     }
 
     private void initData() {
@@ -160,7 +155,6 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         // 将自定义的 myLocationStyle 对象添加到地图上
         mAMap.setMyLocationStyle(myLocationStyle);
         mAMap.setOnMarkerClickListener(this);
-
     }
 
 
@@ -281,6 +275,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                     mStateView.setState(StateView.State.FAILED);
                 } else {
+                    mAddressTextView.setText(aMapLocation.getAddress());
                     mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), aMapLocation.getLongitude(), aMapLocation.getLatitude());
                 }
             } else {
@@ -293,7 +288,6 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
 
     private void setMapLocationView() {
         mStateView.setState(StateView.State.SUCCESS);
-        mGymLayout.setVisibility(View.GONE);
         mNoDataLayout.setVisibility(View.GONE);
     }
 
@@ -313,32 +307,39 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
             }
             mAMap.clear();
             setMapMarkView();
-            showGymView(gymDto);
+            // showGymView(gymDto);
+            jumpLikingHomeActivity(gymDto);
         }
         return false;
     }
 
-    private void showGymView(final CheckGymListResult.CheckGymData.CheckGym mGymDto) {
-        mGymLayout.setVisibility(View.VISIBLE);
-        mNameTextView.setText(mGymDto.getGymName().trim());
-        mAddressTextView.setText(mGymDto.getGymAddress().trim());
-        String imageUrl = mGymDto.getImg();
-        if (!StringUtils.isEmpty(imageUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
-        }
-
-        mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
-                Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
-                postEvent(new ChangGymMessage(mGymDto.getGymId() + ""));
-                startActivity(intent);
-            }
-        });
+    /**
+     * 跳转到首页
+     *
+     * @param mGymDto
+     */
+    private void jumpLikingHomeActivity(CheckGymListResult.CheckGymData.CheckGym mGymDto) {
+        UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
+        Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
+        postEvent(new ChangGymMessage(mGymDto.getGymId() + ""));
+        startActivity(intent);
     }
 
-
+    /**
+     * 展示场馆信息
+     */
+//    private void showGymView(final CheckGymListResult.CheckGymData.CheckGym mGymDto) {
+//        mGymLayout.setVisibility(View.VISIBLE);
+//        mGymLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
+//                Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
+//                postEvent(new ChangGymMessage(mGymDto.getGymId() + ""));
+//                startActivity(intent);
+//            }
+//        });
+//    }
     @Override
     public void onMapClick(LatLng latLng) {
     }
@@ -366,7 +367,13 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                     CameraUpdate cameraUpdate = CameraUpdateFactory.changeLatLng(latLng);
                     mAMap.moveCamera(cameraUpdate);
                 }
-                showGymView(mCheckGym);
+                myGymData = checkGymData.getMyGymData();
+                if (myGymData != null && !StringUtils.isEmpty(myGymData.getGymId()) && !StringUtils.isEmpty(myGymData.getGymAddress()) && !StringUtils.isEmpty(myGymData.getGymName())) {
+                    mGymLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mGymLayout.setVisibility(View.GONE);
+                }
+                //  showGymView(mCheckGym);
             } else {
                 mGymLayout.setVisibility(View.GONE);
                 mNoDataLayout.setVisibility(View.VISIBLE);
@@ -388,5 +395,17 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     @Override
     public void handleNetworkFailure() {
         mStateView.setState(StateView.State.FAILED);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mGymLayout) {
+            UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
+            Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
+            postEvent(new ChangGymMessage(myGymData.getGymId() + ""));
+            startActivity(intent);
+        } else if (v == mLocationLayout) {
+            startLocation();
+        }
     }
 }

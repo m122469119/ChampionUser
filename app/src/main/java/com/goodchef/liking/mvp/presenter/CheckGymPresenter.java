@@ -10,6 +10,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CheckGymView;
+import com.goodchef.liking.storage.Preference;
 
 /**
  * 说明:
@@ -23,7 +24,7 @@ public class CheckGymPresenter extends BasePresenter<CheckGymView> {
     }
 
     public void getGymList(int cityId, double longitude, double latitude) {
-        LiKingApi.getCheckGymList(cityId, longitude, latitude, new RequestCallback<CheckGymListResult>() {
+        LiKingApi.getCheckGymList(Preference.getToken(),cityId, longitude, latitude, new RequestCallback<CheckGymListResult>() {
             @Override
             public void onSuccess(CheckGymListResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
