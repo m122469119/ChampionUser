@@ -171,6 +171,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setUserIconUrl(userLoginData.getAvatar());
             Preference.setUserPhone(userLoginData.getPhone());
             Preference.setIsNewUser(userLoginData.getNewUser());
+            Preference.setIsVip(userLoginData.getIsVip());
             postEvent(new LoginFinishMessage());
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
