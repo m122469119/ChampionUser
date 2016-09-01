@@ -94,6 +94,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
             LogUtils.i(TAG,mLocalHeadImageUrl);
             HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
+                    .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }

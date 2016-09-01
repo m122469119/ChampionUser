@@ -59,6 +59,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
         super.onResume();
         if (!StringUtils.isEmpty(mLoaclHeadUrl)) {
             HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
+                    .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
