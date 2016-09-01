@@ -91,20 +91,10 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-//            Bitmap bitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
-//            mHImageView.setImageBitmap(bitmap);
-
             HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
-//            HImageLoaderSingleton.getInstance().loadImage(mHImageView, mLocalHeadImageUrl, new ImageLoaderCallback() {
-//                @Override
-//                public void finish(Bitmap bitmap) {
-//
-//                }
-//            });
-            //mHImageView.setImageURI(Uri.parse("file://" + mLocalHeadImageUrl));
         }
 
     }

@@ -103,7 +103,6 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
         if (v == mHImageView || v == mSelectImageTextView) {
             showCameraDialog();
         } else if (v == mNextBtn) {
-            mLoaclHeadUrl = "/storage/emulated/0/DCIM/P60801-172014.jpg";
             if (StringUtils.isEmpty(mLoaclHeadUrl)) {
                 PopupUtils.showToast("请选择头像");
                 return;
@@ -152,6 +151,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                 if (mBitmap != null) {
                     mLoaclHeadUrl = imagePath;
                     HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
+                            .resize(100, 100)
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
                 } else {
@@ -167,6 +167,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                     LogUtils.i("imagepath =", imagePathList.get(0));
                     mLoaclHeadUrl = imagePathList.get(0);
                     HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
+                            .resize(100, 100)
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
                 } else {
