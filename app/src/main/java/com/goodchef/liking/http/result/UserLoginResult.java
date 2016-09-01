@@ -42,6 +42,8 @@ public class UserLoginResult extends BaseResult {
         private String avatar;
         @SerializedName("newUser")
         private int newUser;
+        @SerializedName("is_vip")
+        private int isVip;
 
         public String getToken() {
             return token;
@@ -81,6 +83,14 @@ public class UserLoginResult extends BaseResult {
 
         public void setNewUser(int newUser) {
             this.newUser = newUser;
+        }
+
+        public int getIsVip() {
+            return isVip;
+        }
+
+        public void setIsVip(int isVip) {
+            this.isVip = isVip;
         }
     }
 }

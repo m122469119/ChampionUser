@@ -52,7 +52,26 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="30dp"
                         android:layout_toRightOf="@+id/head_image"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_15"/>
+
+
+                    <TextView
+                        android:id="@+id/is_vip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_toRightOf="@+id/person_name"
+                        android:background="@drawable/shape_radius_green_vip_back"
+                        android:gravity="center"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="2dp"
+                        android:text="VIP"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/person_phone"

@@ -37,6 +37,7 @@ public class Preference extends AbsPreference {
     public static final String NULL_STRING = "";
     public static final String APP_UPDATE = "appUpdate";
     public static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
+    public static final String IS_VIP = "is_vip";//是否
 
 
     /**
@@ -203,6 +204,17 @@ public class Preference extends AbsPreference {
     }
 
     /**
+     * 设置用户是否是VIP
+     *
+     * @param isVip
+     * @return
+     */
+    public static boolean setIsVip(Integer isVip) {
+        return setObject(IS_VIP, isVip);
+    }
+
+
+    /**
      * 设置是否需要升级app
      *
      * @param isUpdate 升级标志
@@ -240,6 +252,23 @@ public class Preference extends AbsPreference {
         return isNewUser;
     }
 
+    /**
+     * 获取用户是否是是VIP
+     *
+     * @return
+     */
+    public static boolean isVIP() {
+        boolean isVip = false;
+        int is_vip = (int) getObject(IS_VIP, 0);
+        if (is_vip == 0) {
+            isVip = false;
+        } else if (is_vip == 1) {
+            isVip = true;
+        }
+        return isVip;
+    }
+
+
     /***
      * 设置定位信息
      *
@@ -268,6 +297,7 @@ public class Preference extends AbsPreference {
 
     /**
      * 设置jPush ID
+     *
      * @param registrationId
      * @return
      */
@@ -277,6 +307,7 @@ public class Preference extends AbsPreference {
 
     /**
      * 获取Jpush ID
+     *
      * @return
      */
     public static String getJPushRegistrationId() {

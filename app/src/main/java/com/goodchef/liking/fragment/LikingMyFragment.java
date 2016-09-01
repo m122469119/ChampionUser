@@ -70,6 +70,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView mLoginOutBtn;//退出登录
     private TextView mLoginBtn;
     private ImageView mArrowImage;
+    private TextView mIsVip;//是否是VIP
 
     private LinearLayout mMyCourseLayout;//我的课程
     private LinearLayout mMyOrderLayout;//我的订单
@@ -176,6 +177,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             if (!StringUtils.isEmpty(Preference.getUserIconUrl())) {
                 HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, Preference.getUserIconUrl());
             }
+            if (Preference.isVIP()) {
+                mIsVip.setVisibility(View.VISIBLE);
+            } else {
+                mIsVip.setVisibility(View.GONE);
+            }
+
         } else {
             mLoginBtn.setVisibility(View.VISIBLE);
             mArrowImage.setVisibility(View.GONE);
@@ -183,6 +190,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mPersonNameTextView.setVisibility(View.GONE);
             mPersonPhoneTextView.setVisibility(View.GONE);
             mLoginOutBtn.setVisibility(View.GONE);
+            mIsVip.setVisibility(View.GONE);
             mHeadHImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_head_default_image));
         }
     }
@@ -200,6 +208,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mLoginOutBtn = (TextView) view.findViewById(R.id.login_out_btn);
         mLoginBtn = (TextView) view.findViewById(R.id.login_text);
         mArrowImage = (ImageView) view.findViewById(R.id.login_arrow);
+        mIsVip = (TextView) view.findViewById(R.id.is_vip);
 
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
         mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
