@@ -58,7 +58,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/24 下午3:21
  */
-public class GroupLessonDetailsActivity extends AppBarActivity implements GroupCourserDetailsView, View.OnClickListener ,ShareView{
+public class GroupLessonDetailsActivity extends AppBarActivity implements GroupCourserDetailsView, View.OnClickListener, ShareView {
     private static final int COURSES_STATE_NOT_START = 0;// 未开始
     private static final int COURSES_STATE_PROCESS = 1;//进行中
     private static final int COURSES_STATE_OVER = 2;//已结束
