@@ -56,6 +56,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     private String type;
     private String couponId;
     private String scheduleId;
+    private String gymId;
 
     private CouponsAdapter mCouponsAdapter;
 
@@ -107,6 +108,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         type = getArguments().getString(LikingBuyCardFragment.KEY_BUY_TYPE);
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
         scheduleId = getArguments().getString(CouponsActivity.KEY_SCHEDULE_ID);
+        gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
             setPullMode(PullMode.PULL_BOTH);
         } else {
@@ -162,9 +164,9 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     private void sendRequest(int page) {
         mCouponPresenter = new CouponPresenter(getActivity(), this);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getCoupons(null, null, null, null, null, null, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(null, null, null, null, null, null, page,gymId, CouponsFragment.this);
         } else {
-            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, CouponsFragment.this);
+            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page,gymId, CouponsFragment.this);
         }
     }
 
