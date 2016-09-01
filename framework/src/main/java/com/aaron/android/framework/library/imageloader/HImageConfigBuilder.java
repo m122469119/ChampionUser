@@ -46,6 +46,7 @@ public class HImageConfigBuilder extends ImageConfigBuilder<HImageConfigBuilder,
         return new HImageConfig(getThis());
     }
 
+
     /**
      * 设置默认图片
      *
