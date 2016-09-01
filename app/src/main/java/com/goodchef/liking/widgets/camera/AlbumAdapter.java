@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
+import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
+import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.thirdparty.camera.SelectImageFromAlbum;
 import com.goodchef.liking.R;
 
@@ -49,22 +52,22 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
 
     class AlbumViewHolder extends BaseViewHolder<String> {
         View mRootView;
-        ImageView mImageView;
+        HImageView mImageView;
         ImageButton mImageButton;
 
         @Override
         public View inflateItemView() {
             mRootView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, null, false);
-            mImageView = (ImageView) mRootView.findViewById(R.id.id_item_image);
+            mImageView = (HImageView) mRootView.findViewById(R.id.id_item_image);
             mImageButton = (ImageButton) mRootView.findViewById(R.id.id_item_select);
             return mRootView;
         }
 
         @Override
         public void bindViews(final String dirPath) {
-           // ImageLoader.getInstance(3, ImageLoader.Type.LIFO).loadImage(mImageDirPath + "/" + dirPath, mImageView);
-           // HImageLoaderSingleton.getInstance().loadImage(mImageView,mImageDirPath+"/"+dirPath);
-          //  HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mImageView, mImageDirPath+"/"+dirPath).setLoadType(ImageLoader.LoaderType.FILE).build());
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mImageView, mImageDirPath+"/"+dirPath)
+                    .resize(100,100)
+                    .setLoadType(ImageLoader.LoaderType.FILE).build());
             mImageButton.setImageResource(R.drawable.pay_radio_gray_uncheck);
             mImageView.setColorFilter(null);
             mImageView.setOnClickListener(new View.OnClickListener() {

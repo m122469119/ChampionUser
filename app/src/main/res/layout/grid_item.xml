@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <ImageView
+    <com.aaron.android.framework.library.imageloader.HImageView
         android:id="@+id/id_item_image"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
