@@ -108,6 +108,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
             HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
+                    .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
