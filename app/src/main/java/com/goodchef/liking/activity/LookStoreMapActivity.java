@@ -66,12 +66,13 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     private int cityId;
     private List<CheckGymListResult.CheckGymData.CheckGym> allGymList;
 
-    private String selectCityName;
-    private String selectCityId;
-    private boolean isLoaction;
-    private String gymId;
+    private String selectCityName;//选择的城市名称
+    private String selectCityId;//选择的城市id
+    private boolean isLoaction;//是否定位
+    private String gymId;//场馆id
     private CheckGymListResult.CheckGymData.CheckGym mCheckGym;//每个场馆对象
     private CheckGymListResult.CheckGymData.MyGymData myGymData;//我的场馆对象
+    private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         selectCityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
         isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_START_LOCATION, false);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX,0);
         setTitle(selectCityName);
         mCheckGymPresenter = new CheckGymPresenter(this, this);
         setNetWorkView();
@@ -320,8 +322,8 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
      */
     private void jumpLikingHomeActivity(CheckGymListResult.CheckGymData.CheckGym mGymDto) {
         UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
+        postEvent(new ChangGymMessage(String.valueOf(mGymDto.getGymId()),tabIndex));
         Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
-        postEvent(new ChangGymMessage(mGymDto.getGymId() + ""));
         startActivity(intent);
     }
 
@@ -402,7 +404,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         if (v == mGymLayout) {
             UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
             Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
-            postEvent(new ChangGymMessage(myGymData.getGymId() + ""));
+            postEvent(new ChangGymMessage(String.valueOf(myGymData.getGymId()),tabIndex));
             startActivity(intent);
         } else if (v == mLocationLayout) {
             startLocation();

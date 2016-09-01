@@ -205,7 +205,10 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     public void onEvent(ChangGymMessage message) {
         gymId = message.getGymId();
-        loadHomePage();
+        int index = message.getIndex();
+        if (index == 1) {//从买卡界面切换场馆过来
+            loadHomePage();
+        }
     }
 
     private void setHeadNoLocationView(String cityName) {
