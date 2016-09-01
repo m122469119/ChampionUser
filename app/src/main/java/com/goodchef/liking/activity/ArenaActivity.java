@@ -1,14 +1,16 @@
 package com.goodchef.liking.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.ArenaTagAdapter;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -34,14 +36,16 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
     private BannerPagerAdapter mBannerPagerAdapter;
 
     private TextView mAddressTextView;
-    private TextView mPublicNoticeTextView;
-    private String gymId;
-    private GymDetailsPresenter mGymDetailsPresenter;
+    private TextView mPublicNoticeTextView;//公告
     private RelativeLayout mAnnouncementLayout;
-    private LinearLayout mWifiLayout;
-    private LinearLayout mWashLayout;
-    private LinearLayout mDayLayout;
+    private RecyclerView mRecyclerView;
+
     private String announcement;
+    private GymDetailsPresenter mGymDetailsPresenter;
+    private String gymId;
+
+    private ArenaTagAdapter mArenaTagAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +85,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         mAddressTextView = (TextView) findViewById(R.id.arena_address);
         mPublicNoticeTextView = (TextView) findViewById(R.id.public_notice);
         mAnnouncementLayout = (RelativeLayout) findViewById(R.id.layout_area_announcement);
-        mWifiLayout = (LinearLayout) findViewById(R.id.layout_wifi);
-        mWashLayout = (LinearLayout) findViewById(R.id.layout_wash);
-        mDayLayout = (LinearLayout) findViewById(R.id.layout_day);
+        mRecyclerView = (RecyclerView) findViewById(R.id.tag_recyclerView);
         mAnnouncementLayout.setOnClickListener(this);
     }
 
@@ -119,28 +121,11 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         if (imgDataList != null && imgDataList.size() > 0) {
             setBannerView(imgDataList);
         }
-        int isWifi = gymDetailsData.getIsWifi();
-        int isWash = gymDetailsData.getIsWash();
-        int isDay = gymDetailsData.getIsDay();
 
-        if (isWifi == 0) {
-            mWifiLayout.setVisibility(View.GONE);
-        } else if (isWifi == 1) {
-            mWifiLayout.setVisibility(View.VISIBLE);
-        }
-
-        if (isWash == 0) {
-            mWashLayout.setVisibility(View.GONE);
-        } else if (isWash == 1) {
-            mWashLayout.setVisibility(View.VISIBLE);
-        }
-
-        if (isDay == 0) {
-            mDayLayout.setVisibility(View.GONE);
-        } else if (isDay == 1) {
-            mDayLayout.setVisibility(View.VISIBLE);
-        }
-
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        mArenaTagAdapter = new ArenaTagAdapter(this);
+        mArenaTagAdapter.setData(gymDetailsData.getTagDataList());
+        mRecyclerView.setAdapter(mArenaTagAdapter);
     }
 
     /***
