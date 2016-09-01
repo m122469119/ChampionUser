@@ -13,7 +13,8 @@ public abstract class ImageConfigBuilder<BUILDER extends ImageConfigBuilder, CON
     private ImageView mImageView = null;
     private ImageLoader.LoaderType mLoaderType = ImageLoader.LoaderType.NETWORK;
     private ImageLoaderCallback mImageLoaderCallback = null;
-
+    private int mDestWidth;
+    private int mDestHeight;
 
     public ImageConfigBuilder(ImageView imageView, Object loadPath) {
         if (imageView == null || loadPath == null) {
@@ -65,5 +66,19 @@ public abstract class ImageConfigBuilder<BUILDER extends ImageConfigBuilder, CON
 
     public ImageView getImageView() {
         return mImageView;
+    }
+
+    public int getDestWidth() {
+        return mDestWidth;
+    }
+
+    public int getDestHeight() {
+        return mDestHeight;
+    }
+
+    public BUILDER resize(int width, int height) {
+        mDestWidth = width;
+        mDestHeight = height;
+        return getThis();
     }
 }

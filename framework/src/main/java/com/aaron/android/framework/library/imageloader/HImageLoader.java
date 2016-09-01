@@ -13,10 +13,13 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.imageloader.Supplier.MemorySupplier;
 import com.facebook.cache.disk.DiskCacheConfig;
+import com.facebook.common.references.CloseableReference;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
 import com.facebook.imagepipeline.common.ImageDecodeOptions;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
@@ -130,9 +133,14 @@ public class HImageLoader implements ImageLoader {
         ImageDecodeOptions decodeOptions = ImageDecodeOptions.newBuilder()
                 .setBackgroundColor(Color.TRANSPARENT)
                 .build();
-        ImageRequest request = ImageRequestBuilder
+        ImageRequestBuilder request = ImageRequestBuilder
                 .newBuilderWithSource(config.getUri())
                 .setPostprocessor(config.getImageLoaderCallback() == null ? null : new BasePostprocessor() {
+                    @Override
+                    public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
+                        return super.process(sourceBitmap, bitmapFactory);
+                    }
+
                     @Override
                     public void process(Bitmap bitmap) {
                         super.process(bitmap);
@@ -144,9 +152,12 @@ public class HImageLoader implements ImageLoader {
                 .setLocalThumbnailPreviewsEnabled(true)
                 .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH) //允许设置一个最低请求级别
                 .setProgressiveRenderingEnabled(true) //是否支持渐进式加载
-                .build();
+                ;
+        if (config.getDestHeight() != 0 && config.getDestWidth() != 0) {
+            request.setResizeOptions(new ResizeOptions(config.getDestWidth(), config.getDestHeight()));
+        }
         AbstractDraweeControllerBuilder draweeControllerBuilder = config.getDraweeControllerBuilder();
-        draweeControllerBuilder.setImageRequest(request);
+        draweeControllerBuilder.setImageRequest(request.build());
         draweeControllerBuilder.setControllerListener(mControllerListener);
         draweeControllerBuilder.setOldController(imageView.getController());
         imageView.setController(draweeControllerBuilder.build());

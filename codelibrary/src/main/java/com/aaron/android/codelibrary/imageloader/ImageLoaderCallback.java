@@ -8,10 +8,16 @@ import android.graphics.Bitmap;
  * @author ran.huang
  * @version 3.0.1
  */
-public interface ImageLoaderCallback {
+public abstract class ImageLoaderCallback {
     /**
      * 图片加载完成后处理回调
      * @param bitmap 解码后的Bitmap
      */
-    void finish(Bitmap bitmap);
+    public void finish(Bitmap bitmap) {
+
+    }
+
+    public Bitmap transform(Bitmap sourceBitmap) {
+        return null;
+    }
 }

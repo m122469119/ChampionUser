@@ -14,7 +14,6 @@ import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
 public class HImageConfig extends ImageConfig {
 
     private AbstractDraweeControllerBuilder mDraweeControllerBuilder;
-
     private Uri mUri;
 
     public HImageConfig(HImageConfigBuilder builder) {
