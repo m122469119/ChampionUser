@@ -97,6 +97,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private String explain;
     private String gymId = "0";
     private String noticeActivity;//活动
+    private String submitGymId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,10 +234,17 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
 
     private void senSubmitRequest() {
+        if (buyType == BUY_TYPE_BUY) {
+            submitGymId = gymId;
+        } else if (buyType == BUY_TYPE_CONTINUE) {
+            submitGymId = "0";
+        } else if (buyType == BUY_TYPE_UPGRADE) {
+            submitGymId = "0";
+        }
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCouponCode(), payType);
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCouponCode(), payType, submitGymId);
         } else {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType);
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType, submitGymId);
         }
     }
 

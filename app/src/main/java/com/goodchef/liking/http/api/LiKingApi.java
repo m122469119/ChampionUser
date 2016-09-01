@@ -602,9 +602,10 @@ public class LiKingApi {
      * @param payType    支付方式
      * @param callback   RequestCallback
      */
-    public static void submitBuyCardData(String token, int cardId, int type, String couponCode, String payType, RequestCallback<SubmitPayResult> callback) {
+    public static void submitBuyCardData(String token, int cardId, int type, String couponCode, String payType,String gymId, RequestCallback<SubmitPayResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.CARD_SUBMIT_CARD, SubmitPayResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
-                .append("card_id", cardId).append("type", type).append("coupon_code", couponCode).append("pay_type", payType), callback);
+                .append("card_id", cardId).append("type", type).append("coupon_code", couponCode).append("pay_type", payType)
+                .append("gym_id",gymId), callback);
     }
 
 

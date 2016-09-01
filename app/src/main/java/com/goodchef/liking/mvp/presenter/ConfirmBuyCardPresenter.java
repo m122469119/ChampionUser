@@ -64,8 +64,8 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
         });
     }
 
-    public void submitBuyCardData(int cardId, int type, String couponCode, String payType) {
-        LiKingApi.submitBuyCardData(Preference.getToken(), cardId, type, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
+    public void submitBuyCardData(int cardId, int type, String couponCode, String payType,String gymId) {
+        LiKingApi.submitBuyCardData(Preference.getToken(), cardId, type, couponCode, payType,gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);

@@ -56,7 +56,12 @@ public class MyCardResult extends BaseResult {
             private String startTime;
             @SerializedName("end_time")
             private String endTime;
-
+            @SerializedName("gym_name")
+            private String gymName;
+            @SerializedName("gym_addr")
+            private String gymAddress;
+            @SerializedName("gym_id")
+            private String gymId;
             @SerializedName("time_limit")
             private List<TimeLimitData> timeLimit;
 
@@ -100,6 +105,29 @@ public class MyCardResult extends BaseResult {
                 this.timeLimit = timeLimit;
             }
 
+            public String getGymName() {
+                return gymName;
+            }
+
+            public void setGymName(String gymName) {
+                this.gymName = gymName;
+            }
+
+            public String getGymAddress() {
+                return gymAddress;
+            }
+
+            public void setGymAddress(String gymAddress) {
+                this.gymAddress = gymAddress;
+            }
+
+            public String getGymId() {
+                return gymId;
+            }
+
+            public void setGymId(String gymId) {
+                this.gymId = gymId;
+            }
         }
     }
 }

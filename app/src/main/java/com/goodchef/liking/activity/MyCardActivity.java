@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.mvp.presenter.MyCardPresenter;
@@ -36,6 +37,8 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     private TextView mCardNumberTextView;//卡号
     private TextView mBuyCardTimeTextView;//买卡时间
     private TextView mPeriodOfValidityTextView;//有效期
+    private TextView mGymName;//健身房名称
+    private TextView mGymAddress;//健身房地址
     private ListView mListView;
     private LinearLayout mBottomLayout;
     private ScrollView mRootScrollView;
@@ -44,6 +47,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     private TextView mPromotionCardBtn;//升级卡
     private TextView mFlowCardBtn;//续卡
+    private String gymId;//场馆id
 
     private MyCardPresenter mMyCardPresenter;
 
@@ -63,6 +67,8 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         mCardNumberTextView = (TextView) findViewById(R.id.card_number);
         mBuyCardTimeTextView = (TextView) findViewById(R.id.buy_card_time);
         mPeriodOfValidityTextView = (TextView) findViewById(R.id.period_of_validity);
+        mGymName = (TextView) findViewById(R.id.my_card_gym_name);
+        mGymAddress = (TextView) findViewById(R.id.my_card_gym_address);
         mListView = (ListView) findViewById(R.id.time_limit_recycleView);
         mBottomLayout = (LinearLayout) findViewById(R.id.layout_my_card_bottom);
         mPromotionCardBtn = (TextView) findViewById(R.id.my_promotion_card);
@@ -95,11 +101,13 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
             intent.putExtra(KEY_INTENT_TITLE, "升级卡");
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             startActivity(intent);
         } else if (v == mFlowCardBtn) {//续卡
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
             intent.putExtra(KEY_INTENT_TITLE, "续卡");
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             startActivity(intent);
         }
     }
@@ -118,6 +126,9 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                     mCardNumberTextView.setText(myCard.getCardNo());
                     mBuyCardTimeTextView.setText(myCard.getBuyTime());
                     mPeriodOfValidityTextView.setText(myCard.getStartTime() + " ~ " + myCard.getEndTime());
+                    mGymName.setText(myCard.getGymName());
+                    mGymAddress.setText(myCard.getGymAddress());
+                    gymId = myCard.getGymId();
                     List<TimeLimitData> limitDataList = myCard.getTimeLimit();
                     if (limitDataList != null && limitDataList.size() > 0) {
                         CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);
