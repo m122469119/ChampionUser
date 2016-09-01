@@ -78,7 +78,7 @@
                         android:padding="10dp"
                         android:text="@string/card_number"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                     <TextView
                         android:id="@+id/card_number"
@@ -87,7 +87,7 @@
                         android:layout_alignParentRight="true"
                         android:padding="10dp"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
                 </RelativeLayout>
 
                 <View
@@ -106,7 +106,7 @@
                         android:padding="10dp"
                         android:text="@string/buy_card_time"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                     <TextView
                         android:id="@+id/buy_card_time"
@@ -115,7 +115,7 @@
                         android:layout_alignParentRight="true"
                         android:padding="10dp"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -137,7 +137,7 @@
                         android:padding="10dp"
                         android:text="@string/my_card_gym_name"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                     <TextView
                         android:id="@+id/my_card_gym_name"
@@ -146,7 +146,7 @@
                         android:layout_alignParentRight="true"
                         android:padding="10dp"
                         android:textColor="@color/buy_card_confirm_leisure"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                 </RelativeLayout>
 
@@ -168,7 +168,7 @@
                         android:padding="10dp"
                         android:text="@string/my_card_gym_address"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                     <TextView
                         android:id="@+id/my_card_gym_address"
@@ -177,7 +177,7 @@
                         android:layout_alignParentRight="true"
                         android:padding="10dp"
                         android:textColor="@color/buy_card_confirm_leisure"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                 </RelativeLayout>
 
@@ -197,7 +197,7 @@
                         android:padding="10dp"
                         android:text="@string/period_of_validity"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
 
                     <TextView
                         android:id="@+id/period_of_validity"
@@ -206,7 +206,7 @@
                         android:layout_alignParentRight="true"
                         android:padding="10dp"
                         android:textColor="@color/buy_card_confirm_leisure"
-                        android:textSize="@dimen/textsize_15"/>
+                        android:textSize="@dimen/textsize_small"/>
                 </RelativeLayout>
 
                 <View
@@ -222,7 +222,7 @@
                     android:padding="10dp"
                     android:text="@string/use_time"
                     android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="@dimen/textsize_15"/>
+                    android:textSize="@dimen/textsize_small"/>
 
                 <ListView
                     android:id="@+id/time_limit_recycleView"

@@ -12,6 +12,7 @@ import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
@@ -36,6 +37,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     private UpgradeContinueCardAdapter mUpgradeContinueCardAdapter;
     private CardListPresenter mCardListPresenter;
     private LikingStateView mStateView;
+    private String mGymId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     private void initData() {
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
         title = getIntent().getStringExtra(MyCardActivity.KEY_INTENT_TITLE);
+        mGymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(title);
         mCardListPresenter = new CardListPresenter(this, this);
         mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
@@ -100,6 +103,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
                     intent.putExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY, card.getCategoryName());
                     intent.putExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, card.getCategoryId());
                     intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType);
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymId);
                     startActivity(intent);
                 }
             }
