@@ -24,6 +24,7 @@ import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.CityData;
+import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
@@ -55,6 +56,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     private String latitude = "0";
     private String cityId = "310100";
     private String districtId = "310104";
+    private GymData mGymData;
 
     @Override
     protected void requestData(int page) {
@@ -95,13 +97,15 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             public void onItemClick(View view, int position) {
                 CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
                 if (card != null) {
-                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
-                    Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
-                    intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
-                    intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
-                    intent.putExtra(KEY_BUY_TYPE, 1);
-                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID,gymId);
-                    startActivity(intent);
+                    if (!StringUtils.isEmpty(mGymData.getGymId())) {
+                        UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
+                        Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
+                        intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
+                        intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
+                        intent.putExtra(KEY_BUY_TYPE, 1);
+                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymData.getGymId());
+                        startActivity(intent);
+                    }
                 }
             }
 
@@ -153,6 +157,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     @Override
     public void updateCardListView(CardResult.CardData cardData) {
+        mGymData = cardData.getGymData();
         List<CardResult.CardData.Card> list = cardData.getCardList();
         if (list != null && list.size() > 0) {
             LocationData locationData = Preference.getLocationData();

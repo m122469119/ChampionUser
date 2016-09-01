@@ -36,8 +36,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     private static final int COURSES_STATE_COMPLETE = 1;//1 已完成
     private static final int COURSES_STATE_CANCEL = 2; //  2已取消
     private TextView mContactTeacherBtn;//联系教练
-    private TextView mCompleteCoursesBtn;//完成课程
-
     private TextView mCoursesTitleTextView;//训练项目
     private TextView mCoursesStateTextView;//状态
     private TextView mPrivateTeacherNameTextView;//教练名称
@@ -79,7 +77,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.my_private_courses_state_view);
         mContactTeacherBtn = (TextView) findViewById(R.id.details_contact_teacher);
-        mCompleteCoursesBtn = (TextView) findViewById(R.id.details_complete_courses_btn);
         mCoursesTitleTextView = (TextView) findViewById(R.id.details_courses_title);
         mCoursesStateTextView = (TextView) findViewById(R.id.details_courses_state);
         mPrivateTeacherNameTextView = (TextView) findViewById(R.id.details_private_teacher_name);
@@ -103,7 +100,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         mCancelCoursesTimesTextView = (TextView) findViewById(R.id.cancel_courses_times);
         mBreakPromiseTimesTextView = (TextView) findViewById(R.id.break_a_promise_times);
 
-        mCompleteCoursesBtn.setOnClickListener(this);
         mContactTeacherBtn.setOnClickListener(this);
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -141,9 +137,9 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
             CoursesNotice.setText(data.getPrompt());
             mSurplusCoursesTimesTextView.setText(data.getLeft_times());
-            //  mBuyCoursesTimesTextView.setText(data.getTimes());
+             mBuyCoursesTimesTextView.setText(data.getBuyTimes());
             mCancelCoursesTimesTextView.setText(data.getDestroy_times());
-            mGoClassTimesTextView.setText(data.getTimes());
+            mGoClassTimesTextView.setText(data.getCompleteTimes());
             mBreakPromiseTimesTextView.setText(data.getMiss_times());
 
             mCoursesTitleTextView.setText("课程项目: " + data.getCourseName());
@@ -197,9 +193,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     @Override
     public void onClick(View v) {
-        if (v == mCompleteCoursesBtn) {
-            showCompleteDialog();
-        } else if (v == mContactTeacherBtn) {
+      if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
                 LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, "确定联系教练吗？", mTeacherPhone);
             }

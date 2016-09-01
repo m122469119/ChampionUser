@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -62,9 +63,10 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         TextView mGroupCoursesNameTextView;//课程名称
         TextView mShopNameTextView;//门店名称
         TextView mGroupCoursesStateTextView;//课程状态
-        TextView mShopAddressTextView;//门店地址
         TextView mCoursesMoneyTextView;//课程金额
         TextView mCancelOrderBtn;//取消预约
+        TextView mFreeType;
+        RelativeLayout mMyGroupCoursesLayout;
 
 
         public GroupLessonViewHolder(View itemView) {
@@ -74,9 +76,10 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mGroupCoursesNameTextView = (TextView) itemView.findViewById(R.id.group_courses_name);
             mShopNameTextView = (TextView) itemView.findViewById(R.id.shop_name);
             mGroupCoursesStateTextView = (TextView) itemView.findViewById(R.id.group_courses_state);
-            mShopAddressTextView = (TextView) itemView.findViewById(R.id.shop_address);
-            mCancelOrderBtn = (TextView) itemView.findViewById(R.id.cancel_order_btn);
             mCoursesMoneyTextView = (TextView) itemView.findViewById(R.id.courses_money);
+            mCancelOrderBtn = (TextView) itemView.findViewById(R.id.cancel_order_btn);
+            mFreeType = (TextView) itemView.findViewById(R.id.free_type);
+            mMyGroupCoursesLayout = (RelativeLayout) itemView.findViewById(R.id.layout_my_group_courses);
         }
 
         @Override
@@ -84,11 +87,9 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mPeriodOfValidityTextView.setText(object.getStartDate() + "(" + object.getWeekDay() + ") " + object.getStartTime() + " ~ " + object.getEndTime());
             mGroupCoursesNameTextView.setText(object.getCourseName());
             mShopNameTextView.setText(object.getGymName());
-            mShopAddressTextView.setText(object.getGymAddress());
             int state = object.getStatus();
             int showCalcel = object.getCancelBtnShow();
             setCoursesState(state);
-            showCancelBtn(showCalcel);
             mPeriodOfValidityTextView.setTag(object);
             mCancelOrderBtn.setTag(object);
             String imageUrl = object.getCourseUrl();
@@ -97,20 +98,29 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             }
             int isFree = object.getIsFee();
             if (isFree == TYPE_IS_FREE) {//免费
-                mCoursesMoneyTextView.setVisibility(View.GONE);
+                if (showCalcel == 0) {
+                    mMyGroupCoursesLayout.setVisibility(View.GONE);
+                    mCancelOrderBtn.setVisibility(View.GONE);
+                } else if (showCalcel == 1) {
+                    mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
+                    mCancelOrderBtn.setVisibility(View.VISIBLE);
+                }
+                mFreeType.setText("FREE");
             } else if (isFree == TYPE_NOT_FREE) {//收费
-                mCoursesMoneyTextView.setVisibility(View.VISIBLE);
+                mFreeType.setText("付费");
+                mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
                 mCoursesMoneyTextView.setText("¥ " + object.getAmount());
+                showCancelBtn(showCalcel);
             }
 
         }
 
-        private void showCancelBtn(int showCalcel){
-           if (showCalcel ==0){
-               mCancelOrderBtn.setVisibility(View.INVISIBLE);
-           }else if (showCalcel==1){
-               mCancelOrderBtn.setVisibility(View.VISIBLE);
-           }
+        private void showCancelBtn(int showCalcel) {
+            if (showCalcel == 0) {
+                mCancelOrderBtn.setVisibility(View.INVISIBLE);
+            } else if (showCalcel == 1) {
+                mCancelOrderBtn.setVisibility(View.VISIBLE);
+            }
         }
 
         private void setCoursesState(int state) {

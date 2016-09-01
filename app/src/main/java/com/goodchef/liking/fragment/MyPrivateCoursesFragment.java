@@ -13,6 +13,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
@@ -58,9 +59,9 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
         setPullMode(PullMode.PULL_BOTH);
         setNoDataView();
         getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
+        setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
         setRecyclerAdapter(mPrivateLessonAdapter);
-        mPrivateLessonAdapter.setCompleteListener(mCompleteListener);
         mPrivateLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

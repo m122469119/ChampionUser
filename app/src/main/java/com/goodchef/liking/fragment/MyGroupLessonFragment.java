@@ -13,7 +13,9 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.MyChargeGroupCoursesDetailsActivity;
@@ -52,6 +54,8 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     protected void initViews() {
         setNoDataView();
         setPullMode(PullMode.PULL_BOTH);
+        getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
+        setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mGroupLessonAdapter = new MyGroupCoursesAdapter(getActivity());
         setRecyclerAdapter(mGroupLessonAdapter);
         mGroupLessonAdapter.setCancelListener(cancelListener);
@@ -95,9 +99,10 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     /***
      * 跳转到收费团体课详情页
+     *
      * @param data 课程对象
      */
-    private void jumpMyChargeGroupCoursesDetails(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data){
+    private void jumpMyChargeGroupCoursesDetails(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data) {
         UMengCountUtil.UmengCount(getActivity(), UmengEventId.NOTFREEGROUPLESSONDETAILSACTIVITY);
         Intent intent = new Intent(getActivity(), MyChargeGroupCoursesDetailsActivity.class);
         intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
