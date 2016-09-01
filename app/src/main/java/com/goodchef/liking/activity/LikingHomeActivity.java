@@ -70,6 +70,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public static final String KEY_SELECT_CITY = "key_select_city";
     public static final String KEY_SELECT_CITY_ID = "key_select_city_id";
     public static final String KEY_START_LOCATION = "key_start_location";
+    public static final String KEY_TAB_INDEX = "key_tab_index";
 
     private TextView mLikingLeftTitleTextView;//左边文字
     private TextView mLikingMiddleTitleTextView;//中间title
@@ -118,7 +119,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             initTitleLocation();
         }
     }
-
 
     private void checkAppUpdate() {
         if (LiKingVerifyUtils.sBaseConfigResult != null) {
@@ -212,7 +212,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         tabWidget.setBackgroundResource(R.color.main_app_color);
         tabWidget.setPadding(0, DisplayUtils.dp2px(8), 0, DisplayUtils.dp2px(8));
         setHomeTabHost();
-
         setMainTableView();
     }
 
@@ -296,9 +295,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                changeGym();
+                changeGym(0);
             } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                changeGym();
+                changeGym(1);
             }
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
@@ -332,19 +331,24 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         } else if (v == mMiddleLayout) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                if (isWhetherLocation) {//定位成功时查看门店
-                    if (!StringUtils.isEmpty(mGym.getGymId())) {
-                        UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
-                        Intent intent = new Intent(this, ArenaActivity.class);
-                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
-                        this.startActivity(intent);
-                        this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
-                    }
-                } else {//定位失败是，重新定位
-                    initTitleLocation();
-                }
-
+                jumpArenaActivity();
+            } else if (tag.equals(TAG_RECHARGE_TAB)) {
+                jumpArenaActivity();
             }
+        }
+    }
+
+    private void jumpArenaActivity() {
+        if (isWhetherLocation) {//定位成功时查看门店
+            if (!StringUtils.isEmpty(mGym.getGymId())) {
+                UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
+                Intent intent = new Intent(this, ArenaActivity.class);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+                this.startActivity(intent);
+                this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+            }
+        } else {//定位失败是，重新定位
+            initTitleLocation();
         }
     }
 
@@ -410,7 +414,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     /**
      * 切换场馆
      */
-    private void changeGym() {
+    private void changeGym(int index) {
         if (isWhetherLocation) {
             if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
                 isLocation = true;
@@ -422,6 +426,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra(KEY_SELECT_CITY, selectCityName);
                 intent.putExtra(KEY_START_LOCATION, isLocation);
                 intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
+                intent.putExtra(KEY_TAB_INDEX, index);
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
                 startActivity(intent);
             }
@@ -799,7 +804,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
 
 }
