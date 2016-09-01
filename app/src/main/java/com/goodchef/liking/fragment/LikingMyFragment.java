@@ -81,7 +81,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView myTrainTime;
     private TextView myTrainDistance;
     private TextView myTrainCal;
-    private TextView myTrainTimePrompt;
     private TextView mContactSetviceBtn;
 
 
@@ -126,14 +125,18 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                             UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
                             if (exerciseData != null) {
                                 Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
-                                myTrainTimePrompt.setVisibility(View.GONE);
-                                myTrainTime.setVisibility(View.VISIBLE);
                                 myTrainTime.setTypeface(typeFace);
                                 myTrainDistance.setTypeface(typeFace);
                                 myTrainCal.setTypeface(typeFace);
                                 myTrainTime.setText(exerciseData.getTodayMin());
                                 myTrainDistance.setText(exerciseData.getTodayDistance());
                                 myTrainCal.setText(exerciseData.getTodayCal());
+                                Preference.setIsVip(exerciseData.getIsVip());
+                                if (Preference.isVIP()) {
+                                    mIsVip.setVisibility(View.VISIBLE);
+                                } else {
+                                    mIsVip.setVisibility(View.GONE);
+                                }
                             }
                         }
                     }
@@ -156,12 +159,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
         myTrainDistance.setTypeface(typeFace);
         myTrainCal.setTypeface(typeFace);
-        myTrainTime.setVisibility(View.GONE);
+        myTrainTime.setTypeface(typeFace);
         myTrainDistance.setText("-");
         myTrainCal.setText("-");
-        myTrainTimePrompt.setVisibility(View.VISIBLE);
-        myTrainTimePrompt.setTypeface(typeFace);
-        myTrainTimePrompt.setText("-");
+        myTrainTime.setText("-");
     }
 
     private void setLogonView() {
@@ -182,7 +183,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             } else {
                 mIsVip.setVisibility(View.GONE);
             }
-
         } else {
             mLoginBtn.setVisibility(View.VISIBLE);
             mArrowImage.setVisibility(View.GONE);
@@ -219,7 +219,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
         myTrainDistance = (TextView) view.findViewById(R.id.my_train_distance);
         myTrainCal = (TextView) view.findViewById(R.id.my_train_cal);
-        myTrainTimePrompt = (TextView) view.findViewById(R.id.my_train_time_prompt);
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);

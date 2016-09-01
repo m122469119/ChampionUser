@@ -3,15 +3,27 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
                 android:background="@drawable/shape_card_stoke_bottom_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/person_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="个人数据"
+        android:textColor="@color/lesson_details_dark_back"
+        android:textSize="@dimen/textsize_15"/>
 
     <TextView
         android:id="@+id/liking_my_train_promit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/person_data"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="今日训练"
         android:textColor="@color/lesson_details_gray_back"
@@ -24,22 +36,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/liking_my_train_promit"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@+id/my_train_time_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/liking_green_btn_back"
-            android:textSize="30sp"
-            />
 
         <TextView
             android:id="@+id/my_train_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:textColor="@color/liking_green_btn_back"
             android:textSize="34sp"
             android:textStyle="bold"
@@ -48,8 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="7dp"
+            android:gravity="center"
             android:text="Min"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="15sp"
