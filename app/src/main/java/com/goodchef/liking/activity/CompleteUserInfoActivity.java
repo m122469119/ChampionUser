@@ -3,6 +3,7 @@ package com.goodchef.liking.activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -122,13 +123,16 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
         mBirthdayTextView.setText(mBirthdayStr);
         mHeightTextView.setText(height + " cm");
         mWeightTextView.setText(weight);
+
+        Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
+        sendImageFile(mBitmap);
     }
 
     @Override
     public void onClick(View v) {
         if (v == mCompleteBtn) {
-            Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
-            sendImageFile(mBitmap);
+            postEvent(new UpDateUserInfoMessage());
+            this.finish();
         }
     }
 
@@ -163,8 +167,6 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
                 Preference.setUserIconUrl(imageUrl);
             }
             Preference.setNickName(userName);
-            postEvent(new UpDateUserInfoMessage());
-            this.finish();
         }
     }
 
@@ -177,4 +179,15 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     public void handleNetworkFailure() {
 
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            postEvent(new UpDateUserInfoMessage());
+            this.finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
