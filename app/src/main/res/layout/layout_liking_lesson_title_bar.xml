@@ -29,7 +29,6 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:textColor="@color/tab_indicator_color"
                 android:textSize="@dimen/textsize_15"
