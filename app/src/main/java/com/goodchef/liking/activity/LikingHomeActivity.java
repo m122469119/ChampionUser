@@ -216,7 +216,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setMainTableView() {
-        mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+      //  mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+        mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mRightImageView.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
     }
@@ -239,7 +240,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.GONE);
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+//                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+                    mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
                     mRightImageView.setVisibility(View.VISIBLE);
                     mRedPoint.setVisibility(View.VISIBLE);
                     mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
@@ -268,7 +270,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.GONE);
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+//                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+                    mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
                     mRightImageView.setVisibility(View.GONE);
                     mRedPoint.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
