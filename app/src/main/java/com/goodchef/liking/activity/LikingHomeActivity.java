@@ -114,7 +114,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void initData() {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             isWhetherLocation = false;
-            mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+            mLikingLeftTitleTextView.setVisibility(View.GONE);
+            mLikingLeftTitleTextView.setEnabled(false);
         } else {
             initTitleLocation();
         }
@@ -216,7 +217,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setMainTableView() {
-      //  mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+        //  mLikingLeftTitleTextView.setText(R.string.home_left_menu);
         mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mRightImageView.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
@@ -569,6 +570,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void start() {
+                mLikingMiddleTitleTextView.setText("定位中...");
             }
 
             @Override
@@ -686,11 +688,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void setHomeTitle() {
         if (isWhetherLocation) {
+            mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+            mLikingLeftTitleTextView.setEnabled(true);
             mLikingDistanceTextView.setText(mGym.getDistance());
             mLikingMiddleTitleTextView.setText(mGym.getName());
         } else {
             mLikingMiddleTitleTextView.setText("定位失败");
             mLikingDistanceTextView.setVisibility(View.GONE);
+            mLikingLeftTitleTextView.setVisibility(View.GONE);
+            mLikingLeftTitleTextView.setEnabled(false);
         }
     }
 
