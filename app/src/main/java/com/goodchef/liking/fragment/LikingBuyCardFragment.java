@@ -21,8 +21,10 @@ import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
+import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.LocationData;
@@ -158,6 +160,11 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     @Override
     public void updateCardListView(CardResult.CardData cardData) {
         mGymData = cardData.getGymData();
+        CoursesResult.Courses.Gym gym = new CoursesResult.Courses.Gym();
+        gym.setGymId(mGymData.getGymId());
+        gym.setDistance(mGymData.getDistance());
+        gym.setName(mGymData.getName());
+        postEvent(new getGymDataMessage(gym));
         List<CardResult.CardData.Card> list = cardData.getCardList();
         if (list != null && list.size() > 0) {
             LocationData locationData = Preference.getLocationData();
@@ -207,7 +214,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         gymId = message.getGymId();
         int index = message.getIndex();
         if (index == 1) {//从买卡界面切换场馆过来
-            loadHomePage();
+            sendBuyCardListRequest();
         }
     }
 
