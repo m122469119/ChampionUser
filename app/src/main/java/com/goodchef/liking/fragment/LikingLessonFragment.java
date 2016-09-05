@@ -18,6 +18,7 @@ import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
+import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.BannerResult;
@@ -278,4 +279,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         }
     }
 
+    public void onEvent(LoginOutMessage message) {
+        gymId = "0";
+        loadHomePage();
+    }
 }

@@ -37,6 +37,7 @@ import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
+import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
@@ -411,6 +412,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         PopupUtils.showToast("退出成功");
         setLogonView();
         clearExerciseData();
+        postEvent(new LoginOutMessage());
     }
 
     @Override

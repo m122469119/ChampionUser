@@ -9,11 +9,14 @@ import com.aaron.android.framework.library.storage.AbsPreference;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.data.Announcement;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 说明:
@@ -38,6 +41,7 @@ public class Preference extends AbsPreference {
     public static final String APP_UPDATE = "appUpdate";
     public static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
     public static final String IS_VIP = "is_vip";//是否
+    public static List<String> announcementList = new ArrayList<>();
 
 
     /**
@@ -318,7 +322,23 @@ public class Preference extends AbsPreference {
      * 设置公告id
      */
     public static boolean setAnnouncementId(String announcementId) {
-        return setObject(ANNOUNCEMENT_ID, announcementId);
+        if (!StringUtils.isEmpty(announcementId)) {
+            Announcement announcementObject = new Announcement();
+            if (announcementList != null && announcementList.size() > 0) {
+                for (int i = 0; i < announcementList.size(); i++) {
+                    if (!announcementList.get(i).equals(announcementId)) {
+                        announcementList.add(announcementId);
+                    }
+                }
+            } else {
+                announcementList.add(announcementId);
+            }
+            announcementObject.setList(announcementList);
+            String announcement = new Gson().toJson(announcementObject);
+            return setObject(ANNOUNCEMENT_ID, announcement);
+        } else {
+            return false;
+        }
     }
 
     /***
@@ -326,8 +346,44 @@ public class Preference extends AbsPreference {
      *
      * @return
      */
-    public static String getAnnouncementId() {
-        return (String) getObject(ANNOUNCEMENT_ID, NULL_STRING);
+    public static boolean isIdenticalAnnouncement(String announcementId) {
+        boolean isIdenticalAnnouncement = false;
+        if (!StringUtils.isEmpty(announcementId)) {
+            String announcementStr = (String) getObject(ANNOUNCEMENT_ID, NULL_STRING);
+            Announcement announcement = new Gson().fromJson(announcementStr, Announcement.class);
+            if (announcement != null) {
+                List<String> announcementList = announcement.getList();
+                boolean ishas = false;
+                String announcementIdStr = "";
+                if (announcementList != null && announcementList.size() > 0) {
+                    for (int i = 0; i < announcementList.size(); i++) {
+                        if (announcementList.get(i).equals(announcementId)) {
+                            ishas = true;
+                            announcementIdStr = announcementList.get(i);
+                            break;
+                        }
+                    }
+                    if (ishas) {//如果存在
+                        if (announcementIdStr.equals(announcementId)) {
+                            isIdenticalAnnouncement = false;
+                            return isIdenticalAnnouncement;
+                        }
+                    } else {//如果不存在
+                        isIdenticalAnnouncement = true;
+                        return isIdenticalAnnouncement;
+                    }
+                } else {
+                    isIdenticalAnnouncement = true;
+                }
+            } else {
+                isIdenticalAnnouncement = true;
+            }
+
+        } else {
+            isIdenticalAnnouncement = false;
+        }
+
+        return isIdenticalAnnouncement;
     }
 
     public static boolean isNewVersion() {

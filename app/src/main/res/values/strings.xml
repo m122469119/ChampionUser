@@ -182,7 +182,6 @@
     <string name="activity_title_confirm_buy_group_courses">确认购买团体课</string>
     <string name="home_left_menu">[切换]</string>
     <string name="not_free_group_courses">付费团体课</string>
-    <string name="free_group_courses">团体课 FREE</string>
     <string name="share">分享</string>
     <string name="gym_address">场馆地址</string>
     <string name="gym_name">场馆名称</string>
@@ -197,5 +196,11 @@
     <string name="is_cancel">已取消</string>
     <string name="activity_title_my_group_details">团体课详情</string>
     <string name="notice_prompt">提示</string>
+    <string name="no_announcement">暂无公告</string>
+    <string name="location_fail">定位失败·重新定位</string>
+    <string name="free_courses">免费团体课</string>
+    <string name="my_free_group_courses">免费</string>
+    <string name="my_not_free_group_courses">付费</string>
+    <string name="current_city_no_dredge">当前城市尚未开通服务</string>
 
 </resources>

@@ -102,10 +102,10 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
                 if (isFree == 0) {//免费
-                    mLessonTypeTextView.setText("团体课 FREE");
+                    mLessonTypeTextView.setText(R.string.free_courses);
                     mCoursesMoneyTextView.setVisibility(View.GONE);
                 } else if (isFree == 1) {//收费
-                    mLessonTypeTextView.setText("付费团体课");
+                    mLessonTypeTextView.setText(R.string.not_free_group_courses);
                     mCoursesMoneyTextView.setVisibility(View.VISIBLE);
                     mCoursesMoneyTextView.setText("¥ " + object.getPrice());
                 }

@@ -175,7 +175,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             if (isFree == COURSES_IS_FREE) {//免费
                 mCoursesStateLayout.setVisibility(View.GONE);
                 mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
-                mGroupCoursesTagTextView.setText(R.string.free_group_courses);
+                mGroupCoursesTagTextView.setText(R.string.free_courses);
                 if (!StringUtils.isEmpty(guota)) {
                     if (Integer.parseInt(guota) == 0) {
                         mImmediatelySubmitBtn.setText(R.string.appointment_fill);

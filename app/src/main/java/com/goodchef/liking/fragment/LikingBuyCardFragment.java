@@ -144,7 +144,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, getRecyclerView(), false);
         mCityOpenTextView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
         mCityOpenTextView.setVisibility(View.VISIBLE);
-        mCityOpenTextView.setText("当前城市尚未开通服务");
+        mCityOpenTextView.setText(R.string.current_city_no_dredge);
     }
 
     private void sendBuyCardListRequest() {
