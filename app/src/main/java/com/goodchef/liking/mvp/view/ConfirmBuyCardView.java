@@ -12,4 +12,5 @@ import com.goodchef.liking.http.result.data.PayResultData;
 public interface ConfirmBuyCardView extends BaseNetworkLoadView{
     void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData);
     void updateSubmitPayView(PayResultData payResultData);
+    void updateErrorView(String errorMessage);
 }

@@ -195,7 +195,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                 intent.putExtra(KEY_CARD_ID, mCardId);
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID,submitGymId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }
@@ -341,6 +341,20 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         } else {
             handlePay(payResultData);
         }
+    }
+
+    @Override
+    public void updateErrorView(String errorMessage) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                BuyCardConfirmActivity.this.finish();
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 

@@ -51,6 +51,8 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                             }
                         });
                         builder.create().show();
+                    } else if (result.getCode() == 240000 || result.getCode() == 240001) {
+                        mView.updateErrorView(result.getMessage());
                     } else {
                         PopupUtils.showToast(result.getMessage());
                     }
@@ -64,8 +66,8 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
         });
     }
 
-    public void submitBuyCardData(int cardId, int type, String couponCode, String payType,String gymId) {
-        LiKingApi.submitBuyCardData(Preference.getToken(), cardId, type, couponCode, payType,gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
+    public void submitBuyCardData(int cardId, int type, String couponCode, String payType, String gymId) {
+        LiKingApi.submitBuyCardData(Preference.getToken(), cardId, type, couponCode, payType, gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);
