@@ -122,10 +122,19 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
             setBannerView(imgDataList);
         }
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        mArenaTagAdapter = new ArenaTagAdapter(this);
-        mArenaTagAdapter.setData(gymDetailsData.getTagDataList());
-        mRecyclerView.setAdapter(mArenaTagAdapter);
+        List<GymDetailsResult.GymDetailsData.TagData> tagList = gymDetailsData.getTagDataList();
+        if (tagList != null) {
+            if (tagList.size() == 1) {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+            } else if (tagList.size() == 2) {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            } else {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            }
+            mArenaTagAdapter = new ArenaTagAdapter(this);
+            mArenaTagAdapter.setData(gymDetailsData.getTagDataList());
+            mRecyclerView.setAdapter(mArenaTagAdapter);
+        }
     }
 
     /***

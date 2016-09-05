@@ -249,6 +249,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                     setHomeTitle();
                     setHomeMenuReadNotice();
+                    checkAppUpdate();
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -278,6 +279,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                     setHomeTitle();
                     postEvent(new OnCLickBuyCardFragmentMessage());
+                    checkAppUpdate();
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
@@ -288,6 +290,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mRightImageView.setVisibility(View.GONE);
                     mRedPoint.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
+                    checkAppUpdate();
                 }
             }
         });
@@ -363,21 +366,20 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.layout_notice://公告
-                        if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
-                            showNoticeDialog();
-                            RightMenuDialog.dismiss();
-                        }
-                        break;
-                    case R.id.layout_open_door://开门
-                        jumpOpenTheDoorActivity();
+                        showNoticeDialog();
                         RightMenuDialog.dismiss();
                         break;
-
-                }
+                    case R.id.layout_open_door://开门
+                     jumpOpenTheDoorActivity();
+                     RightMenuDialog.dismiss();
+                       break;
             }
-        });
-        RightMenuDialog.show();
+        }
     }
+
+    );
+    RightMenuDialog.show();
+}
 
 
     /**
@@ -387,14 +389,21 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        textView.setText(R.string.notice);
         builder.setCustomTitle(view);
-        builder.setMessage(mGym.getAnnouncementInfo());
+        if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
+            builder.setMessage(mGym.getAnnouncementInfo());
+            textView.setText(R.string.notice);
+        } else {
+            textView.setText(R.string.notice_prompt);
+            builder.setMessage("暂无公告");
+        }
         builder.setNegativeButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Preference.setAnnouncementId(mGym.getAnnouncementId());
-                mRedPoint.setVisibility(View.GONE);
+                if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
+                    Preference.setAnnouncementId(mGym.getAnnouncementId());
+                    mRedPoint.setVisibility(View.GONE);
+                }
                 dialog.dismiss();
             }
         });
@@ -561,10 +570,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName);
+                    mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+                    mLikingLeftTitleTextView.setEnabled(true);
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName);
+                    mLikingLeftTitleTextView.setVisibility(View.GONE);
+                    mLikingLeftTitleTextView.setEnabled(false);
                 }
             }
 
