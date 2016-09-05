@@ -105,9 +105,9 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
                     mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
                     mCancelOrderBtn.setVisibility(View.VISIBLE);
                 }
-                mFreeType.setText("FREE");
+                mFreeType.setText(R.string.my_free_group_courses);
             } else if (isFree == TYPE_NOT_FREE) {//收费
-                mFreeType.setText("付费");
+                mFreeType.setText(R.string.my_not_free_group_courses);
                 mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
                 mCoursesMoneyTextView.setText("¥ " + object.getAmount());
                 showCancelBtn(showCalcel);

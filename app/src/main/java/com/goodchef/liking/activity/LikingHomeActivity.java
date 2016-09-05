@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTabHost;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -319,21 +318,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    PopupUtils.showToast("您还没有购买任何营养餐");
 //                }
             } else if (tag.equals(TAG_MAIN_TAB)) {
-                String announcementId = Preference.getAnnouncementId();
-                if (!StringUtils.isEmpty(announcementId) || !StringUtils.isEmpty(mGym.getAnnouncementId())) {
-                    if (mGym.getAnnouncementId().equals(announcementId)) {
-                        RightMenuDialog.setRedPromptShow(false);
-                        mRedPoint.setVisibility(View.GONE);
-                    } else {
-                        RightMenuDialog.setRedPromptShow(true);
-                        mRedPoint.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    if (!StringUtils.isEmpty(mGym.getAnnouncementId())) {
-                        RightMenuDialog.setRedPromptShow(true);
-                        mRedPoint.setVisibility(View.VISIBLE);
-                    }
-                }
+                setHomeMenuReadNotice();
                 showRightMenuDialog();
             }
         } else if (v == mMiddleLayout) {
@@ -362,24 +347,24 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void showRightMenuDialog() {
         RightMenuDialog.setAnchor(mRightImageView);
         RightMenuDialog.setViewOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.layout_notice://公告
-                        showNoticeDialog();
-                        RightMenuDialog.dismiss();
-                        break;
-                    case R.id.layout_open_door://开门
-                     jumpOpenTheDoorActivity();
-                     RightMenuDialog.dismiss();
-                       break;
-            }
-        }
-    }
+                                                   @Override
+                                                   public void onClick(View v) {
+                                                       switch (v.getId()) {
+                                                           case R.id.layout_notice://公告
+                                                               showNoticeDialog();
+                                                               RightMenuDialog.dismiss();
+                                                               break;
+                                                           case R.id.layout_open_door://开门
+                                                               jumpOpenTheDoorActivity();
+                                                               RightMenuDialog.dismiss();
+                                                               break;
+                                                       }
+                                                   }
+                                               }
 
-    );
-    RightMenuDialog.show();
-}
+        );
+        RightMenuDialog.show();
+    }
 
 
     /**
@@ -393,17 +378,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
             builder.setMessage(mGym.getAnnouncementInfo());
             textView.setText(R.string.notice);
+            Preference.setAnnouncementId(mGym.getAnnouncementId());
+            mRedPoint.setVisibility(View.GONE);
+            RightMenuDialog.setRedPromptShow(false);
         } else {
             textView.setText(R.string.notice_prompt);
-            builder.setMessage("暂无公告");
+            builder.setMessage(getString(R.string.no_announcement));
         }
         builder.setNegativeButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
-                    Preference.setAnnouncementId(mGym.getAnnouncementId());
-                    mRedPoint.setVisibility(View.GONE);
-                }
                 dialog.dismiss();
             }
         });
@@ -706,7 +690,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             mLikingDistanceTextView.setText(mGym.getDistance());
             mLikingMiddleTitleTextView.setText(mGym.getName());
         } else {
-            mLikingMiddleTitleTextView.setText("定位失败");
+            mLikingMiddleTitleTextView.setText(R.string.location_fail);
             mLikingDistanceTextView.setVisibility(View.GONE);
             mLikingLeftTitleTextView.setVisibility(View.GONE);
             mLikingLeftTitleTextView.setEnabled(false);
@@ -717,18 +701,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置是否读取过公告
      */
     private void setHomeMenuReadNotice() {
-        String announcementId = Preference.getAnnouncementId();
-        Log.i(TAG, "announcementId = " + announcementId);
-        if (!StringUtils.isEmpty(announcementId) && !StringUtils.isEmpty(mGym.getAnnouncementId())) {
-            if (mGym.getAnnouncementId().equals(announcementId)) {
-                mRedPoint.setVisibility(View.GONE);
-            } else {
-                mRedPoint.setVisibility(View.VISIBLE);
-            }
+        if (Preference.isIdenticalAnnouncement(mGym.getAnnouncementId())) {
+            mRedPoint.setVisibility(View.VISIBLE);
+            RightMenuDialog.setRedPromptShow(true);
         } else {
-            if (!StringUtils.isEmpty(mGym.getAnnouncementId())) {
-                mRedPoint.setVisibility(View.VISIBLE);
-            }
+            mRedPoint.setVisibility(View.GONE);
+            RightMenuDialog.setRedPromptShow(false);
         }
     }
 
@@ -810,7 +788,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public void onEvent(LikingHomeNoNetWorkMessage message) {
         initTitleLocation();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
