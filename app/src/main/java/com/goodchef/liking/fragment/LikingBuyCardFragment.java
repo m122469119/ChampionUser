@@ -18,7 +18,10 @@ import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
@@ -223,6 +226,21 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         if (index == 1) {//从买卡界面切换场馆过来
             sendBuyCardListRequest();
         }
+    }
+
+    public void onEvent(LoginOutMessage message) {
+        gymId = "0";
+        loadHomePage();
+    }
+
+    public void onEvent(LoginFinishMessage message) {
+        gymId = "0";
+        loadHomePage();
+    }
+
+    public void onEvent(CoursesErrorMessage message) {
+        gymId = "0";
+        loadHomePage();
     }
 
     private void setHeadNoLocationView(String cityName) {

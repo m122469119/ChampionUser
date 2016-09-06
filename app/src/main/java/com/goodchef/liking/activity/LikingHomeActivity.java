@@ -238,63 +238,81 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onTabChanged(String tabId) {
                 if (tabId.equals(TAG_MAIN_TAB)) {//首页
-                    //Log.i(TAG,"tab: "+tabId);
-                    mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingDistanceTextView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setVisibility(View.GONE);
-                    mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-//                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
-                    mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
-                    mRightImageView.setVisibility(View.VISIBLE);
-                    mRedPoint.setVisibility(View.VISIBLE);
-                    mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
-                    mShoppingCartNumTextView.setVisibility(View.GONE);
+                    setTagMainTab();
                     setHomeTitle();
                     setHomeMenuReadNotice();
                     checkAppUpdate();
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
-                    mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
-                    mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
-                    mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_nearby);
-                    mRightImageView.setVisibility(View.GONE);
-                    mRedPoint.setVisibility(View.GONE);
-                    mLikingDistanceTextView.setVisibility(View.GONE);
-                    //  mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
+                    setTagRechargeTab();
+                } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
+                    setTagNearbyTab();
+                    setHomeTitle();
+                    postEvent(new OnCLickBuyCardFragmentMessage());
+                    checkAppUpdate();
+                } else if (tabId.equals(TAG_MY_TAB)) {//我的
+                    setTagMyTab();
+                    checkAppUpdate();
+                }
+            }
+        });
+    }
+
+    /**
+     * 设置首页界面tab
+     */
+    private void setTagMainTab() {
+        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+        mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
+        mLikingDistanceTextView.setVisibility(View.VISIBLE);
+        mLikingRightTitleTextView.setVisibility(View.GONE);
+        mRightImageView.setVisibility(View.VISIBLE);
+        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
+        mShoppingCartNumTextView.setVisibility(View.GONE);
+    }
+
+    /**
+     * 设置买卡界面tab
+     */
+    private void setTagNearbyTab() {
+        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+        mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
+        mLikingDistanceTextView.setVisibility(View.VISIBLE);
+        mLikingRightTitleTextView.setVisibility(View.GONE);
+        mRightImageView.setVisibility(View.GONE);
+        mShoppingCartNumTextView.setVisibility(View.GONE);
+        mRedPoint.setVisibility(View.GONE);
+    }
+
+    /**
+     * 设置营养餐tab
+     */
+    private void setTagRechargeTab() {
+        mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
+        mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
+        mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_nearby);
+        mRightImageView.setVisibility(View.GONE);
+        mRedPoint.setVisibility(View.GONE);
+        mLikingDistanceTextView.setVisibility(View.GONE);
+        //  mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_shopping_cart));
 //                    if (calcDishSize() > 0) {
 //                        mShoppingCartNumTextView.setVisibility(View.VISIBLE);
 //                        mShoppingCartNumTextView.setText(calcDishSize() + "");
 //                    } else {
 //                        mShoppingCartNumTextView.setVisibility(View.GONE);
 //                    }
-                } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
-                    // Log.i(TAG,"tab: "+tabId);
-                    mRedPoint.setVisibility(View.GONE);
-                    mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingDistanceTextView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setVisibility(View.GONE);
-                    mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-//                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
-                    mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
-                    mRightImageView.setVisibility(View.GONE);
-                    mShoppingCartNumTextView.setVisibility(View.GONE);
-                    setHomeTitle();
-                    postEvent(new OnCLickBuyCardFragmentMessage());
-                    checkAppUpdate();
-                } else if (tabId.equals(TAG_MY_TAB)) {//我的
-                    // Log.i(TAG,"tab: "+tabId);
-                    mLikingLeftTitleTextView.setVisibility(View.GONE);
-                    mLikingDistanceTextView.setVisibility(View.GONE);
-                    mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
-                    mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
-                    mRightImageView.setVisibility(View.GONE);
-                    mRedPoint.setVisibility(View.GONE);
-                    mShoppingCartNumTextView.setVisibility(View.GONE);
-                    checkAppUpdate();
-                }
-            }
-        });
+    }
+
+    /**
+     * 设置我的界面Tab
+     */
+    private void setTagMyTab() {
+        mLikingLeftTitleTextView.setVisibility(View.GONE);
+        mLikingDistanceTextView.setVisibility(View.GONE);
+        mLikingRightTitleTextView.setVisibility(View.GONE);
+        mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
+        mRightImageView.setVisibility(View.GONE);
+        mRedPoint.setVisibility(View.GONE);
+        mShoppingCartNumTextView.setVisibility(View.GONE);
     }
 
 
@@ -710,18 +728,28 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置首页标题
      */
     private void setHomeTitle() {
+        String tag = fragmentTabHost.getCurrentTabTag();
         if (isWhetherLocation) {
-            mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-            mLikingLeftTitleTextView.setEnabled(true);
-            if (mGym != null && !StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
-                mLikingDistanceTextView.setText(mGym.getDistance());
-                mLikingMiddleTitleTextView.setText(mGym.getName());
+            if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
+                mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+                mLikingLeftTitleTextView.setEnabled(true);
+                if (mGym != null && !StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
+                    mLikingDistanceTextView.setVisibility(View.VISIBLE);
+                    mLikingDistanceTextView.setText(mGym.getDistance());
+                    mLikingMiddleTitleTextView.setText(mGym.getName());
+                }
+            } else if (tag.equals(TAG_MY_TAB)) {//我的
+                setTagMyTab();
             }
         } else {
-            mLikingMiddleTitleTextView.setText(R.string.location_fail);
-            mLikingDistanceTextView.setVisibility(View.GONE);
-            mLikingLeftTitleTextView.setVisibility(View.GONE);
-            mLikingLeftTitleTextView.setEnabled(false);
+            if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
+                mLikingMiddleTitleTextView.setText(R.string.location_fail);
+                mLikingDistanceTextView.setVisibility(View.GONE);
+                mLikingLeftTitleTextView.setVisibility(View.GONE);
+                mLikingLeftTitleTextView.setEnabled(false);
+            } else if (tag.equals(TAG_MY_TAB)) {//我的
+                setTagMyTab();
+            }
         }
     }
 
@@ -729,10 +757,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置是否读取过公告
      */
     private void setHomeMenuReadNotice() {
-        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
-            if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
-                mRedPoint.setVisibility(View.VISIBLE);
-                RightMenuDialog.setRedPromptShow(true);
+        String tag = fragmentTabHost.getCurrentTabTag();
+        if (tag.equals(TAG_MAIN_TAB)) {
+            if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
+                if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+                    mRedPoint.setVisibility(View.VISIBLE);
+                    RightMenuDialog.setRedPromptShow(true);
+                } else {
+                    mRedPoint.setVisibility(View.GONE);
+                    RightMenuDialog.setRedPromptShow(false);
+                }
             } else {
                 mRedPoint.setVisibility(View.GONE);
                 RightMenuDialog.setRedPromptShow(false);
@@ -741,7 +775,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         }
-
     }
 
 //    public void onEvent(JumpToDishesDetailsMessage jumpToDishesDetailsMessage) {
