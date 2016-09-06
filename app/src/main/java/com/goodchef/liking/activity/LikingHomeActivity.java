@@ -34,6 +34,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.adapter.SelectCityAdapter;
 import com.goodchef.liking.dialog.HomeRightDialog;
+import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
@@ -89,7 +90,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private String selectCityId;
     private String selectCityName = "";
     private boolean isLocation = false;
-    private boolean isWhetherLocation = false;
+    public boolean isWhetherLocation = false;
 
     // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     //  private ArrayList<Food> buyList = new ArrayList<>();
@@ -97,6 +98,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private SelectCityAdapter mSelectCityAdapter;
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;
+    private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
 
     @Override
@@ -217,6 +219,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private void setMainTableView() {
         //  mLikingLeftTitleTextView.setText(R.string.home_left_menu);
+        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
         mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mRightImageView.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
@@ -235,7 +238,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onTabChanged(String tabId) {
                 if (tabId.equals(TAG_MAIN_TAB)) {//首页
-                    mAppBarLayout.setVisibility(View.VISIBLE);
+                    //Log.i(TAG,"tab: "+tabId);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.GONE);
@@ -250,7 +253,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setHomeMenuReadNotice();
                     checkAppUpdate();
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
-                    mAppBarLayout.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
@@ -266,7 +268,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                        mShoppingCartNumTextView.setVisibility(View.GONE);
 //                    }
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
-                    mAppBarLayout.setVisibility(View.VISIBLE);
+                   // Log.i(TAG,"tab: "+tabId);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.GONE);
@@ -280,8 +282,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     postEvent(new OnCLickBuyCardFragmentMessage());
                     checkAppUpdate();
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
-                    mAppBarLayout.setVisibility(View.VISIBLE);
-                    mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
+                   // Log.i(TAG,"tab: "+tabId);
+                    mLikingLeftTitleTextView.setVisibility(View.GONE);
                     mLikingDistanceTextView.setVisibility(View.GONE);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
@@ -375,10 +377,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
         builder.setCustomTitle(view);
-        if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
-            builder.setMessage(mGym.getAnnouncementInfo());
+        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+            builder.setMessage(mNoticeGym.getAnnouncementInfo());
             textView.setText(R.string.notice);
-            Preference.setAnnouncementId(mGym.getAnnouncementId());
+            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else {
@@ -553,13 +555,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     selectCityName = currentCityName;//默认设置当前定位为选中城市
                     selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
-                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName);
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName,true);
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setEnabled(true);
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
-                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName);
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName,false);
                     mLikingLeftTitleTextView.setVisibility(View.GONE);
                     mLikingLeftTitleTextView.setEnabled(false);
                 }
@@ -567,6 +569,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void start() {
+                isWhetherLocation = false;
                 mLikingMiddleTitleTextView.setText("定位中...");
             }
 
@@ -579,12 +582,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAmapGDLocation.start();
     }
 
-    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName) {
-        saveLocationInfo(cityId, districtId, longitude, latitude, cityName);
+    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName,boolean isLocation) {
+        saveLocationInfo(cityId, districtId, longitude, latitude, cityName,isLocation);
     }
 
-    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude, String cityName) {
-        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName);
+    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude, String cityName,boolean isLocation) {
+        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName,isLocation);
         Preference.setLocationData(locationData);
     }
 
@@ -680,6 +683,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setHomeMenuReadNotice();
     }
 
+    public void onEvent(GymNoticeMessage message) {
+        mNoticeGym = message.getGym();
+        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getDistance())
+                && !StringUtils.isEmpty(mNoticeGym.getName())) {
+            mGym = mNoticeGym;
+        }
+        setHomeTitle();
+        setHomeMenuReadNotice();
+    }
+
     /**
      * 设置首页标题
      */
@@ -687,8 +700,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (isWhetherLocation) {
             mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
             mLikingLeftTitleTextView.setEnabled(true);
-            mLikingDistanceTextView.setText(mGym.getDistance());
-            mLikingMiddleTitleTextView.setText(mGym.getName());
+            if (!StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
+                mLikingDistanceTextView.setText(mGym.getDistance());
+                mLikingMiddleTitleTextView.setText(mGym.getName());
+            }
         } else {
             mLikingMiddleTitleTextView.setText(R.string.location_fail);
             mLikingDistanceTextView.setVisibility(View.GONE);
@@ -701,7 +716,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置是否读取过公告
      */
     private void setHomeMenuReadNotice() {
-        if (Preference.isIdenticalAnnouncement(mGym.getAnnouncementId())) {
+        if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
             mRedPoint.setVisibility(View.VISIBLE);
             RightMenuDialog.setRedPromptShow(true);
         } else {
