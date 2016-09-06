@@ -233,6 +233,7 @@ public class LiKingVerifyUtils {
                 dialog.dismiss();
             }
         });
+        builder.create().setCancelable(false);
         builder.create().show();
     }
 
