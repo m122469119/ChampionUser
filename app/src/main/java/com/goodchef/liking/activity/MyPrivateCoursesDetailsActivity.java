@@ -27,7 +27,7 @@ import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
- * 说明:
+ * 说明:我的私教课详情
  * Author shaozucheng
  * Time:16/6/20 下午7:08
  */
