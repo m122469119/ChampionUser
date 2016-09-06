@@ -83,7 +83,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     }
 
     private void getLocationData() {
-        LocationData  locationData = Preference.getLocationData();
+        LocationData locationData = Preference.getLocationData();
         if (locationData != null) {
             longitude = locationData.getLongitude() + "";
             latitude = locationData.getLatitude() + "";
@@ -160,11 +160,13 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     @Override
     public void updateCardListView(CardResult.CardData cardData) {
         mGymData = cardData.getGymData();
-        CoursesResult.Courses.Gym gym = new CoursesResult.Courses.Gym();
-        gym.setGymId(mGymData.getGymId());
-        gym.setDistance(mGymData.getDistance());
-        gym.setName(mGymData.getName());
-        postEvent(new getGymDataMessage(gym));
+        if (mGymData != null) {
+            CoursesResult.Courses.Gym gym = new CoursesResult.Courses.Gym();
+            gym.setGymId(mGymData.getGymId());
+            gym.setDistance(mGymData.getDistance());
+            gym.setName(mGymData.getName());
+            postEvent(new getGymDataMessage(gym));
+        }
         List<CardResult.CardData.Card> list = cardData.getCardList();
         if (list != null && list.size() > 0) {
             LocationData locationData = Preference.getLocationData();
