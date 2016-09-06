@@ -19,6 +19,7 @@ import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
@@ -263,7 +264,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
         isFirstMessage = true;
         loadHomePage();
-
     }
 
     public void onEvent(CoursesErrorMessage message) {
@@ -280,6 +280,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(LoginOutMessage message) {
+        gymId = "0";
+        loadHomePage();
+    }
+
+    public void onEvent(LoginFinishMessage message) {
         gymId = "0";
         loadHomePage();
     }
