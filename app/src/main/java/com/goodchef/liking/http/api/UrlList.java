@@ -8,7 +8,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
  * Time:16/6/7 上午10:13
  */
 public class UrlList {
-    public static String HOST_VERSION = "/v1";
+    public static String HOST_VERSION = "/v2";
 
     public static String getVersionHostUrl() {
         return getHostUrl() + HOST_VERSION;

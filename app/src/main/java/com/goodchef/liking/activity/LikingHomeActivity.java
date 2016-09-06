@@ -582,6 +582,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             public void start() {
                 isWhetherLocation = false;
                 mLikingMiddleTitleTextView.setText("定位中...");
+                mLikingLeftTitleTextView.setVisibility(View.GONE);
+                mLikingLeftTitleTextView.setEnabled(false);
             }
 
             @Override
@@ -711,7 +713,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (isWhetherLocation) {
             mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
             mLikingLeftTitleTextView.setEnabled(true);
-            if (mGym !=null && !StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
+            if (mGym != null && !StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
                 mLikingDistanceTextView.setText(mGym.getDistance());
                 mLikingMiddleTitleTextView.setText(mGym.getName());
             }
@@ -727,13 +729,19 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置是否读取过公告
      */
     private void setHomeMenuReadNotice() {
-        if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
-            mRedPoint.setVisibility(View.VISIBLE);
-            RightMenuDialog.setRedPromptShow(true);
+        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
+            if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+                mRedPoint.setVisibility(View.VISIBLE);
+                RightMenuDialog.setRedPromptShow(true);
+            } else {
+                mRedPoint.setVisibility(View.GONE);
+                RightMenuDialog.setRedPromptShow(false);
+            }
         } else {
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         }
+
     }
 
 //    public void onEvent(JumpToDishesDetailsMessage jumpToDishesDetailsMessage) {
