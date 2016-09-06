@@ -269,6 +269,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    }
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
                     // Log.i(TAG,"tab: "+tabId);
+                    mRedPoint.setVisibility(View.GONE);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.GONE);
@@ -276,7 +277,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                    mLikingLeftTitleTextView.setText(R.string.home_left_menu);
                     mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
                     mRightImageView.setVisibility(View.GONE);
-                    mRedPoint.setVisibility(View.GONE);
                     mShoppingCartNumTextView.setVisibility(View.GONE);
                     setHomeTitle();
                     postEvent(new OnCLickBuyCardFragmentMessage());
@@ -711,7 +711,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (isWhetherLocation) {
             mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
             mLikingLeftTitleTextView.setEnabled(true);
-            if (!StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
+            if (mGym !=null && !StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
                 mLikingDistanceTextView.setText(mGym.getDistance());
                 mLikingMiddleTitleTextView.setText(mGym.getName());
             }
