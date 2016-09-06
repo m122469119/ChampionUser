@@ -9,13 +9,15 @@ public class LocationData {
     private double longitude;
     private double latitude;
     private String cityName;
+    private boolean isPositionSuccess;
 
-    public LocationData(String cityId, String districtId, double longitude, double latitude,String cityName) {
+    public LocationData(String cityId, String districtId, double longitude, double latitude,String cityName,boolean isPositionSuccess) {
         this.cityId = cityId;
         this.districtId = districtId;
         this.longitude = longitude;
         this.latitude = latitude;
         this.cityName = cityName;
+        this.isPositionSuccess = isPositionSuccess;
     }
 
     public String getCityId() {
@@ -36,5 +38,9 @@ public class LocationData {
 
     public String getCityName() {
         return cityName;
+    }
+
+    public boolean isPositionSuccess() {
+        return isPositionSuccess;
     }
 }

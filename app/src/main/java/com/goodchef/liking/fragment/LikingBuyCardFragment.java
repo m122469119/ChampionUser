@@ -83,7 +83,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     }
 
     private void getLocationData() {
-        LocationData locationData = Preference.getLocationData();
+        LocationData  locationData = Preference.getLocationData();
         if (locationData != null) {
             longitude = locationData.getLongitude() + "";
             latitude = locationData.getLatitude() + "";
@@ -170,8 +170,13 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             LocationData locationData = Preference.getLocationData();
             if (locationData != null) {
                 String cityName = locationData.getCityName();
+                boolean isLocation = locationData.isPositionSuccess();
                 if (!StringUtils.isEmpty(cityName)) {
                     setHeadNoLocationView(cityName);
+                } else if (isLocation) {
+                    SetHeadView();
+                } else {
+                    removeHeadView();
                 }
             }
             updateListView(list);
@@ -235,15 +240,19 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
                     if (isContains) {
                         removeHeadView();
                     } else {
-                        if (mBuyCardAdapter != null) {
-                            if (mHeadView != null) {
-                                getRecyclerView().removeView(mHeadView);
-                                mBuyCardAdapter.setHeaderView(mHeadView);
-                                mBuyCardAdapter.notifyDataSetChanged();
-                            }
-                        }
+                        SetHeadView();
                     }
                 }
+            }
+        }
+    }
+
+    private void SetHeadView() {
+        if (mBuyCardAdapter != null) {
+            if (mHeadView != null) {
+                getRecyclerView().removeView(mHeadView);
+                mBuyCardAdapter.setHeaderView(mHeadView);
+                mBuyCardAdapter.notifyDataSetChanged();
             }
         }
     }
