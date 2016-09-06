@@ -268,7 +268,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 //                        mShoppingCartNumTextView.setVisibility(View.GONE);
 //                    }
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
-                   // Log.i(TAG,"tab: "+tabId);
+                    // Log.i(TAG,"tab: "+tabId);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingRightTitleTextView.setVisibility(View.GONE);
@@ -282,7 +282,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     postEvent(new OnCLickBuyCardFragmentMessage());
                     checkAppUpdate();
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
-                   // Log.i(TAG,"tab: "+tabId);
+                    // Log.i(TAG,"tab: "+tabId);
                     mLikingLeftTitleTextView.setVisibility(View.GONE);
                     mLikingDistanceTextView.setVisibility(View.GONE);
                     mLikingMiddleTitleTextView.setVisibility(View.VISIBLE);
@@ -377,7 +377,18 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
         builder.setCustomTitle(view);
-        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
+            if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+                builder.setMessage(mNoticeGym.getAnnouncementInfo());
+                textView.setText(R.string.notice);
+            } else {
+                textView.setText(R.string.notice_prompt);
+                builder.setMessage(getString(R.string.no_announcement));
+            }
+            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+            mRedPoint.setVisibility(View.GONE);
+            RightMenuDialog.setRedPromptShow(false);
+        } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
             builder.setMessage(mNoticeGym.getAnnouncementInfo());
             textView.setText(R.string.notice);
             Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
@@ -555,13 +566,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     selectCityName = currentCityName;//默认设置当前定位为选中城市
                     selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
-                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName,true);
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
                     mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                     mLikingLeftTitleTextView.setEnabled(true);
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
-                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName,false);
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName, false);
                     mLikingLeftTitleTextView.setVisibility(View.GONE);
                     mLikingLeftTitleTextView.setEnabled(false);
                 }
@@ -582,12 +593,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAmapGDLocation.start();
     }
 
-    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName,boolean isLocation) {
-        saveLocationInfo(cityId, districtId, longitude, latitude, cityName,isLocation);
+    private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName, boolean isLocation) {
+        saveLocationInfo(cityId, districtId, longitude, latitude, cityName, isLocation);
     }
 
-    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude, String cityName,boolean isLocation) {
-        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName,isLocation);
+    private void saveLocationInfo(String cityId, String districtId, double longitude, double latitude, String cityName, boolean isLocation) {
+        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName, isLocation);
         Preference.setLocationData(locationData);
     }
 
