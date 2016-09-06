@@ -449,7 +449,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             } else {
                 isLocation = false;
             }
-            if (!StringUtils.isEmpty(mGym.getGymId())) {
+            if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
                 Intent intent = new Intent(this, LookStoreMapActivity.class);
                 intent.putExtra(KEY_SELECT_CITY, selectCityName);
                 intent.putExtra(KEY_START_LOCATION, isLocation);
@@ -585,8 +585,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
-                    mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-                    mLikingLeftTitleTextView.setEnabled(true);
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
@@ -611,6 +609,33 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         });
         mAmapGDLocation.start();
+    }
+
+
+    private void setHeadNoLocationView(String cityName) {
+        boolean isContains = false;
+        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        if (baseConfigResult != null) {
+            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            if (baseConfigData != null) {
+                List<CityData> cityDataList = baseConfigData.getCityList();
+                if (cityDataList != null && cityDataList.size() > 0) {
+                    for (CityData data : cityDataList) {
+                        if (data.getCityName().contains(cityName)) {
+                            isContains = true;
+                            break;
+                        }
+                    }
+                    if (isContains) {
+                        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+                        mLikingLeftTitleTextView.setEnabled(true);
+                    } else {
+                        mLikingLeftTitleTextView.setVisibility(View.GONE);
+                        mLikingLeftTitleTextView.setEnabled(false);
+                    }
+                }
+            }
+        }
     }
 
     private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName, boolean isLocation) {
@@ -716,8 +741,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public void onEvent(GymNoticeMessage message) {
         mNoticeGym = message.getGym();
-        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getDistance())
-                && !StringUtils.isEmpty(mNoticeGym.getName())) {
+        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getName())) {
             mGym = mNoticeGym;
         }
         setHomeTitle();
@@ -733,7 +757,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
                 mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
                 mLikingLeftTitleTextView.setEnabled(true);
-                if (mGym != null && !StringUtils.isEmpty(mGym.getDistance()) && !StringUtils.isEmpty(mGym.getName())) {
+                if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setText(mGym.getDistance());
                     mLikingMiddleTitleTextView.setText(mGym.getName());
@@ -741,6 +765,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             } else if (tag.equals(TAG_MY_TAB)) {//我的
                 setTagMyTab();
             }
+            setHeadNoLocationView(currentCityName);
         } else {
             if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
                 mLikingMiddleTitleTextView.setText(R.string.location_fail);

@@ -30,10 +30,9 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
         LiKingApi.chargeGroupCoursesConfirm(Preference.getToken(), gymId, scheduleId, new RequestCallback<ChargeGroupConfirmResult>() {
             @Override
             public void onSuccess(ChargeGroupConfirmResult result) {
-                if (result.getCode() == 0) {
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateChargeGroupCoursesView(result.getData());
-                } else {
-                    mView.updateBuyCoursesErrorView();
+                } else if (result.getCode() != 221009) {
                     PopupUtils.showToast(result.getMessage());
                 }
             }
