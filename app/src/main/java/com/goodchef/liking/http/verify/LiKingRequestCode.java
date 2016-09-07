@@ -43,4 +43,6 @@ public interface LiKingRequestCode extends ServerRequestCode {
     public static final int BUY_CARD_CONFIRM = 23009;
     /**购买私教课团体课*/
     public static final int BUY_COURSES_ERROR =221009;
+    /**无可用会员卡,请购卡后重试*/
+    public static final int BUY_COURSES_NO_CARD=22013;
 }

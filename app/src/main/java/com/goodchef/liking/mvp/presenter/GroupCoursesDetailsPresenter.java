@@ -11,6 +11,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
 
@@ -50,7 +51,9 @@ public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDeta
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateOrderGroupCourses();
-                } else if (result.getCode() != 221009) {
+                } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
+                    mView.updateErrorNoCard(result.getMessage());
+                } else if (result.getCode() != LiKingRequestCode.BUY_COURSES_ERROR) {
                     PopupUtils.showToast(result.getMessage());
                 }
             }

@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
@@ -21,6 +23,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -228,6 +231,30 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         this.finish();
     }
 
+    @Override
+    public void updateErrorNoCard(String errorMessage) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(errorMessage);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(getString(R.string.go_buy_card), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(GroupCoursesChargeConfirmActivity.this, LikingHomeActivity.class);
+                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB,1);
+                startActivity(intent);
+                postEvent(new NoCardMessage(1));
+                dialog.dismiss();
+                GroupCoursesChargeConfirmActivity.this.finish();
+            }
+        });
+        builder.create().show();
+    }
+
     private void handlePay(PayResultData data) {
         int payType = data.getPayType();
         switch (payType) {
@@ -337,7 +364,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         }
     }
 
-    public void onEvent(CoursesErrorMessage message){
+    public void onEvent(CoursesErrorMessage message) {
         this.finish();
     }
 
