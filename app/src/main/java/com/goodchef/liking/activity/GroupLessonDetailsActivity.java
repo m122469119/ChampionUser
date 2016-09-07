@@ -337,10 +337,16 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             if (isFree == COURSES_IS_FREE) {//免费
                 showCancelCoursesDialog();
             } else if (isFree == COURSES_NOT_FREE) {//收费
-                Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
-                intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-                startActivity(intent);
+                if (Preference.isLogin()) {
+                    Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
+                    intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
             }
         } else if (v == mGymIntroduceLayout || v == mGymRootLayout) {//进入门店详情
             UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
