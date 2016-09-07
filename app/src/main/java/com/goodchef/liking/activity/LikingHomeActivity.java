@@ -85,6 +85,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public TextView mShoppingCartNumTextView;
 
     private FragmentTabHost fragmentTabHost;
+    TabWidget tabWidget;
     private AmapGDLocation mAmapGDLocation;
 
     private String currentCityName = "";
@@ -117,7 +118,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
+        fragmentTabHost.setCurrentTab(tag);
     }
+
 
     private void initData() {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -216,15 +220,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 , LikingBuyCardFragment.class, null); //setContent 点击标签后触发
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAG_MY_TAB).setIndicator(buildTabIndicatorCustomView(getString(R.string.tab_liking_home_my), R.drawable.xml_tab_liking_home_me))//setIndicator 设置标签样式
                 , LikingMyFragment.class, null); //setContent 点击标签后触发
-        TabWidget tabWidget = fragmentTabHost.getTabWidget();
+        tabWidget = fragmentTabHost.getTabWidget();
         tabWidget.setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         tabWidget.setBackgroundResource(R.color.main_app_color);
         tabWidget.setPadding(0, DisplayUtils.dp2px(8), 0, DisplayUtils.dp2px(8));
         setHomeTabHost();
         setMainTableView();
 
-        int tag = getIntent().getIntExtra(KEY_INTENT_TAB, 0);
-        fragmentTabHost.setCurrentTab(tag);
+
     }
 
     private void setMainTableView() {
@@ -759,7 +762,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setHomeTitle();
         setHomeMenuReadNotice();
     }
-
 
     /**
      * 设置首页标题

@@ -54,7 +54,7 @@
         <!--首页-->
         <activity
             android:name=".activity.LikingHomeActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <!--引导页-->
