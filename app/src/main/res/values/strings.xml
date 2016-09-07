@@ -202,5 +202,6 @@
     <string name="my_free_group_courses">免费</string>
     <string name="my_not_free_group_courses">付费</string>
     <string name="current_city_no_dredge">当前城市尚未开通服务</string>
+    <string name="go_buy_card">去购卡</string>
 
 </resources>

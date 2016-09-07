@@ -110,7 +110,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         selectCityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
         isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_START_LOCATION, false);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
-        tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX,0);
+        tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX, 0);
         setTitle(selectCityName);
         mCheckGymPresenter = new CheckGymPresenter(this, this);
         setNetWorkView();
@@ -322,9 +322,11 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
      */
     private void jumpLikingHomeActivity(CheckGymListResult.CheckGymData.CheckGym mGymDto) {
         UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
-        postEvent(new ChangGymMessage(String.valueOf(mGymDto.getGymId()),tabIndex));
+        postEvent(new ChangGymMessage(String.valueOf(mGymDto.getGymId()), tabIndex));
         Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
+        intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
         startActivity(intent);
+        this.finish();
     }
 
     /**
@@ -402,10 +404,14 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     @Override
     public void onClick(View v) {
         if (v == mGymLayout) {
-            UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
-            Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
-            postEvent(new ChangGymMessage(String.valueOf(myGymData.getGymId()),tabIndex));
-            startActivity(intent);
+            if (myGymData != null && !StringUtils.isEmpty(myGymData.getGymId())) {
+                UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
+                Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
+                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
+                postEvent(new ChangGymMessage(String.valueOf(myGymData.getGymId()), tabIndex));
+                startActivity(intent);
+                this.finish();
+            }
         } else if (v == mLocationLayout) {
             startLocation();
         }

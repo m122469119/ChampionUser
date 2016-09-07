@@ -11,4 +11,5 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
 public interface GroupCourserDetailsView extends BaseNetworkLoadView {
     void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData);
     void updateOrderGroupCourses();
+    void updateErrorNoCard(String errorMessage);
 }

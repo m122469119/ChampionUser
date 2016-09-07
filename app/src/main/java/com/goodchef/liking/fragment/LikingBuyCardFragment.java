@@ -176,10 +176,10 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             if (locationData != null) {
                 String cityName = locationData.getCityName();
                 boolean isLocation = locationData.isPositionSuccess();
-                if (!StringUtils.isEmpty(cityName)) {
-                    setHeadNoLocationView(cityName);
-                } else if (isLocation) {
+                if (!isLocation) {
                     SetHeadView();
+                } else if (!StringUtils.isEmpty(cityName)) {
+                    setHeadNoLocationView(cityName);
                 } else {
                     removeHeadView();
                 }

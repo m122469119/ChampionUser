@@ -33,6 +33,7 @@ import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;
@@ -65,6 +66,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private static final int COURSES_STATE_CANCEL = 3;//已取消
     private static final int COURSES_IS_FREE = 0;//免费团体课
     private static final int COURSES_NOT_FREE = 1;//收费费团体课
+    public static final String KEY_NO_CARD = "key_no_card";
 
     private HImageView mShopImageView;
     //  private TextView mShopNameTextView;//门店名称
@@ -266,6 +268,29 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         this.finish();
     }
 
+    @Override
+    public void updateErrorNoCard(String errorMessage) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(errorMessage);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(getString(R.string.go_buy_card), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(GroupLessonDetailsActivity.this, LikingHomeActivity.class);
+                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB,1);
+                startActivity(intent);
+                dialog.dismiss();
+                GroupLessonDetailsActivity.this.finish();
+            }
+        });
+        builder.create().show();
+    }
+
     /**
      * 设置详情数据
      *
@@ -423,6 +448,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         if (wechatMessage.isPaySuccess()) {
             this.finish();
         }
+    }
+
+    public void onEvent(NoCardMessage message){
+        this.finish();
     }
 
     public void onEvent(BuyGroupCoursesAliPayMessage message) {

@@ -11,6 +11,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ChargeGroupCoursesView;
 import com.goodchef.liking.storage.Preference;
@@ -30,10 +31,15 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
         LiKingApi.chargeGroupCoursesConfirm(Preference.getToken(), gymId, scheduleId, new RequestCallback<ChargeGroupConfirmResult>() {
             @Override
             public void onSuccess(ChargeGroupConfirmResult result) {
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                if (result.getCode() == 0) {
                     mView.updateChargeGroupCoursesView(result.getData());
-                } else if (result.getCode() != 221009) {
+                } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_ERROR) {
+                    LiKingVerifyUtils.showBuyCoursesErrorDialog(mContext, result.getMessage());
+                } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
+                    mView.updateErrorNoCard(result.getMessage());
+                } else {
                     PopupUtils.showToast(result.getMessage());
+                    mView.updateBuyCoursesErrorView();
                 }
             }
 
