@@ -50,6 +50,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                                 }
                             }
                         });
+                        builder.create().setCancelable(false);
                         builder.create().show();
                     } else if (result.getCode() == 240000 || result.getCode() == 240001) {
                         mView.updateErrorView(result.getMessage());

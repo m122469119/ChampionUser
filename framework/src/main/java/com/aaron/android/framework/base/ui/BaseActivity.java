@@ -31,9 +31,14 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtils.d(TAG, TAG + "----onStart");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.i("Dust", TAG);
         LogUtils.d(TAG, TAG + "----onResume");
         MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
