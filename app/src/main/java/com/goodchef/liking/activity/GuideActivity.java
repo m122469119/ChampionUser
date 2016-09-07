@@ -2,13 +2,16 @@ package com.goodchef.liking.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
+import android.widget.MediaController;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -16,6 +19,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.GuideFragment;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.NavigationBarUtil;
+import com.goodchef.liking.widgets.CustomVideoView;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
 
@@ -29,6 +33,10 @@ public class GuideActivity extends AppBarActivity {
     private ViewPager mViewPager;
     private FragmentPageAdapter mAdapter;
     private IconPageIndicator mIconPageIndicator;
+    private CustomVideoView mVideoView;
+
+    private MediaController mediaco;
+    private Uri mUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +49,47 @@ public class GuideActivity extends AppBarActivity {
         hideAppBar();
         Preference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
         initView();
+        setVideoView();
         setIconPageIndicatorView();
         initData();
+
+
     }
 
-    private void setIconPageIndicatorView(){
+    private void setVideoView() {
+        mediaco = new MediaController(this);
+        mUri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.guide_video);
+        mVideoView.setVideoURI(mUri);
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+                mp.setLooping(true);
+                mediaco.hide();
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.setVideoURI(mUri);
+                mVideoView.start();
+                mediaco.hide();
+            }
+        });
+    }
+
+    private void setIconPageIndicatorView() {
         WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
         if (hasSoft) {
             int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(this);//获取虚拟键盘的高度
             //这一行很重要，将dialog对话框设置在虚拟键盘上面
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mIconPageIndicator.getLayoutParams();
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mIconPageIndicator.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, (navigationBarHeight + 30));
         } else {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mIconPageIndicator.getLayoutParams();
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mIconPageIndicator.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, 30);
         }
     }
@@ -62,6 +97,7 @@ public class GuideActivity extends AppBarActivity {
     private void initView() {
         mViewPager = (ViewPager) findViewById(R.id.guide_viewpager);
         mIconPageIndicator = (IconPageIndicator) findViewById(R.id.guide_indicator);
+        mVideoView = (CustomVideoView) findViewById(R.id.video_view);
     }
 
     private void initData() {
@@ -117,4 +153,9 @@ public class GuideActivity extends AppBarActivity {
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mVideoView.stopPlayback();
+    }
 }

@@ -4,17 +4,26 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/guide_viewpager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-    <com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator
-        android:id="@+id/guide_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"/>
+        <com.goodchef.liking.widgets.CustomVideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/guide_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator
+            android:id="@+id/guide_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="20dp"/>
+    </FrameLayout>
 </RelativeLayout>
