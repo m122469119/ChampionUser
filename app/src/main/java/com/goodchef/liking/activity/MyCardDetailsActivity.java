@@ -51,6 +51,8 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     private LinearLayout mFavourableLayout;
     private TextView mFavourableNumberTextView;
     private ImageView mImageViewLine;
+    private TextView mGymNameTextView;
+    private TextView mGymAddressTextView;
     private LikingStateView mStateView;
 
     private String orderId;//订单id
@@ -79,6 +81,9 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
         mFavourableLayout = (LinearLayout) findViewById(R.id.layout_favourable);
         mFavourableNumberTextView = (TextView) findViewById(R.id.favourable_number);
         mImageViewLine = (ImageView) findViewById(R.id.favourable_line);
+        mGymNameTextView = (TextView) findViewById(R.id.gym_name) ;
+        mGymAddressTextView = (TextView) findViewById(R.id.gym_address) ;
+
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -126,6 +131,8 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
                 mBuyTypeTextView.setText(R.string.pay_free_type);
             }
             mCardPriceTextView.setText("¥ " + data.getOrderAmount());
+            mGymNameTextView.setText(data.getGym_name());
+            mGymAddressTextView.setText(data.getGym_address());
 
             List<TimeLimitData> limitDataList = data.getTimeLimit();
             if (limitDataList != null && limitDataList.size() > 0) {

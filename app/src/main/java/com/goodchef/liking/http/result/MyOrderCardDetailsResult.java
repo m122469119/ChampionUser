@@ -45,6 +45,10 @@ public class MyOrderCardDetailsResult extends BaseResult {
         private List<TimeLimitData> timeLimit;
         @SerializedName("coupon_amount")
         private String couponAmount;
+        @SerializedName("gym_name")
+        private String gym_name;
+        @SerializedName("gym_addr")
+        private String gym_address;
 
         public String getOrderId() {
             return orderId;
@@ -124,6 +128,22 @@ public class MyOrderCardDetailsResult extends BaseResult {
 
         public void setCouponAmount(String couponAmount) {
             this.couponAmount = couponAmount;
+        }
+
+        public String getGym_name() {
+            return gym_name;
+        }
+
+        public void setGym_name(String gym_name) {
+            this.gym_name = gym_name;
+        }
+
+        public String getGym_address() {
+            return gym_address;
+        }
+
+        public void setGym_address(String gym_address) {
+            this.gym_address = gym_address;
         }
     }
 }
