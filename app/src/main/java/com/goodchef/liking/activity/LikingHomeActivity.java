@@ -584,7 +584,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 初始化定位
      */
     private void initTitleLocation() {
-        if (!isWhetherLocation) {
             mAmapGDLocation = new AmapGDLocation(this);
             mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
                 @Override
@@ -623,7 +622,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 }
             });
             mAmapGDLocation.start();
-        }
     }
 
 

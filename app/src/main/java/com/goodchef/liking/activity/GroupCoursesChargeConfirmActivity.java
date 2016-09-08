@@ -238,6 +238,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                GroupCoursesChargeConfirmActivity.this.finish();
                 dialog.dismiss();
             }
         });
@@ -252,6 +253,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
                 GroupCoursesChargeConfirmActivity.this.finish();
             }
         });
+        builder.create().setCancelable(false);
         builder.create().show();
     }
 

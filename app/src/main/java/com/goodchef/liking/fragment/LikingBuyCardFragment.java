@@ -202,12 +202,12 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         longitude = mainAddressChanged.getLongitude() + "";
         cityId = mainAddressChanged.getCityId();
         districtId = mainAddressChanged.getDistrictId();
-        loadHomePage();
+        sendBuyCardListRequest();
     }
 
     public void onEvent(InitApiFinishedMessage message) {
         if (message.isSuccess()) {
-            loadHomePage();
+            sendBuyCardListRequest();
         }
     }
 
@@ -230,17 +230,17 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     public void onEvent(LoginOutMessage message) {
         gymId = "0";
-        loadHomePage();
+        sendBuyCardListRequest();
     }
 
     public void onEvent(LoginFinishMessage message) {
         gymId = "0";
-        loadHomePage();
+        sendBuyCardListRequest();
     }
 
     public void onEvent(CoursesErrorMessage message) {
         gymId = "0";
-        loadHomePage();
+        sendBuyCardListRequest();
     }
 
     private void setHeadNoLocationView(String cityName) {
@@ -280,7 +280,7 @@ public class LikingBuyCardFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     private void removeHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                getRecyclerView().removeView(mHeadView);
+                mBuyCardAdapter.setHeaderView(null);
                 mBuyCardAdapter.notifyDataSetChanged();
             }
         }
