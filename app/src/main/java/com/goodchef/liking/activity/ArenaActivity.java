@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ArenaTagAdapter;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
@@ -20,6 +19,7 @@ import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.mvp.presenter.GymDetailsPresenter;
 import com.goodchef.liking.mvp.view.GymDetailsView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
@@ -56,12 +56,16 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         initView();
         initData();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
+        setRightMenu();
+    }
+
+    private void setRightMenu() {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phoneStr = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phoneStr)) {
-                    PhoneUtils.phoneCall(ArenaActivity.this, phoneStr);
+                String phone = Preference.getCustomerServicePhone();
+                if (!StringUtils.isEmpty(phone)) {
+                    LikingCallUtil.showCallDialog(ArenaActivity.this, "确定联系客服吗？", phone);
                 }
             }
         });
