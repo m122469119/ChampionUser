@@ -274,9 +274,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public void onEvent(ChangGymMessage message) {
         gymId = message.getGymId();
         int index = message.getIndex();
-        if (index == 0) {//从首页切换场馆过来不用刷新界面
+       // if (index == 0) {//从首页切换场馆过来不用刷新界面
             loadHomePage();
-        }
+       // }
     }
 
     public void onEvent(LoginOutMessage message) {
