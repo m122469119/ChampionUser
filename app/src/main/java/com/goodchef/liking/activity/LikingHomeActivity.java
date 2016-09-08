@@ -119,7 +119,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
-        if(fragmentTabHost !=null){
+        if (fragmentTabHost != null) {
             fragmentTabHost.setCurrentTab(tag);
         }
     }
@@ -164,7 +164,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    private void showAppUpdateDialog(final BaseConfigResult.BaseConfigData.UpdateData updateData, int needUpdate) {
+    private void showAppUpdateDialog(final BaseConfigResult.BaseConfigData.UpdateData updateData, final int needUpdate) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
@@ -179,15 +179,17 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     dialog.dismiss();
                 }
             });
-        } else {
-            builder.create().setCancelable(false);
         }
         builder.setPositiveButton(getString(R.string.dialog_app_update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 HDefaultWebActivity.launch(LikingHomeActivity.this, updateData.getUrl(), ConstantUtils.BLANK_STRING);
+                if (needUpdate == 1) {//强制升级
+                    checkAppUpdate();
+                }
             }
         });
+        builder.create().setCancelable(false);
         builder.show();
     }
 
@@ -595,49 +597,50 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 初始化定位
      */
     private void initTitleLocation() {
-            mAmapGDLocation = new AmapGDLocation(this);
-            mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
-                @Override
-                public void receive(AMapLocation object) {
-                    LiKingVerifyUtils.initApi(LikingHomeActivity.this);
-                    if (object != null && object.getErrorCode() == 0) {//定位成功
-                        isWhetherLocation = true;
-                        LogUtils.i("dust", "city: " + object.getCity() + " city code: " + object.getCityCode());
-                        LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
-                        currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                        selectCityName = currentCityName;//默认设置当前定位为选中城市
-                        selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
-                        postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
-                        updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
-                    } else {//定位失败
-                        isWhetherLocation = false;
-                        postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
-                        updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName, false);
-                        mLikingLeftTitleTextView.setVisibility(View.GONE);
-                        mLikingLeftTitleTextView.setEnabled(false);
-                    }
-                }
-
-                @Override
-                public void start() {
+        mAmapGDLocation = new AmapGDLocation(this);
+        mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
+            @Override
+            public void receive(AMapLocation object) {
+                LiKingVerifyUtils.initApi(LikingHomeActivity.this);
+                if (object != null && object.getErrorCode() == 0) {//定位成功
+                    isWhetherLocation = true;
+                    LogUtils.i("dust", "city: " + object.getCity() + " city code: " + object.getCityCode());
+                    LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
+                    currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
+                    selectCityName = currentCityName;//默认设置当前定位为选中城市
+                    selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
+                    postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
+                } else {//定位失败
                     isWhetherLocation = false;
-                    mLikingMiddleTitleTextView.setText("定位中...");
+                    postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, false));
+                    updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName, false);
                     mLikingLeftTitleTextView.setVisibility(View.GONE);
                     mLikingLeftTitleTextView.setEnabled(false);
                 }
+            }
 
-                @Override
-                public void end() {
-                    LogUtils.i("dust", "定位结束...");
-                    checkAppUpdate();
-                }
-            });
-            mAmapGDLocation.start();
+            @Override
+            public void start() {
+                isWhetherLocation = false;
+                mLikingMiddleTitleTextView.setText("定位中...");
+                mLikingLeftTitleTextView.setVisibility(View.GONE);
+                mLikingLeftTitleTextView.setEnabled(false);
+            }
+
+            @Override
+            public void end() {
+                LogUtils.i("dust", "定位结束...");
+                checkAppUpdate();
+            }
+        });
+        mAmapGDLocation.start();
     }
 
 
     /**
      * 设置点位失败是左边切换按钮不显示
+     *
      * @param cityName 城市名称
      */
     private void setHeadNoLocationView(String cityName) {

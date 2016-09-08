@@ -7,8 +7,8 @@
 
     <com.aaron.android.framework.library.imageloader.HImageView
         android:id="@+id/image_tag"
-        android:layout_width="32dp"
-        android:layout_height="25dp"
+        android:layout_width="35dp"
+        android:layout_height="32dp"
         android:layout_gravity="center"
         fresco:failureImage="@drawable/image_defalut_bg"
         fresco:failureImageScaleType="centerCrop"
