@@ -229,7 +229,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     private void removeHeadView() {
         if (mHeadView != null) {
-            getRecyclerView().removeView(mHeadView);
+            mLikingLessonRecyclerAdapter.setHeaderView(null);
             mLikingLessonRecyclerAdapter.notifyDataSetChanged();
         }
     }
