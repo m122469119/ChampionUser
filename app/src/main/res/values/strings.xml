@@ -203,5 +203,8 @@
     <string name="my_not_free_group_courses">付费</string>
     <string name="current_city_no_dredge">当前城市尚未开通服务</string>
     <string name="go_buy_card">去购卡</string>
+    <string name="buy_card">购卡</string>
+    <string name="continue_card">续卡</string>
+    <string name="upgrade_card">升级卡</string>
 
 </resources>

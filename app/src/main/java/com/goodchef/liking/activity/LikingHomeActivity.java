@@ -119,7 +119,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
-        fragmentTabHost.setCurrentTab(tag);
+        if(fragmentTabHost !=null){
+            fragmentTabHost.setCurrentTab(tag);
+        }
     }
 
 
@@ -224,12 +226,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         tabWidget.setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         tabWidget.setBackgroundResource(R.color.main_app_color);
         tabWidget.setPadding(0, DisplayUtils.dp2px(8), 0, DisplayUtils.dp2px(8));
-        setHomeTabHost();
+        setHomeTabHostListener();
         setMainTableView();
-
-
     }
 
+    /**
+     * 设置初始标题view
+     */
     private void setMainTableView() {
         //  mLikingLeftTitleTextView.setText(R.string.home_left_menu);
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
@@ -245,8 +248,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         return tabView;
     }
 
-
-    private void setHomeTabHost() {
+    /***
+     * 设置tab事件
+     */
+    private void setHomeTabHostListener() {
         fragmentTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
@@ -363,6 +368,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    /***
+     * 跳转门店
+     */
     private void jumpArenaActivity() {
         if (isWhetherLocation) {//定位成功时查看门店
             if (!StringUtils.isEmpty(mGym.getGymId())) {
@@ -377,6 +385,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    /**
+     * 展示右边按钮
+     */
     private void showRightMenuDialog() {
         RightMenuDialog.setAnchor(mRightImageView);
         RightMenuDialog.setViewOnClickListener(new View.OnClickListener() {
@@ -625,6 +636,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
 
+    /**
+     * 设置点位失败是左边切换按钮不显示
+     * @param cityName 城市名称
+     */
     private void setHeadNoLocationView(String cityName) {
         boolean isContains = false;
         BaseConfigResult baseConfigResult = Preference.getBaseConfig();

@@ -28,7 +28,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:我的会员卡
  * Author shaozucheng
  * Time:16/6/21 下午3:54
  */

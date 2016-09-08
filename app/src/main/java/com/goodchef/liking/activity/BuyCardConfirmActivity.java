@@ -234,6 +234,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
 
+    /**
+     * 提交支付请求
+     */
     private void senSubmitRequest() {
         if (buyType == BUY_TYPE_BUY) {
             submitGymId = gymId;
@@ -304,14 +307,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 setTitle("升级" + mCardName);
             }
 
-            if (buyType == BUY_TYPE_BUY) {
-
-            } else if (buyType == BUY_TYPE_CONTINUE) {
-
-            } else if (buyType == BUY_TYPE_UPGRADE) {
-
-            }
-
             mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
             if (buyType == BUY_TYPE_UPGRADE) {
                 cardPrice = confirmBuyCardData.getPrice();
@@ -354,6 +349,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 dialog.dismiss();
             }
         });
+        builder.create().setCancelable(false);
         builder.create().show();
     }
 

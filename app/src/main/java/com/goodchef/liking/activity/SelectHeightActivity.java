@@ -16,6 +16,7 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.RulerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 

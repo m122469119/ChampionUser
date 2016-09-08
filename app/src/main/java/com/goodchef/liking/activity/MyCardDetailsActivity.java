@@ -110,20 +110,20 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
             }
             int buyType = data.getBuyType();
             if (buyType == BUY_TYPE_BUY) {
-                mBuyWayTextView.setText("购卡");
+                mBuyWayTextView.setText(R.string.buy_card);
             } else if (buyType == BUY_TYPE_CONTINUE) {
-                mBuyWayTextView.setText("续卡");
+                mBuyWayTextView.setText(R.string.continue_card);
             } else if (buyType == BUY_TYPE_UPGRADE) {
-                mBuyWayTextView.setText("升级卡");
+                mBuyWayTextView.setText(R.string.upgrade_card);
             }
             mPeriodOfValidityTextView.setText(data.getStartTime() + " ~ " + data.getEndTime());
             int payType = data.getPayType();
             if (payType == PAY_TYPE_WECHAT) {
-                mBuyTypeTextView.setText("微信支付");
+                mBuyTypeTextView.setText(R.string.pay_alipay_type);
             } else if (payType == PAY_TYPE_ALIPLY) {
-                mBuyTypeTextView.setText("支付宝支付");
+                mBuyTypeTextView.setText(R.string.pay_wechat_type);
             } else if (payType == PAY_TYPE_FREE) {
-                mBuyTypeTextView.setText("免金额支付");
+                mBuyTypeTextView.setText(R.string.pay_free_type);
             }
             mCardPriceTextView.setText("¥ " + data.getOrderAmount());
 

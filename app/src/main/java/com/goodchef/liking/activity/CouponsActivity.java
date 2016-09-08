@@ -39,18 +39,17 @@ public class CouponsActivity extends AppBarActivity {
     public static final String KEY_SCHEDULE_ID = "schedule_id";
     public static final String KEY_SELECT_TIMES = "select_times";
 
-
-    private EditText mEditCoupons;
-    private TextView mExchangeButton;
-    private LinearLayout mExchangeCouponsLayout;
+    private EditText mEditCoupons;//填写优惠券
+    private TextView mExchangeButton;//兑换优惠券按钮
+    private LinearLayout mExchangeCouponsLayout;//优惠券布局
 
     private String intentType = "";
-    private String coursesId;
-    private String selectTimes;
+    private String coursesId;//课程id
+    private String selectTimes;//私教课购买次数
     private ArrayList<Food> confirmBuyList = new ArrayList<>();
-    private String cardId;//
-    private String type;
-    private String couponId;//
+    private String cardId;//会员卡id
+    private String type;//类型
+    private String couponId;//优惠券id
     private String scheduleId;//排期id
     private String gymId;//场馆id
 
