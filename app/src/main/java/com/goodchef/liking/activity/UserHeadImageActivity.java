@@ -18,6 +18,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CameraCustomDialog;
+import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.camera.CameraPhotoHelper;

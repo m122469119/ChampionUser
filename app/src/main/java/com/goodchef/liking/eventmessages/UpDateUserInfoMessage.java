@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.eventmessages;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 

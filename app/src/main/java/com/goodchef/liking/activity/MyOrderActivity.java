@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:我的订单
  * Author shaozucheng
  * Time:16/6/28 下午2:41
  */

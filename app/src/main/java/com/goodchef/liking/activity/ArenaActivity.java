@@ -42,7 +42,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
 
     private String announcement;
     private GymDetailsPresenter mGymDetailsPresenter;
-    private String gymId;
+    private String gymId;//场馆id
 
     private ArenaTagAdapter mArenaTagAdapter;
 

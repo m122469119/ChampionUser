@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:课程
+ * 说明:我的课程
  * Author shaozucheng
  * Time:16/5/31 下午4:32
  */

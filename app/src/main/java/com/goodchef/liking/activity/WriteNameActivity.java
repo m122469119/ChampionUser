@@ -12,6 +12,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
