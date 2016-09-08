@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ArenaTagAdapter;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
@@ -18,6 +19,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.mvp.presenter.GymDetailsPresenter;
 import com.goodchef.liking.mvp.view.GymDetailsView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
@@ -54,6 +56,15 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         initView();
         initData();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
+        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phoneStr = Preference.getCustomerServicePhone();
+                if (!StringUtils.isEmpty(phoneStr)) {
+                    PhoneUtils.phoneCall(ArenaActivity.this, phoneStr);
+                }
+            }
+        });
     }
 
 
@@ -111,12 +122,8 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         setTitle(gymDetailsData.getName());
         mAddressTextView.setText("地点：" + gymDetailsData.getAddress());
         announcement = gymDetailsData.getAnnouncement().trim();
-        if (!StringUtils.isEmpty(announcement)) {
-            mAnnouncementLayout.setVisibility(View.VISIBLE);
-            mPublicNoticeTextView.setText("公告：" + gymDetailsData.getAnnouncement());
-        } else {
-            mAnnouncementLayout.setVisibility(View.GONE);
-        }
+        mAnnouncementLayout.setVisibility(View.GONE);
+
         List<GymDetailsResult.GymDetailsData.ImgsData> imgDataList = gymDetailsData.getImgs();
         if (imgDataList != null && imgDataList.size() > 0) {
             setBannerView(imgDataList);
