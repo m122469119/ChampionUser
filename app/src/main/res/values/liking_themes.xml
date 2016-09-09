@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LikingTheme" parent="AppTheme.Base.NoActionBar">
+        <item name="colorPrimary">@color/main_app_color</item>
+        <item name="colorPrimaryDark">@color/main_app_dark_color</item>
+    </style>
+    <style name="AppBaseThemeMain"  parent="LikingTheme">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+</resources>

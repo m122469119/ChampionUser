@@ -40,7 +40,7 @@ public abstract class BaseSwipeRefreshPagerLoaderFragment extends BasePagerLoade
         View swipeRefreshLayout = inflater.inflate(R.layout.view_swipe_refresh, null, false);
         mRefreshLayout = (SwipeRefreshLayout) swipeRefreshLayout.findViewById(R.id.swipelayout_pager_load);
         mRefreshLayout.setOnRefreshListener(this);
-        setRefreshColor(R.color.swipe_refresh_default_color);
+        setRefreshColor(R.color.default_swipe_refresh_color);
         if (view == null) {
             throw new IllegalArgumentException("refresh view content must not be null!");
         }

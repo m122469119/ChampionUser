@@ -34,7 +34,7 @@
                       android:padding="5dp"
                       android:gravity="center_horizontal"
                       android:textSize="@dimen/textsize_small"
-                      android:textColor="@color/dialog_message_text_color"/>
+                      android:textColor="@color/default_dialog_message_text_color"/>
         </ScrollView>
     </LinearLayout>
 
