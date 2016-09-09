@@ -2,8 +2,7 @@
 <resources>
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--<item name="android:windowAnimationStyle">@style/ActivityTransitions</item>-->
-        <item name="colorPrimary">@color/main_app_color</item>
-        <item name="colorPrimaryDark">@color/main_app_dark_color</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:listSelector">@drawable/base_list_view_selector</item>
     </style>
     <!-- Base application theme. -->

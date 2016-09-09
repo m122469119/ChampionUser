@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="main_app_color">#2e2f34</color>
+    <color name="main_app_dark_color">#2e2f34</color>
+
     <color name="tab_indicator_color">#23ec7d</color>
     <color name="tab_indicator_gray_color">#9198a1</color>
 
