@@ -79,7 +79,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private TextView mLikingRightTitleTextView;//右边文字
     private TextView mLikingDistanceTextView;//距离
     private TextView mRedPoint;//红色点点
-    private LinearLayout mMiddleLayout;
+    private RelativeLayout mMiddleLayout;
     private AppBarLayout mAppBarLayout;
 
     public TextView mShoppingCartNumTextView;
@@ -202,7 +202,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAppBarLayout = (AppBarLayout) findViewById(R.id.liking_home_appBar);
         mShoppingCartNumTextView = (TextView) findViewById(R.id.tv_shopping_cart_num);
         mRedPoint = (TextView) findViewById(R.id.home_notice_prompt);
-        mMiddleLayout = (LinearLayout) findViewById(R.id.layout_home_middle);
+        mMiddleLayout = (RelativeLayout) findViewById(R.id.layout_home_middle);
         initTabHost();
     }
 

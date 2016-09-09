@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClic
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
@@ -88,8 +89,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             }
         });
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
-        // setRecyclerAdapter(mBuyCardAdapter);
-
+        mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         initRecycleHeadView();
         sendBuyCardListRequest();
     }
@@ -195,7 +195,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                         removeHeadView();
                     }
                 }
-                //   updateListView(list);
                 mBuyCardAdapter = new BuyCardAdapter(getActivity());
                 mBuyCardAdapter.setData(list);
                 mRecyclerView.setAdapter(mBuyCardAdapter);
