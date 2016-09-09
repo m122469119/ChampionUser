@@ -165,7 +165,11 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         } else {
             getLocationData();
             mCardListPresenter = new CardListPresenter(getActivity(), this);
-            mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, gymId, TYPE_BUY);
+            if (longitude.equals("0.0") || latitude.equals("0.0")) {
+                mCardListPresenter.getCardList("0", "0", cityId, districtId, gymId, TYPE_BUY);
+            } else {
+                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, gymId, TYPE_BUY);
+            }
         }
     }
 
@@ -185,7 +189,12 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             if (list != null && list.size() > 0) {
                 LocationData locationData = Preference.getLocationData();
                 if (locationData != null) {
+                    mBuyCardAdapter = new BuyCardAdapter(getActivity());
+                    mBuyCardAdapter.setData(list);
+                    mRecyclerView.setAdapter(mBuyCardAdapter);
+                    setItemClickListener();
                     String cityName = locationData.getCityName();
+
                     boolean isLocation = locationData.isPositionSuccess();
                     if (!isLocation) {
                         SetHeadView();
@@ -195,16 +204,9 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                         removeHeadView();
                     }
                 }
-                mBuyCardAdapter = new BuyCardAdapter(getActivity());
-                mBuyCardAdapter.setData(list);
-                mRecyclerView.setAdapter(mBuyCardAdapter);
-                setItemClickListener();
             } else if (list == null || list.size() == 0) {
                 setNoDataView();
             }
-
-        } else {
-            setNoDataView();
         }
     }
 
