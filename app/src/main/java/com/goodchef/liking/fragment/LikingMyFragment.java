@@ -420,6 +420,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         return true;
     }
 
+
+    public void onEvent(LoginOutMessage message){
+        setLogonView();
+        clearExerciseData();
+    }
+
     public void onEvent(InitApiFinishedMessage message) {
         if (message.isSuccess()) {
             mStateView.setState(StateView.State.SUCCESS);
