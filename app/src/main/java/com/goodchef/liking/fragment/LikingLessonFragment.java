@@ -10,6 +10,7 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
@@ -47,6 +48,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public static final String KEY_DISTANCE = "key_distance";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
     private View mHeadView;
+    private View mBlankView;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
@@ -90,6 +92,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private void initData() {
         mCoursesPresenter = new HomeCoursesPresenter(getActivity(), this);
         initRecycleView();
+        initBlankView();
         initRecycleHeadView();
         setNoDataView();
         getStateView().findViewById(R.id.text_view_fail_refresh).setOnClickListener(new View.OnClickListener() {
@@ -104,6 +107,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         setPullMode(PullMode.PULL_BOTH);
         mLikingLessonRecyclerAdapter = new LikingLessonRecyclerAdapter(getActivity());
         setRecyclerAdapter(mLikingLessonRecyclerAdapter);
+        setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mLikingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -136,12 +140,20 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
 
+    /***
+     * chu初始化headView
+     */
     private void initRecycleHeadView() {
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, getRecyclerView(), false);
         mSliderParentLayout = mHeadView.findViewById(R.id.layout_liking_home_head);
         mImageViewPager = (InfiniteViewPager) mHeadView.findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) mHeadView.findViewById(R.id.liking_home_head_indicator);
         initImageSliderLayout();
+    }
+
+
+    private void initBlankView() {
+        mBlankView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_blank_view, getRecyclerView(), false);
     }
 
     private void setNoDataView() {
@@ -198,12 +210,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         List<CoursesResult.Courses.CoursesData> list = courses.getCoursesDataList();
         if (list != null) {
             updateListView(list);
-            if (bannerDataList != null && bannerDataList.size() > 0) {
-                mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);
-                mLikingLessonRecyclerAdapter.notifyDataSetChanged();
-            } else {
-                removeHeadView();
-            }
         }
     }
 
@@ -222,8 +228,14 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             mLikingLessonRecyclerAdapter.notifyDataSetChanged();
         } else {
             removeHeadView();
+            setBlankView();
         }
 
+    }
+
+    private void setBlankView() {
+        mLikingLessonRecyclerAdapter.setHeaderView(mBlankView);
+        mLikingLessonRecyclerAdapter.notifyDataSetChanged();
     }
 
 
@@ -274,9 +286,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public void onEvent(ChangGymMessage message) {
         gymId = message.getGymId();
         int index = message.getIndex();
-       // if (index == 0) {//从首页切换场馆过来不用刷新界面
-            loadHomePage();
-       // }
+        // if (index == 0) {//从首页切换场馆过来不用刷新界面
+        loadHomePage();
+        // }
     }
 
     public void onEvent(LoginOutMessage message) {
