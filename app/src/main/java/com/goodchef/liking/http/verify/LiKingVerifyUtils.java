@@ -19,6 +19,7 @@ import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
+import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -39,6 +40,7 @@ import de.greenrobot.event.EventBus;
 public class LiKingVerifyUtils {
 
     public static final String TAG = "ChefStoveVerifyResultUtils";
+    public static final String NULL_STRING = "";
 
     /**
      * 验证Result有效性,处理相关服务器响应的BaseResult错误码
@@ -61,6 +63,15 @@ public class LiKingVerifyUtils {
                 case LiKingRequestCode.LOGIN_TOKEN_INVALID:
                     if (view != null && view instanceof BaseLoginView) {
                         ((BaseLoginView) view).updateNoLoginView();
+                    } else {
+                        Preference.setToken(NULL_STRING);
+                        Preference.setNickName(NULL_STRING);
+                        Preference.setUserPhone(NULL_STRING);
+                        Preference.setIsNewUser(null);
+                        Preference.setUserIconUrl(NULL_STRING);
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                        EventBus.getDefault().post(new LoginOutMessage());
                     }
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:
@@ -218,6 +229,7 @@ public class LiKingVerifyUtils {
 
     /**
      * 购买私教课 团体课，预约团体课
+     *
      * @param context
      * @param message
      */
