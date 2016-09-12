@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.fragment.CouponsFragment;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -131,7 +132,7 @@ public class CouponsActivity extends AppBarActivity {
                 if (LiKingVerifyUtils.isValid(CouponsActivity.this, result)) {
                     PopupUtils.showToast("兑换成功");
                     mEditCoupons.setText("");//清空兑换码
-                    setCouponsFragment();
+                    postEvent(new ExchangeCouponsMessage());
                 } else {
                     PopupUtils.showToast(result.getMessage());
                 }

@@ -21,6 +21,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.ShoppingCartActivity;
+import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.CouponPresenter;
@@ -190,6 +191,14 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         }
     }
 
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(ExchangeCouponsMessage message){
+        loadHomePage();
+    }
 
     class CouponsAdapter extends BaseRecycleViewAdapter<CouponsAdapter.CouponsViewHolder, CouponsResult.CouponData.Coupon> {
 
