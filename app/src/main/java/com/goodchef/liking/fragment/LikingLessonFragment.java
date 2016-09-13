@@ -23,6 +23,7 @@ import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
+import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
@@ -284,6 +285,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(ChangGymMessage message) {
+        //切换场馆刷新数据
         gymId = message.getGymId();
         int index = message.getIndex();
         // if (index == 0) {//从首页切换场馆过来不用刷新界面
@@ -292,12 +294,23 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(LoginOutMessage message) {
+        //登出刷新首页数据
         gymId = "0";
         loadHomePage();
     }
 
     public void onEvent(LoginFinishMessage message) {
+        //登录完成刷新首页数据
         gymId = "0";
         loadHomePage();
+    }
+
+    public void onEvent(getGymDataMessage message) {
+        //如果判断购卡页面数据和首页数据不一致，刷新数据
+        CoursesResult.Courses.Gym mGym = message.getGym();
+        if (!mGym.getGymId().equals(gymId)) {
+            gymId = mGym.getGymId();
+            loadHomePage();
+        }
     }
 }

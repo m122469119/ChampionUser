@@ -22,6 +22,7 @@ import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
@@ -263,6 +264,15 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     public void onEvent(CoursesErrorMessage message) {
         gymId = "0";
         sendBuyCardListRequest();
+    }
+
+    public void onEvent(GymNoticeMessage message) {
+        //如果检测到首页数据和买卡场馆不一致，刷新数据
+        if (!message.getGym().getGymId().equals(gymId)) {
+            gymId = message.getGym().getGymId();
+            sendBuyCardListRequest();
+        }
+
     }
 
     private void setHeadNoLocationView(String cityName) {
