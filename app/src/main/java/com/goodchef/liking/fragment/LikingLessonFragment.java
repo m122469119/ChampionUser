@@ -23,7 +23,6 @@ import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
-import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
@@ -305,12 +304,4 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         loadHomePage();
     }
 
-    public void onEvent(getGymDataMessage message) {
-        //如果判断购卡页面数据和首页数据不一致，刷新数据
-        CoursesResult.Courses.Gym mGym = message.getGym();
-        if (!mGym.getGymId().equals(gymId)) {
-            gymId = mGym.getGymId();
-            loadHomePage();
-        }
-    }
 }
