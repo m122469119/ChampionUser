@@ -22,6 +22,7 @@ import com.goodchef.liking.adapter.GymAdapter;
 import com.goodchef.liking.adapter.TrainItemAdapter;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
@@ -227,6 +228,10 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     public void onEvent(BuyPrivateCoursesMessage message) {
         this.finish();
+    }
+
+    public void onEvent(LoginFinishMessage message){
+        sendDetailsRequest();
     }
 
     @Override

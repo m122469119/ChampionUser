@@ -191,6 +191,20 @@
 }
 ###### end #########
 
+####### 支付宝 start ########
+-libraryjars ../thirdparty/libs/alipaySingle-20160825.jar
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}
+####### end ##############
+
+###解决导入支付宝混淆问题###
+-dontwarn android.net.**
+-keep class android.net.SSLCertificateSocketFactory{*;}
+####end#####
 
 # The support library contains references to newer platform versions.
 # Don't warn about those in case this app is linking against an older
