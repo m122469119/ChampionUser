@@ -9,6 +9,7 @@ import com.aaron.android.thirdparty.pay.Pay;
 import com.aaron.android.thirdparty.pay.alipay.utils.Result;
 import com.alipay.sdk.app.PayTask;
 
+
 /**
  * Created on 15/10/9.
  *
@@ -23,7 +24,7 @@ public class AliPay extends Pay<Object> {
     private Activity mContext;
     private OnAliPayListener mOnAliPayListener;
     private String mPayOrderInfo;
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == ALIPAY_FLAG) {
@@ -51,13 +52,14 @@ public class AliPay extends Pay<Object> {
 
     /**
      * 订单信息
+     *
      * @param orderInfo String
      */
     public void setPayOrderInfo(String orderInfo) {
         mPayOrderInfo = orderInfo;
     }
 
-    private class OnAliPayListenerImpl implements OnAliPayListener{
+    private class OnAliPayListenerImpl implements OnAliPayListener {
 
         @Override
         public void onStart() {
@@ -79,6 +81,7 @@ public class AliPay extends Pay<Object> {
 
         }
     }
+
     @Override
     public void initPayApi() {
 
@@ -97,7 +100,7 @@ public class AliPay extends Pay<Object> {
                 mOnAliPayListener.onStart();
                 PayTask alipay = new PayTask(mContext);
                 // 调用支付接口
-                String result = alipay.pay(mPayOrderInfo);
+                String result = alipay.pay(mPayOrderInfo, true);
                 Message msg = new Message();
                 msg.what = ALIPAY_FLAG;
                 msg.obj = result;
