@@ -22,6 +22,7 @@ import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.ShoppingCartActivity;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.CouponPresenter;
@@ -165,9 +166,9 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     private void sendRequest(int page) {
         mCouponPresenter = new CouponPresenter(getActivity(), this);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getCoupons(null, null, null, null, null, null, page,gymId, CouponsFragment.this);
+            mCouponPresenter.getCoupons(null, null, null, null, null, null, page, gymId, CouponsFragment.this);
         } else {
-            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page,gymId, CouponsFragment.this);
+            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, gymId, CouponsFragment.this);
         }
     }
 
@@ -196,8 +197,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         return true;
     }
 
-    public void onEvent(ExchangeCouponsMessage message){
+    public void onEvent(ExchangeCouponsMessage message) {
         loadHomePage();
+    }
+
+    public void onEvent(LoginOutFialureMessage message) {
+        getActivity().finish();
     }
 
     class CouponsAdapter extends BaseRecycleViewAdapter<CouponsAdapter.CouponsViewHolder, CouponsResult.CouponData.Coupon> {

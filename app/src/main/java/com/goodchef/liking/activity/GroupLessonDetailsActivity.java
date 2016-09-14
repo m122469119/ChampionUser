@@ -33,6 +33,7 @@ import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -459,6 +460,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     }
 
     public void onEvent(CoursesErrorMessage message) {
+        this.finish();
+    }
+
+    public void onEvent(LoginOutFialureMessage message){
         this.finish();
     }
 

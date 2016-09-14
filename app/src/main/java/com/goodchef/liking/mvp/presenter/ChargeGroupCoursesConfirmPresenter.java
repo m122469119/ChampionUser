@@ -7,6 +7,7 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
@@ -15,6 +16,8 @@ import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ChargeGroupCoursesView;
 import com.goodchef.liking.storage.Preference;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 说明:
@@ -37,6 +40,10 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
                     LiKingVerifyUtils.showBuyCoursesErrorDialog(mContext, result.getMessage());
                 } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
                     mView.updateErrorNoCard(result.getMessage());
+                } else if (result.getCode() == LiKingRequestCode.LOGIN_TOKEN_INVALID) {
+                    mView.updateBuyCoursesErrorView();
+                    PopupUtils.showToast(result.getMessage());
+                    EventBus.getDefault().post(new LoginOutFialureMessage());
                 } else {
                     PopupUtils.showToast(result.getMessage());
                     mView.updateBuyCoursesErrorView();

@@ -1,5 +1,6 @@
 package com.goodchef.liking.http.verify;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,11 +16,25 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.activity.GroupCoursesChargeConfirmActivity;
+import com.goodchef.liking.activity.GroupLessonDetailsActivity;
+import com.goodchef.liking.activity.InviteFriendsActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.activity.MyCardActivity;
+import com.goodchef.liking.activity.MyCardDetailsActivity;
+import com.goodchef.liking.activity.MyChargeGroupCoursesDetailsActivity;
+import com.goodchef.liking.activity.MyInfoActivity;
+import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
+import com.goodchef.liking.activity.MyTrainDataActivity;
+import com.goodchef.liking.activity.OpenTheDoorActivity;
+import com.goodchef.liking.activity.OrderPrivateCoursesConfirmActivity;
+import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
+import com.goodchef.liking.activity.UpgradeAndContinueCardActivity;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
-import com.goodchef.liking.eventmessages.LoginOutMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -71,7 +86,15 @@ public class LiKingVerifyUtils {
                         Preference.setUserIconUrl(NULL_STRING);
                         Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
-                        EventBus.getDefault().post(new LoginOutMessage());
+                        if (context instanceof GroupLessonDetailsActivity || context instanceof GroupCoursesChargeConfirmActivity
+                                || context instanceof BuyCardConfirmActivity || context instanceof PrivateLessonDetailsActivity
+                                || context instanceof OrderPrivateCoursesConfirmActivity || context instanceof MyChargeGroupCoursesDetailsActivity
+                                || context instanceof MyInfoActivity || context instanceof MyPrivateCoursesDetailsActivity || context instanceof MyTrainDataActivity
+                                || context instanceof UpgradeAndContinueCardActivity || context instanceof MyCardDetailsActivity
+                                || context instanceof MyCardActivity || context instanceof InviteFriendsActivity || context instanceof OpenTheDoorActivity) {
+                            ((Activity) context).finish();
+                        }
+                        EventBus.getDefault().post(new LoginOutFialureMessage());
                     }
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:

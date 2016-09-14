@@ -24,6 +24,7 @@ import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
@@ -261,6 +262,11 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     public void onEvent(CoursesErrorMessage message) {
+        gymId = "0";
+        sendBuyCardListRequest();
+    }
+
+    public void onEvent(LoginOutFialureMessage message){
         gymId = "0";
         sendBuyCardListRequest();
     }

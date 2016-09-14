@@ -21,6 +21,7 @@ import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.MyChargeGroupCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
@@ -211,5 +212,10 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     public void onEvent(CancelGroupCoursesMessage cancelGroupCoursesMessage) {
         loadHomePage();
+    }
+
+
+    public void onEvent(LoginOutFialureMessage message){
+        getActivity().finish();
     }
 }

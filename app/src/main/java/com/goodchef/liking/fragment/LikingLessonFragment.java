@@ -21,6 +21,7 @@ import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.BannerResult;
@@ -300,6 +301,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     public void onEvent(LoginFinishMessage message) {
         //登录完成刷新首页数据
+        gymId = "0";
+        loadHomePage();
+    }
+
+    public void onEvent(LoginOutFialureMessage message){
         gymId = "0";
         loadHomePage();
     }

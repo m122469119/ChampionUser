@@ -29,6 +29,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
@@ -415,5 +416,15 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         } else if (v == mLocationLayout) {
             startLocation();
         }
+    }
+
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(LoginOutFialureMessage message){
+        initMapData();
     }
 }
