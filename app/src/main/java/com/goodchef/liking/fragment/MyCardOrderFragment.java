@@ -21,6 +21,7 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyCardDetailsActivity;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.data.OrderCardData;
@@ -123,6 +124,15 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
                 super.onFailure(error);
             }
         });
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(LoginOutFialureMessage message){
+        getActivity().finish();
     }
 
 

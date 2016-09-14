@@ -37,6 +37,7 @@ import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.UserExerciseResult;
@@ -272,7 +273,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v == mTrainLayout) {
+        if (v == mTrainLayout) {//我的训练数据
             if (Preference.isLogin()) {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYTRAINDATAACTIVITY);
                 Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
@@ -281,7 +282,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
-        } else if (v == mLoginBtn) {
+        } else if (v == mLoginBtn) {//登录
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         } else if (v == mHeadInfoLayout || v == mHeadHImageView) {
@@ -421,7 +422,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    public void onEvent(LoginOutMessage message){
+    public void onEvent(LoginOutFialureMessage message){
         setLogonView();
         clearExerciseData();
     }
