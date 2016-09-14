@@ -397,8 +397,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                                                    public void onClick(View v) {
                                                        switch (v.getId()) {
                                                            case R.id.layout_notice://公告
-                                                               showNoticeDialog();
-                                                               RightMenuDialog.dismiss();
+                                                               if (mNoticeGym !=null){
+                                                                   showNoticeDialog();
+                                                                   RightMenuDialog.dismiss();
+                                                               }
                                                                break;
                                                            case R.id.layout_open_door://开门
                                                                jumpOpenTheDoorActivity();
