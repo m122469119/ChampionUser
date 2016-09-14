@@ -32,12 +32,8 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
-<<<<<<< 24b4996511a7510e080dcd4e8c085770e1903a34
-import com.goodchef.liking.http.result.data.PayData;
-=======
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.result.data.PlacesData;
->>>>>>> 简述：修改私教课确认购买页和加载本地图片
 import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
 import com.goodchef.liking.storage.UmengEventId;
@@ -464,7 +460,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     @Override
-    public void updateSubmitOrderCourses(PayData payData) {
+    public void updateSubmitOrderCourses(PayResultData payData) {
         int payType = payData.getPayType();
         if (payType == PAY_TYPE) {//3 免金额支付
             PopupUtils.showToast("支付成功");
@@ -475,9 +471,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         }
     }
 
-<<<<<<< 24b4996511a7510e080dcd4e8c085770e1903a34
-    private void handlePay(PayData data) {
-=======
     @Override
     public void updateOrderCalculate(boolean isSuccess, OrderCalculateResult.OrderCalculateData orderCalculateData) {
         if (isSuccess) {
@@ -493,7 +486,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
 
     private void handlePay(PayResultData data) {
->>>>>>> 简述：修改私教课确认购买页和加载本地图片
         int payType = data.getPayType();
         switch (payType) {
             case PayType.PAY_TYPE_ALI://支付宝支付
