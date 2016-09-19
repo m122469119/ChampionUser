@@ -184,6 +184,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                 gym.setGymId(mGymData.getGymId());
                 gym.setDistance(mGymData.getDistance());
                 gym.setName(mGymData.getName());
+                gym.setCityId(mGymData.getCityId());
                 postEvent(new getGymDataMessage(gym));
             }
             List<CardResult.CardData.Card> list = cardData.getCardList();

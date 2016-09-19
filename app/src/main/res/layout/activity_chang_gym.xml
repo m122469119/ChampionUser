@@ -4,7 +4,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,49 +18,15 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_change_layer"
+    <ListView
+        android:id="@+id/right_drawer"
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:layout_marginTop="?attr/actionBarSize"
         android:background="@color/white"
-        android:choiceMode="singleChoice">
-
-        <com.goodchef.liking.widgets.PullToRefreshRecyclerView
-            android:id="@+id/right_drawer"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/right_drawer"
-            android:layout_marginTop="60dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:background="@drawable/icon_open_city"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="更多城市开放中..."
-                android:textColor="@color/lesson_details_gray_back"
-                android:textSize="@dimen/textsize_mirco"/>
-        </LinearLayout>
-
-    </RelativeLayout>
-
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"/>
 
 </android.support.v4.widget.DrawerLayout>

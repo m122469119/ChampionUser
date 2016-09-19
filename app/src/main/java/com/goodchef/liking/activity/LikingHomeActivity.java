@@ -72,6 +72,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public static final String KEY_START_LOCATION = "key_start_location";
     public static final String KEY_TAB_INDEX = "key_tab_index";
     public static final String KEY_INTENT_TAB = "key_intent_tab";
+    public static final String KEY_WHETHER_LOCATION = "key_whether_location";
 
     private TextView mLikingLeftTitleTextView;//左边文字
     private TextView mLikingMiddleTitleTextView;//中间title
@@ -471,13 +472,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 切换场馆
      */
     private void changeGym(int index) {
-        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
+        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId()) ) {
             Intent intent = new Intent(this, ChangeGymActivity.class);
-            intent.putExtra(KEY_SELECT_CITY, selectCityName);
-            intent.putExtra(KEY_START_LOCATION, isLocation);
-            intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
-            intent.putExtra(KEY_TAB_INDEX, index);
+            intent.putExtra(KEY_SELECT_CITY_ID, mGym.getCityId());
+            intent.putExtra(KEY_WHETHER_LOCATION,isWhetherLocation);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+            intent.putExtra(KEY_TAB_INDEX, index);
             startActivity(intent);
         }
     }
@@ -600,7 +600,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     LogUtils.i("dust", "city: " + object.getCity() + " city code: " + object.getCityCode());
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                    selectCityName = currentCityName;//默认设置当前定位为选中城市
+                  //  selectCityName = currentCityName;//默认设置当前定位为选中城市
                     selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);

@@ -7,21 +7,27 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseActivity;
-import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
+import com.aaron.android.thirdparty.map.LocationListener;
+import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
+import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeGymCityAdapter;
+import com.goodchef.liking.eventmessages.DrawerMessage;
+import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.fragment.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
-import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
 import java.util.List;
 
@@ -32,22 +38,33 @@ import java.util.List;
  */
 public class ChangeGymActivity extends BaseActivity implements View.OnClickListener {
     private DrawerLayout mDrawerLayout;
-    private PullToRefreshRecyclerView mDrawerRecyclerView;
+    private ListView mListView;
 
     private View mCityHeadView;
+    private View mCityFootView;
     private TextView mRightTitleTextView;
     private ImageView mRightIconArrow;
     private TextView mTitleTextView;
+    private ImageView mLeftIcon;
+    private TextView mCityHeadText;
 
+
+    private String currentCityName;//当前定位城市
+    private String currentCityId;//当前定位的城市id
 
     private String selectCityName;//选择的城市名称
-    private String selectCityId;//选择的城市id
+    private String cityId;//选择的城市id
     private boolean isLoaction;//是否定位
     private String gymId;//场馆id
     private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
 
-
     private ChangeGymCityAdapter mChangeGymCityAdapter;
+
+    private AmapGDLocation mAmapGDLocation;
+    private List<CityData> cityDataList;//开通服务的城市列表
+    private double longitude;
+    private double latitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +73,27 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         initView();
         initData();
         setViewOnClickListener();
+        initTitleLocation();
     }
 
     private void initView() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerRecyclerView = (PullToRefreshRecyclerView) findViewById(R.id.right_drawer);
+        mListView = (ListView) findViewById(R.id.right_drawer);
         mRightTitleTextView = (TextView) findViewById(R.id.change_gym_toolbar_right_title);
         mRightIconArrow = (ImageView) findViewById(R.id.change_gym_toolbar_right_icon);
         mTitleTextView = (TextView) findViewById(R.id.change_gym_toolbar_title);
+        mLeftIcon = (ImageView) findViewById(R.id.change_gym_toolbar_left_icon);
 
         mDrawerLayout.setDrawerShadow(R.drawable.lesson_title_down_arrow, GravityCompat.END);
-        mDrawerRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
+        // mDrawerRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
+        initCityHeadView();
+        initCityFootView();
     }
 
     private void setViewOnClickListener() {
         mRightTitleTextView.setOnClickListener(this);
         mRightIconArrow.setOnClickListener(this);
+        mLeftIcon.setOnClickListener(this);
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -81,11 +103,13 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onDrawerOpened(View drawerView) {
                 LogUtils.i(TAG, "drawleyer open");
+                postEvent(new DrawerMessage(true));
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 LogUtils.i(TAG, "drawleyer close");
+                postEvent(new DrawerMessage(false));
             }
 
             @Override
@@ -98,20 +122,23 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initCityHeadView() {
-        mCityHeadView = LayoutInflater.from(this).inflate(R.layout.item_city_head_view, mDrawerRecyclerView, false);
-        TextView headText = (TextView) mCityHeadView.findViewById(R.id.city_head_test);
-        headText.setText("当前城市：" + "上海市");
+        mCityHeadView = LayoutInflater.from(this).inflate(R.layout.item_city_head_view, mListView, false);
+        mCityHeadText = (TextView) mCityHeadView.findViewById(R.id.city_head_test);
+        mCityHeadText.setOnClickListener(this);
+    }
+
+    private void initCityFootView() {
+        mCityFootView = LayoutInflater.from(this).inflate(R.layout.item_city_foot_view, mListView, false);
     }
 
 
     private void initData() {
-        //  selectCityName = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY);
-        selectCityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
-        isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_START_LOCATION, false);
+        cityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
+        isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_WHETHER_LOCATION, false);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX, 0);
+
         mTitleTextView.setText("切换场馆");
-        mRightTitleTextView.setText("上海市");
         setGymFragment();
         setCityListData();
     }
@@ -121,7 +148,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putString(LikingHomeActivity.KEY_SELECT_CITY_ID, selectCityId);
+        bundle.putString(LikingHomeActivity.KEY_SELECT_CITY_ID, cityId);
         bundle.putInt(LikingHomeActivity.KEY_TAB_INDEX, tabIndex);
         bundle.putString(LikingLessonFragment.KEY_GYM_ID, gymId);
         fragmentTransaction.add(R.id.gym_content_frame, ChangeGymFragment.newInstance(bundle));
@@ -134,25 +161,19 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         if (baseConfigResult != null) {
             BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {
-                List<CityData> cityDataList = baseConfigData.getCityList();
-                CityData data0 = new CityData();
-                data0.setCityName("当前城市：" + "上海市");
-                data0.setCityId(3100);
-                cityDataList.add(0, data0);
-
-                CityData data1 = new CityData();
-                data1.setCityName("北京市");
-                data1.setCityId(111);
-                cityDataList.add(data1);
-
+                cityDataList = baseConfigData.getCityList();
                 if (cityDataList != null && cityDataList.size() > 0) {
                     for (CityData cityData : cityDataList) {
-
+                        if (String.valueOf(cityData.getCityId()).equals(cityId)) {
+                            mRightTitleTextView.setText(cityData.getCityName());
+                            cityData.setSelct(true);
+                        }
                     }
                     mChangeGymCityAdapter = new ChangeGymCityAdapter(this);
                     mChangeGymCityAdapter.setData(cityDataList);
-                    mDrawerRecyclerView.setAdapter(mChangeGymCityAdapter);
+                    mListView.setAdapter(mChangeGymCityAdapter);
                     setCityOnItemClickListener();
+                    setCityFootView();
                 }
             }
         }
@@ -160,9 +181,9 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
 
 
     private void setCityOnItemClickListener() {
-        mChangeGymCityAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view.findViewById(R.id.city_name);
                 if (textView != null) {
                     CityData cityData = (CityData) textView.getTag();
@@ -181,13 +202,9 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                         setDrawerLayout();
                         mRightTitleTextView.setText(selectCityName);
                         mChangeGymCityAdapter.notifyDataSetChanged();
+                        postEvent(new RefreshChangeCityMessage(String.valueOf(cityData.getCityId()), longitude, latitude));
                     }
                 }
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                return false;
             }
         });
     }
@@ -197,6 +214,16 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v == mRightTitleTextView || v == mRightIconArrow) {
             setDrawerLayout();
+        } else if (v == mLeftIcon) {
+            finish();
+        } else if (v == mCityHeadText) {
+            setDrawerLayout();
+            if (isLoaction){
+                mRightTitleTextView.setText(currentCityName);
+                postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
+            }else {
+                initTitleLocation();
+            }
         }
     }
 
@@ -207,4 +234,97 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
             mDrawerLayout.openDrawer(GravityCompat.END);
         }
     }
+
+
+    /***
+     * 初始化定位
+     */
+    private void initTitleLocation() {
+        mAmapGDLocation = new AmapGDLocation(this);
+        mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
+            @Override
+            public void receive(AMapLocation object) {
+                LiKingVerifyUtils.initApi(ChangeGymActivity.this);
+                if (object != null && object.getErrorCode() == 0) {//定位成功
+                    isLoaction = true;
+                    currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
+                    // cityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
+                    currentCityId = object.getCityCode();
+                    longitude = object.getLongitude();
+                    latitude = object.getLatitude();
+                    setCityHeadView();
+                } else {//定位失败
+                    isLoaction = false;
+                }
+            }
+
+            @Override
+            public void start() {
+                isLoaction = false;
+            }
+
+            @Override
+            public void end() {
+                LogUtils.i("dust", "定位结束...");
+            }
+        });
+        mAmapGDLocation.start();
+    }
+
+    private void setCityHeadView() {
+        if (mChangeGymCityAdapter != null) {
+            if (mCityHeadView != null) {
+                if (isLoaction) {
+                    mCityHeadText.setText("当前城市：" + currentCityName);
+                } else {
+                    mCityHeadText.setText("定位失败·重新定位");
+                }
+                mListView.addHeaderView(mCityHeadView);
+            }
+        }
+    }
+
+    private void setCityFootView() {
+        if (mChangeGymCityAdapter != null) {
+            if (mCityFootView != null) {
+                mListView.addFooterView(mCityFootView);
+            }
+        }
+    }
+
+
+    /**
+     * 处理当前定位城市是否在开通城市范围之内
+     */
+    private String doLocationCity() {
+        String cityId = "";
+        for (CityData cityData : cityDataList) {
+            if (cityData.getCityName().equals(currentCityName) || cityData.getCityName().contains(currentCityName)) {
+                cityId = cityData.getCityId() + "";
+                return cityId;
+            } else {
+                cityId = currentCityId;
+                return cityId;
+            }
+        }
+        return cityId;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAmapGDLocation != null) {
+            mAmapGDLocation.stop();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAmapGDLocation != null) {
+            mAmapGDLocation.destroy();
+        }
+    }
+
 }

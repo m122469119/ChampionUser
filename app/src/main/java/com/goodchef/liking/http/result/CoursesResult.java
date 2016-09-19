@@ -194,6 +194,9 @@ public class CoursesResult extends BaseResult {
             @SerializedName("announcement_info")
             private String announcementInfo;
 
+            @SerializedName("city_id")
+            private String cityId;
+
             public String getName() {
                 return name;
             }
@@ -232,6 +235,14 @@ public class CoursesResult extends BaseResult {
 
             public void setAnnouncementInfo(String announcementInfo) {
                 this.announcementInfo = announcementInfo;
+            }
+
+            public String getCityId() {
+                return cityId;
+            }
+
+            public void setCityId(String cityId) {
+                this.cityId = cityId;
             }
         }
     }

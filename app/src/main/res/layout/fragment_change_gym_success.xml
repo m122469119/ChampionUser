@@ -15,36 +15,39 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="12dp"
-        android:visibility="gone"
         android:textColor="@color/white"
-        android:textSize="13sp"/>
+        android:textSize="13sp"
+        android:visibility="gone"/>
 
-    <ScrollView
-        android:id="@+id/layout_gym_scrollview"
+
+    <com.goodchef.liking.widgets.PullToRefreshRecyclerView
+        android:id="@+id/change_gym_RecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/my_gym">
+        android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/layout_no_buy_card"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:background="@drawable/no_buy_card_back"
-                android:visibility="gone">
+    <!--<ScrollView-->
+    <!--android:id="@+id/layout_gym_scrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/my_gym">-->
 
-            </RelativeLayout>
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
 
-            <com.goodchef.liking.widgets.PullToRefreshRecyclerView
-                android:id="@+id/change_gym_RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/layout_no_buy_card"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="140dp"-->
+    <!--android:background="@drawable/no_buy_card_back"-->
+    <!--android:visibility="gone">-->
 
-        </LinearLayout>
-    </ScrollView>
+    <!--</RelativeLayout>-->
+
+    <!---->
+    <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 </RelativeLayout>

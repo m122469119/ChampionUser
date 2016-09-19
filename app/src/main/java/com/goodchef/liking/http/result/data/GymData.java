@@ -22,6 +22,8 @@ public class GymData extends BaseData {
     private String name;
     @SerializedName("distance")
     private String distance;
+    @SerializedName("city_id")
+    private String cityId;
 
     public String getGymId() {
         return gymId;
@@ -45,5 +47,13 @@ public class GymData extends BaseData {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 }
