@@ -55,8 +55,8 @@
         <activity
             android:name=".activity.LikingHomeActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppBaseThemeMain"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseThemeMain"/>
 
         <!--引导页-->
         <activity
@@ -223,6 +223,11 @@
         <!--付费团体课确认订单-->
         <activity
             android:name=".activity.GroupCoursesChargeConfirmActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--切换场馆-->
+        <activity
+            android:name=".activity.ChangeGymActivity"
             android:screenOrientation="portrait"/>
 
         <!--支付宝h5页面-->

@@ -397,7 +397,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                                                    public void onClick(View v) {
                                                        switch (v.getId()) {
                                                            case R.id.layout_notice://公告
-                                                               if (mNoticeGym !=null){
+                                                               if (mNoticeGym != null) {
                                                                    showNoticeDialog();
                                                                    RightMenuDialog.dismiss();
                                                                }
@@ -471,23 +471,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 切换场馆
      */
     private void changeGym(int index) {
-        if (isWhetherLocation) {
-            if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
-                isLocation = true;
-            } else {
-                isLocation = false;
-            }
-            if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
-                Intent intent = new Intent(this, LookStoreMapActivity.class);
-                intent.putExtra(KEY_SELECT_CITY, selectCityName);
-                intent.putExtra(KEY_START_LOCATION, isLocation);
-                intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
-                intent.putExtra(KEY_TAB_INDEX, index);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
-                startActivity(intent);
-            }
-        } else {
-            PopupUtils.showToast("定位失败，无法获取城市地图");
+        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
+            Intent intent = new Intent(this, ChangeGymActivity.class);
+            intent.putExtra(KEY_SELECT_CITY, selectCityName);
+            intent.putExtra(KEY_START_LOCATION, isLocation);
+            intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
+            intent.putExtra(KEY_TAB_INDEX, index);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+            startActivity(intent);
         }
     }
 

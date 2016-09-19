@@ -69,6 +69,10 @@ public class CheckGymListResult extends BaseResult {
             private double latitude;
             @SerializedName("img")
             private String img;
+            @SerializedName("distance")
+            private String distance;
+
+            private boolean reCently;
 
             private boolean isSelect;
 
@@ -126,6 +130,22 @@ public class CheckGymListResult extends BaseResult {
 
             public void setSelect(boolean select) {
                 isSelect = select;
+            }
+
+            public String getDistance() {
+                return distance;
+            }
+
+            public void setDistance(String distance) {
+                this.distance = distance;
+            }
+
+            public boolean isReCently() {
+                return reCently;
+            }
+
+            public void setReCently(boolean reCently) {
+                this.reCently = reCently;
             }
         }
 

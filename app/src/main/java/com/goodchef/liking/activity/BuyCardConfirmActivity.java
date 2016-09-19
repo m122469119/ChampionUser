@@ -191,9 +191,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         } else if (v == mCouponsLayout) {//选优惠券
             if (Preference.isLogin()) {
                 UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
+                setGymId();
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
-                intent.putExtra(KEY_CARD_ID, mCardId);
+                intent.putExtra(KEY_CARD_ID, mCardId+"");
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
@@ -238,17 +239,21 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 提交支付请求
      */
     private void senSubmitRequest() {
+        setGymId();
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCouponCode(), payType, submitGymId);
+        } else {
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType, submitGymId);
+        }
+    }
+
+    private void setGymId(){
         if (buyType == BUY_TYPE_BUY) {
             submitGymId = gymId;
         } else if (buyType == BUY_TYPE_CONTINUE) {
             submitGymId = "0";
         } else if (buyType == BUY_TYPE_UPGRADE) {
             submitGymId = "0";
-        }
-        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCouponCode(), payType, submitGymId);
-        } else {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType, submitGymId);
         }
     }
 
