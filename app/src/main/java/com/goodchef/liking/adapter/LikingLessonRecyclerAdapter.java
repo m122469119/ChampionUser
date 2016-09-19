@@ -51,9 +51,6 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
 
         public LessonViewHolder(View itemView) {
             super(itemView);
-            if (isHeaderHolder()) {
-                return;
-            }
             mHImageView = (HImageView) itemView.findViewById(R.id.lesson_image);
             mLessonNameTextView = (TextView) itemView.findViewById(R.id.lesson_name);
             mLessonUseTextView = (TextView) itemView.findViewById(R.id.lesson_use);
@@ -147,11 +144,6 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
 
     public LikingLessonRecyclerAdapter(Context context) {
         super(context);
-    }
-
-    @Override
-    protected LessonViewHolder createHeaderViewHolder() {
-        return new LessonViewHolder(getHeaderView());
     }
 
     @Override

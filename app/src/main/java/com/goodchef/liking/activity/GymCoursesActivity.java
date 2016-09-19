@@ -180,11 +180,6 @@ public class GymCoursesActivity extends AppBarActivity implements GymCoursesView
         }
 
         @Override
-        protected GymCoursesViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
         protected GymCoursesViewHolder createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_gym_courses, parent, false);
             return new GymCoursesViewHolder(view);

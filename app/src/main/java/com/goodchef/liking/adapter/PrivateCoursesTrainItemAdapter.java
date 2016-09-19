@@ -27,11 +27,6 @@ public class PrivateCoursesTrainItemAdapter extends BaseRecycleViewAdapter<Priva
     }
 
     @Override
-    protected PrivateCoursesTrainItemViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected PrivateCoursesTrainItemViewHolder createViewHolder(ViewGroup parent) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_private_courses_train_item, parent, false);
         return new PrivateCoursesTrainItemViewHolder(itemView);

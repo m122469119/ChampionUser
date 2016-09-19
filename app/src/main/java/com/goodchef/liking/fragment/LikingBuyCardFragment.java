@@ -308,8 +308,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private void removeHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                mBuyCardAdapter.setHeaderView(null);
-                mBuyCardAdapter.notifyDataSetChanged();
+                mBuyCardAdapter.removeHeaderView();
             }
         }
     }

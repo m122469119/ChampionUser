@@ -177,11 +177,6 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
         }
 
         @Override
-        protected CardTimeLimitViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
         protected CardTimeLimitViewHolder createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_card_time_limit, parent, false);
             return new CardTimeLimitViewHolder(view);

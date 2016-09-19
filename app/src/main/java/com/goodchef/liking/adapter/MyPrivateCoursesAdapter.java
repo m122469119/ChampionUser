@@ -37,11 +37,6 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
     }
 
     @Override
-    protected PrivateLessonViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected PrivateLessonViewHolder createViewHolder(ViewGroup parent) {
         View mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_private_my_lesson, parent, false);
         TextView mCompleteCoursesBtn = (TextView) mRootView.findViewById(R.id.complete_courses_btn);

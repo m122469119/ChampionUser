@@ -26,11 +26,6 @@ public class TrainItemAdapter extends BaseRecycleViewAdapter<TrainItemAdapter.Tr
     }
 
     @Override
-    protected TrainViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected TrainViewHolder createViewHolder(ViewGroup parent) {
         View itemViw = LayoutInflater.from(mContext).inflate(R.layout.item_train_couses, parent, false);
         return new TrainViewHolder(itemViw);

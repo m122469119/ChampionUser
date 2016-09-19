@@ -43,11 +43,6 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
     }
 
     @Override
-    protected GroupLessonViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected GroupLessonViewHolder createViewHolder(ViewGroup parent) {
         View mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_group_lesson, parent, false);
         TextView mCancelOrderBtn = (TextView) mRootView.findViewById(R.id.cancel_order_btn);

@@ -37,7 +37,7 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
 
     protected RecyclerView createRecyclerView() {
         return null;
-    };
+    }
 
     private void getDefaultRecyclerView() {
         mRecyclerView = new RecyclerView(getContext());

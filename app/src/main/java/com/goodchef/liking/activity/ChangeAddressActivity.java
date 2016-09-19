@@ -107,11 +107,6 @@ public class ChangeAddressActivity extends AppBarActivity {
         }
 
         @Override
-        protected ChangeAddressViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
         protected ChangeAddressViewHolder createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_change_address, parent, false);
             return new ChangeAddressViewHolder(view);

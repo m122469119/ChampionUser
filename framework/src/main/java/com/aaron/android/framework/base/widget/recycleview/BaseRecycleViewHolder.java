@@ -28,10 +28,18 @@ public abstract class BaseRecycleViewHolder<T> extends RecyclerView.ViewHolder {
     public abstract void bindViews(T object);
 
     /**
-     * 是否为Header项
+     * 是否为HeaderView
      * @return
      */
     public boolean isHeaderHolder() {
         return getItemViewType() == BaseRecycleViewAdapter.TYPE_HEADER;
+    }
+
+    /**
+     * 是否为FooterView
+     * @return
+     */
+    public boolean isFooterHolder() {
+        return getItemViewType() == BaseRecycleViewAdapter.TYPE_FOOTER;
     }
 }

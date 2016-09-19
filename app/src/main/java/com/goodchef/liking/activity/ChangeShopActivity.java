@@ -151,11 +151,6 @@ public class ChangeShopActivity extends AppBarActivity implements ChangeShopView
         }
 
         @Override
-        protected ChangeShopViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
         protected ChangeShopViewHolder createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_change_shop, parent, false);
             return new ChangeShopViewHolder(view);

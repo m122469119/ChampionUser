@@ -2,8 +2,6 @@ package com.aaron.android.framework.base.widget.recycleview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,19 +19,19 @@ import java.util.List;
  * @version 1.0.0
  */
 public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>, T>
-        extends RecyclerView.Adapter<VH> implements View.OnClickListener, View.OnLongClickListener {
+        extends RecyclerView.Adapter implements View.OnClickListener, View.OnLongClickListener {
 
     protected final String TAG = getClass().getSimpleName();;
     private List<T> mDataList = new ArrayList<>();
 
     private Context mContext;
 
-    public static final int TYPE_HEADER = 0;
-    public static final int TYPE_NORMAL = 1;
+    public static final int TYPE_HEADER = RecyclerView.INVALID_TYPE;
+    public static final int TYPE_FOOTER = RecyclerView.INVALID_TYPE - 1;
     private View mHeaderView;
+    private View mFooterView;
 
     private OnRecycleViewItemClickListener mOnRecycleViewItemClickListener;
-    private int mPosition;
 
     protected BaseRecycleViewAdapter(Context context) {
         mContext = context;
@@ -47,15 +45,20 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
     }
 
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mHeaderView != null && viewType == TYPE_HEADER) {
-            return createHeaderViewHolder();
+            return new HeaderFooterViewHolder(mHeaderView);
+        } else if (mFooterView != null && viewType ==TYPE_FOOTER){
+            return new HeaderFooterViewHolder(mFooterView);
         }
         return createViewHolder(parent);
     }
 
-
-    protected abstract VH createHeaderViewHolder();
+    class HeaderFooterViewHolder extends RecyclerView.ViewHolder {
+        public HeaderFooterViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
 
     protected abstract VH createViewHolder(ViewGroup parent);
 
@@ -65,19 +68,24 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
      */
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
-        notifyItemInserted(0);
+        notifyDataSetChanged();
+    }
+
+    public void removeHeaderView() {
+        setHeaderView(null);
+    }
+
+    public void setFooterView(View footerView) {
+        mFooterView = footerView;
+        notifyDataSetChanged();
+    }
+
+    public void removeFooterView() {
+        setFooterView(null);
     }
 
     /**
-     * 获取HeaderView
-     * @return View
-     */
-    public View getHeaderView() {
-        return mHeaderView;
-    }
-
-    /**
-     * @return 获取Adapter Dataliste数据集
+     * @return 获取Adapter DataList数据集
      */
     public List<T> getDataList() {
         return mDataList;
@@ -116,44 +124,58 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         }
     }
 
-    public int getRealPosition(RecyclerView.ViewHolder holder) {
-        int position = holder.getLayoutPosition();
-        return mHeaderView == null ? position : position - 1;
-    }
-
     @Override
     public int getItemViewType(int position) {
-        if (mHeaderView == null) return TYPE_NORMAL;
-        if (position == 0) return TYPE_HEADER;
-        return TYPE_NORMAL;
+        int headerCount = mHeaderView == null ? 0 : 1;
+        if (position < headerCount) {
+            return TYPE_HEADER;
+        }
+        final int realPosition = position - headerCount;
+        if (realPosition < mDataList.size()) {
+            return super.getItemViewType(realPosition);
+        }
+        return TYPE_FOOTER;
     }
 
 
 
     @Override
     public int getItemCount() {
-        return mHeaderView == null ? mDataList.size() : mDataList.size() + 1;
+        int count = mDataList.size();
+        if (mHeaderView != null) {
+            count += 1;
+        }
+        if (mFooterView != null) {
+            count += 1;
+        }
+        return count;
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
-        if (getItemViewType(position) == TYPE_HEADER) return;
-        int realPosition = getRealPosition(holder);
-        T data = mDataList.get(realPosition);
-        if (data != null) {
-            /**绑定holder数据*/
-            holder.bindViews(data);
-            holder.mPosition = realPosition;
-            /**ItemView设置监听*/
-            View itemView = holder.itemView;
-            if (itemView != null) {
-                itemView.setTag(realPosition);
-                itemView.setClickable(true);
-                itemView.setLongClickable(true);
-                itemView.setOnClickListener(this);
-                itemView.setOnLongClickListener(this);
-            }
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int headerCount = mHeaderView == null ? 0 : 1;
+        if (position < headerCount) {
+            return;
+        }
+        final int realPosition = position - headerCount;
+        if (realPosition < mDataList.size()) {
+            T data = mDataList.get(realPosition);
+            VH viewHolder = (VH) holder;
+            if (data != null) {
+                /**绑定holder数据*/
+                viewHolder.bindViews(data);
+                viewHolder.mPosition = realPosition;
+                /**ItemView设置监听*/
+                View itemView = holder.itemView;
+                if (itemView != null) {
+                    itemView.setTag(realPosition);
+                    itemView.setClickable(true);
+                    itemView.setLongClickable(true);
+                    itemView.setOnClickListener(this);
+                    itemView.setOnLongClickListener(this);
+                }
 
+            }
         }
     }
 

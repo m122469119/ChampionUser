@@ -29,11 +29,6 @@ public class ArenaTagAdapter extends BaseRecycleViewAdapter<ArenaTagAdapter.Aren
     }
 
     @Override
-    protected ArenaTagViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected ArenaTagViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_arena_tag, parent, false);
         return new ArenaTagViewHolder(view);

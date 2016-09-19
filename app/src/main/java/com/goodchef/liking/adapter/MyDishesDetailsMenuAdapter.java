@@ -26,11 +26,6 @@ public class MyDishesDetailsMenuAdapter extends BaseRecycleViewAdapter<MyDishesD
     }
 
     @Override
-    protected MyDishesDetailsMenuViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected MyDishesDetailsMenuViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_confirm_dishes, parent, false);
         return new MyDishesDetailsMenuViewHolder(view);

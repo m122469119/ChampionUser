@@ -26,11 +26,6 @@ public class DishesConfirmAdapter extends BaseRecycleViewAdapter<DishesConfirmAd
     }
 
     @Override
-    protected DishesConfirmViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected DishesConfirmViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_confirm_dishes, parent, false);
         return new DishesConfirmViewHolder(view);

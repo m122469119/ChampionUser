@@ -28,11 +28,6 @@ public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLesso
     }
 
     @Override
-    protected GroupLessonDetailsViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected GroupLessonDetailsViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_group_lesson_details, parent, false);
         return new GroupLessonDetailsViewHolder(view);
