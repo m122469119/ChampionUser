@@ -31,11 +31,6 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
     }
 
     @Override
-    protected ChangeGymViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected ChangeGymViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_change_gym, parent, false);
         return new ChangeGymViewHolder(view);
