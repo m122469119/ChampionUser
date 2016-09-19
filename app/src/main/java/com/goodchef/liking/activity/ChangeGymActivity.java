@@ -20,7 +20,6 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeGymCityAdapter;
-import com.goodchef.liking.eventmessages.DrawerMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.fragment.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -64,6 +63,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     private List<CityData> cityDataList;//开通服务的城市列表
     private double longitude;
     private double latitude;
+    private boolean isSecondLocation = false;
 
 
     @Override
@@ -83,9 +83,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         mRightIconArrow = (ImageView) findViewById(R.id.change_gym_toolbar_right_icon);
         mTitleTextView = (TextView) findViewById(R.id.change_gym_toolbar_title);
         mLeftIcon = (ImageView) findViewById(R.id.change_gym_toolbar_left_icon);
-
         mDrawerLayout.setDrawerShadow(R.drawable.lesson_title_down_arrow, GravityCompat.END);
-        // mDrawerRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         initCityHeadView();
         initCityFootView();
     }
@@ -94,31 +92,6 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         mRightTitleTextView.setOnClickListener(this);
         mRightIconArrow.setOnClickListener(this);
         mLeftIcon.setOnClickListener(this);
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                LogUtils.i(TAG, "drawleyer open");
-                postEvent(new DrawerMessage(true));
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                LogUtils.i(TAG, "drawleyer close");
-                postEvent(new DrawerMessage(false));
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
-        });
-
-
     }
 
     private void initCityHeadView() {
@@ -218,10 +191,11 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
             finish();
         } else if (v == mCityHeadText) {
             setDrawerLayout();
-            if (isLoaction){
+            if (isLoaction) {
                 mRightTitleTextView.setText(currentCityName);
                 postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
-            }else {
+            } else {
+                isSecondLocation = true;
                 initTitleLocation();
             }
         }
@@ -252,6 +226,9 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                     currentCityId = object.getCityCode();
                     longitude = object.getLongitude();
                     latitude = object.getLatitude();
+                    if (isSecondLocation) {
+                        postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
+                    }
                     setCityHeadView();
                 } else {//定位失败
                     isLoaction = false;
@@ -298,13 +275,15 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
      */
     private String doLocationCity() {
         String cityId = "";
-        for (CityData cityData : cityDataList) {
-            if (cityData.getCityName().equals(currentCityName) || cityData.getCityName().contains(currentCityName)) {
-                cityId = cityData.getCityId() + "";
-                return cityId;
-            } else {
-                cityId = currentCityId;
-                return cityId;
+        if (cityDataList != null && cityDataList.size() > 0) {
+            for (CityData cityData : cityDataList) {
+                if (cityData.getCityName().equals(currentCityName) || cityData.getCityName().contains(currentCityName)) {
+                    cityId = cityData.getCityId() + "";
+                    return cityId;
+                } else {
+                    cityId = currentCityId;
+                    return cityId;
+                }
             }
         }
         return cityId;
