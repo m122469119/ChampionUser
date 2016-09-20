@@ -6,7 +6,7 @@
               android:orientation="vertical">
 
         <ImageView
-            android:layout_width="80dp"
+            android:layout_width="85dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:background="@drawable/icon_open_city"/>
@@ -18,6 +18,6 @@
             android:gravity="center"
             android:text="更多城市开放中..."
             android:textColor="@color/lesson_details_gray_back"
-            android:textSize="@dimen/textsize_mirco"/>
+            android:textSize="10sp"/>
 
 </LinearLayout>

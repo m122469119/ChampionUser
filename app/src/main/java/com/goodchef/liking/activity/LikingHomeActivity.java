@@ -490,10 +490,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     LogUtils.i("dust", "city: " + object.getCity() + " city code: " + object.getCityCode());
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                    //  selectCityName = currentCityName;//默认设置当前定位为选中城市
                     // selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
+
+                    //虚拟定位
+                    // postEvent(new MainAddressChanged(117.20, 34.26, "123456", "24", "徐州市", true));
+                    // updateLocationPoint("123456", "24", 117.20, 34.26, "徐州市", true);
+
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), "", false));

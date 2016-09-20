@@ -87,7 +87,6 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         mRightIconArrow = (ImageView) findViewById(R.id.change_gym_toolbar_right_icon);
         mTitleTextView = (TextView) findViewById(R.id.change_gym_toolbar_title);
         mLeftIcon = (ImageView) findViewById(R.id.change_gym_toolbar_left_icon);
-        mDrawerLayout.setDrawerShadow(R.drawable.lesson_title_down_arrow, GravityCompat.END);
         initCityHeadView();
         initCityFootView();
     }
@@ -244,10 +243,16 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                 if (object != null && object.getErrorCode() == 0) {//定位成功
                     isLoaction = true;
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                    // cityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     currentCityId = object.getCityCode();
                     longitude = object.getLongitude();
                     latitude = object.getLatitude();
+
+                    //虚拟定位
+//                    currentCityName = "徐州市";
+//                    currentCityId = "123456";
+//                    longitude = 117.20;
+//                    latitude = 34.26;
+
                     if (isSecondLocation) {
                         postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
                     }

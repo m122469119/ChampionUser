@@ -52,8 +52,8 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
     private boolean islocation;
 
-    private double longitude;
-    private double latitude;
+    private double longitude = 0;
+    private double latitude = 0;
 
     private List<CheckGymListResult.CheckGymData.CheckGym> allGymList;
     private CheckGymListResult.CheckGymData.MyGymData mMyGym;
@@ -69,6 +69,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_gym, container, false);
         initView(view);
+        getInitData();
         setNetWorkView();
         setViewOnClickListener();
         return view;
@@ -87,7 +88,9 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                     mStateView.setState(StateView.State.FAILED);
                 } else {
-                    sendGymRequest(Integer.parseInt(selectCityId), longitude, latitude);
+                    if (!StringUtils.isEmpty(selectCityId)) {
+                        sendGymRequest(Integer.parseInt(selectCityId), longitude, latitude);
+                    }
                 }
             }
         });
@@ -105,17 +108,19 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     private void setNetWorkView() {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.FAILED);
-        } else {
-            initData();
         }
+        initData();
     }
 
-    private void initData() {
+    private void getInitData(){
         selectCityId = getArguments().getString(LikingHomeActivity.KEY_SELECT_CITY_ID);
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getArguments().getInt(LikingHomeActivity.KEY_TAB_INDEX, 0);
         islocation = getArguments().getBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION);
         mChangeGymAdapter = new ChangeGymAdapter(getActivity());
+    }
+
+    private void initData() {
         LocationData locationData = Preference.getLocationData();
         sendGymRequest(Integer.parseInt(selectCityId), locationData.getLongitude(), locationData.getLatitude());
     }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -50,7 +51,24 @@ public class PrivateCoursesTrainItemAdapter extends BaseRecycleViewAdapter<Priva
                 mTrainItemTextView.setBackgroundResource(R.drawable.shape_train_item_gray_back);
                 mTrainItemTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
             }
-            mTrainItemTextView.setText(object.getName());
+            String tranName = object.getName();
+            int testLine = 6;
+            StringBuilder sb = new StringBuilder(tranName);
+            int tranNameLength = sb.length();
+            if (tranNameLength <= testLine) {
+                mTrainItemTextView.setText(tranName);
+            } else if (tranNameLength > testLine) {
+                int tranNameLine = tranNameLength % 2;
+                if (tranNameLine == 0) {
+                    int tran = sb.length() / 2;
+                    sb.insert(tran, "\n");
+                    mTrainItemTextView.setText(sb.toString());
+                } else {
+                    int tran = sb.length() / 2 +1;
+                    sb.insert(tran, "\n");
+                    mTrainItemTextView.setText(sb.toString());
+                }
+            }
             mTrainItemTextView.setTag(object);
         }
     }
