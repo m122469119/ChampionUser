@@ -8,7 +8,7 @@ package com.goodchef.liking.storage;
 public class UmengEventId {
 
     /***
-     *开门页面
+     * 开门页面
      */
     public static final String OPENTHEDOORACTIVITY = "OpenTheDoorActivity";
 
@@ -73,7 +73,7 @@ public class UmengEventId {
     public static final String MYINFOACTIVITY = "MyInfoActivity";
 
     /**
-     *  立即买卡按钮
+     * 立即买卡按钮
      */
     public static final String BUY_CARD_IMMEDIATELY_BUY = "BuyCardImmediatelyBuyBtn";
 
@@ -88,7 +88,7 @@ public class UmengEventId {
     public static final String PRIVATE_IMMEDIATELY_BUY_BUTTON = "mPrivateImmediatelyBuyBtn";
 
     /**
-     *私教课立即预约按钮
+     * 私教课立即预约按钮
      */
     public static final String PRIVATE_IMMEDIATELY_SUBMIT_BUTTON = "mPrivateImmediatelySubmitBtn";
 
@@ -108,9 +108,9 @@ public class UmengEventId {
     public static final String BANNER = "banner";
 
     /***
-     * 收费团体课立即购买
+     * 收费团体课立即购买按钮
      */
-    public static final String GROUPCOURSESCHARGECONFIRMACTIVITY = "GroupCoursesChargeConfirmActivity";
+    public static final String GROUPCOURSESCHARGECONFIRMBTN = "GroupCoursesChargeConfirmBtn";
 
     /***
      * 切换场馆界面
@@ -123,12 +123,12 @@ public class UmengEventId {
     public static final String RIGHT_ICON_ARROW_BTN = "RightIconArrowBtn";
 
     /**
-     * 查看我的健身房
+     * 查看我的健身房按钮
      */
     public static final String MY_GYM_BTN = "MyGymBtn";
 
     /***
-     * 切换城市
+     * 切换城市item事件
      */
     public static final String CHANGE_CITY = "change_city";
 
@@ -138,7 +138,7 @@ public class UmengEventId {
     public static final String ADD_BTN = "add_btn";
 
     /**
-     * 查看公告
+     * 查看公告按钮
      */
     public static final String CHECK_ANNOUNCEMENT = "check_Announcement";
 

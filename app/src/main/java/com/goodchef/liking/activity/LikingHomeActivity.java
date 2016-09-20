@@ -3,7 +3,6 @@ package com.goodchef.liking.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,7 +30,6 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
-import com.goodchef.liking.adapter.SelectCityAdapter;
 import com.goodchef.liking.dialog.HomeRightDialog;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
@@ -44,7 +42,6 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CoursesResult;
-import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -52,8 +49,6 @@ import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
-
-import java.util.List;
 
 public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener {
 
@@ -79,25 +74,20 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private TextView mLikingRightTitleTextView;//右边文字
     private TextView mLikingDistanceTextView;//距离
     private TextView mRedPoint;//红色点点
-    private RelativeLayout mMiddleLayout;
-    private AppBarLayout mAppBarLayout;
+    private RelativeLayout mMiddleLayout;//title中间布局
 
-    public TextView mShoppingCartNumTextView;
+    public TextView mShoppingCartNumTextView;//购物车数量
 
     private FragmentTabHost fragmentTabHost;
-    TabWidget tabWidget;
-    private AmapGDLocation mAmapGDLocation;
+    private TabWidget tabWidget;
+    private AmapGDLocation mAmapGDLocation;//定位
 
     private String currentCityName = "";
-    private String selectCityId;
-    private String selectCityName = "";
-    private boolean isLocation = false;
     public boolean isWhetherLocation = false;
 
     // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     //  private ArrayList<Food> buyList = new ArrayList<>();
     private String mUserCityId;
-    private SelectCityAdapter mSelectCityAdapter;
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
@@ -128,8 +118,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void initData() {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             isWhetherLocation = false;
-            mLikingLeftTitleTextView.setVisibility(View.GONE);
-            mLikingLeftTitleTextView.setEnabled(false);
+            mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
         } else {
             initTitleLocation();
         }
@@ -199,7 +188,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mLikingDistanceTextView = (TextView) findViewById(R.id.liking_distance_text);
         mRightImageView = (ImageView) findViewById(R.id.liking_right_imageView);
         mLikingRightTitleTextView = (TextView) findViewById(R.id.liking_right_title_text);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.liking_home_appBar);
         mShoppingCartNumTextView = (TextView) findViewById(R.id.tv_shopping_cart_num);
         mRedPoint = (TextView) findViewById(R.id.home_notice_prompt);
         mMiddleLayout = (RelativeLayout) findViewById(R.id.layout_home_middle);
@@ -484,6 +472,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
             intent.putExtra(KEY_TAB_INDEX, index);
             startActivity(intent);
+        } else {
+            PopupUtils.showToast("网络出错，请检查网络刷新后重试");
         }
     }
 
@@ -502,15 +492,13 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
                     //  selectCityName = currentCityName;//默认设置当前定位为选中城市
-                    selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
+                    // selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
                 } else {//定位失败
                     isWhetherLocation = false;
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), "", false));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName, false);
-                    mLikingLeftTitleTextView.setVisibility(View.GONE);
-                    mLikingLeftTitleTextView.setEnabled(false);
                 }
             }
 
@@ -518,8 +506,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             public void start() {
                 isWhetherLocation = false;
                 mLikingMiddleTitleTextView.setText("定位中...");
-                mLikingLeftTitleTextView.setVisibility(View.GONE);
-                mLikingLeftTitleTextView.setEnabled(false);
             }
 
             @Override
@@ -531,37 +517,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mAmapGDLocation.start();
     }
 
-
-    /**
-     * 设置点位失败是左边切换按钮不显示
-     *
-     * @param cityName 城市名称
-     */
-    private void setHeadNoLocationView(String cityName) {
-        boolean isContains = false;
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-        if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-            if (baseConfigData != null) {
-                List<CityData> cityDataList = baseConfigData.getCityList();
-                if (cityDataList != null && cityDataList.size() > 0) {
-                    for (CityData data : cityDataList) {
-                        if (data.getCityName().contains(cityName)) {
-                            isContains = true;
-                            break;
-                        }
-                    }
-                    if (isContains) {
-                        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-                        mLikingLeftTitleTextView.setEnabled(true);
-                    } else {
-                        mLikingLeftTitleTextView.setVisibility(View.GONE);
-                        mLikingLeftTitleTextView.setEnabled(false);
-                    }
-                }
-            }
-        }
-    }
 
     private void updateLocationPoint(String cityId, String districtId, double longitude, double latitude, String cityName, boolean isLocation) {
         saveLocationInfo(cityId, districtId, longitude, latitude, cityName, isLocation);
@@ -687,7 +642,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingDistanceTextView.setText(mGym.getDistance());
                     mLikingMiddleTitleTextView.setText(mGym.getName());
                 }
-                setHeadNoLocationView(currentCityName);
             } else if (tag.equals(TAG_MY_TAB)) {//我的
                 setTagMyTab();
             }

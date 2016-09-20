@@ -205,7 +205,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
             PopupUtils.showToast("请选择支付方式");
             return;
         }
-        UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMACTIVITY);
+        UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
             mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(gymId, scheduleId, mCoupon.getCouponCode(), payType);
         } else {
