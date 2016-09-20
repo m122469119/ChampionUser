@@ -112,7 +112,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         initData();
     }
 
-    private void getInitData(){
+    private void getInitData() {
         selectCityId = getArguments().getString(LikingHomeActivity.KEY_SELECT_CITY_ID);
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getArguments().getInt(LikingHomeActivity.KEY_TAB_INDEX, 0);
@@ -154,8 +154,13 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 mMyTextView.setText("购卡场馆：" + mMyGym.getGymName());
             } else {
                 if (mNoCardHeadView != null) {
-                    mChangeGymAdapter.setHeaderView(mNoCardHeadView);
-                    mChangeGymAdapter.notifyDataSetChanged();
+                    if (Preference.isLogin()) {
+                        mChangeGymAdapter.setHeaderView(mNoCardHeadView);
+                        mChangeGymAdapter.notifyDataSetChanged();
+                    } else {
+                        mChangeGymAdapter.setHeaderView(null);
+                        mChangeGymAdapter.notifyDataSetChanged();
+                    }
                 }
                 mMyTextView.setVisibility(View.GONE);
             }

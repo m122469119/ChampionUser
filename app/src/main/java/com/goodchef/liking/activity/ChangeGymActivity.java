@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseActivity;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.map.LocationListener;
 import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
@@ -167,7 +168,8 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                     CityData cityData = (CityData) textView.getTag();
                     if (cityData != null) {
                         selectCityName = cityData.getCityName();
-                        compareSelectCity(cityData.getCityName());
+                        compareSelectCity(selectCityName);
+                        compareCurrentCity(selectCityName);
                         setDrawerLayout();
                         mRightTitleTextView.setText(selectCityName);
                         postEvent(new RefreshChangeCityMessage(String.valueOf(cityData.getCityId()), longitude, latitude));
@@ -200,6 +202,17 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     }
 
 
+    private void compareCurrentCity(String cityName) {
+        if (!StringUtils.isEmpty(currentCityName)) {
+            if (cityName.equals(currentCityName)) {
+                mCityHeadText.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+            } else {
+                mCityHeadText.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
+            }
+        }
+    }
+
+
     @Override
     public void onClick(View v) {
         if (v == mRightTitleTextView || v == mRightIconArrow) {
@@ -211,9 +224,10 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
             setDrawerLayout();
             if (isLoaction) {
                 mRightTitleTextView.setText(currentCityName);
-                if (!StringUtils.isEmpty(doLocationCity())) {//如果当前
+                if (!StringUtils.isEmpty(doLocationCity())) {//如果当前城市在开通范围城市范围之内
                     compareSelectCity(currentCityName);
                 }
+                compareCurrentCity(currentCityName);
                 postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
             } else {
                 isSecondLocation = true;
