@@ -118,7 +118,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void initData() {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             isWhetherLocation = false;
-            mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
         } else {
             initTitleLocation();
         }
@@ -635,8 +634,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (isWhetherLocation) {
             if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
-                mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-                mLikingLeftTitleTextView.setEnabled(true);
                 if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setText(mGym.getDistance());
@@ -649,8 +646,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
                 mLikingMiddleTitleTextView.setText(R.string.location_fail);
                 mLikingDistanceTextView.setVisibility(View.GONE);
-                mLikingLeftTitleTextView.setVisibility(View.GONE);
-                mLikingLeftTitleTextView.setEnabled(false);
             } else if (tag.equals(TAG_MY_TAB)) {//我的
                 setTagMyTab();
             }

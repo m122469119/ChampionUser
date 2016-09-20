@@ -33,7 +33,7 @@ public class UmengEventId {
     public static final String GYMCOURSESACTIVITY = "GymCoursesActivity";
 
     /***
-     * 门店页面
+     * 我的健身方名称页面
      */
     public static final String ARENAACTIVITY = "ArenaActivity";
 

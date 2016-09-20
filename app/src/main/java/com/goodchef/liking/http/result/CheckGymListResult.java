@@ -75,6 +75,7 @@ public class CheckGymListResult extends BaseResult {
             private boolean reCently;
 
             private boolean isSelect;
+            private boolean islocation;
 
             public int getGymId() {
                 return gymId;
@@ -146,6 +147,14 @@ public class CheckGymListResult extends BaseResult {
 
             public void setReCently(boolean reCently) {
                 this.reCently = reCently;
+            }
+
+            public boolean islocation() {
+                return islocation;
+            }
+
+            public void setIslocation(boolean islocation) {
+                this.islocation = islocation;
             }
         }
 

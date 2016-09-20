@@ -66,9 +66,9 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
                 mCheckBox.setChecked(false);
             }
 
-            if (object.isReCently()) {
+            if (object.isReCently() && object.islocation()) {
                 mGymDistanceTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-                mGymDistanceTextView.setText("距您最近 "+object.getDistance());
+                mGymDistanceTextView.setText("距您最近 " + object.getDistance());
             } else {
                 mGymDistanceTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
                 mGymDistanceTextView.setText(object.getDistance());

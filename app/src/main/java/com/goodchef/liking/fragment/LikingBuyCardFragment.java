@@ -157,7 +157,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, mRecyclerView, false);
         mCityOpenTextView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
         mCityOpenTextView.setVisibility(View.VISIBLE);
-        mCityOpenTextView.setText(R.string.current_city_no_dredge);
     }
 
     private void sendBuyCardListRequest() {
@@ -200,6 +199,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                     boolean isLocation = locationData.isPositionSuccess();
                     if (!isLocation) {
                         SetHeadView();
+                        mCityOpenTextView.setText(R.string.location_fails_confirm);
                     } else if (!StringUtils.isEmpty(cityName)) {
                         setHeadNoLocationView(cityName);
                     } else {
@@ -290,6 +290,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                         removeHeadView();
                     } else {
                         SetHeadView();
+                        mCityOpenTextView.setText(R.string.current_city_no_dredge);
                     }
                 }
             }

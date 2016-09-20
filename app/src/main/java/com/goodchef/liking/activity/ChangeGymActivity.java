@@ -126,6 +126,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
         bundle.putString(LikingHomeActivity.KEY_SELECT_CITY_ID, cityId);
         bundle.putInt(LikingHomeActivity.KEY_TAB_INDEX, tabIndex);
         bundle.putString(LikingLessonFragment.KEY_GYM_ID, gymId);
+        bundle.putBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION, false);
         fragmentTransaction.add(R.id.gym_content_frame, ChangeGymFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }
@@ -164,25 +165,36 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                     CityData cityData = (CityData) textView.getTag();
                     if (cityData != null) {
                         selectCityName = cityData.getCityName();
-                        List<CityData> list = mChangeGymCityAdapter.getDataList();
-                        if (list != null && list.size() > 0) {
-                            for (CityData data : list) {
-                                if (data.getCityName().equals(cityData.getCityName())) {
-                                    data.setSelct(true);
-                                } else {
-                                    data.setSelct(false);
-                                }
-                            }
-                        }
+                        compareSelectCity(cityData.getCityName());
                         setDrawerLayout();
                         mRightTitleTextView.setText(selectCityName);
-                        mChangeGymCityAdapter.notifyDataSetChanged();
                         postEvent(new RefreshChangeCityMessage(String.valueOf(cityData.getCityId()), longitude, latitude));
                         UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
                     }
                 }
             }
         });
+    }
+
+    /**
+     * 比较选择的城市列表中的城市名称是否相等
+     *
+     * @param cityName
+     */
+    private void compareSelectCity(String cityName) {
+        if (mChangeGymCityAdapter != null) {
+            List<CityData> list = mChangeGymCityAdapter.getDataList();
+            if (list != null && list.size() > 0) {
+                for (CityData data : list) {
+                    if (data.getCityName().equals(cityName)) {
+                        data.setSelct(true);
+                    } else {
+                        data.setSelct(false);
+                    }
+                }
+            }
+            mChangeGymCityAdapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -197,6 +209,9 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
             setDrawerLayout();
             if (isLoaction) {
                 mRightTitleTextView.setText(currentCityName);
+                if (!StringUtils.isEmpty(doLocationCity())){//如果当前
+                    compareSelectCity(currentCityName);
+                }
                 postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
             } else {
                 isSecondLocation = true;
@@ -233,10 +248,10 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                     if (isSecondLocation) {
                         postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
                     }
-                    setCityHeadView();
                 } else {//定位失败
                     isLoaction = false;
                 }
+                setCityHeadView();
             }
 
             @Override
@@ -255,6 +270,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     private void setCityHeadView() {
         if (mChangeGymCityAdapter != null) {
             if (mCityHeadView != null) {
+                mListView.removeHeaderView(mCityHeadView);
                 if (isLoaction) {
                     mCityHeadText.setText("当前城市：" + currentCityName);
                 } else {
