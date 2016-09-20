@@ -83,16 +83,6 @@ public class UmengEventId {
     public static final String GROUP_IMMEDIATELY_SUBMIT_BUTTON = "mGroupImmediatelySubmitBtn";
 
     /***
-     * 首页查看城市按钮
-     */
-    public static final String CHECK_CITY = "checkCity";
-
-    /**
-     * 完成我的私教课按钮
-     */
-    public static final String COMPLETE_MYPRIVATE_COURSES = "completeMyPrivateCourses";
-
-    /***
      * 私教课立即购买
      */
     public static final String PRIVATE_IMMEDIATELY_BUY_BUTTON = "mPrivateImmediatelyBuyBtn";
@@ -101,11 +91,6 @@ public class UmengEventId {
      *私教课立即预约按钮
      */
     public static final String PRIVATE_IMMEDIATELY_SUBMIT_BUTTON = "mPrivateImmediatelySubmitBtn";
-
-    /**
-     * 查看场馆课程
-     */
-    public static final String CHECK_GYM_COURSES = "checkGymCourses";
 
     /***
      * 获取进门密码按钮
@@ -125,8 +110,36 @@ public class UmengEventId {
     /***
      * 收费团体课立即购买
      */
-    public static final String GROUPCOURSESCHARGECONFIRMACTIVITY = "mGroupCoursesChargeConfirmActivity";
+    public static final String GROUPCOURSESCHARGECONFIRMACTIVITY = "GroupCoursesChargeConfirmActivity";
 
+    /***
+     * 切换场馆界面
+     */
+    public static final String CHANGE_GYM_ACTIVITY = "ChangeGymActivity";
 
+    /***
+     * 切换城市按钮
+     */
+    public static final String RIGHT_ICON_ARROW_BTN = "RightIconArrowBtn";
+
+    /**
+     * 查看我的健身房
+     */
+    public static final String MY_GYM_BTN = "MyGymBtn";
+
+    /***
+     * 切换城市
+     */
+    public static final String CHANGE_CITY = "change_city";
+
+    /**
+     * 首页右边加好按钮
+     */
+    public static final String ADD_BTN = "add_btn";
+
+    /**
+     * 查看公告
+     */
+    public static final String CHECK_ANNOUNCEMENT = "check_Announcement";
 
 }

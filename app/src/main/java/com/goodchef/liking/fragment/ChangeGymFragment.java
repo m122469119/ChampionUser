@@ -48,7 +48,6 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     private CheckGymPresenter mCheckGymPresenter;
 
     private String selectCityId;//选择的城市id
-    private boolean isLoaction;//是否定位
     private String gymId;//场馆id
     private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
 
@@ -112,7 +111,6 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
 
     private void initData() {
         selectCityId = getArguments().getString(LikingHomeActivity.KEY_SELECT_CITY_ID);
-        isLoaction = getArguments().getBoolean(LikingHomeActivity.KEY_START_LOCATION, false);
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getArguments().getInt(LikingHomeActivity.KEY_TAB_INDEX, 0);
         mChangeGymAdapter = new ChangeGymAdapter(getActivity());
@@ -244,6 +242,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     public void onClick(View v) {
         if (v == mMyTextView) {
             if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId())) {
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MY_GYM_BTN);
                 jumpLikingHomeActivity(mMyGym.getGymId());
             }
         }

@@ -27,6 +27,8 @@ import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -176,6 +178,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                         mRightTitleTextView.setText(selectCityName);
                         mChangeGymCityAdapter.notifyDataSetChanged();
                         postEvent(new RefreshChangeCityMessage(String.valueOf(cityData.getCityId()), longitude, latitude));
+                        UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
                     }
                 }
             }
@@ -186,6 +189,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mRightTitleTextView || v == mRightIconArrow) {
+            UMengCountUtil.UmengCount(this, UmengEventId.RIGHT_ICON_ARROW_BTN);
             setDrawerLayout();
         } else if (v == mLeftIcon) {
             finish();

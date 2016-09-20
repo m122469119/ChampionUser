@@ -25,24 +25,17 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
     private static final int COURSES_STATE_COMPLETE = 1;//1 已完成
     private static final int COURSES_STATE_CANCEL = 2; //  2已取消
     private Context mContext;
-    private View.OnClickListener mCompleteListener;
 
     public MyPrivateCoursesAdapter(Context context) {
         super(context);
         this.mContext = context;
     }
 
-    public void setCompleteListener(View.OnClickListener listener) {
-        this.mCompleteListener = listener;
-    }
-
     @Override
     protected PrivateLessonViewHolder createViewHolder(ViewGroup parent) {
         View mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_private_my_lesson, parent, false);
-        TextView mCompleteCoursesBtn = (TextView) mRootView.findViewById(R.id.complete_courses_btn);
         return new PrivateLessonViewHolder(mRootView);
     }
-
 
     class PrivateLessonViewHolder extends BaseRecycleViewHolder<MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> {
         HImageView mHImageView;

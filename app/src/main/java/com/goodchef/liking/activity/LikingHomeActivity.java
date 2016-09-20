@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -237,7 +236,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置初始标题view
      */
     private void setMainTableView() {
-        //  mLikingLeftTitleTextView.setText(R.string.home_left_menu);
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
         mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mRightImageView.setVisibility(View.VISIBLE);
@@ -392,6 +390,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 展示右边按钮
      */
     private void showRightMenuDialog() {
+        UMengCountUtil.UmengBtnCount(this, UmengEventId.ADD_BTN, currentCityName);
         RightMenuDialog.setAnchor(mRightImageView);
         RightMenuDialog.setViewOnClickListener(new View.OnClickListener() {
                                                    @Override
@@ -420,6 +419,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 查看公告
      */
     private void showNoticeDialog() {
+        UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
@@ -472,119 +472,20 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 切换场馆
      */
     private void changeGym(int index) {
-        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId()) ) {
+        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId())) {
+            if (StringUtils.isEmpty(currentCityName)) {
+                UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, "定位失败");
+            } else {
+                UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, currentCityName);
+            }
             Intent intent = new Intent(this, ChangeGymActivity.class);
             intent.putExtra(KEY_SELECT_CITY_ID, mGym.getCityId());
-            intent.putExtra(KEY_WHETHER_LOCATION,isWhetherLocation);
+            intent.putExtra(KEY_WHETHER_LOCATION, isWhetherLocation);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
             intent.putExtra(KEY_TAB_INDEX, index);
             startActivity(intent);
         }
     }
-
-    /**
-     * 展示选择城市dialog
-     */
-    private void showSelectCityDialog() {
-        if (StringUtils.isEmpty(currentCityName)) {
-            UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_CITY, "定位失败");
-        } else {
-            UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_CITY, currentCityName);
-        }
-        final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_city, null, false);
-        TextView locationAddress = (TextView) view.findViewById(R.id.dialog_location_address);
-        TextView getCityBtn = (TextView) view.findViewById(R.id.get_city_btn);
-        ListView mCityListView = (ListView) view.findViewById(R.id.city_listView);
-        if (!StringUtils.isEmpty(currentCityName)) {
-            locationAddress.setText("定位城市：" + currentCityName);
-        } else {
-            locationAddress.setText("定位失败");
-        }
-        getCityBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initTitleLocation();
-                builder.create().dismiss();
-            }
-        });
-        setCityData(mCityListView, builder);
-        builder.setCustomView(view);
-        builder.setPositiveButton("查看场馆", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (isWhetherLocation) {
-                    if (currentCityName.equals(selectCityName)) {//当选择的城市和当前定位城市相同，在查看场馆中开启定位
-                        isLocation = true;
-                    } else {
-                        isLocation = false;
-                    }
-                    Intent intent = new Intent(LikingHomeActivity.this, LookStoreMapActivity.class);
-                    intent.putExtra(KEY_SELECT_CITY, selectCityName);
-                    intent.putExtra(KEY_SELECT_CITY_ID, selectCityId);
-                    intent.putExtra(KEY_START_LOCATION, isLocation);
-                    startActivity(intent);
-                } else {
-                    PopupUtils.showToast("定位失败，无法获取城市地图");
-                }
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    /**
-     * 设置选择城市的数据
-     *
-     * @param mCityListView
-     * @param builder
-     */
-    private void setCityData(ListView mCityListView, final HBaseDialog.Builder builder) {
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-        if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-            if (baseConfigData != null) {
-                List<CityData> cityDataList = baseConfigData.getCityList();
-                if (cityDataList != null && cityDataList.size() > 0) {
-                    for (CityData cityData : cityDataList) {
-                        if (cityData.getCityName().contains(selectCityName)) {
-                            cityData.setSelct(true);
-                        } else {
-                            cityData.setSelct(false);
-                        }
-                    }
-                    mSelectCityAdapter = new SelectCityAdapter(this, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            RelativeLayout textView = (RelativeLayout) v.findViewById(R.id.layout_city);
-                            if (textView != null) {
-                                CityData cityData = (CityData) textView.getTag();
-                                if (cityData != null) {
-                                    List<CityData> cityDataList = mSelectCityAdapter.getDataList();
-                                    for (CityData dto : cityDataList) {
-                                        if (dto.getCityId() == cityData.getCityId()) {
-                                            dto.setSelct(true);
-                                        } else {
-                                            dto.setSelct(false);
-                                        }
-                                    }
-                                    mSelectCityAdapter.notifyDataSetChanged();
-                                    selectCityName = cityData.getCityName();
-                                    selectCityId = cityData.getCityId() + "";
-                                    //发送消息更新首页数据
-                                    postEvent(new MainAddressChanged(0, 0, cityData.getCityId() + "", "0", selectCityName, true));
-                                    builder.create().dismiss();
-                                }
-                            }
-                        }
-                    });
-                    mSelectCityAdapter.setData(cityDataList);
-                    mCityListView.setAdapter(mSelectCityAdapter);
-                }
-            }
-        }
-    }
-
 
     /***
      * 初始化定位
@@ -600,7 +501,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     LogUtils.i("dust", "city: " + object.getCity() + " city code: " + object.getCityCode());
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                  //  selectCityName = currentCityName;//默认设置当前定位为选中城市
+                    //  selectCityName = currentCityName;//默认设置当前定位为选中城市
                     selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
