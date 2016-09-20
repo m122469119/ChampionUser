@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -48,6 +49,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     private TextView mTitleTextView;
     private ImageView mLeftIcon;
     private TextView mCityHeadText;
+    private RelativeLayout mCurrentCityLayout;
 
 
     private String currentCityName;//当前定位城市
@@ -99,7 +101,8 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     private void initCityHeadView() {
         mCityHeadView = LayoutInflater.from(this).inflate(R.layout.item_city_head_view, mListView, false);
         mCityHeadText = (TextView) mCityHeadView.findViewById(R.id.city_head_test);
-        mCityHeadText.setOnClickListener(this);
+        mCurrentCityLayout = (RelativeLayout) mCityHeadView.findViewById(R.id.layout_current_city);
+        mCurrentCityLayout.setOnClickListener(this);
     }
 
     private void initCityFootView() {
@@ -205,11 +208,11 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
             setDrawerLayout();
         } else if (v == mLeftIcon) {
             finish();
-        } else if (v == mCityHeadText) {
+        } else if (v == mCurrentCityLayout) {
             setDrawerLayout();
             if (isLoaction) {
                 mRightTitleTextView.setText(currentCityName);
-                if (!StringUtils.isEmpty(doLocationCity())){//如果当前
+                if (!StringUtils.isEmpty(doLocationCity())) {//如果当前
                     compareSelectCity(currentCityName);
                 }
                 postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
