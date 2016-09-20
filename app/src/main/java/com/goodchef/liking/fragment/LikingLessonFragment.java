@@ -216,7 +216,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public void updateBanner(BannerResult.BannerData bannerData) {
         bannerDataList = bannerData.getBannerList();
         if (bannerDataList != null && bannerDataList.size() > 0) {
-            mLikingLessonRecyclerAdapter.addHeaderView(mHeadView);
             if (mBannerPagerAdapter != null) {
                 mBannerPagerAdapter.setData(bannerData.getBannerList());
                 mBannerPagerAdapter.notifyDataSetChanged();
@@ -224,7 +223,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             }
             mImageViewPager.setCurrentItem(0);
             mImageViewPager.startAutoScroll();
-            mLikingLessonRecyclerAdapter.notifyDataSetChanged();
+            mLikingLessonRecyclerAdapter.addHeaderView(mHeadView);
         } else {
             removeHeadView();
             setBlankView();
@@ -234,13 +233,12 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     private void setBlankView() {
         mLikingLessonRecyclerAdapter.addHeaderView(mBlankView);
-        mLikingLessonRecyclerAdapter.notifyDataSetChanged();
     }
 
 
     private void removeHeadView() {
         if (mHeadView != null) {
-            mLikingLessonRecyclerAdapter.removeHeaderView(mBlankView);
+            mLikingLessonRecyclerAdapter.removeHeaderView(mHeadView);
         }
     }
 

@@ -148,7 +148,6 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
             if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
                 if (mNoCardHeadView != null) {
                     mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
-                    mChangeGymAdapter.notifyDataSetChanged();
                 }
                 mMyTextView.setVisibility(View.VISIBLE);
                 mMyTextView.setText("购卡场馆：" + mMyGym.getGymName());
@@ -156,10 +155,8 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {
                         mChangeGymAdapter.addHeaderView(mNoCardHeadView);
-                        mChangeGymAdapter.notifyDataSetChanged();
                     } else {
                         mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
-                        mChangeGymAdapter.notifyDataSetChanged();
                     }
                 }
                 mMyTextView.setVisibility(View.GONE);
