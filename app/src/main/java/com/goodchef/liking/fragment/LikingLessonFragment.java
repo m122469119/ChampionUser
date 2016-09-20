@@ -53,7 +53,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
-    private View mSliderParentLayout;
     private LikingLessonRecyclerAdapter mLikingLessonRecyclerAdapter;
     private HomeCoursesPresenter mCoursesPresenter;
 
@@ -146,7 +145,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
      */
     private void initRecycleHeadView() {
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, getRecyclerView(), false);
-        mSliderParentLayout = mHeadView.findViewById(R.id.layout_liking_home_head);
         mImageViewPager = (InfiniteViewPager) mHeadView.findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) mHeadView.findViewById(R.id.liking_home_head_indicator);
         initImageSliderLayout();
@@ -218,7 +216,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public void updateBanner(BannerResult.BannerData bannerData) {
         bannerDataList = bannerData.getBannerList();
         if (bannerDataList != null && bannerDataList.size() > 0) {
-            mLikingLessonRecyclerAdapter.setHeaderView(mHeadView);
+            mLikingLessonRecyclerAdapter.addHeaderView(mHeadView);
             if (mBannerPagerAdapter != null) {
                 mBannerPagerAdapter.setData(bannerData.getBannerList());
                 mBannerPagerAdapter.notifyDataSetChanged();
@@ -235,14 +233,14 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     private void setBlankView() {
-        mLikingLessonRecyclerAdapter.setHeaderView(mBlankView);
+        mLikingLessonRecyclerAdapter.addHeaderView(mBlankView);
         mLikingLessonRecyclerAdapter.notifyDataSetChanged();
     }
 
 
     private void removeHeadView() {
         if (mHeadView != null) {
-            mLikingLessonRecyclerAdapter.removeHeaderView();
+            mLikingLessonRecyclerAdapter.removeHeaderView(mBlankView);
         }
     }
 

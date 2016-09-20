@@ -98,9 +98,7 @@ public class HImageLoader implements ImageLoader {
      */
     @Override
     public void loadImage(ImageView view, int res) {
-        HImageConfig imageConfig = new HImageConfigBuilder(view, res)
-                .build();
-        loadImage(imageConfig);
+        loadImage(view, LoaderType.RESOURCE, res, null);
     }
 
     /**
@@ -112,10 +110,7 @@ public class HImageLoader implements ImageLoader {
      */
     @Override
     public void loadImage(ImageView view, String url, ImageLoaderCallback imageLoaderCallback) {
-        HImageConfig imageConfig = new HImageConfigBuilder(view, url)
-                .setImageLoaderCallback(imageLoaderCallback)
-                .build();
-        loadImage(imageConfig);
+        loadImage(view, null, url, imageLoaderCallback);
     }
 
     /**
@@ -126,6 +121,19 @@ public class HImageLoader implements ImageLoader {
     @Override
     public void loadImage(ImageView view, String url) {
         loadImage(view, url, null);
+    }
+
+    @Override
+    public void loadImage(ImageView view, LoaderType loaderType, String path) {
+        loadImage(view, loaderType, path, null);
+    }
+
+    @Override
+    public void loadImage(ImageView view, LoaderType loaderType, Object path, ImageLoaderCallback imageLoaderCallback) {
+        HImageConfigBuilder imageConfigBuilder = new HImageConfigBuilder(view, path);
+        imageConfigBuilder.setLoadType(loaderType == null ? LoaderType.NETWORK : loaderType);
+        imageConfigBuilder.setImageLoaderCallback(imageLoaderCallback);
+        loadImage(imageConfigBuilder.build());
     }
 
     private void setImageDraweeViewController(final HImageConfig config) {

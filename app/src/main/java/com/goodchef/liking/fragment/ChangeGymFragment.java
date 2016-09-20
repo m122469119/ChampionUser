@@ -147,7 +147,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
             }
             if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
                 if (mNoCardHeadView != null) {
-                    mChangeGymAdapter.setHeaderView(null);
+                    mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                     mChangeGymAdapter.notifyDataSetChanged();
                 }
                 mMyTextView.setVisibility(View.VISIBLE);
@@ -155,10 +155,10 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
             } else {
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {
-                        mChangeGymAdapter.setHeaderView(mNoCardHeadView);
+                        mChangeGymAdapter.addHeaderView(mNoCardHeadView);
                         mChangeGymAdapter.notifyDataSetChanged();
                     } else {
-                        mChangeGymAdapter.setHeaderView(null);
+                        mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                         mChangeGymAdapter.notifyDataSetChanged();
                     }
                 }

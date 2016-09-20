@@ -21,21 +21,25 @@ import java.util.List;
 public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>, T>
         extends RecyclerView.Adapter implements View.OnClickListener, View.OnLongClickListener {
 
-    protected final String TAG = getClass().getSimpleName();;
+    protected final String TAG = getClass().getSimpleName();
+    ;
     private List<T> mDataList = new ArrayList<>();
 
     private Context mContext;
 
     public static final int TYPE_HEADER = RecyclerView.INVALID_TYPE;
     public static final int TYPE_FOOTER = RecyclerView.INVALID_TYPE - 1;
-    private View mHeaderView;
-    private View mFooterView;
+    private List<FixedViewInfo> mHeaderViewInfos = new ArrayList<>();
+    private List<FixedViewInfo> mFooterViewInfos = new ArrayList<>();
 
     private OnRecycleViewItemClickListener mOnRecycleViewItemClickListener;
 
     protected BaseRecycleViewAdapter(Context context) {
         mContext = context;
     }
+
+
+    protected abstract VH createViewHolder(ViewGroup parent);
 
     /**
      * @return 获取上下文资源
@@ -46,10 +50,25 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mHeaderView != null && viewType == TYPE_HEADER) {
-            return new HeaderFooterViewHolder(mHeaderView);
-        } else if (mFooterView != null && viewType ==TYPE_FOOTER){
-            return new HeaderFooterViewHolder(mFooterView);
+        /**和List添加子项的getView(int position,...)不同是的这里没有position
+         * ,所以采取遍历HeaderFooter FixViewInfoList,通过isAdded的字段来返回列表
+         * 中第一个没有被添加过的HeaderFooterView的方法来创建ViewHolder*/
+        if (mHeaderViewInfos != null && viewType == TYPE_HEADER) {
+            for (FixedViewInfo headerViewInfo : mHeaderViewInfos) {
+                if (headerViewInfo.isAdded) {
+                    continue;
+                }
+                headerViewInfo.isAdded = true;
+                return new HeaderFooterViewHolder(headerViewInfo.view);
+            }
+        } else if (mFooterViewInfos != null && viewType == TYPE_FOOTER) {
+            for (FixedViewInfo footerViewInfo : mFooterViewInfos) {
+                if (footerViewInfo.isAdded) {
+                    continue;
+                }
+                footerViewInfo.isAdded = true;
+                return new HeaderFooterViewHolder(footerViewInfo.view);
+            }
         }
         return createViewHolder(parent);
     }
@@ -60,28 +79,66 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         }
     }
 
-    protected abstract VH createViewHolder(ViewGroup parent);
-
     /**
      * 设置HeaderView
+     *
      * @param headerView View
      */
-    public void setHeaderView(View headerView) {
-        mHeaderView = headerView;
+    public void addHeaderView(View headerView) {
+        if (headerView == null) {
+            return;
+        }
+        for (FixedViewInfo fixedViewInfo : mHeaderViewInfos) {
+            if (fixedViewInfo.view == headerView) {
+                return;
+            }
+        }
+        mHeaderViewInfos.add(createFixedViewInfo(headerView));
         notifyDataSetChanged();
     }
 
-    public void removeHeaderView() {
-        setHeaderView(null);
-    }
-
-    public void setFooterView(View footerView) {
-        mFooterView = footerView;
+    public void addFooterView(View footerView) {
+        if (footerView == null) {
+            return;
+        }
+        for (FixedViewInfo fixedViewInfo : mFooterViewInfos) {
+            if (fixedViewInfo.view == footerView) {
+                return;
+            }
+        }
+        mFooterViewInfos.add(createFixedViewInfo(footerView));
         notifyDataSetChanged();
     }
 
-    public void removeFooterView() {
-        setFooterView(null);
+    private FixedViewInfo createFixedViewInfo(View headerView) {
+        FixedViewInfo headerViewInfo = new FixedViewInfo();
+        headerViewInfo.view = headerView;
+        headerViewInfo.isAdded = false;
+        return headerViewInfo;
+    }
+
+    public void removeHeaderView(View headerView) {
+//        List<FixedViewInfo> newFixedViewInfos = new ArrayList<>();
+//        for (FixedViewInfo headerViewInfo : mHeaderViewInfos) {
+//            if (headerView == headerViewInfo.view) {
+//                newFixedViewInfos.add(headerViewInfo);
+//            }
+//        }
+//        mHeaderViewInfos.removeAll(newFixedViewInfos);
+        mHeaderViewInfos.clear();
+        notifyDataSetChanged();
+    }
+
+    public void removeFooterView(View footerView) {
+//        List<FixedViewInfo> newFixedViewInfos = new ArrayList<>();
+//        for (FixedViewInfo footerViewInfo : mFooterViewInfos) {
+//            if (footerView == footerViewInfo.view) {
+//                newFixedViewInfos.add(footerViewInfo);
+//            }
+//        }
+//        mFooterViewInfos.removeAll(newFixedViewInfos);
+        mFooterViewInfos.clear();
+        notifyDataSetChanged();
     }
 
     /**
@@ -124,9 +181,17 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         }
     }
 
+    private int getHeaderCount() {
+        return mHeaderViewInfos == null ? 0 : mHeaderViewInfos.size();
+    }
+
+    private int getFooterCount() {
+        return mFooterViewInfos == null ? 0 : mFooterViewInfos.size();
+    }
+
     @Override
     public int getItemViewType(int position) {
-        int headerCount = mHeaderView == null ? 0 : 1;
+        int headerCount = getHeaderCount();
         if (position < headerCount) {
             return TYPE_HEADER;
         }
@@ -138,22 +203,14 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
     }
 
 
-
     @Override
     public int getItemCount() {
-        int count = mDataList.size();
-        if (mHeaderView != null) {
-            count += 1;
-        }
-        if (mFooterView != null) {
-            count += 1;
-        }
-        return count;
+        return getHeaderCount() + getFooterCount() + mDataList.size();
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        int headerCount = mHeaderView == null ? 0 : 1;
+        int headerCount = getHeaderCount();
         if (position < headerCount) {
             return;
         }
@@ -190,6 +247,20 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
     public boolean onLongClick(View v) {
         return mOnRecycleViewItemClickListener != null
                 && mOnRecycleViewItemClickListener.onItemLongClick(v, (Integer) v.getTag());
+    }
+
+    /**
+     *
+     */
+    class FixedViewInfo {
+        /**
+         * 添加到RecyclerView的View
+         */
+        public View view;
+        /**
+         * 是否已经添加状态
+         */
+        public boolean isAdded;
     }
 
 }

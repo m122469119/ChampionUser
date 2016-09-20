@@ -300,7 +300,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private void SetHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                mBuyCardAdapter.setHeaderView(mHeadView);
+                mBuyCardAdapter.addHeaderView(mHeadView);
                 mBuyCardAdapter.notifyDataSetChanged();
             }
         }
@@ -309,7 +309,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private void removeHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                mBuyCardAdapter.removeHeaderView();
+                mBuyCardAdapter.removeHeaderView(mHeadView);
             }
         }
     }
