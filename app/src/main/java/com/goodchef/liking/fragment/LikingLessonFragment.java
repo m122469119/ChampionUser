@@ -11,6 +11,7 @@ import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClic
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
@@ -108,6 +109,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         mLikingLessonRecyclerAdapter = new LikingLessonRecyclerAdapter(getActivity());
         setRecyclerAdapter(mLikingLessonRecyclerAdapter);
         setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
+        getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
         mLikingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

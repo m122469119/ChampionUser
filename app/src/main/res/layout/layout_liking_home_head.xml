@@ -27,7 +27,7 @@
         android:id="@+id/layout_blank_view"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/transparent"
+        android:background="@color/app_content_background"
         android:layout_below="@+id/layout_InfiniteViewPager"
         android:visibility="visible"/>
 </RelativeLayout>

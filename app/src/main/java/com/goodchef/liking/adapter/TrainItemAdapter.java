@@ -42,7 +42,24 @@ public class TrainItemAdapter extends BaseRecycleViewAdapter<TrainItemAdapter.Tr
 
         @Override
         public void bindViews(PrivateCoursesResult.PrivateCoursesData.CoursesData object) {
-            mTrainNameTextView.setText(object.getName());
+            String tranName = object.getName();
+            int testLine = 6;
+            StringBuilder sb = new StringBuilder(tranName);
+            int tranNameLength = sb.length();
+            if (tranNameLength <= testLine) {
+                mTrainNameTextView.setText(tranName);
+            } else if (tranNameLength > testLine) {
+                int tranNameLine = tranNameLength % 2;
+                if (tranNameLine == 0) {
+                    int tran = sb.length() / 2;
+                    sb.insert(tran, "\n");
+                    mTrainNameTextView.setText(sb.toString());
+                } else {
+                    int tran = sb.length() / 2 + 1;
+                    sb.insert(tran, "\n");
+                    mTrainNameTextView.setText(sb.toString());
+                }
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
@@ -34,7 +35,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:切换场馆
  * Author shaozucheng
  * Time:16/9/18 下午3:30
  */
@@ -127,6 +128,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
 
 
     private void sendGymRequest(int cityId, double longitude, double latitude) {
+        mStateView.setState(StateView.State.LOADING);
         mCheckGymPresenter = new CheckGymPresenter(getActivity(), this);
         mCheckGymPresenter.getGymList(cityId, longitude, latitude);
     }
@@ -143,7 +145,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 setDefaultCheck();
                 setOnItemClickListener();
             } else {
-                mStateView.setState(StateView.State.NO_DATA);
+                setNoDataView();
             }
             if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
                 if (mNoCardHeadView != null) {
@@ -163,11 +165,46 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
             }
 
         } else {
-            mStateView.setState(StateView.State.NO_DATA);
+            setNoDataView();
         }
 
     }
 
+
+    /***
+     * 设置没有数据
+     */
+    private void setNoDataView() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_chenge_no_data, null, false);
+        ImageView imageView = (ImageView) view.findViewById(R.id.no_buy_card_imageView);
+        TextView myGymTextView = (TextView) view.findViewById(R.id.no_data_my_gym);
+
+        if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
+            imageView.setVisibility(View.GONE);
+            myGymTextView.setVisibility(View.VISIBLE);
+            myGymTextView.setText("购卡场馆：" + mMyGym.getGymName());
+        } else {
+            if (Preference.isLogin()) {
+                imageView.setVisibility(View.VISIBLE);
+            } else {
+                imageView.setVisibility(View.GONE);
+            }
+            myGymTextView.setVisibility(View.GONE);
+        }
+        myGymTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpHomeActivity();
+            }
+        });
+        mStateView.setState(StateView.State.NO_DATA);
+        mStateView.setNodataView(view);
+    }
+
+
+    /***
+     * 设置默认选中首页所在的场馆
+     */
     private void setDefaultCheck() {
         for (int i = 0; i < allGymList.size(); i++) {
             if (i == 0) {
@@ -255,10 +292,15 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     @Override
     public void onClick(View v) {
         if (v == mMyTextView) {
-            if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId())) {
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MY_GYM_BTN);
-                jumpLikingHomeActivity(mMyGym.getGymId());
-            }
+            jumpHomeActivity();
+        }
+    }
+
+
+    private void jumpHomeActivity() {
+        if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId())) {
+            UMengCountUtil.UmengCount(getActivity(), UmengEventId.MY_GYM_BTN);
+            jumpLikingHomeActivity(mMyGym.getGymId());
         }
     }
 }

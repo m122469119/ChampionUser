@@ -495,8 +495,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
 
                     //虚拟定位
-                    // postEvent(new MainAddressChanged(117.20, 34.26, "123456", "24", "徐州市", true));
-                    // updateLocationPoint("123456", "24", 117.20, 34.26, "徐州市", true);
+//                     postEvent(new MainAddressChanged(117.20, 34.26, "123456", "24", "徐州市", true));
+//                     updateLocationPoint("123456", "24", 117.20, 34.26, "徐州市", true);
 
                 } else {//定位失败
                     isWhetherLocation = false;

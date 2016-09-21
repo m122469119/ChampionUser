@@ -6,8 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
+import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyGroupLessonFragment;
 import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
@@ -20,7 +20,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:32
  */
-public class MyLessonActivity extends BaseActivity {
+public class MyLessonActivity extends SwipeBackActivity {
     private static final int INDEX_GROUP_LESSON = 0;//团体课
     private static final int INDEX_PRIVATE_LESSON = 1;//私教课
     public static final String KEY_CURRENT_ITEM = "key_current_item";

@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,7 +18,8 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.framework.base.ui.BaseActivity;
+import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.map.LocationListener;
 import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
@@ -30,6 +34,7 @@ import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
@@ -39,7 +44,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/9/14 下午3:24
  */
-public class ChangeGymActivity extends BaseActivity implements View.OnClickListener {
+public class ChangeGymActivity extends SwipeBackActivity implements View.OnClickListener {
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
 
@@ -51,6 +56,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
     private ImageView mLeftIcon;
     private TextView mCityHeadText;
     private RelativeLayout mCurrentCityLayout;
+    private RelativeLayout mLayoutCityFootView;
 
 
     private String currentCityName;//当前定位城市
@@ -107,6 +113,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
 
     private void initCityFootView() {
         mCityFootView = LayoutInflater.from(this).inflate(R.layout.item_city_foot_view, mListView, false);
+        mLayoutCityFootView = (RelativeLayout) mCityFootView.findViewById(R.id.layout_city_foot_view);
     }
 
 
@@ -146,6 +153,7 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                         if (String.valueOf(cityData.getCityId()).equals(cityId)) {
                             mRightTitleTextView.setText(cityData.getCityName());
                             cityData.setSelct(true);
+                            selectCityName = cityData.getCityName();
                         }
                     }
                     mChangeGymCityAdapter = new ChangeGymCityAdapter(this);
@@ -301,14 +309,47 @@ public class ChangeGymActivity extends BaseActivity implements View.OnClickListe
                 mListView.addHeaderView(mCityHeadView);
             }
         }
+        if (!StringUtils.isEmpty(selectCityName)){
+            compareCurrentCity(selectCityName);
+        }
     }
 
     private void setCityFootView() {
         if (mChangeGymCityAdapter != null) {
             if (mCityFootView != null) {
+                setFootViewHeight();
                 mListView.addFooterView(mCityFootView);
             }
         }
+    }
+
+
+    private void setFootViewHeight() {
+        int heightPixels = DisplayUtils.getHeightPixels();
+        int ActionBarHeight = DisplayUtils.getActionBarSize(this);
+        int cityListHeight = 0;
+        if (cityDataList != null && cityDataList.size() > 0) {
+            cityListHeight = (cityDataList.size() + 1) * DisplayUtils.dp2px(40);
+        }
+        int blankHeight;
+
+        WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
+        if (hasSoft) {
+            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(this);
+            blankHeight = heightPixels - ActionBarHeight - cityListHeight - navigationBarHeight - DisplayUtils.dp2px(30);
+        } else {
+            blankHeight = heightPixels - ActionBarHeight - cityListHeight - DisplayUtils.dp2px(30);
+        }
+
+        AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) mLayoutCityFootView.getLayoutParams();
+        if (blankHeight > 0) {
+            layoutParams.height = blankHeight;
+        } else {
+            layoutParams.height = layoutParams.WRAP_CONTENT;
+        }
+        mLayoutCityFootView.setLayoutParams(layoutParams);
+
     }
 
 

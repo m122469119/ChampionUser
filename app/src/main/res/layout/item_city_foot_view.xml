@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:paddingTop="50dp"
-              android:orientation="vertical">
+<RelativeLayout android:id="@+id/layout_city_foot_view"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="85dp"
@@ -19,5 +25,5 @@
             android:text="更多城市开放中..."
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="10sp"/>
-
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
