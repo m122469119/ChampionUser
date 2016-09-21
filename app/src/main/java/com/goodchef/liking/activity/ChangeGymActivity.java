@@ -136,7 +136,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         bundle.putString(LikingHomeActivity.KEY_SELECT_CITY_ID, cityId);
         bundle.putInt(LikingHomeActivity.KEY_TAB_INDEX, tabIndex);
         bundle.putString(LikingLessonFragment.KEY_GYM_ID, gymId);
-        bundle.putBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION, false);
+        bundle.putBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION, isLoaction);
         fragmentTransaction.add(R.id.gym_content_frame, ChangeGymFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }
@@ -309,7 +309,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 mListView.addHeaderView(mCityHeadView);
             }
         }
-        if (!StringUtils.isEmpty(selectCityName)){
+        if (!StringUtils.isEmpty(selectCityName)) {
             compareCurrentCity(selectCityName);
         }
     }
@@ -328,6 +328,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         int heightPixels = DisplayUtils.getHeightPixels();
         int ActionBarHeight = DisplayUtils.getActionBarSize(this);
         int cityListHeight = 0;
+        int footViewContentHeight = DisplayUtils.dp2px(100);
         if (cityDataList != null && cityDataList.size() > 0) {
             cityListHeight = (cityDataList.size() + 1) * DisplayUtils.dp2px(40);
         }
@@ -343,7 +344,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         }
 
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) mLayoutCityFootView.getLayoutParams();
-        if (blankHeight > 0) {
+        if (blankHeight > 0 && blankHeight > footViewContentHeight) {
             layoutParams.height = blankHeight;
         } else {
             layoutParams.height = layoutParams.WRAP_CONTENT;

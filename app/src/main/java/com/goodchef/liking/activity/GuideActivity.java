@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.GuideFragment;
@@ -28,7 +28,7 @@ import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
  * Author shaozucheng
  * Time:16/7/20 下午5:27
  */
-public class GuideActivity extends AppBarActivity {
+public class GuideActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private FragmentPageAdapter mAdapter;
@@ -46,7 +46,6 @@ public class GuideActivity extends AppBarActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        hideAppBar();
         Preference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
         initView();
         setVideoView();

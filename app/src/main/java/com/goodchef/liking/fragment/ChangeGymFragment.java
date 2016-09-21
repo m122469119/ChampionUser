@@ -156,6 +156,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
             } else {
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {
+                        mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                         mChangeGymAdapter.addHeaderView(mNoCardHeadView);
                     } else {
                         mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
