@@ -136,6 +136,10 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
         }
     }
 
+    protected void setNoNextPageFooterView(View view) {
+        mFooterView = view;
+    }
+
 
     /**
      * @return 获取ListView适配器
