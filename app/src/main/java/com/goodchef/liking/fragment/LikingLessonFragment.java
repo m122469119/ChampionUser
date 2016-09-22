@@ -16,6 +16,7 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
@@ -63,7 +64,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private double mLatitude = 0;
     private String mCityId = "310100";
     private String mDistrictId = "310104";
-    private String gymId = "0";
     private CoursesResult.Courses.Gym mGym;
 
     public static final String KEY_TRAINER_ID = "trainerId";
@@ -203,9 +203,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     //发送首页数据
     private void getCoursesRequest(int page) {
         if (mLongitude > 0 && mLatitude > 0) {
-            mCoursesPresenter.getHomeData(mLongitude + "", mLatitude + "", mCityId, mDistrictId, page, gymId, LikingLessonFragment.this);
+            mCoursesPresenter.getHomeData(mLongitude + "", mLatitude + "", mCityId, mDistrictId, page, LikingHomeActivity.gymId, LikingLessonFragment.this);
         } else {
-            mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, gymId, LikingLessonFragment.this);
+            mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, LikingHomeActivity.gymId, LikingLessonFragment.this);
         }
     }
 
@@ -324,13 +324,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(CoursesErrorMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 
     public void onEvent(ChangGymMessage message) {
         //切换场馆刷新数据
-        gymId = message.getGymId();
+        LikingHomeActivity.gymId = message.getGymId();
         int index = message.getIndex();
         // if (index == 0) {//从首页切换场馆过来不用刷新界面
         loadHomePage();
@@ -339,18 +339,18 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     public void onEvent(LoginOutMessage message) {
         //登出刷新首页数据
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 
     public void onEvent(LoginFinishMessage message) {
         //登录完成刷新首页数据
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 
     public void onEvent(LoginOutFialureMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 

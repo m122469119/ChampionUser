@@ -84,6 +84,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private String currentCityName = "";
     public boolean isWhetherLocation = false;
+    public static String gymId = "0";
 
     // private LikingNearbyFragment mLikingNearbyFragment = LikingNearbyFragment.newInstance();
     //  private ArrayList<Food> buyList = new ArrayList<>();

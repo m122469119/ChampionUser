@@ -18,6 +18,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
@@ -62,7 +63,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private View mHeadView;
     private static final int TYPE_BUY = 1;
     private TextView mCityOpenTextView;//当前城市是否开通
-    private String gymId = "0";
     private String longitude = "0";
     private String latitude = "0";
     private String cityId = "310100";
@@ -166,9 +166,9 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             getLocationData();
             mCardListPresenter = new CardListPresenter(getActivity(), this);
             if (longitude.equals("0.0") || latitude.equals("0.0")) {
-                mCardListPresenter.getCardList("0", "0", cityId, districtId, gymId, TYPE_BUY);
+                mCardListPresenter.getCardList("0", "0", cityId, districtId, LikingHomeActivity.gymId, TYPE_BUY);
             } else {
-                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, gymId, TYPE_BUY);
+                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, LikingHomeActivity.gymId, TYPE_BUY);
             }
         }
     }
@@ -245,7 +245,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
 
     public void onEvent(ChangGymMessage message) {
-        gymId = message.getGymId();
+        LikingHomeActivity.gymId = message.getGymId();
         int index = message.getIndex();
         //  if (index == 1) {//从买卡界面切换场馆过来
         sendBuyCardListRequest();
@@ -253,22 +253,22 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     public void onEvent(LoginOutMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginFinishMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(CoursesErrorMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginOutFialureMessage message){
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
