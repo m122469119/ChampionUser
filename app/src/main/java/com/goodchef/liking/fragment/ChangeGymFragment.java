@@ -179,7 +179,6 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_chenge_no_data, null, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.no_buy_card_imageView);
         TextView myGymTextView = (TextView) view.findViewById(R.id.no_data_my_gym);
-
         if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
             imageView.setVisibility(View.GONE);
             myGymTextView.setVisibility(View.VISIBLE);

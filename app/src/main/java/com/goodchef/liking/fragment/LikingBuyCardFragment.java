@@ -136,7 +136,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
-        noDataImageView.setImageResource(R.drawable.icon_no_coureses_data);
+        noDataImageView.setImageResource(R.drawable.icon_no_data);
         noDataText.setText(R.string.no_data);
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
