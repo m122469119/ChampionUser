@@ -87,6 +87,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             @Override
             public void onRetryRequested() {
                 LiKingVerifyUtils.initApi(getActivity());
+                sendBuyCardListRequest();
             }
         });
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
