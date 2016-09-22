@@ -229,8 +229,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         } else if (v == mLeftIcon) {
             finish();
         } else if (v == mCurrentCityLayout) {
-            setDrawerLayout();
             if (isLoaction) {
+                setDrawerLayout();
                 mRightTitleTextView.setText(currentCityName);
                 if (!StringUtils.isEmpty(doLocationCity())) {//如果当前城市在开通范围城市范围之内
                     compareSelectCity(currentCityName);

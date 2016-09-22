@@ -362,7 +362,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void jumpArenaActivity() {
         if (isWhetherLocation) {//定位成功时查看门店
-            if (!StringUtils.isEmpty(mGym.getGymId())) {
+            if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
                 UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
                 Intent intent = new Intent(this, ArenaActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
@@ -492,6 +492,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
                     // selectCityId = CityUtils.getCityId(object.getProvince(), object.getCity());//设置当前定位城市id,为定位城市id
+                    if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                        mLikingMiddleTitleTextView.setText("定位失败·重新定位");
+                    }
                     postEvent(new MainAddressChanged(object.getLongitude(), object.getLatitude(), CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), object.getLongitude(), object.getLatitude(), currentCityName, true);
 
@@ -501,6 +504,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
                 } else {//定位失败
                     isWhetherLocation = false;
+                    if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                        mLikingMiddleTitleTextView.setText("定位失败·重新定位");
+                    }
                     postEvent(new MainAddressChanged(0, 0, CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), "", false));
                     updateLocationPoint(CityUtils.getCityId(object.getProvince(), object.getCity()), CityUtils.getDistrictId(object.getDistrict()), 0, 0, currentCityName, false);
                 }

@@ -164,6 +164,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.FAILED);
         } else {
+            mStateView.setState(StateView.State.LOADING);
             getLocationData();
             mCardListPresenter = new CardListPresenter(getActivity(), this);
             if (longitude.equals("0.0") || latitude.equals("0.0")) {
