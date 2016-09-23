@@ -123,7 +123,6 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
                 } else {
                     PopupUtils.showToast(R.string.network_no_connection);
                 }
-
             } else {
                 PopupUtils.showToast(R.string.network_no_connection);
             }
