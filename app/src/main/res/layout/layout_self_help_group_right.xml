@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="操房使用时段:"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_small"/>
+
+            <TextView
+                android:id="@+id/self_help_user_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_small"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/line"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/self_help_gym_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="选择锻炼课程"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_small"/>
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_right_arrow"/>
+            </RelativeLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <com.aaron.android.framework.library.imageloader.HImageView
+                    android:id="@+id/gym_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    fresco:failureImage="@drawable/bg_no_data_default_image"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/bg_no_data_default_image"
+                    fresco:placeholderImageScaleType="centerCrop"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:background="#60000000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/group_courses_train_object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="核心力量训练"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/group_courses_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="45dp"
+                        android:text="时长:35"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/group_courses_strong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="课程强度:"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_small"/>
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/self_help_courses_introduce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:padding="10dp"
+                android:text="课程介绍课程介绍课程介绍课程介绍"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_small"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/line"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="最多容纳人数"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_small"/>
+
+            <TextView
+                android:id="@+id/accommodate_user_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="3人"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_small"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/line"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -36,6 +36,7 @@ import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
+import com.goodchef.liking.activity.SelfHelpGroupActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
@@ -74,6 +75,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private ImageView mArrowImage;
     private TextView mIsVip;//是否是VIP
 
+    private LinearLayout mSelfHelpGroupLayout;//自助团体课
     private LinearLayout mMyCourseLayout;//我的课程
     private LinearLayout mMyOrderLayout;//我的订单
     private LinearLayout mMemberCardLayout;//会员卡
@@ -212,6 +214,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mArrowImage = (ImageView) view.findViewById(R.id.login_arrow);
         mIsVip = (TextView) view.findViewById(R.id.is_vip);
 
+        mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
         mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
         mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
@@ -244,6 +247,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mLoginOutBtn.setOnClickListener(this);
         mLoginBtn.setOnClickListener(this);
 
+        mSelfHelpGroupLayout.setOnClickListener(this);
         mMyCourseLayout.setOnClickListener(this);
         mMyOrderLayout.setOnClickListener(this);
         mMemberCardLayout.setOnClickListener(this);
@@ -254,6 +258,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
 
     private void initViewIconAndText() {
+        setMySettingCard(mSelfHelpGroupLayout, R.string.layout_self_help_group, true);
         setMySettingCard(mInviteFriendsLayout, R.string.layout_invite_friends, true);
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, true);
@@ -360,6 +365,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             if (!StringUtils.isEmpty(phone)) {
                 LikingCallUtil.showCallDialog(getActivity(), "确定联系客服吗？", phone);
             }
+        } else if (v == mSelfHelpGroupLayout) {//自助团体课
+            if (Preference.isLogin()) {
+                startActivity(SelfHelpGroupActivity.class);
+            } else {
+                startActivity(LoginActivity.class);
+            }
         }
     }
 
@@ -422,7 +433,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         setLogonView();
         clearExerciseData();
     }

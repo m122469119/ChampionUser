@@ -140,6 +140,10 @@
                 android:background="@color/line"/>
 
             <include
+                android:id="@+id/layout_self_help_group_gym"
+                layout="@layout/item_my_standard"/>
+
+            <include
                 android:id="@+id/layout_invite_friends"
                 layout="@layout/item_my_standard"/>
 
