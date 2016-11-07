@@ -449,7 +449,7 @@ public class LiKingApi {
      * @param cityId    城市id
      * @param callback  RequestCallback
      */
-    public static void getFoodList(double longitude, double latitude, String cityId, int page, RequestCallback<FoodListResult> callback) {
+    public static void getFoodList(String longitude, String latitude, String cityId, int page, RequestCallback<FoodListResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.FOOD_LIST, FoodListResult.class, getCommonRequestParams()
                 .append("longitude", longitude).append("latitude", latitude).append("city_id", cityId).append("page", page), callback);
     }
@@ -800,12 +800,12 @@ public class LiKingApi {
      * @param cityId   城市id
      * @param callback RequestCallback
      */
-    public static void getCheckGymList(String token, int cityId, double longitude, double latitude, RequestCallback<CheckGymListResult> callback) {
+    public static void getCheckGymList(String token, int cityId, String longitude, String latitude, RequestCallback<CheckGymListResult> callback) {
         RequestParams params = getCommonRequestParams().append("city_id", cityId);
-        if (longitude > 0.0) {
+        if (!StringUtils.isEmpty(longitude)) {
             params.append("longitude", longitude);
         }
-        if (latitude > 0.0) {
+        if (!StringUtils.isEmpty(latitude)) {
             params.append("latitude", latitude);
         }
         if (!TextUtils.isEmpty(token)) {

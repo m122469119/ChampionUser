@@ -129,7 +129,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
         if (isLoaction) {
             startLocation();
         } else {
-            mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), 0, 0);
+            mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), "0", "0");
         }
     }
 
@@ -279,7 +279,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                     mStateView.setState(StateView.State.FAILED);
                 } else {
                     mAddressTextView.setText(aMapLocation.getAddress());
-                    mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), aMapLocation.getLongitude(), aMapLocation.getLatitude());
+                    mCheckGymPresenter.getGymList(Integer.parseInt(selectCityId), aMapLocation.getLongitude()+"", aMapLocation.getLatitude()+"");
                 }
             } else {
                 setMapLocationView();

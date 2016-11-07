@@ -9,10 +9,10 @@ import com.aaron.android.framework.base.eventbus.BaseMessage;
  */
 public class RefreshChangeCityMessage extends BaseMessage {
     private String cityId;
-    private double longitude;
-    private double latitude;
+    private String longitude;
+    private String latitude;
 
-    public RefreshChangeCityMessage(String cityId, double longitude, double latitude) {
+    public RefreshChangeCityMessage(String cityId, String longitude, String latitude) {
         this.cityId = cityId;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -22,11 +22,11 @@ public class RefreshChangeCityMessage extends BaseMessage {
         return cityId;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 }

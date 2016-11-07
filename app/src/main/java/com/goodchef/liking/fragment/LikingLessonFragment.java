@@ -60,8 +60,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private LikingLessonRecyclerAdapter mLikingLessonRecyclerAdapter;
     private HomeCoursesPresenter mCoursesPresenter;
 
-    private double mLongitude = 0;
-    private double mLatitude = 0;
+    private String mLongitude = "0";
+    private String mLatitude = "0";
     private String mCityId = "310100";
     private String mDistrictId = "310104";
     private CoursesResult.Courses.Gym mGym;
@@ -202,8 +202,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     //发送首页数据
     private void getCoursesRequest(int page) {
-        if (mLongitude > 0 && mLatitude > 0) {
-            mCoursesPresenter.getHomeData(mLongitude + "", mLatitude + "", mCityId, mDistrictId, page, LikingHomeActivity.gymId, LikingLessonFragment.this);
+        if (!"0".equals(mLongitude) && !"0".equals(mLatitude)) {
+            mCoursesPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingHomeActivity.gymId, LikingLessonFragment.this);
         } else {
             mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, LikingHomeActivity.gymId, LikingLessonFragment.this);
         }

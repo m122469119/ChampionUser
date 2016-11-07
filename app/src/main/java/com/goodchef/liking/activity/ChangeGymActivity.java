@@ -72,8 +72,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
 
     private AmapGDLocation mAmapGDLocation;
     private List<CityData> cityDataList;//开通服务的城市列表
-    private double longitude;
-    private double latitude;
+    private String longitude;
+    private String latitude;
     private boolean isSecondLocation = false;
 
 
@@ -266,8 +266,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                     isLoaction = true;
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
                     currentCityId = object.getCityCode();
-                    longitude = object.getLongitude();
-                    latitude = object.getLatitude();
+                    longitude = object.getLongitude() + "";
+                    latitude = object.getLatitude() + "";
 
                     //虚拟定位
 //                    currentCityName = "徐州市";

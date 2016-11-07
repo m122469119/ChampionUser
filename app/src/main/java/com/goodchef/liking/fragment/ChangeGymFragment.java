@@ -53,8 +53,8 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
     private boolean islocation;
 
-    private double longitude = 0;
-    private double latitude = 0;
+    private String longitude = "0";
+    private String latitude = "0";
 
     private List<CheckGymListResult.CheckGymData.CheckGym> allGymList;
     private CheckGymListResult.CheckGymData.MyGymData mMyGym;
@@ -127,7 +127,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     }
 
 
-    private void sendGymRequest(int cityId, double longitude, double latitude) {
+    private void sendGymRequest(int cityId, String longitude, String latitude) {
         mStateView.setState(StateView.State.LOADING);
         mCheckGymPresenter = new CheckGymPresenter(getActivity(), this);
         mCheckGymPresenter.getGymList(cityId, longitude, latitude);

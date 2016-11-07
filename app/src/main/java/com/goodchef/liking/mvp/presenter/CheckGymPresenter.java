@@ -23,8 +23,8 @@ public class CheckGymPresenter extends BasePresenter<CheckGymView> {
         super(context, mainView);
     }
 
-    public void getGymList(int cityId, double longitude, double latitude) {
-        LiKingApi.getCheckGymList(Preference.getToken(),cityId, longitude, latitude, new RequestCallback<CheckGymListResult>() {
+    public void getGymList(int cityId, String longitude, String latitude) {
+        LiKingApi.getCheckGymList(Preference.getToken(), cityId, longitude, latitude, new RequestCallback<CheckGymListResult>() {
             @Override
             public void onSuccess(CheckGymListResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
