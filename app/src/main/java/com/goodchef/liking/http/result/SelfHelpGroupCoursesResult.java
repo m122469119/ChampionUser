@@ -74,6 +74,8 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
             }
 
             public static class HourData extends BaseData{
+
+                private String mDate;
                 @SerializedName("hour")
                 private String mHour;
                 @SerializedName("available")
@@ -90,6 +92,14 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
 
                 @SerializedName("room")
                 private List<RoomData> mRoom;
+
+                public String getDate() {
+                    return mDate;
+                }
+
+                public void setDate(String date) {
+                    mDate = date;
+                }
 
                 public String getHour() {
                     return mHour;

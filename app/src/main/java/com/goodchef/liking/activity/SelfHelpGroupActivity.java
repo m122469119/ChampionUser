@@ -3,20 +3,32 @@ package com.goodchef.liking.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.SelfHelpGroupCourseTimeAdapter;
 import com.goodchef.liking.adapter.SelfHelpGroupCoursesDateAdapter;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.mvp.presenter.SelfHelpGroupCoursesPresenter;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
 import com.goodchef.liking.widgets.base.LikingStateView;
+import com.goodchef.liking.widgets.stickyheaderrecyclerview.AnimalsAdapter;
+import com.goodchef.liking.widgets.stickyheaderrecyclerview.DividerDecoration;
+import com.goodchef.liking.widgets.stickyheaderrecyclerview.RecyclerItemClickListener;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,13 +99,105 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     @Override
     public void updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData) {
         mLikingStateView.setState(StateView.State.SUCCESS);
-        List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData> timeDataList = selfHelpGroupCoursesData.getTime();
-        if (timeDataList != null) {
-            mCoursesTimeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mSelfHelpGroupCoursesDateAdapter = new SelfHelpGroupCoursesDateAdapter(this);
-            mSelfHelpGroupCoursesDateAdapter.setData(timeDataList);
-            mCoursesTimeRecyclerView.setAdapter(mSelfHelpGroupCoursesDateAdapter);
+        List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData> DataList = selfHelpGroupCoursesData.getTime();
+        List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData> timeList = new ArrayList<>();
+        int index = 0;
+        for (int i = 0; i < DataList.size(); i++) {
+            List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData> list = DataList.get(i).getHour();
+            list.get(index).setDate(DataList.get(i).getDate());
+            timeList.addAll(list);
+            index += list.size();
         }
+
+
+        if (DataList != null) {
+            mCoursesTimeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//            mSelfHelpGroupCoursesDateAdapter = new SelfHelpGroupCoursesDateAdapter(this);
+//            mSelfHelpGroupCoursesDateAdapter.setData(timeDataList);
+//            mCoursesTimeRecyclerView.setAdapter(mSelfHelpGroupCoursesDateAdapter);
+            final AnimalsHeadersAdapter adapter = new AnimalsHeadersAdapter();
+            adapter.addAll(timeList);
+            mCoursesTimeRecyclerView.setAdapter(adapter);
+            final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(adapter);
+            mCoursesTimeRecyclerView.addItemDecoration(headersDecor);
+            mCoursesTimeRecyclerView.addItemDecoration(new DividerDecoration(this));
+            mCoursesTimeRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    TextView textView = (TextView) view.findViewById(R.id.self_help_courses_time);
+                    if (textView != null) {
+                        SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData = (SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData) textView.getTag();
+                        if (hourData != null && !StringUtils.isEmpty(hourData.getHour())) {
+                            PopupUtils.showToast(hourData.getHour());
+                        }
+                    }
+                }
+            }));
+            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    headersDecor.invalidateHeaders();
+                }
+            });
+        }
+    }
+
+
+    private class AnimalsHeadersAdapter extends AnimalsAdapter<RecyclerView.ViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
+        TextView mHeadTextView;
+        TextView mTimeTextView;
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_self_help_group_time, parent, false);
+            return new ContentViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData = getItem(position);
+            if (hourData != null) {
+                mTimeTextView.setText(hourData.getHour());
+                mTimeTextView.setTag(hourData);
+            }
+        }
+
+        @Override
+        public long getHeaderId(int position) {
+            return getItem(position).hashCode();
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_self_help_group_date, parent, false);
+            return new HeaderViewHolder(view);
+        }
+
+        @Override
+        public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
+            String date = getItem(position).getDate();
+            if (!StringUtils.isEmpty(date)) {
+                mHeadTextView.setVisibility(View.VISIBLE);
+                mHeadTextView.setText(date);
+            } else {
+                mHeadTextView.setVisibility(View.GONE);
+            }
+        }
+
+        class HeaderViewHolder extends RecyclerView.ViewHolder {
+            public HeaderViewHolder(View itemView) {
+                super(itemView);
+                mHeadTextView = (TextView) itemView.findViewById(R.id.self_help_courses_date);
+            }
+        }
+
+        class ContentViewHolder extends RecyclerView.ViewHolder {
+            public ContentViewHolder(View itemView) {
+                super(itemView);
+                mTimeTextView = (TextView) itemView.findViewById(R.id.self_help_courses_time);
+            }
+        }
+
     }
 
     @Override

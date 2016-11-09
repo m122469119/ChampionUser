@@ -87,4 +87,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':framework')
     compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
+    compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
 }
