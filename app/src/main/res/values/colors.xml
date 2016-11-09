@@ -56,4 +56,5 @@
     <color name="home_right_dialog_line">#6f717d</color>
     <color name="home_right_dialog_text">#23EC7D</color>
     <color name="action_bar_gray">#20000000</color>
+    <color name="cedeff3">#edeff3</color>
 </resources>

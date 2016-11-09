@@ -50,6 +50,7 @@
             android:background="@color/line"/>
 
         <LinearLayout
+            android:id="@+id/layout_select_group_courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -84,7 +85,7 @@
                 android:layout_marginRight="10dp">
 
                 <com.aaron.android.framework.library.imageloader.HImageView
-                    android:id="@+id/gym_image"
+                    android:id="@+id/self_help_gym_image"
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
                     fresco:failureImage="@drawable/bg_no_data_default_image"

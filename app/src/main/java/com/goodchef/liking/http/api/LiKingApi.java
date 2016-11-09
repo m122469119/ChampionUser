@@ -43,6 +43,7 @@ import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
+import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
@@ -925,5 +926,10 @@ public class LiKingApi {
     public static void getUserShare(String token, RequestCallback<ShareResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_EXERCISE_SHARE, ShareResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token), callback);
+    }
+
+    public static void getSelfCorsesTimeList(String token ,String gymId,RequestCallback<SelfHelpGroupCoursesResult> callback){
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_GYM_SCHEDULE_INFO,SelfHelpGroupCoursesResult.class,getCommonRequestParams()
+        .append(KEY_TOKEN,token).append("gym_id",gymId),callback);
     }
 }
