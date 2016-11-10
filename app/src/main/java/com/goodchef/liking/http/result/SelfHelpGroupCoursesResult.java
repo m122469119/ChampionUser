@@ -47,6 +47,8 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
         public static class TimeData {
             @SerializedName("date")
             private String mDate;
+            @SerializedName("day")
+            private String mDay;
             /**
              * hour : 17:00
              * available : true
@@ -71,6 +73,14 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
 
             public void setHour(List<HourData> hour) {
                 mHour = hour;
+            }
+
+            public String getDay() {
+                return mDay;
+            }
+
+            public void setDay(String day) {
+                mDay = day;
             }
 
             public static class HourData extends BaseData{
@@ -144,6 +154,12 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                     private boolean mScheduled;
                     @SerializedName("schedule_id")
                     private int mScheduleId;
+                    @SerializedName("schedule_name")
+                    private String mScheduleName;
+                    @SerializedName("quota")
+                    private String quota;
+
+                    private boolean isCheck;
 
                     public int getId() {
                         return mId;
@@ -183,6 +199,30 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
 
                     public void setScheduleId(int scheduleId) {
                         mScheduleId = scheduleId;
+                    }
+
+                    public String getScheduleName() {
+                        return mScheduleName;
+                    }
+
+                    public void setScheduleName(String scheduleName) {
+                        mScheduleName = scheduleName;
+                    }
+
+                    public String getQuota() {
+                        return quota;
+                    }
+
+                    public void setQuota(String quota) {
+                        this.quota = quota;
+                    }
+
+                    public boolean isCheck() {
+                        return isCheck;
+                    }
+
+                    public void setCheck(boolean check) {
+                        isCheck = check;
                     }
                 }
             }
