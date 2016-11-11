@@ -83,11 +83,13 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                 mDay = day;
             }
 
-            public static class HourData extends BaseData{
+            public static class HourData extends BaseData {
 
                 private String mDate;
                 @SerializedName("hour")
                 private String mHour;
+                @SerializedName("duration")
+                private String duration;
                 @SerializedName("available")
                 private boolean mAvailable;
                 @SerializedName("filled")
@@ -170,7 +172,15 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                     this.hourId = hourId;
                 }
 
-                public static class RoomData extends BaseData{
+                public String getDuration() {
+                    return duration;
+                }
+
+                public void setDuration(String duration) {
+                    this.duration = duration;
+                }
+
+                public static class RoomData extends BaseData {
                     @SerializedName("id")
                     private int mId;
                     @SerializedName("name")

@@ -965,8 +965,8 @@ public class LiKingApi {
      * @param peopleNum   人数
      * @param callback    RequestCallback
      */
-    public static void orderCourses(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.COURSE_ADD_SCHEDULE, BaseResult.class, getCommonRequestParams()
+    public static void orderCourses(String token, String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_ADD_SCHEDULE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("gym_id", gymId).append("room_id", roomId).append("course_id", coursesId).append("course_date", coursesDate)
                 .append("start_time", startTime).append("end_time", endTime).append("price", price)
                 .append("people_num", peopleNum), callback);

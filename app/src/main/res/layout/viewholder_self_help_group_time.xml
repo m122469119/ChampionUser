@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/self_help_courses_time"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/cedeff3"
+          android:gravity="center"
+          android:padding="10dp"
+          android:textColor="@color/lesson_details_dark_back"
+          android:textSize="@dimen/textsize_mirco"
+          android:visibility="visible">
 
-    <TextView
-        android:id="@+id/self_help_courses_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/cedeff3"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textColor="@color/lesson_details_dark_back"
-        android:textSize="@dimen/textsize_mirco"
-        android:visibility="visible"/>
-
-</LinearLayout>
+</TextView>
