@@ -4,9 +4,12 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
@@ -38,6 +41,23 @@ public class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCo
             @Override
             public void onFailure(RequestError error) {
 
+            }
+        });
+    }
+
+    public void sendOrderRequest(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum) {
+        LiKingApi.orderCourses(gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading) {
+            @Override
+            public void onSuccess(BaseResult result) {
+                super.onSuccess(result);
+                if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    mView.updateOrderView();
+                }
+            }
+
+            @Override
+            public void onFailure(RequestError error) {
+                super.onFailure(error);
             }
         });
     }

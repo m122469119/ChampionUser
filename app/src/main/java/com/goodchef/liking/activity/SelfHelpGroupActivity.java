@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,17 +10,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
-import com.goodchef.liking.adapter.SelfHelpGroupCourseTimeAdapter;
-import com.goodchef.liking.adapter.SelfHelpGroupCoursesDateAdapter;
+import com.goodchef.liking.eventmessages.SelectCoursesMessage;
+import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.mvp.presenter.SelfHelpGroupCoursesPresenter;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
@@ -46,17 +48,24 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     private TextView mUserTimeTextView;//使用时段
     private RecyclerView mGymRecyclerView;
     private HImageView mSelfGymHImageView;
-    private TextView mCoursesTrainTextView;
-    private TextView mGroupCoursesTimeTextView;
-    private TextView mGroupCoursesStrongTextView;
-    private TextView mCoursesIntroduceTextView;
+    private TextView mCoursesTrainTextView;//课程训练名称
+    private TextView mGroupCoursesStrongTextView;//课程强度
+    private TextView mCoursesIntroduceTextView;//课程介绍
     private TextView mAccommodateNumberTextView;//最多容纳人数
     private LinearLayout mSelectCoursesLayout;//选择课程布局
     private LikingStateView mLikingStateView;
 
     private SelfHelpGroupCoursesPresenter mSelfHelpGroupCoursesPresenter;
-    private SelfHelpGroupCoursesDateAdapter mSelfHelpGroupCoursesDateAdapter;
     private SelfHelpCoursesRoomAdapter helpCoursesRoomAdapter;
+
+    private List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData> timeList = new ArrayList<>();
+    private String roomId;
+    private String coursesId;
+    private String courseDate;
+    private String startTime;
+    private String endTime;
+    private String price;
+    private String peopleNum = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +83,6 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         mGymRecyclerView = (RecyclerView) findViewById(R.id.self_help_gym_RecyclerView);
         mSelfGymHImageView = (HImageView) findViewById(R.id.self_help_gym_image);
         mCoursesTrainTextView = (TextView) findViewById(R.id.group_courses_train_object);
-        mGroupCoursesTimeTextView = (TextView) findViewById(R.id.group_courses_time);
         mGroupCoursesStrongTextView = (TextView) findViewById(R.id.group_courses_strong);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.self_help_courses_introduce);
         mAccommodateNumberTextView = (TextView) findViewById(R.id.accommodate_user_number);
@@ -98,30 +106,55 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v == mSelectCoursesLayout) {//选择课程
-
+            Intent intent = new Intent(this, SelectCoursesListActivity.class);
+            startActivity(intent);
         } else if (v == mImmediatelyTextView) {//立即预约
+            //sendOrderRequest();
         }
     }
+
+    private void sendOrderRequest() {
+        mSelfHelpGroupCoursesPresenter.sendOrderRequest(LikingHomeActivity.gymId, roomId, coursesId, courseDate, startTime, endTime, price, peopleNum);
+    }
+
 
     @Override
     public void updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData) {
         mLikingStateView.setState(StateView.State.SUCCESS);
         List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData> DataList = selfHelpGroupCoursesData.getTime();
-        List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData> timeList = new ArrayList<>();
-        int index = 0;
-        for (int i = 0; i < DataList.size(); i++) {
+
+        for (int i = 0; i < DataList.size(); i++) {//将两个集合组装成一个集合
             List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData> list = DataList.get(i).getHour();
+            for (int j = 0; j < list.size(); j++) {
+                list.get(j).setDate(DataList.get(i).getDate());
+                list.get(j).setDay(DataList.get(i).getDay());
+            }
             timeList.addAll(list);
-            timeList.get(index).setDate(DataList.get(i).getDate());
-            index += list.size();
         }
+        setLeftTimeListData(timeList);
+    }
+
+    @Override
+    public void updateOrderView() {
+        PopupUtils.showToast("预约成功");
+    }
 
 
-        if (DataList != null) {
+    /**
+     * 设置左边的时间数据
+     *
+     * @param timeList
+     */
+    private void setLeftTimeListData(List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData> timeList) {
+        if (timeList != null && timeList.size() > 0) {
+//            for (int i = 0; i < timeList.size(); i++) {
+//                if (i == 0) {
+//                    timeList.get(i).setSelect(true);
+//                } else {
+//                    timeList.get(i).setSelect(false);
+//                }
+//            }
             mCoursesTimeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//            mSelfHelpGroupCoursesDateAdapter = new SelfHelpGroupCoursesDateAdapter(this);
-//            mSelfHelpGroupCoursesDateAdapter.setData(timeDataList);
-//            mCoursesTimeRecyclerView.setAdapter(mSelfHelpGroupCoursesDateAdapter);
             final AnimalsHeadersAdapter adapter = new AnimalsHeadersAdapter();
             adapter.addAll(timeList);
             mCoursesTimeRecyclerView.setAdapter(adapter);
@@ -156,6 +189,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
      */
     private void setClickTimeRightData(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData) {
         mUserTimeTextView.setText(hourData.getHour());
+
+
+
         List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomList = new ArrayList<>();
         List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomDataList = hourData.getRoom();
         if (roomDataList != null && roomDataList.size() > 0) {
@@ -173,6 +209,8 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                     if (i == 0) {
                         notScheduledtemporary.get(i).setCheck(true);
                         mAccommodateNumberTextView.setText(notScheduledtemporary.get(i).getQuota() + "人");
+                        roomId = notScheduledtemporary.get(i).getId() + "";
+                        peopleNum = notScheduledtemporary.get(i).getQuota();
                     } else {
                         notScheduledtemporary.get(i).setCheck(false);
                     }
@@ -191,6 +229,10 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         }
     }
 
+
+    /**
+     * 点击操房选择事件
+     */
     private View.OnClickListener SelectRoomClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -207,6 +249,8 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                                 roomDataList.get(i).setCheck(false);
                             }
                         }
+                        roomId = roomData.getId() + "";
+                        peopleNum = roomData.getQuota();
                         mAccommodateNumberTextView.setText(roomData.getQuota() + "人");
                         helpCoursesRoomAdapter.notifyDataSetChanged();
                     }
@@ -230,6 +274,13 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData = getItem(position);
             if (hourData != null) {
+//                if (hourData.isSelect()) {
+//                    mTimeTextView.setBackground(ResourceUtils.getDrawable(R.drawable.shape_card_green_background));
+//                    mTimeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+//                } else {
+//                    mTimeTextView.setBackgroundColor(ResourceUtils.getColor(R.color.cedeff3));
+//                    mTimeTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
+//                }
                 mTimeTextView.setText(hourData.getHour());
                 mTimeTextView.setTag(hourData);
             }
@@ -237,7 +288,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public long getHeaderId(int position) {
-            return getItem(position).hashCode();
+            return Long.parseLong(getItem(position).getDate());
         }
 
         @Override
@@ -248,12 +299,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-            String date = getItem(position).getDate();
+            String date = getItem(position).getDay();
             if (!StringUtils.isEmpty(date)) {
-                mHeadTextView.setVisibility(View.VISIBLE);
                 mHeadTextView.setText(date);
-            } else {
-                mHeadTextView.setVisibility(View.GONE);
             }
         }
 
@@ -270,8 +318,29 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                 mTimeTextView = (TextView) itemView.findViewById(R.id.self_help_courses_time);
             }
         }
-
     }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(SelectCoursesMessage message) {
+        SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mCoursesData = message.getCoursesData();
+        mCoursesTrainTextView.setText(mCoursesData.getName());
+        mCoursesIntroduceTextView.setText(mCoursesData.getDesc());
+        mGroupCoursesStrongTextView.setText("课程强度:" + mCoursesData.getIntensity());
+        List<SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData.ImgData> imageUrlList = mCoursesData.getImg();
+        if (imageUrlList != null && imageUrlList.size() > 0) {
+            String imageUrl = imageUrlList.get(0).getUrl();
+            if (!StringUtils.isEmpty(imageUrl)) {
+                HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, imageUrl);
+            } else {
+                HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, "");
+            }
+        }
+    }
+
 
     @Override
     public void handleNetworkFailure() {

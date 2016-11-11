@@ -209,5 +209,6 @@
     <string name="location_fails_confirm">定位失败,请确认场馆后购买会员卡</string>
     <string name="current_city_no_service">当前定位城市尚未开通服务,敬请期待</string>
     <string name="join_self_courses">加入课程</string>
+    <string name="title_select_courses">选择课程</string>
 
 </resources>

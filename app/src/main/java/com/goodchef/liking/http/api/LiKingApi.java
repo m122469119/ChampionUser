@@ -43,6 +43,7 @@ import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
+import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
@@ -928,8 +929,46 @@ public class LiKingApi {
                 .append(KEY_TOKEN, token), callback);
     }
 
-    public static void getSelfCorsesTimeList(String token ,String gymId,RequestCallback<SelfHelpGroupCoursesResult> callback){
-        VolleyHttpRequestClient.doPost(UrlList.COURSE_GYM_SCHEDULE_INFO,SelfHelpGroupCoursesResult.class,getCommonRequestParams()
-        .append(KEY_TOKEN,token).append("gym_id",gymId),callback);
+    /***
+     * 获取自助团体课时间表
+     *
+     * @param token    token
+     * @param gymId    场馆地
+     * @param callback RequestCallback
+     */
+    public static void getSelfCorsesTimeList(String token, String gymId, RequestCallback<SelfHelpGroupCoursesResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_GYM_SCHEDULE_INFO, SelfHelpGroupCoursesResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, token).append("gym_id", gymId), callback);
+    }
+
+    /***
+     * 获取选择自助团体课的列表
+     *
+     * @param page     页码
+     * @param callback RequestCallback
+     */
+    public static void getSelfCoursesList(int page, RequestCallback<SelfGroupCoursesListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_CAN_SCHEDULE_COURSE_LIST, SelfGroupCoursesListResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, Preference.getToken()).append("page", page), callback);
+    }
+
+    /***
+     * 预约团体课
+     *
+     * @param gymId       场馆id
+     * @param roomId      操房id
+     * @param coursesId   课程id
+     * @param coursesDate 日期
+     * @param startTime   开始时间
+     * @param endTime     结束时间
+     * @param price       价格
+     * @param peopleNum   人数
+     * @param callback    RequestCallback
+     */
+    public static void orderCourses(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_ADD_SCHEDULE, BaseResult.class, getCommonRequestParams()
+                .append("gym_id", gymId).append("room_id", roomId).append("course_id", coursesId).append("course_date", coursesDate)
+                .append("start_time", startTime).append("end_time", endTime).append("price", price)
+                .append("people_num", peopleNum), callback);
     }
 }

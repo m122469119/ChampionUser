@@ -36,12 +36,10 @@ public class SelfHelpGroupCoursesDateAdapter extends BaseRecycleViewAdapter<Self
     public class SelfHelpGroupCoursesDateViewHolder extends BaseRecycleViewHolder<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData> {
 
         TextView mDateTextView;
-        RecyclerView mRecyclerView;
 
         public SelfHelpGroupCoursesDateViewHolder(View itemView) {
             super(itemView);
             mDateTextView = (TextView) itemView.findViewById(R.id.self_help_courses_date);
-            mRecyclerView = (RecyclerView) itemView.findViewById(R.id.self_help_courses_time_RecyclerView);
         }
 
         @Override

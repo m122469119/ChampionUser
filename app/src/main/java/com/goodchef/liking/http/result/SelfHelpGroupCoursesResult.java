@@ -92,6 +92,9 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                 private boolean mAvailable;
                 @SerializedName("filled")
                 private boolean mFilled;
+                private String mDay;
+                private boolean isSelect;
+                private int hourId;
                 /**
                  * id : 10001
                  * name : 101
@@ -141,6 +144,30 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
 
                 public void setRoom(List<RoomData> room) {
                     mRoom = room;
+                }
+
+                public String getDay() {
+                    return mDay;
+                }
+
+                public void setDay(String day) {
+                    mDay = day;
+                }
+
+                public boolean isSelect() {
+                    return isSelect;
+                }
+
+                public void setSelect(boolean select) {
+                    isSelect = select;
+                }
+
+                public int getHourId() {
+                    return hourId;
+                }
+
+                public void setHourId(int hourId) {
+                    this.hourId = hourId;
                 }
 
                 public static class RoomData extends BaseData{

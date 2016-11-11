@@ -8,16 +8,11 @@
         android:id="@+id/self_help_courses_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/cedeff3"
         android:gravity="center"
         android:padding="10dp"
         android:textColor="@color/lesson_details_dark_back"
         android:textSize="@dimen/textsize_mirco"
         android:visibility="visible"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/self_help_courses_time_RecyclerView"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content"/>
 </LinearLayout>

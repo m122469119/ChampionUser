@@ -10,5 +10,7 @@ import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
  */
 
 public interface SelfHelpGroupCoursesView extends BaseNetworkLoadView {
-    void  updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData);
+    void updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData);
+
+    void updateOrderView();
 }
