@@ -153,6 +153,10 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     @Override
     public void updateOrderView() {
         PopupUtils.showToast("预约成功");
+        Intent intent = new Intent(this, MyLessonActivity.class);
+        intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -201,6 +205,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                     timeList.get(i).setSelect(false);
                 }
             }
+            setClickTimeRightData(timeList.get(0));//默认选中地0个
             mCoursesTimeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             final AnimalsHeadersAdapter adapter = new AnimalsHeadersAdapter();
             adapter.addAll(timeList);
