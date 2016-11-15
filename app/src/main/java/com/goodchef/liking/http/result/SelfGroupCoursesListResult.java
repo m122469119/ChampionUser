@@ -3,6 +3,7 @@ package com.goodchef.liking.http.result;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class SelfGroupCoursesListResult extends BaseResult{
             mList = list;
         }
 
-        public static class CoursesData {
+        public static class CoursesData implements Serializable{
             @SerializedName("course_id")
             private String mCourseId;
             @SerializedName("category")
@@ -168,7 +169,7 @@ public class SelfGroupCoursesListResult extends BaseResult{
                 mEquipment = equipment;
             }
 
-            public static class ImgData {
+            public static class ImgData implements Serializable{
                 @SerializedName("url")
                 private String mUrl;
 

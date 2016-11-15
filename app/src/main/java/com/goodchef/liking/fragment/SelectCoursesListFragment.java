@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.GroupLessonDetailsActivity;
+import com.goodchef.liking.activity.SelfLessonDetailsActivity;
 import com.goodchef.liking.adapter.SelectCoursesListAdapter;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
@@ -98,10 +101,13 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
         public void onClick(View v) {
             LinearLayout layout = (LinearLayout) v.findViewById(R.id.layout_select_courses);
             if (layout != null) {
-                SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData CoursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData) layout.getTag();
-                if (CoursesData != null) {
-                    postEvent(new SelectCoursesMessage(CoursesData));
-                    getActivity().finish();
+                SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData) layout.getTag();
+                if (coursesData != null) {
+                    postEvent(new SelectCoursesMessage(coursesData));
+//                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), SelfLessonDetailsActivity.class);
+                    intent.putExtra(SelfLessonDetailsActivity.KEY_SELF_LESSON_DETAILS, coursesData);
+                    startActivity(intent);
                 }
             }
         }

@@ -235,6 +235,11 @@
             android:name=".activity.SelfHelpGroupActivity"
             android:screenOrientation="portrait"/>
 
+        <!--自助团详情-->
+        <activity
+            android:name=".activity.SelfLessonDetailsActivity"
+            android:screenOrientation="portrait"/>
+
         <!--选择排课表-->
         <activity
             android:name=".activity.SelectCoursesListActivity"
