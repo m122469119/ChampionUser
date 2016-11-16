@@ -16,6 +16,8 @@ import com.goodchef.liking.fragment.SelectCoursesListFragment;
 
 public class SelectCoursesListActivity extends AppBarActivity {
 
+    public static final String KEY_SELECT_COURSES_ID = "selectcoursesid";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

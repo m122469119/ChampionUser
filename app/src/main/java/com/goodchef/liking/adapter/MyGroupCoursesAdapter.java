@@ -28,10 +28,12 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
     private static final int COURSES_STATE_CANCEL = 3;//已取消
     private static final int TYPE_IS_FREE = 0;//免费
     private static final int TYPE_NOT_FREE = 1;//收费
+    private static final int TYPE_SCHEDULE_TYPE_SELF = 2;//自助排课
     private Context mContext;
 
 
     private View.OnClickListener mCancelListener;
+    private View.OnClickListener mShareListener;
 
     public MyGroupCoursesAdapter(Context context) {
         super(context);
@@ -42,12 +44,18 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         mCancelListener = listener;
     }
 
+    public void setShareListener(View.OnClickListener listener) {
+        mShareListener = listener;
+    }
+
     @Override
     protected GroupLessonViewHolder createViewHolder(ViewGroup parent) {
         View mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_group_lesson, parent, false);
         TextView mCancelOrderBtn = (TextView) mRootView.findViewById(R.id.cancel_order_btn);
+        TextView mSelfShareBtn = (TextView) mRootView.findViewById(R.id.self_share_btn);
         if (mCancelListener != null) {
             mCancelOrderBtn.setOnClickListener(mCancelListener);
+            mSelfShareBtn.setOnClickListener(mShareListener);
         }
         return new GroupLessonViewHolder(mRootView);
     }
@@ -60,6 +68,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         TextView mGroupCoursesStateTextView;//课程状态
         TextView mCoursesMoneyTextView;//课程金额
         TextView mCancelOrderBtn;//取消预约
+        TextView mSelfShareBtn;//分享给好友
         TextView mFreeType;
         RelativeLayout mMyGroupCoursesLayout;
 
@@ -74,6 +83,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mCoursesMoneyTextView = (TextView) itemView.findViewById(R.id.courses_money);
             mCancelOrderBtn = (TextView) itemView.findViewById(R.id.cancel_order_btn);
             mFreeType = (TextView) itemView.findViewById(R.id.free_type);
+            mSelfShareBtn = (TextView) itemView.findViewById(R.id.self_share_btn);
             mMyGroupCoursesLayout = (RelativeLayout) itemView.findViewById(R.id.layout_my_group_courses);
         }
 
@@ -87,25 +97,41 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             setCoursesState(state);
             mPeriodOfValidityTextView.setTag(object);
             mCancelOrderBtn.setTag(object);
+            mSelfShareBtn.setTag(object);
             String imageUrl = object.getCourseUrl();
             if (!StringUtils.isEmpty(imageUrl)) {
                 HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
             }
+            int scheduleType = object.getScheduleType();
             int isFree = object.getIsFee();
-            if (isFree == TYPE_IS_FREE) {//免费
+            if(scheduleType == TYPE_SCHEDULE_TYPE_SELF){
                 if (showCalcel == 0) {
                     mMyGroupCoursesLayout.setVisibility(View.GONE);
                     mCancelOrderBtn.setVisibility(View.GONE);
+                    mSelfShareBtn.setVisibility(View.GONE);
                 } else if (showCalcel == 1) {
                     mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
                     mCancelOrderBtn.setVisibility(View.VISIBLE);
+                    mSelfShareBtn.setVisibility(View.VISIBLE);
                 }
-                mFreeType.setText(R.string.my_free_group_courses);
-            } else if (isFree == TYPE_NOT_FREE) {//收费
-                mFreeType.setText(R.string.my_not_free_group_courses);
-                mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
-                mCoursesMoneyTextView.setText("¥ " + object.getAmount());
-                showCancelBtn(showCalcel);
+                mFreeType.setText(R.string.self_courses_name);
+            }else {
+                mCancelOrderBtn.setVisibility(View.GONE);
+                if (isFree == TYPE_IS_FREE) {//免费
+                    if (showCalcel == 0) {
+                        mMyGroupCoursesLayout.setVisibility(View.GONE);
+                        mCancelOrderBtn.setVisibility(View.GONE);
+                    } else if (showCalcel == 1) {
+                        mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
+                        mCancelOrderBtn.setVisibility(View.VISIBLE);
+                    }
+                    mFreeType.setText(R.string.my_free_group_courses);
+                } else if (isFree == TYPE_NOT_FREE) {//收费
+                    mFreeType.setText(R.string.my_not_free_group_courses);
+                    mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
+                    mCoursesMoneyTextView.setText("¥ " + object.getAmount());
+                    showCancelBtn(showCalcel);
+                }
             }
 
         }

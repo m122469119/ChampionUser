@@ -1,6 +1,7 @@
 package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
@@ -12,6 +13,8 @@ import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.SelectCoursesListView;
 
+import java.util.List;
+
 /**
  * 说明:
  * Author : shaozucheng
@@ -19,6 +22,9 @@ import com.goodchef.liking.mvp.view.SelectCoursesListView;
  */
 
 public class SelectCoursesListPresenter extends BasePresenter<SelectCoursesListView> {
+
+    private String mSelectCoursesId = null;
+
     public SelectCoursesListPresenter(Context context, SelectCoursesListView mainView) {
         super(context, mainView);
     }
@@ -29,6 +35,7 @@ public class SelectCoursesListPresenter extends BasePresenter<SelectCoursesListV
             public void onSuccess(SelfGroupCoursesListResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
+                    setCoursesSelectState(result.getData().getList());
                     mView.updateSelectCoursesListView(result.getData());
                 } else {
                     PopupUtils.showToast(result.getMessage());
@@ -40,5 +47,30 @@ public class SelectCoursesListPresenter extends BasePresenter<SelectCoursesListV
                 super.onFailure(error);
             }
         });
+    }
+
+    public String getSelectCoursesId() {
+        return mSelectCoursesId;
+    }
+
+    public void setSelectCoursesId(String selectCoursesId) {
+        mSelectCoursesId = selectCoursesId;
+    }
+
+    /**
+     * 设置选中状态
+     *
+     * @param list
+     */
+    private void setCoursesSelectState(List<SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData> list){
+        if(!TextUtils.isEmpty(getSelectCoursesId())){
+            for (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData:list){
+                if(getSelectCoursesId().equals(coursesData.getCourseId())){
+                    coursesData.setSelect(true);
+                }else {
+                    coursesData.setSelect(false);
+                }
+            }
+        }
     }
 }

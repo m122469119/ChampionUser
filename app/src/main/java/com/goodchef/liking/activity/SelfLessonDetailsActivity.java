@@ -12,6 +12,8 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 import java.util.List;
 
@@ -47,6 +49,19 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesTags = (TextView) findViewById(R.id.courses_tags);
         mCoursesIntroduce = (TextView) findViewById(R.id.courses_introduce);
+        setRightMenu();
+    }
+
+    private void setRightMenu() {
+        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phone = Preference.getCustomerServicePhone();
+                if (!StringUtils.isEmpty(phone)) {
+                    LikingCallUtil.showCallDialog(SelfLessonDetailsActivity.this, "确定联系客服吗？", phone);
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -76,7 +91,13 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
                 HImageLoaderSingleton.getInstance().loadImage(mShopImageView, coursesImageUrl);
             }
         }
-//        mCoursesTimeTextView.setText();
+        String duration = null;
+        try {
+            duration = Integer.parseInt(coursesData.getVideoDuration()) / 60 + "min";
+        }catch (Exception e){
+            duration = "";
+        }
+        mCoursesTimeTextView.setText(duration);
         mCoursesApplianceTextView.setText(getAppliances(coursesData.getEquipment()));
         String tags = getTags(coursesData.getTags());
         if(TextUtils.isEmpty(tags)){

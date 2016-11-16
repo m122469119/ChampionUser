@@ -2,6 +2,7 @@ package com.goodchef.liking.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.GroupLessonDetailsActivity;
+import com.goodchef.liking.activity.SelectCoursesListActivity;
 import com.goodchef.liking.activity.SelfLessonDetailsActivity;
 import com.goodchef.liking.adapter.SelectCoursesListAdapter;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
@@ -29,9 +30,12 @@ import java.util.List;
 
 public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements SelectCoursesListView {
 
+
     private SelectCoursesListPresenter mSelectCoursesListPresenter;
 
     private SelectCoursesListAdapter mSelectCoursesListAdapter;
+
+    private String mCurrCourseId = null;
 
     public static SelectCoursesListFragment newInstance() {
         Bundle args = new Bundle();
@@ -50,6 +54,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
             mSelectCoursesListPresenter = new SelectCoursesListPresenter(getActivity(), this);
         }
         mSelectCoursesListPresenter.getCoursesList(page, this);
+        mSelectCoursesListPresenter.setSelectCoursesId(mCurrCourseId);
     }
 
     @Override
@@ -68,6 +73,13 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
         mSelectCoursesListAdapter = new SelectCoursesListAdapter(getActivity());
         setRecyclerAdapter(mSelectCoursesListAdapter);
         mSelectCoursesListAdapter.setViewOnClickListener(mViewListener);
+        Intent intent = getActivity().getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null){
+                mCurrCourseId = bundle.getString(SelectCoursesListActivity.KEY_SELECT_COURSES_ID,"");
+            }
+        }
     }
 
     private void setNoDataView() {
@@ -99,17 +111,31 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     private View.OnClickListener mViewListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            LinearLayout layout = (LinearLayout) v.findViewById(R.id.layout_select_courses);
-            if (layout != null) {
-                SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData) layout.getTag();
-                if (coursesData != null) {
-                    postEvent(new SelectCoursesMessage(coursesData));
-//                    getActivity().finish();
-                    Intent intent = new Intent(getActivity(), SelfLessonDetailsActivity.class);
-                    intent.putExtra(SelfLessonDetailsActivity.KEY_SELF_LESSON_DETAILS, coursesData);
-                    startActivity(intent);
-                }
+
+            switch (v.getId()){
+                case R.id.layout_select_courses:
+                    LinearLayout layout = (LinearLayout) v.findViewById(R.id.layout_select_courses);
+                    if (layout != null) {
+                        SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData) v.getTag();
+                        if (coursesData != null) {
+                            Intent intent = new Intent(getActivity(), SelfLessonDetailsActivity.class);
+                            intent.putExtra(SelfLessonDetailsActivity.KEY_SELF_LESSON_DETAILS, coursesData);
+                            startActivity(intent);
+                        }
+                    }
+                break;
+                case R.id.layout_select_courses_checkbox:
+                    LinearLayout selectlayout = (LinearLayout) v.findViewById(R.id.layout_select_courses_checkbox);
+                    if (selectlayout != null) {
+                        SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData) v.getTag();
+                        if (coursesData != null) {
+                            postEvent(new SelectCoursesMessage(coursesData));
+                            getActivity().finish();
+                        }
+                    }
+                break;
             }
+
         }
     };
 

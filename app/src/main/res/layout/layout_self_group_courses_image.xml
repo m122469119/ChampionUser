@@ -34,12 +34,22 @@
             android:textSize="@dimen/textsize_small"/>
 
         <TextView
+            android:id="@+id/group_courses_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:paddingBottom="6dp"
+            android:layout_marginLeft="10dp"
+            android:text="时长:"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_small"/>
+
+        <TextView
             android:id="@+id/group_courses_strong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="60dp"
             android:text="课程强度:"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>

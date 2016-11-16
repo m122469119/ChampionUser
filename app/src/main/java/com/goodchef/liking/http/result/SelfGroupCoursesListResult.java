@@ -1,5 +1,6 @@
 package com.goodchef.liking.http.result;
 
+import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.google.gson.annotations.SerializedName;
 
@@ -52,7 +53,7 @@ public class SelfGroupCoursesListResult extends BaseResult{
             mList = list;
         }
 
-        public static class CoursesData implements Serializable{
+        public static class CoursesData extends BaseData{
             @SerializedName("course_id")
             private String mCourseId;
             @SerializedName("category")
@@ -79,6 +80,10 @@ public class SelfGroupCoursesListResult extends BaseResult{
             private List<ImgData> mImg;
             @SerializedName("equipment")
             private List<String> mEquipment;
+            @SerializedName("video_duration")
+            private String mVideoDuration;
+
+            private boolean isSelect ;
 
             public String getCategory() {
                 return mCategory;
@@ -169,7 +174,23 @@ public class SelfGroupCoursesListResult extends BaseResult{
                 mEquipment = equipment;
             }
 
-            public static class ImgData implements Serializable{
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean select) {
+                isSelect = select;
+            }
+
+            public String getVideoDuration() {
+                return mVideoDuration;
+            }
+
+            public void setVideoDuration(String videoDuration) {
+                mVideoDuration = videoDuration;
+            }
+
+            public static class ImgData extends BaseData {
                 @SerializedName("url")
                 private String mUrl;
 

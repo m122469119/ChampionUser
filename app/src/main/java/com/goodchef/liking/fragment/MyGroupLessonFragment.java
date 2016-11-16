@@ -163,6 +163,23 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     };
 
     /**
+     * 取消预约事件
+     */
+    private View.OnClickListener shareListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView textView = (TextView) v.findViewById(R.id.cancel_order_btn);
+            if (textView != null) {
+                MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
+                if (data != null) {
+//                    showCancelCoursesDialog(data.getOrderId());
+                }
+            }
+        }
+    };
+
+
+    /**
      * 取消预约团体课
      */
     private void showCancelCoursesDialog(final String orderId) {

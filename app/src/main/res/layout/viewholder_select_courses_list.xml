@@ -1,51 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="10dp"
-              android:orientation="horizontal">
+              android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/layout_select_courses"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
-        <include
-            layout="@layout/layout_self_group_courses_image"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/layout_select_courses"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="8"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/courses_list_introduce"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:textColor="@color/lesson_details_dark_back"
-            android:textSize="@dimen/textsize_small"/>
+            <!--<include-->
+            <!--layout="@layout/layout_self_group_courses_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"/>-->
+            <FrameLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:background="@color/line"/>
+                <com.aaron.android.framework.library.imageloader.HImageView
+                    android:id="@+id/self_help_gym_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    fresco:failureImage="@drawable/bg_no_data_default_image"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/bg_no_data_default_image"
+                    fresco:placeholderImageScaleType="centerCrop"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:background="#60000000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/group_courses_train_object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="4dp"
+                        android:text="核心力量训练"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/group_courses_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="时长:"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_small"/>
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/courses_list_introduce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_small"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_select_courses_checkbox"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="2">
+            <CheckBox
+                android:id="@+id/select_courses_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/pay_radio_button_bg"
+                android:button="@null"
+                android:checked="false"
+                android:clickable="false"
+                android:gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/select_courses_CheckBox"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/pay_radio_button_bg"
-        android:button="@null"
-        android:checked="false"
-        android:clickable="false"
-        android:gravity="center"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/line"/>
 </LinearLayout>

@@ -70,6 +70,8 @@ public class MyGroupCoursesResult extends BaseResult {
             private String courseUrl;
             @SerializedName("is_fee")
             private int isFee;
+            @SerializedName("schedule_type")
+            private int scheduleType;
             @SerializedName("amount")
             private String amount;
             @SerializedName("cancel_btn_show")
@@ -185,6 +187,14 @@ public class MyGroupCoursesResult extends BaseResult {
 
             public void setCancelBtnShow(int cancelBtnShow) {
                 this.cancelBtnShow = cancelBtnShow;
+            }
+
+            public int getScheduleType() {
+                return scheduleType;
+            }
+
+            public void setScheduleType(int scheduleType) {
+                this.scheduleType = scheduleType;
             }
         }
     }

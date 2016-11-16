@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,17 +47,21 @@ public class SelectCoursesListAdapter extends BaseRecycleViewAdapter<SelectCours
     class SelectCoursesListViewHolder extends BaseRecycleViewHolder<SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData> {
         private HImageView mSelfGymHImageView;
         private TextView mCoursesTrainTextView;
-        private TextView mGroupCoursesStrongTextView;
+        private TextView mGroupCoursesDurationTextView;
         private TextView mCoursesIntroduceTextView;
         private LinearLayout mLinearLayout;
+        private CheckBox mCoursesCheckBox;
+        private LinearLayout mSelectLayout;
 
         public SelectCoursesListViewHolder(View itemView) {
             super(itemView);
             mSelfGymHImageView = (HImageView) itemView.findViewById(R.id.self_help_gym_image);
             mCoursesTrainTextView = (TextView) itemView.findViewById(R.id.group_courses_train_object);
-            mGroupCoursesStrongTextView = (TextView) itemView.findViewById(R.id.group_courses_strong);
+            mGroupCoursesDurationTextView = (TextView) itemView.findViewById(R.id.group_courses_duration);
             mCoursesIntroduceTextView = (TextView) itemView.findViewById(R.id.courses_list_introduce);
             mLinearLayout = (LinearLayout) itemView.findViewById(R.id.layout_select_courses);
+            mCoursesCheckBox = (CheckBox) itemView.findViewById(R.id.select_courses_checkbox);
+            mSelectLayout = (LinearLayout) itemView.findViewById(R.id.layout_select_courses_checkbox);
         }
 
         @Override
@@ -70,9 +75,18 @@ public class SelectCoursesListAdapter extends BaseRecycleViewAdapter<SelectCours
                     HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, "");
                 }
             }
+            String duration = "";
+            try{
+                duration = Integer.parseInt(object.getVideoDuration()) / 60 + "min";
+            }catch (Exception e){
+            }
+            mGroupCoursesDurationTextView.setText(mContext.getString(R.string.self_courses_time)+ duration);
             mCoursesTrainTextView.setText(object.getName());
             mCoursesIntroduceTextView.setText(object.getDesc());
+            mCoursesCheckBox.setChecked(object.isSelect());
             if (mOnClickListener != null) {
+                mSelectLayout.setOnClickListener(mOnClickListener);
+                mSelectLayout.setTag(object);
                 mLinearLayout.setOnClickListener(mOnClickListener);
                 mLinearLayout.setTag(object);
             }
