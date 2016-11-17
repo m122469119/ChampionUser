@@ -30,6 +30,7 @@ import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.InviteFriendsActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
@@ -37,10 +38,12 @@ import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.activity.SelfHelpGroupActivity;
+import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -235,6 +238,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 LiKingVerifyUtils.initApi(getActivity());
             }
         });
+        showSelfHelpGroupLayout(((LikingHomeActivity)getActivity()).mCanSchedule);
     }
 
     private void setViewOnClickListener() {
@@ -443,6 +447,24 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mStateView.setState(StateView.State.SUCCESS);
             setLogonView();
             getUserExerciseData();
+        }
+    }
+
+    public void onEvent(GymNoticeMessage message) {
+        CoursesResult.Courses.Gym mNoticeGym = message.getGym();
+        showSelfHelpGroupLayout(mNoticeGym.getCanSchedule());
+    }
+
+    /**
+     * 是否显示自助团体课
+     *
+     * @param canschedule
+     */
+    private void showSelfHelpGroupLayout(int canschedule){
+        if(1 == canschedule){
+            mSelfHelpGroupLayout.setVisibility(View.VISIBLE);
+        }else {
+            mSelfHelpGroupLayout.setVisibility(View.GONE);
         }
     }
 }

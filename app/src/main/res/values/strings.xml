@@ -199,6 +199,7 @@
     <string name="no_announcement">暂无公告</string>
     <string name="location_fail">定位失败·重新定位</string>
     <string name="free_courses">免费团体课</string>
+    <string name="self_courses">自主团体课</string>
     <string name="my_free_group_courses">免费</string>
     <string name="my_not_free_group_courses">付费</string>
     <string name="current_city_no_dredge">当前定位城市尚未开通服务</string>

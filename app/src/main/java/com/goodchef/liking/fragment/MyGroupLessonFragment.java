@@ -52,7 +52,6 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     private MyGroupCoursesPresenter mMyGroupCoursesPresenter;
     private SharePresenter mSharePresenter;
-    private boolean isShowShareView;
 
     @Override
     protected void requestData(int page) {
@@ -181,12 +180,8 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             if (textView != null) {
                 MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                 if (data != null) {
-                    if(!isShowShareView){
-                        mSharePresenter = new SharePresenter(getActivity(), MyGroupLessonFragment.this);
-                        mSharePresenter.getGroupShareData(data.getScheduleId());
-                        isShowShareView = true;
-                    }
-
+                    mSharePresenter = new SharePresenter(getActivity(), MyGroupLessonFragment.this);
+                    mSharePresenter.getGroupShareData(data.getScheduleId());
                 }
             }
         }
@@ -266,7 +261,6 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
                         webPageData.setIconResId(R.mipmap.ic_launcher);
                         weixinShare.shareWebPage(webPageData);
                         shareCustomDialog.dismiss();
-                        isShowShareView = false;
                         break;
                     case R.id.layout_wx_friend_circle://微信朋友圈
                         WeixinShareData.WebPageData webPageData1 = new WeixinShareData.WebPageData();
@@ -277,11 +271,9 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
                         webPageData1.setIconResId(R.mipmap.ic_launcher);
                         weixinShare.shareWebPage(webPageData1);
                         shareCustomDialog.dismiss();
-                        isShowShareView = false;
                         break;
                     case R.id.cancel_image_button:
                         shareCustomDialog.dismiss();
-                        isShowShareView = false;
                         break;
                 }
             }

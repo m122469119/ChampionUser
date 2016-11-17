@@ -141,6 +141,7 @@
 
             <include
                 android:id="@+id/layout_self_help_group_gym"
+                android:visibility="gone"
                 layout="@layout/item_my_standard"/>
 
             <include

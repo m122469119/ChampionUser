@@ -74,6 +74,17 @@ public class CoursesResult extends BaseResult {
             private String phone;
             @SerializedName("desc")
             private String description;
+            @SerializedName("schedule_type")
+            private int scheduleType;
+
+
+            public int getScheduleType() {
+                return scheduleType;
+            }
+
+            public void setScheduleType(int scheduleType) {
+                this.scheduleType = scheduleType;
+            }
 
             public String getTrainerId() {
                 return trainerId;
@@ -193,9 +204,10 @@ public class CoursesResult extends BaseResult {
             private String announcementId;
             @SerializedName("announcement_info")
             private String announcementInfo;
-
             @SerializedName("city_id")
             private String cityId;
+            @SerializedName("can_schedule")
+            private int canSchedule = -1;
 
             public String getName() {
                 return name;
@@ -243,6 +255,14 @@ public class CoursesResult extends BaseResult {
 
             public void setCityId(String cityId) {
                 this.cityId = cityId;
+            }
+
+            public int getCanSchedule() {
+                return canSchedule;
+            }
+
+            public void setCanSchedule(int canSchedule) {
+                this.canSchedule = canSchedule;
             }
         }
     }

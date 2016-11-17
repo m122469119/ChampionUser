@@ -77,6 +77,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private RelativeLayout mMiddleLayout;//title中间布局
 
     public TextView mShoppingCartNumTextView;//购物车数量
+    public int mCanSchedule = -1;//是否支持自助团体课
 
     private FragmentTabHost fragmentTabHost;
     private TabWidget tabWidget;
@@ -556,6 +557,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public void onEvent(GymNoticeMessage message) {
         mNoticeGym = message.getGym();
+        mCanSchedule = mNoticeGym.getCanSchedule();
         if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getName())) {
             mGym = mNoticeGym;
         }
