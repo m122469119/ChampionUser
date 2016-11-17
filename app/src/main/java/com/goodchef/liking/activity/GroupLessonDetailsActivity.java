@@ -19,6 +19,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
+import com.aaron.android.framework.base.widget.recycleview.RecyclerItemDecoration;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
@@ -28,6 +29,8 @@ import com.aaron.android.thirdparty.share.weixin.WeixinShare;
 import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
+import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
+import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
@@ -79,6 +82,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private TextView mTeacherNameTextView;//教练名称
     private RatingBar mRatingBar;//强度
     private TextView mCoursesIntroduceTextView;//课程介绍
+    private TextView mJoinUserNumbers;//报名人数
+    private RecyclerView  mUserListRecyclerView;//报名人数展示
     private TextView mImmediatelySubmitBtn;//立即购买
     private TextView mGroupCoursesTagTextView;//课程Tag 付费和免费
     private LinearLayout mShareLayout;
@@ -102,6 +107,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private int isFree;//是否免费
     private String price;//价格
     private SharePresenter mSharePresenter;
+
+    private GroupLessonNumbersAdapter mGroupLessonNumbersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +151,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mTeacherNameTextView = (TextView) findViewById(R.id.group_teacher_name);
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.courses_introduce);
+        mJoinUserNumbers = (TextView) findViewById(R.id.group_user_numbers);
+        mUserListRecyclerView = (RecyclerView) findViewById(R.id.group_user_list_recyclerView);
         mGroupCoursesTagTextView = (TextView) findViewById(R.id.group_courses_tag);
         mShareLayout = (LinearLayout) findViewById(R.id.layout_group_courses_share);
 
@@ -327,9 +336,24 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
         mCoursesIntroduceTextView.setText(groupLessonData.getCourseDesc());
         setStadiumImage(groupLessonData.getGymImgs());
+        setGroupLessonNumbers(groupLessonData.getGymNumbers());
         isFree = groupLessonData.getIsFree();
         price = groupLessonData.getPrice();
         setBottomCoursesState();
+    }
+
+    /**
+     * 设置报名会员
+     *
+     * @param gymNumbersDatas
+     */
+    private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas){
+        mJoinUserNumbers.setText(gymNumbersDatas.size() + " 人");
+        mUserListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mGroupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
+        mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this,LinearLayoutManager.HORIZONTAL));
+        mGroupLessonNumbersAdapter.setData(gymNumbersDatas);
+        mUserListRecyclerView.setAdapter(mGroupLessonNumbersAdapter);
     }
 
     private void setStadiumImage(List<GroupCoursesResult.GroupLessonData.GymImgsData> stadiumImageList) {

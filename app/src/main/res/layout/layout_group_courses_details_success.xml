@@ -21,15 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp">
 
-                <com.aaron.android.framework.library.imageloader.HImageView
-                    android:id="@+id/group_lesson_details_shop_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    fresco:failureImage="@drawable/bg_no_data_default_image"
-                    fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@drawable/bg_no_data_default_image"
-                    fresco:placeholderImageScaleType="centerCrop"/>
-
                 <TextView
                     android:id="@+id/group_courses_tag"
                     android:layout_width="wrap_content"
@@ -89,6 +80,17 @@
                         android:textStyle="bold"/>
 
                 </RelativeLayout>
+
+                <com.aaron.android.framework.library.imageloader.HImageView
+                    android:id="@+id/group_lesson_details_shop_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    fresco:failureImage="@drawable/bg_no_data_default_image"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/bg_no_data_default_image"
+                    fresco:placeholderImageScaleType="centerCrop"
+                    android:layout_alignTop="@+id/group_courses_tag"
+                    android:layout_alignParentStart="true"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -230,6 +232,50 @@
                     android:textSize="13sp"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="报名会员"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/group_user_numbers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="10dp"
+                        android:text="1 人"
+                        android:textColor="@color/my_group_green_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/line"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/group_user_list_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
