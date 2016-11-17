@@ -105,6 +105,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private LikingStateView mStateView;
     private String guota;//预约人数
     private int isFree;//是否免费
+    private int scheduleType = -1;
     private String price;//价格
     private SharePresenter mSharePresenter;
 
@@ -219,6 +220,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 mCancelOrderBtn.setOnClickListener(this);
             }
 
+            if( COURSES_SELF == scheduleType) {
+                mGroupCoursesTagTextView.setText(R.string.self_courses);
+            }
+
         } else if (mCoursesState == COURSES_STATE_NOT_START) {//未开始
             mCoursesStateLayout.setVisibility(View.VISIBLE);
             mImmediatelySubmitBtn.setVisibility(View.GONE);
@@ -324,7 +329,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
-        if(COURSES_SELF == groupLessonData.getScheduleType()) {//如果是自助课程隐藏教练显示
+        scheduleType = groupLessonData.getScheduleType();
+        if(COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
             mTeacherNamelayout.setVisibility(View.GONE);
         } else {
             mTeacherNamelayout.setVisibility(View.VISIBLE);
