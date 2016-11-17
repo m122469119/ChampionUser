@@ -26,6 +26,8 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
     private Context mContext;
     private View.OnClickListener mSelectRoomOnClickListener;
 
+    private View.OnClickListener mSelectRoomJoinClickListener;
+
     public SelfHelpCoursesRoomAdapter(Context context) {
         super(context);
         this.mContext = context;
@@ -35,6 +37,9 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
         this.mSelectRoomOnClickListener = roomOnClickListener;
     }
 
+    public void setSelectRoomJoinClickListener(View.OnClickListener selectRoomJoinClickListener) {
+        mSelectRoomJoinClickListener = selectRoomJoinClickListener;
+    }
     @Override
     protected SelfHelpCoursesRoomViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.viewholder_self_help_room, parent, false);
@@ -91,6 +96,10 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
                 if (mSelectRoomOnClickListener != null) {
                     mSelectRoomRelativeLayout.setOnClickListener(mSelectRoomOnClickListener);
                     mSelectRoomRelativeLayout.setTag(object);
+                }
+                if(mSelectRoomJoinClickListener != null){
+                    mJoinCoursesTextView.setOnClickListener(mSelectRoomJoinClickListener);
+                    mJoinCoursesTextView.setTag(object);
                 }
             }
             mRoomNameTextView.setText(object.getName());

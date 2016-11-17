@@ -67,6 +67,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private static final int COURSES_STATE_CANCEL = 3;//已取消
     private static final int COURSES_IS_FREE = 0;//免费团体课
     private static final int COURSES_NOT_FREE = 1;//收费费团体课
+    private static final int COURSES_SELF = 2;//自助团体课
     public static final String KEY_NO_CARD = "key_no_card";
 
     private HImageView mShopImageView;
@@ -74,6 +75,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private TextView mScheduleResultTextView;//排期
     private TextView mCoursesTimeTextView;//时间
     private TextView mShopAddressTextView;//地址
+    private RelativeLayout mTeacherNamelayout;
     private TextView mTeacherNameTextView;//教练名称
     private RatingBar mRatingBar;//强度
     private TextView mCoursesIntroduceTextView;//课程介绍
@@ -138,6 +140,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mScheduleResultTextView = (TextView) findViewById(R.id.schedule_result);
         mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
         mShopAddressTextView = (TextView) findViewById(R.id.shop_address);
+        mTeacherNamelayout = (RelativeLayout) findViewById(R.id.layout_group_teacher_name);
         mTeacherNameTextView = (TextView) findViewById(R.id.group_teacher_name);
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesIntroduceTextView = (TextView) findViewById(R.id.courses_introduce);
@@ -312,7 +315,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
-        mTeacherNameTextView.setText(groupLessonData.getTrainerName());
+        if(COURSES_SELF == groupLessonData.getScheduleType()) {//如果是自助课程隐藏教练显示
+            mTeacherNamelayout.setVisibility(View.GONE);
+        } else {
+            mTeacherNamelayout.setVisibility(View.VISIBLE);
+        }
+
         String rat = groupLessonData.getIntensity();
         if (!TextUtils.isEmpty(rat)) {
             mRatingBar.setRating(Float.parseFloat(rat));

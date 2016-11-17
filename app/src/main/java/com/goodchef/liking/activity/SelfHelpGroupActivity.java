@@ -27,12 +27,16 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.SelectCoursesListFragment;
+import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.mvp.presenter.SelfHelpGroupCoursesPresenter;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.stickyheaderrecyclerview.AnimalsAdapter;
 import com.goodchef.liking.widgets.stickyheaderrecyclerview.DividerDecoration;
@@ -83,7 +87,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     private String endTime = "";
     private String price = "";
     private String peopleNum = "0";
-    private String mCurrCourseId = null;
+    private String mSelectSelfCourseId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +156,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     public void onClick(View v) {
         if (v == mSelectCoursesLayout) {//选择课程
             Intent intent = new Intent(this, SelectCoursesListActivity.class);
-            intent.putExtra(SelectCoursesListActivity.KEY_SELECT_COURSES_ID,mCurrCourseId);
+            intent.putExtra(SelectCoursesListActivity.KEY_SELECT_COURSES_ID,mSelectSelfCourseId);
             startActivity(intent);
         } else if (v == mImmediatelyTextView) {//立即预约
             if (!Preference.isLogin()) {
@@ -345,6 +349,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
             helpCoursesRoomAdapter.setData(roomList);
             mGymRecyclerView.setAdapter(helpCoursesRoomAdapter);
             helpCoursesRoomAdapter.setSelectRoomOnClickListener(SelectRoomClickListener);
+            helpCoursesRoomAdapter.setSelectRoomJoinClickListener(joinRoomClickListener);
         }else {
             //没有课程
             mImmediatelyTextView.setVisibility(View.GONE);
@@ -382,6 +387,37 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
             }
         }
     };
+
+    /**
+     * 点击加入课程选择事件
+     */
+    private View.OnClickListener joinRoomClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+//            TextView mJoinCoursesTextView = (TextView) v.findViewById(R.id.join_courses_TextView);
+//            if (mJoinCoursesTextView != null) {
+//                SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData roomData = (SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData) mLayout.getTag();
+//                if (roomData != null) {
+//                    roomData
+//                    joinGroupDetails()
+//                }
+//            }
+        }
+    };
+
+//    /**
+//     * 跳转到团体课详情
+//     *
+//     * @param data 课程对象
+//     */
+//    private void joinGroupDetails(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data) {
+//        UMengCountUtil.UmengCount(this, UmengEventId.GROUPLESSONDETAILSACTIVITY);
+//        Intent intent = new Intent(this, GroupLessonDetailsActivity.class);
+//        intent.putExtra(INTENT_KEY_STATE, data.getStatus());
+//        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, data.getScheduleId());
+//        intent.putExtra(INTENT_KEY_ORDER_ID, data.getOrderId());
+//        startActivity(intent);
+//    }
 
 
     private class AnimalsHeadersAdapter extends AnimalsAdapter<RecyclerView.ViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
@@ -435,7 +471,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
     public void onEvent(SelectCoursesMessage message) {
         SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mCoursesData = message.getCoursesData();
-        mCurrCourseId = mCoursesData.getCourseId();
+        mSelectSelfCourseId = mCoursesData.getCourseId();
         mNoneCoursesLayout.setVisibility(View.INVISIBLE);
         mCoursesTrainTextView.setText(mCoursesData.getName());
         mCoursesIntroduceTextView.setText(mCoursesData.getDesc());

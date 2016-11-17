@@ -55,6 +55,8 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         TextView mSelfShareBtn = (TextView) mRootView.findViewById(R.id.self_share_btn);
         if (mCancelListener != null) {
             mCancelOrderBtn.setOnClickListener(mCancelListener);
+        }
+        if(mShareListener != null) {
             mSelfShareBtn.setOnClickListener(mShareListener);
         }
         return new GroupLessonViewHolder(mRootView);
@@ -104,7 +106,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             }
             int scheduleType = object.getScheduleType();
             int isFree = object.getIsFee();
-            if(scheduleType == TYPE_SCHEDULE_TYPE_SELF){
+            if(scheduleType == TYPE_SCHEDULE_TYPE_SELF){//如果是自主排课
                 if (showCalcel == 0) {
                     mMyGroupCoursesLayout.setVisibility(View.GONE);
                     mCancelOrderBtn.setVisibility(View.GONE);

@@ -86,6 +86,8 @@ public class GroupCoursesResult extends BaseResult {
         private int isFree;
         @SerializedName("price")
         private String price;
+        @SerializedName("schedule_type")
+        private int scheduleType;
 
         /**
          * object_id : 2
@@ -224,6 +226,14 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setPrice(String price) {
             this.price = price;
+        }
+
+        public int getScheduleType() {
+            return scheduleType;
+        }
+
+        public void setScheduleType(int scheduleType) {
+            this.scheduleType = scheduleType;
         }
 
         public static class GymImgsData {

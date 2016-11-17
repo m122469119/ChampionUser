@@ -120,6 +120,7 @@
                     android:id="@+id/self_share_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
                     android:background="@drawable/shape_green_line_background"
                     android:gravity="center"
                     android:minHeight="28dp"
