@@ -560,6 +560,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         mCanSchedule = mNoticeGym.getCanSchedule();
         if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getName())) {
             mGym = mNoticeGym;
+            gymId = mNoticeGym.getGymId();
         }
         setHomeTitle();
         setHomeMenuReadNotice();
