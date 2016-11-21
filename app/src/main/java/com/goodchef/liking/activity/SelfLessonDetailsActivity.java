@@ -28,7 +28,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
 
     private HImageView mShopImageView;
     private TextView mCoursesTimeTextView;//时间
-    private TextView mCoursesApplianceTextView;//器械
+//    private TextView mCoursesApplianceTextView;//器械
     private RatingBar mRatingBar;//强度
     private TextView mCoursesTags;//标签
     private TextView mCoursesIntroduce;//介绍
@@ -45,7 +45,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
     private void initView() {
         mShopImageView = (HImageView) findViewById(R.id.self_lesson_details_shop_image);
         mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
-        mCoursesApplianceTextView = (TextView) findViewById(R.id.courses_appliance);
+//        mCoursesApplianceTextView = (TextView) findViewById(R.id.courses_appliance);
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
         mCoursesTags = (TextView) findViewById(R.id.courses_tags);
         mCoursesIntroduce = (TextView) findViewById(R.id.courses_introduce);
@@ -98,7 +98,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
             duration = "";
         }
         mCoursesTimeTextView.setText(duration);
-        mCoursesApplianceTextView.setText(getAppliances(coursesData.getEquipment()));
+//        mCoursesApplianceTextView.setText(getAppliances(coursesData.getEquipment()));
         String tags = getTags(coursesData.getTags());
         if(TextUtils.isEmpty(tags)){
             mCoursesTags.setVisibility(View.GONE);

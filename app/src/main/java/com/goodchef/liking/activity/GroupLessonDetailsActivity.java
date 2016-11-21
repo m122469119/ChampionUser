@@ -77,6 +77,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     //  private TextView mShopNameTextView;//门店名称
     private TextView mScheduleResultTextView;//排期
     private TextView mCoursesTimeTextView;//时间
+    private TextView mShopPlaceTextView;//地点-场馆
     private TextView mShopAddressTextView;//地址
     private RelativeLayout mTeacherNamelayout;
     private TextView mTeacherNameTextView;//教练名称
@@ -148,6 +149,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mScheduleResultTextView = (TextView) findViewById(R.id.schedule_result);
         mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
         mShopAddressTextView = (TextView) findViewById(R.id.shop_address);
+        mShopPlaceTextView = (TextView) findViewById(R.id.shop_place);
         mTeacherNamelayout = (RelativeLayout) findViewById(R.id.layout_group_teacher_name);
         mTeacherNameTextView = (TextView) findViewById(R.id.group_teacher_name);
         mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
@@ -329,6 +331,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
+        mShopPlaceTextView.setText(groupLessonData.getPlaceInfo());
         scheduleType = groupLessonData.getScheduleType();
         if(COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
             mTeacherNamelayout.setVisibility(View.GONE);

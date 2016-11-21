@@ -129,11 +129,38 @@
                     android:paddingRight="10dp">
 
                     <TextView
-                        android:id="@+id/shop_address_details"
+                        android:id="@+id/shop_place_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:text="@string/lesson_venues"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <TextView
+                        android:id="@+id/shop_place"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/shop_place_details"
+                        android:gravity="left"
+                        android:textColor="@color/liking_lesson_text"
+                        android:textSize="@dimen/textsize_small"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/shop_address_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/address"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 

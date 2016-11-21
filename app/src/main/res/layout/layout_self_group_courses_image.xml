@@ -37,7 +37,7 @@
             android:id="@+id/group_courses_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:paddingBottom="6dp"
             android:layout_marginLeft="10dp"
             android:text="时长:"
@@ -52,6 +52,7 @@
             android:layout_marginLeft="10dp"
             android:text="课程强度:"
             android:textColor="@color/white"
+            android:visibility="gone"
             android:textSize="@dimen/textsize_small"/>
     </LinearLayout>
 </FrameLayout>

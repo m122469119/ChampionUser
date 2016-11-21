@@ -70,6 +70,8 @@ public class GroupCoursesResult extends BaseResult {
         private String quota;
         @SerializedName("quota_desc")
         private String quotaDesc;
+        @SerializedName("place_info")
+        private String placeInfo;
         @SerializedName("gym_name")
         private String gymName;
         @SerializedName("gym_address")
@@ -244,6 +246,15 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setGymNumbers(List<GymNumbersData> gymNumbers) {
             this.gymNumbers = gymNumbers;
+        }
+
+
+        public String getPlaceInfo() {
+            return placeInfo;
+        }
+
+        public void setPlaceInfo(String placeInfo) {
+            this.placeInfo = placeInfo;
         }
 
         public static class GymImgsData {

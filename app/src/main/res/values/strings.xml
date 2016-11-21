@@ -213,6 +213,7 @@
     <string name="join_self_courses">加入课程</string>
     <string name="title_select_courses">选择课程</string>
 
+    <string name="address">地址：</string>
     <string name="self_courses_name">自助</string>
     <string name="self_courses_time">时长：</string>
     <string name="courses_appliance">器械：</string>
