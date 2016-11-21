@@ -96,6 +96,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         initView();
         setViewOnClickListener();
         sendRequest();
+        setTitle(LikingHomeActivity.gymName);
     }
 
     private void initView() {

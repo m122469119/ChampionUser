@@ -86,6 +86,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private String currentCityName = "";
     public boolean isWhetherLocation = false;
     public static String gymId = "0";
+    public static String gymName = "";
     private String mUserCityId;
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;
@@ -561,6 +562,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getName())) {
             mGym = mNoticeGym;
             gymId = mNoticeGym.getGymId();
+            gymName = mNoticeGym.getName();
         }
         setHomeTitle();
         setHomeMenuReadNotice();
