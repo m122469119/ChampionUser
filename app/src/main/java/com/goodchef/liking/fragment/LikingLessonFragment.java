@@ -17,6 +17,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.activity.SelfHelpGroupActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
@@ -33,6 +34,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
@@ -192,7 +194,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private View.OnClickListener goToSelfCoursesListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            startActivity(SelfHelpGroupActivity.class);
+            if (Preference.isLogin()) {
+                startActivity(SelfHelpGroupActivity.class);
+            } else {
+                startActivity(LoginActivity.class);
+            }
         }
     };
 
