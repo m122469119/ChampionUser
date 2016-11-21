@@ -313,50 +313,54 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
      * @param hourData
      */
     private void setClickTimeRightData(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData) {
-        selectUserTime(hourData);
-        List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomList = new ArrayList<>();
-        List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomDataList = hourData.getRoom();
-        if (roomDataList != null && roomDataList.size() > 0) {
+        if(hourData.isAvailable()){
+            selectUserTime(hourData);
             mImmediatelyTextView.setVisibility(View.VISIBLE);
             selfCoursesView.setVisibility(View.VISIBLE);
             otherCoursesView.setVisibility(View.INVISIBLE);
-            List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> isScheduledtemporary = new ArrayList<>();
-            List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> notScheduledtemporary = new ArrayList<>();
-            for (int i = 0; i < roomDataList.size(); i++) {//将操房刷选出来重现排列
-                if (roomDataList.get(i).isScheduled()) {//可以安排的操房
-                    isScheduledtemporary.add(roomDataList.get(i));
-                } else {//不能安排的操房
-                    notScheduledtemporary.add(roomDataList.get(i));
-                }
-            }
-            if (notScheduledtemporary.size() > 0) {
-                for (int i = 0; i < notScheduledtemporary.size(); i++) {
-                    if (i == 0) {
-                        notScheduledtemporary.get(i).setCheck(true);
-                        mAccommodateNumberTextView.setText(notScheduledtemporary.get(i).getCapacity()+ "人");
-                        roomId = notScheduledtemporary.get(i).getId() + "";
-                        peopleNum = notScheduledtemporary.get(i).getCapacity()+"";
-                    } else {
-                        notScheduledtemporary.get(i).setCheck(false);
+            List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomList = new ArrayList<>();
+            List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomDataList = hourData.getRoom();
+            if (roomDataList != null && roomDataList.size() > 0) {
+
+                List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> isScheduledtemporary = new ArrayList<>();
+                List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> notScheduledtemporary = new ArrayList<>();
+                for (int i = 0; i < roomDataList.size(); i++) {//将操房刷选出来重现排列
+                    if (roomDataList.get(i).isScheduled()) {//可以安排的操房
+                        isScheduledtemporary.add(roomDataList.get(i));
+                    } else {//不能安排的操房
+                        notScheduledtemporary.add(roomDataList.get(i));
                     }
                 }
-                roomList.addAll(notScheduledtemporary);
+                if (notScheduledtemporary.size() > 0) {
+                    for (int i = 0; i < notScheduledtemporary.size(); i++) {
+                        if (i == 0) {
+                            notScheduledtemporary.get(i).setCheck(true);
+                            mAccommodateNumberTextView.setText(notScheduledtemporary.get(i).getCapacity()+ "人");
+                            roomId = notScheduledtemporary.get(i).getId() + "";
+                            peopleNum = notScheduledtemporary.get(i).getCapacity()+"";
+                        } else {
+                            notScheduledtemporary.get(i).setCheck(false);
+                        }
+                    }
+                    roomList.addAll(notScheduledtemporary);
+                }
+                if (isScheduledtemporary.size() > 0) {
+                    roomList.addAll(isScheduledtemporary);
+                }
+                mGymRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                helpCoursesRoomAdapter = new SelfHelpCoursesRoomAdapter(this);
+                helpCoursesRoomAdapter.setData(roomList);
+                mGymRecyclerView.setAdapter(helpCoursesRoomAdapter);
+                helpCoursesRoomAdapter.setSelectRoomOnClickListener(SelectRoomClickListener);
+                helpCoursesRoomAdapter.setSelectRoomJoinClickListener(joinRoomClickListener);
             }
-            if (isScheduledtemporary.size() > 0) {
-                roomList.addAll(isScheduledtemporary);
-            }
-            mGymRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            helpCoursesRoomAdapter = new SelfHelpCoursesRoomAdapter(this);
-            helpCoursesRoomAdapter.setData(roomList);
-            mGymRecyclerView.setAdapter(helpCoursesRoomAdapter);
-            helpCoursesRoomAdapter.setSelectRoomOnClickListener(SelectRoomClickListener);
-            helpCoursesRoomAdapter.setSelectRoomJoinClickListener(joinRoomClickListener);
-        }else {
-            //没有课程
+        }else{
             mImmediatelyTextView.setVisibility(View.GONE);
             selfCoursesView.setVisibility(View.INVISIBLE);
             otherCoursesView.setVisibility(View.VISIBLE);
         }
+
+
     }
 
 
