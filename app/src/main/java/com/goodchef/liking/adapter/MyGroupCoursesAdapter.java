@@ -93,7 +93,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         public void bindViews(MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses object) {
             mPeriodOfValidityTextView.setText(object.getStartDate() + "(" + object.getWeekDay() + ") " + object.getStartTime() + " ~ " + object.getEndTime());
             mGroupCoursesNameTextView.setText(object.getCourseName());
-            mShopNameTextView.setText(object.getGymName());
+            mShopNameTextView.setText(object.getPlaceInfo());
             int state = object.getStatus();
             int showCalcel = object.getCancelBtnShow();
             setCoursesState(state);

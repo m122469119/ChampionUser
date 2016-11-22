@@ -14,4 +14,5 @@ public interface SelfHelpGroupCoursesView extends BaseNetworkLoadView {
 
     void updateOrderView();
     void updateNoCardView(String message);
+    void updateSelectCourserView();
 }

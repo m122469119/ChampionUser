@@ -35,6 +35,26 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
 
         @SerializedName("time")
         private List<TimeData> mTime;
+        @SerializedName("duration")
+        private int mDuration;
+        @SerializedName("last_course")
+        private SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mLastCourse;
+
+        public int getDuration() {
+            return mDuration;
+        }
+
+        public void setDuration(int duration) {
+            mDuration = duration;
+        }
+
+        public SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData getLastCourse() {
+            return mLastCourse;
+        }
+
+        public void setLastCourse(SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData lastCourse) {
+            mLastCourse = lastCourse;
+        }
 
         public List<TimeData> getTime() {
             return mTime;
@@ -264,5 +284,6 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                 }
             }
         }
+
     }
 }

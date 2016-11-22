@@ -62,6 +62,8 @@ public class MyGroupCoursesResult extends BaseResult {
             private String endTime;
             @SerializedName("week_day")
             private String weekDay;
+            @SerializedName("place_info")
+            private String placeInfo;
             @SerializedName("gym_name")
             private String gymName;
             @SerializedName("gym_address")
@@ -196,6 +198,16 @@ public class MyGroupCoursesResult extends BaseResult {
             public void setScheduleType(int scheduleType) {
                 this.scheduleType = scheduleType;
             }
+
+
+            public String getPlaceInfo() {
+                return placeInfo;
+            }
+
+            public void setPlaceInfo(String placeInfo) {
+                this.placeInfo = placeInfo;
+            }
+
         }
     }
 

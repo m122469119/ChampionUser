@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.SelectCoursesListActivity;
@@ -59,6 +60,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
 
     @Override
     protected void initViews() {
+        setPullMode(PullMode.PULL_BOTH);
         initData();
     }
 

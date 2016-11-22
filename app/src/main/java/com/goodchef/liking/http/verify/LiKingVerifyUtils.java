@@ -20,7 +20,6 @@ import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.GroupCoursesChargeConfirmActivity;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.InviteFriendsActivity;
-import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyCardDetailsActivity;
@@ -31,8 +30,9 @@ import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.activity.OpenTheDoorActivity;
 import com.goodchef.liking.activity.OrderPrivateCoursesConfirmActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
+import com.goodchef.liking.activity.SelectCoursesListActivity;
+import com.goodchef.liking.activity.SelfHelpGroupActivity;
 import com.goodchef.liking.activity.UpgradeAndContinueCardActivity;
-import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -91,7 +91,8 @@ public class LiKingVerifyUtils {
                                 || context instanceof OrderPrivateCoursesConfirmActivity || context instanceof MyChargeGroupCoursesDetailsActivity
                                 || context instanceof MyInfoActivity || context instanceof MyPrivateCoursesDetailsActivity || context instanceof MyTrainDataActivity
                                 || context instanceof UpgradeAndContinueCardActivity || context instanceof MyCardDetailsActivity
-                                || context instanceof MyCardActivity || context instanceof InviteFriendsActivity || context instanceof OpenTheDoorActivity) {
+                                || context instanceof MyCardActivity || context instanceof InviteFriendsActivity || context instanceof OpenTheDoorActivity
+                                || context instanceof SelfHelpGroupActivity || context instanceof SelectCoursesListActivity) {
                             ((Activity) context).finish();
                         }
                         EventBus.getDefault().post(new LoginOutFialureMessage());
@@ -259,12 +260,12 @@ public class LiKingVerifyUtils {
     public static void showBuyCoursesErrorDialog(final Context context, String message) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
         builder.setMessage(message);
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(context, LikingHomeActivity.class);
-                context.startActivity(intent);
-                EventBus.getDefault().post(new CoursesErrorMessage());
+//                Intent intent = new Intent(context, LikingHomeActivity.class);
+//                context.startActivity(intent);
+//                EventBus.getDefault().post(new CoursesErrorMessage());
                 dialog.dismiss();
             }
         });

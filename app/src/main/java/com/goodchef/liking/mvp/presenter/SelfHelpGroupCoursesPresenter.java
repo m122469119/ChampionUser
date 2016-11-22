@@ -60,6 +60,7 @@ public class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCo
                 } else if (result.getCode() == 22013) {
                    mView.updateNoCardView(result.getMessage());
                 } else {
+                    mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)
                     PopupUtils.showToast(result.getMessage());
                 }
             }

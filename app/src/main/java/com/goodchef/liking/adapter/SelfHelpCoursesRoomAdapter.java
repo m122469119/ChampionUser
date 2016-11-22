@@ -74,12 +74,16 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
             if (ismScheduled) {//已有排课
                 mGymCheckBox.setVisibility(View.GONE);
                 mSurplusNumberTextView.setVisibility(View.VISIBLE);
-                mSurplusNumberTextView.setText("还剩" + object.getCapacity() + "个名额");
+                mSurplusNumberTextView.setText("还剩" + object.getQuota() + "个名额");
                 mJoinCoursesTextView.setVisibility(View.VISIBLE);
                 mGymRoomOrderPromptTextView.setVisibility(View.VISIBLE);
-                mGymRoomOrderPromptTextView.setText(object.getScheduleName());
+                mGymRoomOrderPromptTextView.setText("(已有" + object.getScheduleName() + ")");
                 mImageView.setVisibility(View.GONE);
                 mLineImageView.setVisibility(View.VISIBLE);
+                if(mSelectRoomJoinClickListener != null){
+                    mJoinCoursesTextView.setOnClickListener(mSelectRoomJoinClickListener);
+                    mJoinCoursesTextView.setTag(object);
+                }
             } else {//没有排课
                 mGymCheckBox.setVisibility(View.VISIBLE);
                 boolean isCheck = object.isCheck();
@@ -96,10 +100,6 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
                 if (mSelectRoomOnClickListener != null) {
                     mSelectRoomRelativeLayout.setOnClickListener(mSelectRoomOnClickListener);
                     mSelectRoomRelativeLayout.setTag(object);
-                }
-                if(mSelectRoomJoinClickListener != null){
-                    mJoinCoursesTextView.setOnClickListener(mSelectRoomJoinClickListener);
-                    mJoinCoursesTextView.setTag(object);
                 }
             }
             mRoomNameTextView.setText(object.getName());

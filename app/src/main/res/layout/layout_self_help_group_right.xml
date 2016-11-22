@@ -49,8 +49,8 @@
             android:id="@+id/layout_select_group_courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -72,7 +72,6 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/bg_right_arrow"/>
             </RelativeLayout>
-
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -113,8 +112,6 @@
                 </LinearLayout>
             </FrameLayout>
 
-
-
             <TextView
                 android:id="@+id/self_help_courses_introduce"
                 android:layout_width="match_parent"
@@ -122,46 +119,47 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:padding="10dp"
-                android:text="课程介绍课程介绍课程介绍课程介绍"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="最多容纳人数"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_small"/>
+
+                <TextView
+                    android:id="@+id/accommodate_user_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="@dimen/textsize_small"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/line"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="最多容纳人数"
-                android:textColor="@color/lesson_details_dark_back"
-                android:textSize="@dimen/textsize_small"/>
-
-            <TextView
-                android:id="@+id/accommodate_user_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/add_minus_dishes_text"
-                android:textSize="@dimen/textsize_small"/>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/line"/>
 
     </LinearLayout>
 </ScrollView>

@@ -189,11 +189,21 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * 设置底部view的状态
      */
     private void setBottomCoursesState() {
+        if( COURSES_SELF == scheduleType) {
+            mGroupCoursesTagTextView.setText(R.string.self_courses);
+        } else {
+            if(isFree == COURSES_IS_FREE) {
+                mGroupCoursesTagTextView.setText(R.string.free_courses);
+            } else if (isFree == COURSES_NOT_FREE){
+                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
+            }
+        }
+
         if (mCoursesState == -1) {
             if (isFree == COURSES_IS_FREE) {//免费
                 mCoursesStateLayout.setVisibility(View.GONE);
                 mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
-                mGroupCoursesTagTextView.setText(R.string.free_courses);
+//                mGroupCoursesTagTextView.setText(R.string.free_courses);
                 if (!StringUtils.isEmpty(guota)) {
                     if (Integer.parseInt(guota) == 0) {
                         mImmediatelySubmitBtn.setText(R.string.appointment_fill);
@@ -215,21 +225,17 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             } else if (isFree == COURSES_NOT_FREE) {//收费
                 mImmediatelySubmitBtn.setVisibility(View.GONE);
                 mCoursesStateLayout.setVisibility(View.VISIBLE);
-                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
+//                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
                 mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
                 mStatePromptTextView.setText("¥ " + price);
                 mCancelOrderBtn.setText(R.string.immediately_buy_btn);
                 mCancelOrderBtn.setOnClickListener(this);
             }
 
-            if( COURSES_SELF == scheduleType) {
-                mGroupCoursesTagTextView.setText(R.string.self_courses);
-            }
-
         } else if (mCoursesState == COURSES_STATE_NOT_START) {//未开始
             mCoursesStateLayout.setVisibility(View.VISIBLE);
             mImmediatelySubmitBtn.setVisibility(View.GONE);
-            mStatePromptTextView.setText(R.string.not_start);
+            mStatePromptTextView.setText(R.string.not_start_courses);
             mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
             mCancelOrderBtn.setText(R.string.cancel_appointment);
             mCancelOrderBtn.setVisibility(View.VISIBLE);
@@ -330,7 +336,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mScheduleResultTextView.setText(groupLessonData.getQuotaDesc());
         //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
-        mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
+        if(!TextUtils.isEmpty(groupLessonData.getGymAddress())){
+            mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
+        }
         mShopPlaceTextView.setText(groupLessonData.getPlaceInfo());
         scheduleType = groupLessonData.getScheduleType();
         if(COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
