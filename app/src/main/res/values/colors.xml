@@ -58,4 +58,5 @@
     <color name="action_bar_gray">#20000000</color>
     <color name="cedeff3">#edeff3</color>
     <color name="cdee0e4">#dee0e4</color>
+    <color name="state_prompt_none">#7FD7A1</color>
 </resources>

@@ -418,9 +418,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.3"
-            android:gravity="left|center"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:paddingLeft="10dp"
-            android:textColor="@color/lesson_details_gray_back"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_15"
             />
 

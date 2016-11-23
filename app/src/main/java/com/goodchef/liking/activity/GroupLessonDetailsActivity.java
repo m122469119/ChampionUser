@@ -228,6 +228,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 //                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
                 mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
                 mStatePromptTextView.setText("¥ " + price);
+                mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
+                mStatePromptTextView.setBackgroundColor(0);
                 mCancelOrderBtn.setText(R.string.immediately_buy_btn);
                 mCancelOrderBtn.setOnClickListener(this);
             }
@@ -236,16 +238,18 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mCoursesStateLayout.setVisibility(View.VISIBLE);
             mImmediatelySubmitBtn.setVisibility(View.GONE);
             mStatePromptTextView.setText(R.string.not_start_courses);
-            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+            mStatePromptTextView.setBackgroundColor(ResourceUtils.getColor(R.color.state_prompt_none));
             mCancelOrderBtn.setText(R.string.cancel_appointment);
             mCancelOrderBtn.setVisibility(View.VISIBLE);
             mCancelOrderBtn.setOnClickListener(this);
-            mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
+            mStatePromptTextView.setGravity(Gravity.CENTER);
         } else if (mCoursesState == COURSES_STATE_PROCESS) {//进行中
             mCoursesStateLayout.setVisibility(View.VISIBLE);
             mImmediatelySubmitBtn.setVisibility(View.GONE);
             mStatePromptTextView.setText(R.string.start_process);
             mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+            mStatePromptTextView.setBackgroundColor(0);
             mCancelOrderBtn.setVisibility(View.GONE);
             mCancelOrderBtn.setOnClickListener(null);
             mStatePromptTextView.setGravity(Gravity.CENTER);
@@ -254,6 +258,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mImmediatelySubmitBtn.setVisibility(View.GONE);
             mStatePromptTextView.setText(R.string.courses_complete);
             mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+            mStatePromptTextView.setBackgroundColor(0);
             mCancelOrderBtn.setVisibility(View.GONE);
             mCancelOrderBtn.setOnClickListener(null);
             mStatePromptTextView.setGravity(Gravity.CENTER);
@@ -262,6 +267,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mImmediatelySubmitBtn.setVisibility(View.GONE);
             mStatePromptTextView.setText(R.string.courses_cancel);
             mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+            mStatePromptTextView.setBackgroundColor(0);
             mCancelOrderBtn.setVisibility(View.GONE);
             mCancelOrderBtn.setOnClickListener(null);
             mStatePromptTextView.setGravity(Gravity.CENTER);

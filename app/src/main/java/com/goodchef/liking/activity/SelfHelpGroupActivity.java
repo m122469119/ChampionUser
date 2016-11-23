@@ -93,8 +93,8 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
     private SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mSelectLastCoursesData =  null;
 
-    private String mCurrSelectDate = "";
-    private String mCurrSelectHour = "";
+    private String mCurrSelectDate = "";//当前选中的时间段
+    private String mCurrSelectHour = "";//当前选中的小时
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,6 +336,11 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         }
     }
 
+    /**
+     * 设置右边View数据
+     * @param hourData
+     */
+
     private void  setRigthSelectViewData(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData) {
         if(hourData != null) {
             mCurrSelectDate = hourData.getDate();
@@ -379,7 +384,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
      * @param hourData
      */
     private void setClickTimeRightData(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData) {
-        if(hourData.isAvailable()){
+        if(hourData.isAvailable()) {//操房是否可用
             selectUserTime(hourData);
             selfCoursesView.setVisibility(View.VISIBLE);
             otherCoursesView.setVisibility(View.GONE);
