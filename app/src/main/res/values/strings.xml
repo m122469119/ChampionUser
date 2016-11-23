@@ -55,7 +55,7 @@
     <string name="not_start">未开始</string>
     <string name="not_start_courses">课程尚未开始</string>
     <string name="start_process">进行中</string>
-    <string name="courses_complete">已完成</string>
+    <string name="courses_complete">已结束</string>
     <string name="courses_cancel">已取消</string>
     <string name="immediately_buy_btn">立即购买</string>
     <string name="get_meals_address">取餐地址</string>
@@ -85,7 +85,7 @@
     <string name="title_my_card">我的会员卡</string>
     <string name="pay_free_type">免金额支付</string>
     <string name="courses_state_payed">已支付</string>
-    <string name="courses_state_complete">已完成</string>
+    <string name="courses_state_complete">已结束</string>
     <string name="courses_state_cancel">已取消</string>
     <string name="title_courses_details">课程详情</string>
     <string name="title_my_train_data">训练数据</string>
@@ -194,7 +194,7 @@
     <string name="my_card_gym_address">健身房地址</string>
     <string name="no_start">未开始</string>
     <string name="is_doing">进行中</string>
-    <string name="is_over">已完成</string>
+    <string name="is_over">已结束</string>
     <string name="is_cancel">已取消</string>
     <string name="activity_title_my_group_details">团体课详情</string>
     <string name="notice_prompt">提示</string>

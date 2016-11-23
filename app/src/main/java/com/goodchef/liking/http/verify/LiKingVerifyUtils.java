@@ -17,6 +17,7 @@ import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.activity.ChangeGymActivity;
 import com.goodchef.liking.activity.GroupCoursesChargeConfirmActivity;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.InviteFriendsActivity;
@@ -92,7 +93,8 @@ public class LiKingVerifyUtils {
                                 || context instanceof MyInfoActivity || context instanceof MyPrivateCoursesDetailsActivity || context instanceof MyTrainDataActivity
                                 || context instanceof UpgradeAndContinueCardActivity || context instanceof MyCardDetailsActivity
                                 || context instanceof MyCardActivity || context instanceof InviteFriendsActivity || context instanceof OpenTheDoorActivity
-                                || context instanceof SelfHelpGroupActivity || context instanceof SelectCoursesListActivity) {
+                                || context instanceof SelfHelpGroupActivity || context instanceof SelectCoursesListActivity
+                                || context instanceof ChangeGymActivity) {
                             ((Activity) context).finish();
                         }
                         EventBus.getDefault().post(new LoginOutFialureMessage());

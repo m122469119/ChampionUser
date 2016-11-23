@@ -937,8 +937,9 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getSelfCorsesTimeList(String token, String gymId, RequestCallback<SelfHelpGroupCoursesResult> callback) {
+        //.append(KEY_TOKEN, token)
         VolleyHttpRequestClient.doPost(UrlList.COURSE_GYM_SCHEDULE_INFO, SelfHelpGroupCoursesResult.class, getCommonRequestParams()
-                .append(KEY_TOKEN, token).append("gym_id", gymId), callback);
+                .append("gym_id", gymId), callback);
     }
 
     /***
@@ -948,8 +949,9 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getSelfCoursesList(int page, RequestCallback<SelfGroupCoursesListResult> callback) {
+        //.append(KEY_TOKEN, Preference.getToken())
         VolleyHttpRequestClient.doPost(UrlList.COURSE_CAN_SCHEDULE_COURSE_LIST, SelfGroupCoursesListResult.class, getCommonRequestParams()
-                .append(KEY_TOKEN, Preference.getToken()).append("page", page), callback);
+                .append("page", page), callback);
     }
 
     /***

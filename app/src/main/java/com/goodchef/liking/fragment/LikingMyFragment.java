@@ -150,7 +150,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
                     @Override
                     public void onFailure(RequestError error) {
-
                     }
                 });
             }
@@ -236,6 +235,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onRetryRequested() {
                 LiKingVerifyUtils.initApi(getActivity());
+                setLogonView();
+                getUserExerciseData();
             }
         });
         showSelfHelpGroupLayout(((LikingHomeActivity)getActivity()).mCanSchedule);
@@ -370,11 +371,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 LikingCallUtil.showCallDialog(getActivity(), "确定联系客服吗？", phone);
             }
         } else if (v == mSelfHelpGroupLayout) {//自助团体课
-            if (Preference.isLogin()) {
+//            if (Preference.isLogin()) {
                 startActivity(SelfHelpGroupActivity.class);
-            } else {
-                startActivity(LoginActivity.class);
-            }
+//            } else {
+//                startActivity(LoginActivity.class);
+//            }
         }
     }
 
@@ -467,4 +468,5 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mSelfHelpGroupLayout.setVisibility(View.GONE);
         }
     }
+
 }

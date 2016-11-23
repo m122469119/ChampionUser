@@ -194,11 +194,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private View.OnClickListener goToSelfCoursesListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            if (Preference.isLogin()) {
+//            if (Preference.isLogin()) {
                 startActivity(SelfHelpGroupActivity.class);
-            } else {
-                startActivity(LoginActivity.class);
-            }
+//            } else {
+//                startActivity(LoginActivity.class);
+//            }
         }
     };
 
