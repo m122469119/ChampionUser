@@ -937,9 +937,12 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getSelfCorsesTimeList(String token, String gymId, RequestCallback<SelfHelpGroupCoursesResult> callback) {
-        //.append(KEY_TOKEN, token)
-        VolleyHttpRequestClient.doPost(UrlList.COURSE_GYM_SCHEDULE_INFO, SelfHelpGroupCoursesResult.class, getCommonRequestParams()
-                .append("gym_id", gymId), callback);
+        RequestParams params = getCommonRequestParams();
+        if (!TextUtils.isEmpty(token)) {
+            params.append(KEY_TOKEN, token);
+        }
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_GYM_SCHEDULE_INFO, SelfHelpGroupCoursesResult.class,
+                params.append("gym_id", gymId), callback);
     }
 
     /***
