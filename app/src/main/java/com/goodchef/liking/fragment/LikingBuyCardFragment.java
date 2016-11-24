@@ -79,6 +79,9 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         if (!EnvironmentUtils.Network.isNetWorkAvailable() && mainView != null && mBuyCardAdapter != null
                 && mBuyCardAdapter.getDataList().size() > 0) { //无网络情况并且有数据显示上一次的缓存
             if(mStateView != null){
+                if(mRecyclerView.getRefreshableView().getAdapter() == null) {
+                    mRecyclerView.getRefreshableView().setAdapter(mBuyCardAdapter);
+                }
                 mStateView.setState(LikingStateView.State.SUCCESS);
             }
         } else {

@@ -92,6 +92,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     public static final String NULL_STRING = "";
     private LikingStateView mStateView;
+    private boolean isRetryRequest = false;
 
     @Nullable
     @Override
@@ -124,9 +125,16 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                 clearExerciseData();
             } else {
+                if(isRetryRequest) {
+                    mStateView.setState(StateView.State.LOADING);
+                }
                 LiKingApi.getUserExerciseData(Preference.getToken(), new RequestCallback<UserExerciseResult>() {
                     @Override
                     public void onSuccess(UserExerciseResult result) {
+                        if(isRetryRequest) {
+                            mStateView.setState(StateView.State.SUCCESS);
+                            isRetryRequest = false;
+                        }
                         if (LiKingVerifyUtils.isValid(getActivity(), result)) {
                             UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
                             if (exerciseData != null) {
@@ -149,6 +157,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
                     @Override
                     public void onFailure(RequestError error) {
+                        if(isRetryRequest) {
+                            mStateView.setState(StateView.State.FAILED);
+                            isRetryRequest = false;
+                        }
                     }
                 });
             }
@@ -234,6 +246,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             public void onRetryRequested() {
                 LiKingVerifyUtils.initApi(getActivity());
                 setLogonView();
+                isRetryRequest = true;
                 getUserExerciseData();
             }
         });

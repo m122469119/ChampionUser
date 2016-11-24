@@ -303,7 +303,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     @Override
     public void updateErrorNoCard(String errorMessage) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage(errorMessage);
+        builder.setMessage("无卡用户或会员卡剩余有效期太短,请购卡后重试");
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
