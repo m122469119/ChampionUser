@@ -165,6 +165,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 });
             }
         } else {
+            if (EnvironmentUtils.Network.isNetWorkAvailable()) {
+                mStateView.setState(StateView.State.SUCCESS);
+            }
             clearExerciseData();
         }
     }
