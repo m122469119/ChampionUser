@@ -63,7 +63,6 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * @version 1.0.0
  */
 public class LikingMyFragment extends BaseFragment implements View.OnClickListener, LoginView {
-    private LinearLayout mInviteFriendsLayout;//邀请好友
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mAboutUsLayout;//关于我们
@@ -204,7 +203,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private void initView(View view) {
         mStateView = (LikingStateView) view.findViewById(R.id.my_state_view);
         mHeadInfoLayout = (RelativeLayout) view.findViewById(R.id.layout_head_info);
-        mInviteFriendsLayout = (LinearLayout) view.findViewById(R.id.layout_invite_friends);
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
         mAboutUsLayout = (LinearLayout) view.findViewById(R.id.layout_about_us);
@@ -243,7 +241,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void setViewOnClickListener() {
-        mInviteFriendsLayout.setOnClickListener(this);
         mContactJoinLayout.setOnClickListener(this);
         mBecomeTeacherLayout.setOnClickListener(this);
         mAboutUsLayout.setOnClickListener(this);
@@ -264,7 +261,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     private void initViewIconAndText() {
         setMySettingCard(mSelfHelpGroupLayout, R.string.layout_self_help_group, true);
-        setMySettingCard(mInviteFriendsLayout, R.string.layout_invite_friends, true);
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, true);
         setMySettingCard(mAboutUsLayout, R.string.layout_about_us, false);
@@ -327,14 +323,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             if (Preference.isLogin()) {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYCARDACTIVITY);
                 Intent intent = new Intent(getActivity(), MyCardActivity.class);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
-        } else if (v == mInviteFriendsLayout) {//邀请好友
-            if (Preference.isLogin()) {
-                Intent intent = new Intent(getActivity(), InviteFriendsActivity.class);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
