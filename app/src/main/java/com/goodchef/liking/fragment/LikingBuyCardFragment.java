@@ -71,13 +71,22 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
     private LikingStateView mStateView;
     private PullToRefreshRecyclerView mRecyclerView;
+    private View mainView = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
-        initViews(view);
-        return view;
+        if (!EnvironmentUtils.Network.isNetWorkAvailable() && mainView != null && mBuyCardAdapter != null
+                && mBuyCardAdapter.getDataList().size() > 0) { //无网络情况并且有数据显示上一次的缓存
+            if(mStateView != null){
+                mStateView.setState(LikingStateView.State.SUCCESS);
+            }
+        } else {
+            mainView = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
+            initViews(mainView);
+        }
+
+        return mainView;
     }
 
     protected void initViews(View view) {
