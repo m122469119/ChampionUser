@@ -247,7 +247,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     private void showNoCardDialog(String message) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         builder.setTitle("提示");
-        builder.setMessage(message);
+        builder.setMessage("无卡用户或会员卡剩余有效期太短,请购卡后重试");
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
