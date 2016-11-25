@@ -91,7 +91,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     private String price = "";
     private String peopleNum = "0";
 
-    private SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mSelectLastCoursesData =  null;
+    private SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mSelectLastCoursesData =  null;//上次选中的自助课程
 
     private String mCurrSelectDate = "";//当前选中的时间段
     private String mCurrSelectHour = "";//当前选中的小时
@@ -196,7 +196,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     @Override
     public void updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData) {
         mLikingStateView.setState(StateView.State.SUCCESS);
-        mSelectLastCoursesData = selfHelpGroupCoursesData.getLastCourse();
+        if(mSelectLastCoursesData == null) {
+            mSelectLastCoursesData = selfHelpGroupCoursesData.getLastCourse();
+        }
         List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData> DataList = selfHelpGroupCoursesData.getTime();
         if(timeList.size() > 0)  timeList.clear();
         for (int i = 0; i < DataList.size(); i++) {//将两个集合组装成一个集合
@@ -557,10 +559,13 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         this.finish();
     }
 
+    /**
+     * 设置选中自助课程信息
+     *
+     * @param mCoursesData
+     */
     public void setSelectCoursesInfo(SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mCoursesData){
-        if(mCoursesData !=null) {
-            mSelectLastCoursesData = mCoursesData;
-        }
+        mSelectLastCoursesData = mCoursesData;
         mNoneCoursesLayout.setVisibility(View.GONE);
         mCoursesTrainTextView.setText(mCoursesData.getName());
         mCoursesIntroduceTextView.setVisibility(View.VISIBLE);
