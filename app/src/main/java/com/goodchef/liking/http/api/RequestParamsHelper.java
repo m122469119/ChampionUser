@@ -16,8 +16,8 @@ import java.util.Arrays;
 public class RequestParamsHelper {
     private static final String TAG = "RequestParamsHelper";
     //1.0.0 appKey :gIhErwWVDaM4jefERmoR   1.1.0 appkey :FpJUf4IBz3jHdqg05yCG
-    // 1.1.1. appkey :sxpYGL1MMbnY7GXUfN0X
-    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isDebugMode() ? "testCcmsIam500QiangA" : "sxpYGL1MMbnY7GXUfN0X"; //app签名key
+    // 1.1.1. appkey :sxpYGL1MMbnY7GXUfN0X 1.2.0 appkey:I3DMnKF4egsgUJ5V5k1m
+    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isDebugMode() ? "testCcmsIam500QiangA" : "I3DMnKF4egsgUJ5V5k1m"; //app签名key
 
     //正式环境的支付公钥为(yGcNQznPTvusj7Y6rMI5)
     public static final String SET_PASSWORD_KEY = EnvironmentUtils.Config.isDebugMode() ? "vZr8m0erpGqLbLThv4ov" : "yGcNQznPTvusj7Y6rMI5";//测试环境支付公钥
