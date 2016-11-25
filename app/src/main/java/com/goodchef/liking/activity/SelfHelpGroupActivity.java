@@ -558,7 +558,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     }
 
     public void setSelectCoursesInfo(SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mCoursesData){
-        mSelectLastCoursesData = mCoursesData;
+        if(mCoursesData !=null) {
+            mSelectLastCoursesData = mCoursesData;
+        }
         mNoneCoursesLayout.setVisibility(View.GONE);
         mCoursesTrainTextView.setText(mCoursesData.getName());
         mCoursesIntroduceTextView.setVisibility(View.VISIBLE);
