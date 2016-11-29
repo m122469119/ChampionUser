@@ -157,29 +157,38 @@
                     android:background="@color/line"/>
 
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/my_card_gym_address_prompt"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:layout_weight="2"
                         android:text="@string/my_card_gym_address"
+                        android:layout_gravity="center"
+                        android:gravity="left"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_small"/>
 
                     <TextView
                         android:id="@+id/my_card_gym_address"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:gravity="right"
+                        android:layout_gravity="center"
                         android:textColor="@color/buy_card_confirm_leisure"
                         android:textSize="@dimen/textsize_small"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
