@@ -21,9 +21,9 @@
             android:id="@+id/food_image"
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            fresco:failureImage="@drawable/bg_no_data_default_image"
+            fresco:failureImage="@mipmap/bg_no_data_default_image"
             fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImage="@drawable/bg_no_data_default_image"
+            fresco:placeholderImage="@mipmap/bg_no_data_default_image"
             fresco:placeholderImageScaleType="centerCrop"/>
 
 

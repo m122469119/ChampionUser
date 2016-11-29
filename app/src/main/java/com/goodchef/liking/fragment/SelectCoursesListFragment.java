@@ -72,14 +72,17 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
             }
         });
         setNoDataView();
-        mSelectCoursesListAdapter = new SelectCoursesListAdapter(getActivity());
+        if (mSelectCoursesListAdapter == null) {
+            mSelectCoursesListAdapter = new SelectCoursesListAdapter(getActivity());
+        }
+
         setRecyclerAdapter(mSelectCoursesListAdapter);
         mSelectCoursesListAdapter.setViewOnClickListener(mViewListener);
         Intent intent = getActivity().getIntent();
-        if(intent != null){
+        if (intent != null) {
             Bundle bundle = intent.getExtras();
-            if(bundle != null){
-                mCurrCourseId = bundle.getString(SelectCoursesListActivity.KEY_SELECT_COURSES_ID,"");
+            if (bundle != null) {
+                mCurrCourseId = bundle.getString(SelectCoursesListActivity.KEY_SELECT_COURSES_ID, "");
             }
         }
     }
@@ -114,7 +117,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
         @Override
         public void onClick(View v) {
 
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.layout_select_courses:
                     LinearLayout layout = (LinearLayout) v.findViewById(R.id.layout_select_courses);
                     if (layout != null) {
@@ -125,7 +128,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
                             startActivity(intent);
                         }
                     }
-                break;
+                    break;
                 case R.id.layout_select_courses_checkbox:
                     LinearLayout selectlayout = (LinearLayout) v.findViewById(R.id.layout_select_courses_checkbox);
                     if (selectlayout != null) {
@@ -135,7 +138,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
                             getActivity().finish();
                         }
                     }
-                break;
+                    break;
             }
 
         }

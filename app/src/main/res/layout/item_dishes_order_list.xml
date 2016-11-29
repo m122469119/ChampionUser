@@ -60,9 +60,9 @@
             android:layout_width="90dp"
             android:layout_height="70dp"
             android:layout_margin="10dp"
-            fresco:failureImage="@drawable/bg_private_teacher_default"
+            fresco:failureImage="@mipmap/bg_private_teacher_default"
             fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImage="@drawable/bg_private_teacher_default"
+            fresco:placeholderImage="@mipmap/bg_private_teacher_default"
             fresco:placeholderImageScaleType="centerCrop"/>
 
         <LinearLayout
