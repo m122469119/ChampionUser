@@ -28,11 +28,6 @@ public class UpgradeContinueCardAdapter extends BaseRecycleViewAdapter<UpgradeCo
     }
 
     @Override
-    protected UpgradeContinueCardViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected UpgradeContinueCardViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_continue_card, parent, false);
         return new UpgradeContinueCardViewHolder(view);

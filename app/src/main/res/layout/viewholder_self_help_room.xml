@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_self_help_select_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/gym_room_name_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/gym_room_order_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/gym_room_name_TextView"
+            android:textColor="@color/get_code_gray_dark"
+            android:textSize="12sp"/>
+
+        <CheckBox
+            android:id="@+id/gym_room_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/self_help_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/surplus_number_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:textColor="@color/get_code_gray_dark"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:id="@+id/join_courses_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_green_line_background"
+            android:minWidth="50dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/join_self_courses"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="13sp"/>
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/self_help_image_view_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:background="@color/line"/>
+
+</LinearLayout>

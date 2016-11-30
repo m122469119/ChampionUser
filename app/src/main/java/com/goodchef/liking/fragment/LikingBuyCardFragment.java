@@ -18,6 +18,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
@@ -62,7 +63,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private View mHeadView;
     private static final int TYPE_BUY = 1;
     private TextView mCityOpenTextView;//当前城市是否开通
-    private String gymId = "0";
     private String longitude = "0";
     private String latitude = "0";
     private String cityId = "310100";
@@ -71,13 +71,25 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
     private LikingStateView mStateView;
     private PullToRefreshRecyclerView mRecyclerView;
+    private View mainView = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
-        initViews(view);
-        return view;
+        if (!EnvironmentUtils.Network.isNetWorkAvailable() && mainView != null && mBuyCardAdapter != null
+                && mBuyCardAdapter.getDataList().size() > 0) { //无网络情况并且有数据显示上一次的缓存
+            if(mStateView != null){
+                if(mRecyclerView.getRefreshableView().getAdapter() == null) {
+                    mRecyclerView.getRefreshableView().setAdapter(mBuyCardAdapter);
+                }
+                mStateView.setState(LikingStateView.State.SUCCESS);
+            }
+        } else {
+            mainView = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
+            initViews(mainView);
+        }
+
+        return mainView;
     }
 
     protected void initViews(View view) {
@@ -87,6 +99,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             @Override
             public void onRetryRequested() {
                 LiKingVerifyUtils.initApi(getActivity());
+                sendBuyCardListRequest();
             }
         });
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
@@ -136,7 +149,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
-        noDataImageView.setImageResource(R.drawable.icon_no_coureses_data);
+        noDataImageView.setImageResource(R.drawable.icon_no_data);
         noDataText.setText(R.string.no_data);
         refreshView.setText(R.string.refresh_btn_text);
         refreshView.setOnClickListener(refreshOnClickListener);
@@ -157,19 +170,19 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, mRecyclerView, false);
         mCityOpenTextView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
         mCityOpenTextView.setVisibility(View.VISIBLE);
-        mCityOpenTextView.setText(R.string.current_city_no_dredge);
     }
 
     private void sendBuyCardListRequest() {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.FAILED);
         } else {
+            mStateView.setState(StateView.State.LOADING);
             getLocationData();
             mCardListPresenter = new CardListPresenter(getActivity(), this);
             if (longitude.equals("0.0") || latitude.equals("0.0")) {
-                mCardListPresenter.getCardList("0", "0", cityId, districtId, gymId, TYPE_BUY);
+                mCardListPresenter.getCardList("0", "0", cityId, districtId, LikingHomeActivity.gymId, TYPE_BUY);
             } else {
-                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, gymId, TYPE_BUY);
+                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, LikingHomeActivity.gymId, TYPE_BUY);
             }
         }
     }
@@ -184,6 +197,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                 gym.setGymId(mGymData.getGymId());
                 gym.setDistance(mGymData.getDistance());
                 gym.setName(mGymData.getName());
+                gym.setCityId(mGymData.getCityId());
                 postEvent(new getGymDataMessage(gym));
             }
             List<CardResult.CardData.Card> list = cardData.getCardList();
@@ -199,6 +213,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                     boolean isLocation = locationData.isPositionSuccess();
                     if (!isLocation) {
                         SetHeadView();
+                        mCityOpenTextView.setText(R.string.location_fails_confirm);
                     } else if (!StringUtils.isEmpty(cityName)) {
                         setHeadNoLocationView(cityName);
                     } else {
@@ -244,7 +259,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
 
     public void onEvent(ChangGymMessage message) {
-        gymId = message.getGymId();
+        LikingHomeActivity.gymId = message.getGymId();
         int index = message.getIndex();
         //  if (index == 1) {//从买卡界面切换场馆过来
         sendBuyCardListRequest();
@@ -252,22 +267,22 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     public void onEvent(LoginOutMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginFinishMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(CoursesErrorMessage message) {
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginOutFialureMessage message){
-        gymId = "0";
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
@@ -289,6 +304,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                         removeHeadView();
                     } else {
                         SetHeadView();
+                        mCityOpenTextView.setText(R.string.current_city_no_dredge);
                     }
                 }
             }
@@ -298,8 +314,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private void SetHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                mBuyCardAdapter.setHeaderView(mHeadView);
-                mBuyCardAdapter.notifyDataSetChanged();
+                mBuyCardAdapter.addHeaderView(mHeadView);
             }
         }
     }
@@ -307,8 +322,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     private void removeHeadView() {
         if (mBuyCardAdapter != null) {
             if (mHeadView != null) {
-                mBuyCardAdapter.setHeaderView(null);
-                mBuyCardAdapter.notifyDataSetChanged();
+                mBuyCardAdapter.removeHeaderView(mHeadView);
             }
         }
     }

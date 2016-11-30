@@ -46,12 +46,6 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
         this.mContext = context;
     }
 
-
-    @Override
-    protected LikingNearbyViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
     @Override
     protected LikingNearbyViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_liking_nearby, parent, false);

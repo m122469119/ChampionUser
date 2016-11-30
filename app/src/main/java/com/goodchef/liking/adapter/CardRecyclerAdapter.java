@@ -43,11 +43,6 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
     }
 
     @Override
-    protected CardRecyclerViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected CardRecyclerViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_card, parent, false);
         return new CardRecyclerViewHolder(view);

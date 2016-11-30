@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/self_help_immediately_appointment_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/liking_green_btn_back"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/immadetails_appointment"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_small"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/self_help_immediately_appointment_TextView"
+        android:orientation="horizontal">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/self_help_group_courses_time_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/white"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <include
+                android:id="@+id/layout_self_right"
+                layout="@layout/layout_self_help_group_right"/>
+
+            <include
+                android:id="@+id/layout_self_right_overlap"
+                android:visibility="gone"
+                layout="@layout/view_common_no_data"/>
+
+        </FrameLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

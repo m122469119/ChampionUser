@@ -1,5 +1,6 @@
 package com.aaron.android.codelibrary.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,5 +20,16 @@ public class ListUtils {
             return true;
         }
         return false;
+    }
+
+    public static <T> void wipeNullElement(List<T> list) {
+        List<T> newList = new ArrayList();
+        for (T obj : list) {
+            if (obj != null) {
+                newList.add(obj);
+            }
+        }
+        list.clear();
+        list.addAll(newList);
     }
 }

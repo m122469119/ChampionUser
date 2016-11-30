@@ -1,6 +1,5 @@
 package com.goodchef.liking.activity;
 
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -9,21 +8,17 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.mvp.presenter.MyPrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesDetailsView;
-import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
-import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
@@ -198,27 +193,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
                 LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, "确定联系教练吗？", mTeacherPhone);
             }
         }
-    }
-
-
-    private void showCompleteDialog() {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage(ResourceUtils.getString(R.string.confirm_complete_courese));
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UMengCountUtil.UmengBtnCount(MyPrivateCoursesDetailsActivity.this, UmengEventId.COMPLETE_MYPRIVATE_COURSES);
-                sendCompleteRequest();
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
     }
 
     @Override

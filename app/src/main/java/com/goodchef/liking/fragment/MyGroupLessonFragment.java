@@ -16,18 +16,24 @@ import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.android.thirdparty.share.weixin.WeixinShare;
+import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.MyChargeGroupCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
+import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
+import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.MyGroupCoursesPresenter;
+import com.goodchef.liking.mvp.presenter.SharePresenter;
 import com.goodchef.liking.mvp.view.MyGroupCourseView;
+import com.goodchef.liking.mvp.view.ShareView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -39,12 +45,13 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:42
  */
-public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyGroupCourseView {
+public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyGroupCourseView,ShareView {
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupCoursesAdapter mGroupLessonAdapter;
 
     private MyGroupCoursesPresenter mMyGroupCoursesPresenter;
+    private SharePresenter mSharePresenter;
 
     @Override
     protected void requestData(int page) {
@@ -60,6 +67,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         mGroupLessonAdapter = new MyGroupCoursesAdapter(getActivity());
         setRecyclerAdapter(mGroupLessonAdapter);
         mGroupLessonAdapter.setCancelListener(cancelListener);
+        mGroupLessonAdapter.setShareListener(shareListener);
         mGroupLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -163,6 +171,24 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     };
 
     /**
+     * 分享事件
+     */
+    private View.OnClickListener shareListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView textView = (TextView) v.findViewById(R.id.self_share_btn);
+            if (textView != null) {
+                MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
+                if (data != null) {
+                    mSharePresenter = new SharePresenter(getActivity(), MyGroupLessonFragment.this);
+                    mSharePresenter.getGroupShareData(data.getScheduleId());
+                }
+            }
+        }
+    };
+
+
+    /**
      * 取消预约团体课
      */
     private void showCancelCoursesDialog(final String orderId) {
@@ -217,5 +243,45 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     public void onEvent(LoginOutFialureMessage message){
         getActivity().finish();
+    }
+
+    private void showShareDialog(final ShareData shareData) {
+        final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(getActivity());
+        shareCustomDialog.setViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeixinShare weixinShare = new WeixinShare(getActivity());
+                switch (v.getId()) {
+                    case R.id.layout_wx_friend://微信好友
+                        WeixinShareData.WebPageData webPageData = new WeixinShareData.WebPageData();
+                        webPageData.setWebUrl(shareData.getUrl());
+                        webPageData.setTitle(shareData.getTitle());
+                        webPageData.setDescription(shareData.getContent());
+                        webPageData.setWeixinSceneType(WeixinShareData.WeixinSceneType.FRIEND);
+                        webPageData.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.layout_wx_friend_circle://微信朋友圈
+                        WeixinShareData.WebPageData webPageData1 = new WeixinShareData.WebPageData();
+                        webPageData1.setWebUrl(shareData.getUrl());
+                        webPageData1.setTitle(shareData.getTitle());
+                        webPageData1.setDescription(shareData.getContent());
+                        webPageData1.setWeixinSceneType(WeixinShareData.WeixinSceneType.CIRCLE);
+                        webPageData1.setIconResId(R.mipmap.ic_launcher);
+                        weixinShare.shareWebPage(webPageData1);
+                        shareCustomDialog.dismiss();
+                        break;
+                    case R.id.cancel_image_button:
+                        shareCustomDialog.dismiss();
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateShareView(ShareData shareData) {
+        showShareDialog(shareData);
     }
 }

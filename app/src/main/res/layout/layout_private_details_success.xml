@@ -26,9 +26,9 @@
                     android:id="@+id/private_lesson_details_teach_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    fresco:failureImage="@drawable/private_teacher_default_image"
+                    fresco:failureImage="@mipmap/private_teacher_default_image"
                     fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@drawable/private_teacher_default_image"
+                    fresco:placeholderImage="@mipmap/private_teacher_default_image"
                     fresco:placeholderImageScaleType="centerCrop"/>
 
                 <TextView

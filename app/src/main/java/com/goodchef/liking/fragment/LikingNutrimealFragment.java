@@ -31,15 +31,15 @@ import java.util.List;
  *
  * @author aaron.huang
  * @version 1.0.0
- * 营养餐Fragment
+ *          营养餐Fragment
  */
 public class LikingNutrimealFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment {
     public static final String INTENT_KEY_USER_CITY_ID = "intent_key_user_city_id";
     private static final int SELECT_MAX = 5;//设置单个菜品最大购买数量
     private LikingNearbyAdapter mAdapter;
     private String mCityId = "310100";
-    private double mLongitude = 0;
-    private double mLatitude = 0;
+    private String mLongitude = "0";
+    private String mLatitude = "0";
     private String mUserCityId;
     private ArrayList<Food> buyLit;
     private List<Food> mFoodList;

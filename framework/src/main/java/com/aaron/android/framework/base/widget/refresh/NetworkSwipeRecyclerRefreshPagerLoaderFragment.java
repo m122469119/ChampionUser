@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.aaron.android.codelibrary.http.result.DataListExtraResult;
 import com.aaron.android.codelibrary.http.result.ExtraData;
 import com.aaron.android.codelibrary.utils.ListUtils;
+import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
-import com.aaron.android.framework.utils.PopupUtils;
 
 import java.util.List;
 
@@ -26,18 +26,21 @@ import java.util.List;
 public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends BaseSwipeRefreshPagerLoaderFragment {
     private RecyclerView mRecyclerView;
     private BaseRecycleViewAdapter mRecyclerViewAdapter;
+    private View mFooterView;
+
     @Override
     protected View createContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRecyclerView = createRecyclerView();
         if (mRecyclerView == null) {
             getDefaultRecyclerView();
         }
+        mFooterView = inflater.inflate(R.layout.layout_network_footer, mRecyclerView, false);
         return mRecyclerView;
     }
 
     protected RecyclerView createRecyclerView() {
         return null;
-    };
+    }
 
     private void getDefaultRecyclerView() {
         mRecyclerView = new RecyclerView(getContext());
@@ -109,7 +112,8 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
                     clearListViewContent();
                     getStateView().setState(StateView.State.NO_DATA);
                 } else {
-                    PopupUtils.showToast("没有更多数据了");
+                    setTotalPage(getCurrentPage());
+                    mRecyclerViewAdapter.addFooterView(mFooterView);
                 }
             } else {
                 getStateView().setState(StateView.State.SUCCESS);
@@ -118,6 +122,8 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
                 } else {
                     mRecyclerViewAdapter.addData(listData);
                 }
+                setTotalPage(getCurrentPage() + 1);
+                mRecyclerViewAdapter.removeFooterView(mFooterView);
                 mRecyclerViewAdapter.notifyDataSetChanged();
             }
         }
@@ -128,6 +134,10 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
             mRecyclerViewAdapter.setData(null);
             mRecyclerViewAdapter.notifyDataSetChanged();
         }
+    }
+
+    protected void setNoNextPageFooterView(View view) {
+        mFooterView = view;
     }
 
 

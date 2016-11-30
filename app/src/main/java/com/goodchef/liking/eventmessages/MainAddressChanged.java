@@ -10,14 +10,14 @@ import com.aaron.android.framework.base.eventbus.BaseMessage;
  * @version 1.0.0
  */
 public class MainAddressChanged extends BaseMessage {
-    private double mLongitude;
-    private double mLatitude;
+    private String  mLongitude;
+    private String  mLatitude;
     private String mCityId;
     private String mDistrictId;
     private String mCityName;
     private boolean mIsLocationSuccess;
 
-    public MainAddressChanged(double longitude, double latitude, String cityId, String districtId,String cityName,boolean isLocationSuccess) {
+    public MainAddressChanged(String longitude, String latitude, String cityId, String districtId, String cityName, boolean isLocationSuccess) {
         mLongitude = longitude;
         mLatitude = latitude;
         mCityId = cityId;
@@ -26,11 +26,11 @@ public class MainAddressChanged extends BaseMessage {
         mIsLocationSuccess = isLocationSuccess;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return mLongitude;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return mLatitude;
     }
 

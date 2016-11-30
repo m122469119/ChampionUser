@@ -42,6 +42,23 @@ public interface ImageLoader {
      */
     void loadImage(ImageView view, String url);
 
+    /**
+     * 根据加载类型和路径加载图片(网络,文件,ContentProvider,Assets)
+     * @param view ImageView
+     * @param loaderType 请求类型
+     * @param path 请求路径
+     */
+    void loadImage(ImageView view, LoaderType loaderType, String path);
+
+    /**
+     * 根据加载类型和路径加载图片(网络,文件,ContentProvider,Assets),支持图片回调处理
+     * @param view ImageView
+     * @param loaderType 请求类型
+     * @param path 请求路径
+     * @param imageLoaderCallback 请求回调
+     */
+    void loadImage(ImageView view, LoaderType loaderType, Object path, ImageLoaderCallback imageLoaderCallback);
+
     enum LoaderType {
         NETWORK,
         FILE,

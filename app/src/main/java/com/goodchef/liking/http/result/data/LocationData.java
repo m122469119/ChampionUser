@@ -6,12 +6,12 @@ package com.goodchef.liking.http.result.data;
 public class LocationData {
     private String cityId;
     private String districtId;
-    private double longitude;
-    private double latitude;
+    private String longitude;
+    private String latitude;
     private String cityName;
     private boolean isPositionSuccess;
 
-    public LocationData(String cityId, String districtId, double longitude, double latitude,String cityName,boolean isPositionSuccess) {
+    public LocationData(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isPositionSuccess) {
         this.cityId = cityId;
         this.districtId = districtId;
         this.longitude = longitude;
@@ -28,11 +28,11 @@ public class LocationData {
         return districtId;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 

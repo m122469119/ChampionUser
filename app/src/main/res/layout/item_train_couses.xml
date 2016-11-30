@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:orientation="vertical">
 
     <TextView
         android:id="@+id/train_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="10dp"
+        android:singleLine="false"
+        android:lines="2"
+        android:padding="5dp"
+        android:maxLines="2"
         android:textColor="@color/lesson_details_dark_back"
-        android:textSize="@dimen/textsize_small"/>
+        android:textSize="13sp"/>
 
     <View
         android:layout_width="0.5dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@color/line"/>

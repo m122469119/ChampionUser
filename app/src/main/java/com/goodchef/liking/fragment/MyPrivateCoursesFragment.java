@@ -1,35 +1,24 @@
 package com.goodchef.liking.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
-import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.MyPrivateCoursesPresenter;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesView;
-import com.goodchef.liking.storage.Preference;
-import com.goodchef.liking.storage.UmengEventId;
-import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
 
@@ -112,63 +101,6 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
         if (list != null) {
             updateListView(list);
         }
-    }
-
-
-    /**
-     * 完成课程事件
-     */
-    private View.OnClickListener mCompleteListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            TextView textView = (TextView) v.findViewById(R.id.complete_courses_btn);
-            if (textView != null) {
-                MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses data = (MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses) textView.getTag();
-                if (data != null) {
-                    showCompleteDialog(data.getOrderId());
-                }
-            }
-        }
-    };
-
-    private void showCompleteDialog(final String orderId) {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
-        builder.setMessage(ResourceUtils.getString(R.string.confirm_complete_courese));
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.COMPLETE_MYPRIVATE_COURSES);
-                completeMyPrivateCourses(orderId);
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    //发送完成课程请求
-    public void completeMyPrivateCourses(String orderId) {
-        LiKingApi.completerMyPrivateCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(getActivity(), R.string.loading_data) {
-            @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    loadHomePage();
-                } else {
-                    PopupUtils.showToast(result.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-            }
-        });
     }
 
     @Override

@@ -21,6 +21,7 @@ public class CityUtils {
 
     /**
      * 根据城市名称获取城市Id
+     *
      * @param cityName 城市名称
      * @return 城市Id
      */
@@ -62,6 +63,7 @@ public class CityUtils {
 
     /**
      * 根据城市名称获取城市Id
+     *
      * @return 城市Id
      */
     public static String getDistrictId(String districtName) {
@@ -102,5 +104,95 @@ public class CityUtils {
         }
         LogUtils.d(TAG, "区域ID: " + districtId);
         return districtId;
+    }
+
+    /**
+     * 根据城市获取经度
+     *
+     * @param longitude    经度
+     * @param districtName 地区名称
+     * @return longitudeStr
+     */
+    public static String getLongitude(double longitude, String districtName) {
+        String longitudeStr = "0";
+        if (StringUtils.isEmpty(districtName)) {
+            return longitudeStr;
+        }
+        BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
+        if (baseConfigResult == null) {
+            return longitudeStr;
+        }
+        BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+        if (baseConfigData == null) {
+            return longitudeStr;
+        }
+        List<CityData> cityDataList = baseConfigData.getCityList();
+        if (ListUtils.isEmpty(cityDataList)) {
+            return longitudeStr;
+        }
+        for (CityData cityData : cityDataList) {
+            if (cityData == null) {
+                continue;
+            }
+            List<CityData.DistrictData> districtDataList = cityData.getDistrict();
+            if (ListUtils.isEmpty(districtDataList)) {
+                continue;
+            }
+            for (CityData.DistrictData districtData : districtDataList) {
+                if (districtData == null) {
+                    continue;
+                }
+                if (!StringUtils.isEmpty(districtName) && (districtName.contains(districtData.getDistrictName()) || districtData.getDistrictName().contains(districtName))) {
+                    longitudeStr = longitude + "";
+                    break;
+                }
+            }
+        }
+        return longitudeStr;
+    }
+
+    /**
+     * 获取纬度
+     *
+     * @param latitude     纬度
+     * @param districtName 地区名称
+     * @return latitudeStr
+     */
+    public static String getLatitude(double latitude, String districtName) {
+        String latitudeStr = "0";
+        if (StringUtils.isEmpty(districtName)) {
+            return latitudeStr;
+        }
+        BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
+        if (baseConfigResult == null) {
+            return latitudeStr;
+        }
+        BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+        if (baseConfigData == null) {
+            return latitudeStr;
+        }
+        List<CityData> cityDataList = baseConfigData.getCityList();
+        if (ListUtils.isEmpty(cityDataList)) {
+            return latitudeStr;
+        }
+        for (CityData cityData : cityDataList) {
+            if (cityData == null) {
+                continue;
+            }
+            List<CityData.DistrictData> districtDataList = cityData.getDistrict();
+            if (ListUtils.isEmpty(districtDataList)) {
+                continue;
+            }
+            for (CityData.DistrictData districtData : districtDataList) {
+                if (districtData == null) {
+                    continue;
+                }
+                if (!StringUtils.isEmpty(districtName) && (districtName.contains(districtData.getDistrictName()) || districtData.getDistrictName().contains(districtName))) {
+                    latitudeStr = latitude + "";
+                    break;
+                }
+            }
+        }
+        return latitudeStr;
     }
 }

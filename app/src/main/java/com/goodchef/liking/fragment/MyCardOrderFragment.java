@@ -146,11 +146,6 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         }
 
         @Override
-        protected MyCardOrderViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
         protected MyCardOrderViewHolder createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_order_card, parent, false);
             return new MyCardOrderViewHolder(view);

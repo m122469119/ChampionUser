@@ -30,6 +30,7 @@ import java.util.List;
 public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLessonRecyclerAdapter.LessonViewHolder, CoursesResult.Courses.CoursesData> {
     public static final int TYPE_GROUP_LESSON = 1;//团体课
     public static final int TYPE_PRIVATE_LESSON = 2;//私教课
+    private static final int TYPE_SCHEDULE_TYPE_SELF = 2;//自助排课
 
     private View.OnClickListener mClickListener;
 
@@ -51,9 +52,6 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
 
         public LessonViewHolder(View itemView) {
             super(itemView);
-            if (isHeaderHolder()) {
-                return;
-            }
             mHImageView = (HImageView) itemView.findViewById(R.id.lesson_image);
             mLessonNameTextView = (TextView) itemView.findViewById(R.id.lesson_name);
             mLessonUseTextView = (TextView) itemView.findViewById(R.id.lesson_use);
@@ -99,8 +97,10 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
             int type = object.getType();
             if (type == TYPE_GROUP_LESSON) {
                 int isFree = object.getIsFee();
+                int scheduleType = object.getScheduleType();
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_group_teach_lesson);
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
+
                 if (isFree == 0) {//免费
                     mLessonTypeTextView.setText(R.string.free_courses);
                     mCoursesMoneyTextView.setVisibility(View.GONE);
@@ -109,6 +109,11 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                     mCoursesMoneyTextView.setVisibility(View.VISIBLE);
                     mCoursesMoneyTextView.setText("¥ " + object.getPrice());
                 }
+
+                if(TYPE_SCHEDULE_TYPE_SELF == scheduleType){ //自助团体课
+                    mLessonTypeTextView.setText(R.string.self_courses);
+                }
+
                 mLessonNameTextView.setText(object.getCourseName());
                 String courseDate = object.getCourseDate();
                 if (!StringUtils.isEmpty(courseDate)) {
@@ -147,11 +152,6 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
 
     public LikingLessonRecyclerAdapter(Context context) {
         super(context);
-    }
-
-    @Override
-    protected LessonViewHolder createHeaderViewHolder() {
-        return new LessonViewHolder(getHeaderView());
     }
 
     @Override

@@ -42,11 +42,6 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
     }
 
     @Override
-    protected ShopPingCartViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected ShopPingCartViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_shopping_cart, parent, false);
         return new ShopPingCartViewHolder(view);

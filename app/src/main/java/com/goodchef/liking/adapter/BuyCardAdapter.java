@@ -28,11 +28,6 @@ public class BuyCardAdapter extends BaseRecycleViewAdapter<BuyCardAdapter.BuyCar
         this.mContext = context;
     }
 
-    @Override
-    protected BuyCardViewHolder createHeaderViewHolder() {
-        return new BuyCardViewHolder(getHeaderView());
-    }
-
     public void setBuyCardListener(View.OnClickListener onClickListener) {
         mClickListener = onClickListener;
     }

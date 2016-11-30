@@ -220,11 +220,6 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         }
 
         @Override
-        protected CouponsViewHolder createHeaderViewHolder() {
-            return null;
-        }
-
-        @Override
         protected CouponsViewHolder createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_coupons, parent, false);
             return new CouponsViewHolder(view);

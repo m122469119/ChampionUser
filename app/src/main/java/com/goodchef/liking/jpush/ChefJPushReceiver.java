@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.storage.Preference;
@@ -39,6 +40,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String DIRECT_UPDATE = "update";
     public static final String FOOD = "food";
     public static final String TEAM = "team";
+    public static final String CARD = "card";
     public static final String DIRECT_TYPE_HTML5 = "h5";
 
     @Override
@@ -123,6 +125,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         toMyOrderList(context);
                     } else if (TEAM.equals(direct)) { //跳转到课程列表
                         toMyGroupCoursesList(context);
+                    } else if(CARD.equals(direct)) { //点击跳转至我的会员卡
+                        toMyCardVipInfo(context);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
@@ -171,6 +175,12 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         context.startActivity(intent);
     }
 
+    private void toMyCardVipInfo(Context context){
+        LogUtils.d(TAG, "MyCardActivity");
+        Intent intent = new Intent(context, MyCardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+    }
 
     // 打印所有的 intent extra 数据
     private static String printBundle(Bundle bundle) {

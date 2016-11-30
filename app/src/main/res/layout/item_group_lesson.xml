@@ -23,9 +23,9 @@
                 android:layout_height="70dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                fresco:failureImage="@drawable/bg_private_teacher_default"
+                fresco:failureImage="@mipmap/bg_private_teacher_default"
                 fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/bg_private_teacher_default"
+                fresco:placeholderImage="@mipmap/bg_private_teacher_default"
                 fresco:placeholderImageScaleType="centerCrop"
                 />
 
@@ -109,21 +109,41 @@
                 android:textSize="@dimen/textsize_small"/>
 
 
-            <TextView
-                android:id="@+id/cancel_order_btn"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/shape_green_line_background"
-                android:gravity="center"
-                android:minHeight="28dp"
-                android:minWidth="72dp"
-                android:text="@string/cancel_appointment"
-                android:textColor="@color/my_group_green_text"
-                android:textSize="@dimen/textsize_small"
-                android:visibility="invisible"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/self_share_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/shape_green_line_background"
+                    android:gravity="center"
+                    android:minHeight="28dp"
+                    android:minWidth="72dp"
+                    android:text="@string/layout_invite_friends"
+                    android:textColor="@color/my_group_green_text"
+                    android:textSize="@dimen/textsize_small"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/cancel_order_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_green_line_background"
+                    android:gravity="center"
+                    android:minHeight="28dp"
+                    android:minWidth="72dp"
+                    android:text="@string/cancel_appointment"
+                    android:textColor="@color/my_group_green_text"
+                    android:textSize="@dimen/textsize_small"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
     </LinearLayout>

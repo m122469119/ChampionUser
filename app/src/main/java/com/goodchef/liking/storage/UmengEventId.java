@@ -8,7 +8,7 @@ package com.goodchef.liking.storage;
 public class UmengEventId {
 
     /***
-     *开门页面
+     * 开门页面
      */
     public static final String OPENTHEDOORACTIVITY = "OpenTheDoorActivity";
 
@@ -33,7 +33,7 @@ public class UmengEventId {
     public static final String GYMCOURSESACTIVITY = "GymCoursesActivity";
 
     /***
-     * 门店页面
+     * 我的健身方名称页面
      */
     public static final String ARENAACTIVITY = "ArenaActivity";
 
@@ -73,7 +73,7 @@ public class UmengEventId {
     public static final String MYINFOACTIVITY = "MyInfoActivity";
 
     /**
-     *  立即买卡按钮
+     * 立即买卡按钮
      */
     public static final String BUY_CARD_IMMEDIATELY_BUY = "BuyCardImmediatelyBuyBtn";
 
@@ -83,29 +83,14 @@ public class UmengEventId {
     public static final String GROUP_IMMEDIATELY_SUBMIT_BUTTON = "mGroupImmediatelySubmitBtn";
 
     /***
-     * 首页查看城市按钮
-     */
-    public static final String CHECK_CITY = "checkCity";
-
-    /**
-     * 完成我的私教课按钮
-     */
-    public static final String COMPLETE_MYPRIVATE_COURSES = "completeMyPrivateCourses";
-
-    /***
      * 私教课立即购买
      */
     public static final String PRIVATE_IMMEDIATELY_BUY_BUTTON = "mPrivateImmediatelyBuyBtn";
 
     /**
-     *私教课立即预约按钮
+     * 私教课立即预约按钮
      */
     public static final String PRIVATE_IMMEDIATELY_SUBMIT_BUTTON = "mPrivateImmediatelySubmitBtn";
-
-    /**
-     * 查看场馆课程
-     */
-    public static final String CHECK_GYM_COURSES = "checkGymCourses";
 
     /***
      * 获取进门密码按钮
@@ -123,10 +108,38 @@ public class UmengEventId {
     public static final String BANNER = "banner";
 
     /***
-     * 收费团体课立即购买
+     * 收费团体课立即购买按钮
      */
-    public static final String GROUPCOURSESCHARGECONFIRMACTIVITY = "mGroupCoursesChargeConfirmActivity";
+    public static final String GROUPCOURSESCHARGECONFIRMBTN = "GroupCoursesChargeConfirmBtn";
 
+    /***
+     * 切换场馆界面
+     */
+    public static final String CHANGE_GYM_ACTIVITY = "ChangeGymActivity";
 
+    /***
+     * 切换城市按钮
+     */
+    public static final String RIGHT_ICON_ARROW_BTN = "RightIconArrowBtn";
+
+    /**
+     * 查看我的健身房按钮
+     */
+    public static final String MY_GYM_BTN = "MyGymBtn";
+
+    /***
+     * 切换城市item事件
+     */
+    public static final String CHANGE_CITY = "change_city";
+
+    /**
+     * 首页右边加好按钮
+     */
+    public static final String ADD_BTN = "add_btn";
+
+    /**
+     * 查看公告按钮
+     */
+    public static final String CHECK_ANNOUNCEMENT = "check_Announcement";
 
 }

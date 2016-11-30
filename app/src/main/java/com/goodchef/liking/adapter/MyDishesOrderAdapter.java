@@ -41,11 +41,6 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
     }
 
     @Override
-    protected MyDishesOrderViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected MyDishesOrderViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_dishes_order_list, parent, false);
         return new MyDishesOrderViewHolder(view);

@@ -26,6 +26,7 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
     private PullMode mPullMode = PullMode.PULL_DOWN;
     private Pager mPager = new Pager();
     private StateView mStateView;
+    private boolean isFirstLoad = true;
     private boolean mIsRefreshViewPull = false;
     private final View.OnClickListener mRefreshClickListener = new View.OnClickListener() {
         @Override
@@ -117,7 +118,11 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
             LogUtils.i(TAG, "Page Loader error, network is not available!");
             if (page == mPager.getStart()) {
-                mStateView.setState(StateView.State.FAILED);
+                if (isFirstLoad) {
+                    mStateView.setState(StateView.State.FAILED);
+                } else {
+                    PopupUtils.showToast(R.string.network_no_connection);
+                }
             } else {
                 PopupUtils.showToast(R.string.network_no_connection);
             }
@@ -158,6 +163,7 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
             mStateView.setState(StateView.State.SUCCESS);
         }
         requestFinished();
+        isFirstLoad = false;
     }
 
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.goodchef.liking"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="110"
-          android:versionName="1.1.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.goodchef.liking"
+          android:versionCode="120"
+          android:versionName="1.2.0">
 
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
 
@@ -55,8 +55,8 @@
         <activity
             android:name=".activity.LikingHomeActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppBaseThemeMain"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseThemeMain"/>
 
         <!--引导页-->
         <activity
@@ -225,6 +225,26 @@
             android:name=".activity.GroupCoursesChargeConfirmActivity"
             android:screenOrientation="portrait"/>
 
+        <!--切换场馆-->
+        <activity
+            android:name=".activity.ChangeGymActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--自助团体课-->
+        <activity
+            android:name=".activity.SelfHelpGroupActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--自助团详情-->
+        <activity
+            android:name=".activity.SelfLessonDetailsActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--选择排课表-->
+        <activity
+            android:name=".activity.SelectCoursesListActivity"
+            android:screenOrientation="portrait"/>
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -377,7 +397,7 @@
         <!--正式key: 5792d1a767e58ee14d002e2c 测试：5784523067e58eb7470009e4  -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5784523067e58eb7470009e4">
+            android:value="5792d1a767e58ee14d002e2c">
         </meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"

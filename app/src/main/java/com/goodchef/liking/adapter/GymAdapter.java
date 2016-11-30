@@ -26,11 +26,6 @@ public class GymAdapter extends BaseRecycleViewAdapter<GymAdapter.GymViewHolder,
     }
 
     @Override
-    protected GymViewHolder createHeaderViewHolder() {
-        return null;
-    }
-
-    @Override
     protected GymViewHolder createViewHolder(ViewGroup parent) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_gym, parent, false);
         return new GymViewHolder(itemView);

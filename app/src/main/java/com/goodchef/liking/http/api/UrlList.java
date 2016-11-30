@@ -127,6 +127,14 @@ public class UrlList {
     public static final String USER_TEAM_SHARE = getVersionHostUrl() + "/user/team-share";
     /**运动数据分享*/
     public static final String USER_EXERCISE_SHARE = getVersionHostUrl() + "/user/exercise-share";
+    /**获取用户自助排课页面的时间表*/
+    public static final String COURSE_GYM_SCHEDULE_INFO = getVersionHostUrl() + "/course/gym-schedule-info";
+    /**选择排课列表*/
+    public static final String COURSE_CAN_SCHEDULE_COURSE_LIST = getVersionHostUrl() + "/course/can-schedule-course-list";
+    /**预约团体课*/
+    public static final String COURSE_ADD_SCHEDULE = getVersionHostUrl() + "/course/add-schedule";
+
+
 
 
 }

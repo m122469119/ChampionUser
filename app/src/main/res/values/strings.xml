@@ -6,13 +6,14 @@
     <string name="tab_liking_home_nearby">营养餐</string>
     <string name="tab_liking_home_lesson">约课</string>
 
-
+    <string name="layout_self_help_group">自助团体课</string>
     <string name="layout_invite_friends">邀请好友</string>
     <string name="layout_coupons">优惠券</string>
     <string name="layout_contact_join">联系加盟</string>
     <string name="layout_become_teacher">成为教练</string>
     <string name="layout_about_us">关于我们</string>
     <string name="lesson_time">时间：</string>
+    <string name="lesson_venues">场馆：</string>
     <string name="lesson_address">地点：</string>
     <string name="lesson_teacher">教练：</string>
     <string name="immadetails_appointment">立即预约</string>
@@ -52,8 +53,9 @@
     <string name="flow_card">续卡</string>
     <string name="cancel_appointment">取消预约</string>
     <string name="not_start">未开始</string>
+    <string name="not_start_courses">课程尚未开始</string>
     <string name="start_process">进行中</string>
-    <string name="courses_complete">已完成</string>
+    <string name="courses_complete">已结束</string>
     <string name="courses_cancel">已取消</string>
     <string name="immediately_buy_btn">立即购买</string>
     <string name="get_meals_address">取餐地址</string>
@@ -83,7 +85,7 @@
     <string name="title_my_card">我的会员卡</string>
     <string name="pay_free_type">免金额支付</string>
     <string name="courses_state_payed">已支付</string>
-    <string name="courses_state_complete">已完成</string>
+    <string name="courses_state_complete">已结束</string>
     <string name="courses_state_cancel">已取消</string>
     <string name="title_courses_details">课程详情</string>
     <string name="title_my_train_data">训练数据</string>
@@ -192,19 +194,32 @@
     <string name="my_card_gym_address">健身房地址</string>
     <string name="no_start">未开始</string>
     <string name="is_doing">进行中</string>
-    <string name="is_over">已完成</string>
+    <string name="is_over">已结束</string>
     <string name="is_cancel">已取消</string>
     <string name="activity_title_my_group_details">团体课详情</string>
     <string name="notice_prompt">提示</string>
     <string name="no_announcement">暂无公告</string>
     <string name="location_fail">定位失败·重新定位</string>
     <string name="free_courses">免费团体课</string>
+    <string name="self_courses">自助团体课</string>
     <string name="my_free_group_courses">免费</string>
     <string name="my_not_free_group_courses">付费</string>
-    <string name="current_city_no_dredge">当前城市尚未开通服务</string>
+    <string name="current_city_no_dredge">当前定位城市尚未开通服务</string>
     <string name="go_buy_card">去购卡</string>
     <string name="buy_card">购卡</string>
     <string name="continue_card">续卡</string>
     <string name="upgrade_card">升级卡</string>
+    <string name="location_fails_confirm">定位失败,请确认场馆后购买会员卡</string>
+    <string name="current_city_no_service">当前定位城市尚未开通服务,敬请期待</string>
+    <string name="join_self_courses">加入课程</string>
+    <string name="title_select_courses">选择课程</string>
+
+    <string name="address">地址：</string>
+    <string name="self_courses_name">自助</string>
+    <string name="self_courses_time">时长：</string>
+    <string name="courses_appliance">器械：</string>
+    <string name="self_courses_other">当前时间预留教练排团体课</string>
+    <string name="self_courses_goto_home">前往首页查看课程</string>
+    <string name="self_group_courses_none_hint">未选择课程,请选择锻炼课程</string>
 
 </resources>

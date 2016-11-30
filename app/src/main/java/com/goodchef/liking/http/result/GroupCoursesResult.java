@@ -70,6 +70,8 @@ public class GroupCoursesResult extends BaseResult {
         private String quota;
         @SerializedName("quota_desc")
         private String quotaDesc;
+        @SerializedName("place_info")
+        private String placeInfo;
         @SerializedName("gym_name")
         private String gymName;
         @SerializedName("gym_address")
@@ -86,6 +88,10 @@ public class GroupCoursesResult extends BaseResult {
         private int isFree;
         @SerializedName("price")
         private String price;
+        @SerializedName("schedule_type")
+        private int scheduleType;
+        @SerializedName("user_list")
+        private List<GymNumbersData> gymNumbers;
 
         /**
          * object_id : 2
@@ -226,6 +232,31 @@ public class GroupCoursesResult extends BaseResult {
             this.price = price;
         }
 
+        public int getScheduleType() {
+            return scheduleType;
+        }
+
+        public void setScheduleType(int scheduleType) {
+            this.scheduleType = scheduleType;
+        }
+
+        public List<GymNumbersData> getGymNumbers() {
+            return gymNumbers;
+        }
+
+        public void setGymNumbers(List<GymNumbersData> gymNumbers) {
+            this.gymNumbers = gymNumbers;
+        }
+
+
+        public String getPlaceInfo() {
+            return placeInfo;
+        }
+
+        public void setPlaceInfo(String placeInfo) {
+            this.placeInfo = placeInfo;
+        }
+
         public static class GymImgsData {
             @SerializedName("object_id")
             private String objectId;
@@ -256,6 +287,59 @@ public class GroupCoursesResult extends BaseResult {
 
             public void setUrl(String url) {
                 this.url = url;
+            }
+        }
+
+        public static class GymNumbersData {
+            @SerializedName("avatar")
+            private String avatar;
+            @SerializedName("name")
+            private String name;
+            @SerializedName("gender")
+            private int gender;
+            @SerializedName("phone")
+            private String phone;
+            @SerializedName("time")
+            private String time;
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getGender() {
+                return gender;
+            }
+
+            public void setGender(int gender) {
+                this.gender = gender;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
             }
         }
     }
