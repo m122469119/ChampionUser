@@ -31,6 +31,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
+import com.goodchef.liking.activity.BodyTestHistoryActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.InviteFriendsActivity;
@@ -57,6 +58,7 @@ import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -180,7 +182,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 清除训练数据
      */
     private void clearExerciseData() {
-        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
+        Typeface typeFace = TypefaseUtil.getImpactTypeface(getActivity());
         myPersonSideData.setTypeface(typeFace);
         myTrainTimeUnit.setTypeface(typeFace);
         myTrainTime.setTypeface(typeFace);
@@ -390,7 +392,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 //                startActivity(LoginActivity.class);
 //            }
         } else if (v == mPersonSideLayout) {//体侧数据
-
+            startActivity(BodyTestHistoryActivity.class);
         }
     }
 

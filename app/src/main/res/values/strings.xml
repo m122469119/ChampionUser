@@ -221,5 +221,6 @@
     <string name="self_courses_other">当前时间预留教练排团体课</string>
     <string name="self_courses_goto_home">前往首页查看课程</string>
     <string name="self_group_courses_none_hint">未选择课程,请选择锻炼课程</string>
+    <string name="body_test_history_title">体测历史</string>
 
 </resources>
