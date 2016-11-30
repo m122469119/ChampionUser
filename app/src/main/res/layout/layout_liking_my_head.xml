@@ -1,160 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/layout_my_train"
-                xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:card_view="http://schemas.android.com/apk/res-auto"
+             xmlns:fresco="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.aaron.android.framework.library.imageloader.HImageView
+            android:id="@+id/head_image_background"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            fresco:failureImage="@mipmap/bg_private_teacher_default"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@mipmap/bg_private_teacher_default"
+            fresco:placeholderImageScaleType="centerCrop"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/c80000000"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <com.aaron.android.framework.library.imageloader.HImageView
+                android:id="@+id/head_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                fresco:failureImage="@drawable/icon_head_default_image"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/icon_head_default_image"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:roundAsCircle="true"/>
+
+            <RelativeLayout
+                android:id="@+id/layout_head_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/person_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_15"/>
+
+                <TextView
+                    android:id="@+id/is_vip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="@dimen/spacing_2dp"
+                    android:layout_toRightOf="@+id/person_name"
+                    android:background="@drawable/shape_radius_green_vip_back"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/spacing_2dp"
+                    android:paddingLeft="@dimen/spacing_4dp"
+                    android:paddingRight="@dimen/spacing_4dp"
+                    android:paddingTop="2dp"
+                    android:text="VIP"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/person_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/login_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_radius_green_btn_background"
+                android:gravity="center"
+                android:minWidth="60dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="登录"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/my_head_CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginBottom="4dp"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardPreventCornerOverlap="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/person_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_card_stoke_bottom_background"
-                android:orientation="vertical"
-                android:paddingBottom="10dp">
-
-    <TextView
-        android:id="@+id/person_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="个人数据"
-        android:textColor="@color/lesson_details_dark_back"
-        android:textSize="@dimen/textsize_15"/>
-
-    <TextView
-        android:id="@+id/liking_my_train_promit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/person_data"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:text="今日训练"
-        android:textColor="@color/lesson_details_gray_back"
-        android:textSize="@dimen/textsize_small"/>
-
-
-    <LinearLayout
-        android:id="@+id/layout_my_train_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/liking_my_train_promit"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@+id/my_train_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/liking_green_btn_back"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:visibility="visible"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Min"
-            android:textColor="@color/lesson_details_dark_back"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_my_train_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_my_train_time"
-        android:layout_marginBottom="2dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="距离"
-            android:textSize="@dimen/textsize_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="消耗"
-            android:textSize="@dimen/textsize_small"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_my_train_data"
-        android:orientation="horizontal">
-
-
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:id="@+id/my_train_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/liking_green_btn_back"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="3dp"
-                android:text="Km"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="个人数据"
                 android:textColor="@color/lesson_details_dark_back"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
+                android:textSize="@dimen/textsize_15"/>
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:id="@+id/my_train_cal"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/liking_green_btn_back"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/spacing_8dp"
+                android:visibility="visible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="3dp"
-                android:text="Kcal"
-                android:textColor="@color/lesson_details_dark_back"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
+                <LinearLayout
+                    android:id="@+id/layout_person_side"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个人体侧数据"
+                        android:textColor="@color/lesson_details_gray_back"
+                        android:textSize="@dimen/textsize_small"
+                        android:visibility="visible"/>
+
+                    <TextView
+                        android:id="@+id/person_side_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="139"
+                        android:textColor="@color/liking_green_btn_back"
+                        android:textSize="32sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_my_train_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="今日训练"
+                        android:textColor="@color/lesson_details_gray_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/my_train_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="180"
+                            android:textColor="@color/liking_green_btn_back"
+                            android:textSize="32sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/my_train_time_unit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_4dp"
+                            android:layout_marginTop="@dimen/spacing_8dp"
+                            android:text="Min"
+                            android:textColor="@color/lesson_details_dark_back"
+                            android:textSize="@dimen/textsize_small"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="12dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/bg_right_arrow"/>
-</RelativeLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

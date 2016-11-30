@@ -3,11 +3,14 @@ package com.goodchef.liking.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +24,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -58,6 +62,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
  * Created on 16/5/20.
+ * 我的界面
  *
  * @author aaron.huang
  * @version 1.0.0
@@ -68,14 +73,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LinearLayout mAboutUsLayout;//关于我们
 
     private RelativeLayout mHeadInfoLayout;//头像布局
+    private HImageView mHImageViewBackground;//头像背景
     private HImageView mHeadHImageView;//头像
-    private TextView mLoginPrompt;//登录提示
-    private TextView mPersonNameTextView;
-    private TextView mPersonPhoneTextView;
+    private TextView mPersonNameTextView;//用户名称
+    private TextView mPersonPhoneTextView;//用户手机
     private TextView mLoginOutBtn;//退出登录
-    private TextView mLoginBtn;
-    private ImageView mArrowImage;
+    private TextView mLoginBtn;//登录按钮
     private TextView mIsVip;//是否是VIP
+    private CardView mPersonDataCardView;//个人数据布局
 
     private LinearLayout mSelfHelpGroupLayout;//自助团体课
     private LinearLayout mMyCourseLayout;//我的课程
@@ -83,11 +88,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LinearLayout mMemberCardLayout;//会员卡
     private LinearLayout mCouponsLayout;//我的优惠券
 
-    private RelativeLayout mTrainLayout;
-    private TextView myTrainTime;
-    private TextView myTrainDistance;
-    private TextView myTrainCal;
-    private TextView mContactSetviceBtn;
+    private LinearLayout mTrainLayout;//训练数据布局
+    private LinearLayout mPersonSideLayout;//体侧数据布局
+    private TextView myTrainTime;//训练时间
+    private TextView myTrainTimeUnit;
+    private TextView myPersonSideData;//个人训练数据
+    private TextView mContactSetviceBtn;//联系客服
 
 
     public static final String NULL_STRING = "";
@@ -125,13 +131,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                 clearExerciseData();
             } else {
-                if(isRetryRequest) {
+                if (isRetryRequest) {
                     mStateView.setState(StateView.State.LOADING);
                 }
                 LiKingApi.getUserExerciseData(Preference.getToken(), new RequestCallback<UserExerciseResult>() {
                     @Override
                     public void onSuccess(UserExerciseResult result) {
-                        if(isRetryRequest) {
+                        if (isRetryRequest) {
                             mStateView.setState(StateView.State.SUCCESS);
                             isRetryRequest = false;
                         }
@@ -140,11 +146,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                             if (exerciseData != null) {
                                 Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
                                 myTrainTime.setTypeface(typeFace);
-                                myTrainDistance.setTypeface(typeFace);
-                                myTrainCal.setTypeface(typeFace);
+                                myPersonSideData.setTypeface(typeFace);
                                 myTrainTime.setText(exerciseData.getTodayMin());
-                                myTrainDistance.setText(exerciseData.getTodayDistance());
-                                myTrainCal.setText(exerciseData.getTodayCal());
+                                myPersonSideData.setText(exerciseData.getTodayDistance());
                                 Preference.setIsVip(exerciseData.getIsVip());
                                 if (Preference.isVIP()) {
                                     mIsVip.setVisibility(View.VISIBLE);
@@ -157,7 +161,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
                     @Override
                     public void onFailure(RequestError error) {
-                        if(isRetryRequest) {
+                        if (isRetryRequest) {
                             mStateView.setState(StateView.State.FAILED);
                             isRetryRequest = false;
                         }
@@ -177,26 +181,24 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      */
     private void clearExerciseData() {
         Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
-        myTrainDistance.setTypeface(typeFace);
-        myTrainCal.setTypeface(typeFace);
+        myPersonSideData.setTypeface(typeFace);
+        myTrainTimeUnit.setTypeface(typeFace);
         myTrainTime.setTypeface(typeFace);
-        myTrainDistance.setText("-");
-        myTrainCal.setText("-");
+        myPersonSideData.setText("-");
         myTrainTime.setText("-");
     }
 
     private void setLogonView() {
         if (Preference.isLogin()) {
             mLoginBtn.setVisibility(View.GONE);
-            mArrowImage.setVisibility(View.VISIBLE);
             mLoginOutBtn.setVisibility(View.VISIBLE);
-            mLoginPrompt.setVisibility(View.GONE);
             mPersonNameTextView.setVisibility(View.VISIBLE);
             mPersonPhoneTextView.setVisibility(View.VISIBLE);
             mPersonNameTextView.setText(Preference.getNickName());
             mPersonPhoneTextView.setText(Preference.getUserPhone());
             if (!StringUtils.isEmpty(Preference.getUserIconUrl())) {
                 HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, Preference.getUserIconUrl());
+                HImageLoaderSingleton.getInstance().loadImage(mHImageViewBackground, Preference.getUserIconUrl());
             }
             if (Preference.isVIP()) {
                 mIsVip.setVisibility(View.VISIBLE);
@@ -205,8 +207,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else {
             mLoginBtn.setVisibility(View.VISIBLE);
-            mArrowImage.setVisibility(View.GONE);
-            mLoginPrompt.setVisibility(View.VISIBLE);
             mPersonNameTextView.setVisibility(View.GONE);
             mPersonPhoneTextView.setVisibility(View.GONE);
             mLoginOutBtn.setVisibility(View.GONE);
@@ -222,12 +222,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
         mAboutUsLayout = (LinearLayout) view.findViewById(R.id.layout_about_us);
 
+        mHImageViewBackground = (HImageView) view.findViewById(R.id.head_image_background);
         mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
-        mLoginPrompt = (TextView) view.findViewById(R.id.person_login_prompt);
         mLoginOutBtn = (TextView) view.findViewById(R.id.login_out_btn);
         mLoginBtn = (TextView) view.findViewById(R.id.login_text);
-        mArrowImage = (ImageView) view.findViewById(R.id.login_arrow);
         mIsVip = (TextView) view.findViewById(R.id.is_vip);
+        mPersonDataCardView = (CardView) view.findViewById(R.id.my_head_CardView);
 
         mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
@@ -235,10 +235,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
         mCouponsLayout = (LinearLayout) view.findViewById(R.id.layout_coupons);
 
-        mTrainLayout = (RelativeLayout) view.findViewById(R.id.layout_my_train);
+        mTrainLayout = (LinearLayout) view.findViewById(R.id.layout_my_train_data);
+        mPersonSideLayout = (LinearLayout) view.findViewById(R.id.layout_person_side);
         myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
-        myTrainDistance = (TextView) view.findViewById(R.id.my_train_distance);
-        myTrainCal = (TextView) view.findViewById(R.id.my_train_cal);
+        myTrainTimeUnit = (TextView) view.findViewById(R.id.my_train_time_unit);
+        myPersonSideData = (TextView) view.findViewById(R.id.person_side_data);
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
@@ -253,7 +254,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 getUserExerciseData();
             }
         });
-        showSelfHelpGroupLayout(((LikingHomeActivity)getActivity()).mCanSchedule);
+        showSelfHelpGroupLayout(((LikingHomeActivity) getActivity()).mCanSchedule);
+
+        if (Build.VERSION.SDK_INT < 21) {
+            mPersonDataCardView.setCardElevation(0);
+        } else {
+            mPersonDataCardView.setCardElevation(10);
+        }
+
     }
 
     private void setViewOnClickListener() {
@@ -271,6 +279,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMemberCardLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
         mTrainLayout.setOnClickListener(this);
+        mPersonSideLayout.setOnClickListener(this);
         mContactSetviceBtn.setOnClickListener(this);
     }
 
@@ -376,10 +385,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mSelfHelpGroupLayout) {//自助团体课
 //            if (Preference.isLogin()) {
-                startActivity(SelfHelpGroupActivity.class);
+            startActivity(SelfHelpGroupActivity.class);
 //            } else {
 //                startActivity(LoginActivity.class);
 //            }
+        } else if (v == mPersonSideLayout) {//体侧数据
+
         }
     }
 
@@ -465,10 +476,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      *
      * @param canschedule
      */
-    private void showSelfHelpGroupLayout(int canschedule){
-        if(1 == canschedule){
+    private void showSelfHelpGroupLayout(int canschedule) {
+        if (1 == canschedule) {
             mSelfHelpGroupLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mSelfHelpGroupLayout.setVisibility(View.GONE);
         }
     }
