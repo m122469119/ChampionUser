@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/spacing_12dp"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/spacing_12dp"
+                android:layout_gravity="center"
+                android:background="@color/cb8babc"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="低"
+                android:textColor="@color/cb8babc"
+                android:textSize="@dimen/textsize_small"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/spacing_12dp"
+                android:layout_gravity="center"
+                android:background="@color/cb8babc"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="标准"
+                android:textColor="@color/cb8babc"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/spacing_12dp"
+                android:layout_gravity="center"
+                android:background="@color/cb8babc"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="高"
+                android:textColor="@color/cb8babc"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/spacing_12dp"
+                android:layout_gravity="center"
+                android:background="@color/cb8babc"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="@dimen/spacing_12dp"
+            android:text="体重(kg)"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"/>
+
+        <include
+            layout="@layout/layout_statistics_rate"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_gravity="center"
+            android:layout_weight="1.1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="@dimen/spacing_12dp"
+            android:text="23.3kg"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="@dimen/textsize_small"/>
+    </LinearLayout>
+</LinearLayout>

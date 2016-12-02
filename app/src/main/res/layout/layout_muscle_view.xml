@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/spacing_8dp"
+                                    android:layout_marginLeft="@dimen/spacing_12dp"
+                                    android:layout_marginRight="@dimen/spacing_12dp"
+                                    android:layout_marginTop="@dimen/spacing_12dp"
+                                    android:orientation="vertical"
+                                    card_view:cardCornerRadius="10dp"
+                                    card_view:cardPreventCornerOverlap="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/spacing_12dp"
+            android:text="@string/segment_muscle"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:layout_width="95dp"
+                android:layout_height="180dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_muscle"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12dp"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/spacing_12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19.0"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kg"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/spacing_4dp"
+                    android:text="正常"
+                    android:textColor="@color/add_minus_dishes_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/spacing_12dp"
+                android:orientation="vertical"
+                android:paddingRight="@dimen/spacing_12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19.0"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kg"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/spacing_4dp"
+                    android:text="正常"
+                    android:textColor="@color/add_minus_dishes_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_12dp"
+                android:paddingRight="@dimen/spacing_12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19.0"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kg"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/spacing_4dp"
+                    android:text="正常"
+                    android:textColor="@color/add_minus_dishes_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_12dp"
+                android:paddingLeft="@dimen/spacing_12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19.0"
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kg"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/spacing_4dp"
+                    android:text="正常"
+                    android:textColor="@color/add_minus_dishes_text"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_12dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/spacing_2dp"
+                android:layout_height="@dimen/spacing_12dp"
+                android:layout_gravity="center"
+                android:background="@color/add_minus_dishes_text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_8dp"
+                android:drawableLeft="@drawable/shape_radius_green_btn_background"
+                android:text="@string/analyze_conclusion"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_15"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="3dp"
+            android:padding="@dimen/spacing_12dp"
+            android:text="肌肉男指肌肉发达的男子。肌肉男并不是特指肌肉如岩石般坚硬突出的健美运动员，更不是四肢发达头脑简单的代名词，而是对体魄结实男人的赞誉词汇。概念定义一说起“肌肉男”，总有很多人的第一反应会是“四肢发达，头脑简单”。或许从赤膊上阵的许褚、五大三粗的张飞、奇黑粗犷的李逵，到田里辛勤劳作或"
+            android:textColor="@color/c969a9e"
+            android:textSize="@dimen/textsize_small"/>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

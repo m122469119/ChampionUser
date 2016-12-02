@@ -31,6 +31,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
+import com.goodchef.liking.activity.BodyTestDataActivity;
 import com.goodchef.liking.activity.BodyTestHistoryActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
@@ -392,7 +393,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 //                startActivity(LoginActivity.class);
 //            }
         } else if (v == mPersonSideLayout) {//体侧数据
-            startActivity(BodyTestHistoryActivity.class);
+            startActivity(BodyTestDataActivity.class);
         }
     }
 

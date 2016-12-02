@@ -246,8 +246,14 @@
             android:screenOrientation="portrait"/>
 
         <!--体测历史-->
-        <activity android:name=".activity.BodyTestHistoryActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.BodyTestHistoryActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--体测数据-->
+        <activity
+            android:name=".activity.BodyTestDataActivity"
+            android:screenOrientation="portrait"/>
 
         <!--支付宝h5页面-->
         <activity

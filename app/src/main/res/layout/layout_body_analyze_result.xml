@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_12dp"
+            android:layout_marginLeft="@dimen/spacing_12dp"
+            android:layout_marginRight="@dimen/spacing_12dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:orientation="vertical"
+            card_view:cardCornerRadius="10dp"
+            card_view:cardPreventCornerOverlap="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/spacing_12dp"
+                    android:text="身体成分分析结果"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_15"/>
+
+                <include layout="@layout/item_body_analyze_result"/>
+
+                <include layout="@layout/item_body_analyze_result"/>
+
+                <include layout="@layout/item_body_analyze_result"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_24dp"
+                    android:layout_marginTop="@dimen/spacing_24dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_24dp"
+                    android:paddingLeft="@dimen/spacing_12dp"
+                    android:paddingRight="@dimen/spacing_12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="分析结论："
+                        android:textColor="@color/add_minus_dishes_text"
+                        android:textSize="@dimen/textsize_small"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="与肌肉相比，体脂肪偏高"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_15"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="285dp"
+        android:background="@drawable/shape_radius_green_btn_background"
+        android:gravity="center"
+        android:minWidth="100dp"
+        android:padding="@dimen/spacing_8dp"
+        android:text="历史记录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_small"/>
+
+
+</RelativeLayout>
