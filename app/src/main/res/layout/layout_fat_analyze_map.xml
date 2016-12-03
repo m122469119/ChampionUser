@@ -30,13 +30,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/spacing_12dp"
-                    android:text="@string/body_radar"
+                    android:text="@string/fat_analyze"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
 
                 <com.github.mikephil.charting.charts.RadarChart
-                    android:id="@+id/body_ingredient_RadarChart"
+                    android:id="@+id/body_fat_RadarChart"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     />
@@ -64,7 +64,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/body_radar_analyze_result_TextView"
+                    android:id="@+id/fat_analyze_result_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3dp"
@@ -78,7 +78,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/body_element_history_TextView"
+        android:id="@+id/fat_analyze_history_TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

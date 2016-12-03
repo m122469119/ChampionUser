@@ -226,5 +226,8 @@
     <string name="analyze_conclusion">分析结论</string>
     <string name="segment_muscle">节段肌肉</string>
     <string name="history_record">历史记录</string>
+    <string name="body_test_grade">体测评分</string>
+    <string name="body_radar">身体成分分析</string>
+    <string name="fat_analyze">肥胖分析</string>
 
 </resources>

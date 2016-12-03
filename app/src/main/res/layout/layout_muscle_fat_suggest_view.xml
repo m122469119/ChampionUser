@@ -24,6 +24,41 @@
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_15"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="推荐每天摄入卡路里"
+            android:textColor="@color/c969a9e"
+            android:textSize="@dimen/textsize_small"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_4dp"
+            android:layout_marginBottom="@dimen/spacing_12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="1600"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="kcal"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

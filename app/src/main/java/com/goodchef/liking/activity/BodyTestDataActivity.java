@@ -2,6 +2,9 @@ package com.goodchef.liking.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,16 +12,12 @@ import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.goodchef.liking.R;
 import com.goodchef.liking.utils.ChartColorUtil;
@@ -33,9 +32,19 @@ import java.util.ArrayList;
  */
 
 public class BodyTestDataActivity extends SwipeBackActivity implements View.OnClickListener {
+    //评分
+    private TextView mBodyTestTimeTextView;//测试时间
+    private TextView mBodyGradeHistoryTextView;//体测评分历史记录
 
+    //成分分析
     private RadarChart mBodyIngredientRadarChart;//身体分析雷达图
+    private TextView mBodyRadarAnalyzeResultTextView;//身体成分分析结果
     private TextView mBodyElementHistoryTextView;//身体成分历史记录
+    //肥胖分析
+    private RadarChart mFatAnalyzeRadarChart;//肥胖分析雷达
+    private TextView mFatAnalyzeResultTextView;//肥胖分析结论
+    private TextView mFatAnalyzeHistoryTextView;//肥胖分析历史记录
+
     private TextView mBodyTestHistoryTextView;//体测历史
 
     @Override
@@ -45,11 +54,38 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         initView();
         setBodyIngredientRadarChart();
         initViewOnClickListener();
+        initToolbar();
+
     }
 
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_app_bar_style);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("体测数据");
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+
     private void initView() {
+        mBodyTestTimeTextView = (TextView) findViewById(R.id.body_test_time_TextView);
+        mBodyGradeHistoryTextView = (TextView) findViewById(R.id.body_grade_history_TextView);
+
         mBodyIngredientRadarChart = (RadarChart) findViewById(R.id.body_ingredient_RadarChart);
+        mBodyRadarAnalyzeResultTextView = (TextView) findViewById(R.id.body_radar_analyze_result_TextView);
         mBodyElementHistoryTextView = (TextView) findViewById(R.id.body_element_history_TextView);
+
+        mFatAnalyzeRadarChart = (RadarChart) findViewById(R.id.body_fat_RadarChart);
+        mFatAnalyzeResultTextView = (TextView) findViewById(R.id.fat_analyze_result_TextView);
+        mFatAnalyzeHistoryTextView = (TextView) findViewById(R.id.fat_analyze_history_TextView);
 
         mBodyTestHistoryTextView = (TextView) findViewById(R.id.body_test_history_TextView);
     }
@@ -106,7 +142,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         yAxis.setEnabled(false);
 
         mBodyIngredientRadarChart.setDrawWeb(true);
-
     }
 
     public void setData() {
