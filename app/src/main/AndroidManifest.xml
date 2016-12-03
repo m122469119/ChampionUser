@@ -255,6 +255,11 @@
             android:name=".activity.BodyTestDataActivity"
             android:screenOrientation="portrait"/>
 
+        <!--体测数据图-->
+        <activity
+            android:name=".activity.BodyAnalyzeChartActivity"
+            android:screenOrientation="portrait"/>
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

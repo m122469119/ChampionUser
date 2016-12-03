@@ -13,6 +13,8 @@
 
         <include layout="@layout/layout_body_analyze_result"/>
 
+        <include layout="@layout/layout_body_radar_map"/>
+
         <include layout="@layout/layout_muscle_view"/>
 
         <include layout="@layout/layout_muscle_view"/>

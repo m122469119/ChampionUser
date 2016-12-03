@@ -88,4 +88,5 @@ dependencies {
     compile project(':framework')
     compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 }
