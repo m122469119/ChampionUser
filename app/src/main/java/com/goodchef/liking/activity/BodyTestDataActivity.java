@@ -1,14 +1,23 @@
 package com.goodchef.liking.activity;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
+import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
+import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -20,7 +29,13 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.BodyTestResult;
+import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
+import com.goodchef.liking.mvp.view.BodyTestView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.ChartColorUtil;
+import com.goodchef.liking.utils.TypefaseUtil;
+import com.goodchef.liking.widgets.MyCircleView;
 
 import java.util.ArrayList;
 
@@ -31,10 +46,21 @@ import java.util.ArrayList;
  * version 1.0.0
  */
 
-public class BodyTestDataActivity extends SwipeBackActivity implements View.OnClickListener {
+public class BodyTestDataActivity extends SwipeBackActivity implements View.OnClickListener, BodyTestView {
+
+    private HImageView mTopBackgroundHImageView;
+    private HImageView mHeadHImageView;
+    private TextView mUserNameTextView;
+    private ImageView mUserGenderImageView;
+    private TextView mUserAgeTextView;
+    private TextView mUserWeightTextView;
+    private TextView mUserWeightUnit;
+    private CardView mHeadCardView;
+
     //评分
     private TextView mBodyTestTimeTextView;//测试时间
     private TextView mBodyGradeHistoryTextView;//体测评分历史记录
+    private MyCircleView mMyCicleView;//体测评分圆环
 
     //成分分析
     private RadarChart mBodyIngredientRadarChart;//身体分析雷达图
@@ -47,15 +73,25 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
     private TextView mBodyTestHistoryTextView;//体测历史
 
+    private BodyTestPresenter mBodyTestPresenter;
+    private Typeface mTypeface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_test_data);
         initView();
+        //透明状态栏
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
+        //透明导航栏
         setBodyIngredientRadarChart();
         initViewOnClickListener();
         initToolbar();
-
+        sendRequest();
+        mTypeface = TypefaseUtil.getImpactTypeface(this);
     }
 
     private void initToolbar() {
@@ -76,8 +112,18 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
 
     private void initView() {
+        mTopBackgroundHImageView = (HImageView) findViewById(R.id.head_image_background);
+        mHeadHImageView = (HImageView) findViewById(R.id.body_head_image);
+        mUserNameTextView = (TextView) findViewById(R.id.person_user_name_TextView);
+        mUserGenderImageView = (ImageView) findViewById(R.id.person_user_gender_ImageView);
+        mUserAgeTextView = (TextView) findViewById(R.id.person_user_age_TextView);
+        mUserWeightTextView = (TextView) findViewById(R.id.user_weight_TextView);
+        mUserWeightUnit = (TextView) findViewById(R.id.user_weight_unit);
+        mHeadCardView = (CardView) findViewById(R.id.body_test_CardView);
+
         mBodyTestTimeTextView = (TextView) findViewById(R.id.body_test_time_TextView);
         mBodyGradeHistoryTextView = (TextView) findViewById(R.id.body_grade_history_TextView);
+        mMyCicleView = (MyCircleView) findViewById(R.id.body_grade_MyCircleView);
 
         mBodyIngredientRadarChart = (RadarChart) findViewById(R.id.body_ingredient_RadarChart);
         mBodyRadarAnalyzeResultTextView = (TextView) findViewById(R.id.body_radar_analyze_result_TextView);
@@ -93,6 +139,13 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     private void initViewOnClickListener() {
         mBodyElementHistoryTextView.setOnClickListener(this);
         mBodyTestHistoryTextView.setOnClickListener(this);
+    }
+
+    private void sendRequest() {
+        if (mBodyTestPresenter == null) {
+            mBodyTestPresenter = new BodyTestPresenter(this, this);
+        }
+        mBodyTestPresenter.getBodyData("");
     }
 
     private void setBodyIngredientRadarChart() {
@@ -203,5 +256,48 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         } else if (v == mBodyTestHistoryTextView) {
             startActivity(BodyTestHistoryActivity.class);
         }
+    }
+
+    @Override
+    public void updateBodyTestView(BodyTestResult.BodyTestData bodyTestData) {
+        BodyTestResult.BodyTestData.UserDataData bodyUserData = bodyTestData.getUserData();
+        setUserData(bodyUserData);
+        setGradeData();
+    }
+
+    /**
+     * 设置用户基本信息
+     *
+     * @param bodyUserData 用户基本数据
+     */
+    private void setUserData(BodyTestResult.BodyTestData.UserDataData bodyUserData) {
+        mUserNameTextView.setText(bodyUserData.getName());
+        String gender = bodyUserData.getGender();
+        if ("0".equals(gender)) {
+            mUserGenderImageView.setImageResource(R.drawable.icon_women);
+        } else if ("1".equals(gender)) {
+            mUserGenderImageView.setImageResource(R.drawable.icon_man);
+        }
+        mUserAgeTextView.setText(bodyUserData.getAge());
+        mUserWeightTextView.setText(bodyUserData.getHeight());
+        mUserWeightUnit.setTypeface(mTypeface);
+        mUserWeightTextView.setTypeface(mTypeface);
+        mUserAgeTextView.setTypeface(mTypeface);
+
+        String imageUrl = bodyUserData.getAvatar();
+        if (!StringUtils.isEmpty(imageUrl)) {
+            HImageLoaderSingleton.getInstance().loadImage(mTopBackgroundHImageView, imageUrl);
+            HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, imageUrl);
+        }
+    }
+
+    private void setGradeData() {
+        mMyCicleView.setCurrentCount(100, 72);
+        mMyCicleView.setTextTypeface(TypefaseUtil.getImpactTypeface(this));
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+
     }
 }

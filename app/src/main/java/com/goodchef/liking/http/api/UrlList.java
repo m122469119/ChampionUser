@@ -133,6 +133,8 @@ public class UrlList {
     public static final String COURSE_CAN_SCHEDULE_COURSE_LIST = getVersionHostUrl() + "/course/can-schedule-course-list";
     /**预约团体课*/
     public static final String COURSE_ADD_SCHEDULE = getVersionHostUrl() + "/course/add-schedule";
+    /**获取体测数据*/
+    public static final String USER_GET_USER_BODY = getVersionHostUrl() + "/user/get-user-body";
 
 
 

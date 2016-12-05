@@ -229,5 +229,7 @@
     <string name="body_test_grade">体测评分</string>
     <string name="body_radar">身体成分分析</string>
     <string name="fat_analyze">肥胖分析</string>
+    <string name="age">年龄</string>
+    <string name="weight">体重</string>
 
 </resources>

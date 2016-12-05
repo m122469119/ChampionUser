@@ -36,9 +36,11 @@
                     android:textSize="@dimen/textsize_15"/>
 
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"/>
+                 <com.goodchef.liking.widgets.MyCircleView
+                     android:id="@+id/body_grade_MyCircleView"
+                     android:layout_width="200dp"
+                     android:layout_height="200dp"
+                     android:layout_gravity="center"/>
 
                 <TextView
                     android:id="@+id/body_test_time_TextView"
