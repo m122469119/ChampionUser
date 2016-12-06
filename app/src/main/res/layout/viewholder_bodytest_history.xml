@@ -16,6 +16,29 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/bodytest_history_grade_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="18.9"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:textColor="@color/liking_green_btn_back"
+            android:textSize="@dimen/textsize_huge"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="体测评分"
+            android:layout_marginTop="@dimen/spacing_4dp"
+            android:layout_marginBottom="@dimen/spacing_12dp"
+            android:textColor="@color/c969a9e"
+            android:textSize="@dimen/textsize_small"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,6 +94,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/bmi_chinese_name_TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_4dp"
@@ -128,6 +152,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/fat_chinese_name_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_4dp"
@@ -162,6 +187,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/body_whr_unit_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -184,6 +210,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/whr_chinese_name_TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_4dp"
@@ -203,7 +230,6 @@
             android:layout_marginTop="@dimen/spacing_8dp"
             android:gravity="center"
             android:padding="@dimen/spacing_12dp"
-            android:text="体测时间：2016-12-24（周四）13：40"
             android:textColor="@color/c969a9e"
             android:textSize="@dimen/textsize_small"
             />

@@ -17,6 +17,7 @@ import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
@@ -987,5 +988,16 @@ public class LiKingApi {
     public static void getBodyTestData(String bodyId, RequestCallback<BodyTestResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_GET_USER_BODY, BodyTestResult.class, getCommonRequestParams()
                 .append("body_id", bodyId).append(KEY_TOKEN, Preference.getToken()), callback);
+    }
+
+    /***
+     * 获取体测历史
+     *
+     * @param page     页码
+     * @param callback RequestCallback
+     */
+    public static void getBodyHistory(int page, RequestCallback<BodyHistoryResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_GET_BODY_LIST, BodyHistoryResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()).append("page", page)
+                , callback);
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
+import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.utils.TypefaseUtil;
 
 /**
@@ -21,7 +22,7 @@ import com.goodchef.liking.utils.TypefaseUtil;
  * version 1.0.0
  */
 
-public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHistoryAdapter.BodyTestHistoryViewHolder, String> {
+public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHistoryAdapter.BodyTestHistoryViewHolder, BodyHistoryResult.BodyHistoryData.ListData> {
 
     private Context mContext;
 
@@ -36,45 +37,86 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
         return new BodyTestHistoryViewHolder(view);
     }
 
-    class BodyTestHistoryViewHolder extends BaseRecycleViewHolder<String> {
+    class BodyTestHistoryViewHolder extends BaseRecycleViewHolder<BodyHistoryResult.BodyHistoryData.ListData> {
         CardView mCardView;
+        TextView mBodyHistoryGradeTextView;
+
         TextView mBodyIndexNumberTextView;
         TextView mBodyIndexNumberUnitTextView;
         TextView mBodyIndexBmiTextView;
+        TextView mBmiChineseNameTextView;
+
         TextView mBodyFatNumberTextView;
         TextView mBodyFatNumberUnitTextView;
         TextView mBodyFatTextView;
+        TextView mFatChineseNameTextView;
+
         TextView mBodyWhrNumberTextView;
+        TextView mBodyWhrUnitTextView;
         TextView mBodyWhrTextView;
+        TextView mWhrChineseNameTextView;
+
         TextView mBodyMeasureTimeTextView;
 
         public BodyTestHistoryViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.bodytest_history_cardView);
+            mBodyHistoryGradeTextView = (TextView) itemView.findViewById(R.id.bodytest_history_grade_TextView);
             mBodyIndexNumberTextView = (TextView) itemView.findViewById(R.id.body_index_number_TextView);
             mBodyIndexNumberUnitTextView = (TextView) itemView.findViewById(R.id.body_index_number_unit_TextView);
             mBodyIndexBmiTextView = (TextView) itemView.findViewById(R.id.body_index_bmi_TextView);
+            mBmiChineseNameTextView = (TextView) itemView.findViewById(R.id.bmi_chinese_name_TextView);
+
             mBodyFatNumberTextView = (TextView) itemView.findViewById(R.id.body_fat_number_TextView);
             mBodyFatNumberUnitTextView = (TextView) itemView.findViewById(R.id.body_fat_number_unit_TextView);
             mBodyFatTextView = (TextView) itemView.findViewById(R.id.body_fat_TextView);
+            mFatChineseNameTextView = (TextView) itemView.findViewById(R.id.fat_chinese_name_textView);
+
             mBodyWhrNumberTextView = (TextView) itemView.findViewById(R.id.body_whr_number_TextView);
+            mBodyWhrUnitTextView = (TextView) itemView.findViewById(R.id.body_whr_unit_TextView);
             mBodyWhrTextView = (TextView) itemView.findViewById(R.id.body_whr_TextView);
+            mWhrChineseNameTextView = (TextView) itemView.findViewById(R.id.whr_chinese_name_TextView);
+
             mBodyMeasureTimeTextView = (TextView) itemView.findViewById(R.id.body_measure_time_TextView);
         }
 
         @Override
-        public void bindViews(String object) {
+        public void bindViews(BodyHistoryResult.BodyHistoryData.ListData object) {
             if (Build.VERSION.SDK_INT < 21) {
                 mCardView.setCardElevation(0);
             } else {
                 mCardView.setCardElevation(10);
             }
             setTextViewType();
-            mBodyIndexNumberTextView.setText(object);
+            BodyHistoryResult.BodyHistoryData.ListData.BmiData bmiData = object.getBmi();
+            BodyHistoryResult.BodyHistoryData.ListData.FatRateData fatRateData = object.getFatRate();
+            BodyHistoryResult.BodyHistoryData.ListData.WaistHipData waistHipData = object.getWaistHip();
+
+            mBodyHistoryGradeTextView.setText(object.getScore());
+            if (bmiData != null) {
+                mBodyIndexNumberTextView.setText(bmiData.getValue());
+                mBodyIndexNumberUnitTextView.setText(bmiData.getUnit());
+                mBodyIndexBmiTextView.setText(bmiData.getEnglishName());
+                mBmiChineseNameTextView.setText(bmiData.getChineseName());
+            }
+            if (fatRateData != null) {
+                mBodyFatNumberTextView.setText(fatRateData.getValue());
+                mBodyFatNumberUnitTextView.setText(fatRateData.getUnit());
+                mBodyFatTextView.setText(fatRateData.getEnglishName());
+                mFatChineseNameTextView.setText(fatRateData.getChineseName());
+            }
+            if (waistHipData != null) {
+                mBodyWhrNumberTextView.setText(waistHipData.getValue());
+                mBodyWhrUnitTextView.setText(waistHipData.getUnit());
+                mBodyWhrTextView.setText(waistHipData.getEnglishName());
+                mWhrChineseNameTextView.setText(waistHipData.getChineseName());
+            }
+            mBodyMeasureTimeTextView.setText("体测时间：" + object.getBodyTime());
         }
 
-        private void setTextViewType(){
+        private void setTextViewType() {
             Typeface typeface = TypefaseUtil.getImpactTypeface(mContext);
+            mBodyHistoryGradeTextView.setTypeface(typeface);
             mBodyIndexNumberTextView.setTypeface(typeface);
             mBodyIndexNumberUnitTextView.setTypeface(typeface);
             mBodyIndexBmiTextView.setTypeface(typeface);
@@ -82,6 +124,7 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
             mBodyFatNumberUnitTextView.setTypeface(typeface);
             mBodyFatTextView.setTypeface(typeface);
             mBodyWhrNumberTextView.setTypeface(typeface);
+            mBodyWhrUnitTextView.setTypeface(typeface);
             mBodyWhrTextView.setTypeface(typeface);
         }
     }

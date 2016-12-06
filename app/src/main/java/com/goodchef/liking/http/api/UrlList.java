@@ -135,6 +135,8 @@ public class UrlList {
     public static final String COURSE_ADD_SCHEDULE = getVersionHostUrl() + "/course/add-schedule";
     /**获取体测数据*/
     public static final String USER_GET_USER_BODY = getVersionHostUrl() + "/user/get-user-body";
+    /**获取体测历史*/
+    public static final String USER_GET_BODY_LIST = getVersionHostUrl() + "/user/get-body-list";
 
 
 

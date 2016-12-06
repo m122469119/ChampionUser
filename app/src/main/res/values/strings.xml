@@ -235,5 +235,6 @@
     <string name="every_day_kcal">推荐每天摄入卡路里</string>
     <string name="muscle_control">肌肉控制</string>
     <string name="more_advice">更多建议请咨询店内教练</string>
+    <string name="no_body_history_data">暂无体测历史</string>
 
 </resources>
