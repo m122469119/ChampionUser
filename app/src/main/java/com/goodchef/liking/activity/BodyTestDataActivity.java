@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -116,6 +117,8 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     private BodyTestPresenter mBodyTestPresenter;
     private Typeface mTypeface;
 
+    private String bodyAnalysisType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,14 +222,21 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == mBodyGradeHistoryTextView) {//体侧评分历史记录
-
+            startBodyAnalyzeChartActivity("体测评分", "top_data");
         } else if (v == mBodyElementHistoryTextView) {//身体成分历史记录
-            startActivity(BodyAnalyzeChartActivity.class);
+            startBodyAnalyzeChartActivity("身体成分分析", bodyAnalysisType);
         } else if (v == mBodyTestHistoryTextView) {
             startActivity(BodyTestHistoryActivity.class);
         } else if (v == mMuscleResultHistoryTextView) {//节段肌肉历史记录
 
         }
+    }
+
+    private void startBodyAnalyzeChartActivity(String title, String modules) {
+        Intent intent = new Intent(this, BodyAnalyzeChartActivity.class);
+        intent.putExtra(BodyAnalyzeChartActivity.KEY_HISTORY_TITLE, title);
+        intent.putExtra(BodyAnalyzeChartActivity.KEY_HISTORY_MODULES, modules);
+        startActivity(intent);
     }
 
     @Override
@@ -237,6 +247,8 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         BodyTestResult.BodyTestData.TopDataData gradeData = bodyTestData.getTopData();
         //身体成分分析
         BodyTestResult.BodyTestData.BodyAnalysisData bodyAnalysisData = bodyTestData.getBodyAnalysis();
+        bodyAnalysisType = bodyAnalysisData.getType();
+
         //肥胖分析
         BodyTestResult.BodyTestData.FatAnalysisData fatAnalysisData = bodyTestData.getFatAnalysis();
         //节段肌肉
@@ -499,7 +511,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         setBodyFatTypeface();
     }
 
-    private void setBodyFatTypeface(){
+    private void setBodyFatTypeface() {
         setTxtViewTypeface(mLeftMuscleTextView);
         setTxtViewTypeface(mLeftMuscleUnitTextView);
         setTxtViewTypeface(mLeftMuscleEvaluateTextView);
@@ -548,8 +560,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     }
 
 
-
-
     /**
      * 设置底部建议数据
      *
@@ -572,7 +582,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         setTxtViewTypeface(mFatControlUnitTextView);
     }
 
-    private void setTxtViewTypeface(TextView mTextView){
+    private void setTxtViewTypeface(TextView mTextView) {
         mTextView.setTypeface(mTypeface);
     }
 

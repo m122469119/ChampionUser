@@ -17,7 +17,9 @@ import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.http.result.BodyHistoryResult;
+import com.goodchef.liking.http.result.BodyModelNavigationResult;
 import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
@@ -999,5 +1001,27 @@ public class LiKingApi {
     public static void getBodyHistory(int page, RequestCallback<BodyHistoryResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_GET_BODY_LIST, BodyHistoryResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()).append("page", page)
                 , callback);
+    }
+
+    /**
+     * 获取体测历史页面顶部导航
+     *
+     * @param modules  模块名称
+     * @param callback RequestCallback
+     */
+    public static void getBodyHistoryTitleList(String modules, RequestCallback<BodyModelNavigationResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_BODY_MODULES_HISTORY, BodyModelNavigationResult.class, getCommonRequestParams()
+                .append("modules", modules).append(KEY_TOKEN, Preference.getToken()), callback);
+    }
+
+    /**
+     * 获取体测历史下面数据
+     *
+     * @param column   导航栏目
+     * @param callback RequestCallback
+     */
+    public static void getBodyHistoryList(String column, RequestCallback<BodyAnalyzeHistoryResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_BODY_COLUMN_HISTORY, BodyAnalyzeHistoryResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, Preference.getToken()).append("column", column), callback);
     }
 }

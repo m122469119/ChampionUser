@@ -137,6 +137,10 @@ public class UrlList {
     public static final String USER_GET_USER_BODY = getVersionHostUrl() + "/user/get-user-body";
     /**获取体测历史*/
     public static final String USER_GET_BODY_LIST = getVersionHostUrl() + "/user/get-body-list";
+    /** 获取历史页面顶部导航*/
+    public static final String USER_BODY_MODULES_HISTORY = getVersionHostUrl() + "/user/body-modules-history";
+    /**获取体测数据单个字段历史值*/
+    public static final String USER_BODY_COLUMN_HISTORY = getVersionHostUrl() + "/user/body-column-history";
 
 
 

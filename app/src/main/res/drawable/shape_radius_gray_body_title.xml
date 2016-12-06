@@ -1,0 +1,18 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <!--分別對應上面左圆角的半径，上面右圆角的半径，下面左圆角的半径，下面右圆角的半径-->
+    <!-- 填充颜色 -->
+    <solid android:color="@color/c2e333d"/>
+
+    <corners
+        android:bottomLeftRadius="25dp"
+        android:bottomRightRadius="25dp"
+        android:topLeftRadius="25dp"
+        android:topRightRadius="25dp"/>
+    <!--设置渐变-->
+
+    <!-- 线的宽度，颜色灰色 -->
+    <stroke
+        android:width="1dp"
+        android:color="@color/c2e333d"/>
+</shape>
