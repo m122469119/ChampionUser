@@ -16,11 +16,7 @@ public class BodyChartValueFormatter implements AxisValueFormatter {
 
     private List<String> mAxisList;
 
-    private BarLineChartBase<?> chart;
-
-
-    public BodyChartValueFormatter(BarLineChartBase<?> chart, List<String> AxisList) {
-        this.chart = chart;
+    public BodyChartValueFormatter(List<String> AxisList) {
         this.mAxisList = AxisList;
     }
 

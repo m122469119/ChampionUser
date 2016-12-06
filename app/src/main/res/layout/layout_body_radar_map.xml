@@ -31,6 +31,7 @@
                     android:gravity="center"
                     android:padding="@dimen/spacing_12dp"
                     android:text="@string/body_radar"
+                     android:layout_marginBottom="@dimen/spacing_12dp"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 

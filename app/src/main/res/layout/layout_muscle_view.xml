@@ -9,6 +9,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/body_muscle_CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_8dp"
@@ -25,6 +26,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/muscle_analyze_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -38,6 +40,7 @@
                     android:layout_height="200dp">
 
                     <ImageView
+                        android:id="@+id/muscle_analyze_imageView"
                         android:layout_width="95dp"
                         android:layout_height="180dp"
                         android:layout_centerHorizontal="true"
@@ -57,21 +60,24 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/left_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="19.0"
+                                android:text="19.0 "
                                 android:textColor="@color/add_minus_dishes_text"
                                 android:textStyle="bold"/>
 
                             <TextView
+                                android:id="@+id/left_muscle_unit_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="kg"
+                                android:text=" kg"
                                 android:textColor="@color/lesson_details_dark_back"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/left_muscle_evaluate_TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
@@ -93,6 +99,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/right_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="19.0"
@@ -100,14 +107,16 @@
                                 android:textStyle="bold"/>
 
                             <TextView
+                                android:id="@+id/right_muscle_unit_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="kg"
+                                android:text=" kg"
                                 android:textColor="@color/lesson_details_dark_back"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/right_muscle_evaluate_TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
@@ -130,6 +139,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/right_down_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="19.0"
@@ -137,14 +147,16 @@
                                 android:textStyle="bold"/>
 
                             <TextView
+                                android:id="@+id/right_down_muscle_unit_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="kg"
+                                android:text=" kg"
                                 android:textColor="@color/lesson_details_dark_back"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/right_down_muscle_evaluate_TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
@@ -167,6 +179,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/lef_down_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="19.0"
@@ -174,14 +187,16 @@
                                 android:textStyle="bold"/>
 
                             <TextView
+                                android:id="@+id/lef_down_muscle_unit_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="kg"
+                                android:text=" kg"
                                 android:textColor="@color/lesson_details_dark_back"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/lef_down_muscle_evaluate_TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
@@ -213,6 +228,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/muscle_analyze_result_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_12dp"
@@ -227,6 +243,7 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/muscle_result_history_TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

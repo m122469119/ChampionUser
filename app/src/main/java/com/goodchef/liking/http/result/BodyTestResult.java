@@ -18,11 +18,11 @@ public class BodyTestResult extends BaseResult{
     /**
      * user_data : {"gender":"1","name":"qqq","height":"111","age":"26","avatar":"http://testimg.likingfit.com/img/2016/12/01/1480560043_583f8dab845b4_thumb.png"}
      * top_data : {"body_time":"2016-12-02 16:11:56","score":"1"}
-     * body_analysis : {"body_data":[{"value":"120.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体重","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"骨骼肌","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体脂肪","english_name":"","unit":"kg"},{"value":"30.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"身体水分含量","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"去脂体重","english_name":"","unit":"kg"}],"advise":""}
-     * fat_analysis : {"body_data":[{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"身体质量指数","english_name":"BMI","unit":"kg/㎡"},{"value":"10","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体脂百分比","english_name":"PBF","unit":"%"},{"value":"10","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"腰臀百分比","english_name":"WHR","unit":"%"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"基础代谢","english_name":"kcal","unit":"kj/㎡/h"}],"advise":""}
-     * muscle : {"body_data":[{"value":"10.00","evaluate":"1","chinese_name":"右上肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"左上肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"右下肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"左下肢节段肌肉","english_name":"","unit":"kg"}],"advise":""}
-     * body_fat : {"body_data":[{"value":"1.00","evaluate":"1","chinese_name":"右上肢节段脂肪百分比","content":"10.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"左上肢节段脂肪百分比","content":"10.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"右下肢节段脂肪百分比","content":"1.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"左下肢节段脂肪百分比","content":"1.00kg","english_name":"","unit":"%"}],"advise":""}
-     * footer : {"body_data":[{"value":"10.00","chinese_name":"肌肉控制","english_name":"","unit":"kg"},{"value":"0","chinese_name":"推荐摄入卡路里量","english_name":"","unit":"kcal"},{"value":"10.00","chinese_name":"脂肪控制","english_name":"","unit":"kg"}]}
+     * body_analysis : {"body_data":[{"value":"120.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体重","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"骨骼肌","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体脂肪","english_name":"","unit":"kg"},{"value":"30.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"身体水分含量","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"去脂体重","english_name":"","unit":"kg"}],"advise":"","type":"body_analysis"}
+     * fat_analysis : {"body_data":[{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"身体质量指数","english_name":"BMI","unit":"kg/㎡"},{"value":"10","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体脂百分比","english_name":"PBF","unit":"%"},{"value":"10","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"腰臀百分比","english_name":"WHR","unit":"%"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"基础代谢","english_name":"kcal","unit":"kj/㎡/h"}],"advise":"","type":"fat_analysis"}
+     * muscle : {"body_data":[{"value":"10.00","evaluate":"1","chinese_name":"右上肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"左上肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"右下肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"左下肢节段肌肉","english_name":"","unit":"kg"}],"advise":"","type":"muscle"}
+     * body_fat : {"body_data":[{"value":"1.00","evaluate":"1","chinese_name":"右上肢节段脂肪百分比","content":"10.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"左上肢节段脂肪百分比","content":"10.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"右下肢节段脂肪百分比","content":"1.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"左下肢节段脂肪百分比","content":"1.00kg","english_name":"","unit":"%"}],"advise":"","type":"body_fat"}
+     * footer : {"body_data":[{"value":"10.00","chinese_name":"肌肉控制","english_name":"","unit":"kg"},{"value":"0","chinese_name":"推荐摄入卡路里量","english_name":"","unit":"kcal"},{"value":"10.00","chinese_name":"脂肪控制","english_name":"","unit":"kg"}],"type":"footer"}
      */
 
     @SerializedName("data")
@@ -57,6 +57,7 @@ public class BodyTestResult extends BaseResult{
         /**
          * body_data : [{"value":"120.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体重","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"骨骼肌","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体脂肪","english_name":"","unit":"kg"},{"value":"30.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"身体水分含量","english_name":"","unit":"kg"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"去脂体重","english_name":"","unit":"kg"}]
          * advise :
+         * type : body_analysis
          */
 
         @SerializedName("body_analysis")
@@ -64,6 +65,7 @@ public class BodyTestResult extends BaseResult{
         /**
          * body_data : [{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"身体质量指数","english_name":"BMI","unit":"kg/㎡"},{"value":"10","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"体脂百分比","english_name":"PBF","unit":"%"},{"value":"10","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"腰臀百分比","english_name":"WHR","unit":"%"},{"value":"10.00","criterion_max":"1.00","criterion_min":"1.00","chinese_name":"基础代谢","english_name":"kcal","unit":"kj/㎡/h"}]
          * advise :
+         * type : fat_analysis
          */
 
         @SerializedName("fat_analysis")
@@ -71,6 +73,7 @@ public class BodyTestResult extends BaseResult{
         /**
          * body_data : [{"value":"10.00","evaluate":"1","chinese_name":"右上肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"左上肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"右下肢节段肌肉","english_name":"","unit":"kg"},{"value":"10.00","evaluate":"1","chinese_name":"左下肢节段肌肉","english_name":"","unit":"kg"}]
          * advise :
+         * type : muscle
          */
 
         @SerializedName("muscle")
@@ -78,10 +81,16 @@ public class BodyTestResult extends BaseResult{
         /**
          * body_data : [{"value":"1.00","evaluate":"1","chinese_name":"右上肢节段脂肪百分比","content":"10.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"左上肢节段脂肪百分比","content":"10.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"右下肢节段脂肪百分比","content":"1.00kg","english_name":"","unit":"%"},{"value":"1.00","evaluate":"1","chinese_name":"左下肢节段脂肪百分比","content":"1.00kg","english_name":"","unit":"%"}]
          * advise :
+         * type : body_fat
          */
 
         @SerializedName("body_fat")
         private BodyFatData mBodyFat;
+        /**
+         * body_data : [{"value":"10.00","chinese_name":"肌肉控制","english_name":"","unit":"kg"},{"value":"0","chinese_name":"推荐摄入卡路里量","english_name":"","unit":"kcal"},{"value":"10.00","chinese_name":"脂肪控制","english_name":"","unit":"kg"}]
+         * type : footer
+         */
+
         @SerializedName("footer")
         private FooterData mFooter;
 
@@ -220,6 +229,8 @@ public class BodyTestResult extends BaseResult{
         public static class BodyAnalysisData {
             @SerializedName("advise")
             private String mAdvise;
+            @SerializedName("type")
+            private String mType;
             /**
              * value : 120.00
              * criterion_max : 1.00
@@ -238,6 +249,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setAdvise(String advise) {
                 mAdvise = advise;
+            }
+
+            public String getType() {
+                return mType;
+            }
+
+            public void setType(String type) {
+                mType = type;
             }
 
             public List<BodyDataData> getBodyData() {
@@ -315,6 +334,8 @@ public class BodyTestResult extends BaseResult{
         public static class FatAnalysisData {
             @SerializedName("advise")
             private String mAdvise;
+            @SerializedName("type")
+            private String mType;
             /**
              * value : 10.00
              * criterion_max : 1.00
@@ -333,6 +354,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setAdvise(String advise) {
                 mAdvise = advise;
+            }
+
+            public String getType() {
+                return mType;
+            }
+
+            public void setType(String type) {
+                mType = type;
             }
 
             public List<BodyDataData> getBodyData() {
@@ -410,6 +439,8 @@ public class BodyTestResult extends BaseResult{
         public static class MuscleData {
             @SerializedName("advise")
             private String mAdvise;
+            @SerializedName("type")
+            private String mType;
             /**
              * value : 10.00
              * evaluate : 1
@@ -427,6 +458,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setAdvise(String advise) {
                 mAdvise = advise;
+            }
+
+            public String getType() {
+                return mType;
+            }
+
+            public void setType(String type) {
+                mType = type;
             }
 
             public List<BodyDataData> getBodyData() {
@@ -494,6 +533,8 @@ public class BodyTestResult extends BaseResult{
         public static class BodyFatData {
             @SerializedName("advise")
             private String mAdvise;
+            @SerializedName("type")
+            private String mType;
             /**
              * value : 1.00
              * evaluate : 1
@@ -512,6 +553,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setAdvise(String advise) {
                 mAdvise = advise;
+            }
+
+            public String getType() {
+                return mType;
+            }
+
+            public void setType(String type) {
+                mType = type;
             }
 
             public List<BodyDataData> getBodyData() {
@@ -587,6 +636,8 @@ public class BodyTestResult extends BaseResult{
         }
 
         public static class FooterData {
+            @SerializedName("type")
+            private String mType;
             /**
              * value : 10.00
              * chinese_name : 肌肉控制
@@ -596,6 +647,14 @@ public class BodyTestResult extends BaseResult{
 
             @SerializedName("body_data")
             private List<BodyDataData> mBodyData;
+
+            public String getType() {
+                return mType;
+            }
+
+            public void setType(String type) {
+                mType = type;
+            }
 
             public List<BodyDataData> getBodyData() {
                 return mBodyData;

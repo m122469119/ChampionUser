@@ -109,7 +109,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment {
         xAxis.setAxisMinValue(0);
         xAxis.setTextSize(10f);
         xAxis.setTextColor(ChartColorUtil.CHART_WHITE);
-        AxisValueFormatter formatter = new BodyChartValueFormatter(mLineChart, dateList);
+        AxisValueFormatter formatter = new BodyChartValueFormatter( dateList);
         xAxis.setValueFormatter(formatter);
     }
 

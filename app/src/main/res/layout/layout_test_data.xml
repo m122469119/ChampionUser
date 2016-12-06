@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/spacing_48dp">
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginBottom="@dimen/spacing_48dp">
 
 
     <LinearLayout
@@ -18,9 +18,13 @@
 
         <include layout="@layout/layout_fat_analyze_map"/>
 
-        <include layout="@layout/layout_muscle_view"/>
+        <include
+            android:id="@+id/layout_muscle_view"
+            layout="@layout/layout_muscle_view"/>
 
-        <include layout="@layout/layout_muscle_view"/>
+        <include
+            android:id="@+id/layout_fat_view"
+            layout="@layout/layout_muscle_view"/>
 
         <include layout="@layout/layout_muscle_fat_suggest_view"/>
 
