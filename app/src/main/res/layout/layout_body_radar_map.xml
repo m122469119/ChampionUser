@@ -28,18 +28,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_12dp"
                     android:gravity="center"
                     android:padding="@dimen/spacing_12dp"
                     android:text="@string/body_radar"
-                     android:layout_marginBottom="@dimen/spacing_12dp"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
 
-                <com.github.mikephil.charting.charts.RadarChart
+                <com.goodchef.liking.widgets.CustomRadarView
                     android:id="@+id/body_ingredient_RadarChart"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="240dp"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
                     />
 
                 <LinearLayout
@@ -70,7 +72,6 @@
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3dp"
                     android:padding="@dimen/spacing_12dp"
-                    android:text="肌肉男指肌肉发达的男子。肌肉男并不是特指肌肉如岩石般坚硬突出的健美运动员，更不是四肢发达头脑简单的代名词，而是对体魄结实男人的赞誉词汇。概念定义一说起“肌肉男”，总有很多人的第一反应会是“四肢发达，头脑简单”。或许从赤膊上阵的许褚、五大三粗的张飞、奇黑粗犷的李逵，到田里辛勤劳作或"
                     android:textColor="@color/c969a9e"
                     android:textSize="@dimen/textsize_small"/>
 

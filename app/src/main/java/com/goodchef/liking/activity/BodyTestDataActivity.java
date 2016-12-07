@@ -3,14 +3,12 @@ package com.goodchef.liking.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,25 +18,19 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.BodyTestResult;
-import com.goodchef.liking.http.result.data.BodyChartValueFormatter;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;
-import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.ChartColorUtil;
 import com.goodchef.liking.utils.TypefaseUtil;
+import com.goodchef.liking.widgets.CustomRadarView;
 import com.goodchef.liking.widgets.MyCircleView;
 
 import java.util.ArrayList;
@@ -68,11 +60,11 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     private TextView mBodyGradeHistoryTextView;//体测评分历史记录
 
     //成分分析
-    private RadarChart mBodyIngredientRadarChart;//身体分析雷达图
+    private CustomRadarView mBodyIngredientRadarChart;//身体分析雷达图
     private TextView mBodyRadarAnalyzeResultTextView;//身体成分分析结果
     private TextView mBodyElementHistoryTextView;//身体成分历史记录
     //肥胖分析
-    private RadarChart mFatAnalyzeRadarChart;//肥胖分析雷达
+    private CustomRadarView mFatAnalyzeRadarChart;//肥胖分析雷达
     private TextView mFatAnalyzeResultTextView;//肥胖分析结论
     private TextView mFatAnalyzeHistoryTextView;//
 
@@ -135,7 +127,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         initToolbar();
         sendRequest();
         mTypeface = TypefaseUtil.getImpactTypeface(this);
-        initRadarChart(mBodyIngredientRadarChart);
+        // initRadarChart(mBodyIngredientRadarChart);
     }
 
 
@@ -170,11 +162,11 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mBodyGradeHistoryTextView = (TextView) findViewById(R.id.body_grade_history_TextView);
         mMyCircleView = (MyCircleView) findViewById(R.id.body_grade_MyCircleView);
 
-        mBodyIngredientRadarChart = (RadarChart) findViewById(R.id.body_ingredient_RadarChart);
+        mBodyIngredientRadarChart = (CustomRadarView) findViewById(R.id.body_ingredient_RadarChart);
         mBodyRadarAnalyzeResultTextView = (TextView) findViewById(R.id.body_radar_analyze_result_TextView);
         mBodyElementHistoryTextView = (TextView) findViewById(R.id.body_element_history_TextView);
 
-        mFatAnalyzeRadarChart = (RadarChart) findViewById(R.id.body_fat_RadarChart);
+        mFatAnalyzeRadarChart = (CustomRadarView) findViewById(R.id.body_fat_RadarChart);
         mFatAnalyzeResultTextView = (TextView) findViewById(R.id.fat_analyze_result_TextView);
         mFatAnalyzeHistoryTextView = (TextView) findViewById(R.id.fat_analyze_history_TextView);
 
@@ -247,7 +239,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         BodyTestResult.BodyTestData.TopDataData gradeData = bodyTestData.getTopData();
         //身体成分分析
         BodyTestResult.BodyTestData.BodyAnalysisData bodyAnalysisData = bodyTestData.getBodyAnalysis();
-        bodyAnalysisType = bodyAnalysisData.getType();
 
         //肥胖分析
         BodyTestResult.BodyTestData.FatAnalysisData fatAnalysisData = bodyTestData.getFatAnalysis();
@@ -258,13 +249,28 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         //底部建议数据
         BodyTestResult.BodyTestData.FooterData adviceData = bodyTestData.getFooter();
 
-        setUserData(bodyUserData);
-        setGradeData(gradeData);
-        setBodyElementAnalyzeData(bodyAnalysisData);
-        setFatAnalysisData(fatAnalysisData);
-        setMuscleData(muscleData);
-        setBodyFatData(bodyFatData);
-        setFootAdviceData(adviceData);
+        if (bodyUserData != null) {
+            setUserData(bodyUserData);
+        }
+        if (gradeData != null) {
+            setGradeData(gradeData);
+        }
+        if (bodyAnalysisData != null) {
+            bodyAnalysisType = bodyAnalysisData.getType();
+            setBodyElementAnalyzeData(bodyAnalysisData);
+        }
+        if (fatAnalysisData != null) {
+            setFatAnalysisData(fatAnalysisData);
+        }
+        if (muscleData != null) {
+            setMuscleData(muscleData);
+        }
+        if (bodyFatData != null) {
+            setBodyFatData(bodyFatData);
+        }
+        if (adviceData != null) {
+            setFootAdviceData(adviceData);
+        }
     }
 
     /**
@@ -310,17 +316,19 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         if (bodyAnalysisData != null) {
             List<BodyTestResult.BodyTestData.BodyAnalysisData.BodyDataData> bodyDataList = bodyAnalysisData.getBodyData();
             List<String> chineseNameList = new ArrayList<>();
+            List<String> unitList = new ArrayList<>();
             List<Float> valueList = new ArrayList<>();
             if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
                 for (int i = 0; i < bodyDataList.size(); i++) {
                     chineseNameList.add(bodyDataList.get(i).getChineseName());
+                    unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
                     float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
                     float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
                     float value = Float.parseFloat(bodyDataList.get(i).getValue());
                     valueList.add(getRadarValueData(max, min, value));
                 }
             }
-            setBodyElementRadarChart(chineseNameList, valueList);
+            setBodyElementRadarChart(chineseNameList, valueList, unitList);
         }
         mBodyRadarAnalyzeResultTextView.setText(bodyAnalysisData.getAdvise());
     }
@@ -342,8 +350,8 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         } else if (radarValue < 0) {
             radarValue = 0;
         }
-        LogUtils.d(TAG, "radarValue ==" + radarValue + "");
-        return radarValue;
+        Log.d(TAG, "radarValue ==" + radarValue + "");
+        return radarValue * 100;
     }
 
     /**
@@ -352,95 +360,19 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
      * @param chineseNameList
      * @param valueList
      */
-    private void setBodyElementRadarChart(final List<String> chineseNameList, List<Float> valueList) {
-        setBodyElementRadarData(valueList);
-        XAxis xAxis = mBodyIngredientRadarChart.getXAxis();
-        xAxis.setTextSize(8f);
-        xAxis.setXOffset(0f);
-        xAxis.setYOffset(0f);
-        AxisValueFormatter formatter = new BodyChartValueFormatter(chineseNameList);
-
-        xAxis.setValueFormatter(new AxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return chineseNameList.get((int) value % chineseNameList.size());
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        });
-        xAxis.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
-
-        YAxis yAxis = mBodyIngredientRadarChart.getYAxis();
-        yAxis.setLabelCount(2, false);
-        yAxis.setTextSize(9f);
-        yAxis.setAxisMinValue(0f);
-        yAxis.setAxisMaxValue(80f);
-        yAxis.setDrawLabels(false); // no axis labels
-        yAxis.setDrawAxisLine(false); // no axis line
-        yAxis.setDrawGridLines(false); // no grid lines
-        yAxis.setDrawZeroLine(false); // draw a zero line
-        yAxis.setEnabled(false);
-        yAxis.setLabelCount(2);
-    }
-
-    public void setBodyElementRadarData(List<Float> valueList) {
-
-        ArrayList<RadarEntry> entries1 = new ArrayList<>();
-        ArrayList<RadarEntry> entries2 = new ArrayList<>();
-        ArrayList<RadarEntry> entries3 = new ArrayList<>();
-
+    private void setBodyElementRadarChart(List<String> chineseNameList, List<Float> valueList, List<String> unitList) {
+        List<Float> minList = new ArrayList<>();
+        List<Float> maxList = new ArrayList<>();
         for (int i = 0; i < valueList.size(); i++) {
-            entries1.add(new RadarEntry((1f / 3f) * 100f));
+            minList.add((1f / 3f) * 100f);
+            maxList.add((2f / 3f) * 100f);
         }
-
-        for (int i = 0; i < valueList.size(); i++) {
-            entries2.add(new RadarEntry((2f / 3f) * 100f));
-        }
-
-        for (int i = 0; i < valueList.size(); i++) {
-            entries3.add(new RadarEntry(valueList.get(i) * 100f));
-        }
-
-        RadarDataSet set1 = new RadarDataSet(entries1, "");
-        set1.setColor(ChartColorUtil.CHART_WHITE);
-        set1.setFillColor(ChartColorUtil.CHART_WHITE);
-        set1.setDrawFilled(true);
-        set1.setFillAlpha(100);
-        set1.setLineWidth(1f);
-        set1.setDrawHighlightCircleEnabled(false);
-        set1.setDrawHighlightIndicators(false);
-
-        RadarDataSet set2 = new RadarDataSet(entries2, "");
-        set2.setColor(ChartColorUtil.CHART_LIGHT_GRAY);
-        set2.setFillColor(ChartColorUtil.CHART_LIGHT_GRAY);
-        set2.setDrawFilled(true);
-        set2.setFillAlpha(100);
-        set2.setLineWidth(1f);
-        set2.setDrawHighlightCircleEnabled(false);
-        set2.setDrawHighlightIndicators(false);
-
-        RadarDataSet set3 = new RadarDataSet(entries3, "");
-        set3.setColor(ChartColorUtil.CHART_LIGHT_GREEN);
-        set3.setFillColor(ChartColorUtil.CHART_LIGHT_GREEN);
-        set3.setDrawFilled(true);
-        set3.setFillAlpha(50);
-        set3.setLineWidth(2f);
-        set3.setDrawHighlightCircleEnabled(false);
-        set3.setDrawHighlightIndicators(false);
-
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-        sets.add(set1);
-        sets.add(set2);
-        sets.add(set3);
-
-        RadarData data = new RadarData(sets);
-        data.setDrawValues(false);
-
-        mBodyIngredientRadarChart.setData(data);
-        mBodyIngredientRadarChart.invalidate();
+        mBodyIngredientRadarChart.setDataCount(valueList.size());
+        mBodyIngredientRadarChart.setTitles(chineseNameList);
+        mBodyIngredientRadarChart.setRadarValueList(valueList);
+        mBodyIngredientRadarChart.setMinValueList(minList);
+        mBodyIngredientRadarChart.setMaxValueList(maxList);
+        mBodyIngredientRadarChart.setValueUnitList(unitList);
     }
 
 
@@ -450,7 +382,39 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
      * @param fatAnalysisData
      */
     private void setFatAnalysisData(BodyTestResult.BodyTestData.FatAnalysisData fatAnalysisData) {
+        if (fatAnalysisData != null) {
+            List<BodyTestResult.BodyTestData.FatAnalysisData.BodyDataData> bodyDataList = fatAnalysisData.getBodyData();
+            List<String> chineseNameList = new ArrayList<>();
+            List<String> unitList = new ArrayList<>();
+            List<Float> valueList = new ArrayList<>();
+            if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
+                for (int i = 0; i < bodyDataList.size(); i++) {
+                    chineseNameList.add(bodyDataList.get(i).getChineseName());
+                    unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
+                    float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
+                    float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
+                    float value = Float.parseFloat(bodyDataList.get(i).getValue());
+                    valueList.add(getRadarValueData(max, min, value));
+                }
+            }
+            setBodyFatRadarChart(chineseNameList, valueList, unitList);
+        }
 
+    }
+
+    private void setBodyFatRadarChart(List<String> chineseNameList, List<Float> valueList, List<String> unitList) {
+        List<Float> minList = new ArrayList<>();
+        List<Float> maxList = new ArrayList<>();
+        for (int i = 0; i < valueList.size(); i++) {
+            minList.add((1f / 3f) * 100f);
+            maxList.add((2f / 3f) * 100f);
+        }
+        mFatAnalyzeRadarChart.setDataCount(valueList.size());
+        mFatAnalyzeRadarChart.setTitles(chineseNameList);
+        mFatAnalyzeRadarChart.setRadarValueList(valueList);
+        mFatAnalyzeRadarChart.setMinValueList(minList);
+        mFatAnalyzeRadarChart.setMaxValueList(maxList);
+        mFatAnalyzeRadarChart.setValueUnitList(unitList);
     }
 
     /**
