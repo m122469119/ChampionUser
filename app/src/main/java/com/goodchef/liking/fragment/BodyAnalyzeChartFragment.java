@@ -93,7 +93,6 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     private void setChartView() {
         mLineChart.setDrawGridBackground(false);
         mLineChart.setBackgroundColor(ChartColorUtil.CHART_LIGHT_BLACK);
-        mLineChart.animateX(3000);
         mLineChart.setDragEnabled(true);
         mLineChart.setScaleEnabled(false);//设置这两个方法可以横向滑动
         mLineChart.setData(generateLineData(totalList));
@@ -101,21 +100,20 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLineChart.setDescription("");
         mLineChart.setExtraOffsets(0f, 30f, 0f, 15f);
         mLineChart.setMinOffset(0f);
-        mLineChart.zoom(1 / zoomLevel, 1, 0, 0);//解决重复筛选缩放问题
+       // mLineChart.zoom(1 / zoomLevel, 1, 0, 0);//解决重复筛选缩放问题
         float scaleX = (float) dateList.size() / 4f;
         if (scaleX < 1f) {
             zoomLevel = 1f;
             scaleX = 1f;
         }
-        mLineChart.zoom(scaleX, 1, 0, 0);//设置横向向右扩展,固定横轴为4个坐标,多的会自动向右伸展
+       // mLineChart.zoom(scaleX, 1, 0, 0);//设置横向向右扩展,固定横轴为4个坐标,多的会自动向右伸展
         zoomLevel = scaleX;
         if (dateList.size() > 0 && totalList.size() > 0) {
             int SelectY = totalList.size() - 1;
             int sleectX = dateList.size() - 1;
-            //  mLineChart.highlightValue(new Highlight((float) sleectX, SelectY), true);
             mLineChart.moveViewToX((float) sleectX);
         }
-        //  mLineChart.setOnChartValueSelectedListener(mOnChartValueSelectedListener);
+        mLineChart.setVisibleXRangeMaximum(4f);//设置只显示4个，多余的往后移动
         mLineChart.invalidate();
 
         Legend l = mLineChart.getLegend();

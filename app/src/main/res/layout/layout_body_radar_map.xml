@@ -10,6 +10,7 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/body_radar_CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_12dp"
@@ -25,16 +26,33 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_12dp"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_12dp"
-                    android:text="@string/body_radar"
-                    android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="@dimen/textsize_small"/>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/body_radar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="@dimen/spacing_12dp"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_12dp"
+                        android:textColor="@color/lesson_details_dark_back"
+                        android:textSize="@dimen/textsize_small"/>
+
+                    <ImageView
+                        android:id="@+id/body_radar_help_ImageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/spacing_12dp"
+                        android:src="@mipmap/icon_help"/>
+
+                </RelativeLayout>
 
                 <com.goodchef.liking.widgets.CustomRadarView
                     android:id="@+id/body_ingredient_RadarChart"
@@ -70,6 +88,7 @@
                     android:id="@+id/body_radar_analyze_result_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_24dp"
                     android:lineSpacingExtra="3dp"
                     android:padding="@dimen/spacing_12dp"
                     android:textColor="@color/c969a9e"

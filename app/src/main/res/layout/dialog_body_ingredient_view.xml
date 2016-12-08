@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/dialog_body_ingredient_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/spacing_12dp"
+        android:paddingTop="@dimen/spacing_12dp"
+        android:textColor="@color/lesson_details_dark_back"
+        android:textSize="13sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dialog_analyze_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

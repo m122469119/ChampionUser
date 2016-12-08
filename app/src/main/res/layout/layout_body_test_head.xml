@@ -70,7 +70,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="雷达"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_15"/>
 
@@ -112,7 +111,6 @@
                             android:id="@+id/person_user_age_TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="25"
                             android:textColor="@color/liking_green_btn_back"
                             android:textSize="32sp"
                             android:textStyle="bold"/>
@@ -154,7 +152,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="80"
                                 android:textColor="@color/liking_green_btn_back"
                                 android:textSize="32sp"
                                 android:textStyle="bold"/>
@@ -165,7 +162,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_4dp"
                                 android:layout_marginTop="@dimen/spacing_8dp"
-                                android:text="cm"
+                                android:text="kg"
                                 android:textColor="@color/lesson_details_dark_back"
                                 android:textSize="@dimen/textsize_small"
                                 android:textStyle="bold"/>

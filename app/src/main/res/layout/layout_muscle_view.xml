@@ -54,6 +54,14 @@
                         android:orientation="vertical"
                         android:paddingLeft="@dimen/spacing_12dp">
 
+                        <TextView
+                            android:id="@+id/left_muscle_percentage_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/spacing_4dp"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:visibility="gone"/>
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -92,6 +100,14 @@
                         android:layout_marginTop="@dimen/spacing_12dp"
                         android:orientation="vertical"
                         android:paddingRight="@dimen/spacing_12dp">
+
+                        <TextView
+                            android:id="@+id/right_muscle_percentage_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/spacing_4dp"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:visibility="gone"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -133,6 +149,14 @@
                         android:paddingBottom="@dimen/spacing_12dp"
                         android:paddingRight="@dimen/spacing_12dp">
 
+                        <TextView
+                            android:id="@+id/right_down_muscle_percentage_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/spacing_4dp"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:visibility="gone"/>
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -172,6 +196,14 @@
                         android:orientation="vertical"
                         android:paddingBottom="@dimen/spacing_12dp"
                         android:paddingLeft="@dimen/spacing_12dp">
+
+                        <TextView
+                            android:id="@+id/left_down_muscle_percentage_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/spacing_4dp"
+                            android:textColor="@color/add_minus_dishes_text"
+                            android:visibility="gone"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -231,10 +263,9 @@
                     android:id="@+id/muscle_analyze_result_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_12dp"
+                    android:layout_marginBottom="@dimen/spacing_24dp"
                     android:lineSpacingExtra="3dp"
                     android:padding="@dimen/spacing_12dp"
-                    android:text="肌肉男指肌肉发达的男子。肌肉男并不是特指肌肉如岩石般坚硬突出的健美运动员，更不是四肢发达头脑简单的代名词，而是对体魄结实男人的赞誉词汇。概念定义一说起“肌肉男”，总有很多人的第一反应会是“四肢发达，头脑简单”。或许从赤膊上阵的许褚、五大三粗的张飞、奇黑粗犷的李逵，到田里辛勤劳作或"
                     android:textColor="@color/c969a9e"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -249,7 +280,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/spacing_8dp"
+        android:layout_marginBottom="@dimen/spacing_4dp"
         android:background="@drawable/shape_radius_green_btn_background"
         android:gravity="center"
         android:minWidth="100dp"

@@ -12,7 +12,7 @@ import java.util.List;
  * version 1.0.0
  */
 
-public class BodyTestResult extends BaseResult{
+public class BodyTestResult extends BaseResult {
 
 
     /**
@@ -208,6 +208,10 @@ public class BodyTestResult extends BaseResult{
             private String mBodyTime;
             @SerializedName("score")
             private String mScore;
+            @SerializedName("title")
+            private String title;
+            @SerializedName("type")
+            private String type;
 
             public String getBodyTime() {
                 return mBodyTime;
@@ -224,6 +228,22 @@ public class BodyTestResult extends BaseResult{
             public void setScore(String score) {
                 mScore = score;
             }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
         }
 
         public static class BodyAnalysisData {
@@ -231,6 +251,9 @@ public class BodyTestResult extends BaseResult{
             private String mAdvise;
             @SerializedName("type")
             private String mType;
+            @SerializedName("title")
+            private String title;
+
             /**
              * value : 120.00
              * criterion_max : 1.00
@@ -259,6 +282,14 @@ public class BodyTestResult extends BaseResult{
                 mType = type;
             }
 
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
             public List<BodyDataData> getBodyData() {
                 return mBodyData;
             }
@@ -280,6 +311,7 @@ public class BodyTestResult extends BaseResult{
                 private String mEnglishName;
                 @SerializedName("unit")
                 private String mUnit;
+
 
                 public String getValue() {
                     return mValue;
@@ -328,6 +360,7 @@ public class BodyTestResult extends BaseResult{
                 public void setUnit(String unit) {
                     mUnit = unit;
                 }
+
             }
         }
 
@@ -336,6 +369,9 @@ public class BodyTestResult extends BaseResult{
             private String mAdvise;
             @SerializedName("type")
             private String mType;
+            @SerializedName("title")
+            private String title;
+
             /**
              * value : 10.00
              * criterion_max : 1.00
@@ -370,6 +406,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setBodyData(List<BodyDataData> bodyData) {
                 mBodyData = bodyData;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
             }
 
             public static class BodyDataData {
@@ -441,6 +485,9 @@ public class BodyTestResult extends BaseResult{
             private String mAdvise;
             @SerializedName("type")
             private String mType;
+
+            @SerializedName("title")
+            private String title;
             /**
              * value : 10.00
              * evaluate : 1
@@ -474,6 +521,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setBodyData(List<BodyDataData> bodyData) {
                 mBodyData = bodyData;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
             }
 
             public static class BodyDataData {
@@ -535,6 +590,8 @@ public class BodyTestResult extends BaseResult{
             private String mAdvise;
             @SerializedName("type")
             private String mType;
+            @SerializedName("title")
+            private String title;
             /**
              * value : 1.00
              * evaluate : 1
@@ -565,6 +622,14 @@ public class BodyTestResult extends BaseResult{
 
             public List<BodyDataData> getBodyData() {
                 return mBodyData;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
             }
 
             public void setBodyData(List<BodyDataData> bodyData) {
@@ -638,6 +703,10 @@ public class BodyTestResult extends BaseResult{
         public static class FooterData {
             @SerializedName("type")
             private String mType;
+
+            @SerializedName("title")
+            private String title;
+
             /**
              * value : 10.00
              * chinese_name : 肌肉控制
@@ -662,6 +731,14 @@ public class BodyTestResult extends BaseResult{
 
             public void setBodyData(List<BodyDataData> bodyData) {
                 mBodyData = bodyData;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
             }
 
             public static class BodyDataData {

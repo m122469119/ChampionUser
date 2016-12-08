@@ -1,178 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    android:id="@+id/muscle_fat_advice_CardView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="@dimen/spacing_12dp"
-                                    android:layout_marginLeft="@dimen/spacing_12dp"
-                                    android:layout_marginRight="@dimen/spacing_12dp"
-                                    android:layout_marginTop="@dimen/spacing_12dp"
-                                    card_view:cardCornerRadius="10dp"
-                                    card_view:cardPreventCornerOverlap="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/spacing_12dp"
-            android:text="@string/muscle_fat_advice"
-            android:textColor="@color/lesson_details_dark_back"
-            android:textSize="@dimen/textsize_15"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/every_day_kcal"
-            android:textColor="@color/c969a9e"
-            android:textSize="@dimen/textsize_small"/>
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/muscle_fat_advice_CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_12dp"
-            android:layout_marginTop="@dimen/spacing_4dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/every_day_cal_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="1600"
-                android:textColor="@color/add_minus_dishes_text"
-                android:textSize="@dimen/textsize_large"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/every_day_cal_unit_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="kcal"
-                android:textColor="@color/lesson_details_dark_back"
-                android:textSize="@dimen/textsize_large"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/spacing_8dp"
-            android:paddingLeft="@dimen/spacing_12dp"
-            android:paddingRight="@dimen/spacing_12dp"
-            android:paddingTop="@dimen/spacing_8dp">
+            android:layout_marginLeft="@dimen/spacing_12dp"
+            android:layout_marginRight="@dimen/spacing_12dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            card_view:cardCornerRadius="10dp"
+            card_view:cardPreventCornerOverlap="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/muscle_control"
+                    android:padding="@dimen/spacing_12dp"
+                    android:text="@string/muscle_fat_advice"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_15"/>
+
+                <TextView
+                    android:id="@+id/every_day_kcal_title_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:textColor="@color/c969a9e"
                     android:textSize="@dimen/textsize_small"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_12dp"
                     android:layout_marginTop="@dimen/spacing_4dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/muscle_control_TextView"
+                        android:id="@+id/every_day_cal_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="+8.9"
                         android:textColor="@color/add_minus_dishes_text"
                         android:textSize="@dimen/textsize_large"
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/muscle_control_unit_TextView"
+                        android:id="@+id/every_day_cal_unit_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="kg"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_large"
                         android:textStyle="bold"/>
                 </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/line"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="脂肪控制"
-                    android:textColor="@color/c969a9e"
-                    android:textSize="@dimen/textsize_small"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_8dp"
+                    android:paddingLeft="@dimen/spacing_12dp"
+                    android:paddingRight="@dimen/spacing_12dp"
+                    android:paddingTop="@dimen/spacing_8dp">
 
-                    <TextView
-                        android:id="@+id/fat_control_TextView"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="+8.9"
-                        android:textColor="@color/add_minus_dishes_text"
-                        android:textSize="@dimen/textsize_large"
-                        android:textStyle="bold"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/fat_control_unit_TextView"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/muscle_control_title_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/c969a9e"
+                            android:textSize="@dimen/textsize_small"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/muscle_control_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/add_minus_dishes_text"
+                                android:textSize="@dimen/textsize_large"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/muscle_control_unit_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/lesson_details_dark_back"
+                                android:textSize="@dimen/textsize_large"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/line"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="kg"
-                        android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_large"
-                        android:textStyle="bold"/>
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fat_control_title_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/c969a9e"
+                            android:textSize="@dimen/textsize_small"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/fat_control_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/add_minus_dishes_text"
+                                android:textSize="@dimen/textsize_large"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/fat_control_unit_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/lesson_details_dark_back"
+                                android:textSize="@dimen/textsize_large"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/spacing_12dp"
-            android:text="@string/more_advice"
-            android:textColor="@color/lesson_details_dark_back"
-            android:textSize="@dimen/textsize_small"/>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_24dp"
+                    android:gravity="center"
+                    android:padding="@dimen/spacing_12dp"
+                    android:text="@string/more_advice"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_small"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/muscle_fat_history_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/spacing_4dp"
+        android:background="@drawable/shape_radius_green_btn_background"
+        android:gravity="center"
+        android:minWidth="100dp"
+        android:padding="@dimen/spacing_8dp"
+        android:text="@string/history_record"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_small"/>
+</RelativeLayout>

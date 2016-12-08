@@ -96,12 +96,15 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView myTrainTime;//训练时间
     private TextView myTrainTimeUnit;
     private TextView myPersonSideData;//个人训练数据
+    private TextView myPersonSideUnit;
+
     private TextView mContactSetviceBtn;//联系客服
 
 
     public static final String NULL_STRING = "";
     private LikingStateView mStateView;
     private boolean isRetryRequest = false;
+    private Typeface mTypeface;
 
     @Nullable
     @Override
@@ -110,6 +113,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         initView(view);
         initViewIconAndText();
         setViewOnClickListener();
+        mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         return view;
     }
 
@@ -147,9 +151,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                         if (LiKingVerifyUtils.isValid(getActivity(), result)) {
                             UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
                             if (exerciseData != null) {
-                                Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Impact.ttf");
-                                myTrainTime.setTypeface(typeFace);
-                                myPersonSideData.setTypeface(typeFace);
+                                setTextViewTypeface();
                                 myTrainTime.setText(exerciseData.getTodayMin());
                                 myPersonSideData.setText(exerciseData.getTodayDistance());
                                 Preference.setIsVip(exerciseData.getIsVip());
@@ -183,12 +185,16 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 清除训练数据
      */
     private void clearExerciseData() {
-        Typeface typeFace = TypefaseUtil.getImpactTypeface(getActivity());
-        myPersonSideData.setTypeface(typeFace);
-        myTrainTimeUnit.setTypeface(typeFace);
-        myTrainTime.setTypeface(typeFace);
+        setTextViewTypeface();
         myPersonSideData.setText("-");
         myTrainTime.setText("-");
+    }
+
+    private void setTextViewTypeface(){
+        myPersonSideData.setTypeface(mTypeface);
+        myTrainTimeUnit.setTypeface(mTypeface);
+        myPersonSideUnit.setTypeface(mTypeface);
+        myTrainTime.setTypeface(mTypeface);
     }
 
     private void setLogonView() {
@@ -243,6 +249,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
         myTrainTimeUnit = (TextView) view.findViewById(R.id.my_train_time_unit);
         myPersonSideData = (TextView) view.findViewById(R.id.person_side_data);
+        myPersonSideUnit = (TextView) view.findViewById(R.id.person_side_data_unit);
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
@@ -393,7 +400,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 //                startActivity(LoginActivity.class);
 //            }
         } else if (v == mPersonSideLayout) {//体侧数据
-            startActivity(BodyTestDataActivity.class);
+            Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
+            intent.putExtra(BodyTestDataActivity.BODY_ID, "");
+            intent.putExtra(BodyTestDataActivity.SOURCE, "other");
+            startActivity(intent);
         }
     }
 

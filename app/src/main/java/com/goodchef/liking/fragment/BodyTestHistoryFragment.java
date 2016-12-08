@@ -1,16 +1,19 @@
 package com.goodchef.liking.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BodyTestDataActivity;
 import com.goodchef.liking.adapter.BodyTestHistoryAdapter;
 import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.mvp.presenter.BodyHistoryPresenter;
@@ -60,7 +63,24 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
             mBodyTestHistoryAdapter = new BodyTestHistoryAdapter(getActivity());
         }
         setRecyclerAdapter(mBodyTestHistoryAdapter);
+        mBodyTestHistoryAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                BodyHistoryResult.BodyHistoryData.ListData object = mBodyTestHistoryAdapter.getDataList().get(position);
+                if (object != null) {
+                    String bodyId = object.getBodyId();
+                    Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
+                    intent.putExtra(BodyTestDataActivity.BODY_ID, bodyId);
+                    intent.putExtra(BodyTestDataActivity.SOURCE, "history");
+                    startActivity(intent);
+                }
+            }
 
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
     }
 
     private void setNoDataView() {

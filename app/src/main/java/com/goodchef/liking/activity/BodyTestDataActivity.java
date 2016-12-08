@@ -1,34 +1,33 @@
 package com.goodchef.liking.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.BodyAnalyzeAdapter;
+import com.goodchef.liking.adapter.FatAnalyzeAdapter;
 import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;
-import com.goodchef.liking.utils.ChartColorUtil;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.CustomRadarView;
 import com.goodchef.liking.widgets.MyCircleView;
@@ -45,6 +44,9 @@ import java.util.List;
 
 public class BodyTestDataActivity extends SwipeBackActivity implements View.OnClickListener, BodyTestView {
 
+    public static final String BODY_ID = "bodyId";
+    public static final String SOURCE = "source";
+
     private HImageView mTopBackgroundHImageView;
     private HImageView mHeadHImageView;
     private TextView mUserNameTextView;
@@ -55,18 +57,26 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     private CardView mHeadCardView;
 
     //评分
+    private CardView mGradeCardView;
+    private TextView mBodyGradeTitle;//标题
     private TextView mBodyTestTimeTextView;//测试时间
     private MyCircleView mMyCircleView;//体测评分圆环
     private TextView mBodyGradeHistoryTextView;//体测评分历史记录
 
     //成分分析
+    private CardView mBodyRadarCardView;
     private CustomRadarView mBodyIngredientRadarChart;//身体分析雷达图
     private TextView mBodyRadarAnalyzeResultTextView;//身体成分分析结果
     private TextView mBodyElementHistoryTextView;//身体成分历史记录
+    private ImageView mBodyRadarHelpImageView;//查看所有明细按钮
+    private TextView mBodyRadarTitle;//标题
     //肥胖分析
+    private CardView mFatCardView;
     private CustomRadarView mFatAnalyzeRadarChart;//肥胖分析雷达
     private TextView mFatAnalyzeResultTextView;//肥胖分析结论
-    private TextView mFatAnalyzeHistoryTextView;//
+    private TextView mFatAnalyzeHistoryTextView;//肥胖分析历史记录
+    private TextView mFatAnalyzeTitle;//标题
+    private ImageView mFatAnalyzeHelpImageView;//查看所有明细
 
     private RelativeLayout mMuscleLayout;
     private RelativeLayout mFatLayout;
@@ -97,19 +107,35 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     //---end------
 
     //footer建议
+    private CardView mFootCardView;
+    private TextView mEveryDayKcalTitleTextView;
     private TextView mEveryDayCalTextView;
     private TextView mEveryDayCalUnitTextView;
+
+    private TextView mMuscleControlTitleTextView;
     private TextView mMuscleControlTextView;
     private TextView mMuscleControlUnitTextView;
+
+    private TextView mFatControlTitleTextView;
     private TextView mFatControlTextView;
     private TextView mFatControlUnitTextView;
+    private TextView mAdviceHistoryTextView;
+    //---end-
 
     private TextView mBodyTestHistoryTextView;//体测历史
 
     private BodyTestPresenter mBodyTestPresenter;
     private Typeface mTypeface;
 
-    private String bodyAnalysisType;
+    private BodyTestResult.BodyTestData.TopDataData gradeData;//评分数据
+    private BodyTestResult.BodyTestData.BodyAnalysisData bodyAnalysisData;//身体成分分析Data
+    private BodyTestResult.BodyTestData.FatAnalysisData fatAnalysisData;//肥胖分析Data
+    private BodyTestResult.BodyTestData.MuscleData muscleData;//节段肌肉
+    private BodyTestResult.BodyTestData.BodyFatData bodyFatData; //节段脂肪
+    private BodyTestResult.BodyTestData.FooterData adviceData;//底部数据
+
+    private String bodyId = "";
+    private String sourse = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,13 +147,22 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //        }
-        //透明导航栏
-
+        bodyId = getIntent().getStringExtra(BODY_ID);
+        sourse = getIntent().getStringExtra(SOURCE);
+        setSourceView();
         initViewOnClickListener();
         initToolbar();
         sendRequest();
         mTypeface = TypefaseUtil.getImpactTypeface(this);
-        // initRadarChart(mBodyIngredientRadarChart);
+    }
+
+
+    private void setSourceView() {
+        if (sourse.equals("history")) {
+            mBodyTestHistoryTextView.setVisibility(View.GONE);
+        } else {
+            mBodyTestHistoryTextView.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -158,72 +193,169 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mUserWeightUnit = (TextView) findViewById(R.id.user_weight_unit);
         mHeadCardView = (CardView) findViewById(R.id.body_test_CardView);
 
+        mGradeCardView = (CardView) findViewById(R.id.body_grade_CardView);
+        mBodyGradeTitle = (TextView) findViewById(R.id.body_grade_title);
         mBodyTestTimeTextView = (TextView) findViewById(R.id.body_test_time_TextView);
         mBodyGradeHistoryTextView = (TextView) findViewById(R.id.body_grade_history_TextView);
         mMyCircleView = (MyCircleView) findViewById(R.id.body_grade_MyCircleView);
 
+        mBodyRadarCardView = (CardView) findViewById(R.id.body_radar_CardView);
+        mBodyRadarTitle = (TextView) findViewById(R.id.body_radar_title);
         mBodyIngredientRadarChart = (CustomRadarView) findViewById(R.id.body_ingredient_RadarChart);
         mBodyRadarAnalyzeResultTextView = (TextView) findViewById(R.id.body_radar_analyze_result_TextView);
         mBodyElementHistoryTextView = (TextView) findViewById(R.id.body_element_history_TextView);
+        mBodyRadarHelpImageView = (ImageView) findViewById(R.id.body_radar_help_ImageView);
 
+        mFatCardView = (CardView) findViewById(R.id.fat_analyze_CardView);
+        mFatAnalyzeTitle = (TextView) findViewById(R.id.fat_analyze_title_TextView);
         mFatAnalyzeRadarChart = (CustomRadarView) findViewById(R.id.body_fat_RadarChart);
         mFatAnalyzeResultTextView = (TextView) findViewById(R.id.fat_analyze_result_TextView);
         mFatAnalyzeHistoryTextView = (TextView) findViewById(R.id.fat_analyze_history_TextView);
+        mFatAnalyzeHelpImageView = (ImageView) findViewById(R.id.fat_analyze_help_ImageView);
 
         mMuscleLayout = (RelativeLayout) findViewById(R.id.layout_muscle_view);
         mFatLayout = (RelativeLayout) findViewById(R.id.layout_fat_view);
 
+        mFootCardView = (CardView) findViewById(R.id.muscle_fat_advice_CardView);
+        mEveryDayKcalTitleTextView = (TextView) findViewById(R.id.every_day_kcal_title_TextView);
         mEveryDayCalTextView = (TextView) findViewById(R.id.every_day_cal_TextView);
         mEveryDayCalUnitTextView = (TextView) findViewById(R.id.every_day_cal_unit_TextView);
+        mMuscleControlTitleTextView = (TextView) findViewById(R.id.muscle_control_title_TextView);
         mMuscleControlTextView = (TextView) findViewById(R.id.muscle_control_TextView);
         mMuscleControlUnitTextView = (TextView) findViewById(R.id.muscle_control_unit_TextView);
+        mFatControlTitleTextView = (TextView) findViewById(R.id.fat_control_title_TextView);
         mFatControlTextView = (TextView) findViewById(R.id.fat_control_TextView);
         mFatControlUnitTextView = (TextView) findViewById(R.id.fat_control_unit_TextView);
-
+        mAdviceHistoryTextView = (TextView) findViewById(R.id.muscle_fat_history_TextView);
 
         mBodyTestHistoryTextView = (TextView) findViewById(R.id.body_test_history_TextView);
+
+        if (Build.VERSION.SDK_INT < 21) {
+            mHeadCardView.setCardElevation(0f);
+            mGradeCardView.setCardElevation(0f);
+            mBodyRadarCardView.setCardElevation(0f);
+            mFatCardView.setCardElevation(0f);
+            mFootCardView.setCardElevation(0f);
+        } else {
+            mHeadCardView.setCardElevation(10f);
+            mGradeCardView.setCardElevation(10f);
+            mBodyRadarCardView.setCardElevation(10f);
+            mFatCardView.setCardElevation(10f);
+            mFootCardView.setCardElevation(10f);
+        }
     }
 
     private void initViewOnClickListener() {
         mBodyElementHistoryTextView.setOnClickListener(this);
         mBodyTestHistoryTextView.setOnClickListener(this);
         mBodyGradeHistoryTextView.setOnClickListener(this);
-
+        mFatAnalyzeHistoryTextView.setOnClickListener(this);
+        mBodyRadarHelpImageView.setOnClickListener(this);
+        mFatAnalyzeHelpImageView.setOnClickListener(this);
+        mAdviceHistoryTextView.setOnClickListener(this);
     }
 
     private void sendRequest() {
         if (mBodyTestPresenter == null) {
             mBodyTestPresenter = new BodyTestPresenter(this, this);
         }
-        mBodyTestPresenter.getBodyData("");
-    }
-
-    private void initRadarChart(RadarChart radarChart) {
-        radarChart.setBackgroundColor(Color.rgb(255, 255, 255));
-        radarChart.setWebLineWidth(1f);
-        radarChart.setWebColor(ChartColorUtil.CHART_LIGHT_GRAY);
-        radarChart.setWebLineWidthInner(1f);
-        radarChart.setWebColorInner(ChartColorUtil.CHART_LIGHT_GRAY);
-        radarChart.setWebAlpha(255);
-        radarChart.setDescription("");//去掉说明
-        radarChart.setRotationEnabled(false);//设置旋转
-        radarChart.animateXY(1400, 1400, Easing.EasingOption.EaseInOutQuad, Easing.EasingOption.EaseInOutQuad);
+        mBodyTestPresenter.getBodyData(bodyId);
     }
 
 
     @Override
     public void onClick(View v) {
         if (v == mBodyGradeHistoryTextView) {//体侧评分历史记录
-            startBodyAnalyzeChartActivity("体测评分", "top_data");
+            startBodyAnalyzeChartActivity(gradeData.getTitle(), gradeData.getType());
         } else if (v == mBodyElementHistoryTextView) {//身体成分历史记录
-            startBodyAnalyzeChartActivity("身体成分分析", bodyAnalysisType);
-        } else if (v == mBodyTestHistoryTextView) {
+            startBodyAnalyzeChartActivity(bodyAnalysisData.getTitle(), bodyAnalysisData.getType());
+        } else if (v == mFatAnalyzeHistoryTextView) {//肥胖分析历史记录
+            startBodyAnalyzeChartActivity(fatAnalysisData.getTitle(), fatAnalysisData.getType());
+        } else if (v == mAdviceHistoryTextView) {
+            startBodyAnalyzeChartActivity(adviceData.getTitle(), adviceData.getType());
+        } else if (v == mBodyRadarHelpImageView) {//身体成分分析雷达图
+            showBodyIngredientDialog();
+        } else if (v == mFatAnalyzeHelpImageView) {//肥胖分析雷达图
+            showFatAnalyzeDialog();
+        } else if (v == mBodyTestHistoryTextView) {//历史记录
             startActivity(BodyTestHistoryActivity.class);
-        } else if (v == mMuscleResultHistoryTextView) {//节段肌肉历史记录
-
         }
     }
 
+    /**
+     * 展示肥胖分析dialog
+     */
+    private void showFatAnalyzeDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_body_ingredient_view, null, false);
+        setFatAnalyzeDialogView(view);
+        builder.setCustomView(view);
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    /**
+     * 展示身体成分分析具体数据
+     */
+    private void showBodyIngredientDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_body_ingredient_view, null, false);
+        setBodyAnalyzeView(view);
+        builder.setCustomView(view);
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    /**
+     * 设置肥胖分析view
+     *
+     * @param view
+     */
+    private void setFatAnalyzeDialogView(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dialog_analyze_RecyclerView);
+        TextView titleTextView = (TextView) view.findViewById(R.id.dialog_body_ingredient_title);
+        List<BodyTestResult.BodyTestData.FatAnalysisData.BodyDataData> bodyDataList = fatAnalysisData.getBodyData();
+        titleTextView.setText(fatAnalysisData.getTitle());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FatAnalyzeAdapter adapter = new FatAnalyzeAdapter(this);
+        adapter.setData(bodyDataList);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    /**
+     * 设置身体成分分析明细对话框数据
+     *
+     * @param view
+     */
+    private void setBodyAnalyzeView(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dialog_analyze_RecyclerView);
+        TextView titleTextView = (TextView) view.findViewById(R.id.dialog_body_ingredient_title);
+        List<BodyTestResult.BodyTestData.BodyAnalysisData.BodyDataData> bodyDataList = bodyAnalysisData.getBodyData();
+        titleTextView.setText(bodyAnalysisData.getTitle());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BodyAnalyzeAdapter analyzeAdapter = new BodyAnalyzeAdapter(this);
+        analyzeAdapter.setData(bodyDataList);
+        recyclerView.setAdapter(analyzeAdapter);
+    }
+
+
+    /**
+     * 跳转到历史记录
+     *
+     * @param title   标题
+     * @param modules 类型
+     */
     private void startBodyAnalyzeChartActivity(String title, String modules) {
         Intent intent = new Intent(this, BodyAnalyzeChartActivity.class);
         intent.putExtra(BodyAnalyzeChartActivity.KEY_HISTORY_TITLE, title);
@@ -236,40 +368,40 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         //用户基本信息
         BodyTestResult.BodyTestData.UserDataData bodyUserData = bodyTestData.getUserData();
         //评分数据
-        BodyTestResult.BodyTestData.TopDataData gradeData = bodyTestData.getTopData();
+        gradeData = bodyTestData.getTopData();
         //身体成分分析
-        BodyTestResult.BodyTestData.BodyAnalysisData bodyAnalysisData = bodyTestData.getBodyAnalysis();
-
+        bodyAnalysisData = bodyTestData.getBodyAnalysis();
         //肥胖分析
-        BodyTestResult.BodyTestData.FatAnalysisData fatAnalysisData = bodyTestData.getFatAnalysis();
+        fatAnalysisData = bodyTestData.getFatAnalysis();
         //节段肌肉
-        BodyTestResult.BodyTestData.MuscleData muscleData = bodyTestData.getMuscle();
+        muscleData = bodyTestData.getMuscle();
         //节段脂肪
-        BodyTestResult.BodyTestData.BodyFatData bodyFatData = bodyTestData.getBodyFat();
+        bodyFatData = bodyTestData.getBodyFat();
         //底部建议数据
-        BodyTestResult.BodyTestData.FooterData adviceData = bodyTestData.getFooter();
+        adviceData = bodyTestData.getFooter();
 
         if (bodyUserData != null) {
             setUserData(bodyUserData);
         }
         if (gradeData != null) {
-            setGradeData(gradeData);
+            setGradeData();
         }
         if (bodyAnalysisData != null) {
-            bodyAnalysisType = bodyAnalysisData.getType();
-            setBodyElementAnalyzeData(bodyAnalysisData);
+            mBodyRadarTitle.setText(bodyAnalysisData.getTitle());
+            setBodyElementAnalyzeData();
         }
         if (fatAnalysisData != null) {
-            setFatAnalysisData(fatAnalysisData);
+            mFatAnalyzeTitle.setText(fatAnalysisData.getTitle());
+            setFatAnalysisData();
         }
         if (muscleData != null) {
-            setMuscleData(muscleData);
+            setMuscleData();
         }
         if (bodyFatData != null) {
-            setBodyFatData(bodyFatData);
+            setBodyFatData();
         }
         if (adviceData != null) {
-            setFootAdviceData(adviceData);
+            setFootAdviceData();
         }
     }
 
@@ -301,35 +433,32 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
     /***
      * 设置体测评分数据
-     *
-     * @param gradeData 体测评分数据
      */
-    private void setGradeData(BodyTestResult.BodyTestData.TopDataData gradeData) {
+    private void setGradeData() {
         if (gradeData != null) {
+            mBodyGradeTitle.setText(gradeData.getTitle());
             mMyCircleView.setCurrentCount(100, Integer.parseInt(gradeData.getScore()));
             mMyCircleView.setTextTypeface(TypefaseUtil.getImpactTypeface(this));
             mBodyTestTimeTextView.setText(gradeData.getBodyTime());
         }
     }
 
-    private void setBodyElementAnalyzeData(BodyTestResult.BodyTestData.BodyAnalysisData bodyAnalysisData) {
-        if (bodyAnalysisData != null) {
-            List<BodyTestResult.BodyTestData.BodyAnalysisData.BodyDataData> bodyDataList = bodyAnalysisData.getBodyData();
-            List<String> chineseNameList = new ArrayList<>();
-            List<String> unitList = new ArrayList<>();
-            List<Float> valueList = new ArrayList<>();
-            if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
-                for (int i = 0; i < bodyDataList.size(); i++) {
-                    chineseNameList.add(bodyDataList.get(i).getChineseName());
-                    unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
-                    float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
-                    float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
-                    float value = Float.parseFloat(bodyDataList.get(i).getValue());
-                    valueList.add(getRadarValueData(max, min, value));
-                }
+    private void setBodyElementAnalyzeData() {
+        List<BodyTestResult.BodyTestData.BodyAnalysisData.BodyDataData> bodyDataList = bodyAnalysisData.getBodyData();
+        List<String> chineseNameList = new ArrayList<>();
+        List<String> unitList = new ArrayList<>();
+        List<Float> valueList = new ArrayList<>();
+        if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
+            for (int i = 0; i < bodyDataList.size(); i++) {
+                chineseNameList.add(bodyDataList.get(i).getChineseName());
+                unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
+                float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
+                float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
+                float value = Float.parseFloat(bodyDataList.get(i).getValue());
+                valueList.add(getRadarValueData(max, min, value));
             }
-            setBodyElementRadarChart(chineseNameList, valueList, unitList);
         }
+        setBodyElementRadarChart(chineseNameList, valueList, unitList);
         mBodyRadarAnalyzeResultTextView.setText(bodyAnalysisData.getAdvise());
     }
 
@@ -378,28 +507,24 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
     /**
      * 设置肥胖分析数据
-     *
-     * @param fatAnalysisData
      */
-    private void setFatAnalysisData(BodyTestResult.BodyTestData.FatAnalysisData fatAnalysisData) {
-        if (fatAnalysisData != null) {
-            List<BodyTestResult.BodyTestData.FatAnalysisData.BodyDataData> bodyDataList = fatAnalysisData.getBodyData();
-            List<String> chineseNameList = new ArrayList<>();
-            List<String> unitList = new ArrayList<>();
-            List<Float> valueList = new ArrayList<>();
-            if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
-                for (int i = 0; i < bodyDataList.size(); i++) {
-                    chineseNameList.add(bodyDataList.get(i).getChineseName());
-                    unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
-                    float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
-                    float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
-                    float value = Float.parseFloat(bodyDataList.get(i).getValue());
-                    valueList.add(getRadarValueData(max, min, value));
-                }
+    private void setFatAnalysisData() {
+        List<BodyTestResult.BodyTestData.FatAnalysisData.BodyDataData> bodyDataList = fatAnalysisData.getBodyData();
+        List<String> chineseNameList = new ArrayList<>();
+        List<String> unitList = new ArrayList<>();
+        List<Float> valueList = new ArrayList<>();
+        if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
+            for (int i = 0; i < bodyDataList.size(); i++) {
+                chineseNameList.add(bodyDataList.get(i).getChineseName());
+                unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
+                float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
+                float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
+                float value = Float.parseFloat(bodyDataList.get(i).getValue());
+                valueList.add(getRadarValueData(max, min, value));
             }
-            setBodyFatRadarChart(chineseNameList, valueList, unitList);
         }
-
+        setBodyFatRadarChart(chineseNameList, valueList, unitList);
+        mFatAnalyzeResultTextView.setText(fatAnalysisData.getAdvise());
     }
 
     private void setBodyFatRadarChart(List<String> chineseNameList, List<Float> valueList, List<String> unitList) {
@@ -419,13 +544,11 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
     /**
      * 设置节段肌肉数据
-     *
-     * @param muscleData
      */
-    private void setMuscleData(BodyTestResult.BodyTestData.MuscleData muscleData) {
+    private void setMuscleData() {
         setMuscleView(mMuscleLayout);
 
-        mMuscleAnalyzeTitle.setText("节段肌肉");
+        mMuscleAnalyzeTitle.setText(muscleData.getTitle());
         mMuscleAnalyzeImageView.setImageResource(R.mipmap.icon_muscle);
 
         List<BodyTestResult.BodyTestData.MuscleData.BodyDataData> bodyListData = muscleData.getBodyData();
@@ -447,6 +570,12 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mLeftDownMuscleEvaluateTextView.setText(bodyListData.get(3).getEvaluate());
 
         mMuscleAnalyzeResultTextView.setText(muscleData.getAdvise());
+        mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startBodyAnalyzeChartActivity(muscleData.getTitle(), muscleData.getType());
+            }
+        });
     }
 
     private void setMuscleView(View view) {
@@ -472,6 +601,12 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
         mMuscleAnalyzeResultTextView = (TextView) view.findViewById(R.id.muscle_analyze_result_TextView);
         mMuscleResultHistoryTextView = (TextView) view.findViewById(R.id.muscle_result_history_TextView);
+
+        if (Build.VERSION.SDK_INT < 21) {
+            mMuscleCardView.setCardElevation(0);
+        } else {
+            mMuscleCardView.setCardElevation(10);
+        }
         setBodyFatTypeface();
     }
 
@@ -492,13 +627,11 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
     /**
      * 设置节段脂肪数据
-     *
-     * @param bodyFatData
      */
-    private void setBodyFatData(BodyTestResult.BodyTestData.BodyFatData bodyFatData) {
+    private void setBodyFatData() {
         setMuscleView(mFatLayout);
 
-        mMuscleAnalyzeTitle.setText("节段脂肪");
+        mMuscleAnalyzeTitle.setText(bodyFatData.getTitle());
         mMuscleAnalyzeImageView.setImageResource(R.mipmap.icon_axunge);
 
         List<BodyTestResult.BodyTestData.BodyFatData.BodyDataData> bodyListData = bodyFatData.getBodyData();
@@ -520,22 +653,35 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mLeftDownMuscleEvaluateTextView.setText(bodyListData.get(3).getEvaluate());
 
         mMuscleAnalyzeResultTextView.setText(bodyFatData.getAdvise());
-
+        mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startBodyAnalyzeChartActivity(bodyFatData.getTitle(), bodyFatData.getType());
+            }
+        });
     }
 
 
     /**
      * 设置底部建议数据
-     *
-     * @param adviceData
      */
-    private void setFootAdviceData(BodyTestResult.BodyTestData.FooterData adviceData) {
+    private void setFootAdviceData() {
         List<BodyTestResult.BodyTestData.FooterData.BodyDataData> bodyData = adviceData.getBodyData();
+        mEveryDayKcalTitleTextView.setText(bodyData.get(1).getChineseName());
         mEveryDayCalTextView.setText(bodyData.get(1).getValue() + " ");
         mEveryDayCalUnitTextView.setText(bodyData.get(1).getUnit());
+
+        mMuscleControlTitleTextView.setText(bodyData.get(0).getChineseName());
         mMuscleControlTextView.setText(bodyData.get(0).getValue() + " ");
         mMuscleControlUnitTextView.setText(bodyData.get(0).getUnit());
-        mFatControlTextView.setText(bodyData.get(2).getValue() + " ");
+
+        mFatControlTitleTextView.setText(bodyData.get(2).getChineseName());
+        String fatValue = bodyData.get(2).getValue();
+        if (Float.parseFloat(fatValue) >= 0) {
+            mFatControlTextView.setText("+" + fatValue + " ");
+        } else {
+            mFatControlTextView.setText(fatValue + " ");
+        }
         mFatControlUnitTextView.setText(bodyData.get(2).getUnit());
 
         setTxtViewTypeface(mEveryDayCalTextView);

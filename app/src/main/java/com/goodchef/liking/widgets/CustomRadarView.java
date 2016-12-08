@@ -346,7 +346,7 @@ public class CustomRadarView extends View {
                     y = centerY + 10;
                 } else if (i == 2) {
                     x = (int) (centerX - (titleWidth / 2));
-                    y = (int) (centerY + radius + (titleWidth / 2)) - 40;
+                    y = (int) (centerY + radius + (titleWidth / 2)) + 10;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth)) - 40;
                     y = centerY + 10;
@@ -400,8 +400,8 @@ public class CustomRadarView extends View {
                     x = (int) (centerX + radius + (titleWidth / 2));
                     y = centerY + 60;
                 } else if (i == 2) {
-                    x = (int) (centerX - (titleWidth / 2) + unitWidth / 2);
-                    y = (int) (centerY + radius + (titleWidth / 2));
+                    x = (int) (centerX - (titleWidth / 2) + 10);
+                    y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) + 20;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth) - unitWidth / 2) + 10;
                     y = centerY + 60;
