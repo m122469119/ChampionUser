@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -13,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,12 +25,14 @@ import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyAnalyzeAdapter;
 import com.goodchef.liking.adapter.FatAnalyzeAdapter;
 import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;
+import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.CustomRadarView;
 import com.goodchef.liking.widgets.MyCircleView;
@@ -142,11 +147,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_test_data);
         initView();
-        //透明状态栏
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        }
         bodyId = getIntent().getStringExtra(BODY_ID);
         sourse = getIntent().getStringExtra(SOURCE);
         setSourceView();
@@ -154,6 +154,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         initToolbar();
         sendRequest();
         mTypeface = TypefaseUtil.getImpactTypeface(this);
+        StatusBarUtils.setWindowStatusBarColor(this);
     }
 
 
