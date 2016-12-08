@@ -6,7 +6,9 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.BodyTestView;
@@ -24,9 +26,10 @@ public class BodyTestPresenter extends BasePresenter<BodyTestView> {
     }
 
     public void getBodyData(String bodyId) {
-        LiKingApi.getBodyTestData(bodyId, new RequestCallback<BodyTestResult>() {
+        LiKingApi.getBodyTestData(bodyId, new RequestUiLoadingCallback<BodyTestResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(BodyTestResult result) {
+                super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateBodyTestView(result.getData());
                 } else {
@@ -36,7 +39,7 @@ public class BodyTestPresenter extends BasePresenter<BodyTestView> {
 
             @Override
             public void onFailure(RequestError error) {
-                mView.handleNetworkFailure();
+                super.onFailure(error);
             }
         });
     }

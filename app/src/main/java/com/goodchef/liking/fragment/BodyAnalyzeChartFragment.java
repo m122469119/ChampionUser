@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -24,6 +26,7 @@ import com.goodchef.liking.http.result.data.BodyHistoryData;
 import com.goodchef.liking.mvp.presenter.BodyAnalyzeHistoryPresenter;
 import com.goodchef.liking.mvp.view.BodyAnalyzeHistoryView;
 import com.goodchef.liking.utils.ChartColorUtil;
+import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +45,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     private List<String> dateList = new ArrayList<>();
     private List<BodyHistoryData> historyDataList;
     private BodyAnalyzeHistoryPresenter mBodyAnalyzeHistoryPresenter;
-    private float zoomLevel = 1f;
-    public static  String KEY_HISTORY_LIST = "key_history_list";
+    public static String KEY_HISTORY_LIST = "key_history_list";
+    private LikingStateView mLikingStateView;
 
     public static BodyAnalyzeChartFragment newInstance(Bundle args) {
         BodyAnalyzeChartFragment fragment = new BodyAnalyzeChartFragment();
@@ -54,9 +57,10 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_analyze, container, false);
+        View view = inflater.inflate(R.layout.fragment_analyze_state_view, container, false);
+        mLikingStateView = (LikingStateView) view.findViewById(R.id.analyze_chart_stateView);
         mLineChart = (LineChart) view.findViewById(R.id.analyze_LineChart);
-        historyDataList=  getArguments().getParcelableArrayList(KEY_HISTORY_LIST);
+        historyDataList = getArguments().getParcelableArrayList(KEY_HISTORY_LIST);
         initChartData();
         return view;
     }
@@ -76,10 +80,16 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         if (mBodyAnalyzeHistoryPresenter == null) {
             mBodyAnalyzeHistoryPresenter = new BodyAnalyzeHistoryPresenter(getActivity(), this);
         }
+        mLikingStateView.setState(StateView.State.LOADING);
         mBodyAnalyzeHistoryPresenter.getBodyAnalyzeHistory(column);
     }
 
     private void initChartData() {
+        if (ListUtils.isEmpty(historyDataList)) {
+            mLikingStateView.setState(StateView.State.NO_DATA);
+        } else {
+            mLikingStateView.setState(StateView.State.SUCCESS);
+        }
         dateList.add(0, "");
         for (int i = 0; i < historyDataList.size(); i++) {
             dateList.add(historyDataList.get(i).getBodyTime());
@@ -100,16 +110,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLineChart.setDescription("");
         mLineChart.setExtraOffsets(0f, 30f, 0f, 15f);
         mLineChart.setMinOffset(0f);
-       // mLineChart.zoom(1 / zoomLevel, 1, 0, 0);//解决重复筛选缩放问题
-        float scaleX = (float) dateList.size() / 4f;
-        if (scaleX < 1f) {
-            zoomLevel = 1f;
-            scaleX = 1f;
-        }
-       // mLineChart.zoom(scaleX, 1, 0, 0);//设置横向向右扩展,固定横轴为4个坐标,多的会自动向右伸展
-        zoomLevel = scaleX;
         if (dateList.size() > 0 && totalList.size() > 0) {
-            int SelectY = totalList.size() - 1;
             int sleectX = dateList.size() - 1;
             mLineChart.moveViewToX((float) sleectX);
         }
@@ -160,15 +161,15 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
 
         }
         LineDataSet ds0 = new LineDataSet(yVals0, "");
-        ds0.setLineWidth(6f);//设置折线图的宽度
+        ds0.setLineWidth(4f);//设置折线图的宽度
         ds0.setDrawCircles(true);
         ds0.setColor(ChartColorUtil.CHART_LIGHT_GREEN);//设置折线图的颜色
         ds0.setCircleColor(ChartColorUtil.CHART_LIGHT_GREEN);//设置折线图圆圈的颜色
-        ds0.setCircleRadius(8f);//设置圆圈的半径
+        ds0.setCircleRadius(7f);//设置圆圈的半径
         ds0.setDrawCircleHole(true);//设置圆圈空心还是实心,false为实心
-        ds0.setCircleHoleRadius(4f);
+        ds0.setCircleHoleRadius(3f);
         ds0.setDrawValues(true);
-        ds0.setValueTextSize(13f);
+        ds0.setValueTextSize(12f);
         ds0.setValueTextColor(ChartColorUtil.CHART_WHITE);
         ds0.setHighlightEnabled(true);
         ds0.setDrawFilled(true);
@@ -180,12 +181,13 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
 
     @Override
     public void updateBodyAnalyzeHistoryView(BodyAnalyzeHistoryResult.BodyHistory data) {
+        mLikingStateView.setState(StateView.State.SUCCESS);
         historyDataList = data.getHistoryData();
         initChartData();
     }
 
     @Override
     public void handleNetworkFailure() {
-
+        mLikingStateView.setState(StateView.State.FAILED);
     }
 }

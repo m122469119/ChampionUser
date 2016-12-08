@@ -190,7 +190,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         myTrainTime.setText("-");
     }
 
-    private void setTextViewTypeface(){
+    private void setTextViewTypeface() {
         myPersonSideData.setTypeface(mTypeface);
         myTrainTimeUnit.setTypeface(mTypeface);
         myPersonSideUnit.setTypeface(mTypeface);
@@ -320,16 +320,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(LoginActivity.class);
             }
         } else if (v == mLoginBtn) {//登录
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         } else if (v == mHeadInfoLayout || v == mHeadHImageView) {
             if (!Preference.isLogin()) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(LoginActivity.class);
             } else {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
@@ -343,16 +341,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), MyLessonActivity.class);
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(LoginActivity.class);
             }
         } else if (v == mMyOrderLayout) {//我的订单
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), MyOrderActivity.class);
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(LoginActivity.class);
             }
         } else if (v == mMemberCardLayout) {//会员卡
             if (Preference.isLogin()) {
@@ -360,8 +356,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), MyCardActivity.class);
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(LoginActivity.class);
             }
         } else if (v == mCouponsLayout) {//我的优惠券
             if (Preference.isLogin()) {
@@ -370,8 +365,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, CouponsActivity.TYPE_MY_COUPONS);
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(LoginActivity.class);
             }
         } else if (v == mContactJoinLayout) {//联系加盟
             Intent intent = new Intent(getActivity(), ContactJonInActivity.class);
@@ -400,10 +394,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 //                startActivity(LoginActivity.class);
 //            }
         } else if (v == mPersonSideLayout) {//体侧数据
-            Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
-            intent.putExtra(BodyTestDataActivity.BODY_ID, "");
-            intent.putExtra(BodyTestDataActivity.SOURCE, "other");
-            startActivity(intent);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
+                intent.putExtra(BodyTestDataActivity.BODY_ID, "");
+                intent.putExtra(BodyTestDataActivity.SOURCE, "other");
+                startActivity(intent);
+            } else {
+                startActivity(LoginActivity.class);
+            }
         }
     }
 
