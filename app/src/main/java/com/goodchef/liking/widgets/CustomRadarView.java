@@ -14,6 +14,7 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.utils.ChartColorUtil;
 import com.goodchef.liking.utils.TypefaseUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,13 +34,12 @@ public class CustomRadarView extends View {
     private int centerY;
     //各维度标题
     private List<String> titles;
-    //各维度分值
-    private float[] data = {80, 86, 70, 85, 80};
 
     private List<Float> radarValueList;
     private List<Float> minValueList;
     private List<Float> maxValueList;
     private List<String> valueUnitList;//单位和具体值
+    private List<String> standardList = new ArrayList<>();
     //数据最大值
     private float maxValue = 100f;
     //雷达图与标题的间距
@@ -55,10 +55,12 @@ public class CustomRadarView extends View {
     //标题画笔
     private Paint titlePaint;
     private Paint unitPaint;
+    private Paint standardPaint;
     private Typeface mTypeface;
 
     //标题文字大小
     private int titleSize = DisplayUtils.dp2px(13);
+    private int standtitleSize = DisplayUtils.dp2px(9);
 
     public CustomRadarView(Context context) {
         super(context);
@@ -115,6 +117,11 @@ public class CustomRadarView extends View {
         unitPaint.setColor(ChartColorUtil.CHART_LIGHT_GREEN);
         unitPaint.setStyle(Paint.Style.FILL);
 
+        standardPaint = new Paint();
+        standardPaint.setAntiAlias(true);
+        standardPaint.setTextSize(standtitleSize);
+        standardPaint.setColor(ChartColorUtil.CHART_STAND_TEXT);
+        standardPaint.setStyle(Paint.Style.STROKE);
     }
 
     public void setDataCount(int dataCount) {
@@ -142,6 +149,7 @@ public class CustomRadarView extends View {
         postInvalidate();//刷新view
     }
 
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         //雷达图半径
@@ -163,6 +171,7 @@ public class CustomRadarView extends View {
         drawRegionView(canvas);//绘制数据
         drawTitle(canvas);//绘制标题
         drawUnit(canvas);//绘制值和单位
+        drawStandardText(canvas);
     }
 
     /**
@@ -298,6 +307,10 @@ public class CustomRadarView extends View {
         this.radarValueList = radarValueList;
         dataCount = radarValueList.size();
         radian = (float) (Math.PI * 2 / dataCount);
+        standardList.add("偏低");
+        standardList.add("标准");
+        standardList.add("偏高");
+        postInvalidate();
     }
 
     /**
@@ -408,6 +421,29 @@ public class CustomRadarView extends View {
                 }
                 canvas.drawText(valueUnitList.get(i), x, y, unitPaint);
             }
+        }
+    }
+
+
+    private void drawStandardText(Canvas canvas) {
+        if (standardList == null) {
+            return;
+        }
+        for (int i = 0; i < standardList.size(); i++) {
+            int x = getPoint(i, radarMargin, 1).x;
+            int y = getPoint(i, radarMargin, 1).y;
+            float titleWidth = standardPaint.measureText(standardList.get(i));
+            if (i == 0) {
+                x = (int) (centerX - titleWidth / 2);
+                y = centerY - 12;
+            } else if (i == 1) {
+                x = (int) (centerX - titleWidth / 2);
+                y = (int) (centerY - radius / 3 - titleWidth / 2) + 15;
+            } else if (i == 2) {
+                x = (int) (centerX - titleWidth / 2);
+                y = (int) (centerY - (radius / 3) * 2 - titleWidth / 2) +15;
+            }
+            canvas.drawText(standardList.get(i), x, y, standardPaint);
         }
     }
 

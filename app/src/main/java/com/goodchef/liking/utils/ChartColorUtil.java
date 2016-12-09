@@ -17,6 +17,7 @@ public class ChartColorUtil {
     public static int CHART_LIGHT_GREEN = Color.rgb(52, 200, 108);//绿色
     public static int CHART_LIGHT_BLACK = Color.rgb(56,60,75);//深灰色
     public static int CHART_NORMAL_GRAY = Color.rgb(75,82,93);//
+    public static int CHART_STAND_TEXT = Color.rgb(187,186,188);//
 
 
     /**
