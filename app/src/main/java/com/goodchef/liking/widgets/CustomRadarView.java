@@ -307,9 +307,9 @@ public class CustomRadarView extends View {
         this.radarValueList = radarValueList;
         dataCount = radarValueList.size();
         radian = (float) (Math.PI * 2 / dataCount);
-        standardList.add("偏低");
+        standardList.add("低");
         standardList.add("标准");
-        standardList.add("偏高");
+        standardList.add("高");
         postInvalidate();
     }
 
@@ -330,16 +330,20 @@ public class CustomRadarView extends View {
                 float titleWidth = titlePaint.measureText(titles.get(i));
 
                 //底下两个角的坐标需要向下移动半个图片的位置（1、2）
-                if (i == 1) {
+                if (i == 0) {
+                    x = (int) (centerX - (titleWidth / 2));
+                    y = (int) (centerY - radius) - 60;
+                } else if (i == 1) {
                     y += (titleWidth / 2) - 40;
                 } else if (i == 2) {
-                    x -= titleWidth;
-                    y += (titleWidth / 2) - 40;
+                    x = (int) (centerX + (titleWidth / 2));
+                    y += 20;
                 } else if (i == 3) {
-                    x -= titleWidth;
+                    x = (int) (x - titleWidth / 2) - 20;
+                    y = y + getTextHeight(titlePaint) - 20;
                 } else if (i == 4) {
-                    x -= titleWidth / 2;
-                    y -= 20;
+                    x -= titleWidth / 2 + 80;
+                    y += 20;
                 }
                 canvas.drawText(titles.get(i), x, y, titlePaint);
             }
@@ -355,14 +359,14 @@ public class CustomRadarView extends View {
                     x = (int) (centerX - (titleWidth / 2));
                     y = (int) (centerY - radius) - 60;
                 } else if (i == 1) {
-                    x = (int) (centerX + radius + (titleWidth / 2) - 40);
-                    y = centerY + 10;
+                    x = (int) (centerX + radius);
+                    y = centerY - 20;
                 } else if (i == 2) {
                     x = (int) (centerX - (titleWidth / 2));
-                    y = (int) (centerY + radius + (titleWidth / 2)) + 10;
+                    y = (int) (centerY + radius + (titleWidth / 2)) - 40;
                 } else if (i == 3) {
-                    x = (int) (centerX - radius - (titleWidth)) - 40;
-                    y = centerY + 10;
+                    x = (int) (centerX - radius - (titleWidth)) - 30;
+                    y = centerY - 20;
                 }
                 canvas.drawText(titles.get(i), x, y, titlePaint);
             }
@@ -381,20 +385,20 @@ public class CustomRadarView extends View {
                 float titleWidth = titlePaint.measureText(titles.get(i));
                 float unitWidth = unitPaint.measureText(valueUnitList.get(i));
                 if (i == 0) {
-                    x = (int) (x + titleWidth / 2 - unitWidth / 2);
-                    y = y + getTextHeight(titlePaint) + 20;
+                    x = (int) (centerX - (titleWidth / 2));
+                    y = (int) (centerY - radius) - 20;
                 } else if (i == 1) {
                     x = (int) (x + titleWidth / 2 - unitWidth / 2);
                     y = y + getTextHeight(titlePaint) + 40;
                 } else if (i == 2) {
-                    x = (int) (x - titleWidth / 2 - unitWidth / 2);
+                    x = (int) (centerX + (titleWidth / 2));
                     y = y + getTextHeight(titlePaint) + 20;
                 } else if (i == 3) {
-                    x = (int) (x - titleWidth / 2 - unitWidth / 2);
+                    x = (int) (x - titleWidth / 2 - unitWidth / 2) + 60;
                     y = y + getTextHeight(titlePaint) + 20;
                 } else if (i == 4) {
-                    x = (int) (x - unitWidth / 2);
-                    y = (int) (y + unitWidth / 2) - 40;
+                    x = (int) (x - unitWidth / 2 - unitWidth / 2);
+                    y = (int) (y + unitWidth / 2) + 20;
                 }
                 canvas.drawText(valueUnitList.get(i), x, y, unitPaint);
             }
@@ -410,14 +414,14 @@ public class CustomRadarView extends View {
                     x = (int) (centerX - unitWidth / 2);
                     y = (int) (centerY - radius) - 20;
                 } else if (i == 1) {
-                    x = (int) (centerX + radius + (titleWidth / 2));
-                    y = centerY + 60;
+                    x = (int) (centerX + radius + (unitWidth / 2));
+                    y = centerY + 40;
                 } else if (i == 2) {
-                    x = (int) (centerX - (titleWidth / 2) + 10);
-                    y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) + 20;
+                    x = (int) (centerX - (titleWidth / 2) + unitWidth);
+                    y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) - 20;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth) - unitWidth / 2) + 10;
-                    y = centerY + 60;
+                    y = centerY + 40;
                 }
                 canvas.drawText(valueUnitList.get(i), x, y, unitPaint);
             }
@@ -435,13 +439,13 @@ public class CustomRadarView extends View {
             float titleWidth = standardPaint.measureText(standardList.get(i));
             if (i == 0) {
                 x = (int) (centerX - titleWidth / 2);
-                y = centerY - 12;
+                y = centerY - 10;
             } else if (i == 1) {
                 x = (int) (centerX - titleWidth / 2);
                 y = (int) (centerY - radius / 3 - titleWidth / 2) + 15;
             } else if (i == 2) {
                 x = (int) (centerX - titleWidth / 2);
-                y = (int) (centerY - (radius / 3) * 2 - titleWidth / 2) +15;
+                y = (int) (centerY - (radius / 3) * 2 - titleWidth / 2);
             }
             canvas.drawText(standardList.get(i), x, y, standardPaint);
         }
@@ -471,24 +475,20 @@ public class CustomRadarView extends View {
         int y = 0;
         if (dataCount == 5) {
             if (position == 0) {
-                x = (int) (centerX + (radius + radarMargin) * Math.sin(radian) * percent);
-                y = (int) (centerY - (radius + radarMargin) * Math.cos(radian) * percent);
-
-            } else if (position == 1) {
-                x = (int) (centerX + (radius + radarMargin) * Math.sin(radian / 2) * percent);
-                y = (int) (centerY + (radius + radarMargin) * Math.cos(radian / 2) * percent);
-
-            } else if (position == 2) {
-                x = (int) (centerX - (radius + radarMargin) * Math.sin(radian / 2) * percent);
-                y = (int) (centerY + (radius + radarMargin) * Math.cos(radian / 2) * percent);
-
-            } else if (position == 3) {
-                x = (int) (centerX - (radius + radarMargin) * Math.sin(radian) * percent);
-                y = (int) (centerY - (radius + radarMargin) * Math.cos(radian) * percent);
-
-            } else if (position == 4) {
                 x = centerX;
                 y = (int) (centerY - (radius + radarMargin) * percent);
+            } else if (position == 1) {
+                x = (int) (centerX + (radius + radarMargin) * Math.sin(radian) * percent);
+                y = (int) (centerY - (radius + radarMargin) * Math.cos(radian) * percent);
+            } else if (position == 2) {
+                x = (int) (centerX + (radius + radarMargin) * Math.sin(radian / 2) * percent);
+                y = (int) (centerY + (radius + radarMargin) * Math.cos(radian / 2) * percent);
+            } else if (position == 3) {
+                x = (int) (centerX - (radius + radarMargin) * Math.sin(radian / 2) * percent);
+                y = (int) (centerY + (radius + radarMargin) * Math.cos(radian / 2) * percent);
+            } else if (position == 4) {
+                x = (int) (centerX - (radius + radarMargin) * Math.sin(radian) * percent);
+                y = (int) (centerY - (radius + radarMargin) * Math.cos(radian) * percent);
             }
         } else if (dataCount == 4) {
             if (position == 0) {

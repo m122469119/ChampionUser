@@ -145,7 +145,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="个人体侧数据"
+                        android:text="@string/person_test_data"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="@dimen/textsize_small"
                         android:visibility="visible"/>
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="今日训练"
+                        android:text="@string/today_train_data"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="@dimen/textsize_small"/>
 

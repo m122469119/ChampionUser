@@ -248,13 +248,13 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == mBodyGradeHistoryTextView) {//体侧评分历史记录
-            startBodyAnalyzeChartActivity(gradeData.getTitle(), gradeData.getType());
+            startBodyAnalyzeChartActivity(gradeData.getTitle() + "历史", gradeData.getType());
         } else if (v == mBodyElementHistoryTextView) {//身体成分历史记录
-            startBodyAnalyzeChartActivity(bodyAnalysisData.getTitle(), bodyAnalysisData.getType());
+            startBodyAnalyzeChartActivity(bodyAnalysisData.getTitle() + "历史", bodyAnalysisData.getType());
         } else if (v == mFatAnalyzeHistoryTextView) {//肥胖分析历史记录
-            startBodyAnalyzeChartActivity(fatAnalysisData.getTitle(), fatAnalysisData.getType());
+            startBodyAnalyzeChartActivity(fatAnalysisData.getTitle() + "历史", fatAnalysisData.getType());
         } else if (v == mAdviceHistoryTextView) {
-            startBodyAnalyzeChartActivity(adviceData.getTitle(), adviceData.getType());
+            startBodyAnalyzeChartActivity(adviceData.getTitle() + "历史", adviceData.getType());
         } else if (v == mBodyRadarHelpImageView) {//身体成分分析雷达图
             showBodyIngredientDialog();
         } else if (v == mFatAnalyzeHelpImageView) {//肥胖分析雷达图
@@ -423,7 +423,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
             mBodyGradeTitle.setText(gradeData.getTitle());
             mMyCircleView.setCurrentCount(100, Integer.parseInt(gradeData.getScore()));
             mMyCircleView.setTextTypeface(TypefaseUtil.getImpactTypeface(this));
-            mBodyTestTimeTextView.setText(gradeData.getBodyTime());
+            mBodyTestTimeTextView.setText("测试时间：" + gradeData.getBodyTime());
         }
     }
 
@@ -499,7 +499,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         List<Float> valueList = new ArrayList<>();
         if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
             for (int i = 0; i < bodyDataList.size(); i++) {
-                chineseNameList.add(bodyDataList.get(i).getChineseName());
+                chineseNameList.add(bodyDataList.get(i).getChineseName() + bodyDataList.get(i).getEnglishName());
                 unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
                 float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
                 float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
@@ -557,7 +557,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startBodyAnalyzeChartActivity(muscleData.getTitle(), muscleData.getType());
+                startBodyAnalyzeChartActivity(muscleData.getTitle() + "历史", muscleData.getType());
             }
         });
         mLeftMusclePercentageTextView.setVisibility(View.GONE);
@@ -655,7 +655,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startBodyAnalyzeChartActivity(bodyFatData.getTitle(), bodyFatData.getType());
+                startBodyAnalyzeChartActivity(bodyFatData.getTitle() + "历史", bodyFatData.getType());
             }
         });
     }
@@ -671,7 +671,12 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mEveryDayCalUnitTextView.setText(bodyData.get(1).getUnit());
 
         mMuscleControlTitleTextView.setText(bodyData.get(0).getChineseName());
-        mMuscleControlTextView.setText(bodyData.get(0).getValue() + " ");
+        String bodyValue = bodyData.get(0).getValue();
+        if (Float.parseFloat(bodyValue) >= 0) {
+            mMuscleControlTextView.setText("+" + bodyValue + " ");
+        } else {
+            mMuscleControlTextView.setText(bodyValue + " ");
+        }
         mMuscleControlUnitTextView.setText(bodyData.get(0).getUnit());
 
         mFatControlTitleTextView.setText(bodyData.get(2).getChineseName());

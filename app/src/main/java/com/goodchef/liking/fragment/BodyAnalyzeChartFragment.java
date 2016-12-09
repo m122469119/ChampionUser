@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -61,7 +62,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLikingStateView = (LikingStateView) view.findViewById(R.id.analyze_chart_stateView);
         mLineChart = (LineChart) view.findViewById(R.id.analyze_LineChart);
         historyDataList = getArguments().getParcelableArrayList(KEY_HISTORY_LIST);
-        initChartData();
+        initChartData(historyDataList);
         return view;
     }
 
@@ -84,19 +85,18 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mBodyAnalyzeHistoryPresenter.getBodyAnalyzeHistory(column);
     }
 
-    private void initChartData() {
+    private void initChartData(List<BodyHistoryData> historyDataList) {
+        dateList.clear();
+        totalList.clear();
         if (ListUtils.isEmpty(historyDataList)) {
             mLikingStateView.setState(StateView.State.NO_DATA);
         } else {
             mLikingStateView.setState(StateView.State.SUCCESS);
         }
-        dateList.add(0, "");
         for (int i = 0; i < historyDataList.size(); i++) {
             dateList.add(historyDataList.get(i).getBodyTime());
             totalList.add(historyDataList.get(i).getValue());
         }
-        dateList.add("");
-
         setChartView();
     }
 
@@ -108,7 +108,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLineChart.setData(generateLineData(totalList));
         mLineChart.getAxisRight().setEnabled(false);
         mLineChart.setDescription("");
-        mLineChart.setExtraOffsets(0f, 30f, 0f, 15f);
+        mLineChart.setExtraOffsets(20f, 30f, 20f, 15f);
         mLineChart.setMinOffset(0f);
         if (dateList.size() > 0 && totalList.size() > 0) {
             int sleectX = dateList.size() - 1;
@@ -120,7 +120,6 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         Legend l = mLineChart.getLegend();
         l.setEnabled(false);
 
-
         YAxis leftAxis = mLineChart.getAxisLeft();
         leftAxis.setAxisMinValue(0f);
         leftAxis.setTextColor(ChartColorUtil.CHART_LIGHT_BLACK);
@@ -130,7 +129,6 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         leftAxis.setDrawLabels(false);//不显示y轴
         leftAxis.setAxisLineColor(ChartColorUtil.CHART_LIGHT_BLACK);//设置y轴的颜色
         leftAxis.setGridColor(ChartColorUtil.CHART_NORMAL_GRAY);//设置网格线的颜色
-
 
         XAxis xAxis = mLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -143,6 +141,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         xAxis.setTextColor(ChartColorUtil.CHART_WHITE);
         AxisValueFormatter formatter = new BodyChartValueFormatter(dateList);
         xAxis.setValueFormatter(formatter);
+
     }
 
     /**
@@ -152,24 +151,32 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
      */
     private LineData generateLineData(List<String> totalList) {
         ArrayList<ILineDataSet> sets = new ArrayList<>();
-
         ArrayList<Entry> yVals0 = new ArrayList<>();
         for (int i = 0; i < totalList.size(); i++) {
             float val0 = Float.parseFloat(totalList.get(i));
-
-            yVals0.add(new Entry(i + 1, val0));
-
+            yVals0.add(new Entry(i, val0));
         }
         LineDataSet ds0 = new LineDataSet(yVals0, "");
         ds0.setLineWidth(4f);//设置折线图的宽度
         ds0.setDrawCircles(true);
-        ds0.setColor(ChartColorUtil.CHART_LIGHT_GREEN);//设置折线图的颜色
+        int r;
+        int g;
+        int b;
+        int a[] = new int[11];
+        for (int i = 0; i < 10; i++) {
+            r = (52 / 10) * i + 52;
+            g = (200 - 173) / 10 * i + 173;
+            b = (108 - 230) / 10 * i + 230;
+            a[i] = Color.rgb(r, g, b);
+        }
+        a[10] = Color.rgb(52, 200, 108);
+        ds0.setColors(a);
         ds0.setCircleColor(ChartColorUtil.CHART_LIGHT_GREEN);//设置折线图圆圈的颜色
-        ds0.setCircleRadius(7f);//设置圆圈的半径
+        ds0.setCircleRadius(6f);//设置圆圈的半径
         ds0.setDrawCircleHole(true);//设置圆圈空心还是实心,false为实心
         ds0.setCircleHoleRadius(3f);
         ds0.setDrawValues(true);
-        ds0.setValueTextSize(12f);
+        ds0.setValueTextSize(11f);
         ds0.setValueTextColor(ChartColorUtil.CHART_WHITE);
         ds0.setHighlightEnabled(true);
         ds0.setDrawFilled(true);
@@ -182,8 +189,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     @Override
     public void updateBodyAnalyzeHistoryView(BodyAnalyzeHistoryResult.BodyHistory data) {
         mLikingStateView.setState(StateView.State.SUCCESS);
-        historyDataList = data.getHistoryData();
-        initChartData();
+        List<BodyHistoryData> historyDataList = data.getHistoryData();
+        initChartData(historyDataList);
     }
 
     @Override

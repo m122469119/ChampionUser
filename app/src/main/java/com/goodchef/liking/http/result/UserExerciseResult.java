@@ -49,6 +49,8 @@ public class UserExerciseResult extends BaseResult {
         private String totalCal;
         @SerializedName("is_vip")
         private int isVip;
+        @SerializedName("score")
+        private String score;
 
         public String getTodayMin() {
             return todayMin;
@@ -112,6 +114,14 @@ public class UserExerciseResult extends BaseResult {
 
         public void setIsVip(int isVip) {
             this.isVip = isVip;
+        }
+
+        public String getScore() {
+            return score;
+        }
+
+        public void setScore(String score) {
+            this.score = score;
         }
     }
 }

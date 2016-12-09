@@ -230,11 +230,13 @@
     <string name="body_radar">身体成分分析</string>
     <string name="fat_analyze">肥胖分析</string>
     <string name="age">年龄</string>
-    <string name="weight">体重</string>
-    <string name="muscle_fat_advice">肌肉-脂肪控制建议</string>
+    <string name="height">身高</string>
+    <string name="muscle_fat_advice">肌肉-卡路里-脂肪控制建议</string>
     <string name="every_day_kcal">推荐每天摄入卡路里</string>
     <string name="muscle_control">肌肉控制</string>
     <string name="more_advice">更多建议请咨询店内教练</string>
     <string name="no_body_history_data">暂无体测历史</string>
+    <string name="person_test_data">个人体测数据</string>
+    <string name="today_train_data">今日训练</string>
 
 </resources>

@@ -153,7 +153,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                             if (exerciseData != null) {
                                 setTextViewTypeface();
                                 myTrainTime.setText(exerciseData.getTodayMin());
-                                myPersonSideData.setText(exerciseData.getTodayDistance());
+                                myPersonSideData.setText(exerciseData.getScore());
                                 Preference.setIsVip(exerciseData.getIsVip());
                                 if (Preference.isVIP()) {
                                     mIsVip.setVisibility(View.VISIBLE);
@@ -266,11 +266,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         });
         showSelfHelpGroupLayout(((LikingHomeActivity) getActivity()).mCanSchedule);
 
-        if (Build.VERSION.SDK_INT < 21) {
-            mPersonDataCardView.setCardElevation(0);
-        } else {
-            mPersonDataCardView.setCardElevation(10);
-        }
+//        if (Build.VERSION.SDK_INT < 21) {
+//            mPersonDataCardView.setCardElevation(0);
+//        } else {
+//            mPersonDataCardView.setCardElevation(10);
+//        }
 
     }
 
