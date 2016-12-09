@@ -82,11 +82,6 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
 
         @Override
         public void bindViews(BodyHistoryResult.BodyHistoryData.ListData object) {
-            if (Build.VERSION.SDK_INT < 21) {
-                mCardView.setCardElevation(0);
-            } else {
-                mCardView.setCardElevation(10);
-            }
             setTextViewType();
             BodyHistoryResult.BodyHistoryData.ListData.BmiData bmiData = object.getBmi();
             BodyHistoryResult.BodyHistoryData.ListData.FatRateData fatRateData = object.getFatRate();

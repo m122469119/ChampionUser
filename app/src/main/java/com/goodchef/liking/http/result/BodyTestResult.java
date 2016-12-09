@@ -1,6 +1,7 @@
 package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.data.BodyData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -497,7 +498,7 @@ public class BodyTestResult extends BaseResult {
              */
 
             @SerializedName("body_data")
-            private List<BodyDataData> mBodyData;
+            private List<BodyData> mBodyData;
 
             public String getAdvise() {
                 return mAdvise;
@@ -515,11 +516,11 @@ public class BodyTestResult extends BaseResult {
                 mType = type;
             }
 
-            public List<BodyDataData> getBodyData() {
+            public List<BodyData> getBodyData() {
                 return mBodyData;
             }
 
-            public void setBodyData(List<BodyDataData> bodyData) {
+            public void setBodyData(List<BodyData> bodyData) {
                 mBodyData = bodyData;
             }
 
@@ -531,60 +532,7 @@ public class BodyTestResult extends BaseResult {
                 this.title = title;
             }
 
-            public static class BodyDataData {
-                @SerializedName("value")
-                private String mValue;
-                @SerializedName("evaluate")
-                private String mEvaluate;
-                @SerializedName("chinese_name")
-                private String mChineseName;
-                @SerializedName("english_name")
-                private String mEnglishName;
-                @SerializedName("unit")
-                private String mUnit;
-
-                public String getValue() {
-                    return mValue;
-                }
-
-                public void setValue(String value) {
-                    mValue = value;
-                }
-
-                public String getEvaluate() {
-                    return mEvaluate;
-                }
-
-                public void setEvaluate(String evaluate) {
-                    mEvaluate = evaluate;
-                }
-
-                public String getChineseName() {
-                    return mChineseName;
-                }
-
-                public void setChineseName(String chineseName) {
-                    mChineseName = chineseName;
-                }
-
-                public String getEnglishName() {
-                    return mEnglishName;
-                }
-
-                public void setEnglishName(String englishName) {
-                    mEnglishName = englishName;
-                }
-
-                public String getUnit() {
-                    return mUnit;
-                }
-
-                public void setUnit(String unit) {
-                    mUnit = unit;
-                }
-            }
         }
-
         public static class BodyFatData {
             @SerializedName("advise")
             private String mAdvise;
@@ -602,7 +550,7 @@ public class BodyTestResult extends BaseResult {
              */
 
             @SerializedName("body_data")
-            private List<BodyDataData> mBodyData;
+            private List<BodyData> mBodyData;
 
             public String getAdvise() {
                 return mAdvise;
@@ -620,7 +568,7 @@ public class BodyTestResult extends BaseResult {
                 mType = type;
             }
 
-            public List<BodyDataData> getBodyData() {
+            public List<BodyData> getBodyData() {
                 return mBodyData;
             }
 
@@ -632,72 +580,11 @@ public class BodyTestResult extends BaseResult {
                 this.title = title;
             }
 
-            public void setBodyData(List<BodyDataData> bodyData) {
+            public void setBodyData(List<BodyData> bodyData) {
                 mBodyData = bodyData;
             }
 
-            public static class BodyDataData {
-                @SerializedName("value")
-                private String mValue;
-                @SerializedName("evaluate")
-                private String mEvaluate;
-                @SerializedName("chinese_name")
-                private String mChineseName;
-                @SerializedName("content")
-                private String mContent;
-                @SerializedName("english_name")
-                private String mEnglishName;
-                @SerializedName("unit")
-                private String mUnit;
 
-                public String getValue() {
-                    return mValue;
-                }
-
-                public void setValue(String value) {
-                    mValue = value;
-                }
-
-                public String getEvaluate() {
-                    return mEvaluate;
-                }
-
-                public void setEvaluate(String evaluate) {
-                    mEvaluate = evaluate;
-                }
-
-                public String getChineseName() {
-                    return mChineseName;
-                }
-
-                public void setChineseName(String chineseName) {
-                    mChineseName = chineseName;
-                }
-
-                public String getContent() {
-                    return mContent;
-                }
-
-                public void setContent(String content) {
-                    mContent = content;
-                }
-
-                public String getEnglishName() {
-                    return mEnglishName;
-                }
-
-                public void setEnglishName(String englishName) {
-                    mEnglishName = englishName;
-                }
-
-                public String getUnit() {
-                    return mUnit;
-                }
-
-                public void setUnit(String unit) {
-                    mUnit = unit;
-                }
-            }
         }
 
         public static class FooterData {

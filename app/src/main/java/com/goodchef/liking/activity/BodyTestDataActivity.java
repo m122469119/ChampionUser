@@ -30,8 +30,10 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyAnalyzeAdapter;
 import com.goodchef.liking.adapter.FatAnalyzeAdapter;
 import com.goodchef.liking.http.result.BodyTestResult;
+import com.goodchef.liking.http.result.data.BodyData;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.CustomRadarView;
@@ -59,24 +61,20 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     private TextView mUserAgeTextView;
     private TextView mUserWeightTextView;
     private TextView mUserWeightUnit;
-    private CardView mHeadCardView;
 
     //评分
-    private CardView mGradeCardView;
     private TextView mBodyGradeTitle;//标题
     private TextView mBodyTestTimeTextView;//测试时间
     private MyCircleView mMyCircleView;//体测评分圆环
     private TextView mBodyGradeHistoryTextView;//体测评分历史记录
 
     //成分分析
-    private CardView mBodyRadarCardView;
     private CustomRadarView mBodyIngredientRadarChart;//身体分析雷达图
     private TextView mBodyRadarAnalyzeResultTextView;//身体成分分析结果
     private TextView mBodyElementHistoryTextView;//身体成分历史记录
     private ImageView mBodyRadarHelpImageView;//查看所有明细按钮
     private TextView mBodyRadarTitle;//标题
     //肥胖分析
-    private CardView mFatCardView;
     private CustomRadarView mFatAnalyzeRadarChart;//肥胖分析雷达
     private TextView mFatAnalyzeResultTextView;//肥胖分析结论
     private TextView mFatAnalyzeHistoryTextView;//肥胖分析历史记录
@@ -87,22 +85,25 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     private RelativeLayout mFatLayout;
 
     //--节段肌肉和节段脂肪---
-    private CardView mMuscleCardView;
     private TextView mMuscleAnalyzeTitle;
     private ImageView mMuscleAnalyzeImageView;
 
+    private TextView mLeftMusclePercentageTextView;
     private TextView mLeftMuscleTextView;
     private TextView mLeftMuscleUnitTextView;
     private TextView mLeftMuscleEvaluateTextView;
 
+    private TextView mRightMusclePercentageTextView;
     private TextView mRightMuscleTextView;
     private TextView mRightMuscleUnitTextView;
     private TextView mRightMuscleEvaluateTextView;
 
+    private TextView mRightDownMusclePercentageTextView;
     private TextView mRightDownMuscleTextView;
     private TextView mRightDownMuscleUnitTextView;
     private TextView mRightDownMuscleEvaluateTextView;
 
+    private TextView mLeftDownMusclePercentageTextView;
     private TextView mLeftDownMuscleTextView;
     private TextView mLeftDownMuscleUnitTextView;
     private TextView mLeftDownMuscleEvaluateTextView;
@@ -112,7 +113,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     //---end------
 
     //footer建议
-    private CardView mFootCardView;
     private TextView mEveryDayKcalTitleTextView;
     private TextView mEveryDayCalTextView;
     private TextView mEveryDayCalUnitTextView;
@@ -192,22 +192,18 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mUserAgeTextView = (TextView) findViewById(R.id.person_user_age_TextView);
         mUserWeightTextView = (TextView) findViewById(R.id.user_weight_TextView);
         mUserWeightUnit = (TextView) findViewById(R.id.user_weight_unit);
-        mHeadCardView = (CardView) findViewById(R.id.body_test_CardView);
 
-        mGradeCardView = (CardView) findViewById(R.id.body_grade_CardView);
         mBodyGradeTitle = (TextView) findViewById(R.id.body_grade_title);
         mBodyTestTimeTextView = (TextView) findViewById(R.id.body_test_time_TextView);
         mBodyGradeHistoryTextView = (TextView) findViewById(R.id.body_grade_history_TextView);
         mMyCircleView = (MyCircleView) findViewById(R.id.body_grade_MyCircleView);
 
-        mBodyRadarCardView = (CardView) findViewById(R.id.body_radar_CardView);
         mBodyRadarTitle = (TextView) findViewById(R.id.body_radar_title);
         mBodyIngredientRadarChart = (CustomRadarView) findViewById(R.id.body_ingredient_RadarChart);
         mBodyRadarAnalyzeResultTextView = (TextView) findViewById(R.id.body_radar_analyze_result_TextView);
         mBodyElementHistoryTextView = (TextView) findViewById(R.id.body_element_history_TextView);
         mBodyRadarHelpImageView = (ImageView) findViewById(R.id.body_radar_help_ImageView);
 
-        mFatCardView = (CardView) findViewById(R.id.fat_analyze_CardView);
         mFatAnalyzeTitle = (TextView) findViewById(R.id.fat_analyze_title_TextView);
         mFatAnalyzeRadarChart = (CustomRadarView) findViewById(R.id.body_fat_RadarChart);
         mFatAnalyzeResultTextView = (TextView) findViewById(R.id.fat_analyze_result_TextView);
@@ -217,7 +213,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleLayout = (RelativeLayout) findViewById(R.id.layout_muscle_view);
         mFatLayout = (RelativeLayout) findViewById(R.id.layout_fat_view);
 
-        mFootCardView = (CardView) findViewById(R.id.muscle_fat_advice_CardView);
         mEveryDayKcalTitleTextView = (TextView) findViewById(R.id.every_day_kcal_title_TextView);
         mEveryDayCalTextView = (TextView) findViewById(R.id.every_day_cal_TextView);
         mEveryDayCalUnitTextView = (TextView) findViewById(R.id.every_day_cal_unit_TextView);
@@ -230,20 +225,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mAdviceHistoryTextView = (TextView) findViewById(R.id.muscle_fat_history_TextView);
 
         mBodyTestHistoryTextView = (TextView) findViewById(R.id.body_test_history_TextView);
-
-        if (Build.VERSION.SDK_INT < 21) {
-            mHeadCardView.setCardElevation(0f);
-            mGradeCardView.setCardElevation(0f);
-            mBodyRadarCardView.setCardElevation(0f);
-            mFatCardView.setCardElevation(0f);
-            mFootCardView.setCardElevation(0f);
-        } else {
-            mHeadCardView.setCardElevation(10f);
-            mGradeCardView.setCardElevation(10f);
-            mBodyRadarCardView.setCardElevation(10f);
-            mFatCardView.setCardElevation(10f);
-            mFootCardView.setCardElevation(10f);
-        }
     }
 
     private void initViewOnClickListener() {
@@ -413,6 +394,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
      */
     private void setUserData(BodyTestResult.BodyTestData.UserDataData bodyUserData) {
         mUserNameTextView.setText(bodyUserData.getName());
+        Preference.setNickName(bodyUserData.getName());
         String gender = bodyUserData.getGender();
         if ("0".equals(gender)) {
             mUserGenderImageView.setImageResource(R.drawable.icon_women);
@@ -427,6 +409,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
         String imageUrl = bodyUserData.getAvatar();
         if (!StringUtils.isEmpty(imageUrl)) {
+            Preference.setUserIconUrl(imageUrl);
             HImageLoaderSingleton.getInstance().loadImage(mTopBackgroundHImageView, imageUrl);
             HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, imageUrl);
         }
@@ -552,7 +535,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleAnalyzeTitle.setText(muscleData.getTitle());
         mMuscleAnalyzeImageView.setImageResource(R.mipmap.icon_muscle);
 
-        List<BodyTestResult.BodyTestData.MuscleData.BodyDataData> bodyListData = muscleData.getBodyData();
+        List<BodyData> bodyListData = muscleData.getBodyData();
 
         mLeftMuscleTextView.setText(bodyListData.get(0).getValue() + " ");
         mLeftMuscleUnitTextView.setText(bodyListData.get(0).getUnit());
@@ -577,25 +560,32 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
                 startBodyAnalyzeChartActivity(muscleData.getTitle(), muscleData.getType());
             }
         });
+        mLeftMusclePercentageTextView.setVisibility(View.GONE);
+        mRightMusclePercentageTextView.setVisibility(View.GONE);
+        mRightDownMusclePercentageTextView.setVisibility(View.GONE);
+        mLeftDownMusclePercentageTextView.setVisibility(View.GONE);
     }
 
     private void setMuscleView(View view) {
-        mMuscleCardView = (CardView) view.findViewById(R.id.body_muscle_CardView);
         mMuscleAnalyzeTitle = (TextView) view.findViewById(R.id.muscle_analyze_title);
         mMuscleAnalyzeImageView = (ImageView) view.findViewById(R.id.muscle_analyze_imageView);
 
+        mLeftMusclePercentageTextView = (TextView) view.findViewById(R.id.left_muscle_percentage_TextView);
         mLeftMuscleTextView = (TextView) view.findViewById(R.id.left_muscle_TextView);
         mLeftMuscleUnitTextView = (TextView) view.findViewById(R.id.left_muscle_unit_TextView);
         mLeftMuscleEvaluateTextView = (TextView) view.findViewById(R.id.left_muscle_evaluate_TextView);
 
+        mRightMusclePercentageTextView = (TextView) view.findViewById(R.id.right_muscle_percentage_TextView);
         mRightMuscleTextView = (TextView) view.findViewById(R.id.right_muscle_TextView);
         mRightMuscleUnitTextView = (TextView) view.findViewById(R.id.right_muscle_unit_TextView);
         mRightMuscleEvaluateTextView = (TextView) view.findViewById(R.id.right_muscle_evaluate_TextView);
 
+        mRightDownMusclePercentageTextView = (TextView) view.findViewById(R.id.right_down_muscle_percentage_TextView);
         mRightDownMuscleTextView = (TextView) view.findViewById(R.id.right_down_muscle_TextView);
         mRightDownMuscleUnitTextView = (TextView) view.findViewById(R.id.right_down_muscle_unit_TextView);
         mRightDownMuscleEvaluateTextView = (TextView) view.findViewById(R.id.right_down_muscle_evaluate_TextView);
 
+        mLeftDownMusclePercentageTextView = (TextView) view.findViewById(R.id.left_down_muscle_percentage_TextView);
         mLeftDownMuscleTextView = (TextView) view.findViewById(R.id.lef_down_muscle_TextView);
         mLeftDownMuscleUnitTextView = (TextView) view.findViewById(R.id.lef_down_muscle_unit_TextView);
         mLeftDownMuscleEvaluateTextView = (TextView) view.findViewById(R.id.lef_down_muscle_evaluate_TextView);
@@ -603,11 +593,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleAnalyzeResultTextView = (TextView) view.findViewById(R.id.muscle_analyze_result_TextView);
         mMuscleResultHistoryTextView = (TextView) view.findViewById(R.id.muscle_result_history_TextView);
 
-        if (Build.VERSION.SDK_INT < 21) {
-            mMuscleCardView.setCardElevation(0);
-        } else {
-            mMuscleCardView.setCardElevation(10);
-        }
         setBodyFatTypeface();
     }
 
@@ -624,6 +609,10 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         setTxtViewTypeface(mLeftDownMuscleTextView);
         setTxtViewTypeface(mLeftDownMuscleUnitTextView);
         setTxtViewTypeface(mLeftDownMuscleEvaluateTextView);
+        setTxtViewTypeface(mLeftMusclePercentageTextView);
+        setTxtViewTypeface(mRightMusclePercentageTextView);
+        setTxtViewTypeface(mRightDownMusclePercentageTextView);
+        setTxtViewTypeface(mLeftDownMusclePercentageTextView);
     }
 
     /**
@@ -635,20 +624,29 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleAnalyzeTitle.setText(bodyFatData.getTitle());
         mMuscleAnalyzeImageView.setImageResource(R.mipmap.icon_axunge);
 
-        List<BodyTestResult.BodyTestData.BodyFatData.BodyDataData> bodyListData = bodyFatData.getBodyData();
+        List<BodyData> bodyListData = bodyFatData.getBodyData();
 
+        mLeftMusclePercentageTextView.setVisibility(View.VISIBLE);
+        mRightMusclePercentageTextView.setVisibility(View.VISIBLE);
+        mRightDownMusclePercentageTextView.setVisibility(View.VISIBLE);
+        mLeftDownMusclePercentageTextView.setVisibility(View.VISIBLE);
+
+        mLeftMusclePercentageTextView.setText(bodyListData.get(0).getContent());
         mLeftMuscleTextView.setText(bodyListData.get(0).getValue() + " ");
         mLeftMuscleUnitTextView.setText(bodyListData.get(0).getUnit());
         mLeftMuscleEvaluateTextView.setText(bodyListData.get(0).getEvaluate());
 
+        mRightMusclePercentageTextView.setText(bodyListData.get(1).getContent());
         mRightMuscleTextView.setText(bodyListData.get(1).getValue() + " ");
         mRightMuscleUnitTextView.setText(bodyListData.get(1).getUnit());
         mRightMuscleEvaluateTextView.setText(bodyListData.get(1).getEvaluate());
 
+        mRightDownMusclePercentageTextView.setText(bodyListData.get(2).getContent());
         mRightDownMuscleTextView.setText(bodyListData.get(2).getValue() + " ");
         mRightDownMuscleUnitTextView.setText(bodyListData.get(2).getUnit());
         mRightDownMuscleEvaluateTextView.setText(bodyListData.get(2).getEvaluate());
 
+        mLeftDownMusclePercentageTextView.setText(bodyListData.get(3).getContent());
         mLeftDownMuscleTextView.setText(bodyListData.get(3).getValue() + " ");
         mLeftDownMuscleUnitTextView.setText(bodyListData.get(3).getUnit());
         mLeftDownMuscleEvaluateTextView.setText(bodyListData.get(3).getEvaluate());

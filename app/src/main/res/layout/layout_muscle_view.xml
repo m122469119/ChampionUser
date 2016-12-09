@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:textColor="@color/add_minus_dishes_text"
+                            android:textColor="@color/lesson_details_dark_back"
                             android:visibility="gone"/>
 
                         <LinearLayout
@@ -71,7 +71,7 @@
                                 android:id="@+id/left_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="19.0 "
+                                android:text=" "
                                 android:textColor="@color/add_minus_dishes_text"
                                 android:textStyle="bold"/>
 
@@ -106,7 +106,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:textColor="@color/add_minus_dishes_text"
+                            android:textColor="@color/lesson_details_dark_back"
                             android:visibility="gone"/>
 
                         <LinearLayout
@@ -118,7 +118,7 @@
                                 android:id="@+id/right_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="19.0"
+                                android:text=""
                                 android:textColor="@color/add_minus_dishes_text"
                                 android:textStyle="bold"/>
 
@@ -154,7 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:textColor="@color/add_minus_dishes_text"
+                            android:textColor="@color/lesson_details_dark_back"
                             android:visibility="gone"/>
 
                         <LinearLayout
@@ -166,7 +166,7 @@
                                 android:id="@+id/right_down_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="19.0"
+                                android:text=""
                                 android:textColor="@color/add_minus_dishes_text"
                                 android:textStyle="bold"/>
 
@@ -202,7 +202,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:textColor="@color/add_minus_dishes_text"
+                            android:textColor="@color/lesson_details_dark_back"
                             android:visibility="gone"/>
 
                         <LinearLayout
@@ -214,7 +214,7 @@
                                 android:id="@+id/lef_down_muscle_TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="19.0"
+                                android:text=""
                                 android:textColor="@color/add_minus_dishes_text"
                                 android:textStyle="bold"/>
 
