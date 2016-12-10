@@ -118,6 +118,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     //---end------
 
     //footer建议
+    private TextView mFooterTitleTextView;
     private TextView mEveryDayKcalTitleTextView;
     private TextView mEveryDayCalTextView;
     private TextView mEveryDayCalUnitTextView;
@@ -231,6 +232,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleLayout = (RelativeLayout) findViewById(R.id.layout_muscle_view);
         mFatLayout = (RelativeLayout) findViewById(R.id.layout_fat_view);
 
+        mFooterTitleTextView = (TextView) findViewById(R.id.muscle_fat_suggest_title_TextView);
         mEveryDayKcalTitleTextView = (TextView) findViewById(R.id.every_day_kcal_title_TextView);
         mEveryDayCalTextView = (TextView) findViewById(R.id.every_day_cal_TextView);
         mEveryDayCalUnitTextView = (TextView) findViewById(R.id.every_day_cal_unit_TextView);
@@ -566,9 +568,11 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
             for (int i = 0; i < bodyDataList.size(); i++) {
                 String englishName = bodyDataList.get(i).getEnglishName();
-                //if (!StringUtils.isEmpty(englishName)) {
+                if (!StringUtils.isEmpty(englishName)) {
                     chineseNameList.add(bodyDataList.get(i).getChineseName() + "(" + englishName + ")");
-               // }
+                } else {
+                    chineseNameList.add(bodyDataList.get(i).getChineseName());
+                }
                 unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
                 float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
                 float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
@@ -735,6 +739,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
      */
     private void setFootAdviceData() {
         List<BodyTestResult.BodyTestData.FooterData.BodyDataData> bodyData = adviceData.getBodyData();
+        mFooterTitleTextView.setText(adviceData.getTitle());
         mEveryDayKcalTitleTextView.setText(bodyData.get(1).getChineseName());
         mEveryDayCalTextView.setText(bodyData.get(1).getValue() + " ");
         mEveryDayCalUnitTextView.setText(bodyData.get(1).getUnit());

@@ -356,11 +356,11 @@ public class CustomRadarView extends View {
                     x = (int) (centerX - (titleWidth / 2));
                     y = (int) (centerY - radius) - 60;
                 } else if (i == 1) {
-                    x = (int) (centerX + radius);
-                    y = centerY - 20;
+                    x = (int) (centerX + radius) - 20;
+                    y = centerY - 40;
                 } else if (i == 2) {
                     x = (int) (centerX - (titleWidth / 2));
-                    y = (int) (centerY + radius + (titleWidth / 2)) - 40;
+                    y = (int) (centerY + radius + (titleWidth / 2)) - 60;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth)) - 30;
                     y = centerY - 20;
@@ -370,6 +370,11 @@ public class CustomRadarView extends View {
         }
     }
 
+    /**
+     * 绘制每个title下面的百分比数字和单位
+     *
+     * @param canvas 画布
+     */
     private void drawUnit(Canvas canvas) {
         if (valueUnitList == null) {
             return;
@@ -412,10 +417,10 @@ public class CustomRadarView extends View {
                     y = (int) (centerY - radius) - 20;
                 } else if (i == 1) {
                     x = (int) (centerX + radius + (unitWidth / 2));
-                    y = centerY + 40;
+                    y = centerY + 20;
                 } else if (i == 2) {
-                    x = (int) (centerX - (titleWidth / 2));
-                    y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) - 20;
+                    x = centerX - 20;
+                    y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) - 30;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth) - unitWidth / 2) + 10;
                     y = centerY + 40;
@@ -425,7 +430,11 @@ public class CustomRadarView extends View {
         }
     }
 
-
+    /**
+     * 绘制中间 高，标准，低文案
+     *
+     * @param canvas 画布
+     */
     private void drawStandardText(Canvas canvas) {
         if (standardList == null) {
             return;
@@ -489,32 +498,19 @@ public class CustomRadarView extends View {
             }
         } else if (dataCount == 4) {
             if (position == 0) {
-                x = (int) (centerX);
+                x = (centerX);
                 y = (int) (centerY - (radius * percent));
-//                x = (int) (centerX + (radius + radarMargin) * Math.sin(radian) * percent);
-//                y = (int) (centerY - (radius + radarMargin) * Math.cos(radian) * percent);
-
             } else if (position == 1) {
                 x = (int) (centerX + (radius * percent));
-                y = (int) (centerY);
-//                x = (int) (centerX + (radius + radarMargin) * Math.sin(radian /2) * percent);
-//                y = (int) (centerY + (radius + radarMargin) * Math.cos(radian/2 ) * percent);
-
+                y = (centerY);
             } else if (position == 2) {
-//                x = (int) (centerX - (radius + radarMargin) * Math.sin(radian/2 ) * percent);
-//                y = (int) (centerY + (radius + radarMargin) * Math.cos(radian /2) * percent);
-                x = (int) (centerX);
+                x = (centerX);
                 y = (int) (centerY + (radius * percent));
-
             } else if (position == 3) {
-//                x = (int) (centerX - (radius + radarMargin) * Math.sin(radian) * percent);
-//                y = (int) (centerY - (radius + radarMargin) * Math.cos(radian) * percent);
                 x = (int) (centerX - (radius * percent));
-                y = (int) (centerY);
-
+                y = (centerY);
             }
         }
-
         return new Point(x, y);
     }
 
