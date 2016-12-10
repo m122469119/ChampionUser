@@ -128,6 +128,11 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     //---end-
 
     private TextView mBodyTestHistoryTextView;//体测历史
+    private RelativeLayout mNoDataLayout;
+    private ImageView mNoDataImageView;
+    private TextView mNoDataTextView;
+    private TextView mNoDataPromptTextView;
+    private CardView mHeadCardView;
 
     private BodyTestPresenter mBodyTestPresenter;
     private Typeface mTypeface;
@@ -225,6 +230,12 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mAdviceHistoryTextView = (TextView) findViewById(R.id.muscle_fat_history_TextView);
 
         mBodyTestHistoryTextView = (TextView) findViewById(R.id.body_test_history_TextView);
+        mNoDataLayout = (RelativeLayout) findViewById(R.id.body_test_no_data_view);
+        mNoDataImageView = (ImageView) findViewById(R.id.imageview_no_data);
+        mNoDataTextView = (TextView) findViewById(R.id.textview_refresh);
+        mNoDataPromptTextView = (TextView) findViewById(R.id.textview_no_data);
+        mHeadCardView = (CardView) findViewById(R.id.body_test_CardView);
+        mNoDataPromptTextView.setVisibility(View.GONE);
     }
 
     private void initViewOnClickListener() {
@@ -361,6 +372,18 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         bodyFatData = bodyTestData.getBodyFat();
         //底部建议数据
         adviceData = bodyTestData.getFooter();
+
+        if (bodyUserData == null && gradeData == null && bodyAnalysisData == null
+                && fatAnalysisData == null && muscleData == null
+                && bodyFatData == null && adviceData == null) {
+            mNoDataLayout.setVisibility(View.VISIBLE);
+            mHeadCardView.setVisibility(View.GONE);
+            mNoDataImageView.setImageResource(R.drawable.icon_no_data);
+            mNoDataTextView.setText(R.string.no_data);
+        } else {
+            mHeadCardView.setVisibility(View.VISIBLE);
+            mNoDataLayout.setVisibility(View.GONE);
+        }
 
         if (bodyUserData != null) {
             setUserData(bodyUserData);
@@ -703,6 +726,15 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
     @Override
     public void handleNetworkFailure() {
-
+        mNoDataLayout.setVisibility(View.VISIBLE);
+        mHeadCardView.setVisibility(View.GONE);
+        mNoDataImageView.setImageResource(R.drawable.network_anomaly);
+        mNoDataTextView.setText(R.string.refresh_btn_text);
+        mNoDataTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendRequest();
+            }
+        });
     }
 }

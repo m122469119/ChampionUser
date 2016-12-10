@@ -40,6 +40,7 @@ public class BodyTestPresenter extends BasePresenter<BodyTestView> {
             @Override
             public void onFailure(RequestError error) {
                 super.onFailure(error);
+                mView.handleNetworkFailure();
             }
         });
     }

@@ -71,4 +71,15 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/body_test_no_data_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/view_common_no_data"/>
+
+    </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>
