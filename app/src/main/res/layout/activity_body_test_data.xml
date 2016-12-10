@@ -7,12 +7,14 @@
                                                  android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/body_test_AppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/body_test_CollapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -34,14 +36,25 @@
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="visible"
                 app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/app_bar_back"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                app:titleTextAppearance="@style/Toolbar.TitleText">
 
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="16sp"/>
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -67,19 +80,42 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/body_test_history_TextView"/>
-
-
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/body_test_no_data_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <include layout="@layout/view_common_no_data"/>
+        <RelativeLayout
+            android:id="@+id/layout_no_data_title"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/main_app_color">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/no_data_bar_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/app_bar_back"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="体测数据"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <include
+            layout="@layout/view_common_no_data"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

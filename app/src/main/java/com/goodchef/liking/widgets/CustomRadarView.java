@@ -18,8 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 芝麻信用分
- * Created by yangle on 2016/9/26.
+ * 体测数据雷达图
+ * Created by shaozucheng
+ * time 2016/12/06
  */
 public class CustomRadarView extends View {
     //数据个数
@@ -326,9 +327,7 @@ public class CustomRadarView extends View {
             for (int i = 0; i < dataCount; i++) {
                 int x = getPoint(i, radarMargin, 1).x;
                 int y = getPoint(i, radarMargin, 1).y;
-
                 float titleWidth = titlePaint.measureText(titles.get(i));
-
                 //底下两个角的坐标需要向下移动半个图片的位置（1、2）
                 if (i == 0) {
                     x = (int) (centerX - (titleWidth / 2));
@@ -351,9 +350,7 @@ public class CustomRadarView extends View {
             for (int i = 0; i < dataCount; i++) {
                 int x = getPoint(i, radarMargin, 1).x;
                 int y = getPoint(i, radarMargin, 1).y;
-
                 float titleWidth = titlePaint.measureText(titles.get(i));
-
                 //底下两个角的坐标需要向下移动半个图片的位置（1、2）
                 if (i == 0) {
                     x = (int) (centerX - (titleWidth / 2));
@@ -417,7 +414,7 @@ public class CustomRadarView extends View {
                     x = (int) (centerX + radius + (unitWidth / 2));
                     y = centerY + 40;
                 } else if (i == 2) {
-                    x = (int) (centerX - (titleWidth / 2) + unitWidth);
+                    x = (int) (centerX - (titleWidth / 2));
                     y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) - 20;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth) - unitWidth / 2) + 10;

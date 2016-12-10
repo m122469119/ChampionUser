@@ -238,5 +238,6 @@
     <string name="no_body_history_data">暂无体测历史</string>
     <string name="person_test_data">个人体测数据</string>
     <string name="today_train_data">今日训练</string>
+    <string name="title_body_test">体测数据</string>
 
 </resources>

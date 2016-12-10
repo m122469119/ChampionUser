@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyAnalyzeAdapter;
@@ -36,6 +40,7 @@ import com.goodchef.liking.mvp.view.BodyTestView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
+import com.goodchef.liking.widgets.AppBarStateChangeListener;
 import com.goodchef.liking.widgets.CustomRadarView;
 import com.goodchef.liking.widgets.MyCircleView;
 
@@ -128,11 +133,17 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     //---end-
 
     private TextView mBodyTestHistoryTextView;//体测历史
-    private RelativeLayout mNoDataLayout;
+    private LinearLayout mNoDataLayout;
+    private ImageView mNoDataAppBackImageView;
     private ImageView mNoDataImageView;
     private TextView mNoDataTextView;
     private TextView mNoDataPromptTextView;
     private CardView mHeadCardView;
+
+    //title
+    private AppBarLayout mAppBarLayout;
+    private Toolbar mToolbar;
+    private TextView mTooBarTitle;
 
     private BodyTestPresenter mBodyTestPresenter;
     private Typeface mTypeface;
@@ -156,7 +167,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         sourse = getIntent().getStringExtra(SOURCE);
         setSourceView();
         initViewOnClickListener();
-        initToolbar();
+        initToolbar(R.string.title_body_test);
         sendRequest();
         mTypeface = TypefaseUtil.getImpactTypeface(this);
         StatusBarUtils.setWindowStatusBarColor(this);
@@ -171,14 +182,16 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         }
     }
 
-
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_app_bar_style);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+    /**
+     * 初始化Toolbar
+     */
+    public void initToolbar(int titleString) {
+        mTooBarTitle.setText(titleString);
+        setSupportActionBar(mToolbar);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("体测数据");
+            actionBar.setDisplayHomeAsUpEnabled(true);//显示左边返回按钮
+            actionBar.setDisplayShowTitleEnabled(false);//设置不显示Toolbar自带的title,用自己自定义的
         }
     }
 
@@ -230,12 +243,16 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mAdviceHistoryTextView = (TextView) findViewById(R.id.muscle_fat_history_TextView);
 
         mBodyTestHistoryTextView = (TextView) findViewById(R.id.body_test_history_TextView);
-        mNoDataLayout = (RelativeLayout) findViewById(R.id.body_test_no_data_view);
+        mNoDataLayout = (LinearLayout) findViewById(R.id.body_test_no_data_view);
         mNoDataImageView = (ImageView) findViewById(R.id.imageview_no_data);
         mNoDataTextView = (TextView) findViewById(R.id.textview_refresh);
         mNoDataPromptTextView = (TextView) findViewById(R.id.textview_no_data);
         mHeadCardView = (CardView) findViewById(R.id.body_test_CardView);
-        mNoDataPromptTextView.setVisibility(View.GONE);
+        mNoDataAppBackImageView = (ImageView) findViewById(R.id.no_data_bar_back);
+
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.body_test_AppBarLayout);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_app_bar_style);
+        mTooBarTitle = (TextView) findViewById(R.id.toolbar_title);
     }
 
     private void initViewOnClickListener() {
@@ -246,6 +263,28 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mBodyRadarHelpImageView.setOnClickListener(this);
         mFatAnalyzeHelpImageView.setOnClickListener(this);
         mAdviceHistoryTextView.setOnClickListener(this);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                if (state == State.EXPANDED) { //展开状态
+                    mTooBarTitle.setTextColor(ResourceUtils.getColor(R.color.white));
+                    mToolbar.setNavigationIcon(R.drawable.app_bar_white_back);
+                } else if (state == State.COLLAPSED) {//折叠状态
+                    mTooBarTitle.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+                    mToolbar.setNavigationIcon(R.drawable.app_bar_back);
+                } else {//中间状态
+                    mTooBarTitle.setTextColor(ResourceUtils.getColor(R.color.white));
+                    mToolbar.setNavigationIcon(R.drawable.app_bar_white_back);
+                }
+            }
+        });
+        mNoDataAppBackImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void sendRequest() {
@@ -379,10 +418,14 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
             mNoDataLayout.setVisibility(View.VISIBLE);
             mHeadCardView.setVisibility(View.GONE);
             mNoDataImageView.setImageResource(R.drawable.icon_no_data);
-            mNoDataTextView.setText(R.string.no_data);
+            mNoDataTextView.setVisibility(View.GONE);
+            mNoDataPromptTextView.setVisibility(View.VISIBLE);
+            mNoDataPromptTextView.setText(R.string.no_data);
+            mAppBarLayout.setVisibility(View.GONE);
         } else {
             mHeadCardView.setVisibility(View.VISIBLE);
             mNoDataLayout.setVisibility(View.GONE);
+            mAppBarLayout.setVisibility(View.VISIBLE);
         }
 
         if (bodyUserData != null) {
@@ -522,7 +565,10 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         List<Float> valueList = new ArrayList<>();
         if (bodyDataList != null && bodyDataList.size() > 0) {//组装显示的中文名称集合
             for (int i = 0; i < bodyDataList.size(); i++) {
-                chineseNameList.add(bodyDataList.get(i).getChineseName() + bodyDataList.get(i).getEnglishName());
+                String englishName = bodyDataList.get(i).getEnglishName();
+                //if (!StringUtils.isEmpty(englishName)) {
+                    chineseNameList.add(bodyDataList.get(i).getChineseName() + "(" + englishName + ")");
+               // }
                 unitList.add(bodyDataList.get(i).getValue() + bodyDataList.get(i).getUnit());
                 float max = Float.parseFloat(bodyDataList.get(i).getCriterionMax());
                 float min = Float.parseFloat(bodyDataList.get(i).getCriterionMin());
@@ -728,6 +774,8 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     public void handleNetworkFailure() {
         mNoDataLayout.setVisibility(View.VISIBLE);
         mHeadCardView.setVisibility(View.GONE);
+        mAppBarLayout.setVisibility(View.GONE);
+        mNoDataPromptTextView.setVisibility(View.GONE);
         mNoDataImageView.setImageResource(R.drawable.network_anomaly);
         mNoDataTextView.setText(R.string.refresh_btn_text);
         mNoDataTextView.setOnClickListener(new View.OnClickListener() {
