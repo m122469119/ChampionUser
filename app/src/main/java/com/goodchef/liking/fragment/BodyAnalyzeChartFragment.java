@@ -27,8 +27,10 @@ import com.goodchef.liking.http.result.data.BodyHistoryData;
 import com.goodchef.liking.mvp.presenter.BodyAnalyzeHistoryPresenter;
 import com.goodchef.liking.mvp.view.BodyAnalyzeHistoryView;
 import com.goodchef.liking.utils.ChartColorUtil;
+import com.goodchef.liking.utils.DecimalFormatUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,7 +123,6 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         l.setEnabled(false);
 
         YAxis leftAxis = mLineChart.getAxisLeft();
-        leftAxis.setAxisMinValue(0f);
         leftAxis.setTextColor(ChartColorUtil.CHART_LIGHT_BLACK);
         leftAxis.setTextSize(1f);
         leftAxis.setDrawAxisLine(false);
