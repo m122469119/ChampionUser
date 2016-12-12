@@ -1,15 +1,12 @@
 package com.goodchef.liking.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -32,7 +29,6 @@ import com.goodchef.liking.http.result.data.BodyHistoryData;
 import com.goodchef.liking.mvp.presenter.BodyAnalyzeHistoryPresenter;
 import com.goodchef.liking.mvp.view.BodyAnalyzeHistoryView;
 import com.goodchef.liking.utils.ChartColorUtil;
-import com.goodchef.liking.utils.DecimalFormatUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.text.DecimalFormat;
@@ -93,6 +89,11 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         }
     }
 
+    /**
+     * 发送请求
+     *
+     * @param column
+     */
     private void sendRequest(String column) {
         if (mBodyAnalyzeHistoryPresenter == null) {
             mBodyAnalyzeHistoryPresenter = new BodyAnalyzeHistoryPresenter(getActivity(), this);
@@ -104,19 +105,49 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     private void initChartData(List<BodyHistoryData> historyDataList, String unit) {
         dateList.clear();
         totalList.clear();
+        float valueMax = 1f;
+        float valueMin = 0f;
         if (ListUtils.isEmpty(historyDataList)) {
             mLikingStateView.setState(StateView.State.NO_DATA);
         } else {
             mLikingStateView.setState(StateView.State.SUCCESS);
         }
-        for (int i = 0; i < historyDataList.size(); i++) {
+        for (int i = 0; i < historyDataList.size(); i++) {//遍历数据，将数据重组为图表需要的集合
             dateList.add(historyDataList.get(i).getBodyTime());
-            totalList.add(historyDataList.get(i).getValue());
+            String value = historyDataList.get(i).getValue();
+            totalList.add(value);
+            float valueFloat = Float.parseFloat(value);
+            if (i == 0) {//选出最大值和最小值
+                valueMax = valueFloat;
+                valueMin = valueFloat;
+            }
+            if (valueMax < valueFloat) {
+                valueMax = valueFloat;
+            }
+            if (valueMin > valueFloat) {
+                valueMin = valueFloat;
+            }
         }
-        setChartView(unit);
+        if (valueMax > 0f) {
+            valueMax = valueMax * 2;
+        } else if (valueMax < 0f) {
+            valueMax = valueMax / 2;
+        }
+
+        if (valueMin < 0f) {
+            valueMin = valueMin - 10;
+        } else {
+            valueMin = 0f;
+        }
+
+        if (valueMax >= 0f && valueMax < 10f) {
+            valueMax += 10;
+        }
+
+        setChartView(unit, valueMax, valueMin);
     }
 
-    private void setChartView(String unit) {
+    private void setChartView(String unit, float valueMax, float valueMin) {
         mLineChart.setDrawGridBackground(false);
         mLineChart.setBackgroundColor(ChartColorUtil.CHART_LIGHT_BLACK);
         mLineChart.setDragEnabled(true);
@@ -124,7 +155,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLineChart.setData(generateLineData(totalList, unit));
         mLineChart.getAxisRight().setEnabled(false);
         mLineChart.setDescription("");
-        mLineChart.setExtraOffsets(20f, 30f, 20f, 15f);
+        mLineChart.setHighlightPerTapEnabled(false);//去掉点击高亮效果
+        mLineChart.setExtraOffsets(23f, 30f, 25f, 15f);
         mLineChart.setMinOffset(0f);
         if (dateList.size() > 0 && totalList.size() > 0) {
             int sleectX = dateList.size() - 1;
@@ -141,6 +173,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         leftAxis.setTextSize(1f);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setXOffset(0f);
+        leftAxis.setAxisMaxValue(valueMax);
+        leftAxis.setAxisMinValue(valueMin);
         leftAxis.setDrawLabels(false);//不显示y轴
         leftAxis.setAxisLineColor(ChartColorUtil.CHART_LIGHT_BLACK);//设置y轴的颜色
         leftAxis.setGridColor(ChartColorUtil.CHART_NORMAL_GRAY);//设置网格线的颜色
@@ -156,7 +190,6 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         xAxis.setTextColor(ChartColorUtil.CHART_WHITE);
         AxisValueFormatter formatter = new BodyChartValueFormatter(dateList);
         xAxis.setValueFormatter(formatter);
-
     }
 
     /**
@@ -180,7 +213,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         ds0.setDrawCircleHole(true);//设置圆圈空心还是实心,false为实心
         ds0.setCircleHoleRadius(3f);
         ds0.setDrawValues(true);
-        ds0.setValueTextSize(11f);
+        ds0.setValueTextSize(10f);
         ds0.setValueTextColor(ChartColorUtil.CHART_WHITE);
         ds0.setHighlightEnabled(true);
         ds0.setDrawFilled(true);
