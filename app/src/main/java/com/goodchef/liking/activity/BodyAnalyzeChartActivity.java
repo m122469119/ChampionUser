@@ -46,7 +46,6 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyMode
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze_chart);
         initView();
-
         getInitData();
         sendRequest(modules);
     }
@@ -68,11 +67,13 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyMode
         mBodyModeNavigationPresenter.getBodyModeNavigation(modules);
     }
 
-    private void setAnalyzeFragment(ArrayList<BodyHistoryData> firstList) {
+    private void setAnalyzeFragment(ArrayList<BodyHistoryData> firstList, String unit) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BodyAnalyzeChartFragment.KEY_HISTORY_LIST, firstList);
+        bundle.putString(BodyAnalyzeChartFragment.KEY_HISTORY_UNIT, unit);
+        bundle.putString(BodyAnalyzeChartFragment.KEY_HISTORY_MODULES, modules);
         fragmentTransaction.add(R.id.analyze_FrameLayout, BodyAnalyzeChartFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }
@@ -82,7 +83,11 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyMode
         navDataList = data.getNavData();
         ArrayList<BodyHistoryData> firstList = (ArrayList<BodyHistoryData>) data.getHistoryData();
         setTopTitleRecycleView();
-        setAnalyzeFragment(firstList);
+        if (navDataList != null && navDataList.size() > 0) {
+            setAnalyzeFragment(firstList, navDataList.get(0).getUnit());
+        } else {
+            setAnalyzeFragment(firstList, "");
+        }
     }
 
     private void setTopTitleRecycleView() {
@@ -123,7 +128,7 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyMode
                         }
                     }
                     mBodyAnalyzeTitleAdapter.notifyDataSetChanged();
-                    postEvent(new BodyAnalyzeHistoryMessage(object.getColumn()));
+                    postEvent(new BodyAnalyzeHistoryMessage(object.getColumn(), object.getUnit(), modules));
                 }
             }
         }

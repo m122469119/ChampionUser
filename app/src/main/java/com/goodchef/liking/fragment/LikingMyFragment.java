@@ -221,6 +221,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mLoginOutBtn.setVisibility(View.GONE);
             mIsVip.setVisibility(View.GONE);
             mHeadHImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_head_default_image));
+            HImageLoaderSingleton.getInstance().loadImage(mHImageViewBackground, "");
         }
     }
 
@@ -265,13 +266,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         });
         showSelfHelpGroupLayout(((LikingHomeActivity) getActivity()).mCanSchedule);
-
-//        if (Build.VERSION.SDK_INT < 21) {
-//            mPersonDataCardView.setCardElevation(0);
-//        } else {
-//            mPersonDataCardView.setCardElevation(10);
-//        }
-
     }
 
     private void setViewOnClickListener() {
@@ -388,11 +382,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 LikingCallUtil.showCallDialog(getActivity(), "确定联系客服吗？", phone);
             }
         } else if (v == mSelfHelpGroupLayout) {//自助团体课
-//            if (Preference.isLogin()) {
             startActivity(SelfHelpGroupActivity.class);
-//            } else {
-//                startActivity(LoginActivity.class);
-//            }
         } else if (v == mPersonSideLayout) {//体侧数据
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);

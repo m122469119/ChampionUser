@@ -3,11 +3,14 @@ package com.goodchef.liking.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
+import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -18,7 +21,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
 import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
@@ -47,8 +52,13 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     private List<String> totalList = new ArrayList<>();
     private List<String> dateList = new ArrayList<>();
     private List<BodyHistoryData> historyDataList;
+    private String unit = "";
+    private String modules;
     private BodyAnalyzeHistoryPresenter mBodyAnalyzeHistoryPresenter;
     public static String KEY_HISTORY_LIST = "key_history_list";
+    public static String KEY_HISTORY_UNIT = "key_history_unit";
+    public static String KEY_HISTORY_MODULES = "key_history_modules";
+
     private LikingStateView mLikingStateView;
 
     public static BodyAnalyzeChartFragment newInstance(Bundle args) {
@@ -64,7 +74,9 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLikingStateView = (LikingStateView) view.findViewById(R.id.analyze_chart_stateView);
         mLineChart = (LineChart) view.findViewById(R.id.analyze_LineChart);
         historyDataList = getArguments().getParcelableArrayList(KEY_HISTORY_LIST);
-        initChartData(historyDataList);
+        unit = getArguments().getString(KEY_HISTORY_UNIT);
+        modules = getArguments().getString(KEY_HISTORY_MODULES);
+        initChartData(historyDataList, unit);
         return view;
     }
 
@@ -76,6 +88,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     public void onEvent(BodyAnalyzeHistoryMessage message) {
         if (message != null) {
             sendRequest(message.getColumn());
+            unit = message.getUnit();
+            modules = message.getModules();
         }
     }
 
@@ -87,7 +101,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mBodyAnalyzeHistoryPresenter.getBodyAnalyzeHistory(column);
     }
 
-    private void initChartData(List<BodyHistoryData> historyDataList) {
+    private void initChartData(List<BodyHistoryData> historyDataList, String unit) {
         dateList.clear();
         totalList.clear();
         if (ListUtils.isEmpty(historyDataList)) {
@@ -99,15 +113,15 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
             dateList.add(historyDataList.get(i).getBodyTime());
             totalList.add(historyDataList.get(i).getValue());
         }
-        setChartView();
+        setChartView(unit);
     }
 
-    private void setChartView() {
+    private void setChartView(String unit) {
         mLineChart.setDrawGridBackground(false);
         mLineChart.setBackgroundColor(ChartColorUtil.CHART_LIGHT_BLACK);
         mLineChart.setDragEnabled(true);
         mLineChart.setScaleEnabled(false);//设置这两个方法可以横向滑动
-        mLineChart.setData(generateLineData(totalList));
+        mLineChart.setData(generateLineData(totalList, unit));
         mLineChart.getAxisRight().setEnabled(false);
         mLineChart.setDescription("");
         mLineChart.setExtraOffsets(20f, 30f, 20f, 15f);
@@ -150,7 +164,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
      *
      * @return
      */
-    private LineData generateLineData(List<String> totalList) {
+    private LineData generateLineData(List<String> totalList, final String unit) {
         ArrayList<ILineDataSet> sets = new ArrayList<>();
         ArrayList<Entry> yVals0 = new ArrayList<>();
         for (int i = 0; i < totalList.size(); i++) {
@@ -160,18 +174,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         LineDataSet ds0 = new LineDataSet(yVals0, "");
         ds0.setLineWidth(4f);//设置折线图的宽度
         ds0.setDrawCircles(true);
-        int r;
-        int g;
-        int b;
-        int a[] = new int[11];
-        for (int i = 0; i < 10; i++) {
-            r = (52 / 10) * i + 52;
-            g = (200 - 173) / 10 * i + 173;
-            b = (108 - 230) / 10 * i + 230;
-            a[i] = Color.rgb(r, g, b);
-        }
-        a[10] = Color.rgb(52, 200, 108);
-        ds0.setColors(a);
+        ds0.setColors(ChartColorUtil.getGradualChangeColor());
         ds0.setCircleColor(ChartColorUtil.CHART_LIGHT_GREEN);//设置折线图圆圈的颜色
         ds0.setCircleRadius(6f);//设置圆圈的半径
         ds0.setDrawCircleHole(true);//设置圆圈空心还是实心,false为实心
@@ -181,6 +184,18 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         ds0.setValueTextColor(ChartColorUtil.CHART_WHITE);
         ds0.setHighlightEnabled(true);
         ds0.setDrawFilled(true);
+        ds0.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                if (!StringUtils.isEmpty(modules) && modules.equals("top_data")) {
+                    DecimalFormat df = new DecimalFormat("#0");
+                    return df.format(value) + unit;
+                } else {
+                    DecimalFormat df = new DecimalFormat("#0.0");
+                    return df.format(value) + unit;
+                }
+            }
+        });
         sets.add(ds0);
         LineData d = new LineData(sets);
         return d;
@@ -191,7 +206,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     public void updateBodyAnalyzeHistoryView(BodyAnalyzeHistoryResult.BodyHistory data) {
         mLikingStateView.setState(StateView.State.SUCCESS);
         List<BodyHistoryData> historyDataList = data.getHistoryData();
-        initChartData(historyDataList);
+        initChartData(historyDataList, unit);
     }
 
     @Override

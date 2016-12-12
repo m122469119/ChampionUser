@@ -1,6 +1,5 @@
 package com.goodchef.liking.http.result.data;
 
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 
