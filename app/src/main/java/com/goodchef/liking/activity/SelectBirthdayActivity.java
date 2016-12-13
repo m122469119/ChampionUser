@@ -29,6 +29,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  */
 public class SelectBirthdayActivity extends AppBarActivity implements View.OnClickListener {
     public static final String KEY_BIRTHDAY = "key_birthday";
+    public static final String KEY_BIRTHDAY_FORMAT = "key_birthday_format";
     private LikingStateView mStateView;
     private HImageView mHImageView;
     private TextView mUserNameTextView;
@@ -99,7 +100,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            LogUtils.i(TAG,mLocalHeadImageUrl);
+            LogUtils.i(TAG, mLocalHeadImageUrl);
             HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
@@ -169,6 +170,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
             intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
             intent.putExtra(SexActivity.KEY_SEX, sex);
             intent.putExtra(KEY_BIRTHDAY, mBirthdayTextView.getText().toString().trim());
+            intent.putExtra(KEY_BIRTHDAY_FORMAT, year + "-" + month + "-" + day);
             startActivity(intent);
         }
     }

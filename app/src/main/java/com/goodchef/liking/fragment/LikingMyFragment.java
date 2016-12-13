@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
@@ -62,6 +63,8 @@ import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import java.util.Date;
 
 /**
  * Created on 16/5/20.

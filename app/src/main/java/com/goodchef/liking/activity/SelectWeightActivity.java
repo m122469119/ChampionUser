@@ -42,9 +42,11 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
 
     private String userName;
     private String mLocalHeadImageUrl;
-    private int sex ;
+    private int sex;
     private String mBirthdayStr;
+    private String mBirthdayStrFormat;
     private int height;
+    private int mScale;
 
     private List<String> weightList;
 
@@ -93,12 +95,13 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
         mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
         sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 0);
         mBirthdayStr = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY);
+        mBirthdayStrFormat = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT);
         height = getIntent().getIntExtra(SelectHeightActivity.KEY_HEIGHT, 0);
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            LogUtils.i(TAG,mLocalHeadImageUrl);
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
+            LogUtils.i(TAG, mLocalHeadImageUrl);
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
@@ -113,7 +116,7 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
             mWeightRulerView.smoothScrollTo(57);
         }
         mBirthdayTextView.setText("出生年月：" + mBirthdayStr);
-        mHeightTextView.setText("身高：" + height +" cm");
+        mHeightTextView.setText("身高：" + height + " cm");
     }
 
     private void setRulerView() {
@@ -121,6 +124,7 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
         mWeightRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
             @Override
             public void onScaleChanged(int scale) {
+                mScale = scale;
                 mWeightTextView.setText(weightList.get(scale) + " kg");
             }
         });
@@ -134,8 +138,9 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
             intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
             intent.putExtra(SexActivity.KEY_SEX, sex);
             intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY, mBirthdayStr);
-            intent.putExtra(SelectHeightActivity.KEY_HEIGHT,height);
-            intent.putExtra(KEY_WEIGHT,mWeightTextView.getText().toString());
+            intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT, mBirthdayStrFormat);
+            intent.putExtra(SelectHeightActivity.KEY_HEIGHT, height);
+            intent.putExtra(KEY_WEIGHT, weightList.get(mScale));
             startActivity(intent);
         }
     }
@@ -146,7 +151,7 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
         return true;
     }
 
-    public void onEvent(UpDateUserInfoMessage message){
+    public void onEvent(UpDateUserInfoMessage message) {
         this.finish();
     }
 }

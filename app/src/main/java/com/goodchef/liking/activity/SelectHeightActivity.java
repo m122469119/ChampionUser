@@ -42,6 +42,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
     private String mLocalHeadImageUrl;
     private int sex;
     private String mBirthdayStr;
+    private String mBirthdayStrFormat;
     private int height;
 
     @Override
@@ -89,7 +90,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
         mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
         sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 1);
         mBirthdayStr = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY);
-
+        mBirthdayStrFormat = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT);
         mUserNameTextView.setText(userName);
 
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
@@ -130,6 +131,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
             intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
             intent.putExtra(SexActivity.KEY_SEX, sex);
             intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY, mBirthdayStr);
+            intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT, mBirthdayStrFormat);
             intent.putExtra(KEY_HEIGHT,height);
             startActivity(intent);
         }

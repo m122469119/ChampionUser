@@ -233,6 +233,10 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
+        if (birthday.equals("选择出生日期")) {
+            birthday = "";
+        }
+
         if (!StringUtils.isEmpty(height)) {
             int heightInt = Integer.parseInt(height);
             if (heightInt < 50 || heightInt > 250) {

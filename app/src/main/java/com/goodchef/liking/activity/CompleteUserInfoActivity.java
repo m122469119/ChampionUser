@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
+import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -30,6 +31,8 @@ import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import java.util.Date;
 
 /**
  * 说明:首次登陆完成个人信息界面
@@ -52,6 +55,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     private String mLocalHeadImageUrl;
     private int sex = -1;
     private String mBirthdayStr;
+    private String mBirthdayStrFormat;
     private int height;
     private String weight;
     private String headUrl;
@@ -104,6 +108,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
         mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
         sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 0);
         mBirthdayStr = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY);
+        mBirthdayStrFormat = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT);
         height = getIntent().getIntExtra(SelectHeightActivity.KEY_HEIGHT, 0);
         weight = getIntent().getStringExtra(SelectWeightActivity.KEY_WEIGHT);
 
@@ -123,7 +128,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
         }
         mBirthdayTextView.setText(mBirthdayStr);
         mHeightTextView.setText(height + " cm");
-        mWeightTextView.setText(weight);
+        mWeightTextView.setText(weight + " kg");
 
         Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
         sendImageFile(mBitmap);
@@ -147,7 +152,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
                     headUrl = result.getData().getUrl();
                     Log.e("headUrl", headUrl);
                     if (!StringUtils.isEmpty(headUrl)) {
-                        mUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStr, weight, height + "");
+                        mUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStrFormat, weight, height + "");
                     }
                 }
             }
