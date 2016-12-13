@@ -331,12 +331,12 @@ public class CustomRadarView extends View {
                 //底下两个角的坐标需要向下移动半个图片的位置（1、2）
                 if (i == 0) {
                     x = (int) (centerX - (titleWidth / 2));
-                    y = (int) (centerY - radius) - 60;
+                    y = (int) (centerY - radius - getTextHeight(titlePaint)) - 20;
                 } else if (i == 1) {
-                    y += (titleWidth / 2) - 40;
+                    y += 20;
                 } else if (i == 2) {
                     x = (int) (centerX + (titleWidth / 2));
-                    y += 20;
+                    y = y + getTextHeight(titlePaint) - 20;
                 } else if (i == 3) {
                     x = (int) (x - titleWidth / 2) - 20;
                     y = y + getTextHeight(titlePaint) - 20;
@@ -354,16 +354,16 @@ public class CustomRadarView extends View {
                 //底下两个角的坐标需要向下移动半个图片的位置（1、2）
                 if (i == 0) {
                     x = (int) (centerX - (titleWidth / 2));
-                    y = (int) (centerY - radius) - 60;
+                    y = (int) (centerY - radius) - 75;
                 } else if (i == 1) {
-                    x = (int) (centerX + radius) - 20;
-                    y = centerY - 40;
+                    x = (int) (centerX + radius) - 30;
+                    y = centerY - 45;
                 } else if (i == 2) {
                     x = (int) (centerX - (titleWidth / 2));
                     y = (int) (centerY + radius + (titleWidth / 2)) - 60;
                 } else if (i == 3) {
-                    x = (int) (centerX - radius - (titleWidth)) - 30;
-                    y = centerY - 20;
+                    x = (int) (centerX - radius - (titleWidth)) - 20;
+                    y = centerY - 45;
                 }
                 canvas.drawText(titles.get(i), x, y, titlePaint);
             }
@@ -391,13 +391,13 @@ public class CustomRadarView extends View {
                     y = (int) (centerY - radius) - 20;
                 } else if (i == 1) {
                     x = (int) (x + titleWidth / 2 - unitWidth / 2);
-                    y = y + getTextHeight(titlePaint) + 40;
+                    y = y + getTextHeight(titlePaint) + 30;
                 } else if (i == 2) {
                     x = (int) (centerX + (titleWidth / 2));
-                    y = y + getTextHeight(titlePaint) + 20;
+                    y = y + getTextHeight(titlePaint) + 40;
                 } else if (i == 3) {
-                    x = (int) (x - titleWidth / 2 - unitWidth / 2) + 60;
-                    y = y + getTextHeight(titlePaint) + 20;
+                    x = (int) (x - titleWidth / 2 - unitWidth / 2) + 70;
+                    y = y + getTextHeight(titlePaint) + 40;
                 } else if (i == 4) {
                     x = (int) (x - unitWidth / 2 - unitWidth / 2);
                     y = (int) (y + unitWidth / 2) + 20;
@@ -423,7 +423,7 @@ public class CustomRadarView extends View {
                     y = (int) (centerY + radius + (titleWidth / 2) + unitWidth / 2) - 30;
                 } else if (i == 3) {
                     x = (int) (centerX - radius - (titleWidth) - unitWidth / 2) + 10;
-                    y = centerY + 40;
+                    y = centerY + 20;
                 }
                 canvas.drawText(valueUnitList.get(i), x, y, unitPaint);
             }
