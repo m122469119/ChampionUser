@@ -165,12 +165,18 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v == mNextBtn) {
+            String monthFormat;
+            if (month < 10) {
+                monthFormat = "0" + month;
+            } else {
+                monthFormat = month + "";
+            }
             Intent intent = new Intent(this, SelectHeightActivity.class);
             intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
             intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
             intent.putExtra(SexActivity.KEY_SEX, sex);
             intent.putExtra(KEY_BIRTHDAY, mBirthdayTextView.getText().toString().trim());
-            intent.putExtra(KEY_BIRTHDAY_FORMAT, year + "-" + month + "-" + day);
+            intent.putExtra(KEY_BIRTHDAY_FORMAT, year + "-" + monthFormat + "-" + day);
             startActivity(intent);
         }
     }
