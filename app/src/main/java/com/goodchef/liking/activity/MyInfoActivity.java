@@ -277,6 +277,9 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                         if (Integer.parseInt(month) < 10) {
                             month = "0" + month;
                         }
+                        if (Integer.parseInt(dayStr) < 10) {
+                            dayStr = "0" + dayStr;
+                        }
                         String str = yearStr + "-" + month + "-" + dayStr;
                         if (VerifyDateUtils.isVerifyDate(str)) {
                             mSelectBirthdayTextView.setText(str);
@@ -395,6 +398,12 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             String birthday = userInfoData.getBirthday();
             if (!StringUtils.isEmpty(birthday)) {
                 mSelectBirthdayTextView.setText(birthday);
+                String a[] = birthday.split("-");
+                if (a != null && a.length >= 2) {
+                    yearStr = a[0];
+                    monthStr = a[1];
+                    dayStr = a[2];
+                }
             }
             int height = userInfoData.getHeight();
             if (height > 0) {
