@@ -10,8 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@color/app_content_background">
+        android:background="@color/app_content_background"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,9 +26,9 @@
                     android:id="@+id/self_lesson_details_shop_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    fresco:failureImage="@mipmap/bg_no_data_default_image"
+                    fresco:failureImage="@drawable/bg_no_data_default_image"
                     fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@mipmap/bg_no_data_default_image"
+                    fresco:placeholderImage="@drawable/bg_no_data_default_image"
                     fresco:placeholderImageScaleType="centerCrop"/>
 
                 <TextView
@@ -80,9 +80,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="gone"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/courses_appliance_details"
@@ -107,9 +107,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp">
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:id="@+id/rating_courses_details"
@@ -155,9 +155,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3dp"
-                    android:paddingTop="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:paddingTop="10dp"
                     android:textColor="@color/coupons_green"
                     android:textSize="13sp"/>
 

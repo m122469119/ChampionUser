@@ -254,9 +254,9 @@
                         android:layout_height="70dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        fresco:failureImage="@mipmap/bg_private_teacher_default"
+                        fresco:failureImage="@drawable/bg_private_teacher_default"
                         fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImage="@mipmap/bg_private_teacher_default"
+                        fresco:placeholderImage="@drawable/bg_private_teacher_default"
                         fresco:placeholderImageScaleType="centerCrop"
                         />
 
