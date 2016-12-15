@@ -191,6 +191,9 @@
 }
 ###### end #########
 
+####添加 MPAndroidChart 图片框架混淆##
+-keep class com.github.mikephil.charting.** { *; }
+
 ####### 支付宝 start ########
 -libraryjars ../thirdparty/libs/alipaySingle-20160825.jar
 -keep class com.alipay.android.app.IAlixPay{*;}
