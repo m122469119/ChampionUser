@@ -234,9 +234,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 mRightTitleTextView.setText(currentCityName);
                 if (!StringUtils.isEmpty(doLocationCity())) {//如果当前城市在开通范围城市范围之内
                     compareSelectCity(currentCityName);
+                    postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
                 }
-                compareCurrentCity(currentCityName);
-                postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
             } else {
                 isSecondLocation = true;
                 initTitleLocation();
@@ -364,10 +363,10 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 if (cityData.getCityName().equals(currentCityName) || cityData.getCityName().contains(currentCityName)) {
                     cityId = cityData.getCityId() + "";
                     return cityId;
-                } else {
-                    cityId = currentCityId;
-                    return cityId;
                 }
+            }
+            if (StringUtils.isEmpty(cityId)) {
+                cityId = currentCityId;
             }
         }
         return cityId;

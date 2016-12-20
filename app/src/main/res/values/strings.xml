@@ -239,5 +239,7 @@
     <string name="person_test_data">个人体测数据</string>
     <string name="today_train_data">今日训练</string>
     <string name="title_body_test">体测数据</string>
+    <string name="home_buy_card">点击购卡</string>
+    <string name="home_no_data_prompt">即刻开启智能健身之旅</string>
 
 </resources>

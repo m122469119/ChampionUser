@@ -31,10 +31,12 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
 import com.goodchef.liking.dialog.HomeRightDialog;
+import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
+import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
@@ -246,6 +248,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setHomeTitle();
                     setHomeMenuReadNotice();
                     checkAppUpdate();
+                    postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     setTagRechargeTab();
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
@@ -566,6 +569,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         setHomeTitle();
         setHomeMenuReadNotice();
+    }
+
+    public void onEvent(BuyCardMessage message) {
+        if (message != null && fragmentTabHost != null) {
+            fragmentTabHost.setCurrentTab(1);
+        }
     }
 
     /**

@@ -268,6 +268,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         Intent intent = new Intent(getActivity(), LikingHomeActivity.class);
         intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
         startActivity(intent);
+        LikingHomeActivity.gymId = gymId;
         getActivity().finish();
     }
 
