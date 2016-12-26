@@ -32,6 +32,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
+import com.goodchef.liking.activity.BingBraceletActivity;
 import com.goodchef.liking.activity.BodyTestDataActivity;
 import com.goodchef.liking.activity.BodyTestHistoryActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
@@ -89,6 +90,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private CardView mPersonDataCardView;//个人数据布局
 
     private LinearLayout mSelfHelpGroupLayout;//自助团体课
+    private LinearLayout mBindBraceletLinearLayout;//绑定手环
     private LinearLayout mMyCourseLayout;//我的课程
     private LinearLayout mMyOrderLayout;//我的订单
     private LinearLayout mMemberCardLayout;//会员卡
@@ -243,6 +245,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mPersonDataCardView = (CardView) view.findViewById(R.id.my_head_CardView);
 
         mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
+        mBindBraceletLinearLayout = (LinearLayout) view.findViewById(R.id.layout_bind_bracelet);
         mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
         mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
         mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
@@ -281,6 +284,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mLoginBtn.setOnClickListener(this);
 
         mSelfHelpGroupLayout.setOnClickListener(this);
+        mBindBraceletLinearLayout.setOnClickListener(this);
         mMyCourseLayout.setOnClickListener(this);
         mMyOrderLayout.setOnClickListener(this);
         mMemberCardLayout.setOnClickListener(this);
@@ -293,6 +297,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     private void initViewIconAndText() {
         setMySettingCard(mSelfHelpGroupLayout, R.string.layout_self_help_group, true);
+        setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, true);
         setMySettingCard(mAboutUsLayout, R.string.layout_about_us, false);
@@ -395,6 +400,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             } else {
                 startActivity(LoginActivity.class);
             }
+        } else if (v == mBindBraceletLinearLayout) {//绑定手环
+            startActivity(BingBraceletActivity.class);
         }
     }
 

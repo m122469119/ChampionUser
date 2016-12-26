@@ -235,6 +235,11 @@
             android:name=".activity.SelfHelpGroupActivity"
             android:screenOrientation="portrait"/>
 
+        <!--绑定手环-->
+        <activity
+            android:name=".activity.BingBraceletActivity"
+            android:screenOrientation="portrait"/>
+
         <!--自助团详情-->
         <activity
             android:name=".activity.SelfLessonDetailsActivity"

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_blue_tooth_back">
+
+        <com.goodchef.liking.widgets.WhewView
+            android:id="@+id/blue_tooth_WhewView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.goodchef.liking.widgets.RoundImageView
+            android:id="@+id/blue_tooth_RoundImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/icon_blue_tooth"
+            imagecontrol:border_inside_color="#ffffff"
+            imagecontrol:border_outside_color="#ffffff"
+            imagecontrol:border_thickness="1dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/blue_tooth_RoundImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:text="@string/point_search"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_12dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_12dp"
+            android:paddingBottom="@dimen/spacing_12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="1.请确保手机蓝牙打开"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/line"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_12dp"
+            android:paddingBottom="@dimen/spacing_12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="2.请确保手环有电"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/line"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_12dp"
+            android:paddingBottom="@dimen/spacing_12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="3.让手机靠近手环 (在5米范围内) "
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"/>
+
+
+    </LinearLayout>
+</LinearLayout>
