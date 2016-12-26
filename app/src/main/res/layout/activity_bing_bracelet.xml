@@ -27,6 +27,7 @@
             imagecontrol:border_thickness="1dp"/>
 
         <TextView
+            android:id="@+id/click_search_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/blue_tooth_RoundImageView"
@@ -37,7 +38,40 @@
             android:textSize="15sp"/>
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/spacing_12dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:text="蓝牙未开启"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_15"/>
+
+        <TextView
+            android:id="@+id/open_blue_tooth_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="@dimen/spacing_12dp"
+            android:paddingTop="10dp"
+            android:text="开启"
+            android:textColor="@color/c4A90E2"
+            android:textSize="@dimen/textsize_15"/>
+
+    </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/layout_blue_tooth_bracelet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_12dp"
@@ -90,7 +124,11 @@
             android:text="3.让手机靠近手环 (在5米范围内) "
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_small"/>
-
-
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/blue_booth_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -265,6 +265,11 @@
             android:name=".activity.BodyAnalyzeChartActivity"
             android:screenOrientation="portrait"/>
 
+        <!--蓝牙帮助界面-->
+        <activity
+            android:name=".activity.BlueToothHelpActivity"
+            android:screenOrientation="portrait"/>
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
