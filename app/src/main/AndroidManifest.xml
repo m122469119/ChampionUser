@@ -270,6 +270,10 @@
             android:name=".activity.BlueToothHelpActivity"
             android:screenOrientation="portrait"/>
 
+        <!--每日运动-->
+        <activity android:name=".activity.EveryDaySportActivity"
+            android:screenOrientation="portrait"/>
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

@@ -228,6 +228,7 @@
     <string name="segment_muscle">节段肌肉</string>
     <string name="history_record">历史记录</string>
     <string name="body_test_grade">体测评分</string>
+    <string name="body_test_grade_unit">Points</string>
     <string name="body_radar">身体成分分析</string>
     <string name="fat_analyze">肥胖分析</string>
     <string name="age">年龄</string>
@@ -239,10 +240,13 @@
     <string name="no_body_history_data">暂无体测历史</string>
     <string name="person_test_data">个人体测数据</string>
     <string name="today_train_data">今日训练</string>
+    <string name="today_train_data_unit">Min</string>
     <string name="title_body_test">体测数据</string>
     <string name="home_buy_card">点击购卡</string>
     <string name="home_no_data_prompt">即刻开启智能健身之旅</string>
     <string name="point_search">点击搜索</string>
     <string name="title_bing_bracelet">绑定手环</string>
+    <string name="everyday_sport_title">日常运动</string>
+    <string name="everyday_sport_unit">Km</string>
 
 </resources>

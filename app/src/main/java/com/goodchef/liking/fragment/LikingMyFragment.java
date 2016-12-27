@@ -3,29 +3,23 @@ package com.goodchef.liking.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -34,10 +28,9 @@ import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.activity.BecomeTeacherActivity;
 import com.goodchef.liking.activity.BingBraceletActivity;
 import com.goodchef.liking.activity.BodyTestDataActivity;
-import com.goodchef.liking.activity.BodyTestHistoryActivity;
 import com.goodchef.liking.activity.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
-import com.goodchef.liking.activity.InviteFriendsActivity;
+import com.goodchef.liking.activity.EveryDaySportActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
@@ -65,8 +58,6 @@ import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
-import java.util.Date;
-
 /**
  * Created on 16/5/20.
  * 我的界面
@@ -87,7 +78,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView mLoginOutBtn;//退出登录
     private TextView mLoginBtn;//登录按钮
     private TextView mIsVip;//是否是VIP
-    private CardView mPersonDataCardView;//个人数据布局
 
     private LinearLayout mSelfHelpGroupLayout;//自助团体课
     private LinearLayout mBindBraceletLinearLayout;//绑定手环
@@ -96,15 +86,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LinearLayout mMemberCardLayout;//会员卡
     private LinearLayout mCouponsLayout;//我的优惠券
 
-    private LinearLayout mTrainLayout;//训练数据布局
-    private LinearLayout mPersonSideLayout;//体侧数据布局
-    private TextView myTrainTime;//训练时间
-    private TextView myTrainTimeUnit;
-    private TextView myPersonSideData;//个人训练数据
-    private TextView myPersonSideUnit;
+    private LinearLayout mBodyScoreLayout;
+    private LinearLayout mEverydaySportLayout;
+    private LinearLayout mTrainLayout;
+    private TextView mBodyScoreData;//个人训练数据
+    private TextView mEveryDataSportData;//每日运动
+    private TextView mTrainTimeData;//训练时间
 
     private TextView mContactSetviceBtn;//联系客服
-
 
     public static final String NULL_STRING = "";
     private LikingStateView mStateView;
@@ -115,10 +104,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
+        mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         initView(view);
         initViewIconAndText();
+        setHeadPersonData();
         setViewOnClickListener();
-        mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         return view;
     }
 
@@ -156,9 +146,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                         if (LiKingVerifyUtils.isValid(getActivity(), result)) {
                             UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
                             if (exerciseData != null) {
-                                setTextViewTypeface();
-                                myTrainTime.setText(exerciseData.getTodayMin());
-                                myPersonSideData.setText(exerciseData.getScore());
+                                mTrainTimeData.setText(exerciseData.getTodayMin());
+                                mBodyScoreData.setText(exerciseData.getScore());
                                 Preference.setIsVip(exerciseData.getIsVip());
                                 if (Preference.isVIP()) {
                                     mIsVip.setVisibility(View.VISIBLE);
@@ -190,17 +179,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 清除训练数据
      */
     private void clearExerciseData() {
-        setTextViewTypeface();
-        myPersonSideData.setText("-");
-        myTrainTime.setText("-");
+        mBodyScoreData.setText("-");
+        mTrainTimeData.setText("-");
+        mEveryDataSportData.setText("-");
     }
 
-    private void setTextViewTypeface() {
-        myPersonSideData.setTypeface(mTypeface);
-        myTrainTimeUnit.setTypeface(mTypeface);
-        myPersonSideUnit.setTypeface(mTypeface);
-        myTrainTime.setTypeface(mTypeface);
-    }
 
     private void setLogonView() {
         if (Preference.isLogin()) {
@@ -242,7 +225,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mLoginOutBtn = (TextView) view.findViewById(R.id.login_out_btn);
         mLoginBtn = (TextView) view.findViewById(R.id.login_text);
         mIsVip = (TextView) view.findViewById(R.id.is_vip);
-        mPersonDataCardView = (CardView) view.findViewById(R.id.my_head_CardView);
 
         mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
         mBindBraceletLinearLayout = (LinearLayout) view.findViewById(R.id.layout_bind_bracelet);
@@ -251,12 +233,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
         mCouponsLayout = (LinearLayout) view.findViewById(R.id.layout_coupons);
 
-        mTrainLayout = (LinearLayout) view.findViewById(R.id.layout_my_train_data);
-        mPersonSideLayout = (LinearLayout) view.findViewById(R.id.layout_person_side);
-        myTrainTime = (TextView) view.findViewById(R.id.my_train_time);
-        myTrainTimeUnit = (TextView) view.findViewById(R.id.my_train_time_unit);
-        myPersonSideData = (TextView) view.findViewById(R.id.person_side_data);
-        myPersonSideUnit = (TextView) view.findViewById(R.id.person_side_data_unit);
+        mBodyScoreLayout = (LinearLayout) view.findViewById(R.id.layout_body_score);
+        mEverydaySportLayout = (LinearLayout) view.findViewById(R.id.layout_everyday_sport);
+        mTrainLayout = (LinearLayout) view.findViewById(R.id.layout_today_data);
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
@@ -289,8 +268,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mMyOrderLayout.setOnClickListener(this);
         mMemberCardLayout.setOnClickListener(this);
         mCouponsLayout.setOnClickListener(this);
+
+        mBodyScoreLayout.setOnClickListener(this);
         mTrainLayout.setOnClickListener(this);
-        mPersonSideLayout.setOnClickListener(this);
+        mEverydaySportLayout.setOnClickListener(this);
+
         mContactSetviceBtn.setOnClickListener(this);
     }
 
@@ -311,6 +293,42 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             line.setVisibility(View.VISIBLE);
         } else {
             line.setVisibility(View.GONE);
+        }
+    }
+
+    private void setHeadPersonData() {
+        setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
+        setHeadPersonDataView(mEverydaySportLayout, R.string.everyday_sport_title, R.string.everyday_sport_unit);
+        setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
+
+        mEveryDataSportData.setText("0");
+    }
+
+    /**
+     * 设置头部个人数据
+     *
+     * @param view
+     * @param title
+     * @param unitText
+     */
+    private void setHeadPersonDataView(View view, int title, int unitText) {
+        TextView titleTextView = (TextView) view.findViewById(R.id.person_body_title);
+        TextView contentTextView = (TextView) view.findViewById(R.id.person_content_data);
+        TextView unitTextView = (TextView) view.findViewById(R.id.person_content_data_unit);
+        titleTextView.setText(title);
+        unitTextView.setText(unitText);
+        unitTextView.setTypeface(mTypeface);
+        contentTextView.setTypeface(mTypeface);
+        switch (view.getId()) {
+            case R.id.layout_body_score:
+                mBodyScoreData = contentTextView;
+                break;
+            case R.id.layout_everyday_sport:
+                mEveryDataSportData = contentTextView;
+                break;
+            case R.id.layout_today_data:
+                mTrainTimeData = contentTextView;
+                break;
         }
     }
 
@@ -391,7 +409,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mSelfHelpGroupLayout) {//自助团体课
             startActivity(SelfHelpGroupActivity.class);
-        } else if (v == mPersonSideLayout) {//体侧数据
+        } else if (v == mBodyScoreLayout) {//体测数据
             if (Preference.isLogin()) {
                 Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
                 intent.putExtra(BodyTestDataActivity.BODY_ID, "");
@@ -402,6 +420,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             startActivity(BingBraceletActivity.class);
+        } else if (v == mEverydaySportLayout) {//每日运动
+            startActivity(EveryDaySportActivity.class);
         }
     }
 

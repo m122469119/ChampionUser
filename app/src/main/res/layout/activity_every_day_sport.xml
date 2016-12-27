@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/app_content_background"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/synchronization_sate_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/spacing_12dp"
+            android:text="同步失败"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textsize_small"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/spacing_12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/spacing_12dp"
+                android:text="今日数据"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_12dp"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_every_day_back"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/layout_today_step"
+                    layout="@layout/item_every_day"/>
+
+                <include
+                    android:id="@+id/layout_today_distance"
+                    layout="@layout/item_every_day"/>
+
+                <include
+                    android:id="@+id/layout_today_kcal"
+                    layout="@layout/item_every_day"/>
+
+                <include
+                    android:id="@+id/layout_average_heart_rate"
+                    layout="@layout/item_every_day"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/spacing_12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/spacing_12dp"
+                android:text="总运动数据"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_medium"/>
+
+            <include
+                android:id="@+id/layout_today_total_step"
+                layout="@layout/item_every_day_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_12dp"/>
+
+            <include
+                android:id="@+id/layout_today_total_distance"
+                layout="@layout/item_every_day_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_12dp"/>
+
+            <include
+                android:id="@+id/layout_today_total_kcal"
+                layout="@layout/item_every_day_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_12dp"/>
+
+            <include
+                android:id="@+id/layout_today_total_average_heart_rate"
+                layout="@layout/item_every_day_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_12dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
