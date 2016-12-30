@@ -71,6 +71,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
 
     private void setViewOnClickListener() {
         mBlueToothRoundImageView.setOnClickListener(this);
+        mOpenBlueToothTextView.setOnClickListener(this);
     }
 
     /**
@@ -117,6 +118,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 mClickSearchTextView.setVisibility(View.GONE);
                 handler.sendEmptyMessage(Nou);
             }
+        } else if (v == mOpenBlueToothTextView) {
         }
     }
 }

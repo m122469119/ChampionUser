@@ -1,12 +1,18 @@
 package com.goodchef.liking.utils;
 
+import android.content.Context;
+
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.storage.ReadProvincesCitiesJson;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -195,4 +201,17 @@ public class CityUtils {
         }
         return latitudeStr;
     }
+
+
+    public static List<City.RegionsData> getLocalCityList(Context context) {
+        List<City.RegionsData> cityList = new ArrayList<>();
+        String jsonStr = ReadProvincesCitiesJson.getJson(context);//获取省市json串
+        if (!StringUtils.isEmpty(jsonStr)) {
+            Gson gson = new Gson();
+            City data = gson.fromJson(jsonStr, City.class);
+            cityList = data.getRegions();
+        }
+        return cityList;
+    }
+
 }
