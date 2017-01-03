@@ -95,6 +95,8 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 }
             }
             int type = object.getType();
+            String tagName = object.getTagName();
+            mLessonTypeTextView.setText(tagName);
             if (type == TYPE_GROUP_LESSON) {
                 int isFree = object.getIsFee();
                 int scheduleType = object.getScheduleType();
@@ -102,18 +104,15 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_group_text));
 
                 if (isFree == 0) {//免费
-                    mLessonTypeTextView.setText(R.string.free_courses);
                     mCoursesMoneyTextView.setVisibility(View.GONE);
                 } else if (isFree == 1) {//收费
-                    mLessonTypeTextView.setText(R.string.not_free_group_courses);
                     mCoursesMoneyTextView.setVisibility(View.VISIBLE);
                     mCoursesMoneyTextView.setText("¥ " + object.getPrice());
                 }
 
                 if(TYPE_SCHEDULE_TYPE_SELF == scheduleType){ //自助团体课
-                    mLessonTypeTextView.setText(R.string.self_courses);
-                }
 
+                }
                 mLessonNameTextView.setText(object.getCourseName());
                 String courseDate = object.getCourseDate();
                 if (!StringUtils.isEmpty(courseDate)) {
@@ -132,7 +131,6 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                 mGroupLessonLayout.setTag(object);
             } else if (type == TYPE_PRIVATE_LESSON) {
                 mLessonTypeLayout.setBackgroundResource(R.drawable.icon_pivate_teach_lesson);
-                mLessonTypeTextView.setText("私教课");
                 mLessonTypeTextView.setTextColor(ResourceUtils.getColor(R.color.white));
                 mLessonNameTextView.setText(object.getCourseName());
                 mLessonTimeTextView.setText(object.getDescription());

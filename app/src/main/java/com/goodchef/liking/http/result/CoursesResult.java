@@ -62,6 +62,8 @@ public class CoursesResult extends BaseResult {
             private List<String> imgs;
             @SerializedName("tags")
             private List<String> tags;
+            @SerializedName("tag_name")
+            private String tagName;
             @SerializedName("type")
             private int type;
             @SerializedName("is_fee")
@@ -191,6 +193,13 @@ public class CoursesResult extends BaseResult {
                 this.scheduleId = scheduleId;
             }
 
+            public String getTagName() {
+                return tagName;
+            }
+
+            public void setTagName(String tagName) {
+                this.tagName = tagName;
+            }
         }
 
         public static class Gym extends BaseData{

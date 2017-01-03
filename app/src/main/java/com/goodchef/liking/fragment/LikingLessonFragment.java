@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
@@ -56,7 +57,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public static final String KEY_DISTANCE = "key_distance";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
     private View mHeadView;
-    private View mBlankView;
+    private RelativeLayout mHeadInfiteLayout;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
@@ -156,6 +157,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
      */
     private void initRecycleHeadView() {
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_home_head, getRecyclerView(), false);
+        mHeadInfiteLayout = (RelativeLayout) mHeadView.findViewById(R.id.layout_InfiniteViewPager);
         mImageViewPager = (InfiniteViewPager) mHeadView.findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) mHeadView.findViewById(R.id.liking_home_head_indicator);
         mContentDataView = (LinearLayout) mHeadView.findViewById(R.id.layout_no_content);
@@ -163,12 +165,12 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         mSelfCoursesInView = (LinearLayout) mHeadView.findViewById(R.id.layout_self_courses_view);
         mSelfCoursesInView.setOnClickListener(goToSelfCoursesListener);
         mBuyCardTextView.setOnClickListener(buyCardOnClickListener);
+        mLikingLessonRecyclerAdapter.addHeaderView(mHeadView);
         initImageSliderLayout();
     }
 
 
     private void initBlankView() {
-        mBlankView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_blank_view, getRecyclerView(), false);
         mFooterView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_network_footer, getRecyclerView(), false);
         setNoNextPageFooterView(mFooterView);
     }
@@ -229,7 +231,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         } else {
             mCoursesPresenter.getHomeData("0", "0", mCityId, mDistrictId, page, LikingHomeActivity.gymId, LikingLessonFragment.this);
         }
-        LogUtils.i("bbbbb", "request=" + page);
     }
 
 
@@ -247,22 +248,18 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         list = courses.getCoursesDataList();
         if (list != null && list.size() > 0) {
             if (mContentDataView != null) {
-                LogUtils.i("bbbbb", "333Gone");
                 mContentDataView.setVisibility(View.GONE);
             }
             updateListView(list);
         } else {
             setTotalPage(getCurrentPage());
             if (isRequestHomePage()) {
-                LogUtils.i("bbbbb", "2222");
                 clearContent();
                 if (bannerDataList != null && bannerDataList.size() > 0) {
                     setBannerData();
                     if (mContentDataView != null) {
-                        LogUtils.i("bbbbb", "是否可见" + mContentDataView.getVisibility());
                         if (mContentDataView.getVisibility() == View.GONE) {
                             mContentDataView.setVisibility(View.VISIBLE);
-                            LogUtils.i("bbbbb", "4444 VISIBLE");
                         }
                     }
                     mLikingLessonRecyclerAdapter.removeFooterView(mFooterView);
@@ -271,7 +268,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                 }
             } else {
                 if (mContentDataView != null) {
-                    LogUtils.i("bbbbb", "1111 GONE");
                     mContentDataView.setVisibility(View.GONE);
                 }
                 if (ListUtils.isEmpty(list)) {
@@ -303,7 +299,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     private void setBannerData() {
         if (bannerDataList != null && bannerDataList.size() > 0) {
-            removeHeadView();
+            mHeadInfiteLayout.setVisibility(View.VISIBLE);
             if (mBannerPagerAdapter != null) {
                 mBannerPagerAdapter.setData(bannerDataList);
                 mBannerPagerAdapter.notifyDataSetChanged();
@@ -311,7 +307,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             }
             mImageViewPager.setCurrentItem(0);
             mImageViewPager.startAutoScroll();
-            mLikingLessonRecyclerAdapter.addHeaderView(mHeadView);
             if (list != null && list.size() > 0) {
                 if (mContentDataView != null) {
                     mContentDataView.setVisibility(View.GONE);
@@ -324,22 +319,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                 }
             }
         } else {
-            removeHeadView();
-            setBlankView();
+            mHeadInfiteLayout.setVisibility(View.GONE);
         }
     }
-
-    private void setBlankView() {
-        mLikingLessonRecyclerAdapter.addHeaderView(mBlankView);
-    }
-
-
-    private void removeHeadView() {
-        if (mHeadView != null) {
-            mLikingLessonRecyclerAdapter.removeHeaderView(mHeadView);
-        }
-    }
-
 
     @Override
     public void onResume() {

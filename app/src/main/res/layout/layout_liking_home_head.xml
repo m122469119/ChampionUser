@@ -37,32 +37,30 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_blank_view"
         android:layout_marginBottom="8dp"
-        android:visibility="visible"
-        >
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/liking_green_btn_back"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginRight="@dimen/spacing_8dp"
+            android:background="@drawable/icon_self_clock"/>
+
+        <TextView
+            android:id="@+id/self_courses_tv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:background="@color/liking_green_btn_back"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            >
-
-            <TextView
-                android:id="@+id/self_courses_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/icon_self_clock"
-                android:drawablePadding="6dp"
-                android:gravity="center"
-                android:text="预约自助团体课"
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
-        </LinearLayout>
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="预约自助团体课"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
     </LinearLayout>
 
     <LinearLayout
