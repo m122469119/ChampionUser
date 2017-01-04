@@ -119,6 +119,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 handler.sendEmptyMessage(Nou);
             }
         } else if (v == mOpenBlueToothTextView) {
+            startActivity(MyBraceletActivity.class);
         }
     }
 }

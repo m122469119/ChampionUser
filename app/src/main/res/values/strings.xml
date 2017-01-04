@@ -248,5 +248,9 @@
     <string name="title_bing_bracelet">绑定手环</string>
     <string name="everyday_sport_title">日常运动</string>
     <string name="everyday_sport_unit">Km</string>
+    <string name="current_devices">当前设备</string>
+    <string name="devices_address">设备MAC地址</string>
+    <string name="devices_version">固件版本号</string>
+    <string name="unbind_bracelet">解除绑定</string>
 
 </resources>
