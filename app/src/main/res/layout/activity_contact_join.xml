@@ -53,7 +53,7 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/city_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,11 +61,12 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_four_card_background"
-            android:hint="@string/hint_input_city"
+            android:hint="请选择城市"
             android:inputType="text"
             android:paddingBottom="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:drawableRight="@drawable/icon_triangle"
             android:paddingTop="12dp"
             android:textColor="@color/lesson_details_dark_back"
             android:textColorHint="@color/split_line_color"
