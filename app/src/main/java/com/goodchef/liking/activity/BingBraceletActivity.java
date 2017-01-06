@@ -468,6 +468,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     Log.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
                     mBraceletPower = (data[4] & 0xff);
                     if (!isSendRequest) {
+                        isSendRequest = true;
                         sendDevicesRequest();
                     }
                 } else if ((data[1] & 0xff) == 0x27) {

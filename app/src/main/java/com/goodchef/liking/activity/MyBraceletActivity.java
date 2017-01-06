@@ -7,14 +7,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 说明:我的手环
@@ -41,11 +42,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     TextView mDevicesVersionTextView;
     @BindView(R.id.unbind_TextView)
     TextView mUnbindTextView;
+    @BindView(R.id.bracelet_power_MyCustomCircleView)
+    MyCustomCircleView mBraceletPowerMyCustomCircleView;
+    @BindView(R.id.my_power_TextView)
+    TextView mMyPowerTextView;
 
     private String mBindDevicesName;//绑定的设备名称
     private String mBindDevicesAddress;//绑定的设备地址
     private String mFirmwareInfo;//固件版本信息
-    private int mBrancePower;
+    private int mBrancePower = 0;
 
     Handler mHandler = new Handler();
 
@@ -68,9 +73,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     }
 
     private void initData() {
-        mCurrentDevicesNameTextView.setText(mBindDevicesName);
-        mDevicesAddressTextView.setText(mBindDevicesAddress);
-        mDevicesVersionTextView.setText(mFirmwareInfo);
+        if (!StringUtils.isEmpty(mBindDevicesName)) {
+            mCurrentDevicesNameTextView.setText(mBindDevicesName);
+        }
+        if (!StringUtils.isEmpty(mBindDevicesAddress)) {
+            mDevicesAddressTextView.setText(mBindDevicesAddress);
+        }
+        if (!StringUtils.isEmpty(mBindDevicesAddress)) {
+            mDevicesVersionTextView.setText(mFirmwareInfo);
+        }
         synchronizationInfo();
     }
 
@@ -83,20 +94,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyBraceletImageView.getLayoutParams();
-                layoutParams.width = DisplayUtils.dp2px(128);
-                layoutParams.height = DisplayUtils.dp2px(104);
+                setBraceletView();
                 mMyBraceletImageView.setBackgroundResource(R.drawable.icon_syn);
-                mMyBraceletImageView.setLayoutParams(layoutParams);
                 mMyBraceletTextView.setText("同步中...");
             }
         }, 2000);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyBraceletImageView.getLayoutParams();
-                layoutParams.width = DisplayUtils.dp2px(128);
-                layoutParams.height = DisplayUtils.dp2px(104);
+                setBraceletView();
                 mMyBraceletImageView.setBackgroundResource(R.drawable.icon_syn_success);
                 mMyBraceletTextView.setText("同步完成");
             }
@@ -104,10 +110,24 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mMyBraceletImageView.setBackgroundResource(R.drawable.icon_syn_success);
-                mMyBraceletTextView.setText(mBrancePower + "");
+                mMyBraceletImageView.setVisibility(View.GONE);
+                mMyBraceletTextView.setVisibility(View.GONE);
+                mBraceletPowerMyCustomCircleView.setVisibility(View.VISIBLE);
+                mMyPowerTextView.setVisibility(View.VISIBLE);
+                mBraceletPowerMyCustomCircleView.setCurrentCount(100, mBrancePower);
             }
         }, 5000);
+    }
+
+    private void setBraceletView() {
+        mMyBraceletImageView.setVisibility(View.VISIBLE);
+        mMyBraceletTextView.setVisibility(View.VISIBLE);
+        mBraceletPowerMyCustomCircleView.setVisibility(View.GONE);
+        mMyPowerTextView.setVisibility(View.GONE);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyBraceletImageView.getLayoutParams();
+        layoutParams.width = DisplayUtils.dp2px(128);
+        layoutParams.height = DisplayUtils.dp2px(104);
+        mMyBraceletImageView.setLayoutParams(layoutParams);
     }
 
     @Override
