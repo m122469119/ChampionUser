@@ -42,7 +42,7 @@ project.ext {
 //    build config
     compileSdkVersion = 23
     buildToolsVersion = "23.0.2"
-    minSdkVersion = 17
+    minSdkVersion = 18
     targetSdkVersion = 22
     versionCode = getManifestVersionCode().toInteger()
     versionName = getManifestVersionName()

@@ -1024,4 +1024,22 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.USER_BODY_COLUMN_HISTORY, BodyAnalyzeHistoryResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, Preference.getToken()).append("column", column), callback);
     }
+
+    /**
+     * 绑定手环
+     *
+     * @param braceletName    用户手环名称
+     * @param braceletVersion 用户手环固件版本
+     * @param deviceId        用户设备id
+     * @param platform        用户设备平台
+     * @param deviceName      用户设备名称
+     * @param osVersion       用户手环设备版本
+     * @param callback        RequestCallback
+     */
+    public static void bindDevices(String braceletName, String braceletVersion, String deviceId, String platform, String deviceName, String osVersion, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_BIND_DEVICE, BaseResult.class, getCommonRequestParams()
+                .append(KEY_TOKEN, Preference.getToken()).append("bracelet_name", braceletName)
+                .append("bracelet_version", braceletVersion).append("device_id", deviceId)
+                .append("platform", platform).append("device_name", deviceName).append("os_version", osVersion), callback);
+    }
 }

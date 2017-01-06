@@ -18,6 +18,8 @@
     <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE" tools:node="remove"/>
     <uses-permission android:name="com.goodchef.liking.test.permission.JPUSH_MESSAGE"/>
     <!-- JPush极光推送-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application>
         <!-- 高德地图注册信息-->

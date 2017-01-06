@@ -141,8 +141,7 @@ public class UrlList {
     public static final String USER_BODY_MODULES_HISTORY = getVersionHostUrl() + "/user/body-modules-history";
     /**获取体测数据单个字段历史值*/
     public static final String USER_BODY_COLUMN_HISTORY = getVersionHostUrl() + "/user/body-column-history";
-
-
-
+    /**绑定手环*/
+    public static final String USER_BIND_DEVICE = getVersionHostUrl() + "/user/bind-device";
 
 }

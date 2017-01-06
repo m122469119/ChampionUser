@@ -4,13 +4,11 @@
           android:versionCode="131"
           android:versionName="1.3.1">
 
+
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-
-
     <permission
         android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
-
     <!-- JPush极光推送-->
     <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
@@ -35,6 +33,9 @@
     <!--【必选】用以设置前台是否显示通知-->
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- JPush极光推送-->
+
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
         android:name=".app.LikingApplication"
