@@ -33,6 +33,7 @@ import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.EveryDaySportActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.activity.MyBraceletActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
@@ -66,6 +67,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * @version 1.0.0
  */
 public class LikingMyFragment extends BaseFragment implements View.OnClickListener, LoginView {
+    public static final String KEY_MY_BRACELET_MAC = "key_my_bracelet_mac";
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mAboutUsLayout;//关于我们
@@ -99,6 +101,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private LikingStateView mStateView;
     private boolean isRetryRequest = false;
     private Typeface mTypeface;
+    private String mBraceletMac;//手环mac地址
 
     @Nullable
     @Override
@@ -145,16 +148,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                         }
                         if (LiKingVerifyUtils.isValid(getActivity(), result)) {
                             UserExerciseResult.ExerciseData exerciseData = result.getExerciseData();
-                            if (exerciseData != null) {
-                                mTrainTimeData.setText(exerciseData.getTodayMin());
-                                mBodyScoreData.setText(exerciseData.getScore());
-                                Preference.setIsVip(exerciseData.getIsVip());
-                                if (Preference.isVIP()) {
-                                    mIsVip.setVisibility(View.VISIBLE);
-                                } else {
-                                    mIsVip.setVisibility(View.GONE);
-                                }
-                            }
+                            doExerciseData(exerciseData);
                         }
                     }
 
@@ -172,6 +166,33 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 mStateView.setState(StateView.State.SUCCESS);
             }
             clearExerciseData();
+        }
+    }
+
+
+    /**
+     * 处理
+     *
+     * @param exerciseData
+     */
+    private void doExerciseData(UserExerciseResult.ExerciseData exerciseData) {
+        if (exerciseData != null) {
+            mTrainTimeData.setText(exerciseData.getTodayMin());
+            mBodyScoreData.setText(exerciseData.getScore());
+            mEveryDataSportData.setText(exerciseData.getAllDistance());
+            Preference.setIsVip(exerciseData.getIsVip());
+            Preference.setIsBind(exerciseData.getIsBind());
+            mBraceletMac = exerciseData.getBraceletMac();
+            if (Preference.isVIP()) {
+                mIsVip.setVisibility(View.VISIBLE);
+            } else {
+                mIsVip.setVisibility(View.GONE);
+            }
+            if (Preference.isBind()) {
+                setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet_my, true);
+            } else {
+                setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
+            }
         }
     }
 
@@ -279,7 +300,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     private void initViewIconAndText() {
         setMySettingCard(mSelfHelpGroupLayout, R.string.layout_self_help_group, true);
-        setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
+        if (Preference.isBind()) {
+            setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet_my, true);
+        } else {
+            setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
+        }
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, true);
         setMySettingCard(mAboutUsLayout, R.string.layout_about_us, false);
@@ -300,8 +325,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
         setHeadPersonDataView(mEverydaySportLayout, R.string.everyday_sport_title, R.string.everyday_sport_unit);
         setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
-
-        mEveryDataSportData.setText("0");
     }
 
     /**
@@ -419,7 +442,19 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
-            startActivity(BingBraceletActivity.class);
+            if (Preference.isLogin()) {
+                if (Preference.isBind()) {//绑定过手环
+                    Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
+                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                    startActivity(intent);
+                } else {//没有绑过
+                    Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
+                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                    startActivity(intent);
+                }
+            } else {
+                startActivity(LoginActivity.class);
+            }
         } else if (v == mEverydaySportLayout) {//每日运动
             startActivity(EveryDaySportActivity.class);
         }

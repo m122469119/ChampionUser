@@ -39,9 +39,8 @@ public class Preference extends AbsPreference {
     public static final String APP_UPDATE = "appUpdate";
     public static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
     public static final String IS_VIP = "is_vip";//是否
+    public static final String IS_BIND = "is_bind";
     public static List<String> announcementList = new ArrayList<>();
-
-
 
 
     /**
@@ -147,6 +146,35 @@ public class Preference extends AbsPreference {
      */
     public static boolean setIsVip(Integer isVip) {
         return setObject(IS_VIP, isVip);
+    }
+
+    /**
+     * 设置是否绑定
+     *
+     * @param isBind
+     * @return
+     */
+    public static boolean setIsBind(String isBind) {
+        return setObject(IS_BIND, isBind);
+    }
+
+    /**
+     * 获取是否绑定
+     *
+     * @return
+     */
+    public static boolean isBind() {
+        boolean isBind = false;
+        String bind = (String) getObject(IS_BIND, "0");
+        if (!StringUtils.isEmpty(bind)) {
+            if ("0".equals(bind)) {
+                isBind = false;
+            } else if ("1".equals(bind)) {
+                isBind = true;
+            }
+        }
+
+        return isBind;
     }
 
 

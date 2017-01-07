@@ -8,6 +8,7 @@
 
     <string name="layout_self_help_group">自助团体课</string>
     <string name="layout_bing_bracelet">绑定手环</string>
+    <string name="layout_bing_bracelet_my">我的手环</string>
     <string name="layout_invite_friends">邀请好友</string>
     <string name="layout_coupons">优惠券</string>
     <string name="layout_contact_join">联系加盟</string>

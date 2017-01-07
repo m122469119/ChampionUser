@@ -51,6 +51,16 @@ public class UserExerciseResult extends BaseResult {
         private int isVip;
         @SerializedName("score")
         private String score;
+        @SerializedName("is_bind")
+        private String isBind;
+        @SerializedName("all_distance")
+        private String allDistance;
+        @SerializedName("bracelet_mac")
+        private String braceletMac;
+        @SerializedName("is_first_bind")
+        private String isFirstBind;
+        @SerializedName("uuid")
+        private String uuid;
 
         public String getTodayMin() {
             return todayMin;
@@ -122,6 +132,46 @@ public class UserExerciseResult extends BaseResult {
 
         public void setScore(String score) {
             this.score = score;
+        }
+
+        public String getIsBind() {
+            return isBind;
+        }
+
+        public void setIsBind(String isBind) {
+            this.isBind = isBind;
+        }
+
+        public String getAllDistance() {
+            return allDistance;
+        }
+
+        public void setAllDistance(String allDistance) {
+            this.allDistance = allDistance;
+        }
+
+        public String getBraceletMac() {
+            return braceletMac;
+        }
+
+        public void setBraceletMac(String braceletMac) {
+            this.braceletMac = braceletMac;
+        }
+
+        public String getIsFirstBind() {
+            return isFirstBind;
+        }
+
+        public void setIsFirstBind(String isFirstBind) {
+            this.isFirstBind = isFirstBind;
+        }
+
+        public String getUuid() {
+            return uuid;
+        }
+
+        public void setUuid(String uuid) {
+            this.uuid = uuid;
         }
     }
 }

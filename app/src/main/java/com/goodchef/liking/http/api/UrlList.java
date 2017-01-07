@@ -143,5 +143,8 @@ public class UrlList {
     public static final String USER_BODY_COLUMN_HISTORY = getVersionHostUrl() + "/user/body-column-history";
     /**绑定手环*/
     public static final String USER_BIND_DEVICE = getVersionHostUrl() + "/user/bind-device";
+    /**解绑手环*/
+    public static final String USER_UNBIND = getVersionHostUrl() + "/user/unbind";
+
 
 }

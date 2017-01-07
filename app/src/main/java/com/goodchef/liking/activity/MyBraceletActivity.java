@@ -2,6 +2,8 @@ package com.goodchef.liking.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -9,9 +11,13 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.dialog.UnBindDevicesDialog;
+import com.goodchef.liking.fragment.LikingMyFragment;
+import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
+import com.goodchef.liking.mvp.view.UnBindDevicesView;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import butterknife.BindView;
@@ -24,7 +30,7 @@ import butterknife.ButterKnife;
  * version 1.0.0
  */
 
-public class MyBraceletActivity extends AppBarActivity implements View.OnClickListener {
+public class MyBraceletActivity extends AppBarActivity implements View.OnClickListener, UnBindDevicesView {
     public static final String KEY_BRACELET_NAME = "key_bracelet_name";
     public static final String KEY_BRACELET_ADDRESS = "key_bracelet_address";
     public static final String KEY_BRACELET_FIRMWARE_INFO = "key_bracelet_firmware_info";
@@ -51,6 +57,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private String mBindDevicesAddress;//绑定的设备地址
     private String mFirmwareInfo;//固件版本信息
     private int mBrancePower = 0;
+    private UnBindDevicesPresenter mUnBindDevicesPresenter;
+    private String myBraceletMac;//我的手环mac地址
 
     Handler mHandler = new Handler();
 
@@ -70,6 +78,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         mBindDevicesAddress = getIntent().getStringExtra(KEY_BRACELET_ADDRESS);
         mFirmwareInfo = getIntent().getStringExtra(KEY_BRACELET_FIRMWARE_INFO);
         mBrancePower = getIntent().getIntExtra(KEY_BRACELET_POWER, 0);
+        myBraceletMac = getIntent().getStringExtra(LikingMyFragment.KEY_MY_BRACELET_MAC);
     }
 
     private void initData() {
@@ -133,7 +142,41 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == mUnbindTextView) {
-            PopupUtils.showToast("解除绑定");
+            showUnbindDialog();
         }
+    }
+
+    /**
+     * 展示解除绑定对话框
+     */
+    private void showUnbindDialog() {
+        UnBindDevicesDialog devicesDialog = new UnBindDevicesDialog(this);
+        devicesDialog.setCancelClickListener(new UnBindDevicesDialog.CancelOnClickListener() {
+            @Override
+            public void onCancelClickListener(AppCompatDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+
+        devicesDialog.setConfirmClickListener(new UnBindDevicesDialog.ConfirmOnClickListener() {
+            @Override
+            public void onConfirmClickListener(AppCompatDialog dialog) {
+                sendUnBindRequest();
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    private void sendUnBindRequest() {
+        if (mUnBindDevicesPresenter == null) {
+            mUnBindDevicesPresenter = new UnBindDevicesPresenter(this, this);
+        }
+        mUnBindDevicesPresenter.unBindDevices();
+    }
+
+    @Override
+    public void updateUnBindDevicesView() {
+        finish();
     }
 }

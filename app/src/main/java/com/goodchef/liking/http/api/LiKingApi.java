@@ -1042,4 +1042,15 @@ public class LiKingApi {
                 .append("bracelet_version", braceletVersion).append("device_id", deviceId)
                 .append("platform", platform).append("device_name", deviceName).append("os_version", osVersion), callback);
     }
+
+    /**
+     * 解绑手环
+     *
+     * @param devicesId 设备id
+     * @param callback  RequestCallback
+     */
+    public static void unBindDevices(String devicesId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_UNBIND, BaseResult.class, getCommonRequestParams()
+                .append("device_id", devicesId).append(KEY_TOKEN, Preference.getToken()), callback);
+    }
 }
