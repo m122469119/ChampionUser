@@ -153,9 +153,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
      * 打开蓝牙
      */
     public void openBluetooth() {
-        if (!mDealWithBlueTooth.isSupportBlueTooth()) {
-            return;
-        }
         mDealWithBlueTooth.openBlueTooth(this);
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -226,6 +223,9 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     }
 
 
+    /**
+     * 搜索蓝牙
+     */
     private void searchBlueTooth() {
         if (mBlueToothWhewView.isStarting()) {
             mClickSearchTextView.setVisibility(View.VISIBLE);
@@ -475,6 +475,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, mBindDevicesAddress);
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_FIRMWARE_INFO, mFirmwareInfo);
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_POWER, mBraceletPower);
+        intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "BingBraceletActivity");
         startActivity(intent);
         finish();
     }

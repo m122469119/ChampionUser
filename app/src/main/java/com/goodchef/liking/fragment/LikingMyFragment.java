@@ -443,9 +443,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             if (Preference.isLogin()) {
+                if (StringUtils.isEmpty(mBraceletMac)) {
+                    return;
+                }
                 if (Preference.isBind()) {//绑定过手环
                     Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
                     intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
                     startActivity(intent);
                 } else {//没有绑过
                     Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
