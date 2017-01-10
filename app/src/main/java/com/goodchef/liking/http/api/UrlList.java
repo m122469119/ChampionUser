@@ -145,6 +145,10 @@ public class UrlList {
     public static final String USER_BIND_DEVICE = getVersionHostUrl() + "/user/bind-device";
     /**解绑手环*/
     public static final String USER_UNBIND = getVersionHostUrl() + "/user/unbind";
+    /**上报运动数据*/
+    public static final String USER_SAVE_SPORT_DATA = getVersionHostUrl() + "/user/save-sport-data";
+    /**获取运动数据*/
+    public static final String USER_SPORT_LIST = getVersionHostUrl() + "/user/sport-list";
 
 
 }

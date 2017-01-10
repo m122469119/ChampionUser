@@ -443,9 +443,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             if (Preference.isLogin()) {
-                if (StringUtils.isEmpty(mBraceletMac)) {
-                    return;
-                }
                 if (Preference.isBind()) {//绑定过手环
                     Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
                     intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
@@ -460,7 +457,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mEverydaySportLayout) {//每日运动
-            startActivity(EveryDaySportActivity.class);
+            if (Preference.isLogin()) {
+                Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
+                intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                startActivity(intent);
+            } else {
+                startActivity(LoginActivity.class);
+            }
         }
     }
 

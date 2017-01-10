@@ -30,7 +30,7 @@ import com.goodchef.liking.dialog.UnBindDevicesDialog;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
 import com.goodchef.liking.mvp.view.UnBindDevicesView;
-import com.goodchef.liking.utils.BlueDataUtil;
+import com.goodchef.liking.bluetooth.BlueDataUtil;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import java.util.UUID;
@@ -254,7 +254,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                     if (Math.abs(rssi) <= 90) {//过滤掉信号强度小于-90的设备
                         if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
                             LogUtils.d(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
-                            if (myBraceletMac.equals(device.getAddress())) {
+                            if (!StringUtils.isEmpty(myBraceletMac) && myBraceletMac.equals(device.getAddress())) {
                                 myBraceletMac = device.getAddress();
                                 mBindDevicesAddress = device.getAddress();
                                 mBindDevicesName = device.getName();

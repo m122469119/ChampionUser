@@ -50,6 +50,7 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.ShareResult;
+import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
@@ -1052,5 +1053,25 @@ public class LiKingApi {
     public static void unBindDevices(String devicesId, RequestCallback<BaseResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_UNBIND, BaseResult.class, getCommonRequestParams()
                 .append("device_id", devicesId).append(KEY_TOKEN, Preference.getToken()), callback);
+    }
+
+    /**
+     * 上报运动数据
+     *
+     * @param sportData 运动数据
+     * @param deviceId  设备id
+     * @param callback  RequestCallback
+     */
+    public static void sendSportData(String sportData, String deviceId, RequestCallback<BaseResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_SAVE_SPORT_DATA, BaseResult.class, getCommonRequestParams()
+                .append("sport_data", sportData).append("device_id", deviceId).append(KEY_TOKEN, Preference.getToken()), callback);
+    }
+
+    /**
+     * 获取运动数据
+     * @param callback
+     */
+    public static void getSportData(RequestCallback<SportDataResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_SPORT_LIST, SportDataResult.class, getCommonRequestParams().append(KEY_TOKEN,Preference.getToken()), callback);
     }
 }

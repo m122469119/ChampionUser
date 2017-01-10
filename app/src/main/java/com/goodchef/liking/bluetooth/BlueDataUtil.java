@@ -1,4 +1,4 @@
-package com.goodchef.liking.utils;
+package com.goodchef.liking.bluetooth;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

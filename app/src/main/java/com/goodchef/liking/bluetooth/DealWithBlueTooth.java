@@ -16,7 +16,6 @@ import android.os.Message;
 import android.util.Log;
 
 import com.aaron.android.framework.utils.PopupUtils;
-import com.goodchef.liking.utils.BlueDataUtil;
 
 import java.util.List;
 import java.util.UUID;
