@@ -39,7 +39,7 @@ public class BlueToothBytesToStringUtil {
      */
     public static int getSprotN(byte[] data) {
         int n = (data[7] & 0xff);
-        LogUtils.i(TAG, "运动N= " + n);
+        LogUtils.i(TAG, "数据组数 N= " + n);
         return n;
     }
 
@@ -63,6 +63,38 @@ public class BlueToothBytesToStringUtil {
             bytesList.add(bytes);
         }
         return bytesList;
+    }
+
+    /**
+     * 获取心率数据组
+     *
+     * @param data
+     * @return
+     */
+    public static List<byte[]> getHeartRateList(byte[] data) {
+        byte[] heartByte = getSportData(data);
+        int n = getSprotN(data);
+        List<byte[]> bytesList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            byte[] bytes = new byte[3];
+            for (int j = 0; j < 3; j++) {
+                int count = i * 3 + j;
+                bytes[j] = heartByte[count];
+            }
+            bytesList.add(bytes);
+        }
+        return bytesList;
+    }
+
+    /**
+     * 获取心率值
+     * @param bytes
+     * @return
+     */
+    public static int getHeartRate(byte[] bytes) {
+        int mHeartRate;
+        mHeartRate = (bytes[2] & 0xff);
+        return mHeartRate;
     }
 
 
