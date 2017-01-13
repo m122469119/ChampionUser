@@ -13,6 +13,9 @@ import java.util.Locale;
 
 public class BlueDataUtil {
 
+    public static final byte ZERO = 0x00;
+    public static final byte ONE = 0x01;
+
     /**
      * 绑定
      *
@@ -51,24 +54,37 @@ public class BlueDataUtil {
      *
      * @return
      */
-    public static byte[] getLoginBytes() {
+    public static byte[] getLoginBytes(byte[] uuidByte) {
         byte[] bytes = new byte[17];
         bytes[0] = (byte) 0xA9;
         bytes[1] = 0x34;
         bytes[2] = 0x01;
         bytes[3] = 0x0c;
 
-        bytes[4] = 0x00;
-        bytes[5] = 0x01;
-        bytes[6] = 0x02;
-        bytes[7] = 0x03;
-        bytes[8] = 0x04;
-        bytes[9] = 0x08;
-        bytes[10] = (byte) 0xA9;
-        bytes[11] = (byte) 0xBC;
-        bytes[12] = 0x66;
-        bytes[13] = 0x42;
-        bytes[14] = (byte) 0xE4;
+        for (int i = 0; i < uuidByte.length; i++) {
+            bytes[i + 4] = (byte) (uuidByte[i] & 0xff);
+        }
+
+
+//        bytes[4] = 0x00;
+//        bytes[5] = 0x01;
+//        bytes[6] = 0x02;
+//        bytes[7] = 0x03;
+//        bytes[8] = 0x04;
+//        bytes[9] = 0x08;
+
+//        bytes[10] = (byte) 0xA9;
+//        bytes[11] = (byte) 0xBC;
+//        bytes[12] = 0x66;
+//        bytes[13] = 0x42;
+//        bytes[14] = (byte) 0xE4;
+
+        bytes[10] = 0x00;
+        bytes[11] = 0x00;
+        bytes[12] = 0x00;
+        bytes[13] = 0x00;
+        bytes[14] = 0x00;
+
         bytes[15] = (byte) 0xAD;
 
         byte crc = 0;
@@ -225,15 +241,35 @@ public class BlueDataUtil {
         return bytes;
     }
 
+
     /**
-     * 运动数据同步
+     * 运动数据回应 0 成功 1 失败
+     *
+     * @return
+     */
+    public static byte[] getSportRespondBytes(byte response) {
+        byte[] bytes = new byte[5];
+        bytes[0] = (byte) 0xA9;
+        bytes[1] = (byte) 0x21;
+        bytes[2] = 0x00;
+        bytes[3] = response;
+        byte crc = 0;
+        for (int i = 0; i < 4; i++) {
+            crc += (bytes[i] & 0xFF);
+        }
+        bytes[4] = (byte) (crc & 0xFF);
+        return bytes;
+    }
+
+    /**
+     * 实时运动数据同步
      *
      * @return
      */
     public static byte[] getSportSynchronizationBytes() {
         byte[] bytes = new byte[6];
         bytes[0] = (byte) 0xA9;
-        bytes[1] = (byte) 0x24;
+        bytes[1] = (byte) 0x36;
         bytes[2] = 0x00;
         bytes[3] = 0x01;
         bytes[4] = 0x01;
@@ -244,6 +280,66 @@ public class BlueDataUtil {
         bytes[5] = (byte) (crc & 0xFF);
         return bytes;
     }
+
+    /**
+     * 实时心率数据同步
+     *
+     * @return
+     */
+    public static byte[] getHeartRateSynchronizationBytes() {
+        byte[] bytes = new byte[6];
+        bytes[0] = (byte) 0xA9;
+        bytes[1] = (byte) 0x36;
+        bytes[2] = 0x00;
+        bytes[3] = 0x01;
+        bytes[4] = 0x03;
+        byte crc = 0;
+        for (int i = 0; i < 5; i++) {
+            crc += (bytes[i] & 0xFF);
+        }
+        bytes[5] = (byte) (crc & 0xFF);
+        return bytes;
+    }
+
+    /**
+     * 关闭实时同步数据
+     *
+     * @return
+     */
+    public static byte[] getCloseSynchronizationBytes() {
+        byte[] bytes = new byte[6];
+        bytes[0] = (byte) 0xA9;
+        bytes[1] = (byte) 0x36;
+        bytes[2] = 0x00;
+        bytes[3] = 0x01;
+        bytes[4] = 0x00;
+        byte crc = 0;
+        for (int i = 0; i < 5; i++) {
+            crc += (bytes[i] & 0xFF);
+        }
+        bytes[5] = (byte) (crc & 0xFF);
+        return bytes;
+    }
+
+    /**
+     * 断开蓝牙
+     *
+     * @return
+     */
+    public static byte[] getDisconnectBlueTooth() {
+        byte[] bytes = new byte[5];
+        bytes[0] = (byte) 0xA9;
+        bytes[1] = (byte) 0x38;
+        bytes[2] = 0x00;
+        bytes[3] = 0x00;
+        byte crc = 0;
+        for (int i = 0; i < 4; i++) {
+            crc += (bytes[i] & 0xFF);
+        }
+        bytes[4] = (byte) (crc & 0xFF);
+        return bytes;
+    }
+
 
     // byte转十六进制字符串
     public static String bytes2HexString(byte[] bytes) {

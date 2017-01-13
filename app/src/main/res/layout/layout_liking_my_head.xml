@@ -123,14 +123,16 @@
                 layout="@layout/layout_person_body_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"
+                android:visibility="visible"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="@dimen/spacing_12dp"
                 android:paddingBottom="@dimen/spacing_8dp"
                 android:visibility="visible">
 
@@ -139,7 +141,8 @@
                     layout="@layout/layout_person_body_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:layout_width="1dp"

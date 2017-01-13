@@ -83,6 +83,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private BlueToothAdapter mAdapter;
 
     private String myBraceletMac;
+    private String muuId;
     private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
     Handler mHandler = new Handler();
     private boolean mScanning;
@@ -99,6 +100,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_bing_bracelet));
         myBraceletMac = getIntent().getStringExtra(LikingMyFragment.KEY_MY_BRACELET_MAC);
+        muuId = getIntent().getStringExtra(LikingMyFragment.KEY_UUID);
         showPromptDialog();
 
         setRightIcon(R.drawable.icon_blue_tooth_help, new View.OnClickListener() {
@@ -251,7 +253,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     mDealWithBlueTooth.stopLeScan(mLeScanCallback);
                     mBlueToothWhewView.stop();
                     mClickSearchTextView.setVisibility(View.VISIBLE);
-                    setBlueToothDevicesList();
+                    // setBlueToothDevicesList();
                 }
             }, 10000); //10秒后停止搜索
             mScanning = true;
@@ -275,9 +277,12 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     //在这里可以把搜索到的设备保存起来
                     if (Math.abs(rssi) <= 90) {//过滤掉信号强度小于-90的设备
                         if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
-                            //  mBluetoothDeviceAddress = device.getAddress();
-                            map.put(device.getAddress(), device);
-                            LogUtils.d(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
+                            if (!StringUtils.isEmpty(myBraceletMac) && myBraceletMac.equals(device.getAddress())) {
+                                LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
+                                map.clear();
+                                map.put(device.getAddress(), device);
+                                setBlueToothDevicesList();
+                            }
                         }
                     }
                 }
@@ -286,15 +291,14 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     };
 
     private void setBlueToothDevicesList() {
-        if (!mScanning) {
-            Iterator entries = map.entrySet().iterator();
-            while (entries.hasNext()) {
-                Map.Entry entry = (Map.Entry) entries.next();
-                String key = (String) entry.getKey();
-                BluetoothDevice value = (BluetoothDevice) entry.getValue();
-                System.out.println("Key = " + key + ", name = " + value.getName() + "address = " + value.getAddress());
-                mBluetoothDeviceList.add(value);
-            }
+        mBluetoothDeviceList.clear();
+        Iterator entries = map.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry entry = (Map.Entry) entries.next();
+            String key = (String) entry.getKey();
+            BluetoothDevice value = (BluetoothDevice) entry.getValue();
+            System.out.println("Key = " + key + ", name = " + value.getName() + "address = " + value.getAddress());
+            mBluetoothDeviceList.add(value);
         }
         mAdapter.setData(mBluetoothDeviceList);
         mAdapter.notifyDataSetChanged();
@@ -338,14 +342,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         @Override //当向设备Descriptor中写数据时，会回调该函数
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             System.out.println("onDescriptorWriteonDescriptorWrite = " + status + ", descriptor =" + descriptor.getUuid().toString());
-//            BluetoothGattService service = mBluetoothGatt.getService(SERVER_UUID);
-//            if (service != null) {
-//                BluetoothGattCharacteristic readcharacteristic = service.getCharacteristic(RX_UUID);
-////                mBluetoothGatt.setCharacteristicNotification(readcharacteristic, true);
-//                if (readcharacteristic != null) {
-//                    setCharacteristicNotification(readcharacteristic, true);
-//                }
-//            }
         }
 
         @Override //设备发出通知时会调用到该接口
@@ -361,11 +357,12 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 }
                 Log.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
             }
-            if (data != null && data.length >= 3) {
+            if (data.length >= 3) {
                 if ((data[1] & 0xff) == 0x33) {//绑定
                     if (data[4] == 0x00) {
                         Log.i(TAG, "绑定成功");
-                        writecharacteristic.setValue(BlueDataUtil.getLoginBytes());
+                        byte[] uuid = muuId.getBytes();
+                        writecharacteristic.setValue(BlueDataUtil.getLoginBytes(uuid));
                     } else if (data[4] == 0x01) {
                         Log.i(TAG, "绑定失败");
                     }
@@ -477,5 +474,9 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         finish();
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
+    }
 }

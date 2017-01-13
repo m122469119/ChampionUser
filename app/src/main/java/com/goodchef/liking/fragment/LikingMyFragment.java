@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
@@ -68,6 +69,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  */
 public class LikingMyFragment extends BaseFragment implements View.OnClickListener, LoginView {
     public static final String KEY_MY_BRACELET_MAC = "key_my_bracelet_mac";
+    public static final String KEY_UUID = "key_UUID";
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mAboutUsLayout;//关于我们
@@ -102,6 +104,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private boolean isRetryRequest = false;
     private Typeface mTypeface;
     private String mBraceletMac;//手环mac地址
+    private String UUID;
 
     @Nullable
     @Override
@@ -178,11 +181,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private void doExerciseData(UserExerciseResult.ExerciseData exerciseData) {
         if (exerciseData != null) {
             mTrainTimeData.setText(exerciseData.getTodayMin());
-            mBodyScoreData.setText(exerciseData.getScore());
-            mEveryDataSportData.setText(exerciseData.getAllDistance());
-            Preference.setIsVip(exerciseData.getIsVip());
             Preference.setIsBind(exerciseData.getIsBind());
+            Preference.setIsVip(exerciseData.getIsVip());
             mBraceletMac = exerciseData.getBraceletMac();
+            UUID = exerciseData.getUuid();
             if (Preference.isVIP()) {
                 mIsVip.setVisibility(View.VISIBLE);
             } else {
@@ -193,14 +195,25 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             } else {
                 setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
             }
+            setHeadPersonData();
+            if (Preference.isBind()){
+                mBodyScoreData.setText(exerciseData.getScore());
+                mEveryDataSportData.setText(exerciseData.getAllDistance());
+            }else {
+                mEveryDataSportData.setText(exerciseData.getScore());
+            }
+
         }
     }
+
 
     /**
      * 清除训练数据
      */
     private void clearExerciseData() {
-        mBodyScoreData.setText("-");
+        if (mBodyScoreData !=null){
+            mBodyScoreData.setText("-");
+        }
         mTrainTimeData.setText("-");
         mEveryDataSportData.setText("-");
     }
@@ -322,9 +335,16 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void setHeadPersonData() {
-        setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
-        setHeadPersonDataView(mEverydaySportLayout, R.string.everyday_sport_title, R.string.everyday_sport_unit);
-        setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
+        if (Preference.isBind()) {//已绑定
+            mBodyScoreLayout.setVisibility(View.VISIBLE);
+            setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
+            setHeadPersonDataView(mEverydaySportLayout, R.string.everyday_sport_title, R.string.everyday_sport_unit);
+            setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
+        } else {//没有绑定
+            mBodyScoreLayout.setVisibility(View.GONE);
+            setHeadPersonDataView(mEverydaySportLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
+            setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
+        }
     }
 
     /**
@@ -443,14 +463,23 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             if (Preference.isLogin()) {
+                if (!StringUtils.isEmpty(mBraceletMac)) {
+                    LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
+                }
                 if (Preference.isBind()) {//绑定过手环
                     Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
-                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                    if (!StringUtils.isEmpty(mBraceletMac)) {
+                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                    }
+                    intent.putExtra(KEY_UUID, UUID);
                     intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
                     startActivity(intent);
                 } else {//没有绑过
                     Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
-                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                    if (!StringUtils.isEmpty(mBraceletMac)) {
+                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                    }
+                    intent.putExtra(KEY_UUID, UUID);
                     startActivity(intent);
                 }
             } else {
@@ -458,8 +487,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mEverydaySportLayout) {//每日运动
             if (Preference.isLogin()) {
+                LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
                 Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
-                intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac);
+                if (!StringUtils.isEmpty(mBraceletMac)) {
+                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                }
+                intent.putExtra(KEY_UUID, UUID);
                 startActivity(intent);
             } else {
                 startActivity(LoginActivity.class);

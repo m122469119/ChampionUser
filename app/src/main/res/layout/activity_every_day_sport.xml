@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/spacing_12dp"
-            android:text="同步失败"
             android:textColor="@color/red"
             android:textSize="@dimen/textsize_small"/>
 

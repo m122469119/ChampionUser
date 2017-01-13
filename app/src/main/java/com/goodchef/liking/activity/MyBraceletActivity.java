@@ -31,6 +31,7 @@ import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
 import com.goodchef.liking.mvp.view.UnBindDevicesView;
 import com.goodchef.liking.bluetooth.BlueDataUtil;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import java.util.UUID;
@@ -75,6 +76,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private int mBraceletPower = 0;
     private UnBindDevicesPresenter mUnBindDevicesPresenter;
     private String myBraceletMac;//我的手环mac地址
+    private String muuId;
     private String source;
 
     Handler mHandler = new Handler();
@@ -94,6 +96,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         setTitle("我的手环");
         getInitData();
         mDealWithBlueTooth = new DealWithBlueTooth(this);
+        mUnbindTextView.setVisibility(View.GONE);
         initData();
         initBlueTooth();
         if (source.equals("BingBraceletActivity")) {
@@ -111,6 +114,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         mFirmwareInfo = getIntent().getStringExtra(KEY_BRACELET_FIRMWARE_INFO);
         mBraceletPower = getIntent().getIntExtra(KEY_BRACELET_POWER, 0);
         myBraceletMac = getIntent().getStringExtra(LikingMyFragment.KEY_MY_BRACELET_MAC);
+        muuId = getIntent().getStringExtra(LikingMyFragment.KEY_UUID);
         source = getIntent().getStringExtra(KEY_BRACELET_SOURCE);
     }
 
@@ -355,7 +359,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             if ((data[1] & 0xff) == 0x33) {//绑定
                 if (data[4] == 0x00) {
                     Log.i(TAG, "绑定成功");
-                    writecharacteristic.setValue(BlueDataUtil.getLoginBytes());
+                    byte[] uuid = muuId.getBytes();
+                    writecharacteristic.setValue(BlueDataUtil.getLoginBytes(uuid));
                 } else if (data[4] == 0x01) {
                     Log.i(TAG, "绑定失败");
                 }
@@ -388,6 +393,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mUnbindTextView.setVisibility(View.VISIBLE);
                             setSynchronizationSuccessView(1000);
                             initData();
                             setSynchronizationPowerView(2000);
@@ -411,7 +417,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             writecharacteristic = service.getCharacteristic(mDealWithBlueTooth.TX_UUID);
             readcharacteristic = service.getCharacteristic(mDealWithBlueTooth.RX_UUID);
             if (writecharacteristic != null) {
-                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getBindBytes());
+                byte[] uuId = muuId.getBytes();
+                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getLoginBytes(uuId));
                 if (readcharacteristic != null) {
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
                 }
@@ -462,6 +469,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == mUnbindTextView) {
+           // mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getUnBindBytes());
             showUnbindDialog();
         }
     }
@@ -497,6 +505,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
 
     @Override
     public void updateUnBindDevicesView() {
+        Preference.setIsBind("0");
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDealWithBlueTooth !=null){
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
+        }
     }
 }

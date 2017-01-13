@@ -118,8 +118,8 @@ public class SportDataResult extends BaseResult {
             private String allDistance;
             @SerializedName("all_kcal")
             private String allKcal;
-            @SerializedName("avg_bpm")
-            private String avgBpm;
+            @SerializedName("last_bpm")
+            private String lastBpm;
 
             public String getAllStep() {
                 return allStep;
@@ -145,12 +145,12 @@ public class SportDataResult extends BaseResult {
                 this.allKcal = allKcal;
             }
 
-            public String getAvgBpm() {
-                return avgBpm;
+            public String getLastBpm() {
+                return lastBpm;
             }
 
-            public void setAvgBpm(String avgBpm) {
-                this.avgBpm = avgBpm;
+            public void setLastBpm(String lastBpm) {
+                this.lastBpm = lastBpm;
             }
         }
     }

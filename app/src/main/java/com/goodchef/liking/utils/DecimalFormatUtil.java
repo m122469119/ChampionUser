@@ -33,4 +33,19 @@ public class DecimalFormatUtil {
             return numStr;
         }
     }
+
+    public static String getTwoDecimalFormat(String number) {
+        String numStr = "0";
+        if (!StringUtils.isEmpty(number)) {
+            if (Double.parseDouble(number) == 0d) {
+                numStr = "0";
+                return numStr;
+            }
+            DecimalFormat df = new DecimalFormat("#0.00");
+            numStr = df.format(Double.parseDouble(number));
+            return numStr;
+        } else {
+            return numStr;
+        }
+    }
 }
