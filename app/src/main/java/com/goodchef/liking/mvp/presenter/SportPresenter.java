@@ -10,10 +10,13 @@ import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.utils.DeviceUtils;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.SportDataView;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:
@@ -27,8 +30,8 @@ public class SportPresenter extends BasePresenter<SportDataView> {
         super(context, mainView);
     }
 
-    public void sendSportData(String sportData) {
-        LiKingApi.sendSportData(sportData, SecurityUtils.MD5.get16MD5String(DeviceUtils.getDeviceInfo(BaseApplication.getInstance())), new RequestCallback<BaseResult>() {
+    public void sendSportData(String sportData ,String deviceId) {
+        LiKingApi.sendSportData(sportData, deviceId, new RequestCallback<BaseResult>() {
             @Override
             public void onSuccess(BaseResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

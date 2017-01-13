@@ -361,8 +361,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 if ((data[1] & 0xff) == 0x33) {//绑定
                     if (data[4] == 0x00) {
                         Log.i(TAG, "绑定成功");
-                        byte[] uuid = muuId.getBytes();
-                        writecharacteristic.setValue(BlueDataUtil.getLoginBytes(uuid));
+                        sendLogin();
                     } else if (data[4] == 0x01) {
                         Log.i(TAG, "绑定失败");
                     }
@@ -424,6 +423,16 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
                 }
             }
+        }
+    }
+
+    /**
+     * 发送登录
+     */
+    private void sendLogin() {
+        if (writecharacteristic != null) {
+            byte[] uuId = muuId.getBytes();
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getLoginBytes(uuId));
         }
     }
 

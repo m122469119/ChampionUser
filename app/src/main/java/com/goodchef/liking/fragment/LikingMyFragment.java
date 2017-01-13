@@ -487,10 +487,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mEverydaySportLayout) {//每日运动
             if (Preference.isLogin()) {
-                LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
                 Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
                 if (!StringUtils.isEmpty(mBraceletMac)) {
                     intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                    LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
                 }
                 intent.putExtra(KEY_UUID, UUID);
                 startActivity(intent);

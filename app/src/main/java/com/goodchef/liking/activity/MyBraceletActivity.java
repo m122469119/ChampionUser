@@ -326,9 +326,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             Log.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
             byte[] data = characteristic.getValue();
             for (int i = 0; i < data.length; i++) {
-                if (i == 1) {
-                    Log.i(TAG, "命令：" + data[1]);
-                }
                 Log.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
             }
             doCharacteristicData(data);
@@ -359,8 +356,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             if ((data[1] & 0xff) == 0x33) {//绑定
                 if (data[4] == 0x00) {
                     Log.i(TAG, "绑定成功");
-                    byte[] uuid = muuId.getBytes();
-                    writecharacteristic.setValue(BlueDataUtil.getLoginBytes(uuid));
                 } else if (data[4] == 0x01) {
                     Log.i(TAG, "绑定失败");
                 }

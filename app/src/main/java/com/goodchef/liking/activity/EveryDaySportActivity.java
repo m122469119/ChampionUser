@@ -43,6 +43,7 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:每日运动
@@ -329,9 +330,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             Log.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
             byte[] data = characteristic.getValue();
             for (int i = 0; i < data.length; i++) {
-                if (i == 1) {
-                    Log.i(TAG, "命令：" + data[1]);
-                }
                 Log.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
             }
             readOnCharacteristicChangedData(data);
@@ -366,6 +364,18 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
                 }
             }
+        }
+    }
+
+    /**
+     * 发送运动数据同步
+     */
+    private void sendSportDataSynchronization() {
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getSportSynchronizationBytes());
+        }
+        if (readcharacteristic != null) {
+            mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
         }
     }
 
@@ -415,8 +425,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             if ((data[1] & 0xff) == 0x33) {//绑定
                 if (data[4] == 0x00) {
                     Log.i(TAG, "绑定成功");
-                    byte[] uuId = muuId.getBytes();
-                    writecharacteristic.setValue(BlueDataUtil.getLoginBytes(uuId));
                 } else if (data[4] == 0x01) {
                     Log.i(TAG, "绑定失败");
                 }
@@ -430,7 +438,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                             mSynchronizationSateTextView.setTextColor(ResourceUtils.getColor(R.color.c4A90E2));
                         }
                     });
-                    writecharacteristic.setValue(BlueDataUtil.getSportSynchronizationBytes());
+                    sendSportDataSynchronization();
                 } else if (data[4] == 0x01) {
                     Log.i(TAG, "登录失败");
                     if (!isLoginFail) {
@@ -455,7 +463,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 Log.i(TAG, "心率 == " + (data[4] & 0xff));
                 setHeartRate((data[4] & 0xff));
             } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
-//                Log.i(TAG, "运动数据返回长度 == " + (data[3] & 0xff));
 
             } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
 
@@ -576,8 +583,18 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             });
 
             if (isHistory) {
-                writecharacteristic.setValue(BlueDataUtil.getSportRespondBytes(BlueDataUtil.ZERO));
+                respondSportData();
             }
+        }
+    }
+
+
+    /**
+     * 回应收到运动数据
+     */
+    private void respondSportData() {
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getSportRespondBytes(BlueDataUtil.ZERO));
         }
     }
 
@@ -608,7 +625,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         sportData.setCreate_time(time);
         Gson gson = new Gson();
         String sportDataStr = gson.toJson(sportData);
-        mSportPresenter.sendSportData(sportDataStr);
+        mSportPresenter.sendSportData(sportDataStr, JPushInterface.getUdid(EveryDaySportActivity.this));
     }
 
 
@@ -681,31 +698,32 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         }
     }
 
+    /**
+     * 展示获取心率dialog
+     */
     private void showPromptHeartRateDialog() {
         if (writecharacteristic == null) {
             PopupUtils.showToast("请连接手环");
             return;
         }
-        writecharacteristic.setValue(BlueDataUtil.getHeartRateSynchronizationBytes());
+        sendHeartRateSynchronization();
         heartDialog = new HeartRateDialog(this);
         heartDialog.setCancelClickListener(new HeartRateDialog.CancelOnClickListener() {
             @Override
             public void onCancelClickListener(AppCompatDialog dialog) {
-                if (writecharacteristic != null) {
-                    writecharacteristic.setValue(BlueDataUtil.getSportSynchronizationBytes());
-                }
+                sendSportDataSynchronization();
                 dialog.dismiss();
             }
         });
     }
 
+
     private void dismissHeartRateDialog() {
-        writecharacteristic.setValue(BlueDataUtil.getSportSynchronizationBytes());
+        sendSportDataSynchronization();
         if (heartDialog != null) {
             heartDialog.dismiss();
         }
     }
-
 
     @Override
     protected void onDestroy() {
@@ -715,7 +733,35 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
-        mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getCloseSynchronizationBytes());
-        mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
+        sendCloseSynchronization();
+        sendDisconnectBlueTooth();
+    }
+
+    /**
+     * 发送心率数据同步
+     */
+    private void sendHeartRateSynchronization() {
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getHeartRateSynchronizationBytes());
+        }
+    }
+
+
+    /**
+     * 发送关闭蓝牙命令
+     */
+    private void sendDisconnectBlueTooth(){
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
+        }
+    }
+
+    /**
+     * 发送关闭实时同步运动数据
+     */
+    private void sendCloseSynchronization() {
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getCloseSynchronizationBytes());
+        }
     }
 }
