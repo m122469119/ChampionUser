@@ -1,6 +1,7 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.ArenaActivity;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
 
 /**
@@ -51,6 +54,7 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
             mGymAddressTextView = (TextView) itemView.findViewById(R.id.gym_address);
             mGymDistanceTextView = (TextView) itemView.findViewById(R.id.gym_distance);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.change_gym_checkBox);
+            mHImageView.setOnClickListener(gymImagClickListener);
         }
 
         @Override
@@ -77,6 +81,19 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
             mGymNameTextView.setText(object.getGymName());
             mGymAddressTextView.setText(object.getGymAddress());
             mGymNameTextView.setTag(object);
+            mHImageView.setTag(object);
         }
     }
+
+    private View.OnClickListener gymImagClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CheckGymListResult.CheckGymData.CheckGym checkGym = (CheckGymListResult.CheckGymData.CheckGym) v.getTag();
+            if(checkGym != null) {
+                Intent intent = new Intent(mContext, ArenaActivity.class);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, String.valueOf(checkGym.getGymId()));
+                mContext.startActivity(intent);
+            }
+        }
+    };
 }
