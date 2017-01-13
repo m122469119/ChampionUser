@@ -30,6 +30,7 @@ import com.goodchef.liking.bluetooth.BlueDataUtil;
 import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.dialog.HeartRateDialog;
+import com.goodchef.liking.dialog.ShakeSynchronizationDialog;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.data.SportData;
@@ -102,6 +103,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private String heartRateDate;
     private boolean isLoginFail = false;
     private boolean connectFile = false;
+    private ShakeSynchronizationDialog mShakeSynchronizationDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,8 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         ButterKnife.bind(this);
         getIntentData();
         mDealWithBlueTooth = new DealWithBlueTooth(this);
-        setTitle("日常运动");
+        setTitle(getString(R.string.title_every_day_sport));
+        setSynchronizationSate(false,"",0);
         setTodayDataView();
         setTotalDataView();
         setViewOnClickListener();
@@ -280,10 +283,32 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private void connect() {
         if (!isConnect) {
             isConnect = true;
-            mSynchronizationSateTextView.setText("连接中...");
-            mSynchronizationSateTextView.setTextColor(ResourceUtils.getColor(R.color.c4A90E2));
+            setSynchronizationSate(true, getString(R.string.connect_ing), ResourceUtils.getColor(R.color.c4A90E2));
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
+    }
+
+
+    /**
+     * 设置日常运动状态
+     *
+     * @param isshow
+     * @param str
+     * @param color
+     */
+    private void setSynchronizationSate(final boolean isshow, final String str, final int color) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isshow) {
+                    mSynchronizationSateTextView.setVisibility(View.VISIBLE);
+                    mSynchronizationSateTextView.setText(str);
+                    mSynchronizationSateTextView.setTextColor(color);
+                } else {
+                    mSynchronizationSateTextView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     /**
@@ -305,6 +330,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 Log.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 Log.i(TAG, "连接失败");
+                setSynchronizationSate(true,getString(R.string.connect_fial),ResourceUtils.getColor(R.color.c4A90E2));
                 sendConnect();
             }
         }
@@ -444,14 +470,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
                     Log.i(TAG, "登录成功");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mSynchronizationSateTextView.setText("正在同步...");
-                            mSynchronizationSateTextView.setTextColor(ResourceUtils.getColor(R.color.c4A90E2));
-                        }
-                    });
-                    sendSportDataSynchronization();
+                    loginSuccess();
                 } else if (data[4] == 0x01) {
                     Log.i(TAG, "登录失败");
                     if (!isLoginFail) {
@@ -487,6 +506,27 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 }
             }
         }
+    }
+
+    /**
+     * 登录成功
+     */
+    private void loginSuccess(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showShakeDialog();
+            }
+        });
+        //设置状态
+        setSynchronizationSate(true,getString(R.string.synchronization_ing),ResourceUtils.getColor(R.color.c4A90E2));
+        sendSportDataSynchronization();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                
+            }
+        }, 30000);
     }
 
 
@@ -626,14 +666,13 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mSynchronizationSateTextView.setText("同步完成");
-                    mSynchronizationSateTextView.setTextColor(ResourceUtils.getColor(R.color.c4A90E2));
+                    dismissShakeDialog();
                     mTodayStepTextView.setText(step + "");
                     mTodayKcalTextView.setText(kcal + "");
                     mTodayDistanceTextView.setText(distance + "");
                 }
             });
-
+            setSynchronizationSate(true,getString(R.string.synchongrozation_finish),ResourceUtils.getColor(R.color.c4A90E2));
             if (isHistory) {
                 respondSportData();
             }
@@ -761,8 +800,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             PopupUtils.showToast("请连接手环");
             return;
         }
-
-        heartDialog = new HeartRateDialog(this);
+        if (heartDialog == null) {
+            heartDialog = new HeartRateDialog(this);
+        }
         heartDialog.setCancelClickListener(new HeartRateDialog.CancelOnClickListener() {
             @Override
             public void onCancelClickListener(AppCompatDialog dialog) {
@@ -783,8 +823,23 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     /**
      * 显示摇一摇对话框
      */
-    private void showSharkItOffDialog() {
+    private void showShakeDialog() {
+        if (mShakeSynchronizationDialog == null) {
+            mShakeSynchronizationDialog = new ShakeSynchronizationDialog(this);
+        }
+        mShakeSynchronizationDialog.setButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mShakeSynchronizationDialog.dismiss();
+            }
+        });
+    }
 
+    private void dismissShakeDialog() {
+        if (mShakeSynchronizationDialog != null) {
+            mShakeSynchronizationDialog.dismiss();
+        }
+        setSynchronizationSate(false,"",0);
     }
 
     @Override

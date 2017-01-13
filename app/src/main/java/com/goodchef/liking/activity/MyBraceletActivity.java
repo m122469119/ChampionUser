@@ -150,7 +150,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             public void run() {
                 setBraceletView();
                 mMyBraceletImageView.setBackgroundResource(R.drawable.icon_syn);
-                mMyBraceletTextView.setText("同步中...");
+                mMyBraceletTextView.setText(R.string.synchronization_ing);
             }
         }, 2000);
     }
@@ -164,7 +164,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             public void run() {
                 setBraceletView();
                 mMyBraceletImageView.setBackgroundResource(R.drawable.icon_syn_success);
-                mMyBraceletTextView.setText("同步完成");
+                mMyBraceletTextView.setText(R.string.synchongrozation_finish);
             }
         }, time);
     }
@@ -308,14 +308,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         @Override //当向设备Descriptor中写数据时，会回调该函数
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             System.out.println("onDescriptorWriteonDescriptorWrite = " + status + ", descriptor =" + descriptor.getUuid().toString());
-//            BluetoothGattService service = mBluetoothGatt.getService(SERVER_UUID);
-//            if (service != null) {
-//                BluetoothGattCharacteristic readcharacteristic = service.getCharacteristic(RX_UUID);
-////                mBluetoothGatt.setCharacteristicNotification(readcharacteristic, true);
-//                if (readcharacteristic != null) {
-//                    setCharacteristicNotification(readcharacteristic, true);
-//                }
-//            }
         }
 
         @Override //设备发出通知时会调用到该接口
@@ -383,25 +375,33 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             } else if ((data[1] & 0xff) == 0x09) {//电量
                 Log.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
                 mBraceletPower = (data[4] & 0xff);
-                if (!isSendRequest) {
-                    isSendRequest = true;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mUnbindTextView.setVisibility(View.VISIBLE);
-                            setSynchronizationSuccessView(1000);
-                            initData();
-                            setSynchronizationPowerView(2000);
-                        }
-                    });
-                }
-            } else if ((data[1] & 0xff) == 0x27) {
-                Log.i(TAG, "心率 == " + (data[4] & 0xff));
+                setPowerView();
             } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
                 Log.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
             } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
                 getFirmwareInfo(data);
             }
+        }
+    }
+
+    /**
+     * 设置电量view
+     */
+    private void setPowerView() {
+        if (!isSendRequest) {
+            isSendRequest = true;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mUnbindTextView.setVisibility(View.VISIBLE);
+                    setSynchronizationSuccessView(1000);
+                    initData();
+                    setSynchronizationPowerView(2000);
+                    if (Preference.getFirstBindBracelet()) {
+                        showFirstCheckPromptDialog();
+                    }
+                }
+            });
         }
     }
 
@@ -436,6 +436,23 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
 
 
     /**
+     * 第一次绑定成功后提示用户在我的界面查看蓝牙数据
+     */
+    private void showFirstCheckPromptDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(getString(R.string.prompt_check_blue_tooth_data) + "\n" + getString(R.string.prompt_check_blue_tooth_data_send));
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+        Preference.setFirstBindBracelet(false);
+    }
+
+
+    /**
      * 获取固件信息
      *
      * @param data
@@ -464,7 +481,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == mUnbindTextView) {
-           // mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getUnBindBytes());
+            // mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getUnBindBytes());
             showUnbindDialog();
         }
     }
@@ -507,7 +524,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     protected void onPause() {
         super.onPause();
-        if (mDealWithBlueTooth !=null){
+        if (mDealWithBlueTooth != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
     }

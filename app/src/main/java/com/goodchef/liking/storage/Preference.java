@@ -40,6 +40,7 @@ public class Preference extends AbsPreference {
     public static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
     public static final String IS_VIP = "is_vip";//是否
     public static final String IS_BIND = "is_bind";
+    public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
     public static List<String> announcementList = new ArrayList<>();
 
 
@@ -136,6 +137,24 @@ public class Preference extends AbsPreference {
      */
     public static boolean setIsNewUser(Integer isNewUser) {
         return setObject(IS_NEW_USER, isNewUser);
+    }
+
+    /**
+     * 设置第一次提示用户在我的界面查看手环数据
+     *
+     * @param isfirst
+     * @return
+     */
+    public static boolean setFirstBindBracelet(boolean isfirst) {
+        return setObject(KEY_BRACELET_FIRST_PROMPT, isfirst);
+    }
+
+    /**
+     * 获取第一次提示用户在我的界面查看手环数据
+     * @return
+     */
+    public static boolean getFirstBindBracelet() {
+        return (boolean) getObject(KEY_BRACELET_FIRST_PROMPT, true);
     }
 
     /**

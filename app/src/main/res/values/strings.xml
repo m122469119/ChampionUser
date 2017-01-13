@@ -253,5 +253,14 @@
     <string name="devices_address">设备MAC地址</string>
     <string name="devices_version">固件版本号</string>
     <string name="unbind_bracelet">解除绑定</string>
+    <string name="shake_synchronization">摇一摇同步数据</string>
+    <string name="synchongrozation_finish">同步完成</string>
+    <string name="connect_ing">连接中...</string>
+    <string name="title_every_day_sport">日常运动</string>
+    <string name="send_brancelet_bing_prompt">只有二代手环用户才能绑定哟~</string>
+    <string name="synchronization_ing">同步中...</string>
+    <string name="prompt_check_blue_tooth_data">您成功开启了手环数据功能</string>
+    <string name="prompt_check_blue_tooth_data_send">快去我的信息界面查看数据吧！</string>
+    <string name="connect_fial">连接失败</string>
 
 </resources>

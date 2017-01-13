@@ -191,8 +191,8 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
         TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
         builder.setCustomView(view);
-        titleTextView.setText("提示");
-        contentTextView.setText("只有二代手环才能绑定哟！");
+        titleTextView.setText(R.string.notice_prompt);
+        contentTextView.setText(R.string.send_brancelet_bing_prompt);
         builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
