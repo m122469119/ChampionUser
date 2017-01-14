@@ -96,6 +96,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView mBodyScoreData;//个人训练数据
     private TextView mEveryDataSportData;//每日运动
     private TextView mTrainTimeData;//训练时间
+    private TextView mHeadPersonDataTextView;
 
     private TextView mContactSetviceBtn;//联系客服
 
@@ -270,6 +271,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mBodyScoreLayout = (LinearLayout) view.findViewById(R.id.layout_body_score);
         mEverydaySportLayout = (LinearLayout) view.findViewById(R.id.layout_everyday_sport);
         mTrainLayout = (LinearLayout) view.findViewById(R.id.layout_today_data);
+        mHeadPersonDataTextView = (TextView) view.findViewById(R.id.my_head_person_data_TextView);
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
@@ -337,11 +339,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private void setHeadPersonData() {
         if (Preference.isBind()) {//已绑定
             mBodyScoreLayout.setVisibility(View.VISIBLE);
+            mHeadPersonDataTextView.setVisibility(View.GONE);
             setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
             setHeadPersonDataView(mEverydaySportLayout, R.string.everyday_sport_title, R.string.everyday_sport_unit);
             setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
         } else {//没有绑定
             mBodyScoreLayout.setVisibility(View.GONE);
+            mHeadPersonDataTextView.setVisibility(View.VISIBLE);
             setHeadPersonDataView(mEverydaySportLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
             setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
         }
@@ -469,6 +473,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                         intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
                     }
                     intent.putExtra(KEY_UUID, UUID);
+                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
+                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
                     intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
                     startActivity(intent);
                 } else {//没有绑过
@@ -501,7 +507,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void jumpBodyTestActivity(){
+    private void jumpBodyTestActivity() {
         Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
         intent.putExtra(BodyTestDataActivity.BODY_ID, "");
         intent.putExtra(BodyTestDataActivity.SOURCE, "other");

@@ -24,6 +24,7 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.dialog.UnBindDevicesDialog;
@@ -70,8 +71,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @BindView(R.id.my_power_TextView)
     TextView mMyPowerTextView;
 
-    private String mBindDevicesName;//绑定的设备名称
-    private String mBindDevicesAddress;//绑定的设备地址
+    private String mBindDevicesName = "";//绑定的设备名称
+    private String mBindDevicesAddress = "";//绑定的设备地址
     private String mFirmwareInfo;//固件版本信息
     private int mBraceletPower = 0;
     private UnBindDevicesPresenter mUnBindDevicesPresenter;
@@ -79,14 +80,16 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private String muuId;
     private String source;
 
-    Handler mHandler = new Handler();
+    private Handler mHandler = new Handler();
     private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
-    private boolean mScanning;
-    public BluetoothGattCharacteristic writecharacteristic;
-    public BluetoothGattCharacteristic readcharacteristic;
+    private BluetoothGattCharacteristic writecharacteristic;
+    private BluetoothGattCharacteristic readcharacteristic;
     private int mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
     private boolean isSendRequest = false;//是否发送过请求
-    private boolean isLoginFail = false;
+    private boolean isLoginFail = false;//是否连接失败
+    private boolean isConnect = false;//是否连接
+    private boolean connectFile = false;//是否连接失败
+    private boolean scaning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,13 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         mUnbindTextView.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (scaning) {
+            connect();
+        }
+    }
 
     private void synchronizationInfo() {
         setOnSynchronizationView();
@@ -231,18 +241,14 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mScanning = false;
                     mDealWithBlueTooth.stopLeScan(mLeScanCallback);
-                    mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
                 }
             }, 10000); //10秒后停止搜索
-            mScanning = true;
             UUID[] uuids = new UUID[1];
             UUID uuid = UUID.fromString("0000FEA0-0000-1000-8000-00805f9b34fb");
             uuids[0] = uuid;
             mDealWithBlueTooth.startLeScan(mLeScanCallback);
         } else {
-            mScanning = false;
             mDealWithBlueTooth.stopLeScan(mLeScanCallback);
         }
     }
@@ -250,7 +256,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-            Log.d(TAG, "name1111 = " + device.getName() + " mac = " + device.getAddress());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -259,9 +264,11 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                         if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
                             LogUtils.d(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
                             if (!StringUtils.isEmpty(myBraceletMac) && myBraceletMac.equals(device.getAddress())) {
-                                myBraceletMac = device.getAddress();
                                 mBindDevicesAddress = device.getAddress();
                                 mBindDevicesName = device.getName();
+                                myBraceletMac = device.getAddress();
+                                scaning = true;
+                                connect();
                             }
                         }
                     }
@@ -270,6 +277,26 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         }
     };
 
+    /**
+     * 连接蓝牙
+     */
+    private void connect() {
+        if (!isConnect) {
+            isConnect = true;
+            mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
+        }
+    }
+
+    /**
+     * 第二次连接
+     */
+    private void sendConnect() {
+        if (!connectFile) {
+            connectFile = true;
+            mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
+        }
+    }
+
     private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override  //当连接上设备或者失去连接时会回调该函数
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -277,10 +304,11 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 Log.i(TAG, "连接成功");
                 mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
-                Log.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
+                LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
-                Log.i(TAG, "连接失败");
+                LogUtils.i(TAG, "连接失败");
+                sendConnect();
             }
         }
 
@@ -524,6 +552,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     protected void onPause() {
         super.onPause();
+        isConnect = false;
         if (mDealWithBlueTooth != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }

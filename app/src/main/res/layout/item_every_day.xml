@@ -49,4 +49,16 @@
         android:textSize="24sp"/>
 
 
+    <ProgressBar
+        android:id="@+id/every_day_ProgressBar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="@dimen/spacing_8dp"
+        android:layout_marginRight="@dimen/spacing_8dp"
+        android:layout_marginTop="@dimen/spacing_8dp"
+        android:layout_toLeftOf="@+id/every_day_data_content"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDrawable="@drawable/shape_loding"
+        android:visibility="gone"/>
+
 </RelativeLayout>

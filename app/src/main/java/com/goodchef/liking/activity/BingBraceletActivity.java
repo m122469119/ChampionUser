@@ -80,18 +80,17 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private String mFirmwareInfo;//固件版本信息
     private int mBraceletPower;//电量
     private boolean isSendRequest = false;//是否发送过请求
-    private BlueToothAdapter mAdapter;
+    private BlueToothAdapter mAdapter;//蓝牙适配器
 
-    private String myBraceletMac;
-    private String muuId;
+    private String myBraceletMac;//我的手环地址
+    private String muuId;//UUID
     private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
-    Handler mHandler = new Handler();
-    private boolean mScanning;
+    private Handler mHandler = new Handler();
     private List<BluetoothDevice> mBluetoothDeviceList = new ArrayList<>();
     private Map<String, BluetoothDevice> map = new HashMap<>();
     private int mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
-    public BluetoothGattCharacteristic writecharacteristic;
-    public BluetoothGattCharacteristic readcharacteristic;
+    private BluetoothGattCharacteristic writecharacteristic;
+    private BluetoothGattCharacteristic readcharacteristic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,20 +248,17 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mScanning = false;
                     mDealWithBlueTooth.stopLeScan(mLeScanCallback);
                     mBlueToothWhewView.stop();
                     mClickSearchTextView.setVisibility(View.VISIBLE);
                     // setBlueToothDevicesList();
                 }
             }, 10000); //10秒后停止搜索
-            mScanning = true;
             UUID[] uuids = new UUID[1];
             UUID uuid = UUID.fromString("0000FEA0-0000-1000-8000-00805f9b34fb");
             uuids[0] = uuid;
             mDealWithBlueTooth.startLeScan(mLeScanCallback);
         } else {
-            mScanning = false;
             mDealWithBlueTooth.stopLeScan(mLeScanCallback);
         }
     }
@@ -270,7 +266,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-            Log.d(TAG, "name1111 = " + device.getName() + " mac = " + device.getAddress());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -352,47 +347,9 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             Log.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
             byte[] data = characteristic.getValue();
             for (int i = 0; i < data.length; i++) {
-                if (i == 1) {
-                    Log.i(TAG, "命令：" + data[1]);
-                }
-                Log.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
+                LogUtils.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
             }
-            if (data.length >= 3) {
-                if ((data[1] & 0xff) == 0x33) {//绑定
-                    if (data[4] == 0x00) {
-                        Log.i(TAG, "绑定成功");
-                        sendLogin();
-                    } else if (data[4] == 0x01) {
-                        Log.i(TAG, "绑定失败");
-                    }
-                } else if ((data[1] & 0xff) == 0x35) {
-                    if (data[4] == 0x00) {
-                        Log.i(TAG, "登录成功");
-                    } else if (data[4] == 0x01) {
-                        Log.i(TAG, "登录失败");
-                    }
-                } else if ((data[1] & 0xff) == 0x0D) {
-                    if (data[4] == 0x00) {
-                        Log.i(TAG, "解绑成功");
-                    } else if (data[4] == 0x01) {
-                        Log.i(TAG, "解绑失败");
-                    }
-                } else if ((data[1] & 0xff) == 0x09) {//电量
-                    Log.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
-                    mBraceletPower = (data[4] & 0xff);
-                    if (!isSendRequest) {
-                        isSendRequest = true;
-                        sendDevicesRequest();
-                    }
-                } else if ((data[1] & 0xff) == 0x27) {
-                    Log.i(TAG, "心率 == " + (data[4] & 0xff));
-                } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
-                    Log.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
-                } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
-                    getFirmwareInfo(data);
-                }
-
-            }
+            doCharacteristicOnePackageData(data);
             System.out.println("--------onCharacteristicChanged-----");
         }
 
@@ -423,6 +380,50 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
                 }
             }
+        }
+    }
+
+    /**
+     * 处理单包蓝牙数据，在这个界面值涉及到单包的数据
+     *
+     * @param data
+     */
+    private void doCharacteristicOnePackageData(byte[] data) {
+        if (data.length >= 3) {
+            if ((data[1] & 0xff) == 0x33) {//绑定
+                if (data[4] == 0x00) {
+                    LogUtils.i(TAG, "绑定成功");
+                    sendLogin();
+                } else if (data[4] == 0x01) {
+                    LogUtils.i(TAG, "绑定失败");
+                }
+            } else if ((data[1] & 0xff) == 0x35) {
+                if (data[4] == 0x00) {
+                    LogUtils.i(TAG, "登录成功");
+                } else if (data[4] == 0x01) {
+                    LogUtils.i(TAG, "登录失败");
+                }
+            } else if ((data[1] & 0xff) == 0x0D) {
+                if (data[4] == 0x00) {
+                    LogUtils.i(TAG, "解绑成功");
+                } else if (data[4] == 0x01) {
+                    LogUtils.i(TAG, "解绑失败");
+                }
+            } else if ((data[1] & 0xff) == 0x09) {//电量
+                LogUtils.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
+                mBraceletPower = (data[4] & 0xff);
+                if (!isSendRequest) {
+                    isSendRequest = true;
+                    sendDevicesRequest();
+                }
+            } else if ((data[1] & 0xff) == 0x27) {
+                LogUtils.i(TAG, "心率 == " + (data[4] & 0xff));
+            } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
+                LogUtils.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
+            } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
+                getFirmwareInfo(data);
+            }
+
         }
     }
 

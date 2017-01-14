@@ -247,7 +247,7 @@
     <string name="home_no_data_prompt">即刻开启智能健身之旅</string>
     <string name="point_search">点击搜索</string>
     <string name="title_bing_bracelet">绑定手环</string>
-    <string name="everyday_sport_title">日常运动</string>
+    <string name="everyday_sport_title">手环数据</string>
     <string name="everyday_sport_unit">Km</string>
     <string name="current_devices">当前设备</string>
     <string name="devices_address">设备MAC地址</string>
@@ -256,7 +256,7 @@
     <string name="shake_synchronization">摇一摇同步数据</string>
     <string name="synchongrozation_finish">同步完成</string>
     <string name="connect_ing">连接中...</string>
-    <string name="title_every_day_sport">日常运动</string>
+    <string name="title_every_day_sport">手环数据</string>
     <string name="send_brancelet_bing_prompt">只有二代手环用户才能绑定哟~</string>
     <string name="synchronization_ing">同步中...</string>
     <string name="prompt_check_blue_tooth_data">您成功开启了手环数据功能</string>
@@ -264,5 +264,20 @@
     <string name="connect_fial">连接失败</string>
     <string name="synchronization_fial">同步失败</string>
     <string name="login_fail">蓝牙登入失败，重新发送登入请求？</string>
+    <string name="total_setp">总步数</string>
+    <string name="total_distance">总距离</string>
+    <string name="total_kacl">总消耗</string>
+    <string name="history_heart_rate">历史心率</string>
+    <string name="total_setp_unit">" Step"</string>
+    <string name="total_distance_unit">" Km"</string>
+    <string name="tota_kcal_unit">" Kcal"</string>
+    <string name="history_heart_rate_unit">" Bpm"</string>
+    <string name="today_step">今日步数</string>
+    <string name="today_distance">距离</string>
+    <string name="today_kcal">卡路里</string>
+    <string name="today_heart_rate">心率</string>
+    <string name="total_sport_number">总运动数</string>
+    <string name="today_sport_number">今日数据</string>
+    <string name="person_data">个人数据</string>
 
 </resources>

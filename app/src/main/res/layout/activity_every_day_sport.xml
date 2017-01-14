@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/spacing_12dp"
-                android:text="今日数据"
+                android:text="@string/today_sport_number"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_medium"/>
 
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/spacing_12dp"
-                android:text="总运动数据"
+                android:text="@string/total_sport_number"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_medium"/>
 

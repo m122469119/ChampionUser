@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -75,16 +76,21 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @BindView(R.id.layout_today_total_average_heart_rate)
     RelativeLayout mTotalHeartRateLayout;
 
-    TextView mTodayStepTextView;
-    TextView mTodayDistanceTextView;
-    TextView mTodayKcalTextView;
-    TextView mTodayAverageHeartRateTextView;
+    private TextView mTodayStepTextView;
+    private TextView mTodayDistanceTextView;
+    private TextView mTodayKcalTextView;
+    private TextView mTodayAverageHeartRateTextView;
 
-    TextView mTotoalStepTextView;
-    TextView mTotalDistanceTextView;
-    TextView mTotalKcalTextView;
-    TextView mTotalAverageHeartRateTextView;
-    ImageView mClikHeartRateImageView;
+    private ProgressBar mTodayStepProgressBar;
+    private ProgressBar mTodayDistanceProgressBar;
+    private ProgressBar mTodayKcalProgressBar;
+    private ProgressBar mTodayHeartRateProgressBar;
+
+    private TextView mTotoalStepTextView;
+    private TextView mTotalDistanceTextView;
+    private TextView mTotalKcalTextView;
+    private TextView mTotalAverageHeartRateTextView;
+    private ImageView mClikHeartRateImageView;
 
     @BindView(R.id.synchronization_sate_TextView)
     TextView mSynchronizationSateTextView;
@@ -124,12 +130,32 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         getIntentData();
         mDealWithBlueTooth = new DealWithBlueTooth(this);
         setTitle(getString(R.string.title_every_day_sport));
-        setSynchronizationSate(false, "", 0);
         setTodayDataView();
+        setSynchronizationSate(false, "", 0);
         setTotalDataView();
         setViewOnClickListener();
         sendRequest();
         searchBlueTooth();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        connect();
+    }
+
+    private void showProgressBar(boolean show) {
+        if (show) {
+            mTodayStepProgressBar.setVisibility(View.VISIBLE);
+            mTodayDistanceProgressBar.setVisibility(View.VISIBLE);
+            mTodayKcalProgressBar.setVisibility(View.VISIBLE);
+            mTodayHeartRateProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mTodayStepProgressBar.setVisibility(View.GONE);
+            mTodayDistanceProgressBar.setVisibility(View.GONE);
+            mTodayKcalProgressBar.setVisibility(View.GONE);
+            mTodayHeartRateProgressBar.setVisibility(View.GONE);
+        }
     }
 
     private void getIntentData() {
@@ -142,17 +168,17 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     }
 
     private void setTodayDataView() {
-        initTodayView(mTodayStepLayout, "今日步数", " Step", false);
-        initTodayView(mTodayDistanceLayout, "距离", " Km", false);
-        initTodayView(mTodayKcalLayout, "卡路里", " Kcal", false);
-        initTodayView(mTodayHeartRateLayout, "平均心率", " Bpm", true);
+        initTodayView(mTodayStepLayout, getString(R.string.today_step), getString(R.string.total_setp_unit), false);
+        initTodayView(mTodayDistanceLayout, getString(R.string.today_distance), getString(R.string.total_distance_unit), false);
+        initTodayView(mTodayKcalLayout, getString(R.string.today_kcal), getString(R.string.tota_kcal_unit), false);
+        initTodayView(mTodayHeartRateLayout, getString(R.string.today_heart_rate), getString(R.string.history_heart_rate_unit), true);
     }
 
     private void setTotalDataView() {
-        initTotalView(mTotalStepLayout, "总步数", " Step");
-        initTotalView(mTotalDistanceLayout, "总距离", " Km");
-        initTotalView(mTotalKcalLayout, "总消耗", " Kcal");
-        initTotalView(mTotalHeartRateLayout, "平均心率", " Bpm");
+        initTotalView(mTotalStepLayout, getString(R.string.total_setp), getString(R.string.total_setp_unit));
+        initTotalView(mTotalDistanceLayout, getString(R.string.total_distance), getString(R.string.total_distance_unit));
+        initTotalView(mTotalKcalLayout, getString(R.string.total_kacl), getString(R.string.tota_kcal_unit));
+        initTotalView(mTotalHeartRateLayout, getString(R.string.history_heart_rate), getString(R.string.history_heart_rate_unit));
     }
 
     private void initTodayView(View view, String title, String unit, boolean showImageView) {
@@ -160,6 +186,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         TextView unitTextView = (TextView) view.findViewById(R.id.every_day_data_unit);
         TextView contentTextView = (TextView) view.findViewById(R.id.every_day_data_content);
         ImageView imageView = (ImageView) view.findViewById(R.id.click_heart_rate_ImageView);
+        ProgressBar mProgressBar = (ProgressBar) view.findViewById(R.id.every_day_ProgressBar);
         titleTextView.setText(title);
         unitTextView.setText(unit);
         if (showImageView) {
@@ -170,16 +197,20 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         switch (view.getId()) {
             case R.id.layout_today_step:
                 mTodayStepTextView = contentTextView;
+                mTodayStepProgressBar = mProgressBar;
                 break;
             case R.id.layout_today_distance:
                 mTodayDistanceTextView = contentTextView;
+                mTodayDistanceProgressBar = mProgressBar;
                 break;
             case R.id.layout_today_kcal:
                 mTodayKcalTextView = contentTextView;
+                mTodayKcalProgressBar = mProgressBar;
                 break;
             case R.id.layout_average_heart_rate:
                 mTodayAverageHeartRateTextView = contentTextView;
                 mClikHeartRateImageView = imageView;
+                mTodayHeartRateProgressBar = mProgressBar;
                 break;
         }
 
@@ -294,6 +325,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private void connect() {
         if (!isConnect) {
             isConnect = true;
+            showProgressBar(true);
             setSynchronizationSate(true, getString(R.string.connect_ing), ResourceUtils.getColor(R.color.c4A90E2));
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
@@ -328,6 +360,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private void sendConnect() {
         if (!connectFile) {
             connectFile = true;
+            showProgressBar(true);
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
     }
@@ -337,6 +370,12 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 Log.i(TAG, "连接成功");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar(false);
+                    }
+                });
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 Log.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
@@ -774,16 +813,15 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
 
     @Override
     public void updateSendSportDataView() {
-        PopupUtils.showToast("上传成功");
+        // PopupUtils.showToast("上传成功");
     }
 
     @Override
     public void updateGetSportDataView(SportDataResult.SportData sportData) {
         SportDataResult.SportData.AllData allData = sportData.getAll();
         SportDataResult.SportData.TodayData todayData = sportData.getToday();
-
-        setTodayData(todayData);
-        setAllData(allData);
+        setTodayData(todayData);//设置今日数据
+        setAllData(allData);//设置总运动数据
     }
 
     /**
@@ -792,18 +830,25 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      * @param todayData
      */
     private void setTodayData(SportDataResult.SportData.TodayData todayData) {
+        showProgressBar(false);
         String todayStepNum = todayData.getStepNum();
         String todayDistance = todayData.getDistance();
         String todayKacl = todayData.getKcal();
 
         if (!StringUtils.isEmpty(todayStepNum)) {
             mTodayStepTextView.setText(todayStepNum);
+        } else {
+            mTodayStepTextView.setText("-");
         }
         if (!StringUtils.isEmpty(todayDistance)) {
             mTodayDistanceTextView.setText(todayDistance);
+        } else {
+            mTodayDistanceTextView.setText("-");
         }
         if (!StringUtils.isEmpty(todayKacl)) {
             mTodayKcalTextView.setText(todayKacl);
+        } else {
+            mTodayKcalTextView.setText("-");
         }
     }
 
@@ -820,17 +865,25 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
 
         if (!StringUtils.isEmpty(allStep)) {
             mTotoalStepTextView.setText(allStep);
+        } else {
+            mTotoalStepTextView.setText("-");
         }
         if (!StringUtils.isEmpty(allDistance)) {
             mTotalDistanceTextView.setText(allDistance);
+        } else {
+            mTotalDistanceTextView.setText("-");
         }
 
         if (!StringUtils.isEmpty(allKcal)) {
             mTotalKcalTextView.setText(allKcal);
+        } else {
+            mTotalKcalTextView.setText("-");
         }
 
         if (!StringUtils.isEmpty(avgBpm)) {
             mTotalAverageHeartRateTextView.setText(avgBpm);
+        } else {
+            mTotalAverageHeartRateTextView.setText("-");
         }
     }
 
@@ -900,6 +953,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
+        isConnect = false;
         sendSportDataRequest(sportSetp + "", sportKcal, sportDistance, mHeartRate + "", sportDate);
         sendCloseSynchronization();
         sendDisconnectBlueTooth();
