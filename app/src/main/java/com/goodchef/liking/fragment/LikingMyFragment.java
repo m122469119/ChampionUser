@@ -196,10 +196,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
             }
             setHeadPersonData();
-            if (Preference.isBind()){
+            if (Preference.isBind()) {
                 mBodyScoreData.setText(exerciseData.getScore());
                 mEveryDataSportData.setText(exerciseData.getAllDistance());
-            }else {
+            } else {
                 mEveryDataSportData.setText(exerciseData.getScore());
             }
 
@@ -211,7 +211,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 清除训练数据
      */
     private void clearExerciseData() {
-        if (mBodyScoreData !=null){
+        if (mBodyScoreData != null) {
             mBodyScoreData.setText("-");
         }
         mTrainTimeData.setText("-");
@@ -454,10 +454,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             startActivity(SelfHelpGroupActivity.class);
         } else if (v == mBodyScoreLayout) {//体测数据
             if (Preference.isLogin()) {
-                Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
-                intent.putExtra(BodyTestDataActivity.BODY_ID, "");
-                intent.putExtra(BodyTestDataActivity.SOURCE, "other");
-                startActivity(intent);
+                jumpBodyTestActivity();
             } else {
                 startActivity(LoginActivity.class);
             }
@@ -487,17 +484,28 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mEverydaySportLayout) {//每日运动
             if (Preference.isLogin()) {
-                Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
-                if (!StringUtils.isEmpty(mBraceletMac)) {
-                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                    LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
+                if (Preference.isBind()) {
+                    Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
+                    if (!StringUtils.isEmpty(mBraceletMac)) {
+                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                        LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
+                    }
+                    intent.putExtra(KEY_UUID, UUID);
+                    startActivity(intent);
+                } else {
+                    jumpBodyTestActivity();
                 }
-                intent.putExtra(KEY_UUID, UUID);
-                startActivity(intent);
             } else {
                 startActivity(LoginActivity.class);
             }
         }
+    }
+
+    private void jumpBodyTestActivity(){
+        Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
+        intent.putExtra(BodyTestDataActivity.BODY_ID, "");
+        intent.putExtra(BodyTestDataActivity.SOURCE, "other");
+        startActivity(intent);
     }
 
     /**

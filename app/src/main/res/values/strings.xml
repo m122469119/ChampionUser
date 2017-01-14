@@ -262,5 +262,7 @@
     <string name="prompt_check_blue_tooth_data">您成功开启了手环数据功能</string>
     <string name="prompt_check_blue_tooth_data_send">快去我的信息界面查看数据吧！</string>
     <string name="connect_fial">连接失败</string>
+    <string name="synchronization_fial">同步失败</string>
+    <string name="login_fail">蓝牙登入失败，重新发送登入请求？</string>
 
 </resources>

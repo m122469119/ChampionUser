@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
@@ -40,6 +41,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -99,11 +101,20 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private List<byte[]> mSportMoreDataList = new ArrayList<>();
     private int sportByteLength = 0;
     private HeartRateDialog heartDialog;
-    private String sportDate;
-    private String heartRateDate;
-    private boolean isLoginFail = false;
-    private boolean connectFile = false;
-    private ShakeSynchronizationDialog mShakeSynchronizationDialog;
+
+    private String sportDate = "";//运动数据时间
+    private String heartRateDate = "";//心率时间
+    private int sportSetp = 0;//运动步数
+    private String sportKcal = "";//运动kcal
+    private String sportDistance = "";//运动距离
+    private String mHeartRate = "";//心率
+
+    private boolean isLoginFail = false;//是否登录失败
+    private boolean connectFile = false;//是否连接失败
+    private ShakeSynchronizationDialog mShakeSynchronizationDialog;//摇一摇对话框
+    private boolean isSynchronization = false;//是否同步完成
+    private boolean isFirsSendSportData = true;//是否是第一次上传运动数据
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +124,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         getIntentData();
         mDealWithBlueTooth = new DealWithBlueTooth(this);
         setTitle(getString(R.string.title_every_day_sport));
-        setSynchronizationSate(false,"",0);
+        setSynchronizationSate(false, "", 0);
         setTodayDataView();
         setTotalDataView();
         setViewOnClickListener();
@@ -330,7 +341,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 Log.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 Log.i(TAG, "连接失败");
-                setSynchronizationSate(true,getString(R.string.connect_fial),ResourceUtils.getColor(R.color.c4A90E2));
+                setSynchronizationSate(true, getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
                 sendConnect();
             }
         }
@@ -413,9 +424,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         if (writecharacteristic != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getSportSynchronizationBytes());
         }
-//        if (readcharacteristic != null) {
-//            mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
-//        }
     }
 
     /**
@@ -511,7 +519,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     /**
      * 登录成功
      */
-    private void loginSuccess(){
+    private void loginSuccess() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -519,12 +527,15 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             }
         });
         //设置状态
-        setSynchronizationSate(true,getString(R.string.synchronization_ing),ResourceUtils.getColor(R.color.c4A90E2));
+        setSynchronizationSate(true, getString(R.string.synchronization_ing), ResourceUtils.getColor(R.color.c4A90E2));
+        isSynchronization = false;
         sendSportDataSynchronization();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                
+                if (!isSynchronization) {
+                    setSynchronizationSate(true, getString(R.string.synchronization_fial), ResourceUtils.getColor(R.color.red));
+                }
             }
         }, 30000);
     }
@@ -532,7 +543,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
 
     private void showLoginFail() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage("蓝牙登入失败，重新发送登入请求？");
+        builder.setMessage(getString(R.string.login_fail));
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -548,13 +559,13 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      *
      * @param heartRate 测量的心率数
      */
-    private void setHeartRate(final int heartRate) {
+    private void setHeartRate(final String heartRate) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                sendSportDataRequest("", "", "", heartRate + "", heartRateDate);
+                sendSportDataRequest("", "", "", heartRate, heartRateDate);
                 dismissHeartRateDialog();
-                mTodayAverageHeartRateTextView.setText(heartRate + "");
+                mTodayAverageHeartRateTextView.setText(heartRate);
             }
         });
     }
@@ -596,6 +607,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         if (mSportMoreDataList.size() > 0) {
             LogUtils.i(TAG, "多包数据返回命令 ==" + (mSportMoreDataList.get(0)[1] & 0xff));
             if ((mSportMoreDataList.get(0)[1] & 0xff) == 0x21) {//运动数据
+                isSynchronization = true;
                 doSportData();
             } else if ((mSportMoreDataList.get(0)[1] & 0xff) == 0x27) {//心率多包数据
                 doMorePackageHeartRate();
@@ -610,9 +622,10 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void doOnePackageHeartRate(byte[] data) {
         heartRateDate = BlueToothBytesToStringUtil.getSportDate(data);//获取运动时间
-        int heartRate = (data[10] & 0xff);
-        LogUtils.i(TAG, "单包心率值 == " + heartRate);
-        setHeartRate(heartRate);
+        int rate = (data[10] & 0xff);
+        mHeartRate = rate + "";
+        LogUtils.i(TAG, "单包心率值 == " + mHeartRate);
+        setHeartRate(mHeartRate);
     }
 
     /**
@@ -636,7 +649,8 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             byte[] heartRateBytes = heartRateList.get(heartRateList.size() - 1);
             int heartRate = BlueToothBytesToStringUtil.getHeartRate(heartRateBytes);
             LogUtils.i(TAG, "多包心率值中最后一组值 == " + heartRate);
-            setHeartRate(heartRate);
+            mHeartRate = heartRate + "";
+            setHeartRate(mHeartRate);
         }
     }
 
@@ -655,14 +669,20 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             }
         }
         Log.i(TAG, "多包运动数据长度 == ***** " + sportbyts.length);
-        sportDate = BlueToothBytesToStringUtil.getSportDate(sportbyts);//获取运动时间
+        String date = BlueToothBytesToStringUtil.getSportDate(sportbyts);//获取运动时间
+        sportDate = date;
         List<byte[]> sportDataList = BlueToothBytesToStringUtil.getSportDataList(sportbyts);
         if (sportDataList != null && sportDataList.size() > 0) {
             byte[] newSportBytes = sportDataList.get(sportDataList.size() - 1);
             final int step = BlueToothBytesToStringUtil.getSportStep(newSportBytes);
             final String kcal = BlueToothBytesToStringUtil.getSportKcal(newSportBytes);
             final String distance = BlueToothBytesToStringUtil.getSportDistance(newSportBytes);
-            sendSportDataRequest(step + "", kcal, distance, "", sportDate);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dosendSportData(step, kcal, distance);
+                }
+            }, 60000);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -672,9 +692,39 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     mTodayDistanceTextView.setText(distance + "");
                 }
             });
-            setSynchronizationSate(true,getString(R.string.synchongrozation_finish),ResourceUtils.getColor(R.color.c4A90E2));
+            setSynchronizationSate(true, getString(R.string.synchongrozation_finish), ResourceUtils.getColor(R.color.c4A90E2));
             if (isHistory) {
                 respondSportData();
+            }
+        }
+    }
+
+    /**
+     * 处理并上报运动数据
+     *
+     * @param step
+     * @param kcal
+     * @param distance
+     */
+    private void dosendSportData(int step, String kcal, String distance) {
+        if (isFirsSendSportData) {//是否是第一次上包运动数据
+            isFirsSendSportData = false;
+            sportSetp = step;
+            sportKcal = kcal;
+            sportDistance = distance;
+            sendSportDataRequest(sportSetp + "", sportKcal, sportDistance, "", sportDate);
+        } else {
+            if (sportSetp != 0 && sportSetp != step) {
+                sportSetp = step;
+                sendSportDataRequest(sportSetp + "", "", "", "", sportDate);
+            }
+            if (!StringUtils.isEmpty(sportKcal) && Double.parseDouble(sportKcal) != Double.parseDouble(kcal)) {
+                sportKcal = kcal;
+                sendSportDataRequest("", sportKcal, "", "", sportDate);
+            }
+            if (!StringUtils.isEmpty(sportDistance) && Double.parseDouble(sportDistance) != Double.parseDouble(distance)) {
+                sportDistance = distance;
+                sendSportDataRequest("", "", "", sportDistance, sportDate);
             }
         }
     }
@@ -839,7 +889,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         if (mShakeSynchronizationDialog != null) {
             mShakeSynchronizationDialog.dismiss();
         }
-        setSynchronizationSate(false,"",0);
+        setSynchronizationSate(false, "", 0);
     }
 
     @Override
@@ -850,6 +900,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
+        sendSportDataRequest(sportSetp + "", sportKcal, sportDistance, mHeartRate + "", sportDate);
         sendCloseSynchronization();
         sendDisconnectBlueTooth();
     }
@@ -861,11 +912,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         if (writecharacteristic != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getHeartRateSynchronizationBytes());
         }
-//        if (readcharacteristic != null) {
-//            mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
-//        }
     }
-
 
     /**
      * 发送关闭蓝牙命令
@@ -884,4 +931,5 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getCloseSynchronizationBytes());
         }
     }
+
 }
