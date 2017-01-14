@@ -87,9 +87,9 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
                 mGymDistanceTextView.setText(object.getDistance());
             }
 
-            if(!StringUtils.isEmpty(object.getOpenTime()) && !StringUtils.isEmpty(object.getCloseTime())) {
+            if(!StringUtils.isEmpty(object.getGymTime())) {
                 mOperatingTimeTextView.setVisibility(View.VISIBLE);
-                mOperatingTimeTextView.setText(getOperatingTime(object.getOpenTime(), object.getCloseTime()));
+                mOperatingTimeTextView.setText(object.getGymTime());
             } else {
                 mOperatingTimeTextView.setText("");
                 mOperatingTimeTextView.setVisibility(View.INVISIBLE);
@@ -113,57 +113,4 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
             }
         }
     };
-
-    private String getOperatingTime(String openTime, String closeTime) {
-        StringBuilder sb = getStringBuilder();
-        try {
-            if (isAllDay(openTime, closeTime)) {
-                sb.append("24小时");
-            } else {
-                sb.append(getAmPm(openTime));
-                sb.append(" - ");
-                sb.append(getAmPm(closeTime));
-            }
-        } catch (Exception e) {
-        }
-        return sb.toString();
-    }
-
-    public boolean isAllDay(String openTime, String closeTime) {
-        try {
-            Date openDate = getSimpleDateFormat().parse(openTime);
-            Date closeDate = getSimpleDateFormat().parse(closeTime);
-            long diff = closeDate.getTime() - openDate.getTime();
-            return diff > (23 * 60 + 30) * 60 * 1000; //大于12:30 营业
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
-    public String getAmPm(String hour) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(getSimpleDateFormat().parse(hour));
-            int h = calendar.get(Calendar.HOUR_OF_DAY);
-            return calendar.get(Calendar.AM_PM) == Calendar.AM ? h + "AM" :  h + "PM";
-        } catch (ParseException e) {}
-        return "";
-    }
-
-    private StringBuilder getStringBuilder() {
-        if(sb == null) {
-            sb = new StringBuilder();
-        }
-        sb.setLength(0);
-        return sb;
-    }
-
-    private SimpleDateFormat getSimpleDateFormat() {
-        if(sdf == null) {
-            sdf = new SimpleDateFormat("HH:mm");
-        }
-        return sdf;
-    }
-
-
 }

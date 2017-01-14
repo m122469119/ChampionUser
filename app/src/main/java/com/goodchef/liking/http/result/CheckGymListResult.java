@@ -69,10 +69,8 @@ public class CheckGymListResult extends BaseResult {
             private double latitude;
             @SerializedName("img")
             private String img;
-            @SerializedName("open_time")
-            private String openTime;
-            @SerializedName("close_time")
-            private String closeTime;
+            @SerializedName("gym_time")
+            private String gymTime;
             @SerializedName("distance")
             private String distance;
 
@@ -161,20 +159,12 @@ public class CheckGymListResult extends BaseResult {
                 this.islocation = islocation;
             }
 
-            public String getOpenTime() {
-                return openTime;
+            public String getGymTime() {
+                return gymTime;
             }
 
-            public void setOpenTime(String openTime) {
-                this.openTime = openTime;
-            }
-
-            public String getCloseTime() {
-                return closeTime;
-            }
-
-            public void setCloseTime(String closeTime) {
-                this.closeTime = closeTime;
+            public void setGymTime(String gymTime) {
+                this.gymTime = gymTime;
             }
         }
 
