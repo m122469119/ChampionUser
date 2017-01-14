@@ -1,6 +1,7 @@
 package com.goodchef.liking.utils;
 
 import android.content.Context;
+import android.support.v4.util.ArrayMap;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -212,6 +213,20 @@ public class CityUtils {
             cityList = data.getRegions();
         }
         return cityList;
+    }
+
+    public static ArrayMap<String, City.RegionsData.CitiesData> getLocalCityMap(Context context) {
+        //城市code 以及下面地方放在map中
+        ArrayMap<String, City.RegionsData.CitiesData> citiesMap = new ArrayMap<>();
+        for (City.RegionsData crd: getLocalCityList(context)) {
+            List<City.RegionsData.CitiesData> cities = crd.getCities();
+            if(cities != null) {
+                for (City.RegionsData.CitiesData citi: cities) {
+                    citiesMap.put(citi.getCityCode(), citi);
+                }
+            }
+        }
+        return citiesMap;
     }
 
 }

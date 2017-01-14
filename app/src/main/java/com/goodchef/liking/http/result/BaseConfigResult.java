@@ -36,6 +36,8 @@ public class BaseConfigResult extends BaseResult {
         private String countSecond;
         @SerializedName("api_version")
         private String apiVersion;
+        @SerializedName("open_city")
+        private List<String> openCity;
         @SerializedName("citys")
         private List<CityData> cityList;
         @SerializedName("patch")
@@ -129,6 +131,14 @@ public class BaseConfigResult extends BaseResult {
 
         public void setWechat(String wechat) {
             this.wechat = wechat;
+        }
+
+        public List<String> getOpenCity() {
+            return openCity;
+        }
+
+        public void setOpenCity(List<String> openCity) {
+            this.openCity = openCity;
         }
 
         public static class UpdateData extends BaseData {

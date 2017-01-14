@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.util.ArrayMap;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
@@ -14,6 +15,7 @@ import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
+import com.aaron.android.framework.library.thread.TaskScheduler;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
@@ -40,10 +42,15 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
+import com.goodchef.liking.http.result.data.City;
+import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.CityUtils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -189,13 +196,15 @@ public class LiKingVerifyUtils {
             }
 
             @Override
-            public void onSuccess(BaseConfigResult result) {
+            public void onSuccess(final BaseConfigResult result) {
                 if (isValid(context, result)) {
                     sBaseConfigResult = result;
                     BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
                     if (baseConfigData != null) {
                         UrlList.HOST_VERSION = File.separator + baseConfigData.getApiVersion();
                     }
+                    //解析已开通城市
+                    loadOpenCitysInfo(context);
                     Preference.setBaseConfig(result);
                     EventBus.getDefault().post(new InitApiFinishedMessage(true));
                 } else {
@@ -211,6 +220,51 @@ public class LiKingVerifyUtils {
                 mBaseConfigInitSuccess = false;
                 sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
                 EventBus.getDefault().post(new InitApiFinishedMessage(false));
+            }
+        });
+    }
+
+    /**
+     * 加载以开放城市信息
+     */
+    public static void loadOpenCitysInfo(final Context context) {
+        TaskScheduler.execute(new Runnable() {
+            @Override
+            public void run() {
+                ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
+                List<CityData> cityList = new ArrayList<>();
+                List<String> openCityCodes = sBaseConfigResult.getBaseConfigData().getOpenCity();
+                for (String cityCode: openCityCodes) {
+                    CityData cityData = null;
+                    City.RegionsData.CitiesData crc = citiesMap.get(cityCode);
+                    try {
+                        if(crc != null) {
+                            //城市
+                            cityData = new CityData();
+                            cityData.setCityId(Integer.valueOf(crc.getCityId()));
+                            cityData.setCityName(crc.getCityName());
+                            List<CityData.DistrictData> districtAll = new ArrayList<>();
+                            cityData.setDistrict(districtAll);
+
+                            //地方
+                            List<City.RegionsData.CitiesData.DistrictsData> districts = crc.getDistricts();
+                            if(districts != null) {
+                                for (City.RegionsData.CitiesData.DistrictsData district:districts) {
+                                    CityData.DistrictData districtData = new CityData.DistrictData();
+                                    districtData.setDistrictId(Integer.parseInt(district.getDistrictId()));
+                                    districtData.setDistrictName(district.getDistrictName());
+                                    districtAll.add(districtData);
+                                }
+                            }
+                        }
+                    }catch (Exception e) {}
+
+                    if(cityData !=null) {
+                        cityList.add(cityData);
+                    }
+                }
+                sBaseConfigResult.getBaseConfigData().setCityList(cityList);
+                Preference.setBaseConfig(sBaseConfigResult);
             }
         });
     }
