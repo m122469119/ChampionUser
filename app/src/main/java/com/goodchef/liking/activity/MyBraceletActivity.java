@@ -343,7 +343,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             if (characteristic.getValue() != null) {
                 System.out.println("收到通知:");
             }
-            Log.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
+            LogUtils.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
             byte[] data = characteristic.getValue();
             for (int i = 0; i < data.length; i++) {
                 Log.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
@@ -361,9 +361,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             System.out.println("--------write success----- status:" + status);
             if (status == BluetoothGatt.GATT_FAILURE) {
-                Log.i(TAG, "写入失败");
+                LogUtils.i(TAG, "写入失败");
             } else if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.i(TAG, "写入成功666666");
+                LogUtils.i(TAG, "写入成功666666");
             }
         }
     };
@@ -375,15 +375,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         if (data != null && data.length >= 3) {
             if ((data[1] & 0xff) == 0x33) {//绑定
                 if (data[4] == 0x00) {
-                    Log.i(TAG, "绑定成功");
+                    LogUtils.i(TAG, "绑定成功");
                 } else if (data[4] == 0x01) {
-                    Log.i(TAG, "绑定失败");
+                    LogUtils.i(TAG, "绑定失败");
                 }
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
-                    Log.i(TAG, "登录成功");
+                    LogUtils.i(TAG, "登录成功");
                 } else if (data[4] == 0x01) {
-                    Log.i(TAG, "登录失败");
+                    LogUtils.i(TAG, "登录失败");
                     if (!isLoginFail) {
                         isLoginFail = true;
                         runOnUiThread(new Runnable() {
@@ -396,16 +396,16 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 }
             } else if ((data[1] & 0xff) == 0x0D) {
                 if (data[4] == 0x00) {
-                    Log.i(TAG, "解绑成功");
+                    LogUtils.i(TAG, "解绑成功");
                 } else if (data[4] == 0x01) {
-                    Log.i(TAG, "解绑失败");
+                    LogUtils.i(TAG, "解绑失败");
                 }
             } else if ((data[1] & 0xff) == 0x09) {//电量
-                Log.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
+                LogUtils.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
                 mBraceletPower = (data[4] & 0xff);
                 setPowerView();
             } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
-                Log.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
+                LogUtils.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
             } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
                 getFirmwareInfo(data);
             }

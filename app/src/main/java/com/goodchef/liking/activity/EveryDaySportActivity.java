@@ -99,7 +99,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private String myBraceletMac;//我的手环Mac地址
     private String muuId;
     private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
-    Handler mHandler = new Handler();
+    private Handler mHandler = new Handler();
     private boolean isConnect = false;//是否连接
     public BluetoothGattCharacteristic writecharacteristic;
     public BluetoothGattCharacteristic readcharacteristic;
@@ -369,7 +369,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         @Override  //当连接上设备或者失去连接时会回调该函数
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
-                Log.i(TAG, "连接成功");
+                LogUtils.i(TAG, "连接成功");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -377,9 +377,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     }
                 });
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
-                Log.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
+                LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
-                Log.i(TAG, "连接失败");
+                LogUtils.i(TAG, "连接失败");
                 setSynchronizationSate(true, getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
                 sendConnect();
             }
@@ -389,7 +389,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {   //找到服务了
                 //在这里可以对服务进行解析，寻找到你需要的服务
-                Log.i(TAG, "service size = " + mDealWithBlueTooth.getSupportedGattServices().size() + "");
+                LogUtils.i(TAG, "service size = " + mDealWithBlueTooth.getSupportedGattServices().size() + "");
                 //  displayGattServices(getSupportedGattServices());
                 getBlueToothServices();
             } else {
@@ -416,10 +416,10 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             if (characteristic.getValue() != null) {
                 System.out.println("收到通知:");
             }
-            Log.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
+            LogUtils.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
             byte[] data = characteristic.getValue();
             for (int i = 0; i < data.length; i++) {
-                Log.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
+                LogUtils.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
             }
             readOnCharacteristicChangedData(data);
             System.out.println("--------onCharacteristicChanged-----");
@@ -434,9 +434,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             System.out.println("--------write success----- status:" + status);
             if (status == BluetoothGatt.GATT_FAILURE) {
-                Log.i(TAG, "写入失败");
+                LogUtils.i(TAG, "写入失败");
             } else if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.i(TAG, "写入成功666666");
+                LogUtils.i(TAG, "写入成功666666");
             }
         }
     };

@@ -279,5 +279,6 @@
     <string name="total_sport_number">总运动数</string>
     <string name="today_sport_number">今日数据</string>
     <string name="person_data">个人数据</string>
+    <string name="order_self_group">预约自助团体课</string>
 
 </resources>

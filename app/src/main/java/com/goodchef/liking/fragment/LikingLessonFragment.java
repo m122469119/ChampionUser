@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
@@ -78,9 +79,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private boolean isFirstMessage = false;
     private List<BannerResult.BannerData.Banner> bannerDataList = new ArrayList<>();
     private View mFooterView;
-    private LinearLayout mContentDataView;//有banner 没有课程数据
+    private LinearLayout mPreSaleView;//有banner 没有课程数据
+    private LinearLayout mNoContentData;
     private TextView mBuyCardTextView;
     private List<CoursesResult.Courses.CoursesData> list;
+    private String presale;
 
     @Override
     protected void requestData(int page) {
@@ -160,7 +163,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         mHeadInfiteLayout = (RelativeLayout) mHeadView.findViewById(R.id.layout_InfiniteViewPager);
         mImageViewPager = (InfiniteViewPager) mHeadView.findViewById(R.id.liking_home_head_viewpager);
         mIconPageIndicator = (IconPageIndicator) mHeadView.findViewById(R.id.liking_home_head_indicator);
-        mContentDataView = (LinearLayout) mHeadView.findViewById(R.id.layout_no_content);
+        mPreSaleView = (LinearLayout) mHeadView.findViewById(R.id.layout_no_content);
+        mNoContentData = (LinearLayout) mHeadView.findViewById(R.id.layout_no_data);
         mBuyCardTextView = (TextView) mHeadView.findViewById(R.id.buy_card_TextView);
         mSelfCoursesInView = (LinearLayout) mHeadView.findViewById(R.id.layout_self_courses_view);
         mSelfCoursesInView.setOnClickListener(goToSelfCoursesListener);
@@ -238,6 +242,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     public void updateCourseView(final CoursesResult.Courses courses) {
         if (courses.getGym() != null) {
             mGym = courses.getGym();
+            presale = mGym.getPresale();
             if (1 == mGym.getCanSchedule()) {//支持自助团体课
                 mSelfCoursesInView.setVisibility(View.VISIBLE);
             } else {
@@ -247,9 +252,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         }
         list = courses.getCoursesDataList();
         if (list != null && list.size() > 0) {
-            if (mContentDataView != null) {
-                mContentDataView.setVisibility(View.GONE);
-            }
+            setHeadPreSaleView(false, presale);
             updateListView(list);
         } else {
             setTotalPage(getCurrentPage());
@@ -257,19 +260,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                 clearContent();
                 if (bannerDataList != null && bannerDataList.size() > 0) {
                     setBannerData();
-                    if (mContentDataView != null) {
-                        if (mContentDataView.getVisibility() == View.GONE) {
-                            mContentDataView.setVisibility(View.VISIBLE);
-                        }
-                    }
+                    setHeadPreSaleView(true, presale);
                     mLikingLessonRecyclerAdapter.removeFooterView(mFooterView);
                 } else {
                     setNoDataView();
                 }
             } else {
-                if (mContentDataView != null) {
-                    mContentDataView.setVisibility(View.GONE);
-                }
+                setHeadPreSaleView(true, presale);
                 if (ListUtils.isEmpty(list)) {
                     mLikingLessonRecyclerAdapter.addFooterView(mFooterView);
                 } else {
@@ -279,6 +276,33 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                 mLikingLessonRecyclerAdapter.notifyDataSetChanged();
             }
 
+        }
+    }
+
+    /**
+     * 设置预售界面和无数据界面
+     *
+     * @param hasData
+     * @param presale
+     */
+    private void setHeadPreSaleView(boolean hasData, String presale) {
+        if (!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
+            if (mPreSaleView != null && mNoContentData != null) {
+                mPreSaleView.setVisibility(View.VISIBLE);
+                mNoContentData.setVisibility(View.GONE);
+            }
+        } else if (!StringUtils.isEmpty(presale) && "0".equals(presale)) {//没有预售
+            if (hasData) {
+                if (mPreSaleView != null && mNoContentData != null) {
+                    mPreSaleView.setVisibility(View.GONE);
+                    mNoContentData.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if (mPreSaleView != null && mNoContentData != null) {
+                    mPreSaleView.setVisibility(View.GONE);
+                    mNoContentData.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
@@ -308,14 +332,10 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             mImageViewPager.setCurrentItem(0);
             mImageViewPager.startAutoScroll();
             if (list != null && list.size() > 0) {
-                if (mContentDataView != null) {
-                    mContentDataView.setVisibility(View.GONE);
-                }
+                setHeadPreSaleView(false, presale);
             } else {
                 if (isRequestHomePage()) {
-                    if (mContentDataView != null) {
-                        mContentDataView.setVisibility(View.VISIBLE);
-                    }
+                    setHeadPreSaleView(false, presale);
                 }
             }
         } else {

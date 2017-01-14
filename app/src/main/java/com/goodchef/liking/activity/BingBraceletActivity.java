@@ -306,10 +306,10 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 Log.i(TAG, "连接成功");
                 mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
-                Log.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
+                LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
-                Log.i(TAG, "连接失败");
+                LogUtils.i(TAG, "连接失败");
             }
         }
 
@@ -317,11 +317,11 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {   //找到服务了
                 //在这里可以对服务进行解析，寻找到你需要的服务
-                Log.i(TAG, "service size = " + mDealWithBlueTooth.getSupportedGattServices().size() + "");
+                LogUtils.i(TAG, "service size = " + mDealWithBlueTooth.getSupportedGattServices().size() + "");
                 //  displayGattServices(getSupportedGattServices());
                 getBlueToothServices();
             } else {
-                Log.d(TAG, "onServicesDiscovered received: " + status);
+                LogUtils.d(TAG, "onServicesDiscovered received: " + status);
             }
         }
 
@@ -362,9 +362,9 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             System.out.println("--------write success----- status:" + status);
             if (status == BluetoothGatt.GATT_FAILURE) {
-                Log.i(TAG, "写入失败");
+                LogUtils.i(TAG, "写入失败");
             } else if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.i(TAG, "写入成功666666");
+                LogUtils.i(TAG, "写入成功666666");
             }
         }
     };

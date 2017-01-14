@@ -217,6 +217,8 @@ public class CoursesResult extends BaseResult {
             private String cityId;
             @SerializedName("can_schedule")
             private int canSchedule = -1;
+            @SerializedName("presale")
+            private String presale;
 
             public String getName() {
                 return name;
@@ -272,6 +274,14 @@ public class CoursesResult extends BaseResult {
 
             public void setCanSchedule(int canSchedule) {
                 this.canSchedule = canSchedule;
+            }
+
+            public String getPresale() {
+                return presale;
+            }
+
+            public void setPresale(String presale) {
+                this.presale = presale;
             }
         }
     }

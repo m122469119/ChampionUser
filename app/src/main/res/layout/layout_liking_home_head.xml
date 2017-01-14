@@ -58,7 +58,7 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="预约自助团体课"
+            android:text="@string/order_self_group"
             android:textColor="@color/white"
             android:textSize="15sp"/>
     </LinearLayout>
@@ -113,6 +113,37 @@
             android:text="@string/home_no_data_prompt"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="13sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_InfiniteViewPager"
+        android:background="@color/app_content_background"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:src="@drawable/icon_no_coureses_data"
+            android:scaleType="centerInside"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/no_data"
+            android:textColor="@color/add_minus_dishes_text"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
