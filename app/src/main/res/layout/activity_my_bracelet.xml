@@ -30,7 +30,6 @@
                 android:layout_below="@+id/my_bracelet_ImageView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/spacing_16dp"
-                android:text="绑定成功"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_medium"
                 android:visibility="visible"/>

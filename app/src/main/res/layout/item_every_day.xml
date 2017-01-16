@@ -56,9 +56,9 @@
         android:layout_marginBottom="@dimen/spacing_8dp"
         android:layout_marginRight="@dimen/spacing_8dp"
         android:layout_marginTop="@dimen/spacing_8dp"
-        android:layout_toLeftOf="@+id/every_day_data_content"
+        android:layout_alignParentRight="true"
         android:indeterminateBehavior="repeat"
         android:indeterminateDrawable="@drawable/shape_loding"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </RelativeLayout>

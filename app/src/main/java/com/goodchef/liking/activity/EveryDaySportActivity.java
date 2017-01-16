@@ -75,11 +75,17 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     RelativeLayout mTotalKcalLayout;
     @BindView(R.id.layout_today_total_average_heart_rate)
     RelativeLayout mTotalHeartRateLayout;
+    @BindView(R.id.synchronization_sate_TextView)
+    TextView mSynchronizationSateTextView;
 
     private TextView mTodayStepTextView;
+    private TextView mTodayStepUnitTextView;
     private TextView mTodayDistanceTextView;
+    private TextView mTodayDistanceUnitTextView;
     private TextView mTodayKcalTextView;
+    private TextView mTodayKcalUnitTextView;
     private TextView mTodayAverageHeartRateTextView;
+    private TextView mTodayAverageHeartRateUnitTextView;
 
     private ProgressBar mTodayStepProgressBar;
     private ProgressBar mTodayDistanceProgressBar;
@@ -91,9 +97,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private TextView mTotalKcalTextView;
     private TextView mTotalAverageHeartRateTextView;
     private ImageView mClikHeartRateImageView;
-
-    @BindView(R.id.synchronization_sate_TextView)
-    TextView mSynchronizationSateTextView;
 
     private SportPresenter mSportPresenter;
     private String myBraceletMac;//我的手环Mac地址
@@ -120,6 +123,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private ShakeSynchronizationDialog mShakeSynchronizationDialog;//摇一摇对话框
     private boolean isSynchronization = false;//是否同步完成
     private boolean isFirsSendSportData = true;//是否是第一次上传运动数据
+    private boolean ispause = false;
 
 
     @Override
@@ -141,7 +145,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        connect();
+        if (ispause) {
+            connect();
+        }
     }
 
     private void showProgressBar(boolean show) {
@@ -197,18 +203,22 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         switch (view.getId()) {
             case R.id.layout_today_step:
                 mTodayStepTextView = contentTextView;
+                mTodayStepUnitTextView = unitTextView;
                 mTodayStepProgressBar = mProgressBar;
                 break;
             case R.id.layout_today_distance:
                 mTodayDistanceTextView = contentTextView;
+                mTodayDistanceUnitTextView = unitTextView;
                 mTodayDistanceProgressBar = mProgressBar;
                 break;
             case R.id.layout_today_kcal:
                 mTodayKcalTextView = contentTextView;
+                mTodayKcalUnitTextView = unitTextView;
                 mTodayKcalProgressBar = mProgressBar;
                 break;
             case R.id.layout_average_heart_rate:
                 mTodayAverageHeartRateTextView = contentTextView;
+                mTodayAverageHeartRateUnitTextView = unitTextView;
                 mClikHeartRateImageView = imageView;
                 mTodayHeartRateProgressBar = mProgressBar;
                 break;
@@ -333,10 +343,37 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 }
             });
             isConnect = true;
+            setTodayRightView(false);
             showProgressBar(true);
             setSynchronizationSate(getString(R.string.connect_ing), ResourceUtils.getColor(R.color.c4A90E2));
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
+    }
+
+    /**
+     * 设置右边显示的文字和动画切换
+     */
+    private void setTodayRightView(boolean showUnit) {
+        if (showUnit) {
+            mTodayStepTextView.setVisibility(View.VISIBLE);
+            mTodayStepUnitTextView.setVisibility(View.VISIBLE);
+            mTodayDistanceTextView.setVisibility(View.VISIBLE);
+            mTodayDistanceUnitTextView.setVisibility(View.VISIBLE);
+            mTodayKcalTextView.setVisibility(View.VISIBLE);
+            mTodayKcalUnitTextView.setVisibility(View.VISIBLE);
+            mTodayAverageHeartRateTextView.setVisibility(View.VISIBLE);
+            mTodayAverageHeartRateUnitTextView.setVisibility(View.VISIBLE);
+        } else {
+            mTodayStepTextView.setVisibility(View.GONE);
+            mTodayStepUnitTextView.setVisibility(View.GONE);
+            mTodayDistanceTextView.setVisibility(View.GONE);
+            mTodayDistanceUnitTextView.setVisibility(View.GONE);
+            mTodayKcalTextView.setVisibility(View.GONE);
+            mTodayKcalUnitTextView.setVisibility(View.GONE);
+            mTodayAverageHeartRateTextView.setVisibility(View.GONE);
+            mTodayAverageHeartRateUnitTextView.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -364,6 +401,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private void sendConnect() {
         if (!connectFile) {
             connectFile = true;
+            setTodayRightView(false);
             showProgressBar(true);
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
@@ -375,16 +413,12 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 LogUtils.i(TAG, "连接成功");
                 setSynchronizationSate(getString(R.string.connect_success), ResourceUtils.getColor(R.color.c4A90E2));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showProgressBar(false);
-                    }
-                });
+                setConnectStateView();
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 LogUtils.i(TAG, "连接失败");
+                setConnectStateView();
                 setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
                 sendConnect();
             }
@@ -459,6 +493,19 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 }
             }
         }
+    }
+
+    /**
+     * 设置连接状态view，连接成功或者失败的view
+     */
+    private void setConnectStateView() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showProgressBar(false);
+                setTodayRightView(true);
+            }
+        });
     }
 
     /**
@@ -652,8 +699,10 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             LogUtils.i(TAG, "多包数据返回命令 ==" + (mSportMoreDataList.get(0)[1] & 0xff));
             if ((mSportMoreDataList.get(0)[1] & 0xff) == 0x21) {//运动数据
                 isSynchronization = true;
+                setConnectStateView();
                 doSportData();
             } else if ((mSportMoreDataList.get(0)[1] & 0xff) == 0x27) {//心率多包数据
+                setConnectStateView();
                 doMorePackageHeartRate();
             }
         }
@@ -848,6 +897,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void setTodayData(SportDataResult.SportData.TodayData todayData) {
         showProgressBar(false);
+        setTodayRightView(true);
         String todayStepNum = todayData.getStepNum();
         String todayDistance = todayData.getDistance();
         String todayKacl = todayData.getKcal();
@@ -976,6 +1026,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
+        ispause = true;
         isConnect = false;
         sendSportDataRequest(sportSetp + "", sportKcal, sportDistance, mHeartRate + "", sportDate);
         sendCloseSynchronization();

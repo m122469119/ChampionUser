@@ -107,7 +107,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         } else {
             searchBlueTooth();
             mUnbindTextView.setVisibility(View.GONE);
-            setOnSynchronizationView();
+            mMyBraceletImageView.setBackgroundResource(R.drawable.icon_my_blue_tooth);
+            mMyBraceletTextView.setText(R.string.connect_bluetooth_ing);
         }
         setViewOnClickListener();
     }
@@ -298,11 +299,13 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         }
     }
 
+
     private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override  //当连接上设备或者失去连接时会回调该函数
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 Log.i(TAG, "连接成功");
+                setConnectSuccessView();
                 mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
@@ -414,6 +417,18 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     }
 
     /**
+     * 连接成功
+     */
+    private void setConnectSuccessView() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMyBraceletTextView.setText(R.string.connect_success);
+            }
+        });
+    }
+
+    /**
      * 设置电量view
      */
     private void setPowerView() {
@@ -423,7 +438,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 @Override
                 public void run() {
                     mUnbindTextView.setVisibility(View.VISIBLE);
-                    setSynchronizationSuccessView(1000);
                     initData();
                     setSynchronizationPowerView(2000);
                     if (Preference.getFirstBindBracelet()) {

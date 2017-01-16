@@ -561,7 +561,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         Preference.setUserPhone(NULL_STRING);
         Preference.setIsNewUser(null);
         Preference.setUserIconUrl(NULL_STRING);
+        Preference.setIsBind("0");
         PopupUtils.showToast("退出成功");
+        setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
+        setHeadPersonData();
         setLogonView();
         clearExerciseData();
         postEvent(new LoginOutMessage());
