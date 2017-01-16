@@ -118,26 +118,26 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
         String city = mCityTextView.getText().toString().trim();
 
         if (StringUtils.isEmpty(name)) {
-            PopupUtils.showToast("姓名不能为空");
+            PopupUtils.showToast(getString(R.string.name_not_blank));
             mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
             return;
         } else if (name.length() > 15) {
-            PopupUtils.showToast("姓名不能超过15个字");
+            PopupUtils.showToast(getString(R.string.name_length_surpass_15));
             mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
             return;
         }
         if (StringUtils.isEmpty(phone)) {
-            PopupUtils.showToast("手机号不能为空");
+            PopupUtils.showToast(getString(R.string.phone_not_blank));
             mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
             return;
         }
         if (!RegularUtils.isMobileExact(phone)) {
-            PopupUtils.showToast("手机号码输入不正确");
+            PopupUtils.showToast(getString(R.string.phone_input_error));
             mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
             return;
         }
         if (StringUtils.isEmpty(city)) {
-            PopupUtils.showToast("城市不能为空");
+            PopupUtils.showToast(getString(R.string.city_not_blank));
             return;
         }
 
@@ -149,7 +149,7 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
 
     @Override
     public void updateContactJoinView() {
-        PopupUtils.showToast("提交成功,请等待工作人员与您联系");
+        PopupUtils.showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
         mNameEditText.setText("");
         mPhoneEditText.setText("");
         mCityTextView.setText("");

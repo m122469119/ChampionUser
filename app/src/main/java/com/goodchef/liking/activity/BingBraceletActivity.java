@@ -10,10 +10,9 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +29,11 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DeviceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.adapter.BlueToothAdapter;
+import com.goodchef.liking.bluetooth.BlueDataUtil;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.BindDevicesPresenter;
 import com.goodchef.liking.mvp.view.BindDevicesView;
-import com.goodchef.liking.bluetooth.BlueDataUtil;
 import com.goodchef.liking.widgets.RoundImageView;
 import com.goodchef.liking.widgets.WhewView;
 
@@ -66,12 +64,16 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     TextView mClickSearchTextView;
     @BindView(R.id.layout_blue_tooth_bracelet)
     LinearLayout mLayoutBlueToothBracelet;
-    @BindView(R.id.blue_booth_RecyclerView)
-    RecyclerView mBlueBoothRecyclerView;
     @BindView(R.id.open_blue_tooth_TextView)
     TextView mOpenBlueToothTextView;
     @BindView(R.id.layout_blue_open_state)
     RelativeLayout mLayoutBlueOpenState;
+    @BindView(R.id.blue_tooth_name_TextView)
+    TextView mBlueToothNameTextView;
+    @BindView(R.id.connect_blue_tooth_TextView)
+    TextView mConnectBlueToothTextView;
+    @BindView(R.id.layout_blue_booth)
+    RelativeLayout mLayoutBlueBooth;
 
 
     private BindDevicesPresenter mBindDevicesPresenter;
@@ -80,7 +82,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private String mFirmwareInfo;//固件版本信息
     private int mBraceletPower;//电量
     private boolean isSendRequest = false;//是否发送过请求
-    private BlueToothAdapter mAdapter;//蓝牙适配器
+    private BluetoothDevice mBluetoothDevice;
 
     private String myBraceletMac;//我的手环地址
     private String muuId;//UUID
@@ -91,6 +93,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private int mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
     private BluetoothGattCharacteristic writecharacteristic;
     private BluetoothGattCharacteristic readcharacteristic;
+    private boolean isLoginSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,31 +108,20 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         setRightIcon(R.drawable.icon_blue_tooth_help, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(BlueToothHelpActivity.class);
+                 startActivity(BlueToothHelpActivity.class);
             }
         });
         setViewOnClickListener();
         mLayoutBlueToothBracelet.setVisibility(View.VISIBLE);
-        mBlueBoothRecyclerView.setVisibility(View.GONE);
-        initBlueToothRecycleView();
+        mLayoutBlueBooth.setVisibility(View.GONE);
         mDealWithBlueTooth = new DealWithBlueTooth(this);
         initBlueTooth();
     }
 
-
-    private void initBlueToothRecycleView() {
-        mBlueBoothRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        if (mAdapter == null) {
-            mAdapter = new BlueToothAdapter(this);
-        }
-        mBlueBoothRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnClickListenr(mConnectListener);
-    }
-
-
     private void setViewOnClickListener() {
         mBlueToothRoundImageView.setOnClickListener(this);
         mOpenBlueToothTextView.setOnClickListener(this);
+        mConnectBlueToothTextView.setOnClickListener(this);
     }
 
     /**
@@ -166,22 +158,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
 
 
     /**
-     * 连接蓝牙
-     */
-    private View.OnClickListener mConnectListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            BluetoothDevice device = (BluetoothDevice) v.getTag();
-            if (device != null && !StringUtils.isEmpty(device.getAddress())) {
-                mBindDevicesName = device.getName();
-                mBindDevicesAddress = device.getAddress();
-                mDealWithBlueTooth.connect(device.getAddress(), mGattCallback);
-                mConnectionState = DealWithBlueTooth.STATE_CONNECTING;
-            }
-        }
-    };
-
-    /**
      * 展示蓝牙提示
      */
     private void showPromptDialog() {
@@ -191,7 +167,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
         builder.setCustomView(view);
         titleTextView.setText(R.string.notice_prompt);
-        contentTextView.setText(R.string.send_brancelet_bing_prompt);
+        contentTextView.setText(getString(R.string.send_brancelet_bing_prompt_left) + "\n" + getString(R.string.send_brancelet_bing_prompt_middle) + "\n" + getString(R.string.send_brancelet_bing_prompt_right));
         builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -211,12 +187,29 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v == mBlueToothRoundImageView) {
-            mBlueBoothRecyclerView.setVisibility(View.VISIBLE);
+            mLayoutBlueBooth.setVisibility(View.VISIBLE);
             mLayoutBlueToothBracelet.setVisibility(View.GONE);
             mLayoutBlueOpenState.setVisibility(View.GONE);
             searchBlueTooth();
         } else if (v == mOpenBlueToothTextView) {
             openBluetooth();
+        } else if (v == mConnectBlueToothTextView) {//连接蓝牙
+            mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
+            connectBlueTooth();
+        }
+    }
+
+    /**
+     * 连接蓝牙
+     */
+    private void connectBlueTooth() {
+        mBlueToothWhewView.stop();
+        mClickSearchTextView.setVisibility(View.VISIBLE);
+        if (mBluetoothDevice != null && !StringUtils.isEmpty(mBluetoothDevice.getAddress())) {
+            mBindDevicesName = mBluetoothDevice.getName();
+            mBindDevicesAddress = mBluetoothDevice.getAddress();
+            mDealWithBlueTooth.connect(mBluetoothDevice.getAddress(), mGattCallback);
+            mConnectionState = DealWithBlueTooth.STATE_CONNECTING;
         }
     }
 
@@ -238,29 +231,32 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             mBlueToothWhewView.start();
             mClickSearchTextView.setVisibility(View.GONE);
             mDealWithBlueTooth.sendHandleMessage();
-            mAdapter.setData(mBluetoothDeviceList);
             scanLeDevice(true);
         }
     }
+
 
     public void scanLeDevice(final boolean enable) {
         if (enable) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mDealWithBlueTooth.stopLeScan(mLeScanCallback);
-                    mBlueToothWhewView.stop();
-                    mClickSearchTextView.setVisibility(View.VISIBLE);
-                    // setBlueToothDevicesList();
+                    stopLeScanView();
                 }
-            }, 10000); //10秒后停止搜索
+            }, 450000); //10秒后停止搜索
             UUID[] uuids = new UUID[1];
             UUID uuid = UUID.fromString("0000FEA0-0000-1000-8000-00805f9b34fb");
             uuids[0] = uuid;
             mDealWithBlueTooth.startLeScan(mLeScanCallback);
         } else {
-            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
+            stopLeScanView();
         }
+    }
+
+    private void stopLeScanView() {
+        mBlueToothWhewView.stop();
+        mClickSearchTextView.setVisibility(View.VISIBLE);
+        mDealWithBlueTooth.stopLeScan(mLeScanCallback);
     }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -295,8 +291,12 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             System.out.println("Key = " + key + ", name = " + value.getName() + "address = " + value.getAddress());
             mBluetoothDeviceList.add(value);
         }
-        mAdapter.setData(mBluetoothDeviceList);
-        mAdapter.notifyDataSetChanged();
+
+        if (mBluetoothDeviceList != null && mBluetoothDeviceList.size() > 0) {
+            mBluetoothDevice = mBluetoothDeviceList.get(0);
+            mBlueToothNameTextView.setText(mBluetoothDevice.getName());
+            mConnectBlueToothTextView.setText(R.string.connect_blue_tooth);
+        }
     }
 
     private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
@@ -375,7 +375,8 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             writecharacteristic = service.getCharacteristic(mDealWithBlueTooth.TX_UUID);
             readcharacteristic = service.getCharacteristic(mDealWithBlueTooth.RX_UUID);
             if (writecharacteristic != null) {
-                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getBindBytes());
+                byte[] uuId = muuId.getBytes();
+                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getBindBytes(uuId));
                 if (readcharacteristic != null) {
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
                 }
@@ -400,6 +401,8 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
                     LogUtils.i(TAG, "登录成功");
+                    isLoginSuccess = true;
+                    sendBindDeviceRequest();
                 } else if (data[4] == 0x01) {
                     LogUtils.i(TAG, "登录失败");
                 }
@@ -412,10 +415,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             } else if ((data[1] & 0xff) == 0x09) {//电量
                 LogUtils.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
                 mBraceletPower = (data[4] & 0xff);
-                if (!isSendRequest) {
-                    isSendRequest = true;
-                    sendDevicesRequest();
-                }
             } else if ((data[1] & 0xff) == 0x27) {
                 LogUtils.i(TAG, "心率 == " + (data[4] & 0xff));
             } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
@@ -424,6 +423,13 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 getFirmwareInfo(data);
             }
 
+        }
+    }
+
+    private void sendBindDeviceRequest() {
+        if (isLoginSuccess && !isSendRequest) {
+            isSendRequest = true;
+            sendDevicesRequest();
         }
     }
 
@@ -462,8 +468,8 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         if (mBindDevicesPresenter == null) {
             mBindDevicesPresenter = new BindDevicesPresenter(this, this);
         }
-        String osName = android.os.Build.MODEL;
-        String osVersion = android.os.Build.VERSION.RELEASE;
+        String osName = Build.MODEL;
+        String osVersion = Build.VERSION.RELEASE;
         mBindDevicesPresenter.bindDevices(mBindDevicesName, mFirmwareInfo, SecurityUtils.MD5.get16MD5String(DeviceUtils.getDeviceInfo(BaseApplication.getInstance())), "android", osName, osVersion);
     }
 
@@ -487,6 +493,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     @Override
     protected void onPause() {
         super.onPause();
+        mDealWithBlueTooth.stopLeScan(mLeScanCallback);
         mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
     }
 }

@@ -133,4 +133,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_blue_booth"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/blue_tooth_name_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_12dp"
+            android:textSize="@dimen/textsize_15"/>
+
+        <TextView
+            android:id="@+id/connect_blue_tooth_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/spacing_12dp"
+            android:textColor="@color/c4A90E2"
+            android:textSize="@dimen/textsize_15"/>
+
+    </RelativeLayout>
 </LinearLayout>

@@ -257,7 +257,6 @@
     <string name="synchongrozation_finish">同步完成</string>
     <string name="connect_ing">连接中...</string>
     <string name="title_every_day_sport">手环数据</string>
-    <string name="send_brancelet_bing_prompt">只有二代手环用户才能绑定哟~</string>
     <string name="synchronization_ing">同步中...</string>
     <string name="prompt_check_blue_tooth_data">您成功开启了手环数据功能</string>
     <string name="prompt_check_blue_tooth_data_send">快去我的信息界面查看数据吧！</string>
@@ -280,5 +279,31 @@
     <string name="today_sport_number">今日数据</string>
     <string name="person_data">个人数据</string>
     <string name="order_self_group">预约自助团体课</string>
+    <string name="confrim_call_business">确定联系商务人员吗？</string>
+    <string name="about_version">"版本: "</string>
+    <string name="confrim_call_customer_service">确定联系客服吗？</string>
+    <string name="area_address_left">地点：</string>
+    <string name="name_not_blank">姓名不能为空</string>
+    <string name="name_length_surpass_15">姓名不能超过15个字</string>
+    <string name="phone_not_blank">手机号不能为空</string>
+    <string name="phone_input_error">手机号码输入不正确</string>
+    <string name="city_not_blank">城市不能为空,请选择！</string>
+    <string name="submit_success_and_waiting_we_can_call_you">提交成功,请等待工作人员与您联系</string>
+    <string name="history">历史</string>
+    <string name="test_time">测试时间：</string>
+    <string name="please_select_pay_type">请选择支付方式</string>
+    <string name="terrace_member_agreement">平台会员协议</string>
+    <string name="yuan">" 元"</string>
+    <string name="buy">购买</string>
+    <string name="go_on_buy">续</string>
+    <string name="upgrade">升级</string>
+    <string name="title_change_gym">切换场馆</string>
+    <string name="send_brancelet_bing_prompt_left">只有二代手环用户</string>
+    <string name="send_brancelet_bing_prompt_middle">Android4.3版本及蓝牙4.0以上的设备</string>
+    <string name="send_brancelet_bing_prompt_right">才能绑定哟~</string>
+    <string name="title_my_bracelet">我的手环</string>
+    <string name="connect_blue_tooth">连接</string>
+    <string name="connect_bluetooth_ing">连接中...</string>
+    <string name="connect_success">连接成功</string>
 
 </resources>

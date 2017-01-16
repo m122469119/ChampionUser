@@ -65,7 +65,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
             public void onClick(View v) {
                 String phone = Preference.getCustomerServicePhone();
                 if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(ArenaActivity.this, "确定联系客服吗？", phone);
+                    LikingCallUtil.showCallDialog(ArenaActivity.this, getString(R.string.confrim_call_customer_service), phone);
                 }
             }
         });
@@ -124,7 +124,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
     @Override
     public void updateGymDetailsView(GymDetailsResult.GymDetailsData gymDetailsData) {
         setTitle(gymDetailsData.getName());
-        mAddressTextView.setText("地点：" + gymDetailsData.getAddress());
+        mAddressTextView.setText(getString(R.string.area_address_left) + gymDetailsData.getAddress());
         announcement = gymDetailsData.getAnnouncement().trim();
         mAnnouncementLayout.setVisibility(View.GONE);
 

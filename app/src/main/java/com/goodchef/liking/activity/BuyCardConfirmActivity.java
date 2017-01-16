@@ -208,7 +208,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         } else if (v == mImmediatelyBuyBtn) {
             if (Preference.isLogin()) {
                 if (payType.equals("-1")) {
-                    PopupUtils.showToast("请选择支付方式");
+                    PopupUtils.showToast(getString(R.string.please_select_pay_type));
                     return;
                 }
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
@@ -224,7 +224,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 if (baseConfigData != null) {
                     String serviceUrl = baseConfigData.getServiceUrl();
                     if (!StringUtils.isEmpty(serviceUrl)) {
-                        HDefaultWebActivity.launch(this, serviceUrl, "平台会员协议");
+                        HDefaultWebActivity.launch(this, serviceUrl, getString(R.string.terrace_member_agreement));
                     }
                 }
             }
@@ -281,7 +281,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         double minAmount = Double.parseDouble(minAmountStr);
         double price = Double.parseDouble(cardPrice);
         if (price >= minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
-            mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
+            mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
             if (price >= couponAmount) {
                 //订单的价格大于优惠券的面额
                 double amount = price - couponAmount;
@@ -305,11 +305,11 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             int type = confirmBuyCardData.getPurchaseType();
             explain = confirmBuyCardData.getTips();
             if (type == BUY_TYPE_BUY) {
-                setTitle("购买" + mCardName);
+                setTitle(getString(R.string.buy) + mCardName);
             } else if (type == BUY_TYPE_CONTINUE) {
-                setTitle("续" + mCardName);
+                setTitle(getString(R.string.go_on_buy) + mCardName);
             } else if (type == BUY_TYPE_UPGRADE) {
-                setTitle("升级" + mCardName);
+                setTitle(getString(R.string.upgrade) + mCardName);
             }
 
             mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
@@ -336,7 +336,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     public void updateSubmitPayView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast("支付成功");
+            PopupUtils.showToast(getString(R.string.pay_success));
             jumpOrderActivity();
         } else {
             handlePay(payResultData);

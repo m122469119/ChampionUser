@@ -18,6 +18,6 @@ public class BlueToothHelpActivity extends AppBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blue_tooth_help);
-        setTitle("绑定手环");
+        setTitle(getString(R.string.title_bing_bracelet));
     }
 }

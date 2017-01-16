@@ -52,7 +52,7 @@ public class BlueToothAdapter extends BaseRecycleViewAdapter<BlueToothAdapter.Bl
 
         @Override
         public void bindViews(BluetoothDevice object) {
-            mBlueToothNameTextView.setText(object.getName() + " mac：" + object.getAddress());
+            mBlueToothNameTextView.setText(object.getName());
             if (mOnClickListener != null) {
                 mConnectBlueToothTextView.setOnClickListener(mOnClickListener);
                 mConnectBlueToothTextView.setTag(object);

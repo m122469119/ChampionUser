@@ -40,7 +40,7 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
     }
 
     private void initData() {
-        mVersionNumberTextView.setText("版本: " + EnvironmentUtils.Config.getAppVersionName());
+        mVersionNumberTextView.setText(getString(R.string.about_version) + EnvironmentUtils.Config.getAppVersionName());
         String phone = Preference.getBusinessServicePhone();
         if (!StringUtils.isEmpty(phone)) {
             mCooperatePhoneTextView.setText(phone);
@@ -59,7 +59,7 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
         if (v == mCooperatePhoneTextView) {
             String phone = mCooperatePhoneTextView.getText().toString().trim();
             if (!StringUtils.isEmpty(phone)) {
-                LikingCallUtil.showCallDialog(AboutActivity.this, "确定联系商务人员吗？", phone);
+                LikingCallUtil.showCallDialog(AboutActivity.this, getString(R.string.confrim_call_business), phone);
             }
         }
     }

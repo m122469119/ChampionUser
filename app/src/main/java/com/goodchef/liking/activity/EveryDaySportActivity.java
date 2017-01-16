@@ -131,7 +131,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         mDealWithBlueTooth = new DealWithBlueTooth(this);
         setTitle(getString(R.string.title_every_day_sport));
         setTodayDataView();
-        setSynchronizationSate(false, "", 0);
+        mSynchronizationSateTextView.setVisibility(View.GONE);
         setTotalDataView();
         setViewOnClickListener();
         sendRequest();
@@ -324,9 +324,17 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void connect() {
         if (!isConnect) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mSynchronizationSateTextView.getVisibility() == View.GONE) {
+                        mSynchronizationSateTextView.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
             isConnect = true;
             showProgressBar(true);
-            setSynchronizationSate(true, getString(R.string.connect_ing), ResourceUtils.getColor(R.color.c4A90E2));
+            setSynchronizationSate(getString(R.string.connect_ing), ResourceUtils.getColor(R.color.c4A90E2));
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
     }
@@ -335,20 +343,16 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     /**
      * 设置日常运动状态
      *
-     * @param isshow
      * @param str
      * @param color
      */
-    private void setSynchronizationSate(final boolean isshow, final String str, final int color) {
+    private void setSynchronizationSate(final String str, final int color) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (isshow) {
-                    mSynchronizationSateTextView.setVisibility(View.VISIBLE);
+                if (mSynchronizationSateTextView.getVisibility() == View.VISIBLE) {
                     mSynchronizationSateTextView.setText(str);
                     mSynchronizationSateTextView.setTextColor(color);
-                } else {
-                    mSynchronizationSateTextView.setVisibility(View.GONE);
                 }
             }
         });
@@ -370,6 +374,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 LogUtils.i(TAG, "连接成功");
+                setSynchronizationSate(getString(R.string.connect_success), ResourceUtils.getColor(R.color.c4A90E2));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -380,7 +385,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 LogUtils.i(TAG, "连接失败");
-                setSynchronizationSate(true, getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
+                setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
                 sendConnect();
             }
         }
@@ -566,14 +571,14 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             }
         });
         //设置状态
-        setSynchronizationSate(true, getString(R.string.synchronization_ing), ResourceUtils.getColor(R.color.c4A90E2));
+        setSynchronizationSate(getString(R.string.synchronization_ing), ResourceUtils.getColor(R.color.c4A90E2));
         isSynchronization = false;
         sendSportDataSynchronization();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (!isSynchronization) {
-                    setSynchronizationSate(true, getString(R.string.synchronization_fial), ResourceUtils.getColor(R.color.red));
+                    setSynchronizationSate(getString(R.string.synchronization_fial), ResourceUtils.getColor(R.color.red));
                 }
             }
         }, 30000);
@@ -731,11 +736,23 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     mTodayDistanceTextView.setText(distance + "");
                 }
             });
-            setSynchronizationSate(true, getString(R.string.synchongrozation_finish), ResourceUtils.getColor(R.color.c4A90E2));
+            setSynchronizationSate(getString(R.string.synchongrozation_finish), ResourceUtils.getColor(R.color.c4A90E2));
+            hideSynchronizationSateView();
             if (isHistory) {
                 respondSportData();
             }
         }
+    }
+
+    private void hideSynchronizationSateView() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mSynchronizationSateTextView.getVisibility() == View.VISIBLE) {
+                    mSynchronizationSateTextView.setVisibility(View.GONE);
+                }
+            }
+        }, 5000);
     }
 
     /**
@@ -834,6 +851,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         String todayStepNum = todayData.getStepNum();
         String todayDistance = todayData.getDistance();
         String todayKacl = todayData.getKcal();
+        String todaybpm = todayData.getBpm();
 
         if (!StringUtils.isEmpty(todayStepNum)) {
             mTodayStepTextView.setText(todayStepNum);
@@ -849,6 +867,11 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             mTodayKcalTextView.setText(todayKacl);
         } else {
             mTodayKcalTextView.setText("-");
+        }
+        if (!StringUtils.isEmpty(todaybpm)) {
+            mTodayAverageHeartRateTextView.setText(todaybpm);
+        } else {
+            mTodayAverageHeartRateTextView.setText("-");
         }
     }
 
@@ -942,7 +965,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         if (mShakeSynchronizationDialog != null) {
             mShakeSynchronizationDialog.dismiss();
         }
-        setSynchronizationSate(false, "", 0);
+        mSynchronizationSateTextView.setVisibility(View.GONE);
     }
 
     @Override

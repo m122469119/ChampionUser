@@ -29,6 +29,8 @@ public class MyCardResult extends BaseResult {
         private int hasCard;
         @SerializedName("my_card")
         private MyCard mMyCard;
+        @SerializedName("activity_title")
+        private String activityTitle;
 
         public int getHasCard() {
             return hasCard;
@@ -44,6 +46,14 @@ public class MyCardResult extends BaseResult {
 
         public void setMyCard(MyCard myCard) {
             mMyCard = myCard;
+        }
+
+        public String getActivityTitle() {
+            return activityTitle;
+        }
+
+        public void setActivityTitle(String activityTitle) {
+            this.activityTitle = activityTitle;
         }
 
         public static class MyCard extends BaseData {

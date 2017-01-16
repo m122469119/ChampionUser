@@ -24,14 +24,14 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.bluetooth.BlueDataUtil;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.dialog.UnBindDevicesDialog;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
 import com.goodchef.liking.mvp.view.UnBindDevicesView;
-import com.goodchef.liking.bluetooth.BlueDataUtil;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
@@ -96,19 +96,20 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_bracelet);
         ButterKnife.bind(this);
-        setTitle("我的手环");
+        setTitle(getString(R.string.title_my_bracelet));
         getInitData();
         mDealWithBlueTooth = new DealWithBlueTooth(this);
-        mUnbindTextView.setVisibility(View.GONE);
         initData();
         initBlueTooth();
         if (source.equals("BingBraceletActivity")) {
             synchronizationInfo();
+            mUnbindTextView.setVisibility(View.VISIBLE);
         } else {
+            searchBlueTooth();
+            mUnbindTextView.setVisibility(View.GONE);
             setOnSynchronizationView();
         }
         setViewOnClickListener();
-        searchBlueTooth();
     }
 
     private void getInitData() {
@@ -509,7 +510,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == mUnbindTextView) {
-            // mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getUnBindBytes());
             showUnbindDialog();
         }
     }
@@ -529,6 +529,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         devicesDialog.setConfirmClickListener(new UnBindDevicesDialog.ConfirmOnClickListener() {
             @Override
             public void onConfirmClickListener(AppCompatDialog dialog) {
+                if (EnvironmentUtils.Config.isDebugMode()) {
+                    mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getUnBindBytes());
+                }
                 sendUnBindRequest();
                 dialog.dismiss();
             }

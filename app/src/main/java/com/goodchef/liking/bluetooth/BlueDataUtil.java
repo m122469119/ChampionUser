@@ -21,24 +21,31 @@ public class BlueDataUtil {
      *
      * @return
      */
-    public static byte[] getBindBytes() {
+    public static byte[] getBindBytes(byte[] uuidByte) {
         byte[] bytes = new byte[17];
         bytes[0] = (byte) 0xA9;
         bytes[1] = 0x32;
         bytes[2] = 0x00;
         bytes[3] = 0x0c;
         //11111100000
-        bytes[4] = 0x01;
-        bytes[5] = 0x01;
-        bytes[6] = 0x01;
-        bytes[7] = 0x01;
-        bytes[8] = 0x01;
-        bytes[9] = 0x01;
+
+        for (int i = 0; i < uuidByte.length; i++) {
+            bytes[i + 4] = (byte) (uuidByte[i] & 0xff);
+        }
+
+//        bytes[4] = 0x01;
+//        bytes[5] = 0x01;
+//        bytes[6] = 0x01;
+//        bytes[7] = 0x01;
+//        bytes[8] = 0x01;
+//        bytes[9] = 0x01;
+
         bytes[10] = 0x00;
         bytes[11] = 0x00;
         bytes[12] = 0x00;
         bytes[13] = 0x00;
         bytes[14] = 0x00;
+
         bytes[15] = (byte) 0xAD;
 
         byte crc = 0;
@@ -66,12 +73,12 @@ public class BlueDataUtil {
         }
 
 
-//        bytes[4] = 0x00;
+//        bytes[4] = 0x01;
 //        bytes[5] = 0x01;
-//        bytes[6] = 0x02;
-//        bytes[7] = 0x03;
-//        bytes[8] = 0x04;
-//        bytes[9] = 0x08;
+//        bytes[6] = 0x01;
+//        bytes[7] = 0x01;
+//        bytes[8] = 0x01;
+//        bytes[9] = 0x01;
 
 //        bytes[10] = (byte) 0xA9;
 //        bytes[11] = (byte) 0xBC;

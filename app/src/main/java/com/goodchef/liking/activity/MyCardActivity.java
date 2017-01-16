@@ -39,6 +39,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     private TextView mPeriodOfValidityTextView;//有效期
     private TextView mGymName;//健身房名称
     private TextView mGymAddress;//健身房地址
+    private TextView mUpgradeCardPromptTextView;//升级卡提示
     private ListView mListView;
     private LinearLayout mBottomLayout;
     private ScrollView mRootScrollView;
@@ -75,6 +76,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         mFlowCardBtn = (TextView) findViewById(R.id.my_card_flow_card);
         mRootScrollView = (ScrollView) findViewById(R.id.layout_my_card_root_view);
         mNoCardLayout = (RelativeLayout) findViewById(R.id.layout_no_card);
+        mUpgradeCardPromptTextView = (TextView) findViewById(R.id.upgrade_card_prompt_TextView);
 
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -121,6 +123,10 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                 mNoCardLayout.setVisibility(View.GONE);
                 mRootScrollView.setVisibility(View.VISIBLE);
                 mBottomLayout.setVisibility(View.VISIBLE);
+                String title = myCardData.getActivityTitle();
+                if (!StringUtils.isEmpty(title)) {
+                    mUpgradeCardPromptTextView.setText(title);
+                }
                 MyCardResult.MyCardData.MyCard myCard = myCardData.getMyCard();
                 if (myCard != null && !StringUtils.isEmpty(myCard.getCardNo()) && !StringUtils.isEmpty(myCard.getBuyTime())) {
                     mCardNumberTextView.setText(myCard.getCardNo());

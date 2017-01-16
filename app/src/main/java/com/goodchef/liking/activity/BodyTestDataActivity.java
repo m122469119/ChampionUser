@@ -293,13 +293,13 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == mBodyGradeHistoryTextView) {//体侧评分历史记录
-            startBodyAnalyzeChartActivity(gradeData.getTitle() + "历史", gradeData.getType());
+            startBodyAnalyzeChartActivity(gradeData.getTitle() + getString(R.string.history), gradeData.getType());
         } else if (v == mBodyElementHistoryTextView) {//身体成分历史记录
-            startBodyAnalyzeChartActivity(bodyAnalysisData.getTitle() + "历史", bodyAnalysisData.getType());
+            startBodyAnalyzeChartActivity(bodyAnalysisData.getTitle() + getString(R.string.history), bodyAnalysisData.getType());
         } else if (v == mFatAnalyzeHistoryTextView) {//肥胖分析历史记录
-            startBodyAnalyzeChartActivity(fatAnalysisData.getTitle() + "历史", fatAnalysisData.getType());
+            startBodyAnalyzeChartActivity(fatAnalysisData.getTitle() + getString(R.string.history), fatAnalysisData.getType());
         } else if (v == mAdviceHistoryTextView) {
-            startBodyAnalyzeChartActivity(adviceData.getTitle() + "历史", adviceData.getType());
+            startBodyAnalyzeChartActivity(adviceData.getTitle() + getString(R.string.history), adviceData.getType());
         } else if (v == mBodyRadarHelpImageView) {//身体成分分析雷达图
             showBodyIngredientDialog();
         } else if (v == mFatAnalyzeHelpImageView) {//肥胖分析雷达图
@@ -484,7 +484,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
             mBodyGradeTitle.setText(gradeData.getTitle());
             mMyCircleView.setCurrentCount(100, Integer.parseInt(gradeData.getScore()));
             mMyCircleView.setTextTypeface(TypefaseUtil.getImpactTypeface(this));
-            mBodyTestTimeTextView.setText("测试时间：" + gradeData.getBodyTime());
+            mBodyTestTimeTextView.setText(getString(R.string.test_time) + gradeData.getBodyTime());
         }
     }
 
@@ -623,7 +623,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startBodyAnalyzeChartActivity(muscleData.getTitle() + "历史", muscleData.getType());
+                startBodyAnalyzeChartActivity(muscleData.getTitle() + getString(R.string.history), muscleData.getType());
             }
         });
         mLeftMusclePercentageTextView.setVisibility(View.GONE);
@@ -721,7 +721,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
         mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startBodyAnalyzeChartActivity(bodyFatData.getTitle() + "历史", bodyFatData.getType());
+                startBodyAnalyzeChartActivity(bodyFatData.getTitle() + getString(R.string.history), bodyFatData.getType());
             }
         });
     }
