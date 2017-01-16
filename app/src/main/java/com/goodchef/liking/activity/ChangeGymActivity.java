@@ -198,7 +198,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
             List<CityData> list = mChangeGymCityAdapter.getDataList();
             if (list != null && list.size() > 0) {
                 for (CityData data : list) {
-                    if (data.getCityName().equals(cityName)) {
+                    if (cityName.equals(data.getCityName()) || cityName.contains(data.getCityName())) {
                         data.setSelct(true);
                     } else {
                         data.setSelct(false);
@@ -212,7 +212,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
 
     private void compareCurrentCity(String cityName) {
         if (!StringUtils.isEmpty(currentCityName)) {
-            if (cityName.equals(currentCityName)) {
+            if (currentCityName.equals(cityName) || currentCityName.contains(cityName)) {
                 mCityHeadText.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
             } else {
                 mCityHeadText.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
@@ -301,9 +301,9 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
             if (mCityHeadView != null) {
                 mListView.removeHeaderView(mCityHeadView);
                 if (isLoaction) {
-                    mCityHeadText.setText("当前城市：" + currentCityName);
+                    mCityHeadText.setText(getString(R.string.current_city) + currentCityName);
                 } else {
-                    mCityHeadText.setText("定位失败·重新定位");
+                    mCityHeadText.setText(R.string.location_fail_repeat_location);
                 }
                 mListView.addHeaderView(mCityHeadView);
             }
@@ -360,7 +360,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         String cityId = "";
         if (cityDataList != null && cityDataList.size() > 0) {
             for (CityData cityData : cityDataList) {
-                if (cityData.getCityName().equals(currentCityName) || cityData.getCityName().contains(currentCityName)) {
+                if (currentCityName.equals(cityData.getCityName()) || currentCityName.contains(cityData.getCityName())) {
                     cityId = cityData.getCityId() + "";
                     return cityId;
                 }
