@@ -49,7 +49,7 @@ public class WhewView extends View {
         // 设置博文的颜色
         paint.setColor(0x0059ccf5);
         alphaList.add("255");// 圆心的不透明度
-        startWidthList.add("50");
+        startWidthList.add("0");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class WhewView extends View {
             int startWidth = Integer.parseInt(startWidthList.get(i));
             paint.setAlpha(alpha);
             // 这个半径决定你想要多大的扩散面积
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, startWidth + 40, paint);
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, startWidth, paint);
             // 同心圆扩散
             if (isStarting && alpha > 0 && startWidth < maxWidth) {
                 alphaList.set(i, (alpha - 1) + "");
@@ -74,8 +74,8 @@ public class WhewView extends View {
             alphaList.add("255");
             startWidthList.add("0");
         }
-        // 同心圆数量达到10个，删除最外层圆
-        if (isStarting && startWidthList.size() == 10) {
+        // 同心圆数量达到12个，删除最外层圆
+        if (isStarting && startWidthList.size() == 12) {
             startWidthList.remove(0);
             alphaList.remove(0);
         }
