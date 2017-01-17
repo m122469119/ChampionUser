@@ -123,8 +123,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private ShakeSynchronizationDialog mShakeSynchronizationDialog;//摇一摇对话框
     private boolean isSynchronization = false;//是否同步完成
     private boolean isFirsSendSportData = true;//是否是第一次上传运动数据
-    private boolean ispause = false;
-
+    private int mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +144,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        if (ispause) {
+        if (!StringUtils.isEmpty(myBraceletMac)){
             connect();
         }
     }
@@ -297,7 +296,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 public void run() {
                     mDealWithBlueTooth.stopLeScan(mLeScanCallback);
                 }
-            }, 10000); //10秒后停止搜索
+            }, 45000); //10秒后停止搜索
             UUID[] uuids = new UUID[1];
             UUID uuid = UUID.fromString("0000FEA0-0000-1000-8000-00805f9b34fb");
             uuids[0] = uuid;
@@ -384,6 +383,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      * @param color
      */
     private void setSynchronizationSate(final String str, final int color) {
+        if (mConnectionState == DealWithBlueTooth.STATE_CONNECTED) {
+            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
+        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -412,12 +414,14 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 LogUtils.i(TAG, "连接成功");
+                mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
                 setSynchronizationSate(getString(R.string.connect_success), ResourceUtils.getColor(R.color.c4A90E2));
                 setConnectStateView();
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 LogUtils.i(TAG, "连接失败");
+                mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
                 setConnectStateView();
                 setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
                 sendConnect();
@@ -1026,7 +1030,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
-        ispause = true;
         isConnect = false;
         sendSportDataRequest(sportSetp + "", sportKcal, sportDistance, mHeartRate + "", sportDate);
         sendCloseSynchronization();

@@ -41,7 +41,7 @@ public class DealWithBlueTooth {
 
     public BluetoothGatt mBluetoothGatt;
 
-    private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     private static final int Nou = 1;
     private Handler handler = new Handler() {
@@ -125,6 +125,16 @@ public class DealWithBlueTooth {
      */
     public void startLeScan(BluetoothAdapter.LeScanCallback callback) {
         mBluetoothAdapter.startLeScan(callback); //开始搜索
+    }
+
+    /**
+     * 开始搜索
+     *
+     * @param uuid     uuid
+     * @param callback LeScanCallback
+     */
+    public void startLeScan(UUID[] uuid, BluetoothAdapter.LeScanCallback callback) {
+        mBluetoothAdapter.startLeScan(uuid, callback); //开始搜索
     }
 
     /**
