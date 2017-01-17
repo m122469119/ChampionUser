@@ -303,9 +303,9 @@
     <string name="send_brancelet_bing_prompt_right">才能绑定哟~</string>
     <string name="title_my_bracelet">我的手环</string>
     <string name="connect_blue_tooth">连接</string>
-    <string name="connect_bluetooth_ing">连接中...</string>
+    <string name="connect_bluetooth_ing">连接中</string>
     <string name="connect_success">连接成功</string>
     <string name="location_fail_repeat_location">定位失败·重新定位</string>
     <string name="current_city">当前城市：</string>
-
+    <string name="binding_finish">已完成绑定</string>
 </resources>

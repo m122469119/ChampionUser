@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -74,6 +75,8 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     TextView mConnectBlueToothTextView;
     @BindView(R.id.layout_blue_booth)
     RelativeLayout mLayoutBlueBooth;
+    @BindView(R.id.connect_bluetooth_ProgressBar)
+    ProgressBar mConnectBluetoothProgressBar;
 
 
     private BindDevicesPresenter mBindDevicesPresenter;
@@ -108,7 +111,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         setRightIcon(R.drawable.icon_blue_tooth_help, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 startActivity(BlueToothHelpActivity.class);
+                startActivity(BlueToothHelpActivity.class);
             }
         });
         setViewOnClickListener();
@@ -195,6 +198,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             openBluetooth();
         } else if (v == mConnectBlueToothTextView) {//连接蓝牙
             mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
+            mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
             connectBlueTooth();
         }
     }
@@ -295,6 +299,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         if (mBluetoothDeviceList != null && mBluetoothDeviceList.size() > 0) {
             mBluetoothDevice = mBluetoothDeviceList.get(0);
             mBlueToothNameTextView.setText(mBluetoothDevice.getName());
+            mConnectBluetoothProgressBar.setVisibility(View.GONE);
             mConnectBlueToothTextView.setText(R.string.connect_blue_tooth);
         }
     }
@@ -303,7 +308,13 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         @Override  //当连接上设备或者失去连接时会回调该函数
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
-                Log.i(TAG, "连接成功");
+                LogUtils.i(TAG, "连接成功");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConnectBluetoothProgressBar.setVisibility(View.GONE);
+                    }
+                });
                 mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());

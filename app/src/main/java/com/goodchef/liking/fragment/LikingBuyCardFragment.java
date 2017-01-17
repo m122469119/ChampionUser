@@ -78,8 +78,8 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (!EnvironmentUtils.Network.isNetWorkAvailable() && mainView != null && mBuyCardAdapter != null
                 && mBuyCardAdapter.getDataList().size() > 0) { //无网络情况并且有数据显示上一次的缓存
-            if(mStateView != null){
-                if(mRecyclerView.getRefreshableView().getAdapter() == null) {
+            if (mStateView != null) {
+                if (mRecyclerView.getRefreshableView().getAdapter() == null) {
                     mRecyclerView.getRefreshableView().setAdapter(mBuyCardAdapter);
                 }
                 mStateView.setState(LikingStateView.State.SUCCESS);
@@ -281,7 +281,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         sendBuyCardListRequest();
     }
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
@@ -295,7 +295,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                 List<CityData> cityDataList = baseConfigData.getCityList();
                 if (cityDataList != null && cityDataList.size() > 0) {
                     for (CityData data : cityDataList) {
-                        if (data.getCityName().contains(cityName)) {
+                        if (cityName.contains(data.getCityName()) || cityName.equals(data.getCityName())) {
                             isContains = true;
                             break;
                         }

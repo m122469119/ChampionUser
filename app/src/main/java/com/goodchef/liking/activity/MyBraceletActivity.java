@@ -102,13 +102,13 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         initData();
         initBlueTooth();
         if (source.equals("BingBraceletActivity")) {
+            mMyBraceletTextView.setText(R.string.binding_finish);
             synchronizationInfo();
             mUnbindTextView.setVisibility(View.VISIBLE);
         } else {
             searchBlueTooth();
             mUnbindTextView.setVisibility(View.GONE);
             mMyBraceletImageView.setBackgroundResource(R.drawable.icon_my_blue_tooth);
-            mMyBraceletTextView.setText(R.string.connect_bluetooth_ing);
         }
         setViewOnClickListener();
     }
@@ -285,6 +285,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private void connect() {
         if (!isConnect) {
             isConnect = true;
+            setConnectView();
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
     }
@@ -295,8 +296,24 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private void sendConnect() {
         if (!connectFile) {
             connectFile = true;
+            setConnectView();
             mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
         }
+    }
+
+    /**
+     * 设置连接是的view
+     */
+    private void setConnectView() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMyBraceletTextView.setText(R.string.connect_bluetooth_ing);
+                mCurrentDevicesNameTextView.setText("--");
+                mDevicesAddressTextView.setText("--");
+                mDevicesVersionTextView.setText("--");
+            }
+        });
     }
 
 

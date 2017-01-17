@@ -156,5 +156,18 @@
             android:textColor="@color/c4A90E2"
             android:textSize="@dimen/textsize_15"/>
 
+
+        <ProgressBar
+            android:id="@+id/connect_bluetooth_ProgressBar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="@dimen/spacing_8dp"
+            android:layout_marginRight="@dimen/spacing_8dp"
+            android:layout_marginTop="@dimen/spacing_8dp"
+            android:indeterminateBehavior="repeat"
+            android:layout_toLeftOf="@+id/connect_blue_tooth_TextView"
+            android:indeterminateDrawable="@drawable/shape_loding"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 </LinearLayout>
