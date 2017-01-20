@@ -635,7 +635,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     setSynchronizationSate(getString(R.string.synchronization_fial), ResourceUtils.getColor(R.color.red));
                 }
             }
-        }, 30000);
+        }, 3000);
     }
 
 

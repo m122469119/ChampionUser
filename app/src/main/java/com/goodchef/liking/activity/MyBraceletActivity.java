@@ -264,7 +264,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                     mDealWithBlueTooth.stopLeScan(mLeScanCallback);
                     setConnectFailView();
                 }
-            }, 450000); //10秒后停止搜索
+            }, 45000); //10秒后停止搜索
             UUID[] uuids = new UUID[1];
             UUID uuid = UUID.fromString("0000FEA0-0000-1000-8000-00805f9b34fb");
             uuids[0] = uuid;
