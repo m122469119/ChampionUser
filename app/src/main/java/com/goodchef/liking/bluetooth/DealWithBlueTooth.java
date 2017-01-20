@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 
 import java.util.List;
@@ -95,7 +96,11 @@ public class DealWithBlueTooth {
      * @return boolean
      */
     public boolean isOpen() {
-        return mBluetoothAdapter.isEnabled();
+        if (mBluetoothAdapter == null) {
+            return false;
+        } else {
+            return mBluetoothAdapter.isEnabled();
+        }
     }
 
 
@@ -154,9 +159,9 @@ public class DealWithBlueTooth {
      * @param callback BluetoothGattCallback
      * @return
      */
-    public boolean connect(String address, BluetoothGattCallback callback) {
+    public boolean connect(Context context, String address, BluetoothGattCallback callback) {
         if (mBluetoothAdapter == null || address == null) {
-            Log.d(TAG, "BluetoothAdapter not initialized or unspecified address.");
+            LogUtils.i(TAG, "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
         // Previously connected device. Try to reconnect. (先前连接的设备。 尝试重新连接)
@@ -171,12 +176,12 @@ public class DealWithBlueTooth {
 //        }
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         if (device == null) {
-            Log.d(TAG, "Device not found.  Unable to connect.");
+            LogUtils.i(TAG, "Device not found.  Unable to connect.");
             return false;
         }
         // 该函数才是真正的去进行连接 一个Context对象，自动连接（boolean值,表示只要BLE设备可用是否自动连接到它）
-        mBluetoothGatt = device.connectGatt(mContext, false, callback);
-        Log.d(TAG, "Trying to create a new connection.");
+        mBluetoothGatt = device.connectGatt(context, false, callback);
+        LogUtils.i(TAG, "Trying to create a new connection.");
         return true;
     }
 
@@ -200,7 +205,7 @@ public class DealWithBlueTooth {
      */
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
+            LogUtils.i(TAG, "BluetoothAdapter not initialized");
             return;
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
@@ -219,7 +224,7 @@ public class DealWithBlueTooth {
      */
     public void wirteCharacteristic(BluetoothGattCharacteristic characteristic, byte[] bytes) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.d(TAG, "BluetoothAdapter not initialized");
+            LogUtils.i(TAG, "BluetoothAdapter not initialized");
             return;
         }
         characteristic.setValue(bytes);

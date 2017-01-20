@@ -212,7 +212,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         if (mBluetoothDevice != null && !StringUtils.isEmpty(mBluetoothDevice.getAddress())) {
             mBindDevicesName = mBluetoothDevice.getName();
             mBindDevicesAddress = mBluetoothDevice.getAddress();
-            mDealWithBlueTooth.connect(mBluetoothDevice.getAddress(), mGattCallback);
+            mDealWithBlueTooth.connect(this,mBluetoothDevice.getAddress(), mGattCallback);
             mConnectionState = DealWithBlueTooth.STATE_CONNECTING;
         }
     }

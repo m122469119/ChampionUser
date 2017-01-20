@@ -151,6 +151,7 @@ public class Preference extends AbsPreference {
 
     /**
      * 获取第一次提示用户在我的界面查看手环数据
+     *
      * @return
      */
     public static boolean getFirstBindBracelet() {
@@ -404,6 +405,27 @@ public class Preference extends AbsPreference {
      */
     public static boolean setBusinessPhone(String phone) {
         return setObject(BUSINESS_PHONE, phone);
+    }
+
+    /**
+     * 设置蓝牙名称
+     *
+     * @param key  key
+     * @param name 蓝牙名称
+     * @return
+     */
+    public static boolean setBlueToothName(String key, String name) {
+        return setObject(key, name);
+    }
+
+    /**
+     * 获取蓝牙名称
+     *
+     * @param key
+     * @return
+     */
+    public static String getBlueToothName(String key) {
+        return (String) getObject(key, ConstantUtils.BLANK_STRING);
     }
 
 

@@ -41,6 +41,7 @@ import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.activity.SelfHelpGroupActivity;
+import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
@@ -106,6 +107,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private Typeface mTypeface;
     private String mBraceletMac;//手环mac地址
     private String UUID;
+    private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
 
     @Nullable
     @Override
@@ -113,6 +115,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         initView(view);
+        mDealWithBlueTooth = new DealWithBlueTooth(getActivity());
         initViewIconAndText();
         setHeadPersonData();
         setViewOnClickListener();
@@ -463,31 +466,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
-            if (Preference.isLogin()) {
-                if (!StringUtils.isEmpty(mBraceletMac)) {
-                    LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
-                }
-                if (Preference.isBind()) {//绑定过手环
-                    Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
-                    if (!StringUtils.isEmpty(mBraceletMac)) {
-                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                    }
-                    intent.putExtra(KEY_UUID, UUID);
-                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
-                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
-                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
-                    startActivity(intent);
-                } else {//没有绑过
-                    Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
-                    if (!StringUtils.isEmpty(mBraceletMac)) {
-                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                    }
-                    intent.putExtra(KEY_UUID, UUID);
-                    startActivity(intent);
-                }
-            } else {
-                startActivity(LoginActivity.class);
-            }
+            jumpBraceletActivity();
         } else if (v == mEverydaySportLayout) {//每日运动
             if (Preference.isLogin()) {
                 if (Preference.isBind()) {
@@ -505,6 +484,61 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         }
+    }
+
+    /**
+     * 跳转到我的手环
+     */
+    private void jumpBraceletActivity() {
+        if (Preference.isLogin()) {
+            if (!StringUtils.isEmpty(mBraceletMac)) {
+                LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
+            }
+            if (Preference.isBind()) {//绑定过手环
+                if (initBlueTooth()) {
+                    Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
+                    if (!StringUtils.isEmpty(mBraceletMac)) {
+                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                    }
+                    intent.putExtra(KEY_UUID, UUID);
+                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
+                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
+                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
+                    startActivity(intent);
+                }
+            } else {//没有绑过
+                Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
+                if (!StringUtils.isEmpty(mBraceletMac)) {
+                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+                }
+                intent.putExtra(KEY_UUID, UUID);
+                startActivity(intent);
+            }
+        } else {
+            startActivity(LoginActivity.class);
+        }
+    }
+
+    /**
+     * 初始化蓝牙
+     */
+    public boolean initBlueTooth() {
+        if (!mDealWithBlueTooth.isSupportBlueTooth()) {
+            return false;
+        }
+        if (!mDealWithBlueTooth.isOpen()) {
+            openBluetooth();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 打开蓝牙
+     */
+    public void openBluetooth() {
+        mDealWithBlueTooth.openBlueTooth(getActivity());
     }
 
     private void jumpBodyTestActivity() {

@@ -308,4 +308,6 @@
     <string name="location_fail_repeat_location">定位失败·重新定位</string>
     <string name="current_city">当前城市：</string>
     <string name="binding_finish">已完成绑定</string>
+    <string name="bluetooth_connect_fail">蓝牙连接失败</string>
+    <string name="retry">重试</string>
 </resources>

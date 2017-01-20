@@ -117,6 +117,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private String sportKcal = "";//运动kcal
     private String sportDistance = "";//运动距离
     private String mHeartRate = "";//心率
+    private int currentSportStep = 0;
+    private String currentSportKcal = "";
+    private String currentSportDistance = "";
 
     private boolean isLoginFail = false;//是否登录失败
     private boolean connectFile = false;//是否连接失败
@@ -144,7 +147,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        if (!StringUtils.isEmpty(myBraceletMac)){
+        if (!StringUtils.isEmpty(myBraceletMac)) {
             connect();
         }
     }
@@ -345,7 +348,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             setTodayRightView(false);
             showProgressBar(true);
             setSynchronizationSate(getString(R.string.connect_ing), ResourceUtils.getColor(R.color.c4A90E2));
-            mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
+            mDealWithBlueTooth.connect(this, myBraceletMac, mGattCallback);
         }
     }
 
@@ -405,7 +408,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             connectFile = true;
             setTodayRightView(false);
             showProgressBar(true);
-            mDealWithBlueTooth.connect(myBraceletMac, mGattCallback);
+            mDealWithBlueTooth.connect(this, myBraceletMac, mGattCallback);
         }
     }
 
@@ -774,6 +777,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             final int step = BlueToothBytesToStringUtil.getSportStep(newSportBytes);
             final String kcal = BlueToothBytesToStringUtil.getSportKcal(newSportBytes);
             final String distance = BlueToothBytesToStringUtil.getSportDistance(newSportBytes);
+            currentSportStep = step;
+            currentSportDistance = distance;
+            currentSportKcal = kcal;
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -1031,7 +1037,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     protected void onPause() {
         super.onPause();
         isConnect = false;
-        sendSportDataRequest(sportSetp + "", sportKcal, sportDistance, mHeartRate + "", sportDate);
+        sendSportDataRequest(currentSportStep + "", currentSportKcal, currentSportDistance, mHeartRate + "", sportDate);
         sendCloseSynchronization();
         sendDisconnectBlueTooth();
     }
