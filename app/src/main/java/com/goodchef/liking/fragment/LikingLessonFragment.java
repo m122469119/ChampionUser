@@ -286,24 +286,51 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
      * @param presale
      */
     private void setHeadPreSaleView(boolean hasData, String presale) {
-        if (!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
-            if (mPreSaleView != null && mNoContentData != null) {
-                mPreSaleView.setVisibility(View.VISIBLE);
-                mNoContentData.setVisibility(View.GONE);
-            }
-        } else if (!StringUtils.isEmpty(presale) && "0".equals(presale)) {//没有预售
-            if (hasData) {
+        if(hasData) {
+            if(!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
                 if (mPreSaleView != null && mNoContentData != null) {
-                    mPreSaleView.setVisibility(View.GONE);
-                    mNoContentData.setVisibility(View.VISIBLE);
-                }
-            } else {
-                if (mPreSaleView != null && mNoContentData != null) {
-                    mPreSaleView.setVisibility(View.GONE);
+                    if(isRequestHomePage()) {
+                        mPreSaleView.setVisibility(View.VISIBLE);
+                    } else {
+                        mPreSaleView.setVisibility(View.GONE);
+                    }
                     mNoContentData.setVisibility(View.GONE);
                 }
+            } else if (!StringUtils.isEmpty(presale) && "0".equals(presale)) {//没有预售
+                if (mPreSaleView != null && mNoContentData != null) {
+                    mPreSaleView.setVisibility(View.GONE);
+                    if (isRequestHomePage()) {
+                        mNoContentData.setVisibility(View.VISIBLE);
+                    } else {
+                        mNoContentData.setVisibility(View.GONE);
+                    }
+                }
+            }
+        } else {
+            if (mPreSaleView != null && mNoContentData != null) {
+                mPreSaleView.setVisibility(View.GONE);
+                mNoContentData.setVisibility(View.GONE);
             }
         }
+
+//        if (!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
+//            if (mPreSaleView != null && mNoContentData != null) {
+//                mPreSaleView.setVisibility(View.VISIBLE);
+//                mNoContentData.setVisibility(View.GONE);
+//            }
+//        } else if (!StringUtils.isEmpty(presale) && "0".equals(presale)) {//没有预售
+//            if (hasData) {
+//                if (mPreSaleView != null && mNoContentData != null) {
+//                    mPreSaleView.setVisibility(View.GONE);
+//                    mNoContentData.setVisibility(View.VISIBLE);
+//                }
+//            } else {
+//                if (mPreSaleView != null && mNoContentData != null) {
+//                    mPreSaleView.setVisibility(View.GONE);
+//                    mNoContentData.setVisibility(View.GONE);
+//                }
+//            }
+//        }
     }
 
 
