@@ -371,24 +371,40 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //1.5s后停止动画
-                    mBlueToothWhewView.stop();
+                    stopBlueToothWhewView();
                 }
             }, 1500);
 
-            mLayoutBlueOpenState.setVisibility(View.VISIBLE);//展示会员的设备
-            mLayoutBlueToothBracelet.setVisibility(View.GONE);//隐藏搜索提示
-            mLayoutBlueBooth.setVisibility(View.VISIBLE);
 
-            mClickSearchTextView.setText(R.string.click_search);//显示点击搜索
-            mBluetoothStateTextView.setText(R.string.member_bluetooth_devices);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLayoutBlueOpenState.setVisibility(View.VISIBLE);//展示会员的设备
+                    mLayoutBlueToothBracelet.setVisibility(View.GONE);//隐藏搜索提示
+                    mLayoutBlueBooth.setVisibility(View.VISIBLE);
 
-            mOpenBlueToothTextView.setVisibility(View.GONE);
-            mBlueToothNameTextView.setText(mBluetoothDevice.getName());//展示蓝牙名称
+                    mClickSearchTextView.setText(R.string.click_search);//显示点击搜索
+                    mBluetoothStateTextView.setText(R.string.member_bluetooth_devices);
 
-            mConnectBluetoothProgressBar.setVisibility(View.GONE);//连接的动画关闭
-            mConnectBlueToothTextView.setText(R.string.connect_blue_tooth);//展示连接文案
+                    mOpenBlueToothTextView.setVisibility(View.GONE);
+                    mBlueToothNameTextView.setText(mBluetoothDevice.getName());//展示蓝牙名称
+
+                    mConnectBluetoothProgressBar.setVisibility(View.GONE);//连接的动画关闭
+                    mConnectBlueToothTextView.setText(R.string.connect_blue_tooth);//展示连接文案
+                }
+            });
+
         }
+    }
+
+    private void stopBlueToothWhewView() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //1.5s后停止动画
+                mBlueToothWhewView.stop();
+            }
+        });
     }
 
     /**
