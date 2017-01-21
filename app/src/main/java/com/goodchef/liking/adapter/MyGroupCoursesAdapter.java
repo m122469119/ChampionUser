@@ -106,7 +106,8 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             }
             int scheduleType = object.getScheduleType();
             int isFree = object.getIsFee();
-
+            String tagName = object.getTagName();
+            mFreeType.setText(tagName);
             if (isFree == TYPE_IS_FREE) {//免费
                 mCoursesMoneyTextView.setVisibility(View.GONE);
                 if (showCalcel == 0) {
@@ -116,10 +117,8 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
                     mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
                     mCancelOrderBtn.setVisibility(View.VISIBLE);
                 }
-                mFreeType.setText(R.string.my_free_group_courses);
             } else if (isFree == TYPE_NOT_FREE) {//收费
                 mCoursesMoneyTextView.setVisibility(View.VISIBLE);
-                mFreeType.setText(R.string.my_not_free_group_courses);
                 mMyGroupCoursesLayout.setVisibility(View.VISIBLE);
                 mCoursesMoneyTextView.setText("¥ " + object.getAmount());
                 showCancelBtn(showCalcel);
@@ -131,7 +130,6 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
                 } else if (showCalcel == 1) {
                     mSelfShareBtn.setVisibility(View.VISIBLE);
                 }
-                mFreeType.setText(R.string.self_courses_name);
             }else {
                 mSelfShareBtn.setVisibility(View.GONE);
             }

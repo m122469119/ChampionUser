@@ -189,15 +189,15 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * 设置底部view的状态
      */
     private void setBottomCoursesState() {
-        if( COURSES_SELF == scheduleType) {
-            mGroupCoursesTagTextView.setText(R.string.self_courses);
-        } else {
-            if(isFree == COURSES_IS_FREE) {
-                mGroupCoursesTagTextView.setText(R.string.free_courses);
-            } else if (isFree == COURSES_NOT_FREE){
-                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
-            }
-        }
+//        if( COURSES_SELF == scheduleType) {
+//            mGroupCoursesTagTextView.setText(R.string.self_courses);
+//        } else {
+//            if(isFree == COURSES_IS_FREE) {
+//                mGroupCoursesTagTextView.setText(R.string.free_courses);
+//            } else if (isFree == COURSES_NOT_FREE){
+//                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
+//            }
+//        }
 
         if (mCoursesState == -1) {
             if (isFree == COURSES_IS_FREE) {//免费
@@ -362,6 +362,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setGroupLessonNumbers(groupLessonData.getGymNumbers());
         isFree = groupLessonData.getIsFree();
         price = groupLessonData.getPrice();
+        String tagName = groupLessonData.getTagName();
+        mGroupCoursesTagTextView.setText(tagName);
         setBottomCoursesState();
     }
 

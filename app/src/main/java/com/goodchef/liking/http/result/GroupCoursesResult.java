@@ -92,6 +92,8 @@ public class GroupCoursesResult extends BaseResult {
         private int scheduleType;
         @SerializedName("user_list")
         private List<GymNumbersData> gymNumbers;
+        @SerializedName("tag_name")
+        private String tagName;
 
         /**
          * object_id : 2
@@ -255,6 +257,14 @@ public class GroupCoursesResult extends BaseResult {
 
         public void setPlaceInfo(String placeInfo) {
             this.placeInfo = placeInfo;
+        }
+
+        public String getTagName() {
+            return tagName;
+        }
+
+        public void setTagName(String tagName) {
+            this.tagName = tagName;
         }
 
         public static class GymImgsData {

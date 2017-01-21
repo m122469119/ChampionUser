@@ -78,6 +78,8 @@ public class MyGroupCoursesResult extends BaseResult {
             private String amount;
             @SerializedName("cancel_btn_show")
             private int cancelBtnShow;
+            @SerializedName("tag_name")
+            private String tagName;
 
             public String getOrderId() {
                 return orderId;
@@ -208,6 +210,13 @@ public class MyGroupCoursesResult extends BaseResult {
                 this.placeInfo = placeInfo;
             }
 
+            public String getTagName() {
+                return tagName;
+            }
+
+            public void setTagName(String tagName) {
+                this.tagName = tagName;
+            }
         }
     }
 

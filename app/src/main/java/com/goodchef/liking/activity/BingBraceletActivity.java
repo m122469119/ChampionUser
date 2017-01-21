@@ -36,6 +36,7 @@ import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.BindDevicesPresenter;
 import com.goodchef.liking.mvp.view.BindDevicesView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.RoundImageView;
 import com.goodchef.liking.widgets.WhewView;
 
@@ -343,6 +344,9 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
 
         if (mBluetoothDeviceList != null && mBluetoothDeviceList.size() > 0) {//搜索到设备了
             mBluetoothDevice = mBluetoothDeviceList.get(0);//获取第一个设备
+            if (!StringUtils.isEmpty(mBluetoothDevice.getName())) {
+                Preference.setBlueToothName(mBluetoothDevice.getAddress(), mBluetoothDevice.getName());
+            }
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

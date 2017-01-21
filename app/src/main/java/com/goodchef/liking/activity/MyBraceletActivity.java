@@ -95,8 +95,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private boolean isSendRequest = false;//是否发送过请求
     private boolean isLoginFail = false;//是否连接失败
     private boolean isConnect = false;//是否连接
-    private boolean connectFile = false;//是否连接失败
+    private boolean connectFail = false;//是否连接失败
     private boolean isPause = false;
+    private boolean isScanDevices = false;
     private BluetoothDevice mBluetoothDevice;
 
     @Override
@@ -151,14 +152,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        if (!StringUtils.isEmpty(myBraceletMac)) {
-            initBlueTooth();
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    connect();
-                }
-            }, 1000);
+        if (initBlueTooth()) {
+            if (!StringUtils.isEmpty(myBraceletMac)) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        connect();
+                    }
+                }, 1000);
+            }
         }
     }
 
@@ -247,12 +249,10 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
      * 搜索蓝牙
      */
     private void searchBlueTooth() {
-        initBlueTooth();
-        if (mDealWithBlueTooth.isOpen()) {
-            scanLeDevice(true);
-        } else {
-            scanLeDevice(false);
+        if (!initBlueTooth()) {
+            return;
         }
+        scanLeDevice(true);
     }
 
 
@@ -262,7 +262,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 @Override
                 public void run() {
                     mDealWithBlueTooth.stopLeScan(mLeScanCallback);
-                    setConnectFailView();
+                    //  overTimeScan();
                 }
             }, 45000); //10秒后停止搜索
             UUID[] uuids = new UUID[1];
@@ -271,6 +271,17 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             mDealWithBlueTooth.startLeScan(uuids, mLeScanCallback);
         } else {
             mDealWithBlueTooth.stopLeScan(mLeScanCallback);
+        }
+    }
+
+    private void overTimeScan() {
+        mDealWithBlueTooth.stopLeScan(mLeScanCallback);
+        if (!isScanDevices) {
+            mBraceletPowerMyCustomCircleView.setVisibility(View.GONE);
+            mMyPowerTextView.setVisibility(View.GONE);
+            mMyBraceletImageView.setVisibility(View.VISIBLE);
+            mMyBraceletImageView.setBackgroundResource(R.drawable.icon_my_blue_tooth);
+            setConnectFailView();
         }
     }
 
@@ -284,6 +295,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 mLayoutBluetoothConnectFail.setVisibility(View.VISIBLE);
                 mBluetoothScanFailTextView.setText(R.string.bluetooth_connect_fail);
                 mBluetoothScanFailRetryTextView.setText(R.string.retry);
+                mBluetoothScanFailRetryTextView.setOnClickListener(MyBraceletActivity.this);
                 setConnectView(getString(R.string.connect_fial));
             }
         });
@@ -303,6 +315,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                                 mBindDevicesAddress = device.getAddress();
                                 mBindDevicesName = device.getName();
                                 myBraceletMac = device.getAddress();
+                                isScanDevices = true;
                                 connect();
                             }
                         }
@@ -322,6 +335,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         }
         if (!isConnect) {
             isConnect = true;
+            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
             mLayoutBluetoothConnectFail.setVisibility(View.GONE);
             setConnectView(getString(R.string.connect_bluetooth_ing));
             mDealWithBlueTooth.connect(this, myBraceletMac, mGattCallback);
@@ -336,11 +350,12 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             beforeConnectBlueToothView();
             return;
         }
-        if (!connectFile) {
+        if (!connectFail) {
+            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
             mLayoutBluetoothConnectFail.setVisibility(View.GONE);
-            connectFile = true;
-            setConnectView(getString(R.string.connect_bluetooth_ing));
+            connectFail = true;
             mDealWithBlueTooth.connect(this, myBraceletMac, mGattCallback);
+            setConnectView(getString(R.string.connect_bluetooth_ing));
         } else {
             beforeConnectBlueToothView();
         }
@@ -360,6 +375,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 mLayoutBluetoothConnectFail.setVisibility(View.VISIBLE);
                 mBluetoothScanFailTextView.setText(R.string.bluetooth_connect_fail);
                 mBluetoothScanFailRetryTextView.setText(R.string.retry);
+                mBluetoothScanFailRetryTextView.setOnClickListener(MyBraceletActivity.this);
                 mUnbindTextView.setVisibility(View.GONE);
             }
         });
@@ -464,6 +480,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             if ((data[1] & 0xff) == 0x33) {//绑定
                 if (data[4] == 0x00) {
                     LogUtils.i(TAG, "绑定成功");
+                    byte[] uuId = muuId.getBytes();
+                    mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getLoginBytes(uuId));
                 } else if (data[4] == 0x01) {
                     LogUtils.i(TAG, "绑定失败");
                 }
@@ -524,16 +542,16 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
      * 设置电量view
      */
     private void setPowerView() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mUnbindTextView.setVisibility(View.VISIBLE);
-                    setSynchronizationPowerView(1000);
-                    if (Preference.getFirstBindBracelet()) {
-                        showFirstCheckPromptDialog();
-                    }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mUnbindTextView.setVisibility(View.VISIBLE);
+                setSynchronizationPowerView(500);
+                if (Preference.getFirstBindBracelet()) {
+                    showFirstCheckPromptDialog();
                 }
-            });
+            }
+        });
     }
 
 
@@ -554,7 +572,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
 
     private void showLoginFail() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage("蓝牙登入失败，重新发送登入请求？");
+        builder.setMessage(getString(R.string.bluetooth_login_fail));
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -618,12 +636,24 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v == mUnbindTextView) {
-            showUnbindDialog();
-        } else if (v == mBluetoothScanFailRetryTextView) {
-            if (initBlueTooth()) {
-                searchBlueTooth();
-            }
+        switch (v.getId()) {
+            case R.id.unbind_TextView:
+                showUnbindDialog();
+                break;
+            case R.id.bluetooth_scan_fail_retry_TextView:
+                if (!initBlueTooth()) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(myBraceletMac)) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            isConnect = false;
+                            connect();
+                        }
+                    }, 100);
+                }
+                break;
         }
     }
 
@@ -669,10 +699,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     protected void onPause() {
         isPause = true;
         isConnect = false;
-        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen()) {
-            if (mDealWithBlueTooth != null) {
-                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
-            }
+        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState == DealWithBlueTooth.STATE_CONNECTED && mDealWithBlueTooth != null && writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
         super.onPause();
     }
