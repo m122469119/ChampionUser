@@ -640,7 +640,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             case R.id.unbind_TextView:
                 showUnbindDialog();
                 break;
-            case R.id.bluetooth_scan_fail_retry_TextView:
+            case R.id.bluetooth_scan_fail_retry_TextView://重试 -- 连接蓝牙
                 if (!initBlueTooth()) {
                     return;
                 }
@@ -648,6 +648,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            mLayoutBluetoothConnectFail.setVisibility(View.GONE);
                             isConnect = false;
                             connect();
                         }

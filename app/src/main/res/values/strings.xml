@@ -318,4 +318,6 @@
     <string name="open_bluetooth">开启</string>
     <string name="bluetooth_no_open">蓝牙未开启</string>
     <string name="bluetooth_login_fail">蓝牙登入失败，重新发送登入请求？</string>
+    <string name="connect_bluetooth_success">连接成功</string>
+    <string name="connect_again">重新连接</string>
 </resources>
