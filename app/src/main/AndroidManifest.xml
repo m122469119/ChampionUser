@@ -5,6 +5,7 @@
           android:versionName="1.4.0">
 
 
+
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <permission
         android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"

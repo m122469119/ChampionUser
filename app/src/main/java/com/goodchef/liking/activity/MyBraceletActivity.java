@@ -91,7 +91,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
     private BluetoothGattCharacteristic writecharacteristic;
     private BluetoothGattCharacteristic readcharacteristic;
-    private int mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
+    private boolean mConnectionState = false;
     private boolean isSendRequest = false;//是否发送过请求
     private boolean isLoginFail = false;//是否连接失败
     private boolean isConnect = false;//是否连接
@@ -404,13 +404,13 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
                 Log.i(TAG, "连接成功");
-                mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
+                mConnectionState = true;
                 mBluetoothDevice = gatt.getDevice();
                 setConnectSuccessView();
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
-                mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
+                mConnectionState = false;
                 LogUtils.i(TAG, "连接失败");
                 sendConnect();
             }
@@ -524,7 +524,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
      * 连接成功
      */
     private void setConnectSuccessView() {
-        if (mConnectionState == DealWithBlueTooth.STATE_CONNECTED) {//连接成功，关闭扫描
+        if (mConnectionState) {//连接成功，关闭扫描
             mDealWithBlueTooth.stopLeScan(mLeScanCallback);
         }
         runOnUiThread(new Runnable() {
@@ -692,6 +692,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
 
     @Override
     public void updateUnBindDevicesView() {
+        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
+        }
         Preference.setIsBind("0");
         finish();
     }
@@ -700,7 +703,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     protected void onPause() {
         isPause = true;
         isConnect = false;
-        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState == DealWithBlueTooth.STATE_CONNECTED && mDealWithBlueTooth != null && writecharacteristic != null) {
+        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
         super.onPause();

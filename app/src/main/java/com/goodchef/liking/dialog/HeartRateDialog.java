@@ -70,6 +70,10 @@ public class HeartRateDialog {
         mDialog.dismiss();
     }
 
+    public void show(){
+        mDialog.show();
+    }
+
     public interface CancelOnClickListener {
         void onCancelClickListener(AppCompatDialog dialog);
     }

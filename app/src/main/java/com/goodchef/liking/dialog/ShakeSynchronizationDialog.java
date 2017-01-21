@@ -29,13 +29,13 @@ public class ShakeSynchronizationDialog {
         mDialog = new android.app.AlertDialog.Builder(context, R.style.share_dialog_no_screen).create();
         //这一行很重要
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.CENTER, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT);
+                WindowManager.LayoutParams.MATCH_PARENT);
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
         Window window = mDialog.getWindow();
         window.setContentView(R.layout.dialog_synchronization_data);
-        window.setWindowAnimations(R.style.my_dialog_enter_exit);  //添加dialog进入和退出的动画
+       // window.setWindowAnimations(R.style.my_dialog_enter_exit);  //添加dialog进入和退出的动画
 
         mButton = (ImageButton) window.findViewById(R.id.cancel_button);
 

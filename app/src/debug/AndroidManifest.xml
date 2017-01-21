@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
+
     <application>
         <!-- 高德地图注册信息-->
         <!--测试key:d599392f8c7be8820ac37204819a453b  正式key :0cfa755090bd4282a06a7db550ab7cf3-->

@@ -99,7 +99,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private Handler mHandler = new Handler();
     private List<BluetoothDevice> mBluetoothDeviceList = new ArrayList<>();
     private Map<String, BluetoothDevice> map = new HashMap<>();
-    private int mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
+    private boolean mConnectionState = false;
     private BluetoothGattCharacteristic writecharacteristic;
     private BluetoothGattCharacteristic readcharacteristic;
     private boolean isLoginSuccess = false;
@@ -329,11 +329,12 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
+            LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     //在这里可以把搜索到的设备保存起来
-                    if (Math.abs(rssi) <= 90) {//过滤掉信号强度小于-90的设备
+                    if (Math.abs(rssi) <= 150) {//过滤掉信号强度小于-90的设备
                         if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
                             if (!StringUtils.isEmpty(myBraceletMac) && myBraceletMac.equals(device.getAddress())) {
                                 LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
@@ -401,7 +402,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             mBindDevicesName = mBluetoothDevice.getName();
             mBindDevicesAddress = mBluetoothDevice.getAddress();
             mDealWithBlueTooth.connect(this, mBluetoothDevice.getAddress(), mGattCallback);
-            mConnectionState = DealWithBlueTooth.STATE_CONNECTING;
         }
     }
 
@@ -410,24 +410,38 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
      */
     private void sendConnect() {
         if (!initBlueTooth()) {//连接之前先判断蓝牙的状态
-            mLayoutBlueOpenState.setVisibility(View.GONE);//您的设备界面初始化隐藏
-            mLayoutBlueToothBracelet.setVisibility(View.VISIBLE);//搜索提示初始化显示
-            mLayoutBlueBooth.setVisibility(View.GONE);//搜索到的设备界面初始化隐藏
-            noOpenBlueToothView();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLayoutBlueOpenState.setVisibility(View.GONE);//您的设备界面初始化隐藏
+                    mLayoutBlueToothBracelet.setVisibility(View.VISIBLE);//搜索提示初始化显示
+                    mLayoutBlueBooth.setVisibility(View.GONE);//搜索到的设备界面初始化隐藏
+                    noOpenBlueToothView();
+                }
+            });
             return;
         }
         if (!connectFail) {
             connectFail = true;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLayoutBlueOpenState.setVisibility(View.VISIBLE);//展示会员的设备
+                    mLayoutBlueToothBracelet.setVisibility(View.GONE);//隐藏搜索提示
+                    mLayoutBlueBooth.setVisibility(View.VISIBLE);
 
-            mLayoutBlueOpenState.setVisibility(View.VISIBLE);//展示会员的设备
-            mLayoutBlueToothBracelet.setVisibility(View.GONE);//隐藏搜索提示
-            mLayoutBlueBooth.setVisibility(View.VISIBLE);
-
-            mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
-            mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
-            connectBlueTooth();
+                    mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
+                    mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
+                    connectBlueTooth();
+                }
+            });
         } else {
-            beforeConnectBlueToothView();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    beforeConnectBlueToothView();
+                }
+            });
         }
     }
 
@@ -457,11 +471,11 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                         mConnectBlueToothTextView.setText(R.string.connect_bluetooth_success);
                     }
                 });
-                mConnectionState = DealWithBlueTooth.STATE_CONNECTED;
+                mConnectionState = true;
                 mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
                 LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
-                mConnectionState = DealWithBlueTooth.STATE_DISCONNECTED;
+                mConnectionState = false;
                 LogUtils.i(TAG, "连接失败");
                 sendConnect();
             }
@@ -648,7 +662,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     @Override
     protected void onPause() {
         super.onPause();
-        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState == DealWithBlueTooth.STATE_CONNECTED && mDealWithBlueTooth != null && writecharacteristic != null) {
+        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
             mDealWithBlueTooth.stopLeScan(mLeScanCallback);
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
