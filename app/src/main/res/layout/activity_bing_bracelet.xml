@@ -91,7 +91,7 @@
                 android:paddingBottom="@dimen/spacing_12dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="1.请确保手机蓝牙打开"
+                android:text="@string/bing_bluetooth_bracelet_prompt_1"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -109,7 +109,7 @@
                 android:paddingBottom="@dimen/spacing_12dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="2.请确保手环有电"
+                android:text="@string/bing_bluetooth_bracelet_prompt_2"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -127,7 +127,7 @@
                 android:paddingBottom="@dimen/spacing_12dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="3.让手机靠近手环 (在5米范围内) "
+                android:text="@string/bing_bluetooth_bracelet_prompt_3"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
         </LinearLayout>
@@ -150,7 +150,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:padding="@dimen/spacing_12dp"
+                android:paddingBottom="@dimen/spacing_12dp"
+                android:paddingLeft="@dimen/spacing_4dp"
+                android:paddingRight="@dimen/spacing_12dp"
+                android:paddingTop="@dimen/spacing_12dp"
                 android:textColor="@color/c4A90E2"
                 android:textSize="@dimen/textsize_15"/>
 
@@ -160,7 +163,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginBottom="@dimen/spacing_8dp"
-                android:layout_marginRight="@dimen/spacing_8dp"
+                android:layout_marginRight="@dimen/spacing_4dp"
                 android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_toLeftOf="@+id/connect_blue_tooth_TextView"
                 android:indeterminateBehavior="repeat"
@@ -174,12 +177,12 @@
         android:id="@+id/no_search_devices_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@color/cE0E8EB"
         android:gravity="center"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"
         android:padding="@dimen/spacing_12dp"
         android:text="@string/no_search_devices"
         android:textColor="@color/c9b9b9b"
-        android:textSize="@dimen/textsize_small"/>
+        android:textSize="@dimen/textsize_small"
+        android:visibility="gone"/>
 </RelativeLayout>

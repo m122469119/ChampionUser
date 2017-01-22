@@ -376,7 +376,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         if (mImageViewPager != null && mImageViewPager.getChildCount() != 0) {
             mImageViewPager.startAutoScroll();
         }
-        loadHomePage();
         LogUtils.i("bbbbb", "onResume()");
     }
 
