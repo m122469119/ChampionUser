@@ -481,12 +481,19 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if (BleService.ACTION_GATT_CONNECTED.equals(action)) {
-                LogUtils.i(TAG, "连接成功");
+                LogUtils.i("BleService", "连接成功");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mOpenBlueToothTextView.setVisibility(View.GONE);
+                        mConnectBluetoothProgressBar.setVisibility(View.GONE);
+                    }
+                });
                 mConnectionState = true;
                 mBleManager.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
             } else if (BleService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnectionState = false;
-                LogUtils.i(TAG, "连接失败");
+                LogUtils.i("BleService", "连接失败");
                 sendConnect();
             } else if (BleService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 //在这里可以对服务进行解析，寻找到你需要的服务
@@ -494,13 +501,13 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             } else if (BleService.ACTION_CHARACTERISTIC_CHANGED.equals(action)) {
                 byte[] data = intent.getByteArrayExtra(BleService.EXTRA_DATA);
                 if (data != null) {
-                    System.out.println("收到通知:");
+                    LogUtils.i("BleService","收到通知:");
                 }
                 for (int i = 0; i < data.length; i++) {
-                    LogUtils.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
+                    LogUtils.i("BleService", " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
                 }
                 doCharacteristicOnePackageData(data);
-                System.out.println("--------onCharacteristicChanged-----");
+                LogUtils.i("BleService","--------onCharacteristicChanged-----");
             }
         }
     };
@@ -537,15 +544,15 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         if (data.length >= 3) {
             if ((data[1] & 0xff) == 0x33) {//绑定
                 if (data[4] == 0x00) {
-                    LogUtils.i(TAG, "绑定成功");
+                    LogUtils.i("BleService", "绑定成功");
                     sendLogin();
                     setLoginTimeOut();
                 } else if (data[4] == 0x01) {
-                    LogUtils.i(TAG, "绑定失败");
+                    LogUtils.i("BleService", "绑定失败");
                 }
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
-                    LogUtils.i(TAG, "登录成功");
+                    LogUtils.i("BleService", "登录成功");
                     isLoginSuccess = true;
                     runOnUiThread(new Runnable() {
                         @Override
@@ -558,13 +565,13 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     setBlueToothTime();
                     sendBindDeviceRequest();
                 } else if (data[4] == 0x01) {
-                    LogUtils.i(TAG, "登录失败");
+                    LogUtils.i("BleService", "登录失败");
                 }
             } else if ((data[1] & 0xff) == 0x0D) {
                 if (data[4] == 0x00) {
-                    LogUtils.i(TAG, "解绑成功");
+                    LogUtils.i("BleService", "解绑成功");
                 } else if (data[4] == 0x01) {
-                    LogUtils.i(TAG, "解绑失败");
+                    LogUtils.i("BleService", "解绑失败");
                 }
             } else if ((data[1] & 0xff) == 0x09) {//电量
                 LogUtils.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
@@ -622,6 +629,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private void sendLogin() {
         if (writecharacteristic != null) {
             byte[] uuId = muuId.getBytes();
+            LogUtils.i("BleService", "sendLogin: " + muuId);
             mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
         }
     }

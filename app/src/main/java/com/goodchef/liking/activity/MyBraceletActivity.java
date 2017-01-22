@@ -245,7 +245,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
      * 打开蓝牙
      */
     public void openBluetooth() {
-        mBleManager.getBleUtils().openBlueTooth(this);
+        if (mBleManager.getBleUtils() != null) {
+            mBleManager.getBleUtils().openBlueTooth(this);
+        }
     }
 
     /**

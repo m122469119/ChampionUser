@@ -63,16 +63,16 @@ public class BleManager {
      * 初始化蓝牙
      */
     public boolean isOpen() {
-        if (mBleUtils == null) {
-            return false;
-        }
-        if (!mBleUtils.isOpen()) {
+        if (mBleUtils == null || !mBleUtils.isOpen()) {
             return false;
         } else {
             return true;
         }
     }
 
+    public boolean isScanning() {
+        return mBleScanner.isScanning();
+    }
 
     public void bind() {
         Intent gattServiceIntent = new Intent(mContext, BleService.class);
@@ -88,6 +88,9 @@ public class BleManager {
     }
 
     public void doScan(boolean enable) {
+        if (mBleScanner.isScanning()) {
+            return;
+        }
         mBleScanner.scanLeDevice(enable);
     }
 

@@ -117,6 +117,7 @@ public class BleService extends Service {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
+            LogUtils.i(TAG, "onConnectionStateChange----");
             String intentAction;
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 intentAction = ACTION_GATT_CONNECTED;
@@ -137,6 +138,7 @@ public class BleService extends Service {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
+            LogUtils.i(TAG, "onServicesDiscovered----");
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             } else {
@@ -146,11 +148,13 @@ public class BleService extends Service {
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            LogUtils.i(TAG, "onCharacteristicRead----");
             super.onCharacteristicRead(gatt, characteristic, status);
         }
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            LogUtils.i(TAG, "onCharacteristicWrite----");
             super.onCharacteristicWrite(gatt, characteristic, status);
             broadcastUpdate(ACTION_CHARACTERISTIC_WRITE);
             System.out.println("--------write success----- status:" + status);
@@ -163,32 +167,38 @@ public class BleService extends Service {
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            LogUtils.i(TAG, "onCharacteristicChanged----");
             super.onCharacteristicChanged(gatt, characteristic);
             broadcastUpdate(ACTION_CHARACTERISTIC_CHANGED, characteristic);
         }
 
         @Override
         public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+            LogUtils.i(TAG, "onDescriptorRead----");
             super.onDescriptorRead(gatt, descriptor, status);
         }
 
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+            LogUtils.i(TAG, "onDescriptorWrite----");
             super.onDescriptorWrite(gatt, descriptor, status);
         }
 
         @Override
         public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
+            LogUtils.i(TAG, "onReliableWriteCompleted----");
             super.onReliableWriteCompleted(gatt, status);
         }
 
         @Override
         public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+            LogUtils.i(TAG, "onReadRemoteRssi----");
             super.onReadRemoteRssi(gatt, rssi, status);
         }
 
         @Override
         public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+            LogUtils.i(TAG, "onMtuChanged----");
             super.onMtuChanged(gatt, mtu, status);
         }
     };
