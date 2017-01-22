@@ -2,12 +2,8 @@ package com.goodchef.liking.activity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,7 +31,6 @@ import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
-import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.dialog.HeartRateDialog;
 import com.goodchef.liking.dialog.ShakeSynchronizationDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
@@ -48,7 +43,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -295,7 +289,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      * 打开蓝牙
      */
     public void openBluetooth() {
-        mBleManager.getBleUtils().openBlueTooth(this);
+        if (mBleManager.getBleUtils() != null) {
+            mBleManager.getBleUtils().openBlueTooth(this);
+        }
     }
 
     /**
