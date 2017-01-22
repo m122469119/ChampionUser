@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.os.ParcelUuid;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -161,7 +163,7 @@ public class DealWithBlueTooth {
      */
     public boolean connect(Context context, String address, BluetoothGattCallback callback) {
         if (mBluetoothAdapter == null || address == null) {
-            LogUtils.i(TAG, "BluetoothAdapter not initialized or unspecified address.");
+            LogUtils.d(TAG, "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
         // Previously connected device. Try to reconnect. (先前连接的设备。 尝试重新连接)
@@ -183,6 +185,28 @@ public class DealWithBlueTooth {
         mBluetoothGatt = device.connectGatt(context, false, callback);
         LogUtils.i(TAG, "Trying to create a new connection.");
         return true;
+    }
+
+    /**
+     * 断开连接
+     */
+    public void disconnect() {
+        LogUtils.i(TAG,mBluetoothGatt == null ? "null":mBluetoothGatt.toString());
+        if (mBluetoothGatt == null) {
+            return;
+        }
+
+        mBluetoothGatt.disconnect();
+    }
+
+    /**
+     * 关闭
+     */
+    public void close() {
+        if (mBluetoothGatt == null) {
+            return;
+        }
+        mBluetoothGatt.close();
     }
 
 
@@ -230,5 +254,6 @@ public class DealWithBlueTooth {
         characteristic.setValue(bytes);
         mBluetoothGatt.writeCharacteristic(characteristic);
     }
+
 
 }

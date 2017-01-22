@@ -407,8 +407,14 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 mConnectionState = true;
                 mBluetoothDevice = gatt.getDevice();
                 setConnectSuccessView();
-                mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
-                LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
+                gatt.discoverServices();
+
+                mDealWithBlueTooth.mBluetoothGatt = gatt;
+                if ( mDealWithBlueTooth.mBluetoothGatt !=null){
+                    mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
+                }
+
+                LogUtils.i(TAG, "Attempting to start service discovery:" + gatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
                 mConnectionState = false;
                 LogUtils.i(TAG, "连接失败");
@@ -488,6 +494,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
                     LogUtils.i(TAG, "登录成功");
+                    setBlueToothTime();
                 } else if (data[4] == 0x01) {
                     LogUtils.i(TAG, "登录失败");
                     if (!isLoginFail) {
@@ -517,6 +524,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
                 getFirmwareInfo(data);
             }
+        }
+    }
+
+    /**
+     * 设置蓝牙时间
+     */
+    private void setBlueToothTime() {
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getTimeBytes());
         }
     }
 
@@ -565,6 +581,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getLoginBytes(uuId));
                 if (readcharacteristic != null) {
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
+                    mDealWithBlueTooth.setCharacteristicNotification(writecharacteristic, true);
                 }
             }
         }
@@ -695,6 +712,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
+        mDealWithBlueTooth.disconnect();
+        mDealWithBlueTooth.close();
         Preference.setIsBind("0");
         finish();
     }
@@ -706,6 +725,8 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
+        mDealWithBlueTooth.disconnect();
+        mDealWithBlueTooth.close();
         super.onPause();
     }
 }

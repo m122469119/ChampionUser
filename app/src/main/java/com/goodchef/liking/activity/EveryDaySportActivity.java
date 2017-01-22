@@ -588,6 +588,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
                     Log.i(TAG, "登录成功");
+                    setBlueToothTime();
                     loginSuccess();
                 } else if (data[4] == 0x01) {
                     Log.i(TAG, "登录失败");
@@ -623,6 +624,15 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     isHistory = false;
                 }
             }
+        }
+    }
+
+    /**
+     * 设置蓝牙时间
+     */
+    private void setBlueToothTime(){
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getTimeBytes());
         }
     }
 

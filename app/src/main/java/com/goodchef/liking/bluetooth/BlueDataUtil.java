@@ -1,7 +1,11 @@
 package com.goodchef.liking.bluetooth;
 
+import com.aaron.android.codelibrary.utils.DateUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -153,12 +157,17 @@ public class BlueDataUtil {
         bytes[2] = 0x00;
         bytes[3] = 0x06;
 
-        bytes[4] = (byte) 0x10;
-        bytes[5] = 0x0c;
-        bytes[6] = 0x18;
-        bytes[7] = 0x0c;
-        bytes[8] = 0x00;
-        bytes[9] = 0x00;
+        byte[] timeBytes = getDateBytes();
+        for (int i = 0; i < timeBytes.length; i++) {
+            bytes[i + 4] = (byte) (timeBytes[i] & 0xff);
+        }
+
+//        bytes[4] = (byte) 0x10;
+//        bytes[5] = 0x0c;
+//        bytes[6] = 0x18;
+//        bytes[7] = 0x0c;
+//        bytes[8] = 0x00;
+//        bytes[9] = 0x00;
 
 
         byte crc = 0;
@@ -398,6 +407,32 @@ public class BlueDataUtil {
             e.printStackTrace();
         }
         return xmlUTF8;
+    }
+
+    public static byte[] getDateBytes() {
+        byte[] bytes = new byte[6];
+     //   Date date = new Date();
+       // String year = date.getYear() + "";
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = (calendar.get(Calendar.MONTH) + 1);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+
+
+        String yearStr = year + "";
+        String y = yearStr.substring(yearStr.length() - 2, yearStr.length());
+
+        bytes[0] = (byte) Integer.parseInt(y);
+        bytes[1] = (byte) month;
+        bytes[2] = (byte) day;
+        bytes[3] = (byte) hour;
+        bytes[4] = (byte) minutes;
+        bytes[5] = (byte) second;
+        return bytes;
     }
 
 }

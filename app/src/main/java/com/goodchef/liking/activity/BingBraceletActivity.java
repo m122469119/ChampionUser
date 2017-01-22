@@ -29,6 +29,7 @@ import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DeviceUtils;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BlueDataUtil;
@@ -137,6 +138,11 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         mBlueToothRoundImageView.setOnClickListener(this);
         mOpenBlueToothTextView.setOnClickListener(this);
         mConnectBlueToothTextView.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     /**
@@ -483,6 +489,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mOpenBlueToothTextView.setVisibility(View.GONE);
                         mConnectBluetoothProgressBar.setVisibility(View.GONE);
                         mConnectBlueToothTextView.setText(R.string.connect_bluetooth_success);
                     }
@@ -587,6 +594,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 if (data[4] == 0x00) {
                     LogUtils.i(TAG, "登录成功");
                     isLoginSuccess = true;
+                    setBlueToothTime();
                     sendBindDeviceRequest();
                 } else if (data[4] == 0x01) {
                     LogUtils.i(TAG, "登录失败");
@@ -611,6 +619,19 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         }
     }
 
+    /**
+     * 设置蓝牙时间
+     */
+    private void setBlueToothTime() {
+        if (writecharacteristic != null) {
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getTimeBytes());
+        }
+    }
+
+
+    /**
+     * 发送绑定请求到后端
+     */
     private void sendBindDeviceRequest() {
         if (isLoginSuccess && !isSendRequest) {
             isSendRequest = true;
@@ -679,7 +700,6 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     protected void onPause() {
         super.onPause();
         if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
-            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
             mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
         }
     }
