@@ -325,10 +325,15 @@ public class BleService extends Service {
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
-        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG));
-        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-        mBluetoothGatt.writeDescriptor(descriptor);
+//        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+//                UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG));
+//        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//        mBluetoothGatt.writeDescriptor(descriptor);
+        List<BluetoothGattDescriptor> descriptors = characteristic.getDescriptors();
+        for (BluetoothGattDescriptor dp : descriptors) {
+            dp.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(dp);
+        }
     }
 
 

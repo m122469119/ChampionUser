@@ -88,7 +88,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private String source;
 
     private Handler mHandler = new Handler();
-    //    private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
     private BluetoothGattCharacteristic writecharacteristic;
     private BluetoothGattCharacteristic readcharacteristic;
     private boolean mConnectionState = false;
@@ -110,7 +109,6 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         getInitData();
         mBleManager = new BleManager(this, mLeScanCallback);
         mBleManager.bind();
-//        mDealWithBlueTooth = new DealWithBlueTooth(this);
         initBlueTooth();
         if (source.equals("BingBraceletActivity")) {
             mMyBraceletTextView.setText(R.string.binding_finish);
@@ -291,8 +289,10 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                                 mBindDevicesAddress = device.getAddress();
                                 mBindDevicesName = device.getName();
                                 myBraceletMac = device.getAddress();
-                                isScanDevices = true;
-                                connect();
+                                if (!isScanDevices){
+                                    isScanDevices = true;
+                                    connect();
+                                }
                             }
                         }
                     }
@@ -482,6 +482,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 byte[] uuId = muuId.getBytes();
                 mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getBindBytes(uuId));
                 if (readcharacteristic != null) {
+                    mBleManager.setCharacteristicNotification(writecharacteristic,true);
                     mBleManager.setCharacteristicNotification(readcharacteristic, true);
                 }
             }

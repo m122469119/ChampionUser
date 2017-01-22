@@ -320,4 +320,5 @@
     <string name="bluetooth_login_fail">蓝牙登入失败，重新发送登入请求？</string>
     <string name="connect_bluetooth_success">连接成功</string>
     <string name="connect_again">重新连接</string>
+    <string name="loging_out_fail">登录失败，重试</string>
 </resources>
