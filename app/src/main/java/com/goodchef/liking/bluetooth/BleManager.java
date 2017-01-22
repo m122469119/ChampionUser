@@ -11,8 +11,11 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created on 17/1/22.
@@ -35,6 +38,7 @@ public class BleManager {
             mBleService = ((BleService.BleServiceBinder) service).getService();
             if (!mBleService.initialize()) {
                 LogUtils.e(TAG, "Unable to initialize Bluetooth");
+                EventBus.getDefault().post(new ServiceConnectionMessage());
             }
         }
 
@@ -59,6 +63,9 @@ public class BleManager {
      * 初始化蓝牙
      */
     public boolean isOpen() {
+        if (mBleUtils == null) {
+            return false;
+        }
         if (!mBleUtils.isOpen()) {
             return false;
         } else {

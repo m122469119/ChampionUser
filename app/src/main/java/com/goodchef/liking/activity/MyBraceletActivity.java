@@ -29,6 +29,7 @@ import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.dialog.UnBindDevicesDialog;
+import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
 import com.goodchef.liking.mvp.view.UnBindDevicesView;
@@ -97,6 +98,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     private boolean connectFail = false;//是否连接失败
     private boolean isPause = false;
     private boolean isScanDevices = false;
+    private boolean isGetAllData = false;
     private BluetoothDevice mBluetoothDevice;
     private BleManager mBleManager;
 
@@ -106,9 +108,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         setContentView(R.layout.activity_my_bracelet);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_bracelet));
-        getInitData();
         mBleManager = new BleManager(this, mLeScanCallback);
         mBleManager.bind();
+        getInitData();
         initBlueTooth();
         if (source.equals("BingBraceletActivity")) {
             mMyBraceletTextView.setText(R.string.binding_finish);
@@ -153,19 +155,21 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        if (initBlueTooth()) {
-            if (!StringUtils.isEmpty(myBraceletMac)) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        connect();
-                    }
-                }, 1000);
-            }
-        }
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
     }
 
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(ServiceConnectionMessage message) {
+        if (initBlueTooth()) {
+            if (!StringUtils.isEmpty(myBraceletMac)) {
+                connect();
+            }
+        }
+    }
 
     private void synchronizationInfo() {
         setOnSynchronizationView();
@@ -289,7 +293,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                                 mBindDevicesAddress = device.getAddress();
                                 mBindDevicesName = device.getName();
                                 myBraceletMac = device.getAddress();
-                                if (!isScanDevices){
+                                if (!isScanDevices) {
                                     isScanDevices = true;
                                     connect();
                                 }
@@ -389,6 +393,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             } else if ((data[1] & 0xff) == 0x35) {
                 if (data[4] == 0x00) {
                     LogUtils.i(TAG, "登录成功");
+                    setLoginTimeOut();
                     setBlueToothTime();
                 } else if (data[4] == 0x01) {
                     LogUtils.i(TAG, "登录失败");
@@ -397,9 +402,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (!isPause) {
-                                    showLoginFail();
-                                }
+                                showLoginFail();
                             }
                         });
                     }
@@ -432,6 +435,30 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     }
 
     /**
+     * 发送登录
+     */
+    private void sendLogin() {
+        if (writecharacteristic != null) {
+            byte[] uuId = muuId.getBytes();
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
+        }
+    }
+
+    private void setLoginTimeOut() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLoginFail();
+                    }
+                });
+            }
+        }, 10000);
+    }
+
+    /**
      * 连接成功
      */
     private void setConnectSuccessView() {
@@ -456,6 +483,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                isGetAllData = true;
                 mUnbindTextView.setVisibility(View.VISIBLE);
                 setSynchronizationPowerView(500);
                 if (Preference.getFirstBindBracelet()) {
@@ -480,9 +508,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             readcharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.RX_UUID);
             if (writecharacteristic != null) {
                 byte[] uuId = muuId.getBytes();
-                mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getBindBytes(uuId));
+                mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
                 if (readcharacteristic != null) {
-                    mBleManager.setCharacteristicNotification(writecharacteristic,true);
+                    mBleManager.setCharacteristicNotification(writecharacteristic, true);
                     mBleManager.setCharacteristicNotification(readcharacteristic, true);
                 }
             }
@@ -490,12 +518,15 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
     }
 
     private void showLoginFail() {
+        if (isFinishing()) {
+            return;
+        }
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         builder.setMessage(getString(R.string.bluetooth_login_fail));
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getBlueToothServices();
+                sendLogin();
                 dialog.dismiss();
             }
         });
@@ -661,7 +692,9 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 for (int i = 0; i < data.length; i++) {
                     LogUtils.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
                 }
-                doCharacteristicData(data);
+                if (!isGetAllData) {
+                    doCharacteristicData(data);
+                }
                 System.out.println("--------onCharacteristicChanged-----");
             }
         }

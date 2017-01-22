@@ -258,10 +258,14 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 noOpenBlueToothView();
                 return;
             }
-            mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
-            mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
-            connectBlueTooth();
-            mConnectBlueToothTextView.setEnabled(false);
+            if (mConnectionState) {
+                sendLogin();
+            } else {
+                mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
+                mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
+                connectBlueTooth();
+                mConnectBlueToothTextView.setEnabled(false);
+            }
         }
     }
 
