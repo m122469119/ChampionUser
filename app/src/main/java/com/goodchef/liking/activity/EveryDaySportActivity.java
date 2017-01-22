@@ -8,7 +8,11 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatDialog;
@@ -27,11 +31,14 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.bluetooth.BleManager;
+import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.dialog.HeartRateDialog;
 import com.goodchef.liking.dialog.ShakeSynchronizationDialog;
+import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.data.SportData;
@@ -99,7 +106,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private SportPresenter mSportPresenter;
     private String myBraceletMac;//我的手环Mac地址
     private String muuId;
-    private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
     private Handler mHandler = new Handler();
     private boolean isConnect = false;//是否连接
     public BluetoothGattCharacteristic writecharacteristic;
@@ -125,13 +131,17 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private boolean isFirsSendSportData = true;//是否是第一次上传运动数据
     private boolean mConnectionState = false;
 
+    private BleManager mBleManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_every_day_sport);
         ButterKnife.bind(this);
         getIntentData();
-        mDealWithBlueTooth = new DealWithBlueTooth(this);
+        mBleManager = new BleManager(this, mLeScanCallback);
+        mBleManager.bind();
         setTitle(getString(R.string.title_every_day_sport));
         setTodayDataView();
         mSynchronizationSateTextView.setVisibility(View.GONE);
@@ -144,6 +154,16 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(ServiceConnectionMessage message) {
         if (initBlueTooth() && !StringUtils.isEmpty(myBraceletMac)) {
             connect();
         } else {
@@ -151,6 +171,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
         }
     }
+
 
     private void showProgressBar(boolean show) {
         if (show) {
@@ -262,22 +283,19 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      * 初始化蓝牙
      */
     public boolean initBlueTooth() {
-        if (!mDealWithBlueTooth.isSupportBlueTooth()) {
+        if (!mBleManager.isOpen()) {
+            openBluetooth();
             return false;
-        }
-//        if (!mDealWithBlueTooth.isOpen()) {
-//            openBluetooth();
-//            return false;
-//        } else {
+        } else {
             return true;
-//        }
+        }
     }
 
     /**
      * 打开蓝牙
      */
     public void openBluetooth() {
-//        mDealWithBlueTooth.openBlueTooth(this);
+        mBleManager.getBleUtils().openBlueTooth(this);
     }
 
     /**
@@ -292,20 +310,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
 
 
     public void scanLeDevice(final boolean enable) {
-        if (enable) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDealWithBlueTooth.stopLeScan(mLeScanCallback);
-                }
-            }, 45000); //10秒后停止搜索
-            UUID[] uuids = new UUID[1];
-            UUID uuid = UUID.fromString("0000FEA0-0000-1000-8000-00805f9b34fb");
-            uuids[0] = uuid;
-            mDealWithBlueTooth.startLeScan(mLeScanCallback);
-        } else {
-            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
-        }
+        mBleManager.doScan(enable);
     }
 
 
@@ -350,7 +355,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                 }
             });
             isConnect = true;
-            mDealWithBlueTooth.connect(this, myBraceletMac, mGattCallback);
+            mBleManager.connect(myBraceletMac);
         }
     }
 
@@ -389,7 +394,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void setSynchronizationSate(final String str, final int color) {
         if (mConnectionState) {
-            mDealWithBlueTooth.stopLeScan(mLeScanCallback);
+            mBleManager.stopScan();
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -418,95 +423,28 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
                     showProgressBar(true);
                 }
             });
-            mDealWithBlueTooth.connect(this, myBraceletMac, mGattCallback);
+            mBleManager.connect(myBraceletMac);
         }
     }
 
-    private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
-        @Override  //当连接上设备或者失去连接时会回调该函数
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            if (newState == BluetoothProfile.STATE_CONNECTED) { //连接成功
-                LogUtils.i(TAG, "连接成功");
-                mConnectionState = true;
-                setSynchronizationSate(getString(R.string.connect_success), ResourceUtils.getColor(R.color.c4A90E2));
-                setConnectStateView();
-                mDealWithBlueTooth.mBluetoothGatt.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
-                LogUtils.i(TAG, "Attempting to start service discovery:" + mDealWithBlueTooth.mBluetoothGatt.discoverServices());
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //连接失败
-                LogUtils.i(TAG, "连接失败");
-                mConnectionState = false;
-                setConnectStateView();
-                setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
-                sendConnect();
-            }
-        }
-
-        @Override  //当设备是否找到服务时，会回调该函数
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {   //找到服务了
-                //在这里可以对服务进行解析，寻找到你需要的服务
-                LogUtils.i(TAG, "service size = " + mDealWithBlueTooth.getSupportedGattServices().size() + "");
-                //  displayGattServices(getSupportedGattServices());
-                getBlueToothServices();
-            } else {
-                Log.d(TAG, "onServicesDiscovered received: " + status);
-            }
-        }
-
-        @Override  //当读取设备时会回调该函数
-        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            System.out.println("onCharacteristicRead");
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                //读取到的数据存在characteristic当中，可以通过characteristic.getValue();函数取出。然后再进行解析操作。
-                //int charaProp = characteristic.getProperties();if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0)表示可发出通知。  判断该Characteristic属性
-            }
-        }
-
-        @Override //当向设备Descriptor中写数据时，会回调该函数
-        public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-            System.out.println("onDescriptorWriteonDescriptorWrite = " + status + ", descriptor =" + descriptor.getUuid().toString());
-        }
-
-        @Override //设备发出通知时会调用到该接口
-        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            if (characteristic.getValue() != null) {
-                System.out.println("收到通知:");
-            }
-            LogUtils.i(TAG, "Characteristic.getUuid == " + characteristic.getUuid().toString());
-            byte[] data = characteristic.getValue();
-            for (int i = 0; i < data.length; i++) {
-                LogUtils.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
-            }
-            readOnCharacteristicChangedData(data);
-            System.out.println("--------onCharacteristicChanged-----");
-        }
-
-        @Override
-        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
-            System.out.println("rssi = " + rssi);
-        }
-
-        @Override //当向Characteristic写数据时会回调该函数
-        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            System.out.println("--------write success----- status:" + status);
-            if (status == BluetoothGatt.GATT_FAILURE) {
-                LogUtils.i(TAG, "写入失败");
-            } else if (status == BluetoothGatt.GATT_SUCCESS) {
-                LogUtils.i(TAG, "写入成功666666");
-            }
-        }
-    };
-
     private void getBlueToothServices() {
-        BluetoothGattService service = mDealWithBlueTooth.mBluetoothGatt.getService(mDealWithBlueTooth.SERVER_UUID);
-        if (service != null) {
-            writecharacteristic = service.getCharacteristic(mDealWithBlueTooth.TX_UUID);
-            readcharacteristic = service.getCharacteristic(mDealWithBlueTooth.RX_UUID);
+        List<BluetoothGattService> bluetoothGattServices = mBleManager.getSupportedGattServices();
+        BluetoothGattService bleService = null;
+        for (BluetoothGattService service : bluetoothGattServices) {
+            if (service.getUuid().equals(BlueCommandUtil.Constants.SERVER_UUID)) {
+                bleService = service;
+                break;
+            }
+        }
+        if (bleService != null) {
+            writecharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.TX_UUID);
+            readcharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.RX_UUID);
             if (writecharacteristic != null) {
                 byte[] uuId = muuId.getBytes();
-                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
+                mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
                 if (readcharacteristic != null) {
-                    mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
+                    mBleManager.setCharacteristicNotification(writecharacteristic, true);
+                    mBleManager.setCharacteristicNotification(readcharacteristic, true);
                 }
             }
         }
@@ -530,7 +468,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void sendSportDataSynchronization() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getSportSynchronizationBytes());
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getSportSynchronizationBytes());
         }
     }
 
@@ -628,9 +566,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     /**
      * 设置蓝牙时间
      */
-    private void setBlueToothTime(){
+    private void setBlueToothTime() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getTimeBytes());
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getTimeBytes());
         }
     }
 
@@ -652,6 +590,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             @Override
             public void run() {
                 if (!isSynchronization) {
+                    dismissShakeDialog();
                     setSynchronizationSate(getString(R.string.synchronization_fial), ResourceUtils.getColor(R.color.red));
                 }
             }
@@ -870,7 +809,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void respondSportData() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getSportRespondBytes(BlueCommandUtil.ZERO));
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getSportRespondBytes(BlueCommandUtil.ZERO));
         }
     }
 
@@ -1053,6 +992,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mBleManager.release();
     }
 
     @Override
@@ -1064,6 +1004,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         }
         sendCloseSynchronization();
         sendDisconnectBlueTooth();
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     /**
@@ -1071,7 +1012,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void sendHeartRateSynchronization() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getHeartRateSynchronizationBytes());
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getHeartRateSynchronizationBytes());
         }
     }
 
@@ -1079,18 +1020,58 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      * 发送关闭蓝牙命令
      */
     private void sendDisconnectBlueTooth() {
-//        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
-//            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getDisconnectBlueTooth());
-//        }
+        if (mBleManager.isOpen() && mConnectionState && writecharacteristic != null) {
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getDisconnectBlueTooth());
+        }
     }
 
     /**
      * 发送关闭实时同步运动数据
      */
     private void sendCloseSynchronization() {
-//        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
-//            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getCloseSynchronizationBytes());
-//        }
+        if (mBleManager.isOpen() && mConnectionState && writecharacteristic != null) {
+            mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getCloseSynchronizationBytes());
+        }
+    }
+
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BleService.ACTION_GATT_CONNECTED.equals(action)) {
+                Log.i(TAG, "连接成功");
+                mConnectionState = true;
+                setSynchronizationSate(getString(R.string.connect_success), ResourceUtils.getColor(R.color.c4A90E2));
+                setConnectStateView();
+                mBleManager.discoverServices();
+            } else if (BleService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mConnectionState = false;
+                setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
+                sendConnect();
+            } else if (BleService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                //在这里可以对服务进行解析，寻找到你需要的服务
+                getBlueToothServices();
+            } else if (BleService.ACTION_CHARACTERISTIC_CHANGED.equals(action)) {
+                byte[] data = intent.getByteArrayExtra(BleService.EXTRA_DATA);
+                if (data != null) {
+                    System.out.println("收到通知:");
+                }
+                for (int i = 0; i < data.length; i++) {
+                    LogUtils.i(TAG, " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
+                }
+                readOnCharacteristicChangedData(data);
+                System.out.println("--------onCharacteristicChanged-----");
+            }
+        }
+    };
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BleService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BleService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BleService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BleService.ACTION_CHARACTERISTIC_CHANGED);
+        return intentFilter;
     }
 
 }
