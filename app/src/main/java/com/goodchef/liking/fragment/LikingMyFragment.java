@@ -523,22 +523,22 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 初始化蓝牙
      */
     public boolean initBlueTooth() {
-        if (!mDealWithBlueTooth.isSupportBlueTooth()) {
-            return false;
-        }
-        if (!mDealWithBlueTooth.isOpen()) {
-            openBluetooth();
-            return false;
-        } else {
+//        if (!mDealWithBlueTooth.isSupportBlueTooth()) {
+//            return false;
+//        }
+//        if (!mDealWithBlueTooth.isOpen()) {
+//            openBluetooth();
+//            return false;
+//        } else {
             return true;
-        }
+//        }
     }
 
     /**
      * 打开蓝牙
      */
     public void openBluetooth() {
-        mDealWithBlueTooth.openBlueTooth(getActivity());
+//        mDealWithBlueTooth.openBlueTooth(getActivity());
     }
 
     private void jumpBodyTestActivity() {

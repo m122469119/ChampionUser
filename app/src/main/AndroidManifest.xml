@@ -5,7 +5,7 @@
           android:versionName="1.4.0">
 
 
-
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <permission
         android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"
@@ -53,7 +53,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        <service android:name=".bluetooth.BleService" android:enabled="true"/>
         <!--首页-->
         <activity
             android:name=".activity.LikingHomeActivity"

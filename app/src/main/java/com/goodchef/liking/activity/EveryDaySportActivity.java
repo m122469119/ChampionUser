@@ -10,7 +10,6 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
@@ -28,7 +27,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.bluetooth.BlueDataUtil;
+import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.dialog.HeartRateDialog;
@@ -42,7 +41,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -267,19 +265,19 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         if (!mDealWithBlueTooth.isSupportBlueTooth()) {
             return false;
         }
-        if (!mDealWithBlueTooth.isOpen()) {
-            openBluetooth();
-            return false;
-        } else {
+//        if (!mDealWithBlueTooth.isOpen()) {
+//            openBluetooth();
+//            return false;
+//        } else {
             return true;
-        }
+//        }
     }
 
     /**
      * 打开蓝牙
      */
     public void openBluetooth() {
-        mDealWithBlueTooth.openBlueTooth(this);
+//        mDealWithBlueTooth.openBlueTooth(this);
     }
 
     /**
@@ -506,7 +504,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             readcharacteristic = service.getCharacteristic(mDealWithBlueTooth.RX_UUID);
             if (writecharacteristic != null) {
                 byte[] uuId = muuId.getBytes();
-                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getLoginBytes(uuId));
+                mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
                 if (readcharacteristic != null) {
                     mDealWithBlueTooth.setCharacteristicNotification(readcharacteristic, true);
                 }
@@ -532,7 +530,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void sendSportDataSynchronization() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getSportSynchronizationBytes());
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getSportSynchronizationBytes());
         }
     }
 
@@ -632,7 +630,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void setBlueToothTime(){
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getTimeBytes());
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getTimeBytes());
         }
     }
 
@@ -872,7 +870,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void respondSportData() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getSportRespondBytes(BlueDataUtil.ZERO));
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getSportRespondBytes(BlueCommandUtil.ZERO));
         }
     }
 
@@ -1073,7 +1071,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void sendHeartRateSynchronization() {
         if (writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getHeartRateSynchronizationBytes());
+            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getHeartRateSynchronizationBytes());
         }
     }
 
@@ -1081,18 +1079,18 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      * 发送关闭蓝牙命令
      */
     private void sendDisconnectBlueTooth() {
-        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getDisconnectBlueTooth());
-        }
+//        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
+//            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getDisconnectBlueTooth());
+//        }
     }
 
     /**
      * 发送关闭实时同步运动数据
      */
     private void sendCloseSynchronization() {
-        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
-            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueDataUtil.getCloseSynchronizationBytes());
-        }
+//        if (mDealWithBlueTooth.isSupportBlueTooth() && mDealWithBlueTooth.isOpen() && mConnectionState && mDealWithBlueTooth != null && writecharacteristic != null) {
+//            mDealWithBlueTooth.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getCloseSynchronizationBytes());
+//        }
     }
 
 }

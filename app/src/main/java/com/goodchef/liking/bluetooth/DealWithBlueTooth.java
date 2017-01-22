@@ -1,6 +1,5 @@
 package com.goodchef.liking.bluetooth;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -9,13 +8,9 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
-import android.os.ParcelUuid;
-import android.os.RemoteException;
-import android.util.Log;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -74,36 +69,7 @@ public class DealWithBlueTooth {
         }
     }
 
-    /**
-     * 打开蓝牙，跳转到蓝牙允许界面
-     *
-     * @param mActivity
-     */
-    public void openBlueTooth(Activity mActivity) {
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        mActivity.startActivityForResult(enableBtIntent, 1);
-    }
 
-
-    /**
-     * 关闭蓝牙
-     */
-    public void closeBluetooth() {
-        mBluetoothAdapter.disable();
-    }
-
-    /**
-     * 判断蓝牙是否打开
-     *
-     * @return boolean
-     */
-    public boolean isOpen() {
-        if (mBluetoothAdapter == null) {
-            return false;
-        } else {
-            return mBluetoothAdapter.isEnabled();
-        }
-    }
 
 
     /**
@@ -191,7 +157,7 @@ public class DealWithBlueTooth {
      * 断开连接
      */
     public void disconnect() {
-        LogUtils.i(TAG,mBluetoothGatt == null ? "null":mBluetoothGatt.toString());
+        LogUtils.i(TAG, mBluetoothGatt == null ? "null" : mBluetoothGatt.toString());
         if (mBluetoothGatt == null) {
             return;
         }

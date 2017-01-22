@@ -1,12 +1,10 @@
 package com.goodchef.liking.bluetooth;
 
-import com.aaron.android.codelibrary.utils.DateUtils;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * 说明:
@@ -15,7 +13,13 @@ import java.util.Locale;
  * version 1.0.0
  */
 
-public class BlueDataUtil {
+public class BlueCommandUtil {
+
+    public static final class Constants {
+        public static final UUID SERVER_UUID = UUID.fromString("C3E6FEA0-E966-1000-8000-BE99C223DF6A");
+        public static final UUID TX_UUID = UUID.fromString("C3E6FEA1-E966-1000-8000-BE99C223DF6A");
+        public static final UUID RX_UUID = UUID.fromString("C3E6FEA2-E966-1000-8000-BE99C223DF6A");
+    }
 
     public static final byte ZERO = 0x00;
     public static final byte ONE = 0x01;
