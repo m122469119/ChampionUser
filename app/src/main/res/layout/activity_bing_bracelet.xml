@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/blue_tooth_RoundImageView"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/spacing_16dp"
+                android:layout_marginTop="@dimen/spacing_20dp"
                 android:text="@string/point_search"
                 android:textColor="@color/white"
                 android:textSize="15sp"/>
@@ -152,6 +152,7 @@
                 android:layout_alignParentRight="true"
                 android:paddingBottom="@dimen/spacing_12dp"
                 android:paddingLeft="@dimen/spacing_4dp"
+                android:layout_centerVertical="true"
                 android:paddingRight="@dimen/spacing_12dp"
                 android:paddingTop="@dimen/spacing_12dp"
                 android:textColor="@color/c4A90E2"
@@ -160,10 +161,11 @@
 
             <ProgressBar
                 android:id="@+id/connect_bluetooth_ProgressBar"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginBottom="@dimen/spacing_8dp"
                 android:layout_marginRight="@dimen/spacing_4dp"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_toLeftOf="@+id/connect_blue_tooth_TextView"
                 android:indeterminateBehavior="repeat"

@@ -80,6 +80,7 @@ public class BleManager {
     }
 
     public void release() {
+        mBleService.disconnect();
         mBleScanner.setLeScanCallback(null);
         mContext.unbindService(mServiceConnection);
         mBleService = null;
@@ -103,7 +104,9 @@ public class BleManager {
     }
 
     public void connect(String address) {
-        mBleService.connect(address);
+        if (mBleService !=null){
+            mBleService.connect(address);
+        }
     }
 
     public void discoverServices() {

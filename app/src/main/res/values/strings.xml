@@ -308,7 +308,7 @@
     <string name="location_fail_repeat_location">定位失败·重新定位</string>
     <string name="current_city">当前城市：</string>
     <string name="binding_finish">已完成绑定</string>
-    <string name="bluetooth_connect_fail">手环连接失败</string>
+    <string name="bluetooth_connect_fail">手环连接失败(尝试重启蓝牙)</string>
     <string name="retry">重试</string>
     <string name="no_search_devices">如果未搜索到设备，请咨询教练</string>
     <string name="member_bluetooth_devices">您的设备</string>
@@ -324,4 +324,6 @@
     <string name="bing_bluetooth_bracelet_prompt_1">1.请确保手机蓝牙打开</string>
     <string name="bing_bluetooth_bracelet_prompt_2">2.请确保手环有电</string>
     <string name="bing_bluetooth_bracelet_prompt_3">3.让手机靠近手环 (在5米范围内)</string>
+    <string name="connect_time_out">手环连接超时</string>
+    <string name="connect_not_jump_help">连接中不能操作哟！</string>
 </resources>

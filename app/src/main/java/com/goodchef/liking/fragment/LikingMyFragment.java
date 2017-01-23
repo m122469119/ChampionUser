@@ -41,6 +41,8 @@ import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.activity.MyTrainDataActivity;
 import com.goodchef.liking.activity.SelfHelpGroupActivity;
+import com.goodchef.liking.bluetooth.BleManager;
+import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.bluetooth.DealWithBlueTooth;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
@@ -107,7 +109,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private Typeface mTypeface;
     private String mBraceletMac;//手环mac地址
     private String UUID;
-    private DealWithBlueTooth mDealWithBlueTooth;//手环处理类
+    private BleUtils mBleUtils;
 
     @Nullable
     @Override
@@ -115,7 +117,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         initView(view);
-        mDealWithBlueTooth = new DealWithBlueTooth(getActivity());
+        mBleUtils = new BleUtils();
         initViewIconAndText();
         setHeadPersonData();
         setViewOnClickListener();
@@ -523,22 +525,19 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 初始化蓝牙
      */
     public boolean initBlueTooth() {
-//        if (!mDealWithBlueTooth.isSupportBlueTooth()) {
-//            return false;
-//        }
-//        if (!mDealWithBlueTooth.isOpen()) {
-//            openBluetooth();
-//            return false;
-//        } else {
+        if (!mBleUtils.isOpen()) {
+            openBluetooth();
+            return false;
+        } else {
             return true;
-//        }
+        }
     }
 
     /**
      * 打开蓝牙
      */
     public void openBluetooth() {
-//        mDealWithBlueTooth.openBlueTooth(getActivity());
+        mBleUtils.openBlueTooth(getActivity());
     }
 
     private void jumpBodyTestActivity() {

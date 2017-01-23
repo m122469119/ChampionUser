@@ -106,8 +106,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     private int clickSearch;
     private boolean isSearchSuccess = false;
     private BleManager mBleManager;
-    private boolean jumpHelpActivity = false;
-    private int connetState;
+    private int connectState;
 
     private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -147,11 +146,10 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         setRightIcon(R.drawable.icon_blue_tooth_help, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (connetState == 0) {
-                    PopupUtils.showToast("连接中不能操作哟！");
+                if (connectState == 1) {
+                    PopupUtils.showToast(getString(R.string.connect_not_jump_help));
                     return;
                 }
-                jumpHelpActivity = true;
                 startActivity(BlueToothHelpActivity.class);
             }
         });
@@ -271,8 +269,8 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                 mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
                 mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
                 connectBlueTooth();
+                connectState = 1;
                 mConnectBlueToothTextView.setEnabled(false);
-                connetState = 0;
             }
         }
     }
@@ -451,15 +449,15 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    connectBlueTooth();
                     mLayoutBlueOpenState.setVisibility(View.VISIBLE);//展示会员的设备
                     mLayoutBlueToothBracelet.setVisibility(View.GONE);//隐藏搜索提示
                     mLayoutBlueBooth.setVisibility(View.VISIBLE);
-
-                    mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
                     mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
-                    connectBlueTooth();
+                    mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
                 }
             });
+
         } else {
             runOnUiThread(new Runnable() {
                 @Override
@@ -500,11 +498,11 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
                     }
                 });
                 mConnectionState = true;
-                connetState = 1;
+                connectState = 2;
                 mBleManager.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
             } else if (BleService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnectionState = false;
-                connetState = 2;
+                connectState = 0;
                 LogUtils.i("BleService", "连接失败");
                 sendConnect();
             } else if (BleService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
