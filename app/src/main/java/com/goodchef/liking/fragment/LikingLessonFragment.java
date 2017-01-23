@@ -393,18 +393,27 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(MainAddressChanged mainAddressChanged) {
-        mLatitude = mainAddressChanged.getLatitude();
-        mLongitude = mainAddressChanged.getLongitude();
-        mCityId = mainAddressChanged.getCityId();
-        mDistrictId = mainAddressChanged.getDistrictId();
-        LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
-        isFirstMessage = true;
-        loadHomePage();
+        try {
+            mLatitude = mainAddressChanged.getLatitude();
+            mLongitude = mainAddressChanged.getLongitude();
+            mCityId = mainAddressChanged.getCityId();
+            mDistrictId = mainAddressChanged.getDistrictId();
+            LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
+            isFirstMessage = true;
+            loadHomePage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void onEvent(CoursesErrorMessage message) {
-        LikingHomeActivity.gymId = "0";
-        loadHomePage();
+        try {
+            LikingHomeActivity.gymId = "0";
+            loadHomePage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onEvent(ChangGymMessage message) {
