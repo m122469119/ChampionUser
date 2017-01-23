@@ -100,6 +100,9 @@
 -keep class com.autonavi.aps.amapapi.model.**{*;}
 
 -keep interface android.support.v4.app.** { *; }
+-keep public class * extends java.io.Serializable {
+    *;
+}
 ##### 友盟消息推送 #####
 -keep class com.umeng.message.* {
         public <fields>;

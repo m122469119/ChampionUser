@@ -1,5 +1,8 @@
 package com.goodchef.liking.http.result.data;
 
+import com.aaron.android.codelibrary.http.result.BaseData;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * 说明:
  * Author : shaozucheng
@@ -7,11 +10,16 @@ package com.goodchef.liking.http.result.data;
  * version 1.0.0
  */
 
-public class SportData {
+public class SportData extends BaseData{
+    @SerializedName("step_num")
     private String step_num;
+    @SerializedName("distance")
     private String distance;
+    @SerializedName("kcal")
     private String kcal;
+    @SerializedName("bpm")
     private String bpm;
+    @SerializedName("create_time")
     private String create_time;
 
     public String getStep_num() {
