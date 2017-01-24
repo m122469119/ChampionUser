@@ -938,7 +938,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void showPromptHeartRateDialog() {
         if (writecharacteristic == null) {
-            PopupUtils.showToast("请连接手环");
+            PopupUtils.showToast(getString(R.string.connect_bluetooth_heart_rate));
             return;
         }
         if (heartDialog == null) {

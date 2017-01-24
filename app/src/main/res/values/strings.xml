@@ -326,4 +326,5 @@
     <string name="bing_bluetooth_bracelet_prompt_3">3.让手机靠近手环 (在5米范围内)</string>
     <string name="connect_time_out">手环连接超时</string>
     <string name="connect_not_jump_help">连接中不能操作哟！</string>
+    <string name="connect_bluetooth_heart_rate">正在连接手环请稍等...</string>
 </resources>
