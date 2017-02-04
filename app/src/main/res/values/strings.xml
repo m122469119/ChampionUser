@@ -327,4 +327,9 @@
     <string name="connect_time_out">手环连接超时</string>
     <string name="connect_not_jump_help">连接中不能操作哟！</string>
     <string name="connect_bluetooth_heart_rate">正在连接手环请稍等...</string>
+    <string name="buy_card_gym">健身房：</string>
+    <string name="buy_card_type">卡种：</string>
+    <string name="confirm_buy_card_info">请确认购卡信息，防止购卡错误</string>
+    <string name="card_money">金额：</string>
+    <string name="money_symbol">"¥ "</string>
 </resources>

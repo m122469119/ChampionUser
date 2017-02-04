@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -98,6 +99,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private String gymId = "0";
     private String noticeActivity;//活动
     private String submitGymId;
+    private String mCardGymName;//场馆名称
+    private String mCardType;//购卡类型
+    private String mCardTotalMoney;//卡的总价钱
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +198,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 setGymId();
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
-                intent.putExtra(KEY_CARD_ID, mCardId+"");
+                intent.putExtra(KEY_CARD_ID, mCardId + "");
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
@@ -212,7 +216,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     return;
                 }
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
-                senSubmitRequest();
+                showSubmitDialog();
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
@@ -234,6 +238,37 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         }
     }
 
+    /***
+     * 确认购卡信息对话框
+     */
+    private void showSubmitDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_view_buy_card_submit, null, false);
+        TextView mGymTextView = (TextView) view.findViewById(R.id.buy_card_gym_TextView);
+        TextView mCardTypeTextView = (TextView) view.findViewById(R.id.buy_card_type_TextView);
+        TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
+
+        mGymTextView.setText(mCardGymName);
+        mCardTypeTextView.setText(mCardType);
+        mMoneyTextView.setText(getString(R.string.money_symbol)+mCardTotalMoney);
+
+        builder.setCustomView(view);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                senSubmitRequest();
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
 
     /**
      * 提交支付请求
@@ -247,7 +282,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         }
     }
 
-    private void setGymId(){
+    private void setGymId() {
         if (buyType == BUY_TYPE_BUY) {
             submitGymId = gymId;
         } else if (buyType == BUY_TYPE_CONTINUE) {
@@ -286,10 +321,12 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 //订单的价格大于优惠券的面额
                 double amount = price - couponAmount;
                 if (amount >= 0) {
-                    mCardMoneyTextView.setText("¥ " + amount);
+                    mCardTotalMoney = amount+"";
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
                 }
             } else {//订单的面额小于优惠券的面额
-                mCardMoneyTextView.setText("¥ " + "0.00");
+                mCardTotalMoney = "0.00";
+                mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
             }
         } else {//优惠券不可用
             mCouponsMoneyTextView.setText("");
@@ -315,14 +352,15 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
             if (buyType == BUY_TYPE_UPGRADE) {
                 cardPrice = confirmBuyCardData.getPrice();
-                mCardMoneyTextView.setText("¥ " + cardPrice);
+                mCardTotalMoney = cardPrice;
+                mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
             }
-
             confirmCardList = confirmBuyCardData.getCardList();
             setCardView(confirmCardList);
             mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
             mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
-            mGymNameTextView.setText(confirmBuyCardData.getGymName());
+            mCardGymName = confirmBuyCardData.getGymName();
+            mGymNameTextView.setText(mCardGymName);
             mGymAddressTextView.setText(confirmBuyCardData.getGymAddress());
             noticeActivity = confirmBuyCardData.getPurchaseActivity();
             mBuyCardNoticeTextView.setText(noticeActivity);
@@ -403,8 +441,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
                     cardPrice = object.getPrice();
-                    mCardMoneyTextView.setText("¥ " + object.getPrice());
+                    mCardTotalMoney = cardPrice;
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + object.getPrice());
                     mCardId = object.getCardId();
+                    mCardType = object.getName();
                 }
             }
         }
@@ -421,9 +461,11 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                 mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
                 mCardId = card.getCardId();
+                mCardType = card.getName();
                 if (buyType != BUY_TYPE_UPGRADE) {
                     cardPrice = card.getPrice();
-                    mCardMoneyTextView.setText("¥ " + cardPrice);
+                    mCardTotalMoney = cardPrice;
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
                 }
             }
         }

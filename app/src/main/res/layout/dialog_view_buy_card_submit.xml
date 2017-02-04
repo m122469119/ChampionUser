@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/buy_card_gym_prompt_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/spacing_12dp"
+            android:paddingTop="@dimen/spacing_12dp"
+            android:text="@string/buy_card_gym"/>
+
+        <TextView
+            android:id="@+id/buy_card_gym_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/buy_card_type_prompt_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/spacing_12dp"
+            android:paddingLeft="@dimen/spacing_12dp"
+            android:paddingTop="@dimen/spacing_12dp"
+            android:text="@string/buy_card_type"
+            android:textSize="@dimen/textsize_small"/>
+
+        <TextView
+            android:id="@+id/buy_card_type_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/spacing_12dp"
+            android:paddingLeft="@dimen/spacing_12dp"
+            android:text="@string/card_money"
+            android:textSize="@dimen/textsize_small"/>
+
+        <TextView
+            android:id="@+id/buy_card_money_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/confirm_buy_card_info"
+        android:paddingBottom="@dimen/spacing_12dp"
+        android:textColor="@color/lesson_details_gray_back"
+        android:textSize="@dimen/textsize_small"/>
+
+
+</LinearLayout>
