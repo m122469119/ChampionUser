@@ -472,22 +472,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 if (object != null && object.getErrorCode() == 0) {//定位成功
                     isWhetherLocation = true;
                     LogUtils.i("dust", "city: " + object.getCity() + "; city code: " + object.getCityCode()
-                            + " ; AdCodeId: " + object.getAdCode() + "; District:" + object.getDistrict() + "; Province:" +  object.getProvince());
+                            + " ; AdCodeId: " + object.getAdCode() + "; District:" + object.getDistrict() + "; Province:" + object.getProvince());
                     LogUtils.i("dust", "longitude:" + object.getLongitude() + "Latitude" + object.getLatitude());
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                    if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                        setHomeTitle();
-                    }
-                    postEvent(new MainAddressChanged(
-                            CityUtils.getLongitude(object.getLongitude(), object.getDistrict()),
-                            CityUtils.getLatitude(object.getLatitude(), object.getDistrict()),
-                            CityUtils.getCityId(object.getProvince(), object.getCity()),
-                            CityUtils.getDistrictId(object.getDistrict()), currentCityName, true));
-                    updateLocationPoint(
-                            CityUtils.getCityId(object.getProvince(), object.getCity()),
-                            CityUtils.getDistrictId(object.getDistrict()),
-                            CityUtils.getLongitude(object.getLongitude(), object.getDistrict()),
-                            CityUtils.getLatitude(object.getLatitude(), object.getDistrict()), currentCityName, true);
+                    String longitude = CityUtils.getLongitude(LikingHomeActivity.this, object.getCityCode(), object.getLongitude());
+                    String latitude = CityUtils.getLatitude(LikingHomeActivity.this, object.getCityCode(), object.getLatitude());
+                    String cityId = CityUtils.getCityId(LikingHomeActivity.this, object.getCityCode());
+                    String districtId = CityUtils.getDistrictId(LikingHomeActivity.this, object.getCityCode(), object.getDistrict());
+
+                    postEvent(new MainAddressChanged(longitude, latitude, cityId, districtId, currentCityName, true));
+                    updateLocationPoint(cityId, districtId, longitude, latitude, currentCityName, true);
 
                     //虚拟定位
 //                     postEvent(new MainAddressChanged(117.20, 34.26, "123456", "24", "徐州市", true));
@@ -495,15 +489,15 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
                 } else {//定位失败
                     isWhetherLocation = false;
-                    if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                        setHomeTitle();
-                    }
-                    postEvent(new MainAddressChanged("0", "0",
-                            CityUtils.getCityId(object.getProvince(), object.getCity()),
-                            CityUtils.getDistrictId(object.getDistrict()), "", false));
-                    updateLocationPoint(
-                            CityUtils.getCityId(object.getProvince(), object.getCity()),
-                            CityUtils.getDistrictId(object.getDistrict()), "0", "0", currentCityName, false);
+                    String cityId = CityUtils.getCityId(LikingHomeActivity.this, object.getCityCode());
+                    String districtId = CityUtils.getDistrictId(LikingHomeActivity.this, object.getCityCode(), object.getDistrict());
+
+                    postEvent(new MainAddressChanged("0", "0", cityId, districtId, currentCityName, false));
+                    updateLocationPoint(cityId, districtId, "0", "0", currentCityName, false);
+                }
+
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    setHomeTitle();
                 }
             }
 

@@ -149,6 +149,8 @@ public class UrlList {
     public static final String USER_SAVE_SPORT_DATA = getVersionHostUrl() + "/user/save-sport-data";
     /**获取运动数据*/
     public static final String USER_SPORT_LIST = getVersionHostUrl() + "/user/sport-list";
+    /**我的页面获取我的个人信息其他数据*/
+    public static final String USER_GET_USER_INFO = getVersionHostUrl() + "/user/get-user-info";
 
 
 }

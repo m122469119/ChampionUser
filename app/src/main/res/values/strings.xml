@@ -14,6 +14,8 @@
     <string name="layout_contact_join">联系加盟</string>
     <string name="layout_become_teacher">成为教练</string>
     <string name="layout_about_us">关于我们</string>
+    <string name="layout_check_update">检测更新</string>
+    <string name="layout_more">更多</string>
     <string name="lesson_time">时间：</string>
     <string name="lesson_venues">场馆：</string>
     <string name="lesson_address">地点：</string>
@@ -332,4 +334,10 @@
     <string name="confirm_buy_card_info">请确认购卡信息，防止购卡错误</string>
     <string name="card_money">金额：</string>
     <string name="money_symbol">"¥ "</string>
+    <string name="change_person_info">修改个人信息</string>
+    <string name="not_login">您还没有登录</string>
+    <string name="confrim_contact_customer_service">确定联系客服吗？</string>
+    <string name="exit_login_success">退出成功</string>
+    <string name="title_activity_more">更多</string>
+    <string name="main_download_apk_progress">下载进度:%1.1f%%</string>
 </resources>

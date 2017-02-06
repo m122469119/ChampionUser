@@ -17,6 +17,7 @@ import com.goodchef.liking.mvp.presenter.SharePresenter;
 import com.goodchef.liking.mvp.presenter.UserExercisePresenter;
 import com.goodchef.liking.mvp.view.ShareView;
 import com.goodchef.liking.mvp.view.UserExerciseView;
+import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
@@ -78,7 +79,7 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseV
     public void updateUserExerciseView(UserExerciseResult.ExerciseData exerciseData) {
         if (exerciseData != null) {
             mStateView.setState(StateView.State.SUCCESS);
-            Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/Impact.ttf");
+            Typeface typeFace = TypefaseUtil.getImpactTypeface(this);
             mTrainTime.setTypeface(typeFace);
             mTrainDistance.setTypeface(typeFace);
             mTrainCal.setTypeface(typeFace);
