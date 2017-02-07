@@ -19,6 +19,7 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.pay.alipay.AliPay;
 import com.aaron.android.thirdparty.pay.alipay.OnAliPayListener;
@@ -111,6 +112,11 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         initPayModule();
         setViewOnClickListener();
         setPayDefaultType();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void initView() {
@@ -249,6 +255,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mPrivateCoursesTrainItemAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    PopupUtils.showToast(R.string.network_error);
+                    return;
+                }
                 List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = mPrivateCoursesTrainItemAdapter.getDataList();
                 TextView tv = (TextView) view.findViewById(R.id.train_item_text);
                 if (tv != null) {
@@ -286,19 +296,30 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     @Override
     public void onClick(View v) {
         if (v == mCouponsLayout) {
-            if (coursesId != null) {
-                UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
-                Intent intent = new Intent(this, CouponsActivity.class);
-                intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
-                intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes + "");
-                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                PopupUtils.showToast(R.string.network_error);
+                return;
+            } else {
+                if (coursesId != null) {
+                    UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
+                    Intent intent = new Intent(this, CouponsActivity.class);
+                    intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
+                    intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes + "");
+                    if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
+                        intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+                    }
+                    intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
+                    startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
                 }
-                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
-                startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
             }
+
         } else if (v == mImmediatelyBuyBtn) {
-            sendBuyCoursesRequest();
+            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                PopupUtils.showToast(R.string.network_error);
+                return;
+            } else {
+                sendBuyCoursesRequest();
+            }
         } else if (v == mAlipayLayout) {
             mAlipayCheckBox.setChecked(true);
             mWechatCheckBox.setChecked(false);
@@ -308,11 +329,26 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mWechatCheckBox.setChecked(true);
             payType = "0";
         } else if (v == mMinusImageView) {
-            doMinusCoursesTimes();
+            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                PopupUtils.showToast(R.string.network_error);
+                return;
+            } else {
+                doMinusCoursesTimes();
+            }
         } else if (v == mAddImageView) {
-            doAddCoursesTimes();
+            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                PopupUtils.showToast(R.string.network_error);
+                return;
+            } else {
+                doAddCoursesTimes();
+            }
         } else if (v == mCoursesTimesTextView) {
-            showCoursesTimesDialog();
+            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                PopupUtils.showToast(R.string.network_error);
+                return;
+            } else {
+                showCoursesTimesDialog();
+            }
         }
 
 //        else if (v == mCoursesAddressTextView) {
@@ -341,9 +377,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 String times = mEditView.getText().toString();
                 mCoursesTimes = Integer.parseInt(times);
                 if (mCoursesTimes < mCoursesMinTimes) {
-                    PopupUtils.showToast("为保证上课质量，最少购买" + mCoursesMinTimes + "次课");
+                    PopupUtils.showToast(getString(R.string.courses_minnum_buy) + mCoursesMinTimes + getString(R.string.times_courses));
                 } else if (mCoursesTimes > mCoursesMaxTimes) {
-                    PopupUtils.showToast("为保证上课质量，单次最多能购买" + mCoursesMaxTimes + "次课");
+                    PopupUtils.showToast(getString(R.string.courses_macnum_buy) + mCoursesMaxTimes + getString(R.string.times_courses));
                 } else {
                     mCoursesTimesTextView.setText(mCoursesTimes + "");
                     mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
@@ -362,7 +398,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
      */
     private void sendBuyCoursesRequest() {
         if (payType.equals("-1")) {
-            PopupUtils.showToast("请选择支付方式");
+            PopupUtils.showToast(R.string.please_select_pay_type);
             return;
         }
         UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
@@ -385,7 +421,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 mCouponTitleTextView.setText("");//清空优惠券需要重新选择
                 mCoupon = null;
             } else {
-                PopupUtils.showToast("为保证上课质量，最少购买" + mCoursesMinTimes + "次课");
+                PopupUtils.showToast(getString(R.string.courses_minnum_buy) + mCoursesMinTimes + getString(R.string.times_courses));
             }
         }
     }
@@ -402,7 +438,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 mCouponTitleTextView.setText("");//清空优惠券需要重新选择
                 mCoupon = null;
             } else {
-                PopupUtils.showToast("为保证上课质量，单次最多能购买" + mCoursesMaxTimes + "次课");
+                PopupUtils.showToast(getString(R.string.courses_macnum_buy) + mCoursesMaxTimes + getString(R.string.times_courses));
             }
         }
     }
@@ -444,7 +480,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
         if (coursesPrice >= minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
-            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
+            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
             if (coursesPrice >= couponAmount) {
                 //课程的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
@@ -463,7 +499,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     public void updateSubmitOrderCourses(PayResultData payData) {
         int payType = payData.getPayType();
         if (payType == PAY_TYPE) {//3 免金额支付
-            PopupUtils.showToast("支付成功");
+            PopupUtils.showToast(R.string.pay_success);
             postEvent(new BuyPrivateCoursesMessage());
             jumpToMyCoursesActivity();
         } else {

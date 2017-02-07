@@ -390,7 +390,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void setSynchronizationSate(final String str, final int color) {
         if (mConnectionState) {
-            mBleManager.stopScan();
+            if (mBleManager != null) {
+                mBleManager.stopScan();
+            }
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -988,7 +990,9 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBleManager.release();
+        if (mBleManager != null) {
+            mBleManager.release();
+        }
     }
 
     @Override

@@ -200,7 +200,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                 intent.putExtra(KEY_CARD_ID, mCardId + "");
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }
@@ -249,7 +249,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
 
         mGymTextView.setText(mCardGymName);
-        mCardTypeTextView.setText(mCardType);
+        mCardTypeTextView.setText(mCardName+mCardType);
         mMoneyTextView.setText(getString(R.string.money_symbol)+mCardTotalMoney);
 
         builder.setCustomView(view);

@@ -4,9 +4,20 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/spacing_4dp"
+        android:paddingTop="@dimen/spacing_8dp"
+        android:text="提示"
+        android:textColor="@color/lesson_details_gray_back"
+        android:textSize="@dimen/textsize_15"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
 
@@ -22,6 +33,7 @@
             android:id="@+id/buy_card_gym_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/spacing_12dp"
             android:textColor="@color/lesson_details_dark_back"
             android:textStyle="bold"
             />
@@ -31,6 +43,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
 
@@ -58,6 +71,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
 
@@ -73,6 +87,7 @@
             android:id="@+id/buy_card_money_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/spacing_12dp"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_small"
             android:textStyle="bold"/>
@@ -84,9 +99,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/confirm_buy_card_info"
         android:paddingBottom="@dimen/spacing_12dp"
-        android:textColor="@color/lesson_details_gray_back"
+        android:text="@string/confirm_buy_card_info"
+        android:textColor="@color/red"
         android:textSize="@dimen/textsize_small"/>
 
 

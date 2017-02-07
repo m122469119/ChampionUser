@@ -106,7 +106,7 @@ public class UrlList {
     /**场馆详情*/
     public static final String GYM_INFO = getVersionHostUrl()+"/gym/info";
     /**获取的运动数据*/
-    public static final String GET_USER_EXERCISE_DATA = getVersionHostUrl()+"/user/get-exercise-data";
+    public static final String GET_USER_EXERCISE_DATA = getVersionHostUrl()+"/user/get-sports-data";
     /**查看场馆*/
     public static final String GET_GYM_LIST = getVersionHostUrl()+"/gym/get-all-gym";
     /**获取开门密码*/

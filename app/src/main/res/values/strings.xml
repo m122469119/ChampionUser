@@ -331,7 +331,7 @@
     <string name="connect_bluetooth_heart_rate">正在连接手环请稍等...</string>
     <string name="buy_card_gym">健身房：</string>
     <string name="buy_card_type">卡种：</string>
-    <string name="confirm_buy_card_info">请确认购卡信息，防止购卡错误</string>
+    <string name="confirm_buy_card_info">请确认购卡信息，防止购卡错误！</string>
     <string name="card_money">金额：</string>
     <string name="money_symbol">"¥ "</string>
     <string name="change_person_info">修改个人信息</string>
@@ -342,4 +342,22 @@
     <string name="main_download_apk_progress">下载进度:%1.1f%%</string>
     <string name="check_update_prompt">已是最新版本</string>
     <string name="contact_services">联系客服</string>
+    <string name="expire">" 到期"</string>
+    <string name="selected">已选择</string>
+    <string name="yuan_coupons">元优惠券</string>
+    <string name="nutritious_food_dedicated">营养餐专用满</string>
+    <string name="can_uses">可用</string>
+    <string name="utritious_food_no_doorsill">营养餐专用,无门槛使用</string>
+    <string name="private_courses_dedicated">私教课专用满</string>
+    <string name="private_courses_no_doorsill">私教课专用,无门槛使用</string>
+    <string name="buy_card_dedicated">购卡专用满</string>
+    <string name="buy_card_no_doorsill">购卡专用,无门槛使用</string>
+    <string name="group_courses_dedicated">团体课专用满</string>
+    <string name="group_courses_no_doorsill">团体课专用,无门槛使用</string>
+    <string name="input_coupon_code">请输入优惠券兑换码</string>
+    <string name="exchange_success">兑换成功</string>
+    <string name="network_error">您的网络异常,请查看网络</string>
+    <string name="courses_minnum_buy">为保证上课质量，最少购买</string>
+    <string name="times_courses">次课</string>
+    <string name="courses_macnum_buy">为保证上课质量，单次最多能购买</string>
 </resources>

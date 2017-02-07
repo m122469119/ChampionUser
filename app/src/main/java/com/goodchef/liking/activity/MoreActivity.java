@@ -112,15 +112,15 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         if (v == mAboutUsLayout) {//关于我们
             startActivity(AboutActivity.class);
         } else if (v == mLayoutCheckUpdate) {//检测更新
-            int update = mUpDateAppData.getUpdate();
-            if (update == 1 || update == 2) {
-                showCheckUpdateDialog();
+            if (mUpDateAppData != null) {
+                int update = mUpDateAppData.getUpdate();
+                if (update == 1 || update == 2) {
+                    showCheckUpdateDialog();
+                }
             }
         } else if (v == mLoginOutBtn) {
             if (Preference.isLogin()) {
-                if (mUpDateAppData != null && mUpDateAppData.getUpdate() == 1) {
-                    showExitDialog();
-                }
+                showExitDialog();
             } else {
                 PopupUtils.showToast(getString(R.string.not_login));
             }
