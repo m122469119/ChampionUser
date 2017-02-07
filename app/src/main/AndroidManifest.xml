@@ -381,6 +381,10 @@
 
         </service>
 
+
+        <service android:name="com.aaron.android.framework.library.downloadprovider.FileDownloadService"/>
+
+
         <!-- Required SDK核心功能-->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"

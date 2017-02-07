@@ -340,4 +340,5 @@
     <string name="exit_login_success">退出成功</string>
     <string name="title_activity_more">更多</string>
     <string name="main_download_apk_progress">下载进度:%1.1f%%</string>
+    <string name="check_update_prompt">当前版本为最新版本</string>
 </resources>

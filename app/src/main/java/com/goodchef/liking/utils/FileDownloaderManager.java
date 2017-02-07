@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,9 +15,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.FileUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.library.downloadprovider.FileDownloadService;
+import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.storage.Preference;
@@ -41,10 +44,10 @@ public class FileDownloaderManager {
     }
 
     public void downloadFile(String downloadUrl, String downloadPath) {
-       // boolean update = Preference.getDownloadAppFile();
+        // boolean update = Preference.getDownloadAppFile();
         if (isCreate) {
             LogUtils.d("socket", "FileDownloaderManager");
-         //   Preference.setDownloadAppFile(true);
+            //   Preference.setDownloadAppFile(true);
             isCreate = false;
             View downloadApkDialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_download_apk, null, false);
             mDownloadApkProgressBar = (ProgressBar) downloadApkDialogView.findViewById(R.id.progressbar_download_apk);
@@ -52,8 +55,8 @@ public class FileDownloaderManager {
             mDownloadApkDialog = new AlertDialog.Builder(mContext)
                     .setView(downloadApkDialogView)
                     .create();
-            mDownloadApkDialog.setCancelable(false);
-            mDownloadApkDialog.setCanceledOnTouchOutside(false);
+            mDownloadApkDialog.setCancelable(true);
+            mDownloadApkDialog.setCanceledOnTouchOutside(true);
             mDownloadApkDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
                 @Override
                 public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -115,7 +118,16 @@ public class FileDownloaderManager {
 //                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    context.startActivity(intent1);
 //                    ApkController.install(intent.getStringExtra(FileDownloadService.EXTRA_INSTALL_APK_PATH), mContext);
-                    unregisterDownloadNewApkBroadcast();
+
+//                     unregisterDownloadNewApkBroadcast();
+                    String dirPath = DiskStorageManager.getInstance().getApkFileStoragePath();
+                    String apkName = Preference.getNewAPkName();
+                    String filePath = dirPath + apkName + ".apk"; //文件需有可读权限
+                    Intent intent1 = new Intent();
+                    intent1.setAction(android.content.Intent.ACTION_VIEW);
+                    intent1.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
+                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent1);
                 }
             }
         }

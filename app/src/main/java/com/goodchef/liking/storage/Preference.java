@@ -42,7 +42,7 @@ public class Preference extends AbsPreference {
     public static final String IS_BIND = "is_bind";
     public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
     public static List<String> announcementList = new ArrayList<>();
-
+    public static final String NEW_APK_NAME = "new_apk_name";
 
     /**
      * 获取token
@@ -166,6 +166,25 @@ public class Preference extends AbsPreference {
      */
     public static boolean setIsVip(Integer isVip) {
         return setObject(IS_VIP, isVip);
+    }
+
+    /**
+     * 设置新版APKName
+     *
+     * @param apkName
+     * @return
+     */
+    public static boolean setNewApkName(String apkName) {
+        return setObject(NEW_APK_NAME, apkName);
+    }
+
+    /**
+     * 获取新版apkName
+     *
+     * @return
+     */
+    public static String getNewAPkName() {
+        return (String) getObject(NEW_APK_NAME, "");
     }
 
     /**

@@ -17,8 +17,10 @@ public class DiskStorageManager {
     private String mAppStoragePath; //应用目录
     private String mImageStoragePath; //图片缓存目录
     private String mFileStoragePath;//file的文件总目录
+    private String mApkFileStoragePath;//apk下载目录
     private static final String PATH_STORAGE_IMAGE_CACHE = "/image/";
     private static final String PATH_STORAGE_FILE = "/file/";
+    private static final String PATH_STORAGE_FILE_APK = "apk/";
 
     /**
      * 使用静态内部类来生成DiskStorageManager单例,由jvm来保证线程的安全性
@@ -43,9 +45,19 @@ public class DiskStorageManager {
         mAppStoragePath = getDeviceRootPath() + File.separator + folderName;
         mImageStoragePath = mAppStoragePath + PATH_STORAGE_IMAGE_CACHE;
         mFileStoragePath = mAppStoragePath + PATH_STORAGE_FILE;
+        mApkFileStoragePath = mFileStoragePath + PATH_STORAGE_FILE_APK;
         createAppFolder(mAppStoragePath);
         createAppFolder(mImageStoragePath);
         createAppFolder(mFileStoragePath);
+        createAppFolder(mApkFileStoragePath);
+    }
+
+    /**
+     * 获取apk下载目录
+     * @return
+     */
+    public String getApkFileStoragePath() {
+        return mApkFileStoragePath;
     }
 
     /**
