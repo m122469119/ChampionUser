@@ -14,13 +14,12 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.ConstantUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.ui.BaseActivity;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -42,17 +41,20 @@ import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
-import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
+import com.goodchef.liking.mvp.view.CheckUpdateAppView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
+import com.goodchef.liking.utils.FileDownloaderManager;
 import com.goodchef.liking.utils.UMengCountUtil;
 
-public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener {
+public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener, CheckUpdateAppView {
 
     public static final String TAG_MAIN_TAB = "lesson";
     public static final String TAG_NEARBY_TAB = "nearby";
@@ -94,7 +96,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CoursesResult.Courses.Gym mGym;
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
-
+    private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
+    private CheckUpdateAppResult.UpDateAppData mUpDateAppData;
+    private FileDownloaderManager mFileDownloaderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setTitle(R.string.activity_liking_home);
         RightMenuDialog = new HomeRightDialog(this);
         initViews();
+        sendUpdateAppRequest();
         setViewOnClickListener();
         initData();
     }
@@ -125,62 +130,76 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    private void checkAppUpdate() {
-        if (LiKingVerifyUtils.sBaseConfigResult != null) {
-            final BaseConfigResult.BaseConfigData.UpdateData updateData = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData().getUpdateData();
-            if (updateData == null) {
-                return;
-            }
-            int needUpdate = updateData.getUpdate();
-            String title = updateData.getTitle();
-            String content = updateData.getContent();
-            String lastVersion = updateData.getLastestVer();
-            String currentVersion = EnvironmentUtils.Config.getAppVersionName();
+    /**
+     * 发送请求
+     */
+    private void sendUpdateAppRequest() {
+        if (mCheckUpdateAppPresenter == null) {
+            mCheckUpdateAppPresenter = new CheckUpdateAppPresenter(this, this);
+        }
+        mCheckUpdateAppPresenter.getUpdateApp();
+    }
 
-            if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content)) {
-                return;
-            }
-            if (needUpdate == 0) {//不需要强制更新
-                if (!StringUtils.isEmpty(lastVersion) && !lastVersion.equals(currentVersion)) {//升级
-                    if (Preference.getIsUpdate()) {
-                        showAppUpdateDialog(updateData, needUpdate);
-                        Preference.setIsUpdateApp(false);
-                    }
-                }
-            } else if (needUpdate == 1) {//需要强制更新
-                showAppUpdateDialog(updateData, needUpdate);
-            }
+    @Override
+    public void updateCheckUpdateAppView(CheckUpdateAppResult.UpDateAppData upDateAppData) {
+        mUpDateAppData = upDateAppData;
+        checkUpdateApp();
+    }
 
+    private void checkUpdateApp() {
+        if (mUpDateAppData == null) {
+            return;
+        }
+        int update = mUpDateAppData.getUpdate();
+        if (update == 0) {//无更新
+            Preference.setUpdateApp(0);
+        } else if (update == 1) {//有更新
+            Preference.setUpdateApp(1);
+            Preference.setNewApkName(mUpDateAppData.getLastestVer());
+            if (Preference.getIsUpdate()) {
+                showCheckUpdateDialog(false);
+            }
+        } else if (update == 2) {//强制更新
+            Preference.setUpdateApp(2);
+            Preference.setNewApkName(mUpDateAppData.getLastestVer());
+            showCheckUpdateDialog(true);
         }
     }
 
-    private void showAppUpdateDialog(final BaseConfigResult.BaseConfigData.UpdateData updateData, final int needUpdate) {
+
+    /**
+     * 更新app弹出框
+     *
+     * @param isForceUpdate
+     */
+    private void showCheckUpdateDialog(boolean isForceUpdate) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        textView.setText((updateData.getTitle()));
+        textView.setText((mUpDateAppData.getTitle()));
         builder.setCustomTitle(view);
-        builder.setMessage(updateData.getContent());
-        if (needUpdate != 1) {
-            builder.create().setCancelable(true);
-            builder.setNegativeButton(getString(R.string.dialog_know), new DialogInterface.OnClickListener() {
+        builder.setMessage(mUpDateAppData.getContent());
+        if (!isForceUpdate) {
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    Preference.setIsUpdateApp(false);
                     dialog.dismiss();
                 }
             });
         }
-        builder.setPositiveButton(getString(R.string.dialog_app_update), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                HDefaultWebActivity.launch(LikingHomeActivity.this, updateData.getUrl(), ConstantUtils.BLANK_STRING);
-                if (needUpdate == 1) {//强制升级
-                    checkAppUpdate();
+                Preference.setIsUpdateApp(false);
+                if (!StringUtils.isEmpty(mUpDateAppData.getUrl())) {
+                    mFileDownloaderManager = new FileDownloaderManager(LikingHomeActivity.this);
+                    mFileDownloaderManager.downloadFile(mUpDateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
                 }
+                dialog.dismiss();
             }
         });
-        builder.create().setCancelable(false);
-        builder.show();
+        builder.create().show();
     }
 
     private void initViews() {
@@ -247,7 +266,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setTagMainTab();
                     setHomeTitle();
                     setHomeMenuReadNotice();
-                    checkAppUpdate();
+                    checkUpdateApp();
                     postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     setTagRechargeTab();
@@ -255,10 +274,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setTagNearbyTab();
                     setHomeTitle();
                     postEvent(new OnCLickBuyCardFragmentMessage());
-                    checkAppUpdate();
+                    checkUpdateApp();
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     setTagMyTab();
-                    checkAppUpdate();
+                    checkUpdateApp();
                 }
             }
         });
@@ -510,7 +529,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void end() {
                 LogUtils.i("dust", "定位结束...");
-                checkAppUpdate();
             }
         });
         mAmapGDLocation.start();
@@ -667,6 +685,5 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
 }

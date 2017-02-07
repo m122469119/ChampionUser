@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,7 +69,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     public static final String KEY_UUID = "key_UUID";
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
-    private LinearLayout mMoreLayout;//更多
+    private RelativeLayout mMoreLayout;//更多
+    private ImageView mUpdateAppImageView;
 
     private RelativeLayout mHeadInfoLayout;//头像布局
     private HImageView mHImageViewBackground;//头像背景
@@ -124,11 +126,21 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         super.onResume();
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
+            showUpdate();
             setLogonView();
             getMyUserInfoOther();
             getUserExerciseData();
         } else {
             mStateView.setState(StateView.State.FAILED);
+        }
+    }
+
+    private void showUpdate(){
+        int update = Preference.getUpdateApp();
+        if (update ==0){//不更新
+            mUpdateAppImageView.setVisibility(View.GONE);
+        }else if (update == 1 || update ==2){//有更新
+            mUpdateAppImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -191,7 +203,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
         }
         setHeadPersonData();
-
     }
 
     @Override
@@ -265,7 +276,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mHeadInfoLayout = (RelativeLayout) view.findViewById(R.id.layout_head_info);
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
-        mMoreLayout = (LinearLayout) view.findViewById(R.id.layout_more);
+        mMoreLayout = (RelativeLayout) view.findViewById(R.id.layout_more);
+        mUpdateAppImageView = (ImageView) view.findViewById(R.id.more_ImageView);
 
         mHImageViewBackground = (HImageView) view.findViewById(R.id.head_image_background);
         mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
@@ -333,7 +345,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         }
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, false);
-        setMySettingCard(mMoreLayout, R.string.layout_more, false);
     }
 
     private void setMySettingCard(View view, int text, boolean isShowLine) {

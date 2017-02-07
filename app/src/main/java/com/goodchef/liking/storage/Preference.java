@@ -43,6 +43,7 @@ public class Preference extends AbsPreference {
     public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
     public static List<String> announcementList = new ArrayList<>();
     public static final String NEW_APK_NAME = "new_apk_name";
+    public static final String UPDATE_APP = "update_app";
 
     /**
      * 获取token
@@ -185,6 +186,25 @@ public class Preference extends AbsPreference {
      */
     public static String getNewAPkName() {
         return (String) getObject(NEW_APK_NAME, "");
+    }
+
+    /**
+     * 设置更新
+     *
+     * @param update
+     * @return
+     */
+    public static boolean setUpdateApp(int update) {
+        return setObject(UPDATE_APP, update);
+    }
+
+    /**
+     * 获取更新
+     *
+     * @return
+     */
+    public static int getUpdateApp() {
+        return (int) getObject(UPDATE_APP, 0);
     }
 
     /**

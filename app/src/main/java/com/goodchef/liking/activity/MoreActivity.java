@@ -112,7 +112,10 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         if (v == mAboutUsLayout) {//关于我们
             startActivity(AboutActivity.class);
         } else if (v == mLayoutCheckUpdate) {//检测更新
-            showCheckUpdateDialog();
+            int update = mUpDateAppData.getUpdate();
+            if (update == 1 || update == 2) {
+                showCheckUpdateDialog();
+            }
         } else if (v == mLoginOutBtn) {
             if (Preference.isLogin()) {
                 if (mUpDateAppData != null && mUpDateAppData.getUpdate() == 1) {
@@ -210,9 +213,11 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         mUpDateAppData = upDateAppData;
         int update = mUpDateAppData.getUpdate();
         if (update == 0) {//无更新
+            Preference.setUpdateApp(0);
             mCheckUpdatePromptTextView.setVisibility(View.VISIBLE);
             mCheckUpdateImageView.setVisibility(View.GONE);
-        } else if (update == 1) {//有更新
+        } else if (update == 1 || update == 2) {//有更新
+            Preference.setUpdateApp(1);
             Preference.setNewApkName(upDateAppData.getLastestVer());
             mCheckUpdatePromptTextView.setVisibility(View.GONE);
             mCheckUpdateImageView.setVisibility(View.VISIBLE);

@@ -55,8 +55,8 @@ public class FileDownloaderManager {
             mDownloadApkDialog = new AlertDialog.Builder(mContext)
                     .setView(downloadApkDialogView)
                     .create();
-            mDownloadApkDialog.setCancelable(true);
-            mDownloadApkDialog.setCanceledOnTouchOutside(true);
+            mDownloadApkDialog.setCancelable(false);
+            mDownloadApkDialog.setCanceledOnTouchOutside(false);
             mDownloadApkDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
                 @Override
                 public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -120,6 +120,8 @@ public class FileDownloaderManager {
 //                    ApkController.install(intent.getStringExtra(FileDownloadService.EXTRA_INSTALL_APK_PATH), mContext);
 
 //                     unregisterDownloadNewApkBroadcast();
+                    Preference.setUpdateApp(0);//将更新设置为不用更新
+                    //调用系统安装
                     String dirPath = DiskStorageManager.getInstance().getApkFileStoragePath();
                     String apkName = Preference.getNewAPkName();
                     String filePath = dirPath + apkName + ".apk"; //文件需有可读权限

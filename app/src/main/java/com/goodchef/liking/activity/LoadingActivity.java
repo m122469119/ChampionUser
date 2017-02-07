@@ -71,6 +71,7 @@ public class LoadingActivity extends BaseActivity {
             @Override
             public void run() {
                 if (Preference.isNewVersion()) {
+                    Preference.setIsUpdateApp(true);//设置可以弹出更新对话框
                     jumpToGuideActivity();
                 } else {
                     jumpToMainActivity();
