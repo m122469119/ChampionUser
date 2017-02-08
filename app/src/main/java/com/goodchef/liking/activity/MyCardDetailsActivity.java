@@ -124,13 +124,13 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
             mPeriodOfValidityTextView.setText(data.getStartTime() + " ~ " + data.getEndTime());
             int payType = data.getPayType();
             if (payType == PAY_TYPE_WECHAT) {
-                mBuyTypeTextView.setText(R.string.pay_alipay_type);
-            } else if (payType == PAY_TYPE_ALIPLY) {
                 mBuyTypeTextView.setText(R.string.pay_wechat_type);
+            } else if (payType == PAY_TYPE_ALIPLY) {
+                mBuyTypeTextView.setText(R.string.pay_alipay_type);
             } else if (payType == PAY_TYPE_FREE) {
                 mBuyTypeTextView.setText(R.string.pay_free_type);
             }
-            mCardPriceTextView.setText("¥ " + data.getOrderAmount());
+            mCardPriceTextView.setText(getString(R.string.money_symbol) + data.getOrderAmount());
             mGymNameTextView.setText(data.getGym_name());
             mGymAddressTextView.setText(data.getGym_address());
 
@@ -151,7 +151,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
                 } else {
                     mFavourableLayout.setVisibility(View.VISIBLE);
                     mImageViewLine.setVisibility(View.VISIBLE);
-                    mFavourableNumberTextView.setText("¥ " + couponAmount);
+                    mFavourableNumberTextView.setText(getString(R.string.money_symbol) + couponAmount);
                 }
             } else {
                 mFavourableLayout.setVisibility(View.GONE);

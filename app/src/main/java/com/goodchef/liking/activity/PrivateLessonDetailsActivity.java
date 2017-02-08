@@ -92,7 +92,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
             public void onClick(View v) {
                 String phone = Preference.getCustomerServicePhone();
                 if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(PrivateLessonDetailsActivity.this, "确定联系客服吗？", phone);
+                    LikingCallUtil.showCallDialog(PrivateLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
                 }
             }
         });

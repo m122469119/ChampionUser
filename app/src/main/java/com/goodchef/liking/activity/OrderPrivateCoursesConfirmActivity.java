@@ -554,7 +554,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
         @Override
         public void onFailure(String errorMessage) {
-
+            setPayFailView();
         }
 
         @Override
@@ -588,11 +588,15 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         if (wechatMessage.isPaySuccess()) {
             jumpToMyCoursesActivity();
         }else {
-            if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
-                mCouponTitleTextView.setText("");
-                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
-                mCoupon = null;
-            }
+            setPayFailView();
+        }
+    }
+
+    private void setPayFailView(){
+        if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
+            mCouponTitleTextView.setText("");
+            mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
+            mCoupon = null;
         }
     }
 

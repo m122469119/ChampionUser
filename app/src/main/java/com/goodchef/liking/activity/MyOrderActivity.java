@@ -5,12 +5,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
 import com.goodchef.liking.fragment.MyCardOrderFragment;
 import com.goodchef.liking.fragment.MyDishesOrderFragment;
 
@@ -37,6 +41,13 @@ public class MyOrderActivity extends AppBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
         setTitle(getString(R.string.title_activity_myorder));
+        showHomeUpIcon(R.drawable.app_bar_back, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postEvent(new RefreshBuyCardMessage());
+                finish();
+            }
+        });
         //   initWidget();
         //  initData();
         setCouponsFragment();
@@ -122,4 +133,15 @@ public class MyOrderActivity extends AppBarActivity {
             return mIndex;
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            postEvent(new RefreshBuyCardMessage());
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

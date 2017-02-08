@@ -229,6 +229,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mTrainTimeData.setText(exerciseData.getTodayMin());
             if (Preference.isBind()) {
                 mBodyScoreData.setText(exerciseData.getScore());
+            }else {
+                mEveryDataSportData.setText(exerciseData.getScore());
             }
         }
     }

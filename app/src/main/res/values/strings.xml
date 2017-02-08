@@ -185,7 +185,7 @@
     <string name="activity_title_complete_userinfo">完成个人信息设置</string>
     <string name="head_select_image_prompt">点击上传头像</string>
     <string name="activity_title_change_address">选择上课地址</string>
-    <string name="activity_title_confirm_buy_group_courses">确认购买团体课</string>
+    <string name="activity_title_confirm_buy_group_courses">确认购买团课</string>
     <string name="home_left_menu">[切换]</string>
     <string name="not_free_group_courses">付费团体课</string>
     <string name="share">分享</string>
@@ -378,4 +378,12 @@
     <string name="_2017_lekuaall_rights_reserved">\@2017 lekuai.All Rights Reserved</string>
     <string name="title_activity_myorder">会员卡</string>
     <string name="people">" 人"</string>
+    <string name="cancel_success">取消成功</string>
+    <string name="sure_cancel_order">您确定取消预约？</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="title_activity_height">选择身高</string>
+    <string name="birthday">出生年月：</string>
+    <string name="no_card_or_no_time">无卡用户或会员卡剩余有效期太短,请购卡后重试</string>
 </resources>

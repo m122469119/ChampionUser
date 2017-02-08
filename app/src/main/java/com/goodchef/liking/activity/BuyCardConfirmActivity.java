@@ -514,6 +514,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         @Override
         public void onFailure(String errorMessage) {
             LogUtils.i(TAG, "支付失败");
+            setPayFailView();
         }
 
         @Override
@@ -547,13 +548,17 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     public void onEvent(BuyCardWeChatMessage weChatMessage) {
         if (weChatMessage.isPaySuccess()) {
             jumpOrderActivity();
-        }else {
-            if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
-                mCouponsMoneyTextView.setText("");
-                mCardTotalMoney = cardPrice;
-                mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
-                mCoupon = null;
-            }
+        } else {
+            setPayFailView();
+        }
+    }
+
+    private void setPayFailView() {
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getAmount())) {
+            mCouponsMoneyTextView.setText("");
+            mCardTotalMoney = cardPrice;
+            mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
+            mCoupon = null;
         }
     }
 
@@ -561,8 +566,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         Intent intent = new Intent(this, MyOrderActivity.class);
         intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
         startActivity(intent);
-        postEvent(new RefreshBuyCardMessage());
-        this.finish();
+        finish();
     }
 
     public void onEvent(LoginFinishMessage message) {
