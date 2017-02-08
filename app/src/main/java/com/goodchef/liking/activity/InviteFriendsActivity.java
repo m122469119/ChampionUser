@@ -42,7 +42,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friend);
-        setTitle("邀请好友");
+        setTitle(getString(R.string.title_activity_invite_friend));
         initView();
         initData();
     }

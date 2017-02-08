@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="上海乐快信息技术有限公司 版权所有"
+            android:text="@string/loding_company_info"
             android:textColor="@color/white"
             android:textSize="13sp"
             />
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text=" @2016 lekuai.All Rights Reserved"
+            android:text="@string/_2017_lekuaall_rights_reserved"
             android:textColor="@color/white"
             android:textSize="13sp"
             />

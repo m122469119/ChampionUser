@@ -164,8 +164,8 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     private void setDetailsData(MyDishesOrderDetailsResult.OrderDetailsData detailsData) {
         if (detailsData != null) {
             mStateView.setState(StateView.State.SUCCESS);
-            mSerialNumberTextView.setText("流水号：" + detailsData.getSerialNumber());
-            mOrderNumberTextView.setText("订单号：" + detailsData.getOrderId());
+            mSerialNumberTextView.setText(getString(R.string.serial_number) + detailsData.getSerialNumber());
+            mOrderNumberTextView.setText(getString(R.string.order_number) + detailsData.getOrderId());
             //设置购买的食品清单
             List<MyDishesOrderDetailsResult.OrderDetailsData.FoodListData> menuList = detailsData.getFoodList();
             if (menuList != null && menuList.size() > 0) {
@@ -314,7 +314,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     public void updateMyDishesPayView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast("支付成功");
+            PopupUtils.showToast(R.string.pay_success);
             sendDetailsRequest();
         } else {
             handlePay(payResultData);
@@ -410,7 +410,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         @Override
         public void onTick(long millisUntilFinished) {
             String str = DateUtils.formatTime(millisUntilFinished);
-            mPaySurplusTimeTextView.setText("剩余支付时间: " + str);
+            mPaySurplusTimeTextView.setText(getString(R.string.surplus_pay_time) + str);
         }
 
         @Override

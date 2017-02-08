@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.thirdparty.R;
 import com.aaron.android.thirdparty.pay.Pay;
 import com.aaron.android.thirdparty.pay.alipay.utils.Result;
@@ -30,6 +31,7 @@ public class AliPay extends Pay<Object> {
             if (msg.what == ALIPAY_FLAG) {
                 Result result = new Result((String) msg.obj);
                 String resultStatus = result.resultStatus;
+                LogUtils.i(TAG, resultStatus + "");
                 switch (resultStatus) {
                     case RESULT_SUCCESS://成功
                         mOnAliPayListener.onSuccess();

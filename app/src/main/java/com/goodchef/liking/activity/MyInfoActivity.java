@@ -94,7 +94,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             setTitle(title);
         }
         if (intentType == 1) {
-            showRightMenu("跳过", new View.OnClickListener() {
+            showRightMenu(getString(R.string.skip), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -233,14 +233,14 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
-        if (birthday.equals("选择出生日期")) {
+        if (birthday.equals(getString(R.string.select_birth_date))) {
             birthday = "";
         }
 
         if (!StringUtils.isEmpty(height)) {
             int heightInt = Integer.parseInt(height);
             if (heightInt < 50 || heightInt > 250) {
-                PopupUtils.showToast("您输入的身高不在正常范围,请重新输入");
+                PopupUtils.showToast(getString(R.string.height_input_error_prompt));
                 return;
             }
         }
@@ -248,7 +248,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         if (!StringUtils.isEmpty(weight)) {
             double weightInt = Double.parseDouble(weight);
             if (weightInt < 25 || weightInt > 250) {
-                PopupUtils.showToast("您输入的体重不在正常范围,请重新输入");
+                PopupUtils.showToast(getString(R.string.weight_input_error_prompt));
                 return;
             }
         }
@@ -289,7 +289,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                             yearStr = "";
                             monthStr = "";
                             dayStr = "";
-                            PopupUtils.showToast("您选择的日期不正确");
+                            PopupUtils.showToast(getString(R.string.select_date_error_prompt));
                         }
                         break;
                 }
@@ -363,7 +363,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 if (mBitmap != null) {
                     sendImageFile(mBitmap);
                 } else {
-                    PopupUtils.showToast("请重新选图片");
+                    PopupUtils.showToast(getString(R.string.please_select_picture));
                 }
             }
 
@@ -374,7 +374,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 if (mBitmap != null) {
                     sendImageFile(bitmapList.get(0));
                 } else {
-                    PopupUtils.showToast("请重新选图片");
+                    PopupUtils.showToast(getString(R.string.please_select_picture));
                 }
             }
         });
@@ -419,7 +419,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             } else if (gender == 1) {
                 mSelectSexTextView.setText(R.string.sex_man);
             } else {
-                mSelectSexTextView.setText("请选择性别");
+                mSelectSexTextView.setText(R.string.select_gender);
             }
         } else {
             mStateView.setState(StateView.State.NO_DATA);
@@ -428,7 +428,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     @Override
     public void updateUserInfo() {
-        PopupUtils.showToast("更新成功");
+        PopupUtils.showToast(getString(R.string.update_success));
         mUserInfoPresenter.getUserInfo();
     }
 

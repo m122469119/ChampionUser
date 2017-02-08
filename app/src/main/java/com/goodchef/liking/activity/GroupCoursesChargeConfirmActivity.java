@@ -75,7 +75,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
-    private String mAmountCount;
+    private String mAmountCount;//课程总金额
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +162,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
             float strength = (float) chargeGroupConfirmData.getIntensity();
             mCoursesStrengthTextView.setRating(strength);
             mAmountCount = chargeGroupConfirmData.getAmount();
-            mCoursesMoneyTextView.setText("¥ " + mAmountCount);
+            mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
         }
     }
 
@@ -202,7 +202,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
      */
     private void sendBuyCoursesRequest() {
         if (payType.equals("-1")) {
-            PopupUtils.showToast("请选择支付方式");
+            PopupUtils.showToast(R.string.please_select_pay_type);
             return;
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
@@ -218,7 +218,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     public void updatePaySubmitView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == PAY_TYPE) {//3 免金额支付
-            PopupUtils.showToast("支付成功");
+            PopupUtils.showToast(R.string.pay_success);
             postEvent(new BuyGroupCoursesAliPayMessage());
             jumpToMyCoursesActivity();
         } else {
@@ -297,15 +297,15 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
         if (coursesPrice >= minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
-            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
+            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
             if (coursesPrice >= couponAmount) {
                 //课程的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
                 if (amount >= 0) {
-                    mCoursesMoneyTextView.setText("¥ " + amount);
+                    mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + amount);
                 }
             } else {//课程的面额小于优惠券的面额
-                mCoursesMoneyTextView.setText("¥ " + "0.00");
+                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + "0.00");
             }
         } else {//优惠券不可用
             mCouponTitleTextView.setText("");
@@ -363,6 +363,12 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     public void onEvent(BuyGroupCoursesWechatMessage wechatMessage) {
         if (wechatMessage.isPaySuccess()) {
             jumpToMyCoursesActivity();
+        }else {
+            if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
+                mCouponTitleTextView.setText("");
+                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
+                mCoupon = null;
+            }
         }
     }
 

@@ -36,7 +36,7 @@ public class MyOrderActivity extends AppBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
-        setTitle("会员卡");
+        setTitle(getString(R.string.title_activity_myorder));
         //   initWidget();
         //  initData();
         setCouponsFragment();

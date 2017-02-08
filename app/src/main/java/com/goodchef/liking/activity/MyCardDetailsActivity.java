@@ -107,11 +107,11 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     public void updateMyCardDetailsView(MyOrderCardDetailsResult.OrderCardDetailsData data) {
         if (data != null) {
             mStateView.setState(StateView.State.SUCCESS);
-            mOrderNumberTextView.setText("订单号：" + data.getOrderId());
-            mBuyTimeTextView.setText("购买时间：" + data.getOrderTime());
+            mOrderNumberTextView.setText(getString(R.string.order_number) + data.getOrderId());
+            mBuyTimeTextView.setText(getString(R.string.buy_time) + data.getOrderTime());
             int orderSate = data.getOrderStatus();
             if (orderSate == 1) {
-                mBuyStateTextView.setText("已支付");
+                mBuyStateTextView.setText(R.string.dishes_order_state_payed);
             }
             int buyType = data.getBuyType();
             if (buyType == BUY_TYPE_BUY) {

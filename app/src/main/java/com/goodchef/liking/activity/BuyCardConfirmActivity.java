@@ -29,6 +29,7 @@ import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -249,8 +250,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
 
         mGymTextView.setText(mCardGymName);
-        mCardTypeTextView.setText(mCardName+mCardType);
-        mMoneyTextView.setText(getString(R.string.money_symbol)+mCardTotalMoney);
+        mCardTypeTextView.setText(mCardName + mCardType);
+        mMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
 
         builder.setCustomView(view);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -285,6 +286,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private void setGymId() {
         if (buyType == BUY_TYPE_BUY) {
             submitGymId = gymId;
+            LikingHomeActivity.gymId = gymId;
         } else if (buyType == BUY_TYPE_CONTINUE) {
             submitGymId = "0";
         } else if (buyType == BUY_TYPE_UPGRADE) {
@@ -321,7 +323,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 //订单的价格大于优惠券的面额
                 double amount = price - couponAmount;
                 if (amount >= 0) {
-                    mCardTotalMoney = amount+"";
+                    mCardTotalMoney = amount + "";
                     mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
                 }
             } else {//订单的面额小于优惠券的面额
@@ -499,21 +501,24 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private final OnAliPayListener mOnAliPayListener = new OnAliPayListener() {
         @Override
         public void onStart() {
-            LogUtils.e(TAG, "alipay start");
+            LogUtils.i(TAG, "alipay start");
         }
 
         @Override
         public void onSuccess() {
+            LogUtils.i(TAG, "alipay sucess");
+
             jumpOrderActivity();
         }
 
         @Override
         public void onFailure(String errorMessage) {
-
+            LogUtils.i(TAG, "支付失败");
         }
 
         @Override
         public void confirm() {
+            LogUtils.i(TAG, "alipay confirm");
         }
     };
 
@@ -542,6 +547,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     public void onEvent(BuyCardWeChatMessage weChatMessage) {
         if (weChatMessage.isPaySuccess()) {
             jumpOrderActivity();
+        }else {
+            if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
+                mCouponsMoneyTextView.setText("");
+                mCardTotalMoney = cardPrice;
+                mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
+                mCoupon = null;
+            }
         }
     }
 
@@ -549,6 +561,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         Intent intent = new Intent(this, MyOrderActivity.class);
         intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
         startActivity(intent);
+        postEvent(new RefreshBuyCardMessage());
         this.finish();
     }
 

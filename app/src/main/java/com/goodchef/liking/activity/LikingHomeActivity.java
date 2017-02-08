@@ -157,6 +157,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             Preference.setUpdateApp(1);
             Preference.setNewApkName(mUpDateAppData.getLastestVer());
             if (Preference.getIsUpdate()) {
+                Preference.setIsUpdateApp(false);
                 showCheckUpdateDialog(false);
             }
         } else if (update == 2) {//强制更新
@@ -183,7 +184,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Preference.setIsUpdateApp(false);
                     dialog.dismiss();
                 }
             });
@@ -191,7 +191,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Preference.setIsUpdateApp(false);
                 if (!StringUtils.isEmpty(mUpDateAppData.getUrl())) {
                     mFileDownloaderManager = new FileDownloaderManager(LikingHomeActivity.this);
                     mFileDownloaderManager.downloadFile(mUpDateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());

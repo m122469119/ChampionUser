@@ -102,13 +102,13 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         if (v == mPromotionCardBtn) {//升级卡
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
-            intent.putExtra(KEY_INTENT_TITLE, "升级卡");
+            intent.putExtra(KEY_INTENT_TITLE, getString(R.string.promotion_card));
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             startActivity(intent);
         } else if (v == mFlowCardBtn) {//续卡
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
-            intent.putExtra(KEY_INTENT_TITLE, "续卡");
+            intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             startActivity(intent);
         }

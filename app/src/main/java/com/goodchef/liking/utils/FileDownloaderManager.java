@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.FileUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.downloadprovider.FileDownloadService;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DialogUtils;
@@ -130,6 +131,7 @@ public class FileDownloaderManager {
                     intent1.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent1);
+                    BaseApplication.getInstance().exitApp();
                 }
             }
         }

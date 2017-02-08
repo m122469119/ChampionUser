@@ -193,9 +193,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             mPlacesDataList = (ArrayList<PlacesData>) coursesConfirmData.getPlacesList();
             setPlacesDataListData();
             mCoursesTimeTextView.setText(coursesConfirmData.getDuration());
-            mCoursesNumberTextView.setText(coursesConfirmData.getPeopleNum() + " 人");
+            mCoursesNumberTextView.setText(coursesConfirmData.getPeopleNum() + getString(R.string.people));
             mAmountCount = coursesConfirmData.getAmount();
-            mCoursesMoneyTextView.setText("¥ " + mAmountCount);
+            mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
@@ -485,10 +485,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 //课程的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
                 if (amount >= 0) {
-                    mCoursesMoneyTextView.setText("¥ " + amount);
+                    mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + amount);
                 }
             } else {//课程的面额小于优惠券的面额
-                mCoursesMoneyTextView.setText("¥ " + "0.00");
+                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + "0.00");
             }
         } else {//优惠券不可用
             mCouponTitleTextView.setText("");
@@ -512,7 +512,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         if (isSuccess) {
             isGetMoneySuccess = isSuccess;
             mAmountCount = orderCalculateData.getAmount();
-            mCoursesMoneyTextView.setText("¥ " + mAmountCount);
+            mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
             mEndTimeTextView.setText(orderCalculateData.getEndTime());
             mCoursesTimeTextView.setText(orderCalculateData.getDuration());
         } else {
@@ -587,6 +587,12 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
         if (wechatMessage.isPaySuccess()) {
             jumpToMyCoursesActivity();
+        }else {
+            if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
+                mCouponTitleTextView.setText("");
+                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
+                mCoupon = null;
+            }
         }
     }
 
