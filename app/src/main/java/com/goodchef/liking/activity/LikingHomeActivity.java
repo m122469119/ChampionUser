@@ -243,7 +243,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void setMainTableView() {
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-        mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
+        mLikingLeftTitleTextView.setText(R.string.title_change_gym);
+        //  mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mRightImageView.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
     }
@@ -288,7 +289,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void setTagMainTab() {
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-        mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
+        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
+            mLikingLeftTitleTextView.setText(mGym.getCityName());
+        }
+        //  mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mLikingDistanceTextView.setVisibility(View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(View.GONE);
         mRightImageView.setVisibility(View.VISIBLE);
@@ -301,7 +305,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void setTagNearbyTab() {
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-        mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
+        // mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
+        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
+            mLikingLeftTitleTextView.setText(mGym.getCityName());
+        }
         mLikingDistanceTextView.setVisibility(View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(View.GONE);
         mRightImageView.setVisibility(View.GONE);
@@ -475,7 +482,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             intent.putExtra(KEY_TAB_INDEX, index);
             startActivity(intent);
         } else {
-            PopupUtils.showToast("网络出错，请检查网络刷新后重试");
+            PopupUtils.showToast(getString(R.string.network_home_error));
         }
     }
 
@@ -606,6 +613,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 设置首页标题
      */
     private void setHomeTitle() {
+        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
+            mLikingLeftTitleTextView.setText(mGym.getCityName());
+        }
         String tag = fragmentTabHost.getCurrentTabTag();
         if (isWhetherLocation) {
             if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
@@ -676,7 +686,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             long secondTime = System.currentTimeMillis();
             if (secondTime - firstTime > 2000) {//如果两次按键时间间隔大于2秒，则不退出
-                PopupUtils.showToast("再按一次退出应用");//再按一次退出应用
+                PopupUtils.showToast(getString(R.string.exit_app));//再按一次退出应用
                 firstTime = secondTime;//更新firstTime
                 return true;
             } else {

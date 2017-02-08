@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout android:id="@+id/liking_home_appBar"
-                                            xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/liking_home_appBar"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:background="@color/main_app_color"
@@ -30,7 +30,10 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:drawablePadding="@dimen/spacing_4dp"
+                android:drawableRight="@drawable/lesson_title_down_arrow"
                 android:gravity="center"
+                android:paddingLeft="10dp"
                 android:textColor="@color/tab_indicator_color"
                 android:textSize="@dimen/textsize_15"
                 android:visibility="visible"/>
@@ -61,9 +64,9 @@
                     android:layout_height="?attr/actionBarSize"
                     android:layout_marginLeft="4dp"
                     android:layout_toRightOf="@+id/liking_middle_title_text"
+                    android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:ellipsize="end"
                     android:textColor="@color/lesson_details_gray_back"
                     android:textSize="@dimen/textsize_mirco"
                     android:visibility="visible"/>
