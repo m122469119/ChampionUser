@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseApplication;
-import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.BuildConfig;
 

@@ -5,18 +5,12 @@ import android.content.Context;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.codelibrary.utils.SecurityUtils;
-import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.DeviceUtils;
 import com.aaron.android.framework.utils.PopupUtils;
-import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.SportDataView;
-
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:
