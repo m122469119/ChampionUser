@@ -29,7 +29,6 @@ import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
-import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -110,6 +109,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         setContentView(R.layout.activity_buy_card_confirm);
         initView();
         setViewOnClickListener();
+
         setDefaultPayType();
         initData();
         initPayModule();
@@ -169,17 +169,29 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         payType = "1";
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mCardName = intent.getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
+        mCategoryId = intent.getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
+        buyType = intent.getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
+        gymId = intent.getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        sendConfirmCardRequest();
+    }
+
     private void initData() {
         mCardName = getIntent().getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
         mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
-        mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         sendConfirmCardRequest();
+
     }
 
     private void sendConfirmCardRequest() {
-        mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
+        if (mConfirmBuyCardPresenter == null) {
+            mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
+        }
         mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, gymId);
     }
 
@@ -471,6 +483,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
                 }
             }
+        }
+        if (mCardRecyclerAdapter == null) {
+            mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         }
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCardRecyclerView.setLayoutManager(mLayoutManager);

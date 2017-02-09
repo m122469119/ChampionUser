@@ -89,6 +89,9 @@ public class BleManager {
     }
 
     public void doScan(boolean enable) {
+        if (mBleScanner ==null){
+            return;
+        }
         if (mBleScanner.isScanning()) {
             return;
         }

@@ -84,7 +84,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private RatingBar mRatingBar;//强度
     private TextView mCoursesIntroduceTextView;//课程介绍
     private TextView mJoinUserNumbers;//报名人数
-    private RecyclerView  mUserListRecyclerView;//报名人数展示
+    private RecyclerView mUserListRecyclerView;//报名人数展示
     private TextView mImmediatelySubmitBtn;//立即购买
     private TextView mGroupCoursesTagTextView;//课程Tag 付费和免费
     private LinearLayout mShareLayout;
@@ -304,7 +304,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(GroupLessonDetailsActivity.this, LikingHomeActivity.class);
-                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB,1);
+                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, 1);
                 startActivity(intent);
                 dialog.dismiss();
                 GroupLessonDetailsActivity.this.finish();
@@ -332,12 +332,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mScheduleResultTextView.setText(groupLessonData.getQuotaDesc());
         //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
-        if(!TextUtils.isEmpty(groupLessonData.getGymAddress())){
+        if (!TextUtils.isEmpty(groupLessonData.getGymAddress())) {
             mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
         }
         mShopPlaceTextView.setText(groupLessonData.getPlaceInfo());
         scheduleType = groupLessonData.getScheduleType();
-        if(COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
+        if (COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
             mTeacherNamelayout.setVisibility(View.GONE);
         } else {
             mTeacherNamelayout.setVisibility(View.VISIBLE);
@@ -362,11 +362,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      *
      * @param gymNumbersDatas
      */
-    private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas){
+    private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas) {
         mJoinUserNumbers.setText(gymNumbersDatas.size() + " 人");
         mUserListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mGroupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
-        mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this,LinearLayoutManager.HORIZONTAL));
+        mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
         mGroupLessonNumbersAdapter.setData(gymNumbersDatas);
         mUserListRecyclerView.setAdapter(mGroupLessonNumbersAdapter);
     }
@@ -428,8 +428,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             this.startActivity(intent);
             this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         } else if (v == mShareLayout) {//分享
-            mSharePresenter = new SharePresenter(this, this);
+            if (mSharePresenter == null) {
+                mSharePresenter = new SharePresenter(this, this);
+            }
             mSharePresenter.getGroupShareData(scheduleId);
+            mShareLayout.setEnabled(false);
         }
     }
 
@@ -498,7 +501,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
     }
 
-    public void onEvent(NoCardMessage message){
+    public void onEvent(NoCardMessage message) {
         this.finish();
     }
 
@@ -510,13 +513,14 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         this.finish();
     }
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         this.finish();
     }
 
     @Override
     public void updateShareView(ShareData shareData) {
         showShareDialog(shareData);
+        mShareLayout.setEnabled(true);
     }
 
     private void showShareDialog(final ShareData shareData) {

@@ -211,8 +211,11 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 startActivity(intent);
             }
         } else if (v == mShareLayout) {
-            mSharePresenter = new SharePresenter(this, this);
+            if (mSharePresenter == null) {
+                mSharePresenter = new SharePresenter(this, this);
+            }
             mSharePresenter.getPrivateShareData(trainerId);
+            mShareLayout.setEnabled(false);
         }
     }
 
@@ -231,11 +234,11 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         this.finish();
     }
 
-    public void onEvent(LoginFinishMessage message){
+    public void onEvent(LoginFinishMessage message) {
         sendDetailsRequest();
     }
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         this.finish();
     }
 
@@ -246,6 +249,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     @Override
     public void updateShareView(ShareData shareData) {
+        mShareLayout.setEnabled(true);
         showShareDialog(shareData);
     }
 

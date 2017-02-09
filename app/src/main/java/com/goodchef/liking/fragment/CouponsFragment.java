@@ -414,7 +414,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                         mTypeTextView.setText(R.string.private_courses_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
-                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
+                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
                     if (minAmountDouble > 0.00) {
                         mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {

@@ -133,6 +133,7 @@
         <!--买卡确认页-->
         <activity
             android:name=".activity.BuyCardConfirmActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--我的私教课订单详情-->
         <activity
