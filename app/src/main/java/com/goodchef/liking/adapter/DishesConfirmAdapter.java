@@ -49,7 +49,7 @@ public class DishesConfirmAdapter extends BaseRecycleViewAdapter<DishesConfirmAd
             int orderNum = object.getSelectedOrderNum();
             mDishesNumberTextView.setText("x " + orderNum);
             double money = Double.parseDouble(object.getPrice()) * orderNum;
-            mDishesMoneyTextView.setText("¥ " + money);
+            mDishesMoneyTextView.setText(mContext.getString(R.string.money_symbol) + money);
         }
     }
 }

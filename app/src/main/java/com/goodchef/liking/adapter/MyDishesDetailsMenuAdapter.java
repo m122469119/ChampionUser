@@ -47,7 +47,7 @@ public class MyDishesDetailsMenuAdapter extends BaseRecycleViewAdapter<MyDishesD
         public void bindViews(MyDishesOrderDetailsResult.OrderDetailsData.FoodListData object) {
             mDishesNameTextView.setText(object.getFoodName());
             mDishesNumberTextView.setText("x " + object.getFoodNum());
-            mDishesMoneyTextView.setText("¥ " + object.getTotalAmount());
+            mDishesMoneyTextView.setText(mContext.getString(R.string.money_symbol) + object.getTotalAmount());
         }
     }
 }

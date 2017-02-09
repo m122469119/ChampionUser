@@ -71,7 +71,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_details);
-        setTitle("商品详情");
+        setTitle(getString(R.string.title_activity_dish_detaials));
         initView();
         initData();
         sendFoodDetailsRequest();

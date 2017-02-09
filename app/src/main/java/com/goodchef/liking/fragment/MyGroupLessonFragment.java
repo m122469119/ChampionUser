@@ -193,7 +193,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
      */
     private void showCancelCoursesDialog(final String orderId) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
-        builder.setMessage("您确定取消预约？");
+        builder.setMessage(getString(R.string.sure_cancel_order));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -217,7 +217,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    PopupUtils.showToast("取消成功");
+                    PopupUtils.showToast(R.string.cancel_success);
                     loadHomePage();
                 } else {
                     PopupUtils.showToast(result.getMessage());

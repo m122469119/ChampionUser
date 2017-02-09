@@ -73,11 +73,11 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
         if (v == mNextBtn) {
             String nameStr = mWriteNameEditText.getText().toString().trim();
             if (StringUtils.isEmpty(nameStr)) {
-                PopupUtils.showToast("请输入名称");
+                PopupUtils.showToast(getString(R.string.input_name));
                 return;
             }
             if (nameStr.length() > 15) {
-                PopupUtils.showToast("昵称不能大于15个字");
+                PopupUtils.showToast(getString(R.string.name_limit));
                 return;
             }
 

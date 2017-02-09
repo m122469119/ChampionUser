@@ -253,7 +253,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
                     if (cancelText != null) {
                         DishesOrderListResult.DishesOrderData.DishesOrder object = (DishesOrderListResult.DishesOrderData.DishesOrder) cancelText.getTag();
                         if (object != null) {
-                            showCancelConfirmDialog(2, object.getOrderId(), "您确定取消该订单吗？");
+                            showCancelConfirmDialog(2, object.getOrderId(), getString(R.string.conrfrim_cancel_order));
                         }
                     }
                     break;
@@ -262,7 +262,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
                     if (confirmTextView != null) {
                         DishesOrderListResult.DishesOrderData.DishesOrder object = (DishesOrderListResult.DishesOrderData.DishesOrder) confirmTextView.getTag();
                         if (object != null) {
-                            showCancelConfirmDialog(1, object.getOrderId(), "您确定完成该订单吗？");
+                            showCancelConfirmDialog(1, object.getOrderId(), getString(R.string.confirm_finish_order));
                         }
                     }
                     break;
@@ -327,7 +327,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     public void updateMyDishesPayView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast("支付成功");
+            PopupUtils.showToast(getString(R.string.pay_success));
             loadHomePage();
         } else {
             handlePay(payResultData);

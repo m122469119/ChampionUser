@@ -87,11 +87,11 @@ public class FatAnalyzeAdapter extends BaseRecycleViewAdapter<FatAnalyzeAdapter.
                 return "";
             }
             if (Float.parseFloat(value) > Float.parseFloat(max)) {
-                result = "偏高";
+                result = mContext.getString(R.string.on_the_high_side);
             } else if (Float.parseFloat(value) < Float.parseFloat(min)) {
-                result = "偏低";
+                result = mContext.getString(R.string.flat);
             } else {
-                result = "正常";
+                result = mContext.getString(R.string.normal);
             }
             return result;
         }

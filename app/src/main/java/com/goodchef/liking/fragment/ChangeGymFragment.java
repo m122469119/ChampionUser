@@ -152,7 +152,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                     mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                 }
                 mMyTextView.setVisibility(View.VISIBLE);
-                mMyTextView.setText("购卡场馆：" + mMyGym.getGymName());
+                mMyTextView.setText(getString(R.string.buy_card_stadium) + mMyGym.getGymName());
             } else {
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {
@@ -182,7 +182,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
             imageView.setVisibility(View.GONE);
             myGymTextView.setVisibility(View.VISIBLE);
-            myGymTextView.setText("购卡场馆：" + mMyGym.getGymName());
+            myGymTextView.setText(getString(R.string.buy_card_stadium) + mMyGym.getGymName());
         } else {
             if (Preference.isLogin()) {
                 imageView.setVisibility(View.VISIBLE);

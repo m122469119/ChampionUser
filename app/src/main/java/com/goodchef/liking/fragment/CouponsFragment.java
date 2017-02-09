@@ -111,11 +111,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
         scheduleId = getArguments().getString(CouponsActivity.KEY_SCHEDULE_ID);
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
-        if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            setPullMode(PullMode.PULL_BOTH);
-        } else {
-            setPullMode(PullMode.PULL_NONE);
-        }
+//        if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
+//            setPullMode(PullMode.PULL_BOTH);
+//        } else {
+//            setPullMode(PullMode.PULL_UP);
+//        }
+        setPullMode(PullMode.PULL_BOTH);
     }
 
     private String createDishesJson() {
@@ -285,6 +286,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
                 } else if (couponsStatus.equals(COUPON_STATUS_NO_SUBJECT)) {//不符合该项目
+                    mOverdueImageView.setVisibility(View.GONE);
                     setNotProjectBackGround(couponType, minAmount);
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");

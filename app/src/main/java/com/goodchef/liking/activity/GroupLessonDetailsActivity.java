@@ -217,7 +217,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 mCoursesStateLayout.setVisibility(View.VISIBLE);
 //                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
                 mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-                mStatePromptTextView.setText(R.string.money_symbol + price);
+                mStatePromptTextView.setText(getString(R.string.money_symbol) + price);
                 mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
                 mStatePromptTextView.setBackgroundColor(0);
                 mCancelOrderBtn.setText(R.string.immediately_buy_btn);

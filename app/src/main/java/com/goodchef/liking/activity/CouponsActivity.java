@@ -85,10 +85,10 @@ public class CouponsActivity extends AppBarActivity {
 
         if (intentType.equals(TYPE_MY_COUPONS)) {
             mExchangeCouponsLayout.setVisibility(View.VISIBLE);
-            setTitle("我的优惠券");
+            setTitle(getString(R.string.title_activity_my_coupons));
         } else {
             mExchangeCouponsLayout.setVisibility(View.GONE);
-            setTitle("选择优惠券");
+            setTitle(getString(R.string.title_activity_select_coupon));
         }
         setCouponsFragment();
     }

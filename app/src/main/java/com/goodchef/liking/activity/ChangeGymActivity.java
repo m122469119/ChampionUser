@@ -123,7 +123,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX, 0);
 
-        mTitleTextView.setText(R.string.title_change_gym);
+        mTitleTextView.setText(getString(R.string.title_change_gym));
         setGymFragment();
         setCityListData();
     }
@@ -303,7 +303,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 if (isLoaction) {
                     mCityHeadText.setText(getString(R.string.current_city) + currentCityName);
                 } else {
-                    mCityHeadText.setText(R.string.location_fail_repeat_location);
+                    mCityHeadText.setText(getString(R.string.location_fail_repeat_location));
                 }
                 mListView.addHeaderView(mCityHeadView);
             }

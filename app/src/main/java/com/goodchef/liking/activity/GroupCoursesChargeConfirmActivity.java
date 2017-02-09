@@ -202,7 +202,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
      */
     private void sendBuyCoursesRequest() {
         if (payType.equals("-1")) {
-            PopupUtils.showToast(R.string.please_select_pay_type);
+            PopupUtils.showToast(getString(R.string.please_select_pay_type));
             return;
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
@@ -218,7 +218,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     public void updatePaySubmitView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == PAY_TYPE) {//3 免金额支付
-            PopupUtils.showToast(R.string.pay_success);
+            PopupUtils.showToast(getString(R.string.pay_success));
             postEvent(new BuyGroupCoursesAliPayMessage());
             jumpToMyCoursesActivity();
         } else {

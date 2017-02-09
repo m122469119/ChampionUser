@@ -447,6 +447,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     mCardMoneyTextView.setText(getString(R.string.money_symbol) + object.getPrice());
                     mCardId = object.getCardId();
                     mCardType = object.getName();
+                    setPayFailView();
                 }
             }
         }

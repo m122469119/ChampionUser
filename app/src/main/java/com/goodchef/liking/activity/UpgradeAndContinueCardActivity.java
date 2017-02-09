@@ -89,7 +89,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     }
 
     private void setNoUpGradeCard() {
-        mStateView.initNoDataView(R.drawable.icon_no_data, "暂无可升级的卡", "刷新看看");
+        mStateView.initNoDataView(R.drawable.icon_no_data, getString(R.string.no_card_upgrade), getString(R.string.refresh_look));
     }
 
     private void setOnItemClickListener() {

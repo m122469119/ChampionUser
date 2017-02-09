@@ -438,7 +438,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else {
-            textView.setText(R.string.notice_prompt);
+            textView.setText(getString(R.string.notice_prompt));
             builder.setMessage(getString(R.string.no_announcement));
         }
         builder.setNegativeButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {

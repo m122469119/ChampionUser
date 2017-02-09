@@ -74,7 +74,7 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
             } else if (Integer.parseInt(leftTimes) == 0) {
                 mCompleteCoursesBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
             }
-            mCompleteCoursesBtn.setText("剩余上课次数：" + object.getLeftTimes() + "次");
+            mCompleteCoursesBtn.setText(mContext.getString(R.string.last_residue_time) + object.getLeftTimes() + mContext.getString(R.string.times));
         }
 
         private void setCoursesState(int state) {

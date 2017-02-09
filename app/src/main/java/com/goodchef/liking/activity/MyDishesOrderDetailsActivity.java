@@ -175,12 +175,12 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
             String couponAmount = detailsData.getCouponAmount();
             if (Double.parseDouble(couponAmount) > 0) {
                 mCouponLayout.setVisibility(View.VISIBLE);
-                mCouponAmount.setText("¥ " + couponAmount);
+                mCouponAmount.setText(getString(R.string.money_symbol) + couponAmount);
             } else {
                 mCouponLayout.setVisibility(View.GONE);
             }
             //设置总价
-            mActualDelivery.setText("¥ " + detailsData.getActualAmount());
+            mActualDelivery.setText(getString(R.string.money_symbol) + detailsData.getActualAmount());
             //设置支付方式
             int payType = detailsData.getPayType();
             if (payType == PAY_TYPE_WECHAT) {

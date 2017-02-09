@@ -106,7 +106,7 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
                 mBodyWhrTextView.setText(waistHipData.getEnglishName());
                 mWhrChineseNameTextView.setText(waistHipData.getChineseName());
             }
-            mBodyMeasureTimeTextView.setText("体测时间：" + object.getBodyTime());
+            mBodyMeasureTimeTextView.setText(mContext.getString(R.string.body_measure_time) + object.getBodyTime());
         }
 
         private void setTextViewType() {

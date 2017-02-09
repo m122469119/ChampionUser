@@ -176,7 +176,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 dishPrice += p;
             }
         }
-        mDishesMoneyextView.setText("¥ " + dishPrice);
+        mDishesMoneyextView.setText(getString(R.string.money_symbol) + dishPrice);
     }
 
 
@@ -219,7 +219,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             if (mealTimeList != null && mealTimeList.size() > 0) {
                 showMealTimeDialog();
             } else {
-                PopupUtils.showToast("无取餐时间数据");
+                PopupUtils.showToast(getString(R.string.no_time_get_dinner));
             }
         } else if (v == mCouponsLayout) {//选择优惠券
             UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
@@ -244,11 +244,11 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         } else if (v == mImmediatelyPayBtn) {
             String mealTime = mGetMealsTimeTextView.getText().toString();
             if (StringUtils.isEmpty(mealTime)) {
-                PopupUtils.showToast("请选择就餐时间");
+                PopupUtils.showToast(getString(R.string.select_dinner_time));
                 return;
             }
             if (payType.equals("-1")) {
-                PopupUtils.showToast("请选择支付方式");
+                PopupUtils.showToast(getString(R.string.please_select_pay_type));
                 return;
             }
             if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
@@ -287,7 +287,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     public void updateSubmitOrderView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast("支付成功");
+            PopupUtils.showToast(getString(R.string.pay_success));
             postEvent(new FreePayMessage());
             jumpIntentDishesOrderList();
         } else {
@@ -343,7 +343,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             }
         });
 
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mGetMealsTimeTextView.setText(mSelectMealtime);
@@ -383,17 +383,17 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         double couponAmount = Double.parseDouble(couponAmountStr);
         double minAmount = Double.parseDouble(minAmountStr);
         if (coursesPrice >= minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
-            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + " 元");
+            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
             if (coursesPrice >= couponAmount) {
                 //订单的价格大于优惠券的面额
                 double amount = coursesPrice - couponAmount;
                 if (amount >= 0) {
-                    mDishesCouponMoney.setText("已优惠" + mCoupon.getAmount());
-                    mDishesMoneyextView.setText("¥ " + amount);
+                    mDishesCouponMoney.setText(getString(R.string.has_coupons) + mCoupon.getAmount());
+                    mDishesMoneyextView.setText(getString(R.string.money_symbol) + amount);
                 }
             } else {//订单的面额小于优惠券的面额
-                mDishesCouponMoney.setText("已优惠" + mCoupon.getAmount());
-                mDishesMoneyextView.setText("¥ " + "0.00");
+                mDishesCouponMoney.setText(getString(R.string.has_coupons) + mCoupon.getAmount());
+                mDishesMoneyextView.setText(getString(R.string.money_symbol) + "0.00");
             }
         } else {//优惠券不可用
             mDishesCouponMoney.setText("");

@@ -178,10 +178,10 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                 return;
             }
             if (StringUtils.isEmpty(roomId)) {
-                PopupUtils.showToast("您还没有选择可用的房间");
+                PopupUtils.showToast(getString(R.string.no_select_room));
             }
             if (StringUtils.isEmpty(coursesId)) {
-                PopupUtils.showToast("您还没有选择课程");
+                PopupUtils.showToast(getString(R.string.no_select_courses));
                 return;
             }
             sendOrderRequest();
@@ -229,7 +229,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
     @Override
     public void updateOrderView() {
-        PopupUtils.showToast("预约成功");
+        PopupUtils.showToast(getString(R.string.order_success));
         Intent intent = new Intent(this, MyLessonActivity.class);
         intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
         startActivity(intent);
@@ -248,8 +248,8 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
     private void showNoCardDialog(String message) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setTitle("提示");
-        builder.setMessage("无卡用户或会员卡剩余有效期太短,请购卡后重试");
+        builder.setTitle(getString(R.string.notice_prompt));
+        builder.setMessage(getString(R.string.no_card_or_vip));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -574,8 +574,8 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         try{
             duration = Integer.parseInt(mCoursesData.getVideoDuration()) / 60 + "min";
         }catch (Exception e){}
-        mCoursesDurationTextView.setText(getResources().getString(R.string.self_courses_time) + duration);
-        mGroupCoursesStrongTextView.setText("课程强度:" + mCoursesData.getIntensity());
+        mCoursesDurationTextView.setText(getString(R.string.self_courses_time) + duration);
+        mGroupCoursesStrongTextView.setText(getString(R.string.courses_strength) + mCoursesData.getIntensity());
         List<SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData.ImgData> imageUrlList = mCoursesData.getImg();
         if (imageUrlList != null && imageUrlList.size() > 0) {
             String imageUrl = imageUrlList.get(0).getUrl();

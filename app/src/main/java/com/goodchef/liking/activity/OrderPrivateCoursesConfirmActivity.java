@@ -256,7 +256,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             @Override
             public void onItemClick(View view, int position) {
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                    PopupUtils.showToast(R.string.network_error);
+                    PopupUtils.showToast(getString(R.string.network_error));
                     return;
                 }
                 List<PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses> trainItemList = mPrivateCoursesTrainItemAdapter.getDataList();
@@ -297,7 +297,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     public void onClick(View v) {
         if (v == mCouponsLayout) {
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                PopupUtils.showToast(R.string.network_error);
+                PopupUtils.showToast(getString(R.string.network_error));
                 return;
             } else {
                 if (coursesId != null) {
@@ -315,7 +315,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
         } else if (v == mImmediatelyBuyBtn) {
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                PopupUtils.showToast(R.string.network_error);
+                PopupUtils.showToast(getString(R.string.network_error));
                 return;
             } else {
                 sendBuyCoursesRequest();
@@ -330,21 +330,21 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             payType = "0";
         } else if (v == mMinusImageView) {
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                PopupUtils.showToast(R.string.network_error);
+                PopupUtils.showToast(getString(R.string.network_error));
                 return;
             } else {
                 doMinusCoursesTimes();
             }
         } else if (v == mAddImageView) {
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                PopupUtils.showToast(R.string.network_error);
+                PopupUtils.showToast(getString(R.string.network_error));
                 return;
             } else {
                 doAddCoursesTimes();
             }
         } else if (v == mCoursesTimesTextView) {
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                PopupUtils.showToast(R.string.network_error);
+                PopupUtils.showToast(getString(R.string.network_error));
                 return;
             } else {
                 showCoursesTimesDialog();
@@ -398,7 +398,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
      */
     private void sendBuyCoursesRequest() {
         if (payType.equals("-1")) {
-            PopupUtils.showToast(R.string.please_select_pay_type);
+            PopupUtils.showToast(getString(R.string.please_select_pay_type));
             return;
         }
         UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);

@@ -240,10 +240,10 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      */
     private void clearExerciseData() {
         if (mBodyScoreData != null) {
-            mBodyScoreData.setText("-");
+            mBodyScoreData.setText("--");
         }
-        mTrainTimeData.setText("-");
-        mEveryDataSportData.setText("-");
+        mTrainTimeData.setText("--");
+        mEveryDataSportData.setText("--");
     }
 
 

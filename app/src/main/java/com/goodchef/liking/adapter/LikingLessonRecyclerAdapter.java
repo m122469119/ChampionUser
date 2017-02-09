@@ -33,6 +33,13 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
 
     private View.OnClickListener mClickListener;
 
+    private Context mContext;
+
+    public LikingLessonRecyclerAdapter(Context context) {
+        super(context);
+        this.mContext = context;
+    }
+
     public void setGroupOnClickListener(View.OnClickListener listener) {
         this.mClickListener = listener;
     }
@@ -106,7 +113,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
                     mCoursesMoneyTextView.setVisibility(View.GONE);
                 } else if (isFree == 1) {//收费
                     mCoursesMoneyTextView.setVisibility(View.VISIBLE);
-                    mCoursesMoneyTextView.setText(R.string.money_symbol + object.getPrice());
+                    mCoursesMoneyTextView.setText(mContext.getString(R.string.money_symbol) + object.getPrice());
                 }
                 mLessonNameTextView.setText(object.getCourseName());
                 String courseDate = object.getCourseDate();
@@ -143,9 +150,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
         }
     }
 
-    public LikingLessonRecyclerAdapter(Context context) {
-        super(context);
-    }
+
 
     @Override
     protected LessonViewHolder createViewHolder(ViewGroup parent) {

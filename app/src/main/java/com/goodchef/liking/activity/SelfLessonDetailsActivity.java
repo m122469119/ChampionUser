@@ -58,7 +58,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
             public void onClick(View v) {
                 String phone = Preference.getCustomerServicePhone();
                 if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(SelfLessonDetailsActivity.this, "确定联系客服吗？", phone);
+                    LikingCallUtil.showCallDialog(SelfLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
                 }
             }
         });

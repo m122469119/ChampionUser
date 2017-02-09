@@ -174,18 +174,18 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
                 mOrderNumberTextView.setText(getString(R.string.order_number) + object.getOrderId());
                 int orderSate = object.getOrderStatus();
                 if (orderSate == 1) {
-                    mOrderStateTextView.setText(R.string.dishes_order_state_payed);
+                    mOrderStateTextView.setText(getString(R.string.dishes_order_state_payed));
                 }
                 String buyType = object.getBuyType();
                 if ("1".equals(buyType)) {
-                    mOrderBuyTypeTextView.setText(R.string.buy_card);
+                    mOrderBuyTypeTextView.setText(getString(R.string.buy_card));
                 } else if ("2".equals(buyType)) {
-                    mOrderBuyTypeTextView.setText(R.string.continue_card);
+                    mOrderBuyTypeTextView.setText(getString(R.string.continue_card));
                 } else if ("3".equals(buyType)) {
-                    mOrderBuyTypeTextView.setText(R.string.upgrade_card);
+                    mOrderBuyTypeTextView.setText(getString(R.string.upgrade_card));
                 }
                 mOrderPeriodOfValidityTextView.setText(object.getStartTime() + " ~ " + object.getEndTime());
-                mOrderMoneyTextView.setText("¥ " + object.getOrderAmount());
+                mOrderMoneyTextView.setText(getString(R.string.money_symbol) + object.getOrderAmount());
                 String imageUrl = object.getCardImg();
                 if (!StringUtils.isEmpty(imageUrl)) {
                     HImageLoaderSingleton.getInstance().loadImage(mCardHImageView, imageUrl);
