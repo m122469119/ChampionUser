@@ -152,7 +152,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                     mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                 }
                 mMyTextView.setVisibility(View.VISIBLE);
-                mMyTextView.setText(getString(R.string.buy_card_stadium) + mMyGym.getGymName());
+                mMyTextView.setText(getActivity().getString(R.string.buy_card_stadium) + mMyGym.getGymName());
             } else {
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {
