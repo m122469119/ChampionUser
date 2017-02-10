@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.fragment.CouponsFragment;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
@@ -84,10 +85,10 @@ public class CouponsActivity extends AppBarActivity {
 
         if (intentType.equals(TYPE_MY_COUPONS)) {
             mExchangeCouponsLayout.setVisibility(View.VISIBLE);
-            setTitle("我的优惠券");
+            setTitle(getString(R.string.title_activity_my_coupons));
         } else {
             mExchangeCouponsLayout.setVisibility(View.GONE);
-            setTitle("选择优惠券");
+            setTitle(getString(R.string.title_activity_select_coupon));
         }
         setCouponsFragment();
     }
@@ -97,14 +98,14 @@ public class CouponsActivity extends AppBarActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_COURSE_ID, coursesId);
-        bundle.putString(KEY_SELECT_TIMES,selectTimes);
+        bundle.putString(KEY_SELECT_TIMES, selectTimes);
         bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
         bundle.putString(TYPE_MY_COUPONS, intentType);
-        bundle.putString(BuyCardConfirmActivity.KEY_CARD_ID,cardId);
-        bundle.putString(LikingBuyCardFragment.KEY_BUY_TYPE,type);
-        bundle.putString(KEY_SCHEDULE_ID,scheduleId);
-        bundle.putString(KEY_COUPON_ID,couponId);
-        bundle.putString(LikingLessonFragment.KEY_GYM_ID,gymId);
+        bundle.putString(BuyCardConfirmActivity.KEY_CARD_ID, cardId);
+        bundle.putString(LikingBuyCardFragment.KEY_BUY_TYPE, type);
+        bundle.putString(KEY_SCHEDULE_ID, scheduleId);
+        bundle.putString(KEY_COUPON_ID, couponId);
+        bundle.putString(LikingLessonFragment.KEY_GYM_ID, gymId);
         fragmentTransaction.add(R.id.my_coupons_fragment, CouponsFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }
@@ -116,7 +117,7 @@ public class CouponsActivity extends AppBarActivity {
                 InputMethodManagerUtils.hideKeyboard(mEditCoupons);
                 String couponsNumber = mEditCoupons.getText().toString().trim();
                 if (StringUtils.isEmpty(couponsNumber)) {
-                    PopupUtils.showToast("请输入优惠券兑换码");
+                    PopupUtils.showToast(getString(R.string.input_coupon_code));
                 } else {
                     sendExchangeCouponsRequest(couponsNumber);
                 }
@@ -130,7 +131,7 @@ public class CouponsActivity extends AppBarActivity {
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(CouponsActivity.this, result)) {
-                    PopupUtils.showToast("兑换成功");
+                    PopupUtils.showToast(getString(R.string.exchange_success));
                     mEditCoupons.setText("");//清空兑换码
                     postEvent(new ExchangeCouponsMessage());
                 } else {
@@ -141,9 +142,17 @@ public class CouponsActivity extends AppBarActivity {
             @Override
             public void onFailure(RequestError error) {
                 super.onFailure(error);
-                PopupUtils.showToast("您的网络异常,请查看网络");
+                PopupUtils.showToast(getString(R.string.network_error));
             }
         });
     }
 
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(CouponErrorMessage message) {
+        finish();
+    }
 }

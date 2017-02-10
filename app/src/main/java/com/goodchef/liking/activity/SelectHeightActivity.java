@@ -49,7 +49,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_height);
-        setTitle("选择身高");
+        setTitle(getString(R.string.title_activity_height));
         initView();
         initData();
         getIntentData();
@@ -109,7 +109,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
             mSexManImage.setVisibility(View.GONE);
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
-        mBirthdayTextView.setText("出生年月：" + mBirthdayStr);
+        mBirthdayTextView.setText(getString(R.string.birthday) + mBirthdayStr);
 
     }
 

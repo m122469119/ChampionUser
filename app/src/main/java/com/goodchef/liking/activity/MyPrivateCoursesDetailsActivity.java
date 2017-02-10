@@ -137,7 +137,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             mGoClassTimesTextView.setText(data.getCompleteTimes());
             mBreakPromiseTimesTextView.setText(data.getMiss_times());
 
-            mCoursesTitleTextView.setText("课程项目: " + data.getCourseName());
+            mCoursesTitleTextView.setText(getString(R.string.courses_project) + data.getCourseName());
             int state = data.getStatus();
             if (state == COURSES_STATE_PAYED) {
                 mCoursesStateTextView.setText(R.string.courses_state_payed);
@@ -155,9 +155,9 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             mOrderNumberTextView.setText(data.getOrderId());
             mOrderTimeTextView.setText(data.getOrderTime());
             mCoursesPersonNumberTextView.setText(data.getPeopleNum() + "");
-            mCoursesPriceTextView.setText("¥ " + data.getTotalAmount());
-            mFavourableTextView.setText("¥ " + data.getCouponAmount());
-            mRealityPriceTextView.setText("¥ " + data.getActualAmount());
+            mCoursesPriceTextView.setText(getString(R.string.money_symbol) + data.getTotalAmount());
+            mFavourableTextView.setText(getString(R.string.money_symbol) + data.getCouponAmount());
+            mRealityPriceTextView.setText(getString(R.string.money_symbol) + data.getActualAmount());
 
             int payTpe = data.getPayType();
             if (payTpe == 0) {
@@ -190,7 +190,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     public void onClick(View v) {
       if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
-                LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, "确定联系教练吗？", mTeacherPhone);
+                LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, getString(R.string.confrim_contact_teacher), mTeacherPhone);
             }
         }
     }

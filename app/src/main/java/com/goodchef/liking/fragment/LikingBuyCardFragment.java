@@ -29,6 +29,7 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
+import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
@@ -194,6 +195,9 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     @Override
     public void updateCardListView(CardResult.CardData cardData) {
         if (cardData != null) {
+            if (mStateView == null) {
+                return;
+            }
             mStateView.setState(StateView.State.SUCCESS);
             mGymData = cardData.getGymData();
             if (mGymData != null) {
@@ -287,6 +291,10 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
     public void onEvent(LoginOutFialureMessage message) {
         LikingHomeActivity.gymId = "0";
+        sendBuyCardListRequest();
+    }
+
+    public void onEvent(RefreshBuyCardMessage message){
         sendBuyCardListRequest();
     }
 

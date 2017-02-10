@@ -87,11 +87,11 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
 
     private void initView() {
         if (mNum == TYPE_NUM_PASSWORD) {
-            mTitleTextView.setText("获取密码开门");
+            mTitleTextView.setText(R.string.get_open_door_pwd);
             mOpenDoorLayout.setVisibility(View.VISIBLE);
             mBraceletImage.setVisibility(View.GONE);
         } else if (mNum == TYPE_NUM_BRACELET) {
-            mTitleTextView.setText("使用手环开门");
+            mTitleTextView.setText(R.string.user_bracelet_open_door);
             mOpenDoorLayout.setVisibility(View.GONE);
             mBraceletImage.setVisibility(View.VISIBLE);
         }

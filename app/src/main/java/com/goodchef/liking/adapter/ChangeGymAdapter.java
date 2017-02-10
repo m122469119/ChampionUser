@@ -32,8 +32,6 @@ import java.util.Date;
 public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.ChangeGymViewHolder, CheckGymListResult.CheckGymData.CheckGym> {
 
     private Context mContext;
-    private StringBuilder sb = null;
-    private SimpleDateFormat sdf = null;
 
     public ChangeGymAdapter(Context context) {
         super(context);
@@ -81,7 +79,7 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
 
             if (object.isReCently() && object.islocation() && !StringUtils.isEmpty(object.getDistance())) {
                 mGymDistanceTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-                mGymDistanceTextView.setText("距您最近 " + object.getDistance());
+                mGymDistanceTextView.setText(mContext.getString(R.string.distance_recently) + object.getDistance());
             } else {
                 mGymDistanceTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
                 mGymDistanceTextView.setText(object.getDistance());

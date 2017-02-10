@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.goodchef.liking"
-          android:versionCode="140"
-          android:versionName="1.4.0">
+          android:versionCode="141"
+          android:versionName="1.4.1">
 
 
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <permission
         android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"
@@ -35,7 +37,10 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- JPush极光推送-->
 
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true"/>
+
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
@@ -53,7 +58,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name=".bluetooth.BleService" android:enabled="true"/>
+        <service
+            android:name=".bluetooth.BleService"
+            android:enabled="true"/>
         <!--首页-->
         <activity
             android:name=".activity.LikingHomeActivity"
@@ -126,6 +133,7 @@
         <!--买卡确认页-->
         <activity
             android:name=".activity.BuyCardConfirmActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--我的私教课订单详情-->
         <activity
@@ -283,6 +291,11 @@
             android:name=".activity.EveryDaySportActivity"
             android:screenOrientation="portrait"/>
 
+        <!--更多-->
+        <activity
+            android:name=".activity.MoreActivity"
+            android:screenOrientation="portrait"/>
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -368,6 +381,10 @@
             </intent-filter>
 
         </service>
+
+
+        <service android:name="com.aaron.android.framework.library.downloadprovider.FileDownloadService"/>
+
 
         <!-- Required SDK核心功能-->
         <receiver

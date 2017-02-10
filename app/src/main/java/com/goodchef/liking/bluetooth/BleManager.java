@@ -89,6 +89,9 @@ public class BleManager {
     }
 
     public void doScan(boolean enable) {
+        if (mBleScanner ==null){
+            return;
+        }
         if (mBleScanner.isScanning()) {
             return;
         }
@@ -104,21 +107,27 @@ public class BleManager {
     }
 
     public void connect(String address) {
-        if (mBleService !=null){
+        if (mBleService != null) {
             mBleService.connect(address);
         }
     }
 
     public void discoverServices() {
-        mBleService.discoverServices();
+        if (mBleService != null) {
+            mBleService.discoverServices();
+        }
     }
 
     public void wirteCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data) {
-        mBleService.wirteCharacteristic(characteristic, data);
+        if (mBleService != null) {
+            mBleService.wirteCharacteristic(characteristic, data);
+        }
     }
 
     public void setCharacteristicNotification(BluetoothGattCharacteristic readcharacteristic, boolean enable) {
-        mBleService.setCharacteristicNotification(readcharacteristic, enable);
+        if (mBleService != null) {
+            mBleService.setCharacteristicNotification(readcharacteristic, enable);
+        }
     }
 
     public List<BluetoothGattService> getSupportedGattServices() {

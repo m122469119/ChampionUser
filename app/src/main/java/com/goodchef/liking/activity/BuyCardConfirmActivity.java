@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -98,6 +99,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private String gymId = "0";
     private String noticeActivity;//活动
     private String submitGymId;
+    private String mCardGymName;//场馆名称
+    private String mCardType;//购卡类型
+    private String mCardTotalMoney;//卡的总价钱
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         setContentView(R.layout.activity_buy_card_confirm);
         initView();
         setViewOnClickListener();
+
         setDefaultPayType();
         initData();
         initPayModule();
@@ -164,17 +169,29 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         payType = "1";
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mCardName = intent.getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
+        mCategoryId = intent.getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
+        buyType = intent.getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
+        gymId = intent.getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        sendConfirmCardRequest();
+    }
+
     private void initData() {
         mCardName = getIntent().getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
         mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
-        mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         sendConfirmCardRequest();
+
     }
 
     private void sendConfirmCardRequest() {
-        mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
+        if (mConfirmBuyCardPresenter == null) {
+            mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
+        }
         mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, gymId);
     }
 
@@ -194,9 +211,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 setGymId();
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
-                intent.putExtra(KEY_CARD_ID, mCardId+"");
+                intent.putExtra(KEY_CARD_ID, mCardId + "");
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }
@@ -212,7 +229,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     return;
                 }
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
-                senSubmitRequest();
+                showSubmitDialog();
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
@@ -234,6 +251,37 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         }
     }
 
+    /***
+     * 确认购卡信息对话框
+     */
+    private void showSubmitDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_view_buy_card_submit, null, false);
+        TextView mGymTextView = (TextView) view.findViewById(R.id.buy_card_gym_TextView);
+        TextView mCardTypeTextView = (TextView) view.findViewById(R.id.buy_card_type_TextView);
+        TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
+
+        mGymTextView.setText(mCardGymName);
+        mCardTypeTextView.setText(mCardName + mCardType);
+        mMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
+
+        builder.setCustomView(view);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                senSubmitRequest();
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
 
     /**
      * 提交支付请求
@@ -247,9 +295,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         }
     }
 
-    private void setGymId(){
+    private void setGymId() {
         if (buyType == BUY_TYPE_BUY) {
             submitGymId = gymId;
+            LikingHomeActivity.gymId = gymId;
         } else if (buyType == BUY_TYPE_CONTINUE) {
             submitGymId = "0";
         } else if (buyType == BUY_TYPE_UPGRADE) {
@@ -286,10 +335,12 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 //订单的价格大于优惠券的面额
                 double amount = price - couponAmount;
                 if (amount >= 0) {
-                    mCardMoneyTextView.setText("¥ " + amount);
+                    mCardTotalMoney = amount + "";
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
                 }
             } else {//订单的面额小于优惠券的面额
-                mCardMoneyTextView.setText("¥ " + "0.00");
+                mCardTotalMoney = "0.00";
+                mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
             }
         } else {//优惠券不可用
             mCouponsMoneyTextView.setText("");
@@ -315,14 +366,15 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadLine());
             if (buyType == BUY_TYPE_UPGRADE) {
                 cardPrice = confirmBuyCardData.getPrice();
-                mCardMoneyTextView.setText("¥ " + cardPrice);
+                mCardTotalMoney = cardPrice;
+                mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
             }
-
             confirmCardList = confirmBuyCardData.getCardList();
             setCardView(confirmCardList);
             mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
             mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
-            mGymNameTextView.setText(confirmBuyCardData.getGymName());
+            mCardGymName = confirmBuyCardData.getGymName();
+            mGymNameTextView.setText(mCardGymName);
             mGymAddressTextView.setText(confirmBuyCardData.getGymAddress());
             noticeActivity = confirmBuyCardData.getPurchaseActivity();
             mBuyCardNoticeTextView.setText(noticeActivity);
@@ -403,8 +455,11 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
                     cardPrice = object.getPrice();
-                    mCardMoneyTextView.setText("¥ " + object.getPrice());
+                    mCardTotalMoney = cardPrice;
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + object.getPrice());
                     mCardId = object.getCardId();
+                    mCardType = object.getName();
+                    setPayFailView();
                 }
             }
         }
@@ -421,11 +476,16 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                 mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
                 mCardId = card.getCardId();
+                mCardType = card.getName();
                 if (buyType != BUY_TYPE_UPGRADE) {
                     cardPrice = card.getPrice();
-                    mCardMoneyTextView.setText("¥ " + cardPrice);
+                    mCardTotalMoney = cardPrice;
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
                 }
             }
+        }
+        if (mCardRecyclerAdapter == null) {
+            mCardRecyclerAdapter = new CardRecyclerAdapter(this);
         }
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCardRecyclerView.setLayoutManager(mLayoutManager);
@@ -457,21 +517,25 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private final OnAliPayListener mOnAliPayListener = new OnAliPayListener() {
         @Override
         public void onStart() {
-            LogUtils.e(TAG, "alipay start");
+            LogUtils.i(TAG, "alipay start");
         }
 
         @Override
         public void onSuccess() {
+            LogUtils.i(TAG, "alipay sucess");
+
             jumpOrderActivity();
         }
 
         @Override
         public void onFailure(String errorMessage) {
-
+            LogUtils.i(TAG, "支付失败");
+            setPayFailView();
         }
 
         @Override
         public void confirm() {
+            LogUtils.i(TAG, "alipay confirm");
         }
     };
 
@@ -500,6 +564,17 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     public void onEvent(BuyCardWeChatMessage weChatMessage) {
         if (weChatMessage.isPaySuccess()) {
             jumpOrderActivity();
+        } else {
+            setPayFailView();
+        }
+    }
+
+    private void setPayFailView() {
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getAmount())) {
+            mCouponsMoneyTextView.setText("");
+            mCardTotalMoney = cardPrice;
+            mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
+            mCoupon = null;
         }
     }
 
@@ -507,7 +582,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         Intent intent = new Intent(this, MyOrderActivity.class);
         intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
         startActivity(intent);
-        this.finish();
+        finish();
     }
 
     public void onEvent(LoginFinishMessage message) {

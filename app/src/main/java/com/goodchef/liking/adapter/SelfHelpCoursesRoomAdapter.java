@@ -74,10 +74,10 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
             if (ismScheduled) {//已有排课
                 mGymCheckBox.setVisibility(View.GONE);
                 mSurplusNumberTextView.setVisibility(View.VISIBLE);
-                mSurplusNumberTextView.setText("还剩" + object.getQuota() + "个名额");
+                mSurplusNumberTextView.setText(mContext.getString(R.string.remain) + object.getQuota() + mContext.getString(R.string.number_people));
                 mJoinCoursesTextView.setVisibility(View.VISIBLE);
                 mGymRoomOrderPromptTextView.setVisibility(View.VISIBLE);
-                mGymRoomOrderPromptTextView.setText("(已有" + object.getScheduleName() + ")");
+                mGymRoomOrderPromptTextView.setText(mContext.getString(R.string.hased) + object.getScheduleName() + ")");
                 mImageView.setVisibility(View.GONE);
                 mLineImageView.setVisibility(View.VISIBLE);
                 if(mSelectRoomJoinClickListener != null){

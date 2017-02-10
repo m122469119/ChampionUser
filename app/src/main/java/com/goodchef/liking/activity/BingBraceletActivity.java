@@ -225,7 +225,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
         TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
         TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
         builder.setCustomView(view);
-        titleTextView.setText(R.string.notice_prompt);
+        titleTextView.setText(getString(R.string.notice_prompt));
         contentTextView.setText(getString(R.string.send_brancelet_bing_prompt_left) + "\n" + getString(R.string.send_brancelet_bing_prompt_middle) + "\n" + getString(R.string.send_brancelet_bing_prompt_right));
         builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
             @Override
@@ -266,7 +266,7 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
             if (mConnectionState) {
                 sendLogin();
             } else {
-                mConnectBlueToothTextView.setText(R.string.connect_bluetooth_ing);
+                mConnectBlueToothTextView.setText(getString(R.string.connect_bluetooth_ing));
                 mConnectBluetoothProgressBar.setVisibility(View.VISIBLE);
                 connectBlueTooth();
                 connectState = 1;

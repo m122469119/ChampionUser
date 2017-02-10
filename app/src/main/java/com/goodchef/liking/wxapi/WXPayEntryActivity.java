@@ -86,7 +86,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
         CustomAlertDialog.Builder builder = new CustomAlertDialog.Builder(this);
         builder.setMessage(message);
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (payType == PAY_TYPE_ORDER) {

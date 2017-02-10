@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_12dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/layout_about_us"
+            layout="@layout/item_my_standard"/>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_check_update"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/check_update_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="@string/layout_check_update"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="15sp"/>
+
+            <ImageView
+                android:id="@+id/check_update_ImageView"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/spacing_8dp"
+                android:layout_toRightOf="@+id/check_update_TextView"
+                android:background="@drawable/shape_update_app_round"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/check_update_prompt_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_update_prompt"
+                android:visibility="gone"
+                android:textColor="@color/lesson_details_gray_back"
+                android:textSize="@dimen/textsize_mirco"
+                android:layout_marginLeft="@dimen/spacing_8dp"
+                android:layout_toRightOf="@+id/check_update_TextView"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:src="@drawable/bg_right_arrow"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_out_btn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/liking_green_btn_back"
+        android:gravity="center"
+        android:text="@string/exit_login"
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
+</RelativeLayout>

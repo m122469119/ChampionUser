@@ -24,6 +24,7 @@ import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
+import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -42,6 +43,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
@@ -1069,9 +1071,28 @@ public class LiKingApi {
 
     /**
      * 获取运动数据
-     * @param callback
+     *
+     * @param callback RequestCallback
      */
     public static void getSportData(RequestCallback<SportDataResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_SPORT_LIST, SportDataResult.class, getCommonRequestParams().append(KEY_TOKEN,Preference.getToken()), callback);
+        VolleyHttpRequestClient.doPost(UrlList.USER_SPORT_LIST, SportDataResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()), callback);
+    }
+
+    /**
+     * 我的界面获取我的其他个人信息
+     *
+     * @param callback RequestCallback
+     */
+    public static void getMyUserInfoData(RequestCallback<MyUserOtherInfoResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_GET_USER_INFO, MyUserOtherInfoResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()), callback);
+    }
+
+    /**
+     * 检测更新APP
+     *
+     * @param callback RequestCallback
+     */
+    public static void getUpdateApp(RequestCallback<CheckUpdateAppResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_CHECK_UPDATES, CheckUpdateAppResult.class, getCommonRequestParams(), callback);
     }
 }

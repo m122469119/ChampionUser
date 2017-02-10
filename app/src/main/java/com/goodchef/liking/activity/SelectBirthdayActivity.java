@@ -125,7 +125,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
             @Override
             public void onScaleChanged(int scale) {
                 year = scale;
-                mBirthdayTextView.setText(year + "年" + month + "月" + day + "日");
+                mBirthdayTextView.setText(year + getString(R.string.year) + month + getString(R.string.month) + day + getString(R.string.day));
                 checkDate();
             }
         });
@@ -134,7 +134,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
             @Override
             public void onScaleChanged(int scale) {
                 month = scale;
-                mBirthdayTextView.setText(year + "年" + month + "月" + day + "日");
+                mBirthdayTextView.setText(year + getString(R.string.year) + month + getString(R.string.month) + day + getString(R.string.day));
                 checkDate();
             }
         });
@@ -143,7 +143,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
             @Override
             public void onScaleChanged(int scale) {
                 day = scale;
-                mBirthdayTextView.setText(year + "年" + month + "月" + day + "日");
+                mBirthdayTextView.setText(year + getString(R.string.year) + month + getString(R.string.month) + day + getString(R.string.day));
                 checkDate();
             }
         });

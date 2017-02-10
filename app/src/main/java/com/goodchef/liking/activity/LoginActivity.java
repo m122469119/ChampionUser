@@ -63,7 +63,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         initView();
         mMyCountdownTime = new MyCountdownTime(60000, 1000);
         mLoginPresenter = new LoginPresenter(this, this);
-        mSendCodeBtn.setText("获取验证码");
+        mSendCodeBtn.setText(getString(R.string.get_version_code));
         showHomeUpIcon(R.drawable.app_bar_left_quit);
         setViewOnClickListener();
     }
@@ -95,7 +95,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
                 if (baseConfigData != null) {
                     String agreeUrl = baseConfigData.getAgreeUrl();
                     if (!StringUtils.isEmpty(agreeUrl)) {
-                        HDefaultWebActivity.launch(this, agreeUrl, "用户协议");
+                        HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.user_agreement));
                     }
                 }
             }
@@ -111,7 +111,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         }
         String code = mCodeEditText.getText().toString().trim();
         if (StringUtils.isEmpty(code)) {
-            PopupUtils.showToast("验证码不能为空");
+            PopupUtils.showToast(getString(R.string.version_code_not_blank));
             return;
         }
         requestLogin(phoneStr, code);
@@ -141,11 +141,11 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
     private boolean checkPhone() {
         phoneStr = mLoginPhoneEditText.getText().toString().trim();
         if (StringUtils.isEmpty(phoneStr)) {
-            PopupUtils.showToast("请输入手机号码");
+            PopupUtils.showToast(getString(R.string.hint_login_phone));
             return false;
         }
         if (!RegularUtils.isMobileExact(phoneStr)) {
-            PopupUtils.showToast("您手机号码格式不正确");
+            PopupUtils.showToast(getString(R.string.phone_format_error));
             return false;
         }
         return true;
@@ -154,7 +154,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
     @Override
     public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
         mCodeEditText.setText("");
-        PopupUtils.showToast("验证码已发送");
+        PopupUtils.showToast(getString(R.string.version_code_sended));
         if (!EnvironmentUtils.Config.isDebugMode()) {
             return;
         }
@@ -234,13 +234,13 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         @Override
         public void onTick(long millisUntilFinished) {
             mSendCodeBtn.setClickable(false);
-            mSendCodeBtn.setText("重新发送(" + millisUntilFinished / 1000 + "s" + ")");
+            mSendCodeBtn.setText(getString(R.string.repeate_send_kuohao) + millisUntilFinished / 1000 + "s" + ")");
             mSendCodeBtn.setTextColor(ResourceUtils.getColor(R.color.get_code_gray_dark));
         }
 
         @Override
         public void onFinish() {
-            mSendCodeBtn.setText("重新发送");
+            mSendCodeBtn.setText(getString(R.string.repeate_send));
             mSendCodeBtn.setClickable(true);
             mSendCodeBtn.setTextColor(ResourceUtils.getColor(R.color.bg_login_green_text));
         }

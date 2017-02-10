@@ -108,7 +108,7 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
             setWomenCheck();
         } else if (v == mNextButton) {
             if (sex == -1) {
-                PopupUtils.showToast("请选择性别");
+                PopupUtils.showToast(getString(R.string.select_gender));
                 return;
             }
             Intent intent = new Intent(this, SelectBirthdayActivity.class);

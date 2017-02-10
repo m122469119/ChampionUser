@@ -313,24 +313,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             }
         }
 
-//        if (!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
-//            if (mPreSaleView != null && mNoContentData != null) {
-//                mPreSaleView.setVisibility(View.VISIBLE);
-//                mNoContentData.setVisibility(View.GONE);
-//            }
-//        } else if (!StringUtils.isEmpty(presale) && "0".equals(presale)) {//没有预售
-//            if (hasData) {
-//                if (mPreSaleView != null && mNoContentData != null) {
-//                    mPreSaleView.setVisibility(View.GONE);
-//                    mNoContentData.setVisibility(View.VISIBLE);
-//                }
-//            } else {
-//                if (mPreSaleView != null && mNoContentData != null) {
-//                    mPreSaleView.setVisibility(View.GONE);
-//                    mNoContentData.setVisibility(View.GONE);
-//                }
-//            }
-//        }
     }
 
 

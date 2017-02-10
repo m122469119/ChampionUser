@@ -94,7 +94,7 @@ public class WriteInviteCodeActivity extends AppBarActivity implements View.OnCl
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(WriteInviteCodeActivity.this, result)) {
-                    PopupUtils.showToast("兑换成功");
+                    PopupUtils.showToast(getString(R.string.exchange_success));
                     finish();
                 } else {
                     mErrorTextView.setText(result.getMessage());

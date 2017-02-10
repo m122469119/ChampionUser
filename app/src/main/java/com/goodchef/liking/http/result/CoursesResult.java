@@ -215,6 +215,8 @@ public class CoursesResult extends BaseResult {
             private String announcementInfo;
             @SerializedName("city_id")
             private String cityId;
+            @SerializedName("city_name")
+            private String cityName;
             @SerializedName("can_schedule")
             private int canSchedule = -1;
             @SerializedName("presale")
@@ -282,6 +284,14 @@ public class CoursesResult extends BaseResult {
 
             public void setPresale(String presale) {
                 this.presale = presale;
+            }
+
+            public String getCityName() {
+                return cityName;
+            }
+
+            public void setCityName(String cityName) {
+                this.cityName = cityName;
             }
         }
     }

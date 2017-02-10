@@ -61,7 +61,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         onItemClick();
     }
 
-    private void setNoDataView(){
+    private void setNoDataView() {
         View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
@@ -84,14 +84,14 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
     };
 
 
-    private void onItemClick(){
+    private void onItemClick() {
         mMyCardOrderAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                OrderCardData data =  mMyCardOrderAdapter.getDataList().get(position);
-                if (data !=null){
+                OrderCardData data = mMyCardOrderAdapter.getDataList().get(position);
+                if (data != null) {
                     Intent intent = new Intent(getActivity(), MyCardDetailsActivity.class);
-                    intent.putExtra(KEY_ORDER_ID,data.getOrderId());
+                    intent.putExtra(KEY_ORDER_ID, data.getOrderId());
                     startActivity(intent);
                 }
             }
@@ -131,7 +131,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         return true;
     }
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         getActivity().finish();
     }
 
@@ -171,21 +171,21 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
 
             @Override
             public void bindViews(OrderCardData object) {
-                mOrderNumberTextView.setText("订单号:" + object.getOrderId());
+                mOrderNumberTextView.setText(getString(R.string.order_number) + object.getOrderId());
                 int orderSate = object.getOrderStatus();
                 if (orderSate == 1) {
-                    mOrderStateTextView.setText("已支付");
+                    mOrderStateTextView.setText(getString(R.string.dishes_order_state_payed));
                 }
                 String buyType = object.getBuyType();
-                if (buyType.equals("1")) {
-                    mOrderBuyTypeTextView.setText("购卡");
-                } else if (buyType.equals("2")) {
-                    mOrderBuyTypeTextView.setText("续卡");
-                } else if (buyType.equals("3")) {
-                    mOrderBuyTypeTextView.setText("升级卡");
+                if ("1".equals(buyType)) {
+                    mOrderBuyTypeTextView.setText(getString(R.string.buy_card));
+                } else if ("2".equals(buyType)) {
+                    mOrderBuyTypeTextView.setText(getString(R.string.continue_card));
+                } else if ("3".equals(buyType)) {
+                    mOrderBuyTypeTextView.setText(getString(R.string.upgrade_card));
                 }
                 mOrderPeriodOfValidityTextView.setText(object.getStartTime() + " ~ " + object.getEndTime());
-                mOrderMoneyTextView.setText("¥ "+object.getOrderAmount());
+                mOrderMoneyTextView.setText(getString(R.string.money_symbol) + object.getOrderAmount());
                 String imageUrl = object.getCardImg();
                 if (!StringUtils.isEmpty(imageUrl)) {
                     HImageLoaderSingleton.getInstance().loadImage(mCardHImageView, imageUrl);

@@ -115,8 +115,8 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
             mSexWomenImage.setVisibility(View.VISIBLE);
             mWeightRulerView.smoothScrollTo(57);
         }
-        mBirthdayTextView.setText("出生年月：" + mBirthdayStr);
-        mHeightTextView.setText("身高：" + height + " cm");
+        mBirthdayTextView.setText(R.string.birthday + mBirthdayStr);
+        mHeightTextView.setText(getString(R.string.select_weight) + height + " cm");
     }
 
     private void setRulerView() {

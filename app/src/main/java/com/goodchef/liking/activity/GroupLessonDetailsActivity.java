@@ -84,7 +84,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private RatingBar mRatingBar;//强度
     private TextView mCoursesIntroduceTextView;//课程介绍
     private TextView mJoinUserNumbers;//报名人数
-    private RecyclerView  mUserListRecyclerView;//报名人数展示
+    private RecyclerView mUserListRecyclerView;//报名人数展示
     private TextView mImmediatelySubmitBtn;//立即购买
     private TextView mGroupCoursesTagTextView;//课程Tag 付费和免费
     private LinearLayout mShareLayout;
@@ -136,7 +136,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             public void onClick(View v) {
                 String phone = Preference.getCustomerServicePhone();
                 if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(GroupLessonDetailsActivity.this, "确定联系客服吗？", phone);
+                    LikingCallUtil.showCallDialog(GroupLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
                 }
             }
         });
@@ -189,16 +189,6 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * 设置底部view的状态
      */
     private void setBottomCoursesState() {
-//        if( COURSES_SELF == scheduleType) {
-//            mGroupCoursesTagTextView.setText(R.string.self_courses);
-//        } else {
-//            if(isFree == COURSES_IS_FREE) {
-//                mGroupCoursesTagTextView.setText(R.string.free_courses);
-//            } else if (isFree == COURSES_NOT_FREE){
-//                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
-//            }
-//        }
-
         if (mCoursesState == -1) {
             if (isFree == COURSES_IS_FREE) {//免费
                 mCoursesStateLayout.setVisibility(View.GONE);
@@ -227,7 +217,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 mCoursesStateLayout.setVisibility(View.VISIBLE);
 //                mGroupCoursesTagTextView.setText(R.string.not_free_group_courses);
                 mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-                mStatePromptTextView.setText("¥ " + price);
+                mStatePromptTextView.setText(getString(R.string.money_symbol) + price);
                 mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
                 mStatePromptTextView.setBackgroundColor(0);
                 mCancelOrderBtn.setText(R.string.immediately_buy_btn);
@@ -303,7 +293,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     @Override
     public void updateErrorNoCard(String errorMessage) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage("无卡用户或会员卡剩余有效期太短,请购卡后重试");
+        builder.setMessage(getString(R.string.no_card_or_no_time));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -314,7 +304,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(GroupLessonDetailsActivity.this, LikingHomeActivity.class);
-                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB,1);
+                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, 1);
                 startActivity(intent);
                 dialog.dismiss();
                 GroupLessonDetailsActivity.this.finish();
@@ -342,12 +332,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mScheduleResultTextView.setText(groupLessonData.getQuotaDesc());
         //  mShopNameTextView.setText(groupLessonData.getGymName());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
-        if(!TextUtils.isEmpty(groupLessonData.getGymAddress())){
+        if (!TextUtils.isEmpty(groupLessonData.getGymAddress())) {
             mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
         }
         mShopPlaceTextView.setText(groupLessonData.getPlaceInfo());
         scheduleType = groupLessonData.getScheduleType();
-        if(COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
+        if (COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
             mTeacherNamelayout.setVisibility(View.GONE);
         } else {
             mTeacherNamelayout.setVisibility(View.VISIBLE);
@@ -372,11 +362,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      *
      * @param gymNumbersDatas
      */
-    private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas){
+    private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas) {
         mJoinUserNumbers.setText(gymNumbersDatas.size() + " 人");
         mUserListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mGroupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
-        mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this,LinearLayoutManager.HORIZONTAL));
+        mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
         mGroupLessonNumbersAdapter.setData(gymNumbersDatas);
         mUserListRecyclerView.setAdapter(mGroupLessonNumbersAdapter);
     }
@@ -438,8 +428,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             this.startActivity(intent);
             this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         } else if (v == mShareLayout) {//分享
-            mSharePresenter = new SharePresenter(this, this);
+            if (mSharePresenter == null) {
+                mSharePresenter = new SharePresenter(this, this);
+            }
             mSharePresenter.getGroupShareData(scheduleId);
+            mShareLayout.setEnabled(false);
         }
     }
 
@@ -449,7 +442,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      */
     private void showCancelCoursesDialog() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage("您确定取消预约？");
+        builder.setMessage(getString(R.string.sure_cancel_order));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -474,7 +467,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(GroupLessonDetailsActivity.this, result)) {
-                    PopupUtils.showToast("取消成功");
+                    PopupUtils.showToast(getString(R.string.cancel_success));
                     postEvent(new CancelGroupCoursesMessage());
                     mCoursesState = 3;
                     setBottomCoursesState();
@@ -508,7 +501,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
     }
 
-    public void onEvent(NoCardMessage message){
+    public void onEvent(NoCardMessage message) {
         this.finish();
     }
 
@@ -520,13 +513,14 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         this.finish();
     }
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         this.finish();
     }
 
     @Override
     public void updateShareView(ShareData shareData) {
         showShareDialog(shareData);
+        mShareLayout.setEnabled(true);
     }
 
     private void showShareDialog(final ShareData shareData) {

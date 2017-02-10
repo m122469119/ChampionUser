@@ -105,7 +105,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
             showCameraDialog();
         } else if (v == mNextBtn) {
             if (StringUtils.isEmpty(mLoaclHeadUrl)) {
-                PopupUtils.showToast("请选择头像");
+                PopupUtils.showToast(getString(R.string.select_head));
                 return;
             }
             Intent intent = new Intent(this, SexActivity.class);
@@ -156,7 +156,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
                 } else {
-                    PopupUtils.showToast("请重新选图片");
+                    PopupUtils.showToast(getString(R.string.repeat_select_picture));
                 }
             }
 
@@ -172,7 +172,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
                 } else {
-                    PopupUtils.showToast("请重新选图片");
+                    PopupUtils.showToast(getString(R.string.repeat_select_picture));
                 }
             }
         });

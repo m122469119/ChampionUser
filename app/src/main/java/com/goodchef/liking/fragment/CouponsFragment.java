@@ -111,11 +111,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
         scheduleId = getArguments().getString(CouponsActivity.KEY_SCHEDULE_ID);
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
-        if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            setPullMode(PullMode.PULL_BOTH);
-        } else {
-            setPullMode(PullMode.PULL_NONE);
-        }
+//        if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
+//            setPullMode(PullMode.PULL_BOTH);
+//        } else {
+//            setPullMode(PullMode.PULL_UP);
+//        }
+        setPullMode(PullMode.PULL_BOTH);
     }
 
     private String createDishesJson() {
@@ -285,13 +286,14 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
                 } else if (couponsStatus.equals(COUPON_STATUS_NO_SUBJECT)) {//不符合该项目
+                    mOverdueImageView.setVisibility(View.GONE);
                     setNotProjectBackGround(couponType, minAmount);
                     mRootCouponsLayout.setEnabled(false);
                     setSelectCouponView(false, "0");
                 }
                 mTitleTextView.setText(object.getTitle());
                 mAmountTextView.setText(object.getAmount());
-                mEndTimeTextView.setText(object.getEndTime() + " 到期");
+                mEndTimeTextView.setText(object.getEndTime() + getString(R.string.expire));
                 mRootCouponsLayout.setTag(object);
             }
 
@@ -300,7 +302,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                 if (isSelect) {
                     mSelectCouponLayout.setVisibility(View.VISIBLE);
                     mSelectCouponTextView.setVisibility(View.VISIBLE);
-                    mSelectCouponTextView.setText("已选择" + amount + "元优惠券");
+                    mSelectCouponTextView.setText(getString(R.string.selected) + amount + getString(R.string.yuan_coupons));
                 } else {
                     mSelectCouponLayout.setVisibility(View.GONE);
                     mSelectCouponTextView.setVisibility(View.GONE);
@@ -319,33 +321,33 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                     mRightLayout.setBackgroundResource(R.drawable.coupons_right_orange_backround);
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("营养餐专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.nutritious_food_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("营养餐专用,无门槛使用");
+                        mTypeTextView.setText(R.string.utritious_food_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
                     mRightLayout.setBackgroundResource(R.drawable.coupons_right_blue_background);
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("私教课专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.private_courses_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("私教课专用,无门槛使用");
+                        mTypeTextView.setText(R.string.private_courses_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
                     mRightLayout.setBackgroundResource(R.drawable.coupons_right_green_background);
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("购卡专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("购卡专用,无门槛使用");
+                        mTypeTextView.setText(R.string.buy_card_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
                     mRightLayout.setBackgroundResource(R.drawable.coupons_right_blue_background);
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("团体课专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.group_courses_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("团体课专用,无门槛使用");
+                        mTypeTextView.setText(R.string.group_courses_no_doorsill);
                     }
                 }
             }
@@ -363,27 +365,27 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
                 if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("营养餐专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.nutritious_food_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("营养餐专用,无门槛使用");
+                        mTypeTextView.setText(R.string.utritious_food_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("购买私教课可用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.private_courses_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("私教课专用,无门槛使用");
+                        mTypeTextView.setText(R.string.private_courses_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("购卡专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("购卡专用,无门槛使用");
+                        mTypeTextView.setText(R.string.buy_card_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("团体课专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.group_courses_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("团体课专用,无门槛使用");
+                        mTypeTextView.setText(R.string.group_courses_no_doorsill);
                     }
                 }
             }
@@ -400,30 +402,30 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                 if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("营养餐专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.nutritious_food_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("营养餐专用,无门槛使用");
+                        mTypeTextView.setText(R.string.utritious_food_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("购买私教课可用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.private_courses_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("私教课专用,无门槛使用");
+                        mTypeTextView.setText(R.string.private_courses_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
-                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
+                    mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("购卡专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("购卡专用,无门槛使用");
+                        mTypeTextView.setText(R.string.buy_card_no_doorsill);
                     }
                 } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
                     mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
                     if (minAmountDouble > 0.00) {
-                        mTypeTextView.setText("团体课专用满" + minAmount + "可用");
+                        mTypeTextView.setText(getString(R.string.group_courses_dedicated)+ minAmount + getString(R.string.can_uses));
                     } else {
-                        mTypeTextView.setText("团体课专用,无门槛使用");
+                        mTypeTextView.setText(R.string.group_courses_no_doorsill);
                     }
                 }
             }
