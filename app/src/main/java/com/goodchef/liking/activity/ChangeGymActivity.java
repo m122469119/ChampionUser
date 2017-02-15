@@ -1,6 +1,7 @@
 package com.goodchef.liking.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -225,7 +226,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
     public void onClick(View v) {
         if (v == mRightTitleTextView || v == mRightIconArrow) {
             UMengCountUtil.UmengCount(this, UmengEventId.RIGHT_ICON_ARROW_BTN);
-            setDrawerLayout();
+            //  setDrawerLayout();
+            jumpToChangeCityActivity();
         } else if (v == mLeftIcon) {
             finish();
         } else if (v == mCurrentCityLayout) {
@@ -242,6 +244,15 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
             }
         }
     }
+
+    /**
+     * 跳转到切换城市界面
+     */
+    private void jumpToChangeCityActivity() {
+        Intent intent = new Intent(this, ChangeCityActivity.class);
+        startActivity(intent);
+    }
+
 
     private void setDrawerLayout() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {

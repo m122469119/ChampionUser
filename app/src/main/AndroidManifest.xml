@@ -291,6 +291,11 @@
             android:name=".activity.EveryDaySportActivity"
             android:screenOrientation="portrait"/>
 
+        <!--切换城市-->
+        <activity android:name=".activity.ChangeCityActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateUnspecified|adjustPan"/>
+
         <!--更多-->
         <activity
             android:name=".activity.MoreActivity"
