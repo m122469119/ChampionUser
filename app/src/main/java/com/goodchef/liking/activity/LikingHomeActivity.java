@@ -625,6 +625,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                         mLikingMiddleTitleTextView.setText(mGym.getName());
                     }
                 } else {
+                    isWhetherLocation = false;
                     mLikingMiddleTitleTextView.setText(R.string.location_fail);
                     mLikingDistanceTextView.setVisibility(View.GONE);
                 }
@@ -633,6 +634,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         } else {
             if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
+                isWhetherLocation = false;
                 mLikingMiddleTitleTextView.setText(R.string.location_fail);
                 mLikingDistanceTextView.setVisibility(View.GONE);
             } else if (tag.equals(TAG_MY_TAB)) {//我的
