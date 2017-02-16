@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -110,7 +111,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         sendUpdateAppRequest();
         setViewOnClickListener();
         initData();
+       // showDefaultGymDialog();
     }
+
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -363,6 +367,31 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 jumpArenaActivity();
             }
         }
+    }
+
+    /**
+     * 显示默认场馆的对话框
+     */
+    private void showDefaultGymDialog(){
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage("您现在处于默认场馆需要切换场馆吗");
+        builder.setNegativeButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("去切换场馆", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                changeGym(0);
+                dialog.dismiss();
+            }
+        });
+        Dialog dialog =  builder.create();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     /***

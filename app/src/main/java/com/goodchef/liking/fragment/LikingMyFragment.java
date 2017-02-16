@@ -96,7 +96,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView mTrainTimeData;//训练时间
     private TextView mHeadPersonDataTextView;
 
-    private TextView mContactSetviceBtn;//联系客服
 
 
     private LikingStateView mStateView;
@@ -300,7 +299,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
-        mContactSetviceBtn = (TextView) view.findViewById(R.id.contact_service);
 
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -334,7 +332,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mTrainLayout.setOnClickListener(this);
         mEverydaySportLayout.setOnClickListener(this);
 
-        mContactSetviceBtn.setOnClickListener(this);
     }
 
 
@@ -466,12 +463,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             startActivity(intent);
         } else if (v == mMoreLayout) {//更多
             startActivity(MoreActivity.class);
-        } else if (v == mContactSetviceBtn) {
-            String phone = Preference.getCustomerServicePhone();
-            if (!StringUtils.isEmpty(phone)) {
-                LikingCallUtil.showCallDialog(getActivity(), getString(R.string.confrim_contact_customer_service), phone);
-            }
-        } else if (v == mSelfHelpGroupLayout) {//自助团体课
+        }  else if (v == mSelfHelpGroupLayout) {//自助团体课
             startActivity(SelfHelpGroupActivity.class);
         } else if (v == mBodyScoreLayout) {//体测数据
             if (Preference.isLogin()) {
