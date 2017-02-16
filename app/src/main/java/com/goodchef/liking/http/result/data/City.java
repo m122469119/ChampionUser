@@ -1,6 +1,7 @@
 package com.goodchef.liking.http.result.data;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
+import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class City extends BaseData{
             this.cities = cities;
         }
 
-        public static class CitiesData {
+        public static class CitiesData extends BaseIndexPinyinBean {
             /**
              * city_id : 110100
              * city_code : 010
@@ -110,6 +111,11 @@ public class City extends BaseData{
 
             public void setDistricts(List<DistrictsData> districts) {
                 this.districts = districts;
+            }
+
+            @Override
+            public String getTarget() {
+                return cityName;
             }
 
             public static class DistrictsData {
