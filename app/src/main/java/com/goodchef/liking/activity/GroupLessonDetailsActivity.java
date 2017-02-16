@@ -130,6 +130,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setRightMenu();
     }
 
+    /**
+     * TODO 修改电话样式
+     */
     private void setRightMenu() {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override

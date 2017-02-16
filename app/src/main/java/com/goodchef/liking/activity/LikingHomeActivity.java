@@ -440,8 +440,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
 
+
+
     /**
      * 查看公告
+     * TODO 切换城市显示和第一次进入首页显示
      */
     private void showNoticeDialog() {
         UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
@@ -619,10 +622,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setHomeMenuReadNotice();
     }
 
+    /**
+     * TODO 判断是否需要显示公告
+     * @param message
+     */
     public void onEvent(GymNoticeMessage message) {
         mNoticeGym = message.getGym();
         mCanSchedule = mNoticeGym.getCanSchedule();
-        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getGymId()) && !StringUtils.isEmpty(mNoticeGym.getName())) {
+        if (mNoticeGym != null
+                && !StringUtils.isEmpty(mNoticeGym.getGymId())
+                && !StringUtils.isEmpty(mNoticeGym.getName())) {
             mGym = mNoticeGym;
             gymId = mNoticeGym.getGymId();
             gymName = mNoticeGym.getName();
@@ -674,6 +683,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     /**
      * 设置是否读取过公告
+     * TODO 删除红点， 有公告直接显示
      */
     private void setHomeMenuReadNotice() {
         String tag = fragmentTabHost.getCurrentTabTag();

@@ -86,6 +86,9 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         sendDetailsRequest();
     }
 
+    /**
+     * TODO 修改电话样式
+     */
     private void setRightMenu() {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override

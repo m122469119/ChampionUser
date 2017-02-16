@@ -238,6 +238,10 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
 
+    /**
+     * TODO 第一次请求结束需要判断是否要显示公告
+     * @param courses
+     */
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         if (courses.getGym() != null) {
