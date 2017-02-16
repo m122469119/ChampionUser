@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.github.promeg.pinyinhelper.Pinyin;
+import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -75,6 +77,7 @@ public class ChangeCityFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_change_city, container, false);
         ButterKnife.bind(this, view);
         mManager = new LinearLayoutManager(getActivity());
+        Pinyin.init(Pinyin.newConfig().with(CnCityDict.getInstance(getActivity())));
         initView();
         return view;
     }
