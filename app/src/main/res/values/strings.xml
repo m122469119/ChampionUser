@@ -430,4 +430,8 @@
     <string name="version_code_sended">验证码已发送</string>
     <string name="repeate_send">重新发送</string>
     <string name="repeate_send_kuohao">重新发送(</string>
+    <string name="title_network_contact_fail">网络连接失败</string>
+    <string name="hint_search_city">请输入城市名称或拼音查询</string>
+    <string name="location_city">定位城市</string>
+    <string name="start_business_city">已开业城市</string>
 </resources>

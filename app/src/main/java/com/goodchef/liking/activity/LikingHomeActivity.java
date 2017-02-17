@@ -664,7 +664,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     }
                 } else {
                     isWhetherLocation = false;
-                    mLikingMiddleTitleTextView.setText(R.string.location_fail);
+                    mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
                     mLikingDistanceTextView.setVisibility(View.GONE);
                 }
             } else if (tag.equals(TAG_MY_TAB)) {//我的

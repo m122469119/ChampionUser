@@ -103,7 +103,7 @@ public class ChangeCityFragment extends BaseFragment {
         mChangeCityRecycleView.setAdapter(mHeaderAdapter);
         mChangeCityRecycleView.addItemDecoration(mDecoration = new SuspensionDecoration(getActivity(), mSourceDatas)
                 .setmTitleHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics()))
-                .setColorTitleBg(0xffefefef)
+                .setColorTitleBg(0xfff5f5f5)
                 .setTitleFontSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()))
                 .setColorTitleFont(ResourceUtils.getColor(R.color.black))
                 .setHeaderViewCount(mHeaderAdapter.getHeaderViewCount() - mHeaderDatas.size()));
