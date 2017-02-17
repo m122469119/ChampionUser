@@ -13,6 +13,7 @@ import com.goodchef.liking.http.result.data.City;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:
@@ -29,6 +30,16 @@ public class ChangeCityAdapter extends BaseRecycleViewAdapter<ChangeCityAdapter.
     public ChangeCityAdapter(Context context) {
         super(context);
         this.mContext = context;
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(View v, int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -49,6 +60,17 @@ public class ChangeCityAdapter extends BaseRecycleViewAdapter<ChangeCityAdapter.
         @Override
         public void bindViews(City.RegionsData.CitiesData object) {
             mCityNameTextView.setText(object.getCityName());
+        }
+
+        @OnClick({R.id.city_name_TextView})
+        public void onViewClick(View view){
+            switch (view.getId()){
+                case R.id.city_name_TextView:
+                    if (mOnItemClickListener != null){
+                        mOnItemClickListener.onItemClick(mCityNameTextView, mPosition);
+                    }
+                    break;
+            }
         }
     }
 }

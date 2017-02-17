@@ -204,6 +204,7 @@
     <string name="notice_prompt">提示</string>
     <string name="no_announcement">暂无公告</string>
     <string name="location_fail">定位失败·重新定位</string>
+    <string name="re_location">重新定位</string>
     <string name="free_courses">免费团体课</string>
     <string name="self_courses">自助团体课</string>
     <string name="my_free_group_courses">免费</string>

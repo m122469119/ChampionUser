@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -18,6 +19,7 @@ import com.github.promeg.pinyinhelper.Pinyin;
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
+import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.ChangeCityHeaderData;
@@ -92,22 +94,6 @@ public class ChangeCityFragment extends BaseFragment {
 
         mChangeCityAdapter = new ChangeCityAdapter(getActivity());
         mChangeCityAdapter.setData(mBodyDatas);
-        mChangeCityAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                //TODO 返回上一页
-                ChangeGymActivityMessage message = ChangeGymActivityMessage.obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);
-                message.obj1 = mBodyDatas.get(position);
-                postEvent(message);
-                getActivity().finish();
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                return false;
-            }
-        });
-
         mHeaderAdapter = new HeaderRecyclerAndFooterWrapperAdapter(mChangeCityAdapter) {
 
             @Override
@@ -116,16 +102,31 @@ public class ChangeCityFragment extends BaseFragment {
             }
         };
 
+        mChangeCityAdapter.setOnItemClickListener(new ChangeCityAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                LogUtils.e(TAG, "-----> %d" + pos);
+                ChangeCityActivityMessage message = ChangeCityActivityMessage
+                        .obtain(ChangeCityActivityMessage.CITY_ITEM_CLICK);
+                message.obj1 = mBodyDatas.get(pos);
+                postEvent(message);
+            }
+        });
+
 
         mChangeCityRecycleView.setLayoutManager(mManager);
         mChangeCityRecycleView.setAdapter(mHeaderAdapter);
-        mChangeCityRecycleView.addItemDecoration(mDecoration = new SuspensionDecoration(getActivity(), mSourceDatas)
-                .setmTitleHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics()))
+        mChangeCityRecycleView
+                .addItemDecoration(mDecoration = new SuspensionDecoration(getActivity(), mSourceDatas)
+                .setmTitleHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35,
+                        getResources().getDisplayMetrics()))
                 .setColorTitleBg(0xfff5f5f5)
-                .setTitleFontSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()))
+                .setTitleFontSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16,
+                        getResources().getDisplayMetrics()))
                 .setColorTitleFont(ResourceUtils.getColor(R.color.black))
                 .setHeaderViewCount(mHeaderAdapter.getHeaderViewCount() - mHeaderDatas.size()));
-        mChangeCityRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mChangeCityRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                DividerItemDecoration.VERTICAL_LIST));
 
         mChangeCityIndexBar.setmPressedShowTextView(mSideBarHintTextView)//设置HintTextView
                 .setNeedRealIndex(true)//设置需要真实的索引

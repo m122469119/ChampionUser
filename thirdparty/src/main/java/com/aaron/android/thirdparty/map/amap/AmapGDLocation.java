@@ -80,6 +80,13 @@ public class AmapGDLocation extends Location<AMapLocation> {
         }
     }
 
+    public boolean isStart(){
+        if (mLocationClient != null)
+          return mLocationClient.isStarted();
+        return false;
+    }
+
+
     public AmapGDLocation(Context context) {
         super(context);
     }

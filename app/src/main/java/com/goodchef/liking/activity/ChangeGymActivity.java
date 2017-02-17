@@ -32,6 +32,7 @@ import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.fragment.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
@@ -404,10 +405,16 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
     public void onEvent(ChangeGymActivityMessage message) {
         switch (message.what) {
             case ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT:
-
-
-
-
+                City.RegionsData.CitiesData citiesData = (City.RegionsData.CitiesData) message.obj1;
+                if (citiesData != null) {
+                    selectCityName = citiesData.getCityName();
+                    compareSelectCity(selectCityName);
+                    compareCurrentCity(selectCityName);
+                    setDrawerLayout();
+                    mRightTitleTextView.setText(selectCityName);
+                    postEvent(new RefreshChangeCityMessage(String.valueOf(citiesData.getCityId()), longitude, latitude));
+                    UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
+                }
                 break;
         }
     }

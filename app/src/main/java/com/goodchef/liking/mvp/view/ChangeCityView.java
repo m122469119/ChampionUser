@@ -9,4 +9,10 @@ import com.aaron.android.framework.base.mvp.BaseView;
  */
 
 public interface ChangeCityView extends BaseView{
+
+    void setLocationCityNameTextViewText(String text);
+
+    CharSequence getLocationCityNameTextViewText();
+
+    void setTitle(String text);
 }
