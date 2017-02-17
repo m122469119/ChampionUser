@@ -12,7 +12,7 @@ public class ChangeGymActivityMessage extends BaseMessage {
     public static final int CHANGE_LEFT_CITY_TEXT = 0x00000001;
 
     public ChangeGymActivityMessage(int what) {
-        this.what = what;
+        super(what);
     }
 
     public static ChangeGymActivityMessage obtain(int what){

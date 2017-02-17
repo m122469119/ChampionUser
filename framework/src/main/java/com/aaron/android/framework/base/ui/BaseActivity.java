@@ -25,7 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtils.d(TAG, TAG + "----onCreate");
-        if (isEventTarget()) {
+        if (isEventTarget() && !EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -68,7 +68,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (isEventTarget()) {
+        if (isEventTarget() && EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         LogUtils.d(TAG, TAG + "----onDestroy");

@@ -26,4 +26,16 @@ public abstract class BasePresenter<T extends BaseView> {
         EventBus.getDefault().post(message);
     }
 
+    public void onCreate(){
+
+    }
+
+    public void onStop(){
+
+    }
+
+    public void onDestroy(){
+
+    }
+
 }

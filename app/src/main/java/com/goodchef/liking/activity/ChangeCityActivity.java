@@ -3,14 +3,13 @@ package com.goodchef.liking.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
@@ -72,31 +71,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 mPresenter.getCitySearch(text);
             }
         });
-
-        mLocationCityNameTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().equals(getString(R.string.re_location))){
-                    mLocationCityNameTextView.setClickable(false);
-                } else {
-                    mLocationCityNameTextView.setClickable(true);
-                }
-            }
-        });
     }
-
-
-
 
     private void setCouponsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -121,7 +96,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 mSearchCityEditText.clearFocus();
                 break;
             case R.id.location_cityName_TextView:
-                mPresenter.startLocation();
+                mPresenter.onLocationTextClick();
                 break;
         }
     }
@@ -130,18 +105,31 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     public void onEvent(ChangeCityActivityMessage message){
         switch (message.what){
             case ChangeCityActivityMessage.CITY_ITEM_CLICK:
-                LogUtils.e(TAG, "----->!!!!!" );
-
-                City.RegionsData.CitiesData citiesData = (City.RegionsData.CitiesData) message.obj1;
                 ChangeGymActivityMessage msg = ChangeGymActivityMessage
                         .obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);
-                msg.obj1 = citiesData;
+                msg.msg1 = message.msg1;
                 postEvent(msg);
                 finish();
                 break;
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPresenter.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
 
     @Override
     public void setLocationCityNameTextViewText(String text) {
@@ -158,4 +146,13 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         super.setTitle(text);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
+    @Override
+    public void postEvent(BaseMessage object) {
+        super.postEvent(object);
+    }
 }

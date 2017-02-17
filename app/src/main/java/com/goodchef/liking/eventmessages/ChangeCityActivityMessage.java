@@ -14,7 +14,7 @@ public class ChangeCityActivityMessage extends BaseMessage{
 
 
     public ChangeCityActivityMessage(int what) {
-
+        super(what);
     }
 
     public static ChangeCityActivityMessage obtain(int what){

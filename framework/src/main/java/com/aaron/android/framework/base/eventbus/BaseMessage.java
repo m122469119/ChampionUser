@@ -17,4 +17,10 @@ public abstract class BaseMessage implements Serializable {
 
     public Object obj1;
     public Object obj2;
+
+    public BaseMessage(){}
+
+    public BaseMessage(int what){
+        this.what = what;
+    }
 }

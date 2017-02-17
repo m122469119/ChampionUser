@@ -155,15 +155,16 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                     for (CityData cityData : cityDataList) {
                         if (String.valueOf(cityData.getCityId()).equals(cityId)) {
                             mRightTitleTextView.setText(cityData.getCityName());
-                            cityData.setSelct(true);
-                            selectCityName = cityData.getCityName();
+//                            cityData.setSelct(true);
+//                            selectCityName = cityData.getCityName();
+                            break;
                         }
                     }
-                    mChangeGymCityAdapter = new ChangeGymCityAdapter(this);
-                    mChangeGymCityAdapter.setData(cityDataList);
-                    mListView.setAdapter(mChangeGymCityAdapter);
-                    setCityOnItemClickListener();
-                    setCityFootView();
+//                    mChangeGymCityAdapter = new ChangeGymCityAdapter(this);
+//                    mChangeGymCityAdapter.setData(cityDataList);
+//                    mListView.setAdapter(mChangeGymCityAdapter);
+//                    setCityOnItemClickListener();
+//                    setCityFootView();
                 }
             }
         }
@@ -405,17 +406,21 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
     public void onEvent(ChangeGymActivityMessage message) {
         switch (message.what) {
             case ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT:
-                City.RegionsData.CitiesData citiesData = (City.RegionsData.CitiesData) message.obj1;
-                if (citiesData != null) {
-                    selectCityName = citiesData.getCityName();
-                    compareSelectCity(selectCityName);
-                    compareCurrentCity(selectCityName);
-                    setDrawerLayout();
-                    mRightTitleTextView.setText(selectCityName);
-                    postEvent(new RefreshChangeCityMessage(String.valueOf(citiesData.getCityId()), longitude, latitude));
-                    UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
-                }
+                selectCityName = message.msg1;
+//                    compareSelectCity(selectCityName);
+//                    compareCurrentCity(selectCityName);
+//                    setDrawerLayout();
+                currentCityName = message.msg1;
+                mRightTitleTextView.setText(selectCityName);
+                postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
+                UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
                 break;
         }
     }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
 }

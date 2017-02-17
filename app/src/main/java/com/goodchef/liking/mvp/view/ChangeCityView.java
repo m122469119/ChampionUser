@@ -1,5 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
+import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.framework.base.mvp.BaseView;
 
 /**
@@ -15,4 +16,8 @@ public interface ChangeCityView extends BaseView{
     CharSequence getLocationCityNameTextViewText();
 
     void setTitle(String text);
+
+    void postEvent(BaseMessage object);
+
+    void finish();
 }

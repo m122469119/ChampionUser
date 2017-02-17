@@ -13,14 +13,13 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
-import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
-import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
+import com.goodchef.liking.eventmessages.ChangeCityFragmentMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.ChangeCityHeaderData;
 import com.goodchef.liking.http.result.data.City;
@@ -108,10 +107,11 @@ public class ChangeCityFragment extends BaseFragment {
                 LogUtils.e(TAG, "-----> %d" + pos);
                 ChangeCityActivityMessage message = ChangeCityActivityMessage
                         .obtain(ChangeCityActivityMessage.CITY_ITEM_CLICK);
-                message.obj1 = mBodyDatas.get(pos);
+                message.msg1 = mBodyDatas.get(pos).getCityName();
                 postEvent(message);
             }
         });
+
 
 
         mChangeCityRecycleView.setLayoutManager(mManager);
@@ -163,5 +163,12 @@ public class ChangeCityFragment extends BaseFragment {
         mDecoration.setmDatas(mSourceDatas);
     }
 
+    protected boolean isEventTarget() {
+        return false;
+    }
+
+
+    public void onEvent(ChangeCityFragmentMessage msg){
+    }
 
 }
