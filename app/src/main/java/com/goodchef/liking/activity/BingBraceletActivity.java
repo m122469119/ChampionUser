@@ -202,11 +202,13 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
      * 打开蓝牙
      */
     public void openBluetooth() {
-        mBleManager.getBleUtils().openBlueTooth(this);
+        if (mBleManager != null) {
+            mBleManager.getBleUtils().openBlueTooth(this);
+        }
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mBleManager.getBleUtils().isOpen()) {
+                if (mBleManager != null && mBleManager.getBleUtils() != null && mBleManager.getBleUtils().isOpen()) {
                     mLayoutBlueOpenState.setVisibility(View.GONE);
                 } else {
                     mLayoutBlueOpenState.setVisibility(View.VISIBLE);
@@ -240,7 +242,9 @@ public class BingBraceletActivity extends AppBarActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBleManager.release();
+        if (mBleManager != null) {
+            mBleManager.release();
+        }
     }
 
 
