@@ -9,18 +9,11 @@ import com.aaron.android.framework.base.eventbus.BaseMessage;
  */
 public class ChangGymMessage extends BaseMessage {
 
-    private String gymId;
     private int index;
 
-    public ChangGymMessage(String gymId,int index) {
-        this.gymId = gymId;
+    public ChangGymMessage(int index) {
         this.index = index;
     }
-
-    public String getGymId() {
-        return gymId;
-    }
-
     public int getIndex() {
         return index;
     }

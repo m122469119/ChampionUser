@@ -473,7 +473,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             jumpBraceletActivity();
-        } else if (v == mEverydaySportLayout) {//每日运动
+        } else if (v == mEverydaySportLayout) {//手环数据
             if (Preference.isLogin()) {
                 if (Preference.isBind()) {
                     Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);

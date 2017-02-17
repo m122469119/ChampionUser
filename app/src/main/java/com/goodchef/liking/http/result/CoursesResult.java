@@ -202,7 +202,7 @@ public class CoursesResult extends BaseResult {
             }
         }
 
-        public static class Gym extends BaseData{
+        public static class Gym extends BaseData {
             @SerializedName("name")
             private String name;
             @SerializedName("distance")
@@ -221,6 +221,10 @@ public class CoursesResult extends BaseResult {
             private int canSchedule = -1;
             @SerializedName("presale")
             private String presale;
+            @SerializedName("default_gym")
+            private int defaultGym;
+            @SerializedName("tel")
+            private String tel;
 
             public String getName() {
                 return name;
@@ -292,6 +296,22 @@ public class CoursesResult extends BaseResult {
 
             public void setCityName(String cityName) {
                 this.cityName = cityName;
+            }
+
+            public int getDefaultGym() {
+                return defaultGym;
+            }
+
+            public void setDefaultGym(int defaultGym) {
+                this.defaultGym = defaultGym;
+            }
+
+            public String getTel() {
+                return tel;
+            }
+
+            public void setTel(String tel) {
+                this.tel = tel;
             }
         }
     }

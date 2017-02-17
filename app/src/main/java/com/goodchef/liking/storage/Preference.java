@@ -41,9 +41,12 @@ public class Preference extends AbsPreference {
     public static final String IS_VIP = "is_vip";//是否
     public static final String IS_BIND = "is_bind";
     public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
+    public static final String SHOW_DEFAULT_GYM_DIALOG = "SHOW_DEFAULT_GYM_DIALOG";
     public static List<String> announcementList = new ArrayList<>();
     public static final String NEW_APK_NAME = "new_apk_name";
     public static final String UPDATE_APP = "update_app";
+    public static final String LOGIN_GYM_ID = "login_gym_id";//登录后返回的gymId
+
 
     /**
      * 获取token
@@ -291,6 +294,43 @@ public class Preference extends AbsPreference {
         return isVip;
     }
 
+    /**
+     * 设置登录的gymId
+     *
+     * @param gymId 场馆id
+     * @return
+     */
+    public static boolean setLoginGymId(String gymId) {
+        return setObject(LOGIN_GYM_ID, gymId);
+    }
+
+    /**
+     * 获取登录的gymId
+     *
+     * @return
+     */
+    public static String getLoginGymId() {
+        return (String) getObject(LOGIN_GYM_ID, "");
+    }
+
+    /**
+     * 设置是否弹出默认场馆对话框
+     *
+     * @param show
+     * @return
+     */
+    public static boolean setShowDefaultGymDialg(boolean show) {
+        return setObject(SHOW_DEFAULT_GYM_DIALOG, show);
+    }
+
+    /**
+     * 获取是否弹出默认对话框
+     *
+     * @return
+     */
+    public static boolean getShowDefaultGymDialg() {
+        return (boolean) getObject(SHOW_DEFAULT_GYM_DIALOG, true);
+    }
 
     /***
      * 设置定位信息
