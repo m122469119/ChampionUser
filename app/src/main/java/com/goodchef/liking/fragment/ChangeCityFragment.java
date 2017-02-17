@@ -12,17 +12,18 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
+import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
+import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.ChangeCityHeaderData;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.widgets.indexBar.IndexBar;
 import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.goodchef.liking.widgets.indexBar.decoration.DividerItemDecoration;
@@ -67,7 +68,9 @@ public class ChangeCityFragment extends BaseFragment {
     private SuspensionDecoration mDecoration;
 
     public static ChangeCityFragment newInstance() {
+        Bundle args = new Bundle();
         ChangeCityFragment fragment = new ChangeCityFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -89,6 +92,21 @@ public class ChangeCityFragment extends BaseFragment {
 
         mChangeCityAdapter = new ChangeCityAdapter(getActivity());
         mChangeCityAdapter.setData(mBodyDatas);
+        mChangeCityAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //TODO 返回上一页
+                ChangeGymActivityMessage message = ChangeGymActivityMessage.obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);
+                message.obj1 = mBodyDatas.get(position);
+                postEvent(message);
+                getActivity().finish();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
 
         mHeaderAdapter = new HeaderRecyclerAndFooterWrapperAdapter(mChangeCityAdapter) {
 
@@ -108,7 +126,6 @@ public class ChangeCityFragment extends BaseFragment {
                 .setColorTitleFont(ResourceUtils.getColor(R.color.black))
                 .setHeaderViewCount(mHeaderAdapter.getHeaderViewCount() - mHeaderDatas.size()));
         mChangeCityRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-
 
         mChangeCityIndexBar.setmPressedShowTextView(mSideBarHintTextView)//设置HintTextView
                 .setNeedRealIndex(true)//设置需要真实的索引
@@ -131,7 +148,7 @@ public class ChangeCityFragment extends BaseFragment {
         for (int i = 0; i < cityList.size(); i++) {
             City.RegionsData.CitiesData cityBean = new City.RegionsData.CitiesData();
             cityBean.setCityName(cityList.get(i).getCityName());
-            cityBean.setCityId(cityList.get(i).getCityId()+"");
+            cityBean.setCityId(cityList.get(i).getCityId() + "");
             mBodyDatas.add(cityBean);
         }
         //先排序

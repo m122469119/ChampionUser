@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -614,6 +615,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public void onEvent(UserCityIdMessage userCityIdMessage) {
         mUserCityId = userCityIdMessage.getUserCityId();
+
     }
 
     public void onEvent(getGymDataMessage message) {
@@ -692,6 +694,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
                     mRedPoint.setVisibility(View.VISIBLE);
                     RightMenuDialog.setRedPromptShow(true);
+                    showNoticeDialog();
                 } else {
                     mRedPoint.setVisibility(View.GONE);
                     RightMenuDialog.setRedPromptShow(false);

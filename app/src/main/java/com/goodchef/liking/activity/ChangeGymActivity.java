@@ -27,6 +27,7 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeGymCityAdapter;
+import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.fragment.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -400,4 +401,14 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         }
     }
 
+    public void onEvent(ChangeGymActivityMessage message) {
+        switch (message.what) {
+            case ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT:
+
+
+
+
+                break;
+        }
+    }
 }

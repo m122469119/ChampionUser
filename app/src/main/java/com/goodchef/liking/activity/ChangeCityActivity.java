@@ -5,9 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.EditText;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.ChangeCityFragment;
+import com.goodchef.liking.widgets.TimerEditView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,9 +22,10 @@ import butterknife.ButterKnife;
  */
 
 public class ChangeCityActivity extends AppBarActivity {
+    private static final String TAG = "ChangeCityActivity";
 
     @BindView(R.id.search_city_EditText)
-    EditText mSearchCityEditText;
+    TimerEditView mSearchCityEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,19 @@ public class ChangeCityActivity extends AppBarActivity {
         setContentView(R.layout.activity_change_city);
         ButterKnife.bind(this);
         setCouponsFragment();
+        initView();
+    }
+
+    /**
+     * TODO 请求接口
+     */
+    private void initView() {
+        mSearchCityEditText.setOnTextChangerListener(new TimerEditView.onTextChangerListener() {
+            @Override
+            public void onTextChanger(String text) {
+                LogUtils.e(TAG, "text= %s", text);
+            }
+        });
     }
 
     private void setCouponsFragment() {

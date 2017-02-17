@@ -61,5 +61,9 @@
         <attr name="indexBarTextSize" />
         <attr name="indexBarPressBackground" format="color" />
     </declare-styleable>
+    
+    <declare-styleable name="TimerEditView">
+        <attr name="delayedTime" format="integer"/>
+    </declare-styleable>
 
 </resources>
