@@ -172,6 +172,11 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setUserPhone(userLoginData.getPhone());
             Preference.setIsNewUser(userLoginData.getNewUser());
             Preference.setIsVip(userLoginData.getIsVip());
+            String gymId = userLoginData.getGymId();
+            Preference.setLoginGymId(gymId);
+            if (!StringUtils.isEmpty(gymId) && !"0".equals(gymId)){
+                LikingHomeActivity.gymId = userLoginData.getGymId();
+            }
             postEvent(new LoginFinishMessage());
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();

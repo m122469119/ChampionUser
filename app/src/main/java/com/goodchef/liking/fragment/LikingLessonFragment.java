@@ -240,12 +240,14 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     /**
      * TODO 第一次请求结束需要判断是否要显示公告
+     *
      * @param courses
      */
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         if (courses.getGym() != null) {
             mGym = courses.getGym();
+            LikingHomeActivity.gymTel = mGym.getTel();
             presale = mGym.getPresale();
             if (1 == mGym.getCanSchedule()) {//支持自助团体课
                 mSelfCoursesInView.setVisibility(View.VISIBLE);
@@ -290,10 +292,10 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
      * @param presale
      */
     private void setHeadPreSaleView(boolean hasData, String presale) {
-        if(hasData) {
-            if(!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
+        if (hasData) {
+            if (!StringUtils.isEmpty(presale) && "1".equals(presale)) {//预售中
                 if (mPreSaleView != null && mNoContentData != null) {
-                    if(isRequestHomePage()) {
+                    if (isRequestHomePage()) {
                         mPreSaleView.setVisibility(View.VISIBLE);
                     } else {
                         mPreSaleView.setVisibility(View.GONE);
@@ -395,7 +397,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     public void onEvent(CoursesErrorMessage message) {
         try {
-            LikingHomeActivity.gymId = "0";
+            // LikingHomeActivity.gymId = "0";
             loadHomePage();
         } catch (Exception e) {
             e.printStackTrace();
@@ -404,25 +406,21 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     public void onEvent(ChangGymMessage message) {
         //切换场馆刷新数据
-        LikingHomeActivity.gymId = message.getGymId();
-        LogUtils.i("bbbbb", "ChangGymMessage message");
+        LogUtils.i(TAG, "---切换场馆啦---");
         loadHomePage();
     }
 
     public void onEvent(LoginOutMessage message) {
         //登出刷新首页数据
-        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 
     public void onEvent(LoginFinishMessage message) {
         //登录完成刷新首页数据
-        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 
     public void onEvent(LoginOutFialureMessage message) {
-        LikingHomeActivity.gymId = "0";
         loadHomePage();
     }
 

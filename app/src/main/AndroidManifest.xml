@@ -118,9 +118,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--查看所有门店-->
-        <activity
-            android:name=".activity.LookStoreMapActivity"
-            android:screenOrientation="portrait"/>
         <!--查看场馆-->
         <activity
             android:name=".activity.ArenaActivity"
@@ -286,7 +283,7 @@
             android:name=".activity.MyBraceletActivity"
             android:screenOrientation="portrait"/>
 
-        <!--每日运动-->
+        <!--手环数据-->
         <activity
             android:name=".activity.EveryDaySportActivity"
             android:screenOrientation="portrait"/>

@@ -93,9 +93,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public boolean isWhetherLocation = false;
     public static String gymId = "0";
     public static String gymName = "";
+    public static String gymTel = "";
     private String mUserCityId;
     private long firstTime = 0;//第一点击返回键
-    private CoursesResult.Courses.Gym mGym;
+    private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
     private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
@@ -112,9 +113,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         sendUpdateAppRequest();
         setViewOnClickListener();
         initData();
-       // showDefaultGymDialog();
+        // showDefaultGymDialog();
     }
-
 
 
     @Override
@@ -351,9 +351,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                changeGym(0);
+                changeGym(0);//从首页切换过去
             } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                changeGym(1);
+                changeGym(1);//从买卡界面切换过去
             }
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
@@ -373,23 +373,30 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     /**
      * 显示默认场馆的对话框
      */
-    private void showDefaultGymDialog(){
+    private void defaultGymDialog() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage("您现在处于默认场馆需要切换场馆吗");
-        builder.setNegativeButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_one_content, null, false);
+        TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
+        TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
+        TextView secondTextView = (TextView) view.findViewById(R.id.second_dialog_content);
+        secondTextView.setVisibility(View.VISIBLE);
+        titleTextView.setText(R.string.notice_prompt);
+        contentTextView.setText(getString(R.string.current_default_gym) +mGym.getName());
+        secondTextView.setText(R.string.please_select_gym_buy_card);
+        builder.setNegativeButton(getString(R.string.immedately_change_gym), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton("去切换场馆", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.waite_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 changeGym(0);
                 dialog.dismiss();
             }
         });
-        Dialog dialog =  builder.create();
+        Dialog dialog = builder.create();
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -439,8 +446,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         );
         RightMenuDialog.show();
     }
-
-
 
 
     /**
@@ -626,6 +631,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     /**
      * TODO 判断是否需要显示公告
+     *
      * @param message
      */
     public void onEvent(GymNoticeMessage message) {
@@ -640,6 +646,18 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         setHomeTitle();
         setHomeMenuReadNotice();
+        showDefaultGymDialog();
+    }
+
+    /**
+     * 弹出默认场馆的对话框
+     */
+    private void showDefaultGymDialog() {
+        //无卡，定位失败，弹一次
+        if (!isWhetherLocation && "0".equals(gymId) && Preference.getShowDefaultGymDialg()) {
+            Preference.setShowDefaultGymDialg(false);
+            defaultGymDialog();
+        }
     }
 
     public void onEvent(BuyCardMessage message) {
