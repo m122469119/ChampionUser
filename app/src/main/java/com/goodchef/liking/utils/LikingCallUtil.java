@@ -53,12 +53,14 @@ public class LikingCallUtil {
                         @Override
                         public void onClick(View v) {
                             PhoneUtils.phoneCall(context, mPhoneDialog.getGymPhoneText());
+                            mPhoneDialog.dismiss();
                         }
                     })
                     .setOnLikingPhoneListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             PhoneUtils.phoneCall(context, mPhoneDialog.getLikingPhoneText());
+                            mPhoneDialog.dismiss();
                         }
                     });
         mPhoneDialog.show();
