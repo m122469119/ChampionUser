@@ -296,7 +296,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private void setGymId() {
         if (buyType == BUY_TYPE_BUY) {//买卡
             submitGymId = LikingHomeActivity.gymId;
-           // LikingHomeActivity.gymId = gymId;
         } else if (buyType == BUY_TYPE_CONTINUE) {//续卡
             submitGymId = gymId;
         } else if (buyType == BUY_TYPE_UPGRADE) {//升级卡

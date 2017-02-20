@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,7 +50,8 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     private TextView mPromotionCardBtn;//升级卡
     private TextView mFlowCardBtn;//续卡
-  //  private String gymId;//场馆id
+    private int hasCard;
+    private String gymId;//场馆id
 
     private MyCardPresenter mMyCardPresenter;
 
@@ -101,12 +103,20 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     public void onClick(View v) {
         UMengCountUtil.UmengCount(this, UmengEventId.UPGRADEANDCONTINUECARDACTIVITY);
         if (v == mPromotionCardBtn) {//升级卡
+            if (!checkGymId()){
+                startActivity(LoginActivity.class);
+                return;
+            }
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
             intent.putExtra(KEY_INTENT_TITLE, getString(R.string.promotion_card));
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, Preference.getLoginGymId());
             startActivity(intent);
         } else if (v == mFlowCardBtn) {//续卡
+            if (!checkGymId()){
+                startActivity(LoginActivity.class);
+                return;
+            }
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
             intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
@@ -115,11 +125,20 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         }
     }
 
+
+    private boolean checkGymId() {
+        if (hasCard == 1 && gymId.equals("0")) {//有卡,后端数据传错了，gymId应该不为0
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public void updateMyCardView(MyCardResult.MyCardData myCardData) {
         if (myCardData != null) {
             mStateView.setState(StateView.State.SUCCESS);
-            int hasCard = myCardData.getHasCard();
+            hasCard = myCardData.getHasCard();
             if (hasCard == 1) {//有卡
                 mNoCardLayout.setVisibility(View.GONE);
                 mRootScrollView.setVisibility(View.VISIBLE);
@@ -135,7 +154,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                     mPeriodOfValidityTextView.setText(myCard.getStartTime() + " ~ " + myCard.getEndTime());
                     mGymName.setText(myCard.getGymName());
                     mGymAddress.setText(myCard.getGymAddress());
-                //    gymId = myCard.getGymId();
+                    gymId = myCard.getGymId();
                     List<TimeLimitData> limitDataList = myCard.getTimeLimit();
                     if (limitDataList != null && limitDataList.size() > 0) {
                         CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);
