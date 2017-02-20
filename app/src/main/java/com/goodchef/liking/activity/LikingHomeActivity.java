@@ -383,7 +383,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 显示默认场馆的对话框
      */
     private void setDefaultGymDialog(String text, boolean isDefaultGym) {
-        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this);
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.defaultGymType);
         defaultGymDialog.setCancelable(false);
         defaultGymDialog.setCanceledOnTouchOutside(false);
         if (isDefaultGym) {
@@ -455,39 +455,34 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void showNoticeDialog() {
         UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
+        defaultGymDialog.setCancelable(true);
+        defaultGymDialog.setCanceledOnTouchOutside(true);
 
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
-        TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        builder.setCustomTitle(view);
         if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
             if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-                builder.setMessage(mNoticeGym.getAnnouncementInfo());
-                textView.setText(R.string.notice);
+                defaultGymDialog.setNoticesMessage(mNoticeGym.getAnnouncementInfo());
             } else {
-                textView.setText(R.string.notice_prompt);
-                builder.setMessage(getString(R.string.no_announcement));
+                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
             Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-            builder.setMessage(mNoticeGym.getAnnouncementInfo());
-            textView.setText(R.string.notice);
+            defaultGymDialog.setNoticesMessage(mNoticeGym.getAnnouncementInfo());
             Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else {
-            textView.setText(getString(R.string.notice_prompt));
-            builder.setMessage(getString(R.string.no_announcement));
+            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
         }
-        builder.setNegativeButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
+        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onConfirmClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
             }
         });
-        builder.create().show();
+
 
     }
 
@@ -632,7 +627,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     /**
-     *
      * @param message
      */
     public void onEvent(GymNoticeMessage message) {

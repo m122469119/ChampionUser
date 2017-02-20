@@ -446,5 +446,6 @@
     <string name="waite_again">再等等</string>
     <string name="current_default_gym_prompt">当前为默认场馆:</string>
     <string name="current_city_not_open_services">当前城市尚未开通服务</string>
+    <string name="affirm">确认</string>
 
 </resources>
