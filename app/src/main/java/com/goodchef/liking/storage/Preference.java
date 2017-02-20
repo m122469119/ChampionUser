@@ -314,6 +314,19 @@ public class Preference extends AbsPreference {
     }
 
     /**
+     * 判断当前用户是否有卡
+     * @return
+     */
+    public static boolean getUserHasCard() {
+        String gym = getLoginGymId();
+        if (!StringUtils.isEmpty(gym) && !"0".equals(gym)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 设置是否弹出默认场馆对话框
      *
      * @param show

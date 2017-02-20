@@ -56,7 +56,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
-                mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
+                mCardListPresenter.getCardList("0", "0", "310100", "310104", mGymId, buyType);
             }
         });
     }
@@ -67,7 +67,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         mGymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(title);
         mCardListPresenter = new CardListPresenter(this, this);
-        mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
+        mCardListPresenter.getCardList("0", "0", "310100", "310104", mGymId, buyType);
     }
 
     @Override

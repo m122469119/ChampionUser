@@ -100,7 +100,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private String mAmountCount;//课程总金额
 
     private ArrayList<PlacesData> mPlacesDataList;//上课地点集合
-    private String gymId;//场馆id
+  //  private String gymId;//场馆id
 
 
     @Override
@@ -172,7 +172,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+     //   gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(teacherName);
         mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmPresenter(this, this);
         mStateView.setState(StateView.State.LOADING);
@@ -180,7 +180,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     private void sendRequest() {
-        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(gymId, trainerId);
+        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(LikingHomeActivity.gymId, trainerId);
     }
 
     @Override
@@ -213,7 +213,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     mPlacesDataList.get(i).setSelect(false);
                 }
             }
-            gymId = mPlacesDataList.get(0).getGymId();
+           // gymId = mPlacesDataList.get(0).getGymId();
             mCoursesAddressTextView.setText(mPlacesDataList.get(0).getAddress());
         }
     }
@@ -403,9 +403,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         }
         UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
         if (mCoupon != null) {
-            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType, mCoursesTimes, gymId);
+            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCouponCode(), payType, mCoursesTimes, LikingHomeActivity.gymId);
         } else {
-            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType, mCoursesTimes, gymId);
+            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType, mCoursesTimes, LikingHomeActivity.gymId);
         }
     }
 
@@ -456,7 +456,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 PlacesData placesData = (PlacesData) data.getSerializableExtra(ChangeAddressActivity.KEY_ADDRESS_DATA);
                 if (placesData != null) {
                     mCoursesAddressTextView.setText(placesData.getAddress());
-                    gymId = placesData.getGymId();
+                   // gymId = placesData.getGymId();
                     for (PlacesData place : mPlacesDataList) {
                         if (place.getGymId().equals(placesData.getGymId())) {
                             place.setSelect(placesData.isSelect());

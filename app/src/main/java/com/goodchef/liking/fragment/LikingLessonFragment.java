@@ -133,7 +133,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                     intent.putExtra(KEY_INTENT_TYPE, "0");
-                    intent.putExtra(KEY_GYM_ID, mGym.getGymId());
+                    // intent.putExtra(KEY_GYM_ID, mGym.getGymId());
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.PRIVATELESSONDETAILSACTIVITY);
@@ -247,6 +247,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         if (courses.getGym() != null) {
             mGym = courses.getGym();
             LikingHomeActivity.gymTel = mGym.getTel();
+            LikingHomeActivity.gymId = mGym.getGymId();
+            LikingHomeActivity.defaultGym = mGym.getDefaultGym();
+
             presale = mGym.getPresale();
             if (1 == mGym.getCanSchedule()) {//支持自助团体课
                 mSelfCoursesInView.setVisibility(View.VISIBLE);

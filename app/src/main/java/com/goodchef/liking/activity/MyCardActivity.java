@@ -20,6 +20,7 @@ import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.mvp.presenter.MyCardPresenter;
 import com.goodchef.liking.mvp.view.MyCardView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.ListViewUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -48,7 +49,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     private TextView mPromotionCardBtn;//升级卡
     private TextView mFlowCardBtn;//续卡
-    private String gymId;//场馆id
+  //  private String gymId;//场馆id
 
     private MyCardPresenter mMyCardPresenter;
 
@@ -103,13 +104,13 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
             intent.putExtra(KEY_INTENT_TITLE, getString(R.string.promotion_card));
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, Preference.getLoginGymId());
             startActivity(intent);
         } else if (v == mFlowCardBtn) {//续卡
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
             intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, Preference.getLoginGymId());
             startActivity(intent);
         }
     }
@@ -134,7 +135,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
                     mPeriodOfValidityTextView.setText(myCard.getStartTime() + " ~ " + myCard.getEndTime());
                     mGymName.setText(myCard.getGymName());
                     mGymAddress.setText(myCard.getGymAddress());
-                    gymId = myCard.getGymId();
+                //    gymId = myCard.getGymId();
                     List<TimeLimitData> limitDataList = myCard.getTimeLimit();
                     if (limitDataList != null && limitDataList.size() > 0) {
                         CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(this);

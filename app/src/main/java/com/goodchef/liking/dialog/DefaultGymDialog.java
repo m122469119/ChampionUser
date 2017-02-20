@@ -12,29 +12,49 @@ import com.goodchef.liking.R;
 /**
  * 说明:
  * Author : shaozucheng
- * Time: 下午5:34
+ * Time: 下午3:34
  * version 1.0.0
  */
 
-public class UnBindDevicesDialog {
+public class DefaultGymDialog {
 
     private Context mContext;
     private AppCompatDialog mDialog;
-    private ImageView mCancelButton;
+    private TextView mCancelButton;
     private TextView mConfirmButton;
+    private TextView mDefaultPromptTextView;
+    private TextView mDefaultGymNameTextView;
 
 
-    public UnBindDevicesDialog(Context context) {
+    public DefaultGymDialog(Context context) {
         this.mContext = context;
         mDialog = new AppCompatDialog(context, R.style.dialog_ios_style);
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.show();
         Window window = mDialog.getWindow();
-        window.setContentView(R.layout.dialog_unbinad_devices);
-        // window.setWindowAnimations(R.style.my_dialog_enter_exit);  //添加dialog进入和退出的动画
-        mCancelButton = (ImageView) window.findViewById(R.id.dialog_unbind_cancel);
-        mConfirmButton = (TextView) window.findViewById(R.id.dialog_unbind_confirm);
+        window.setContentView(R.layout.dialog_default_gym);
+        mConfirmButton = (TextView) window.findViewById(R.id.go_to_change_gym_TextView);
+        mCancelButton = (TextView) window.findViewById(R.id.waite_change_gym_TextView);
+        mDefaultPromptTextView = (TextView) window.findViewById(R.id.gym_default_prompt);
+        mDefaultGymNameTextView = (TextView) window.findViewById(R.id.default_gym_name_TextView);
+    }
+
+
+    /**
+     * 设置默认场馆名称
+     * @param gymName 场馆名称
+     */
+    public void setDefaultPromptView(String gymName){
+        mDefaultPromptTextView.setVisibility(View.VISIBLE);
+        mDefaultPromptTextView.setText(R.string.current_default_gym_prompt);
+        mDefaultGymNameTextView.setText(gymName);
+    }
+
+
+    public void  setCurrentCityNotOpen(String openPrompt){
+        mDefaultPromptTextView.setVisibility(View.GONE);
+        mDefaultGymNameTextView.setText(openPrompt);
     }
 
 

@@ -37,7 +37,7 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
                 if (result.getCode() == 0) {
                     mView.updateChargeGroupCoursesView(result.getData());
                 } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_ERROR) {
-                    LiKingVerifyUtils.showBuyCoursesErrorDialog(mContext, result.getMessage());
+                    mView.updateBuyCoursesNotOnGym(result.getMessage());
                 } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
                     mView.updateErrorNoCard(result.getMessage());
                 } else if (result.getCode() == LiKingRequestCode.LOGIN_TOKEN_INVALID) {

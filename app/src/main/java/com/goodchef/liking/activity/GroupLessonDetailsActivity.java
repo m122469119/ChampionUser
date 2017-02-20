@@ -105,7 +105,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private String scheduleId;//排期id
     private int mCoursesState = -1;//课程状态
     private String orderId;//订单id
-    private String gymId;//场馆id
+   // private String gymId;//场馆id
     private LikingStateView mStateView;
     private String guota;//预约人数
     private int isFree;//是否免费
@@ -127,7 +127,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
         mCoursesState = getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1);
         orderId = getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+       // gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         initView();
         requestData();
         setRightMenu();
@@ -322,7 +322,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * @param groupLessonData
      */
     private void setDetailsData(GroupCoursesResult.GroupLessonData groupLessonData) {
-        gymId = groupLessonData.getGymId();
+      //  gymId = groupLessonData.getGymId();
         setTitle(groupLessonData.getCourseName());
         List<String> coursesImageList = groupLessonData.getCourseImgs();
         if (coursesImageList != null && coursesImageList.size() > 0) {
@@ -386,7 +386,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 public void onItemClick(View view, int position) {
                     UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
                     Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
-                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
                     startActivity(intent);
                     overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
                 }
@@ -404,7 +404,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         if (v == mImmediatelySubmitBtn) {
             UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
             if (Preference.isLogin()) {
-                mGroupCoursesDetailsPresenter.orderGroupCourses(gymId, scheduleId, Preference.getToken());
+                mGroupCoursesDetailsPresenter.orderGroupCourses(LikingHomeActivity.gymId, scheduleId, Preference.getToken());
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
@@ -416,7 +416,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 if (Preference.isLogin()) {
                     Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
                     intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
-                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                   // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);
@@ -427,7 +427,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         } else if (v == mGymIntroduceLayout || v == mGymRootLayout) {//进入门店详情
             UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
             Intent intent = new Intent(this, ArenaActivity.class);
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
             this.startActivity(intent);
             this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         } else if (v == mShareLayout) {//分享
