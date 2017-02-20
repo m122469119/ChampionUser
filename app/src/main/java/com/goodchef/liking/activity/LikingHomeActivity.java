@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v7.app.AppCompatDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,9 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.LikingNearbyAdapter;
+import com.goodchef.liking.dialog.CancelOnClickListener;
+import com.goodchef.liking.dialog.ConfirmOnClickListener;
+import com.goodchef.liking.dialog.DefaultGymDialog;
 import com.goodchef.liking.dialog.HomeRightDialog;
 import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
@@ -91,10 +95,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private String currentCityName = "";
     public boolean isWhetherLocation = false;
-    public static String gymId = Preference.getChangeGymId();
+    public static String gymId = "0";
     public static String gymName = "";
     public static String gymTel = "";
-    private String mUserCityId;
+    public static int defaultGym;
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
@@ -102,6 +106,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
     private CheckUpdateAppResult.UpDateAppData mUpDateAppData;
     private FileDownloaderManager mFileDownloaderManager;
+    private String cityCode;//高德地图定位的城市返回的code码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +132,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
 
     private void initData() {
+        //首次进来如果没有网络设置定位失败设置显示的view
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            isWhetherLocation = false;
-        } else {
+            setNotNetWorkMiddleView();
+        } else {//有网络，去定位
             initTitleLocation();
         }
     }
@@ -372,49 +378,42 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     /**
      * 显示默认场馆的对话框
      */
-    private void defaultGymDialog() {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_one_content, null, false);
-        TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
-        TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
-        TextView secondTextView = (TextView) view.findViewById(R.id.second_dialog_content);
-        secondTextView.setVisibility(View.VISIBLE);
-        titleTextView.setText(R.string.notice_prompt);
-        contentTextView.setText(getString(R.string.current_default_gym) +mGym.getName());
-        secondTextView.setText(R.string.please_select_gym_buy_card);
-        builder.setNegativeButton(getString(R.string.immedately_change_gym), new DialogInterface.OnClickListener() {
+    private void setDefaultGymDialog(String text, boolean isDefaultGym) {
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this);
+        defaultGymDialog.setCancelable(false);
+        defaultGymDialog.setCanceledOnTouchOutside(false);
+        if (isDefaultGym) {
+            defaultGymDialog.setDefaultPromptView(text);
+        } else {
+            defaultGymDialog.setCurrentCityNotOpen(text);
+        }
+        defaultGymDialog.setCancelClickListener(new CancelOnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton(getString(R.string.waite_again), new DialogInterface.OnClickListener() {
+
+        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onConfirmClickListener(AppCompatDialog dialog) {
                 changeGym(0);
                 dialog.dismiss();
             }
         });
-        Dialog dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+
     }
 
     /***
      * 跳转门店
      */
     private void jumpArenaActivity() {
-        if (isWhetherLocation) {//定位成功时查看门店
-            if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
-                UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
-                Intent intent = new Intent(this, ArenaActivity.class);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
-                this.startActivity(intent);
-                this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
-            }
-        } else {//定位失败是，重新定位
-            initTitleLocation();
+        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
+            UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
+            Intent intent = new Intent(this, ArenaActivity.class);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+            this.startActivity(intent);
+            this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
         }
     }
 
@@ -540,8 +539,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     String longitude = CityUtils.getLongitude(LikingHomeActivity.this, object.getCityCode(), object.getLongitude());
                     String latitude = CityUtils.getLatitude(LikingHomeActivity.this, object.getCityCode(), object.getLatitude());
                     String cityId = CityUtils.getCityId(LikingHomeActivity.this, object.getCityCode());
-                    String districtId = CityUtils.getDistrictId(LikingHomeActivity.this, object.getCityCode(), object.getDistrict());
-
+                    String districtId = object.getAdCode();
+                    cityCode = object.getCityCode();
                     postEvent(new MainAddressChanged(longitude, latitude, cityId, districtId, currentCityName, true));
                     updateLocationPoint(cityId, districtId, longitude, latitude, currentCityName, true);
 
@@ -618,7 +617,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     public void onEvent(UserCityIdMessage userCityIdMessage) {
-        mUserCityId = userCityIdMessage.getUserCityId();
 
     }
 
@@ -652,10 +650,17 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 弹出默认场馆的对话框
      */
     private void showDefaultGymDialog() {
-        //无卡，定位失败，弹一次
-        if (!isWhetherLocation && "0".equals(gymId) && Preference.getShowDefaultGymDialg()) {
-            Preference.setShowDefaultGymDialg(false);
-            defaultGymDialog();
+        //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
+        if (!Preference.getUserHasCard() && 1 == defaultGym && Preference.getShowDefaultGymDialg()) {
+            if (!isWhetherLocation) {//定位失败
+                setDefaultGymDialog(getString(R.string.current_default_gym) + mGym.getName(), true);
+                Preference.setShowDefaultGymDialg(false);
+            } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
+                if (!CityUtils.isDredge(cityCode)) {
+                    Preference.setShowDefaultGymDialg(false);
+                    setDefaultGymDialog(getString(R.string.current_city_not_open_services), false);
+                }
+            }
         }
     }
 
@@ -673,31 +678,31 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             mLikingLeftTitleTextView.setText(mGym.getCityName());
         }
         String tag = fragmentTabHost.getCurrentTabTag();
-        if (isWhetherLocation) {
-            if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
-                if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-                    if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
-                        mLikingDistanceTextView.setVisibility(View.VISIBLE);
-                        mLikingDistanceTextView.setText(mGym.getDistance());
-                        mLikingMiddleTitleTextView.setText(mGym.getName());
-                    }
+        if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
+            if (EnvironmentUtils.Network.isNetWorkAvailable()) {
+                if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
+                    mLikingDistanceTextView.setVisibility(View.VISIBLE);
+                    mLikingDistanceTextView.setText(mGym.getDistance());
+                    mLikingMiddleTitleTextView.setText(mGym.getName());
                 } else {
-                    isWhetherLocation = false;
                     mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
                     mLikingDistanceTextView.setVisibility(View.GONE);
                 }
-            } else if (tag.equals(TAG_MY_TAB)) {//我的
-                setTagMyTab();
+            } else {
+                setNotNetWorkMiddleView();
             }
-        } else {
-            if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
-                isWhetherLocation = false;
-                mLikingMiddleTitleTextView.setText(R.string.location_fail);
-                mLikingDistanceTextView.setVisibility(View.GONE);
-            } else if (tag.equals(TAG_MY_TAB)) {//我的
-                setTagMyTab();
-            }
+        } else if (tag.equals(TAG_MY_TAB)) {//我的
+            setTagMyTab();
         }
+    }
+
+    /**
+     * 设置没有网络是中间view的显示
+     */
+    private void setNotNetWorkMiddleView() {
+        isWhetherLocation = false;
+        mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
+        mLikingDistanceTextView.setVisibility(View.GONE);
     }
 
     /**

@@ -174,7 +174,8 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             Preference.setIsVip(userLoginData.getIsVip());
             String gymId = userLoginData.getGymId();
             Preference.setLoginGymId(gymId);
-            if (!StringUtils.isEmpty(gymId) && !"0".equals(gymId)){
+            Preference.setShowDefaultGymDialg(true);//将弹出默认场馆的对话框按钮重置
+            if (!StringUtils.isEmpty(gymId) && !"0".equals(gymId)){//登录成功,gymId !=0 表示该用户有卡，此时将全局的gymId 换掉
                 LikingHomeActivity.gymId = userLoginData.getGymId();
             }
             postEvent(new LoginFinishMessage());

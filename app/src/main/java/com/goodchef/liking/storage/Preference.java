@@ -42,7 +42,6 @@ public class Preference extends AbsPreference {
     public static final String IS_BIND = "is_bind";
     public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
     public static final String SHOW_DEFAULT_GYM_DIALOG = "SHOW_DEFAULT_GYM_DIALOG";
-    public static final String CHANGE_GYM_ID = "CHANGE_GYM_ID";//切换场馆记住gymid
     public static List<String> announcementList = new ArrayList<>();
     public static final String NEW_APK_NAME = "new_apk_name";
     public static final String UPDATE_APP = "update_app";
@@ -315,6 +314,19 @@ public class Preference extends AbsPreference {
     }
 
     /**
+     * 判断当前用户是否有卡
+     * @return
+     */
+    public static boolean getUserHasCard() {
+        String gym = getLoginGymId();
+        if (!StringUtils.isEmpty(gym) && !"0".equals(gym)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 设置是否弹出默认场馆对话框
      *
      * @param show
@@ -331,23 +343,6 @@ public class Preference extends AbsPreference {
      */
     public static boolean getShowDefaultGymDialg() {
         return (boolean) getObject(SHOW_DEFAULT_GYM_DIALOG, true);
-    }
-
-    /**
-     * 切换场馆记住场馆id
-     *
-     * @return
-     */
-    public static boolean setChangeGymId(String gymId) {
-        return setObject(CHANGE_GYM_ID, gymId);
-    }
-
-    /**
-     * 获取切换场馆的gymId
-     * @return
-     */
-    public static String getChangeGymId() {
-        return (String) getObject(CHANGE_GYM_ID, "0");
     }
 
     /***

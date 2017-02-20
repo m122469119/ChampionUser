@@ -437,6 +437,9 @@
     <string name="start_business_city">已开业城市</string>
     <string name="current_default_gym">当前为默认场馆：</string>
     <string name="please_select_gym_buy_card">请选择您需要的场馆进行购买操作</string>
-    <string name="immedately_change_gym">立即去切换</string>
-    <string name="waite_again">再等一等</string>
+    <string name="immedately_change_gym">去切换</string>
+    <string name="waite_again">再等等</string>
+    <string name="current_default_gym_prompt">当前为默认场馆:</string>
+    <string name="current_city_not_open_services">当前城市尚未开通服务</string>
+
 </resources>

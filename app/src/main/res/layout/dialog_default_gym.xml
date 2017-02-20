@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/shape_radius_white_back"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="@dimen/spacing_20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/gym_default_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/spacing_12dp"
+                android:paddingRight="@dimen/spacing_8dp"
+                android:layout_marginLeft="10dp"
+                android:paddingTop="@dimen/spacing_12dp"
+                android:visibility="gone"
+                android:textColor="@color/lesson_details_gray_back"
+                android:textSize="@dimen/textsize_15"/>
+
+            <TextView
+                android:id="@+id/default_gym_name_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_15"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/go_to_change_gym_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/spacing_12dp"
+                android:text="@string/immedately_change_gym"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_15"/>
+
+            <TextView
+                android:id="@+id/waite_change_gym_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/spacing_12dp"
+                android:text="@string/waite_again"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_15"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/dialog_icon_prompt"/>
+
+</RelativeLayout>
