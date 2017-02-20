@@ -63,40 +63,21 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                 for (int i = 0; i < chars.length; i ++) {
                     if (i == 0)
                         chinese = Pinyin.isChinese(chars[i]);
-                    else if (Pinyin.isChinese(chars[i]) == chinese){
+                    else if (Pinyin.isChinese(chars[i]) != chinese)
                         return null;
-                    }
                 }
-
                 List<City.RegionsData.CitiesData> citiesDataList = LiKingVerifyUtils.getCitiesDataList();
                 List<City.RegionsData.CitiesData> result = new ArrayList<>();
 
-                city:for (City.RegionsData.CitiesData citiesData : citiesDataList) {
+                for (City.RegionsData.CitiesData citiesData : citiesDataList) {
                     if (Pinyin.isChinese(chars[0])){
-                        String cityName = citiesData.getCityName();
-                        if (cityName.contains(replace)){
+                        if (compareStrings(citiesData.getCityName(), replace)){
                             result.add(citiesData);
-                            continue;
                         }
                     } else {
-//                        String pinyin = citiesData.getPinyin();
-//                        String[] split = pinyin.split(",");
-//                        String re = replace;
-//                        for (String s : split){
-//                            if (replace.length() > 0) {
-//                                if (s.substring(0, 1).toUpperCase().equals(re.substring(0, 1))) {
-//                                    re = re.substring(1, re.length());
-//                                } else {
-//                                    continue city;
-//                                }
-//                            }
-//                        }
-                        String pinyin = citiesData.getPinyin();
-                        pinyin = pinyin.replace(",", "");
-
-                        if (pinyin.contains(replace)) {
+                        String pinyin = citiesData.getPinyin().replace(",", "");
+                        if (compareStrings(pinyin, replace)){
                             result.add(citiesData);
-                            continue;
                         }
                     }
                 }
@@ -104,11 +85,42 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
             }
 
             @Override
-            protected void onPostExecute(List<City.RegionsData.CitiesData> citiesDatas) {
-                mView.showCityListWindow(citiesDatas);
+            protected void onPostExecute(List<City.RegionsData.CitiesData> reslut) {
+                mView.showCityListWindow(reslut);
             }
         }.execute();
     }
+
+    public boolean compareStrings(String A, String B) {
+        // write your code here
+        if (null == A || null == B || A.length() < B.length()) {
+            return false;
+        }
+        if (A.equals(B)) {
+            return true;
+        }
+
+
+        char[] charsA = A.toCharArray();
+        char[] charsB = B.toCharArray();
+
+        if (!String.valueOf(charsA[0]).equals(String.valueOf(charsB[0]))){
+            return false;
+        }
+
+        for (int i = 0; i < charsB.length; i ++){
+            if (A.length() == 0){
+                return false;
+            }
+            String s = String.valueOf(charsB[i]);
+            if (!A.contains(s)){
+                return false;
+            }
+            A = A.substring(A.indexOf(s), A.length());
+        }
+        return true;
+    }
+
 
     /***
      * 初始化定位
@@ -127,10 +139,10 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                         longitude = object.getLongitude() + "";
                         latitude = object.getLatitude() + "";
                         mView.setLocationCityNameTextViewText(currentCityName);
-                        mView.setTitle(mContext.getString(R.string.current_city) + currentCityName);
+                        mView.setTitle(currentCityName);
                     } else {//定位失败
                         mView.setLocationCityNameTextViewText(mContext.getString(R.string.re_location));
-                        mView.setTitle(mContext.getString(R.string.location_fail));
+                        mView.setTitle(mView.getDefaultCityName());
                     }
                 }
                 @Override

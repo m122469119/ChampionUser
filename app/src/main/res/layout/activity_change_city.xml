@@ -13,6 +13,7 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_8dp"
@@ -36,7 +37,9 @@
                 android:textColorHint="@color/bg_hint_gray"
                 android:textCursorDrawable="@null"
                 android:textSize="14sp"
-                app:delayedTime="1" />
+                app:delayedTime="1"
+                android:imeOptions="actionDone"
+                />
 
             <ImageView
                 android:id="@+id/delete_search_ImageView"

@@ -27,4 +27,6 @@ public interface ChangeCityView extends BaseView{
     void postEvent(BaseMessage object);
 
     void finish();
+
+    String getDefaultCityName();
 }

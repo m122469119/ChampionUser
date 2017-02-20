@@ -253,6 +253,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
      */
     private void jumpToChangeCityActivity() {
         Intent intent = new Intent(this, ChangeCityActivity.class);
+        intent.putExtra(ChangeCityActivity.CITY_NAME, mRightTitleTextView.getText());
         startActivity(intent);
     }
 

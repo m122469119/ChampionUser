@@ -1,10 +1,13 @@
 package com.goodchef.liking.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -39,6 +42,8 @@ import butterknife.OnClick;
 public class ChangeCityActivity extends AppBarActivity implements ChangeCityView{
     private static final String TAG = "ChangeCityActivity";
 
+    public static final String CITY_NAME = "city_name";
+
     @BindView(R.id.search_city_EditText)
     TimerEditView mSearchCityEditText;
     @BindView(R.id.delete_search_ImageView)
@@ -53,6 +58,8 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
 
     ChangeCityPresenter mPresenter;
 
+    String defaultCityName;
+
     private CityListWindow mCityListWindow;
     private ChangeCityAdapter mChangeCityAdapter;
 
@@ -60,6 +67,8 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_city);
+        Intent intent = getIntent();
+        defaultCityName = intent.getStringExtra(CITY_NAME);
         ButterKnife.bind(this);
         setCouponsFragment();
         mPresenter = new ChangeCityPresenter(this, this);
@@ -85,6 +94,21 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 mPresenter.getCitySearch(text);
             }
         });
+
+        mSearchCityEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    mSearchCancelTextView.setVisibility(View.VISIBLE);
+                } else {
+                    mSearchCancelTextView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        mSearchCityEditText.clearFocus();
+
+
     }
 
     private void setCouponsFragment() {
@@ -108,6 +132,11 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
             case R.id.search_cancel_TextView:
                 mSearchCityEditText.setText("");
                 mSearchCityEditText.clearFocus();
+                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm != null) {
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                            0);
+                }
                 break;
             case R.id.location_cityName_TextView:
                 mPresenter.onLocationTextClick();
@@ -131,7 +160,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
 
 
     @Override
-    public void showCityListWindow(List<City.RegionsData.CitiesData> list){
+    public void showCityListWindow(final List<City.RegionsData.CitiesData> list){
         if (mCityListWindow != null && mCityListWindow.isShowing()) {
             return;
         } else if (mCityListWindow == null) {
@@ -139,8 +168,20 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
             mCityListWindow.setWidth(ViewPager.LayoutParams.MATCH_PARENT);
             mCityListWindow.setHeight(ViewPager.LayoutParams.MATCH_PARENT);
             mCityListWindow.setAdapter(mChangeCityAdapter = new ChangeCityAdapter(this));
+            mChangeCityAdapter.setOnItemClickListener(new ChangeCityAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int pos) {
+
+                    ChangeGymActivityMessage msg = ChangeGymActivityMessage
+                            .obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);
+                    msg.msg1 = list.get(pos).getCityName();
+                    postEvent(msg);
+                    finish();
+                }
+            });
         }
         mChangeCityAdapter.setData(list);
+        mChangeCityAdapter.notifyDataSetChanged();
         mCityListWindow.showAsDropDown(mCityLayout);
     }
 
@@ -190,5 +231,20 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     @Override
     public void postEvent(BaseMessage object) {
         super.postEvent(object);
+    }
+
+
+    @Override
+    public String getDefaultCityName() {
+        return defaultCityName;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mSearchCityEditText.isFocused()) {
+            mSearchCityEditText.clearFocus();
+            return;
+        }
+        super.onBackPressed();
     }
 }
