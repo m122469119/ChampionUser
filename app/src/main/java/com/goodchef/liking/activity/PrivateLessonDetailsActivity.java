@@ -63,7 +63,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
-    private String gymId;
+   // private String gymId;
     private LikingStateView mLikingStateView;
     private SharePresenter mSharePresenter;
 
@@ -80,7 +80,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+      //  gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(teacherName);
         setRightMenu();
         sendDetailsRequest();
@@ -207,7 +207,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
                 intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+               // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);

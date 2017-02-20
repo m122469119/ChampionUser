@@ -70,7 +70,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     private String payType = "-1";//支付方式
 
     private String scheduleId;//排期id
-    private String gymId;
+   // private String gymId;
     private ChargeGroupCoursesConfirmPresenter mChargeGroupCoursesPresenter;
 
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
@@ -129,12 +129,12 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
     private void getIntentData() {
         scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+       // gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
     }
 
     private void initData() {
         mChargeGroupCoursesPresenter = new ChargeGroupCoursesConfirmPresenter(this, this);
-        mChargeGroupCoursesPresenter.getChargeGroupCoursesConfirmData(gymId, scheduleId);
+        mChargeGroupCoursesPresenter.getChargeGroupCoursesConfirmData(LikingHomeActivity.gymId, scheduleId);
     }
 
     private void initPayModule() {
@@ -174,7 +174,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
     @Override
     public void onClick(View v) {
-        if (v == mCouponsLayout) {
+        if (v == mCouponsLayout) {//收费团体课没有传入gymid
             UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_SCHEDULE_ID, scheduleId);
@@ -207,9 +207,9 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(gymId, scheduleId, mCoupon.getCouponCode(), payType);
+            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, mCoupon.getCouponCode(), payType);
         } else {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(gymId, scheduleId, "", payType);
+            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, "", payType);
         }
     }
 

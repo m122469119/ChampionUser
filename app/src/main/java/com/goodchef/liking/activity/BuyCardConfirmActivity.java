@@ -96,7 +96,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private String cardPrice;//卡的金额
     private LikingStateView mStateView;
     private String explain;
-    private String gymId = "0";
+  //  private String gymId = "0";
     private String noticeActivity;//活动
     private String submitGymId;
     private String mCardGymName;//场馆名称
@@ -175,7 +175,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCardName = intent.getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
         mCategoryId = intent.getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
         buyType = intent.getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
-        gymId = intent.getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+      //  gymId = intent.getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         sendConfirmCardRequest();
     }
 
@@ -183,7 +183,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mCardName = getIntent().getStringExtra(LikingBuyCardFragment.KEY_CARD_CATEGORY);
         mCategoryId = getIntent().getIntExtra(LikingBuyCardFragment.KEY_CATEGORY_ID, 0);
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+       // gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         sendConfirmCardRequest();
 
     }
@@ -192,7 +192,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         if (mConfirmBuyCardPresenter == null) {
             mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
         }
-        mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, gymId);
+        mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, LikingHomeActivity.gymId);
     }
 
     @Override
@@ -213,7 +213,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                 intent.putExtra(KEY_CARD_ID, mCardId + "");
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
                 if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
                     intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
                 }
@@ -297,8 +297,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private void setGymId() {
         if (buyType == BUY_TYPE_BUY) {
-            submitGymId = gymId;
-            LikingHomeActivity.gymId = gymId;
+            submitGymId = LikingHomeActivity.gymId;
+           // LikingHomeActivity.gymId = gymId;
         } else if (buyType == BUY_TYPE_CONTINUE) {
             submitGymId = "0";
         } else if (buyType == BUY_TYPE_UPGRADE) {
