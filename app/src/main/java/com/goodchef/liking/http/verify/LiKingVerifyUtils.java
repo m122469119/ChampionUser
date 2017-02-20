@@ -10,6 +10,7 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.DateUtils;
+import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BaseView;
@@ -41,14 +42,20 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.CityUtils;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,16 +231,50 @@ public class LiKingVerifyUtils {
         });
     }
 
+
+    public static List<City.RegionsData.CitiesData> getCitiesDataList() {
+        List<City.RegionsData.CitiesData> citiesDatas = new ArrayList<>();
+
+        BaseConfigResult.BaseConfigData baseConfig = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
+        if (baseConfig == null) {
+            return citiesDatas;
+        }
+        List<CityData> cityList = baseConfig.getCityList();
+        if (ListUtils.isEmpty(cityList)) {
+            return citiesDatas;
+        }
+        for (int i = 0; i < cityList.size(); i++) {
+            City.RegionsData.CitiesData cityBean = new City.RegionsData.CitiesData();
+            cityBean.setCityName(cityList.get(i).getCityName());
+            cityBean.setCityId(cityList.get(i).getCityId() + "");
+            citiesDatas.add(cityBean);
+        }
+
+        return citiesDatas;
+    }
+
+
+
     /**
      * 加载以开放城市信息
      */
     public static void loadOpenCitysInfo(final Context context) {
+        loadOpenCitysInfo(context, null);
+    }
+
+    public static void loadOpenCitysInfo(final Context context, final List<String> openCities){
         TaskScheduler.execute(new Runnable() {
             @Override
             public void run() {
                 ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
                 List<CityData> cityList = new ArrayList<>();
-                List<String> openCityCodes = sBaseConfigResult.getBaseConfigData().getOpenCity();
+                List<String> openCityCodes;
+                if (openCities == null) {
+                    openCityCodes = sBaseConfigResult.getBaseConfigData().getOpenCity();
+                } else {
+                    openCityCodes = openCities;
+                }
+
                 for (String cityCode: openCityCodes) {
                     CityData cityData = null;
                     City.RegionsData.CitiesData crc = citiesMap.get(cityCode);

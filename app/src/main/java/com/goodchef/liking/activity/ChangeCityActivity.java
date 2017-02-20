@@ -3,8 +3,10 @@ package com.goodchef.liking.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -12,13 +14,17 @@ import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.ChangeCityAdapter;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.fragment.ChangeCityFragment;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.mvp.presenter.ChangeCityPresenter;
 import com.goodchef.liking.mvp.view.ChangeCityView;
+import com.goodchef.liking.widgets.CityListWindow;
 import com.goodchef.liking.widgets.TimerEditView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +48,13 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     @BindView(R.id.location_cityName_TextView)
     TextView mLocationCityNameTextView;
 
+    @BindView(R.id.search_city_layout)
+    View mCityLayout;
+
     ChangeCityPresenter mPresenter;
+
+    private CityListWindow mCityListWindow;
+    private ChangeCityAdapter mChangeCityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +64,14 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         setCouponsFragment();
         mPresenter = new ChangeCityPresenter(this, this);
         initView();
-        mPresenter.startLocation();
+        loadData();
     }
 
-    /**
-     * TODO 请求接口
-     */
+    private void loadData() {
+        mPresenter.startLocation();
+        mPresenter.getCityList();
+    }
+
     private void initView() {
         mSearchCityEditText.setOnTextChangerListener(new TimerEditView.onTextChangerListener() {
             @Override
@@ -112,6 +126,28 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 finish();
                 break;
         }
+    }
+
+
+
+    @Override
+    public void showCityListWindow(List<City.RegionsData.CitiesData> list){
+        if (mCityListWindow != null && mCityListWindow.isShowing()) {
+            return;
+        } else if (mCityListWindow == null) {
+            mCityListWindow = new CityListWindow(this);
+            mCityListWindow.setWidth(ViewPager.LayoutParams.MATCH_PARENT);
+            mCityListWindow.setHeight(ViewPager.LayoutParams.MATCH_PARENT);
+            mCityListWindow.setAdapter(mChangeCityAdapter = new ChangeCityAdapter(this));
+        }
+        mChangeCityAdapter.setData(list);
+        mCityListWindow.showAsDropDown(mCityLayout);
+    }
+
+    @Override
+    public void dismissWindow(){
+        if (mCityListWindow != null && mCityListWindow.isShowing())
+            mCityListWindow.dismiss();
     }
 
     @Override

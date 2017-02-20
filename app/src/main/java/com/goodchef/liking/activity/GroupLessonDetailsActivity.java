@@ -1,5 +1,6 @@
 package com.goodchef.liking.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.aaron.android.framework.base.widget.recycleview.RecyclerItemDecoratio
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
@@ -31,6 +33,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
+import com.goodchef.liking.dialog.PhoneDialog;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
@@ -137,10 +140,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(GroupLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(GroupLessonDetailsActivity.this);
             }
         });
     }

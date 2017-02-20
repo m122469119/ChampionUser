@@ -146,4 +146,11 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="phone_style" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/dialog_phone_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_phone_exit</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

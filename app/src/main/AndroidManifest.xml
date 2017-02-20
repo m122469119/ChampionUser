@@ -291,7 +291,8 @@
         <!--切换城市-->
         <activity android:name=".activity.ChangeCityActivity"
                   android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateUnspecified|adjustPan"/>
+                  android:windowSoftInputMode="stateUnspecified|adjustPan"
+                   android:configChanges="keyboardHidden|orientation"/>
 
         <!--更多-->
         <activity

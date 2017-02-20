@@ -25,6 +25,7 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -61,6 +62,7 @@ import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
+import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.storage.Preference;
 
 import java.io.UnsupportedEncodingException;
@@ -1094,5 +1096,12 @@ public class LiKingApi {
      */
     public static void getUpdateApp(RequestCallback<CheckUpdateAppResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_CHECK_UPDATES, CheckUpdateAppResult.class, getCommonRequestParams(), callback);
+    }
+
+    /**
+     * 获取城市列表
+     */
+    public static void getCityList(RequestCallback<CityListResult> callback){
+        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CityListResult.class, getCommonRequestParams(), callback);
     }
 }

@@ -3,12 +3,15 @@ package com.goodchef.liking.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -93,7 +96,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public boolean isWhetherLocation = false;
     public static String gymId = "0";
     public static String gymName = "";
-    public static String gymTel = "";
+    public static String gymTel = ""; //TODO 电话显示
     private String mUserCityId;
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
@@ -450,10 +453,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     /**
      * 查看公告
-     * TODO 切换城市显示和第一次进入首页显示
      */
     private void showNoticeDialog() {
         UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
@@ -486,6 +489,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         });
         builder.create().show();
+
     }
 
     /**
@@ -630,7 +634,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     /**
-     * TODO 判断是否需要显示公告
      *
      * @param message
      */
@@ -703,7 +706,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     /**
      * 设置是否读取过公告
-     * TODO 删除红点， 有公告直接显示
      */
     private void setHomeMenuReadNotice() {
         String tag = fragmentTabHost.getCurrentTabTag();

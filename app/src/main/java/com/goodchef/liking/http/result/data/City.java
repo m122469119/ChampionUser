@@ -1,6 +1,7 @@
 package com.goodchef.liking.http.result.data;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
+import com.github.promeg.pinyinhelper.Pinyin;
 import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.google.gson.annotations.SerializedName;
 
@@ -81,6 +82,8 @@ public class City extends BaseData{
             @SerializedName("districts")
             private List<DistrictsData> districts;
 
+            private String pinyin;
+
             public String getCityId() {
                 return cityId;
             }
@@ -103,6 +106,11 @@ public class City extends BaseData{
 
             public void setCityName(String cityName) {
                 this.cityName = cityName;
+                pinyin = Pinyin.toPinyin(cityName, ",");
+            }
+
+            public String getPinyin(){
+                return pinyin;
             }
 
             public List<DistrictsData> getDistricts() {
@@ -129,6 +137,8 @@ public class City extends BaseData{
                 @SerializedName("district_name")
                 private String districtName;
 
+                private String pinyin;
+
                 public String getDistrictId() {
                     return districtId;
                 }
@@ -143,6 +153,11 @@ public class City extends BaseData{
 
                 public void setDistrictName(String districtName) {
                     this.districtName = districtName;
+                    pinyin = Pinyin.toPinyin(districtName, ",");
+                }
+
+                public String getPinyin(){
+                    return pinyin;
                 }
             }
         }

@@ -93,10 +93,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(PrivateLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(PrivateLessonDetailsActivity.this);
             }
         });
     }

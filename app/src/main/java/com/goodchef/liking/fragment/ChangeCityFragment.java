@@ -137,21 +137,7 @@ public class ChangeCityFragment extends BaseFragment {
     }
 
     private void initData() {
-        mBodyDatas = new ArrayList<>();
-        BaseConfigResult.BaseConfigData baseConfig = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
-        if (baseConfig == null) {
-            return;
-        }
-        List<CityData> cityList = baseConfig.getCityList();
-        if (ListUtils.isEmpty(cityList)) {
-            return;
-        }
-        for (int i = 0; i < cityList.size(); i++) {
-            City.RegionsData.CitiesData cityBean = new City.RegionsData.CitiesData();
-            cityBean.setCityName(cityList.get(i).getCityName());
-            cityBean.setCityId(cityList.get(i).getCityId() + "");
-            mBodyDatas.add(cityBean);
-        }
+        mBodyDatas = LiKingVerifyUtils.getCitiesDataList();
         //先排序
         mChangeCityIndexBar.getDataHelper().sortSourceDatas(mBodyDatas);
         mChangeCityAdapter.setData(mBodyDatas);
@@ -164,11 +150,16 @@ public class ChangeCityFragment extends BaseFragment {
     }
 
     protected boolean isEventTarget() {
-        return false;
+        return true;
     }
 
 
     public void onEvent(ChangeCityFragmentMessage msg){
+        switch (msg.what) {
+            case ChangeCityFragmentMessage.REFRESH_LIST_DATA:
+                initData();
+                break;
+        }
     }
 
 }

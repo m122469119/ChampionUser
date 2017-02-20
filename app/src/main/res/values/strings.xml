@@ -439,4 +439,8 @@
     <string name="please_select_gym_buy_card">请选择您需要的场馆进行购买操作</string>
     <string name="immedately_change_gym">立即去切换</string>
     <string name="waite_again">再等一等</string>
+    <string name="telephone">联系电话</string>
+    <string name="gym_phone">健身房电话:</string>
+    <string name="liking_phone">Liking客服:</string>
+
 </resources>

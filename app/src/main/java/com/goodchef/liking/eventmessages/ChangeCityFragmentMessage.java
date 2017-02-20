@@ -9,5 +9,14 @@ import com.aaron.android.framework.base.eventbus.BaseMessage;
  */
 
 public class ChangeCityFragmentMessage extends BaseMessage {
+    public static final int REFRESH_LIST_DATA = 0x00000001;
 
+
+    public ChangeCityFragmentMessage(int what) {
+        super(what);
+    }
+
+    public static ChangeCityFragmentMessage obtain(int what){
+        return new ChangeCityFragmentMessage(what);
+    }
 }
