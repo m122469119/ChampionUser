@@ -362,7 +362,7 @@
     <string name="times_courses">次课</string>
     <string name="courses_macnum_buy">为保证上课质量，单次最多能购买</string>
     <string name="exit_app">再按一次退出应用</string>
-    <string name="network_home_error">网络出错，请检查网络刷新后重试</string>
+    <string name="network_home_error">当前网络异常，请先刷新首页，再尝试切换！</string>
     <string name="title_activity_invite_friend">邀请好友</string>
     <string name="order_number">订单号：</string>
     <string name="buy_time">购买时间：</string>
@@ -435,7 +435,7 @@
     <string name="hint_search_city">请输入城市名称或拼音查询</string>
     <string name="location_city">定位城市</string>
     <string name="start_business_city">已开业城市</string>
-    <string name="current_default_gym">当前为默认场馆：</string>
+    <string name="current_default_gym">定位失败\n当前处于系统推荐场馆：</string>
     <string name="please_select_gym_buy_card">请选择您需要的场馆进行购买操作</string>
 
     <string name="telephone">联系电话</string>
@@ -448,5 +448,6 @@
     <string name="current_city_not_open_services">当前城市尚未开通服务</string>
     <string name="affirm">确认</string>
     <string name="can_not_buy_card_prompt">您购卡健身房与当前健身房不同\n不能进行购卡/续卡/升级卡操作</string>
+    <string name="please_hand_change_gym">请手动切换场馆</string>
 
 </resources>

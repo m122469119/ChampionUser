@@ -87,9 +87,7 @@ public class DefaultGymDialog {
      * @param gymName 场馆名称
      */
     public void setDefaultPromptView(String gymName) {
-        mDefaultPromptTextView.setVisibility(View.VISIBLE);
-        mDefaultPromptTextView.setVisibility(View.VISIBLE);
-        mDefaultPromptTextView.setText(R.string.current_default_gym_prompt);
+        mDefaultPromptTextView.setVisibility(View.GONE);
         mDefaultGymNameTextView.setText(gymName);
     }
 
