@@ -13,14 +13,19 @@ import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.ChangeCityFragmentMessage;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
+import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.data.City;
+import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.model.ChangeCityModel;
 import com.goodchef.liking.mvp.model.IChangeCityModel;
 import com.goodchef.liking.mvp.view.ChangeCityView;
+import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.CityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,19 +53,19 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
         mModel = new ChangeCityModel();
     }
 
-    public void getCitySearch(final String search){
+    public void getCitySearch(final String search) {
         if (search == null || "".equals(search)) {
             mView.dismissWindow();
             return;
         }
 
-        new AsyncTask<Void, List<City.RegionsData.CitiesData>, List<City.RegionsData.CitiesData>>(){
+        new AsyncTask<Void, List<City.RegionsData.CitiesData>, List<City.RegionsData.CitiesData>>() {
             @Override
             protected List<City.RegionsData.CitiesData> doInBackground(Void... params) {
                 String replace = search.replace(" ", "").toUpperCase(Locale.CHINA);
                 char[] chars = replace.toCharArray();
                 boolean chinese = false;
-                for (int i = 0; i < chars.length; i ++) {
+                for (int i = 0; i < chars.length; i++) {
                     if (i == 0)
                         chinese = Pinyin.isChinese(chars[i]);
                     else if (Pinyin.isChinese(chars[i]) != chinese)
@@ -70,13 +75,13 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                 List<City.RegionsData.CitiesData> result = new ArrayList<>();
 
                 for (City.RegionsData.CitiesData citiesData : citiesDataList) {
-                    if (Pinyin.isChinese(chars[0])){
-                        if (compareStrings(citiesData.getCityName(), replace)){
+                    if (Pinyin.isChinese(chars[0])) {
+                        if (compareStrings(citiesData.getCityName(), replace)) {
                             result.add(citiesData);
                         }
                     } else {
                         String pinyin = citiesData.getPinyin().replace(",", "");
-                        if (compareStrings(pinyin, replace)){
+                        if (compareStrings(pinyin, replace)) {
                             result.add(citiesData);
                         }
                     }
@@ -103,16 +108,16 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
         char[] charsA = A.toCharArray();
         char[] charsB = B.toCharArray();
 
-        if (!String.valueOf(charsA[0]).equals(String.valueOf(charsB[0]))){
+        if (!String.valueOf(charsA[0]).equals(String.valueOf(charsB[0]))) {
             return false;
         }
 
-        for (int i = 0; i < charsB.length; i ++){
-            if (A.length() == 0){
+        for (int i = 0; i < charsB.length; i++) {
+            if (A.length() == 0) {
                 return false;
             }
             String s = String.valueOf(charsB[i]);
-            if (!A.contains(s)){
+            if (!A.contains(s)) {
                 return false;
             }
             A = A.substring(A.indexOf(s) + 1, A.length());
@@ -127,7 +132,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
     public void startLocation() {
         if (mAmapGDLocation != null && mAmapGDLocation.isStart())
             return;
-        if (mAmapGDLocation == null){
+        if (mAmapGDLocation == null) {
             mAmapGDLocation = new AmapGDLocation(mContext);
             mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
                 @Override
@@ -135,20 +140,30 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                     if (object != null && object.getErrorCode() == 0) {//定位成功
                         currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
                         currentCityId = object.getCityCode();
-                        longitude = object.getLongitude() + "";
-                        latitude = object.getLatitude() + "";
+                        longitude = CityUtils.getLongitude(mContext, object.getCityCode(), object.getLongitude());
+                        latitude = CityUtils.getLatitude(mContext, object.getCityCode(), object.getLatitude());
+                        String cityId = CityUtils.getCityId(mContext, object.getCityCode());
+                        String districtId = object.getAdCode();
+
                         mView.setLocationCityNameTextViewText(currentCityName);
                         mView.setTitle(currentCityName);
+                        saveLocationInfo(cityId, districtId, longitude, latitude, currentCityName, true);
                     } else {//定位失败
                         mView.setLocationCityNameTextViewText(mContext.getString(R.string.re_location));
                         mView.setTitle(mView.getDefaultCityName());
+
+                        String cityId = CityUtils.getCityId(mContext, object.getCityCode());
+                        String districtId = CityUtils.getDistrictId(mContext, object.getCityCode(), object.getDistrict());
+                        saveLocationInfo(cityId, districtId, "0", "0", currentCityName, false);
                     }
                 }
+
                 @Override
                 public void start() {
                     mView.setLocationCityNameTextViewText("定位中...");
                     mView.setTitle("定位中...");
                 }
+
                 @Override
                 public void end() {
                     LogUtils.i("dust", "定位结束...");
@@ -158,6 +173,10 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
         mAmapGDLocation.start();
     }
 
+    private void saveLocationInfo(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isLocation) {
+        LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName, isLocation);
+        Preference.setLocationData(locationData);
+    }
 
     @Override
     public void onStop() {
@@ -176,7 +195,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
 
     public void onLocationTextClick() {
         String locationText = mView.getLocationCityNameTextViewText().toString();
-        if (locationText.equals(mContext.getString(R.string.re_location))){
+        if (locationText.equals(mContext.getString(R.string.re_location))) {
             if (mAmapGDLocation != null)
                 mAmapGDLocation.destroy();
             startLocation();

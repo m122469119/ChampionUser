@@ -159,6 +159,9 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
      */
     private boolean compereGymId() {
         if (Preference.isLogin()) {//如果登录了需要比较切换场馆的gymId
+            if (Preference.isNewUser()) {
+                return true;
+            }
             String loginGymId = Preference.getLoginGymId();
             if (!StringUtils.isEmpty(loginGymId) && loginGymId.equals(LikingHomeActivity.gymId)) {
                 return true;
@@ -313,14 +316,10 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
 
     public void onEvent(ChangGymMessage message) {
-        int index = message.getIndex();
-        //  if (index == 1) {//从买卡界面切换场馆过来
         sendBuyCardListRequest();
-        //}
     }
 
     public void onEvent(LoginOutMessage message) {
-        // LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
@@ -329,12 +328,10 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     public void onEvent(CoursesErrorMessage message) {
-        //  LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginOutFialureMessage message) {
-        // LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
