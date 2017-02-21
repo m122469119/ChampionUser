@@ -448,5 +448,6 @@
     <string name="current_city_not_open_services">当前城市尚未开通服务</string>
     <string name="affirm">确认</string>
     <string name="can_not_buy_card_prompt">您购卡健身房与当前健身房不同\n不能进行购卡/续卡/升级卡操作</string>
+    <string name="no_find_data">暂无搜索结果</string>
 
 </resources>

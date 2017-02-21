@@ -23,10 +23,9 @@ import com.goodchef.liking.widgets.indexBar.decoration.DividerItemDecoration;
  */
 
 public class CityListWindow extends PopupWindow {
-    RecyclerView mListView;
 
-
-    View mNoDataView;
+    private RecyclerView mListView;
+    private View mNoDataView;
 
     public CityListWindow(Context context) {
         this(context, null);
