@@ -111,6 +111,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CheckUpdateAppResult.UpDateAppData mUpDateAppData;
     private FileDownloaderManager mFileDownloaderManager;
     private String cityCode;//高德地图定位的城市返回的code码
+    public static boolean isChangeGym = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        firstShowDefaultDialog();
+    }
 
     private void initData() {
         //首次进来如果没有网络设置定位失败设置显示的view
@@ -656,14 +662,27 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
         if (!Preference.getUserHasCard() && 1 == defaultGym && Preference.getShowDefaultGymDialg()) {
             if (!isWhetherLocation) {//定位失败
-                setDefaultGymDialog(getString(R.string.current_default_gym) + mGym.getName() + "\n" + getString(R.string.please_hand_change_gym), true);
                 Preference.setShowDefaultGymDialg(false);
+                setDefaultGymDialog(getString(R.string.current_default_gym) + mGym.getName() + "\n" + getString(R.string.please_hand_change_gym), true);
             } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
                 if (!CityUtils.isDredge(cityCode)) {
                     Preference.setShowDefaultGymDialg(false);
                     setDefaultGymDialog(getString(R.string.current_city_not_open_services), false);
                 }
             }
+        }
+    }
+
+
+    /**
+     * 首次进来，显示公告逻辑
+     * 需要4个条件
+     * 无卡，并且是默认场馆 ,没有弹出过,没有切换场馆
+     */
+    private void firstShowDefaultDialog() {
+        //1无卡，2并且是默认场馆 ,3没有弹出过,4没有切换场馆，此时显示公告
+        if (!Preference.getUserHasCard() && 1 == defaultGym && !Preference.getShowDefaultGymDialg() && !isChangeGym) {
+            setHomeMenuReadNotice();
         }
     }
 

@@ -450,5 +450,7 @@
     <string name="can_not_buy_card_prompt">您购卡健身房与当前健身房不同\n不能进行购卡/续卡/升级卡操作</string>
     <string name="no_find_data">暂无搜索结果</string>
     <string name="please_hand_change_gym">请手动切换场馆</string>
+    <string name="go_to_setting">去设置</string>
+    <string name="no_location_permission">您没有开启定位权限</string>
 
 </resources>

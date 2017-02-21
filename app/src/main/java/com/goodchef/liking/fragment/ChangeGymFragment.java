@@ -270,6 +270,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     private void jumpLikingHomeActivity(String gymId) {
         UMengCountUtil.UmengCount(getActivity(), UmengEventId.GYMCOURSESACTIVITY);
         LikingHomeActivity.gymId = gymId;
+        LikingHomeActivity.isChangeGym = true;
         postEvent(new ChangGymMessage(tabIndex));
         Intent intent = new Intent(getActivity(), LikingHomeActivity.class);
         intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);

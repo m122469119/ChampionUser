@@ -41,24 +41,31 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:lineSpacingMultiplier="1.2"
-                android:paddingTop="@dimen/spacing_12dp"
                 android:paddingBottom="@dimen/spacing_8dp"
-                android:textColor="@color/lesson_details_dark_back"
-                android:textSize="@dimen/textsize_15"/>
-
-
-            <TextView
-                android:id="@+id/notices_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_8dp"
-                android:layout_marginRight="@dimen/spacing_8dp"
-                android:paddingLeft="@dimen/spacing_12dp"
-                android:paddingRight="@dimen/spacing_12dp"
                 android:paddingTop="@dimen/spacing_12dp"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_15"/>
 
+
+            <ScrollView
+                android:id="@+id/dialog_default_ScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadingEdge="vertical"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/notices_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_8dp"
+                    android:layout_marginRight="@dimen/spacing_8dp"
+                    android:paddingLeft="@dimen/spacing_12dp"
+                    android:paddingRight="@dimen/spacing_12dp"
+                    android:paddingTop="@dimen/spacing_12dp"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_15"/>
+            </ScrollView>
         </LinearLayout>
 
         <LinearLayout

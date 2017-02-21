@@ -2,10 +2,12 @@ package com.goodchef.liking.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +23,7 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
@@ -45,7 +48,7 @@ import butterknife.OnClick;
  * Time: 下午6:07
  * version 1.0.0
  */
-public class ChangeCityActivity extends AppBarActivity implements ChangeCityView{
+public class ChangeCityActivity extends AppBarActivity implements ChangeCityView {
     private static final String TAG = "ChangeCityActivity";
 
     public static final String CITY_NAME = "city_name";
@@ -76,6 +79,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_city);
+        showHomeUpIcon(R.drawable.app_bar_left_quit);
         Intent intent = getIntent();
         defaultCityName = intent.getStringExtra(CITY_NAME);
         ButterKnife.bind(this);
@@ -96,7 +100,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
             public void onTextChanger(String text) {
                 if (!StringUtils.isEmpty(text) && text.length() > 0) {
                     mDeleteSearchImageView.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mDeleteSearchImageView.setVisibility(View.GONE);
                 }
                 LogUtils.e(TAG, "text= %s", text);
@@ -107,7 +111,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         mSearchCityEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     mSearchCancelTextView.setVisibility(View.VISIBLE);
                 } else {
                     mSearchCancelTextView.setVisibility(View.GONE);
@@ -127,11 +131,11 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     @OnClick({R.id.delete_search_ImageView,
             R.id.search_cancel_TextView,
             R.id.location_cityName_TextView})
-    public void onViewClick(View v){
+    public void onViewClick(View v) {
         switch (v.getId()) {
             case R.id.delete_search_ImageView:
                 String searchText = mSearchCityEditText.getText().toString().trim();
-                if (!StringUtils.isEmpty(searchText)){
+                if (!StringUtils.isEmpty(searchText)) {
                     mSearchCityEditText.setText("");
                 }
                 break;
@@ -141,41 +145,65 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 hideInput();
                 break;
             case R.id.location_cityName_TextView:
-               // checkLocationPermission();
-                mPresenter.onLocationTextClick();
+                if (showContacts()) {
+                    mPresenter.onLocationTextClick();
+                }
                 break;
         }
     }
 
-    private void checkLocationPermission(){
-        try {
-            int che=  checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                boolean shouldShow = shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION);
-//                if (!shouldShow){
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS},1000);
-//                }
-            }
-        }catch (Exception e){
 
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1000) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+    private boolean showContacts() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                boolean shouldShow = shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION);
+                if (!shouldShow) {
+                    showSetLocationPermission();
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
-                //permission denied
-                //TODO 显示对话框告知用户必须打开权限
+                return true;
             }
         }
+        return true;
     }
 
-    public void onEvent(ChangeCityActivityMessage message){
-        switch (message.what){
+    /**
+     * 展示没有
+     */
+    private void showSetLocationPermission() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        builder.setMessage(getString(R.string.no_location_permission));
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(getString(R.string.go_to_setting), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                jumpSettingLocationActivity();
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+
+    /**
+     * 跳转到设置界面
+     */
+    private void jumpSettingLocationActivity() {
+        Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+        startActivity(intent);
+    }
+
+
+    public void onEvent(ChangeCityActivityMessage message) {
+        switch (message.what) {
             case ChangeCityActivityMessage.CITY_ITEM_CLICK:
                 ChangeGymActivityMessage msg = ChangeGymActivityMessage
                         .obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);
@@ -187,9 +215,8 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     }
 
 
-
     @Override
-    public void showCityListWindow(final List<City.RegionsData.CitiesData> list){
+    public void showCityListWindow(final List<City.RegionsData.CitiesData> list) {
         if (mCityListWindow != null && mCityListWindow.isShowing()) {
             mChangeCityAdapter.setData(list);
             mChangeCityAdapter.notifyDataSetChanged();
@@ -224,7 +251,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         mChangeCityAdapter.notifyDataSetChanged();
 
         if (android.os.Build.VERSION.SDK_INT == 24) {
-            mCityListWindow.showAtLocation(mWindowView, Gravity.CENTER, 0 , DisplayUtils.dp2px(160));
+            mCityListWindow.showAtLocation(mWindowView, Gravity.CENTER, 0, DisplayUtils.dp2px(160));
         } else {
             mCityListWindow.showAsDropDown(mCityLayout);
         }
@@ -232,7 +259,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     }
 
     @Override
-    public void dismissWindow(){
+    public void dismissWindow() {
         if (mCityListWindow != null && mCityListWindow.isShowing())
             mCityListWindow.dismiss();
     }
@@ -266,7 +293,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     }
 
     @Override
-    public void setTitle(String text){
+    public void setTitle(String text) {
         super.setTitle(text);
     }
 
@@ -296,9 +323,9 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         super.onBackPressed();
     }
 
-    public void hideInput(){
-        InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm != null) {
+    public void hideInput() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
     }

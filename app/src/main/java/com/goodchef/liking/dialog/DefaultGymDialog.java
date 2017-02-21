@@ -5,9 +5,13 @@ import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 
@@ -28,6 +32,7 @@ public class DefaultGymDialog {
     private TextView mDefaultPromptTextView;
     private TextView mDefaultGymNameTextView;
     private TextView mNoticesTextView;
+    private ScrollView mNoticeScrollView;
 
     public static int noticeType = 0;//公告
     public static int defaultGymType = 1;//默认场馆
@@ -49,6 +54,7 @@ public class DefaultGymDialog {
         mDefaultPromptTextView = (TextView) window.findViewById(R.id.gym_default_prompt);
         mDefaultGymNameTextView = (TextView) window.findViewById(R.id.default_gym_name_TextView);
         mNoticesTextView = (TextView) window.findViewById(R.id.notices_TextView);
+        mNoticeScrollView = (ScrollView) window.findViewById(R.id.dialog_default_ScrollView);
         setBottomView();
     }
 
@@ -77,6 +83,20 @@ public class DefaultGymDialog {
         mDefaultGymNameTextView.setVisibility(View.GONE);
         if (!StringUtils.isEmpty(message)) {
             mNoticesTextView.setText(message);
+            mNoticesTextView.post(new Runnable() {
+                @Override
+                public void run() {
+                    int lineCount = mNoticesTextView.getLineCount();
+                    LogUtils.i("公告文字的行数：==", +lineCount + "  行");
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mNoticeScrollView.getLayoutParams();
+                    if (lineCount > 10) {
+                        layoutParams.height = 220;
+                    } else {
+                        layoutParams.height = layoutParams.WRAP_CONTENT;
+                    }
+                }
+            });
+
         }
     }
 
