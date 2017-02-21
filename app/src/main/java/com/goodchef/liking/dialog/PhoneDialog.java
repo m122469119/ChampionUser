@@ -103,5 +103,4 @@ public class PhoneDialog extends Dialog {
         float density = getContext().getResources().getDisplayMetrics().density;
         return (int) (dip * density + 0.5f * (dip >= 0 ? 1 : -1));
     }
-
 }

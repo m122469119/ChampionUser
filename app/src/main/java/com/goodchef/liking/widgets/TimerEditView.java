@@ -42,8 +42,8 @@ public class TimerEditView extends EditText {
     public TimerEditView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TimerEditView);
-        int integer = typedArray.getInteger(R.styleable.TimerEditView_delayedTime, DELAYED_TIME);
-        mTimer = integer * 1000;
+        float integer = typedArray.getFloat(R.styleable.TimerEditView_delayedTime, DELAYED_TIME);
+        mTimer = (long) (integer * 1000);
         typedArray.recycle();
         addTextChangedListener(mTextWatcher);
     }

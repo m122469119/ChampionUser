@@ -100,7 +100,6 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
             return true;
         }
 
-
         char[] charsA = A.toCharArray();
         char[] charsB = B.toCharArray();
 
@@ -178,6 +177,8 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
     public void onLocationTextClick() {
         String locationText = mView.getLocationCityNameTextViewText().toString();
         if (locationText.equals(mContext.getString(R.string.re_location))){
+            if (mAmapGDLocation != null)
+                mAmapGDLocation.destroy();
             startLocation();
         } else {
             ChangeGymActivityMessage msg = ChangeGymActivityMessage

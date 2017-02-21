@@ -63,7 +63,7 @@
     </declare-styleable>
     
     <declare-styleable name="TimerEditView">
-        <attr name="delayedTime" format="integer"/>
+        <attr name="delayedTime" format="float"/>
     </declare-styleable>
 
 </resources>

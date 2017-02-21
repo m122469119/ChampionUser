@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,7 +37,7 @@
                 android:textColorHint="@color/bg_hint_gray"
                 android:textCursorDrawable="@null"
                 android:textSize="14sp"
-                app:delayedTime="1"
+                app:delayedTime="0.5"
                 android:imeOptions="actionDone"
                 />
 
@@ -65,46 +65,59 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/window_city_layout"
+        android:layout_below="@id/search_city_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_12dp"
-        android:background="@drawable/shape_card_background"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/location_city_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:background="@drawable/shape_card_background"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_12dp"
+                android:text="@string/location_city"
+                android:textColor="@color/lesson_details_dark_back" />
+
+            <TextView
+                android:id="@+id/location_cityName_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_12dp"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:background="@drawable/shape_location_back"
+                android:paddingBottom="@dimen/spacing_12dp"
+                android:paddingLeft="@dimen/spacing_24dp"
+                android:paddingRight="@dimen/spacing_24dp"
+                android:paddingTop="@dimen/spacing_12dp"
+                android:textColor="@color/lesson_details_dark_back" />
+
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/open_city_txt"
+            android:layout_below="@id/location_city_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_12dp"
-            android:text="@string/location_city"
+            android:text="@string/start_business_city"
             android:textColor="@color/lesson_details_dark_back" />
 
-        <TextView
-            android:id="@+id/location_cityName_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_12dp"
-            android:layout_marginLeft="@dimen/spacing_12dp"
-            android:background="@drawable/shape_location_back"
-            android:paddingBottom="@dimen/spacing_12dp"
-            android:paddingLeft="@dimen/spacing_24dp"
-            android:paddingRight="@dimen/spacing_24dp"
-            android:paddingTop="@dimen/spacing_12dp"
-            android:textColor="@color/lesson_details_dark_back" />
+        <FrameLayout
+            android:layout_below="@id/open_city_txt"
+            android:id="@+id/change_city_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+    </RelativeLayout>
 
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_12dp"
-        android:text="@string/start_business_city"
-        android:textColor="@color/lesson_details_dark_back" />
-
-    <FrameLayout
-        android:id="@+id/change_city_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white" />
-</LinearLayout>
+</RelativeLayout>

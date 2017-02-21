@@ -59,7 +59,7 @@ public class AboutActivity extends AppBarActivity implements View.OnClickListene
         if (v == mCooperatePhoneTextView) {
             String phone = mCooperatePhoneTextView.getText().toString().trim();
             if (!StringUtils.isEmpty(phone)) {
-                LikingCallUtil.showCallDialog(AboutActivity.this, getString(R.string.confrim_call_business), phone);
+                LikingCallUtil.showPhoneDialog(AboutActivity.this);
             }
         }
     }

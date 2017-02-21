@@ -190,7 +190,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     public void onClick(View v) {
       if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
-                LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, getString(R.string.confrim_contact_teacher), mTeacherPhone);
+                LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
             }
         }
     }

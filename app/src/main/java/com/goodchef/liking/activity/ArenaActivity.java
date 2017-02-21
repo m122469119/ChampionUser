@@ -63,10 +63,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(ArenaActivity.this, getString(R.string.confrim_call_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(ArenaActivity.this);
             }
         });
     }

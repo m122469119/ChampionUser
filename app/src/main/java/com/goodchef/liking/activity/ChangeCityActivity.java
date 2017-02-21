@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
@@ -52,6 +54,9 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     TextView mSearchCancelTextView;
     @BindView(R.id.location_cityName_TextView)
     TextView mLocationCityNameTextView;
+
+    @BindView(R.id.window_city_layout)
+    View mWindowView;
 
     @BindView(R.id.search_city_layout)
     View mCityLayout;
@@ -132,11 +137,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
             case R.id.search_cancel_TextView:
                 mSearchCityEditText.setText("");
                 mSearchCityEditText.clearFocus();
-                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(imm != null) {
-                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
-                            0);
-                }
+                hideInput();
                 break;
             case R.id.location_cityName_TextView:
                 mPresenter.onLocationTextClick();
@@ -162,11 +163,12 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     @Override
     public void showCityListWindow(final List<City.RegionsData.CitiesData> list){
         if (mCityListWindow != null && mCityListWindow.isShowing()) {
+            mChangeCityAdapter.setData(list);
+            mChangeCityAdapter.notifyDataSetChanged();
+            mCityListWindow.update();
             return;
         } else if (mCityListWindow == null) {
             mCityListWindow = new CityListWindow(this);
-            mCityListWindow.setWidth(ViewPager.LayoutParams.MATCH_PARENT);
-            mCityListWindow.setHeight(ViewPager.LayoutParams.MATCH_PARENT);
             mCityListWindow.setAdapter(mChangeCityAdapter = new ChangeCityAdapter(this));
             mChangeCityAdapter.setOnItemClickListener(new ChangeCityAdapter.OnItemClickListener() {
                 @Override
@@ -182,7 +184,13 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         }
         mChangeCityAdapter.setData(list);
         mChangeCityAdapter.notifyDataSetChanged();
-        mCityListWindow.showAsDropDown(mCityLayout);
+
+        if (android.os.Build.VERSION.SDK_INT == 24) {
+            mCityListWindow.showAtLocation(mWindowView, Gravity.CENTER, 0 , DisplayUtils.dp2px(160));
+        } else {
+            mCityListWindow.showAsDropDown(mCityLayout);
+        }
+        mCityListWindow.update();
     }
 
     @Override
@@ -200,6 +208,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dismissWindow();
         mPresenter.onDestroy();
     }
 
@@ -241,10 +250,18 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
 
     @Override
     public void onBackPressed() {
+        hideInput();
         if (mSearchCityEditText.isFocused()) {
             mSearchCityEditText.clearFocus();
             return;
         }
         super.onBackPressed();
+    }
+
+    public void hideInput(){
+        InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 }

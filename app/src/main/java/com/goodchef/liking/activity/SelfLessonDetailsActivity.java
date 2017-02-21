@@ -56,10 +56,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(SelfLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(SelfLessonDetailsActivity.this);
             }
         });
     }
