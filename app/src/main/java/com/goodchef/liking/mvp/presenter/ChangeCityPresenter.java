@@ -115,7 +115,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
             if (!A.contains(s)){
                 return false;
             }
-            A = A.substring(A.indexOf(s), A.length());
+            A = A.substring(A.indexOf(s) + 1, A.length());
         }
         return true;
     }

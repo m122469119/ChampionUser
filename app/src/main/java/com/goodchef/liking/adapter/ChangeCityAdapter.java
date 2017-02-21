@@ -11,6 +11,8 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.data.City;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,14 +34,35 @@ public class ChangeCityAdapter extends BaseRecycleViewAdapter<ChangeCityAdapter.
         this.mContext = context;
     }
 
+    @Override
+    public void setData(List<City.RegionsData.CitiesData> list) {
+        super.setData(list);
+        if (mOnDataIsNullListener != null) {
+            if (list == null || list.size() == 0){
+                mOnDataIsNullListener.onDataIsNull(true);
+            } else {
+                mOnDataIsNullListener.onDataIsNull(false);
+            }
+        }
+    }
+
     private OnItemClickListener mOnItemClickListener;
+    private OnDataIsNullListener mOnDataIsNullListener;
 
     public interface OnItemClickListener{
         void onItemClick(View v, int pos);
     }
 
+    public interface OnDataIsNullListener{
+        void onDataIsNull(boolean isNull);
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setOnDataIsNullListener(OnDataIsNullListener mOnDataIsNullListener) {
+        this.mOnDataIsNullListener = mOnDataIsNullListener;
     }
 
     @Override

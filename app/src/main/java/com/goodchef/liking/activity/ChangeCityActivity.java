@@ -110,10 +110,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 }
             }
         });
-
         mSearchCityEditText.clearFocus();
-
-
     }
 
     private void setCouponsFragment() {
@@ -179,6 +176,16 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                     msg.msg1 = list.get(pos).getCityName();
                     postEvent(msg);
                     finish();
+                }
+            });
+            mChangeCityAdapter.setOnDataIsNullListener(new ChangeCityAdapter.OnDataIsNullListener() {
+                @Override
+                public void onDataIsNull(boolean isNull) {
+                    if (isNull) {
+                        mCityListWindow.showNoDataView();
+                    } else {
+                        mCityListWindow.showListView();
+                    }
                 }
             });
         }

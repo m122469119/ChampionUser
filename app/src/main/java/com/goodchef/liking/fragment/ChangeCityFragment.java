@@ -143,6 +143,7 @@ public class ChangeCityFragment extends BaseFragment {
         mChangeCityAdapter.setData(mBodyDatas);
 
         mHeaderAdapter.notifyDataSetChanged();
+        mSourceDatas.clear();
         mSourceDatas.addAll(mBodyDatas);
         //设置数据
         mChangeCityIndexBar.setmSourceDatas(mSourceDatas).invalidate();
