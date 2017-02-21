@@ -34,15 +34,23 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 说明:切换场馆
  * Author shaozucheng
  * Time:16/9/18 下午3:30
  */
 public class ChangeGymFragment extends BaseFragment implements CheckGymView, View.OnClickListener {
-    private LikingStateView mStateView;
-    private PullToRefreshRecyclerView mRecyclerView;
-    private TextView mMyTextView;
+    @BindView(R.id.my_gym)
+    TextView mMyTextView;
+    @BindView(R.id.change_gym_RecyclerView)
+    PullToRefreshRecyclerView mRecyclerView;
+    @BindView(R.id.change_gym_state_view)
+    LikingStateView mStateView;
+
+
     private View mNoCardHeadView;
 
     private ChangeGymAdapter mChangeGymAdapter;
@@ -69,18 +77,15 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_gym, container, false);
-        initView(view);
+        ButterKnife.bind(this, view);
+        initView();
         getInitData();
         setNetWorkView();
         setViewOnClickListener();
         return view;
     }
 
-    private void initView(View view) {
-        mStateView = (LikingStateView) view.findViewById(R.id.change_gym_state_view);
-        mRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.change_gym_RecyclerView);
-        mMyTextView = (TextView) view.findViewById(R.id.my_gym);
-
+    private void initView() {
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
