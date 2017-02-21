@@ -395,6 +395,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
+                if (!Preference.getShowDefaultGymDialg()) {
+                    showNoticeDialog();
+                }
             }
         });
 
@@ -640,7 +643,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             gymName = mNoticeGym.getName();
         }
         setHomeTitle();
-        setHomeMenuReadNotice();
+        if (!Preference.getShowDefaultGymDialg()) {
+            setHomeMenuReadNotice();
+        }
         showDefaultGymDialog();
     }
 
@@ -651,7 +656,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
         if (!Preference.getUserHasCard() && 1 == defaultGym && Preference.getShowDefaultGymDialg()) {
             if (!isWhetherLocation) {//定位失败
-                setDefaultGymDialog(getString(R.string.current_default_gym) + mGym.getName(), true);
+                setDefaultGymDialog(getString(R.string.current_default_gym) + mGym.getName() + "\n" + getString(R.string.please_hand_change_gym), true);
                 Preference.setShowDefaultGymDialg(false);
             } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
                 if (!CityUtils.isDredge(cityCode)) {
@@ -682,8 +687,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     mLikingDistanceTextView.setVisibility(View.VISIBLE);
                     mLikingDistanceTextView.setText(mGym.getDistance());
                     mLikingMiddleTitleTextView.setText(mGym.getName());
-                } else {
-                    mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
+                } else {//当一个（上海）地区所有的店铺关闭时，而它定位在某个地区（上海），后台返回的场馆数据为空
+                    mLikingMiddleTitleTextView.setText("");
                     mLikingDistanceTextView.setVisibility(View.GONE);
                 }
             } else {

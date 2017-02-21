@@ -1,8 +1,13 @@
 package com.goodchef.liking.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -10,7 +15,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -137,11 +141,38 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 hideInput();
                 break;
             case R.id.location_cityName_TextView:
+               // checkLocationPermission();
                 mPresenter.onLocationTextClick();
                 break;
         }
     }
 
+    private void checkLocationPermission(){
+        try {
+            int che=  checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                boolean shouldShow = shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION);
+//                if (!shouldShow){
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS},1000);
+//                }
+            }
+        }catch (Exception e){
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1000) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                //permission denied
+                //TODO 显示对话框告知用户必须打开权限
+            }
+        }
+    }
 
     public void onEvent(ChangeCityActivityMessage message){
         switch (message.what){
