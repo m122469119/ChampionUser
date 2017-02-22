@@ -234,8 +234,11 @@ public class LiKingVerifyUtils {
 
     public static List<City.RegionsData.CitiesData> getCitiesDataList() {
         List<City.RegionsData.CitiesData> citiesDatas = new ArrayList<>();
-
-        BaseConfigResult.BaseConfigData baseConfig = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
+        BaseConfigResult baseResult = LiKingVerifyUtils.sBaseConfigResult;
+        if (baseResult == null) {
+            return citiesDatas;
+        }
+        BaseConfigResult.BaseConfigData baseConfig = baseResult.getBaseConfigData();
         if (baseConfig == null) {
             return citiesDatas;
         }
@@ -249,10 +252,8 @@ public class LiKingVerifyUtils {
             cityBean.setCityId(cityList.get(i).getCityId() + "");
             citiesDatas.add(cityBean);
         }
-
         return citiesDatas;
     }
-
 
 
     /**
@@ -262,24 +263,28 @@ public class LiKingVerifyUtils {
         loadOpenCitysInfo(context, null);
     }
 
-    public static void loadOpenCitysInfo(final Context context, final List<String> openCities){
+    public static void loadOpenCitysInfo(final Context context, final List<String> openCities) {
         TaskScheduler.execute(new Runnable() {
             @Override
             public void run() {
                 ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
                 List<CityData> cityList = new ArrayList<>();
                 List<String> openCityCodes;
+                BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
+                if (baseConfigData == null) {
+                    return;
+                }
                 if (openCities == null) {
-                    openCityCodes = sBaseConfigResult.getBaseConfigData().getOpenCity();
+                    openCityCodes = baseConfigData.getOpenCity();
                 } else {
                     openCityCodes = openCities;
                 }
 
-                for (String cityCode: openCityCodes) {
+                for (String cityCode : openCityCodes) {
                     CityData cityData = null;
                     City.RegionsData.CitiesData crc = citiesMap.get(cityCode);
                     try {
-                        if(crc != null) {
+                        if (crc != null) {
                             //城市
                             cityData = new CityData();
                             cityData.setCityId(Integer.valueOf(crc.getCityId()));
@@ -289,8 +294,8 @@ public class LiKingVerifyUtils {
 
                             //地方
                             List<City.RegionsData.CitiesData.DistrictsData> districts = crc.getDistricts();
-                            if(districts != null) {
-                                for (City.RegionsData.CitiesData.DistrictsData district:districts) {
+                            if (districts != null) {
+                                for (City.RegionsData.CitiesData.DistrictsData district : districts) {
                                     CityData.DistrictData districtData = new CityData.DistrictData();
                                     districtData.setDistrictId(Integer.parseInt(district.getDistrictId()));
                                     districtData.setDistrictName(district.getDistrictName());
@@ -298,9 +303,10 @@ public class LiKingVerifyUtils {
                                 }
                             }
                         }
-                    }catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
-                    if(cityData !=null) {
+                    if (cityData != null) {
                         cityList.add(cityData);
                     }
                 }

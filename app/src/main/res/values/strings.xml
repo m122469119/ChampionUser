@@ -452,5 +452,6 @@
     <string name="please_hand_change_gym">请手动切换场馆</string>
     <string name="go_to_setting">去设置</string>
     <string name="no_location_permission">您没有开启定位权限</string>
+    <string name="the_same_city_gym">同城场馆</string>
 
 </resources>

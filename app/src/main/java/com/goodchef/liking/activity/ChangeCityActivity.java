@@ -1,10 +1,12 @@
 package com.goodchef.liking.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -25,6 +27,7 @@ import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
@@ -193,10 +196,12 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
 
 
     /**
-     * 跳转到设置界面
+     * 跳转到系统设置界面中的Liking APP中设置定位权限
      */
     private void jumpSettingLocationActivity() {
-        Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+        String packageName = EnvironmentUtils.Config.isDebugMode() ? "com.goodchef.liking.test" : "com.goodchef.liking";
+        Uri packageURI = Uri.parse("package:" + packageName);
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
         startActivity(intent);
         finish();
     }
