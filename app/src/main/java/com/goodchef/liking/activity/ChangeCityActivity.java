@@ -145,15 +145,14 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                 hideInput();
                 break;
             case R.id.location_cityName_TextView:
-                if (showContacts()) {
-                    mPresenter.onLocationTextClick();
-                }
+                mPresenter.onLocationTextClick();
                 break;
         }
     }
 
 
-    private boolean showContacts() {
+    @Override
+    public boolean showContacts() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 boolean shouldShow = shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -199,6 +198,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     private void jumpSettingLocationActivity() {
         Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
         startActivity(intent);
+        finish();
     }
 
 

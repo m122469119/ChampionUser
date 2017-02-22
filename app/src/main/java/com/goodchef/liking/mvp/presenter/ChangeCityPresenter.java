@@ -46,6 +46,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
     public String currentCityId;
     public String longitude;
     public String latitude;
+    private boolean isLocation = false;
 
 
     public ChangeCityPresenter(Context context, ChangeCityView mainView) {
@@ -138,6 +139,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                 @Override
                 public void receive(AMapLocation object) {
                     if (object != null && object.getErrorCode() == 0) {//定位成功
+                        isLocation = true;
                         currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
                         currentCityId = object.getCityCode();
                         longitude = CityUtils.getLongitude(mContext, object.getCityCode(), object.getLongitude());
@@ -148,7 +150,9 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                         mView.setLocationCityNameTextViewText(currentCityName);
                         mView.setTitle(currentCityName);
                         saveLocationInfo(cityId, districtId, longitude, latitude, currentCityName, true);
+
                     } else {//定位失败
+                        isLocation = false;
                         mView.setLocationCityNameTextViewText(mContext.getString(R.string.re_location));
                         mView.setTitle(mView.getDefaultCityName());
 
@@ -198,7 +202,13 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
         if (locationText.equals(mContext.getString(R.string.re_location))) {
             if (mAmapGDLocation != null)
                 mAmapGDLocation.destroy();
-            startLocation();
+
+            if (!isLocation){
+                if (mView.showContacts()) {
+                    startLocation();
+                }
+            }
+
         } else {
             ChangeGymActivityMessage msg = ChangeGymActivityMessage
                     .obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);

@@ -14,6 +14,8 @@ import java.util.List;
 
 public interface ChangeCityView extends BaseView{
 
+    boolean showContacts();
+
     void showCityListWindow(List<City.RegionsData.CitiesData> list);
 
     void dismissWindow();
