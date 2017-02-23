@@ -131,6 +131,8 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
      * 初始化定位
      */
     public void startLocation() {
+
+
         if (mAmapGDLocation != null && mAmapGDLocation.isStart())
             return;
         if (mAmapGDLocation == null) {
