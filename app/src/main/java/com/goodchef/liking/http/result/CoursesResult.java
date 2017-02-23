@@ -225,6 +225,10 @@ public class CoursesResult extends BaseResult {
             private int defaultGym;
             @SerializedName("tel")
             private String tel;
+            @SerializedName("biz_status")
+            private String bizStatus;
+            @SerializedName("biz_alert")
+            private String bizAlert;
 
             public String getName() {
                 return name;
@@ -312,6 +316,22 @@ public class CoursesResult extends BaseResult {
 
             public void setTel(String tel) {
                 this.tel = tel;
+            }
+
+            public String getBizStatus() {
+                return bizStatus;
+            }
+
+            public void setBizStatus(String bizStatus) {
+                this.bizStatus = bizStatus;
+            }
+
+            public String getBizAlert() {
+                return bizAlert;
+            }
+
+            public void setBizAlert(String bizAlert) {
+                this.bizAlert = bizAlert;
             }
         }
     }

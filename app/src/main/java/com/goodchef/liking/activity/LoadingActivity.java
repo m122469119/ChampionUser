@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
@@ -70,6 +71,10 @@ public class LoadingActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                int number = clearToken();
+                if (number < 0) {
+                    Preference.setToken("");
+                }
                 if (Preference.isNewVersion()) {
                     Preference.setIsUpdateApp(true);//设置可以弹出更新对话框
                     jumpToGuideActivity();
@@ -78,6 +83,33 @@ public class LoadingActivity extends BaseActivity {
                 }
             }
         }, DURATION);
+    }
+
+    /**
+     * 1、4.2之前的版本都要清空token，因为1.4.2之后的版本登录后的规则发生改变
+     * 如果是<0都要将前面的token清空
+     */
+    private int clearToken() {
+        String appVersion = Preference.getAppVersion();
+        String currentVersion = EnvironmentUtils.Config.getAppVersionName();
+        LogUtils.i(TAG, "lastappVersion== " + appVersion + "currentVersion == " + currentVersion);
+        if (!StringUtils.isEmpty(appVersion)) {
+            String lastversion[] = appVersion.split(".");
+            String currentversion[] = currentVersion.split(".");
+            int length = currentversion.length - lastversion.length;
+            if (length > 0) {
+                lastversion[currentversion.length - 1] = "0";
+            } else if (length < 0) {
+                currentversion[lastversion.length - 1] = "0";
+            }
+            for (int i = 0; i < currentversion.length; i++) {
+                int number = Integer.parseInt(lastversion[i]) - Integer.parseInt(currentversion[i]);
+                if (number != 0) {
+                    return number / Math.abs(number);
+                }
+            }
+        }
+        return 0;
     }
 
     private void jumpToGuideActivity() {

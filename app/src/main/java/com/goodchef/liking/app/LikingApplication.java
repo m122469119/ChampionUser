@@ -1,6 +1,5 @@
 package com.goodchef.liking.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.multidex.MultiDex;
@@ -25,16 +24,7 @@ public class LikingApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (Preference.isNewVersion()){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    MultiDex.install(LikingApplication.this);
-                }
-            }).start();
-        } else {
-            MultiDex.install(this);
-        }
+
     }
 
     @Override
@@ -42,6 +32,8 @@ public class LikingApplication extends BaseApplication {
         super.attachBaseContext(base);
         /**初始化Hotfix修复框架*/
         Nuwa.init(base);
+        /**解决65535方法问题*/
+        MultiDex.install(this);
     }
 
     @Override
@@ -74,18 +66,21 @@ public class LikingApplication extends BaseApplication {
         LogUtils.d(TAG, "onTerminate--" + this);
         super.onTerminate();
     }
+
     @Override
     public void onLowMemory() {
         // 低内存的时候执行
         LogUtils.d(TAG, "onLowMemory--" + this);
         super.onLowMemory();
     }
+
     @Override
     public void onTrimMemory(int level) {
         // 程序在内存清理的时候执行
         LogUtils.d(TAG, "onTrimMemory--" + this);
         super.onTrimMemory(level);
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         LogUtils.d(TAG, "onConfigurationChanged--" + this);

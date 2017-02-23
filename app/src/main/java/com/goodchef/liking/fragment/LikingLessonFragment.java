@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClic
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
@@ -81,9 +82,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private View mFooterView;
     private LinearLayout mPreSaleView;//有banner 没有课程数据
     private LinearLayout mNoContentData;
+    private ImageView mHeadNoDataImageView;//没有数据图片
+    private TextView mHeadNoDataTextViewPrompt;//没有数据提示
+    private TextView mHeadTelTextView;//休业中显示电话
     private TextView mBuyCardTextView;
     private List<CoursesResult.Courses.CoursesData> list;
     private String presale;
+    private String mNoBuinesses = "";
 
     @Override
     protected void requestData(int page) {
@@ -133,7 +138,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     Intent intent = new Intent(getActivity(), GroupLessonDetailsActivity.class);
                     intent.putExtra(KEY_SCHEDULE_ID, coursesData.getScheduleId());
                     intent.putExtra(KEY_INTENT_TYPE, "0");
-                    // intent.putExtra(KEY_GYM_ID, mGym.getGymId());
                     startActivity(intent);
                 } else if (type == TYPE_PRIVATE_LESSON) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.PRIVATELESSONDETAILSACTIVITY);
@@ -167,6 +171,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         mNoContentData = (LinearLayout) mHeadView.findViewById(R.id.layout_no_data);
         mBuyCardTextView = (TextView) mHeadView.findViewById(R.id.buy_card_TextView);
         mSelfCoursesInView = (LinearLayout) mHeadView.findViewById(R.id.layout_self_courses_view);
+        mHeadNoDataImageView = (ImageView) mHeadView.findViewById(R.id.home_no_data_imageView);
+        mHeadNoDataTextViewPrompt = (TextView) mHeadView.findViewById(R.id.home_no_data_prompt);
+        mHeadTelTextView = (TextView) mHeadView.findViewById(R.id.liking_home_tel);
         mSelfCoursesInView.setOnClickListener(goToSelfCoursesListener);
         mBuyCardTextView.setOnClickListener(buyCardOnClickListener);
         mLikingLessonRecyclerAdapter.addHeaderView(mHeadView);
@@ -239,7 +246,6 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
 
     /**
-     *
      * @param courses
      */
     @Override
@@ -249,8 +255,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             LikingHomeActivity.gymTel = mGym.getTel();
             LikingHomeActivity.gymId = mGym.getGymId();
             LikingHomeActivity.defaultGym = mGym.getDefaultGym();
-
-            presale = mGym.getPresale();
+            presale = mGym.getBizStatus();
+            mNoBuinesses = mGym.getBizAlert();
             if (1 == mGym.getCanSchedule()) {//支持自助团体课
                 mSelfCoursesInView.setVisibility(View.VISIBLE);
             } else {
@@ -274,7 +280,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     setNoDataView();
                 }
             } else {
-                setHeadPreSaleView(true, presale);
+                setHeadPreSaleView(false, presale);
                 if (ListUtils.isEmpty(list)) {
                     mLikingLessonRecyclerAdapter.addFooterView(mFooterView);
                 } else {
@@ -304,11 +310,29 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                     }
                     mNoContentData.setVisibility(View.GONE);
                 }
-            } else if (!StringUtils.isEmpty(presale) && "0".equals(presale)) {//没有预售
+            } else if (!StringUtils.isEmpty(presale) && "2".equals(presale)) {//营业中
                 if (mPreSaleView != null && mNoContentData != null) {
                     mPreSaleView.setVisibility(View.GONE);
                     if (isRequestHomePage()) {
                         mNoContentData.setVisibility(View.VISIBLE);
+                        mHeadNoDataImageView.setImageResource(R.drawable.icon_no_coureses_data);
+                        mHeadNoDataTextViewPrompt.setText(R.string.no_data);
+                        mHeadTelTextView.setVisibility(View.GONE);
+                    } else {
+                        mNoContentData.setVisibility(View.GONE);
+                    }
+                }
+            } else if (!StringUtils.isEmpty(presale) && "3".equals(presale)) {//休业中
+                if (mPreSaleView != null && mNoContentData != null) {
+                    mPreSaleView.setVisibility(View.GONE);
+                    if (isRequestHomePage()) {
+                        mNoContentData.setVisibility(View.VISIBLE);
+                        //这个图片要换掉
+                        mHeadNoDataImageView.setImageResource(R.drawable.icon_close);
+                        mHeadNoDataTextViewPrompt.setText(mNoBuinesses);
+                        mHeadTelTextView.setVisibility(View.VISIBLE);
+                        mHeadTelTextView.setText(LikingHomeActivity.gymTel);
+                        mHeadTelTextView.setOnClickListener(callListener);
                     } else {
                         mNoContentData.setVisibility(View.GONE);
                     }
@@ -322,6 +346,19 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         }
 
     }
+
+
+    /**
+     * 拨打健身房场馆电话
+     */
+    private View.OnClickListener callListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!StringUtils.isEmpty(LikingHomeActivity.gymTel)) {
+                PhoneUtils.phoneCall(getActivity(), LikingHomeActivity.gymTel);
+            }
+        }
+    };
 
 
     private void clearContent() {

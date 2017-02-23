@@ -201,8 +201,10 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         Preference.setUserPhone(NULL_STRING);
         Preference.setIsNewUser(null);
         Preference.setUserIconUrl(NULL_STRING);
-        Preference.setShowDefaultGymDialg(true);
+       // Preference.setShowDefaultGymDialg(true);
         Preference.setIsBind("0");
+        Preference.setLoginGymId("0");
+        LikingHomeActivity.shoDefaultDialog = false;////将弹出默认场馆的对话框按钮重置
         PopupUtils.showToast(getString(R.string.exit_login_success));
         postEvent(new LoginOutMessage());
         mLoginOutBtn.setVisibility(View.GONE);

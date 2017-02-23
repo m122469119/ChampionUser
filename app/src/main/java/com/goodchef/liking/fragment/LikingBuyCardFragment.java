@@ -1,6 +1,5 @@
 package com.goodchef.liking.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
@@ -21,7 +19,6 @@ import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
@@ -127,21 +124,17 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (compereGymId()) {
-                    CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
-                    if (card != null) {
-                        if (!StringUtils.isEmpty(mGymData.getGymId())) {
-                            UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
-                            Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
-                            intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
-                            intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
-                            intent.putExtra(KEY_BUY_TYPE, 1);
-                            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymData.getGymId());
-                            startActivity(intent);
-                        }
+                CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
+                if (card != null) {
+                    if (!StringUtils.isEmpty(mGymData.getGymId())) {
+                        UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
+                        Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
+                        intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
+                        intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
+                        intent.putExtra(KEY_BUY_TYPE, 1);
+                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymData.getGymId());
+                        startActivity(intent);
                     }
-                } else {
-                    showCanNotBuyCard();
                 }
             }
 
@@ -150,47 +143,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                 return false;
             }
         });
-    }
-
-    /**
-     * 比较全局的gymId和改用的gymId
-     *
-     * @return
-     */
-    private boolean compereGymId() {
-        if (Preference.isLogin()) {//如果登录了需要比较切换场馆的gymId
-            String loginGymId = Preference.getLoginGymId();
-            if (!Preference.getUserHasCard()) {//如果没有卡，可以买卡
-                return true;
-            } else if (!StringUtils.isEmpty(loginGymId) && loginGymId.equals(LikingHomeActivity.gymId)) {
-                //如果用户有卡，那么登录后的场馆id必须和全局的gymId一样才可以购买卡
-                return true;
-            } else {
-                return false;
-            }
-        } else {//如果没有登录可以进去查看购买卡的信息
-            return true;
-        }
-    }
-
-    /**
-     * 展示不能买卡的对话框
-     */
-    private void showCanNotBuyCard() {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_one_content, null, false);
-        TextView mTitleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
-        TextView mContentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
-        mTitleTextView.setText(R.string.notice_prompt);
-        mContentTextView.setText(R.string.can_not_buy_card_prompt);
-        builder.setCustomView(view);
-        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
     }
 
     private void setNoDataView() {

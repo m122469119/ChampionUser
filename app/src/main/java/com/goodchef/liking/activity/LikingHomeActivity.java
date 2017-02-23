@@ -1,18 +1,13 @@
 package com.goodchef.liking.activity;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -74,9 +69,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public static final int INTENT_REQUEST_CODE_SHOP_CART = 200;
     private static final int INTENT_REQUEST_CODE_DISHES_DETIALS = 201;
-    public static final String KEY_SELECT_CITY = "key_select_city";
     public static final String KEY_SELECT_CITY_ID = "key_select_city_id";
-    public static final String KEY_START_LOCATION = "key_start_location";
     public static final String KEY_TAB_INDEX = "key_tab_index";
     public static final String KEY_INTENT_TAB = "key_intent_tab";
     public static final String KEY_WHETHER_LOCATION = "key_whether_location";
@@ -112,6 +105,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private FileDownloaderManager mFileDownloaderManager;
     private String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
+    public static boolean shoDefaultDialog = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -414,7 +408,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
-                if (!Preference.getShowDefaultGymDialg()) {
+                if (!shoDefaultDialog) {
                     showNoticeDialog();
                 }
             }
@@ -666,7 +660,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             gymName = mNoticeGym.getName();
         }
         setHomeTitle();
-        if (!Preference.getShowDefaultGymDialg()) {
+        if (!shoDefaultDialog) {
             setHomeMenuReadNotice();
         }
         showDefaultGymDialog();
@@ -677,14 +671,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void showDefaultGymDialog() {
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
-        if (!Preference.getUserHasCard() && 1 == defaultGym && Preference.getShowDefaultGymDialg()) {
+        if (!Preference.getUserHasCard() && 1 == defaultGym && shoDefaultDialog) {
             if (!isWhetherLocation) {//定位失败
-                Preference.setShowDefaultGymDialg(false);
+                shoDefaultDialog =false;
                 setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
             } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
                 if (!CityUtils.isDredge(cityCode)) {
-                    Preference.setShowDefaultGymDialg(false);
-                    setDefaultGymDialog(getString(R.string.current_city_not_open_services) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
+                    shoDefaultDialog =false;
+                    setDefaultGymDialog(getString(R.string.current_default_gym_no_gym) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
                 }
             }
         }
@@ -698,7 +692,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void firstShowDefaultDialog() {
         //1无卡，2并且是默认场馆 ,3没有弹出过,4没有切换场馆，此时显示公告
-        if (!Preference.getUserHasCard() && 1 == defaultGym && !Preference.getShowDefaultGymDialg() && !isChangeGym) {
+        if (!Preference.getUserHasCard() && 1 == defaultGym && !shoDefaultDialog && !isChangeGym) {
             setHomeMenuReadNotice();
         }
     }
@@ -793,6 +787,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 firstTime = secondTime;//更新firstTime
                 return true;
             } else {
+                shoDefaultDialog =true;
                 BaseApplication.getInstance().exitApp();
             }
         }

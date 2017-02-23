@@ -326,24 +326,24 @@ public class Preference extends AbsPreference {
         }
     }
 
-    /**
-     * 设置是否弹出默认场馆对话框
-     *
-     * @param show
-     * @return
-     */
-    public static boolean setShowDefaultGymDialg(boolean show) {
-        return setObject(SHOW_DEFAULT_GYM_DIALOG, show);
-    }
-
-    /**
-     * 获取是否弹出默认对话框
-     *
-     * @return
-     */
-    public static boolean getShowDefaultGymDialg() {
-        return (boolean) getObject(SHOW_DEFAULT_GYM_DIALOG, true);
-    }
+//    /**
+//     * 设置是否弹出默认场馆对话框
+//     *
+//     * @param show
+//     * @return
+//     */
+//    public static boolean setShowDefaultGymDialg(boolean show) {
+//        return setObject(SHOW_DEFAULT_GYM_DIALOG, show);
+//    }
+//
+//    /**
+//     * 获取是否弹出默认对话框
+//     *
+//     * @return
+//     */
+//    public static boolean getShowDefaultGymDialg() {
+//        return (boolean) getObject(SHOW_DEFAULT_GYM_DIALOG, true);
+//    }
 
     /***
      * 设置定位信息
