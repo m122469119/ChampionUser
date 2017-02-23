@@ -275,7 +275,6 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
             @Override
             public void receive(AMapLocation object) {
-                LiKingVerifyUtils.initApi(ChangeGymActivity.this);
                 if (object != null && object.getErrorCode() == 0) {//定位成功
                     isLoaction = true;
                     currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
@@ -323,7 +322,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 mListView.addHeaderView(mCityHeadView);
             }
         }
-        if (!StringUtils.isEmpty(selectCityName)) {
+        if (!StringUtils.isEmpty(selectCityName)){
+
             compareCurrentCity(selectCityName);
         }
     }
@@ -359,12 +359,13 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
 
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) mLayoutCityFootView.getLayoutParams();
         if (blankHeight > 0 && blankHeight > footViewContentHeight) {
-            layoutParams.height = blankHeight;
-        } else {
-            layoutParams.height = layoutParams.WRAP_CONTENT;
+            if (blankHeight > 0) {
+                layoutParams.height = blankHeight;
+            } else {
+                layoutParams.height = layoutParams.WRAP_CONTENT;
+            }
+            mLayoutCityFootView.setLayoutParams(layoutParams);
         }
-        mLayoutCityFootView.setLayoutParams(layoutParams);
-
     }
 
 

@@ -83,6 +83,7 @@ public class ChangeCityFragment extends BaseFragment {
         mManager = new LinearLayoutManager(getActivity());
         Pinyin.init(Pinyin.newConfig().with(CnCityDict.getInstance(getActivity())));
         initView();
+        LogUtils.i(TAG,"changeCityFragennt onCreateView");
         return view;
     }
 
@@ -137,7 +138,9 @@ public class ChangeCityFragment extends BaseFragment {
     }
 
     private void initData() {
+        LogUtils.i(TAG,"initData");
         mBodyDatas = LiKingVerifyUtils.getCitiesDataList();
+        LogUtils.i(TAG,""+mBodyDatas+"");
         //先排序
         mChangeCityIndexBar.getDataHelper().sortSourceDatas(mBodyDatas);
         mChangeCityAdapter.setData(mBodyDatas);

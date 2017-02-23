@@ -135,13 +135,13 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
             return;
         if (mAmapGDLocation == null) {
             mAmapGDLocation = new AmapGDLocation(mContext);
+            LogUtils.i("cdust", "...new AmapGDLocation(mContext)....");
             mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
                 @Override
                 public void receive(AMapLocation object) {
                     if (object != null && object.getErrorCode() == 0) {//定位成功
                         isLocation = true;
                         currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                        currentCityId = object.getCityCode();
                         longitude = CityUtils.getLongitude(mContext, object.getCityCode(), object.getLongitude());
                         latitude = CityUtils.getLatitude(mContext, object.getCityCode(), object.getLatitude());
                         String cityId = CityUtils.getCityId(mContext, object.getCityCode());
@@ -150,7 +150,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
                         mView.setLocationCityNameTextViewText(currentCityName);
                         mView.setTitle(currentCityName);
                         saveLocationInfo(cityId, districtId, longitude, latitude, currentCityName, true);
-
+                        LogUtils.i("cdust", "....定位成功..." + currentCityName + cityId + districtId);
                     } else {//定位失败
                         isLocation = false;
                         mView.setLocationCityNameTextViewText(mContext.getString(R.string.re_location));
@@ -170,7 +170,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
 
                 @Override
                 public void end() {
-                    LogUtils.i("dust", "定位结束...");
+                    LogUtils.i("cdust", "定位结束...");
                 }
             });
         }
@@ -195,18 +195,25 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
         super.onDestroy();
         if (mAmapGDLocation != null)
             mAmapGDLocation.destroy();
+            mAmapGDLocation =null;
     }
 
     public void onLocationTextClick() {
         String locationText = mView.getLocationCityNameTextViewText().toString();
         if (locationText.equals(mContext.getString(R.string.re_location))) {
-            if (mAmapGDLocation != null)
+            if (mAmapGDLocation != null){
                 mAmapGDLocation.destroy();
+                mAmapGDLocation = null;
+            }
 
-            if (!isLocation){
-                if (mView.showContacts()) {
-                    startLocation();
-                }
+            if (!isLocation) {
+                LogUtils.i(TAG,"=----------startLocation-----");
+                startLocation();
+//                if (mView.showContacts()) {
+//                    startLocation();
+//                } else {
+//                    startLocation();
+//                }
             }
 
         } else {

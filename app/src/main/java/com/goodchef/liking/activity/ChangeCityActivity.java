@@ -93,6 +93,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     }
 
     private void loadData() {
+        LogUtils.i(TAG,"=-------loadData--------");
         mPresenter.startLocation();
         mPresenter.getCityList();
     }
@@ -127,7 +128,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     private void setCouponsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.change_city_fragment, ChangeCityFragment.newInstance());
+        fragmentTransaction.replace(R.id.change_city_fragment, ChangeCityFragment.newInstance());
         fragmentTransaction.commit();
     }
 
@@ -203,7 +204,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         Uri packageURI = Uri.parse("package:" + packageName);
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
         startActivity(intent);
-        finish();
+       // finish();
     }
 
 

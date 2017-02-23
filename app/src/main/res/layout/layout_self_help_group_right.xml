@@ -49,8 +49,8 @@
             android:id="@+id/layout_select_group_courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -101,8 +101,8 @@
                         android:id="@+id/self_group_courses_none_hint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:ellipsize="end"
+                        android:gravity="center"
                         android:lines="1"
                         android:padding="10dp"
                         android:text="@string/self_group_courses_none_hint"
@@ -158,8 +158,5 @@
                 android:layout_marginLeft="10dp"
                 android:background="@color/line"/>
         </LinearLayout>
-
-
-
     </LinearLayout>
 </ScrollView>

@@ -159,11 +159,11 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
      */
     private boolean compereGymId() {
         if (Preference.isLogin()) {//如果登录了需要比较切换场馆的gymId
-            if (Preference.isNewUser()) {
-                return true;
-            }
             String loginGymId = Preference.getLoginGymId();
-            if (!StringUtils.isEmpty(loginGymId) && loginGymId.equals(LikingHomeActivity.gymId)) {
+            if (!Preference.getUserHasCard()) {//如果没有卡，可以买卡
+                return true;
+            } else if (!StringUtils.isEmpty(loginGymId) && loginGymId.equals(LikingHomeActivity.gymId)) {
+                //如果用户有卡，那么登录后的场馆id必须和全局的gymId一样才可以购买卡
                 return true;
             } else {
                 return false;
@@ -171,7 +171,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         } else {//如果没有登录可以进去查看购买卡的信息
             return true;
         }
-
     }
 
     /**

@@ -98,7 +98,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private String currentCityName = "";
     public boolean isWhetherLocation = false;
-    public static String gymId = "0";
+    public static String gymId;
     public static String gymName = "";
     private String mUserCityId;
     public static String gymTel = "";
@@ -117,12 +117,25 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liking_home);
+        initGymId();
         setTitle(R.string.activity_liking_home);
         RightMenuDialog = new HomeRightDialog(this);
         initViews();
         sendUpdateAppRequest();
         setViewOnClickListener();
         initData();
+    }
+
+    /**
+     * 初始化gymId
+     */
+    private void initGymId() {
+        String id = Preference.getLoginGymId();
+        if (!"0".equals(id)) {
+            gymId = id;
+        } else {
+            gymId = "0";
+        }
     }
 
 
@@ -421,7 +434,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 跳转门店
      */
     private void jumpArenaActivity() {
-        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId())) {
+        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getName())) {
             UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
             Intent intent = new Intent(this, ArenaActivity.class);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
@@ -513,6 +526,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 切换场馆
      */
     private void changeGym(int index) {
+        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+            PopupUtils.showToast(getString(R.string.network_no_connection));
+            return;
+        }
         if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId())) {
             if (StringUtils.isEmpty(currentCityName)) {
                 UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, "定位失败");
@@ -663,11 +680,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (!Preference.getUserHasCard() && 1 == defaultGym && Preference.getShowDefaultGymDialg()) {
             if (!isWhetherLocation) {//定位失败
                 Preference.setShowDefaultGymDialg(false);
-                setDefaultGymDialog(getString(R.string.current_default_gym) + mGym.getName() + "\n" + getString(R.string.please_hand_change_gym), true);
+                setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
             } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
                 if (!CityUtils.isDredge(cityCode)) {
                     Preference.setShowDefaultGymDialg(false);
-                    setDefaultGymDialog(getString(R.string.current_city_not_open_services), false);
+                    setDefaultGymDialog(getString(R.string.current_city_not_open_services) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
                 }
             }
         }

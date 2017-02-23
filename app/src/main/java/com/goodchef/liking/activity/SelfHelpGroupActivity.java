@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
@@ -23,10 +24,8 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
-import com.aaron.android.framework.utils.ViewUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
-import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
@@ -49,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明:自助团体课
  * Author: shaozucheng
  * Time: 下午4:05
  */

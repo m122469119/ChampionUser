@@ -234,7 +234,7 @@ public class LiKingVerifyUtils {
 
     public static List<City.RegionsData.CitiesData> getCitiesDataList() {
         List<City.RegionsData.CitiesData> citiesDatas = new ArrayList<>();
-        BaseConfigResult baseResult = LiKingVerifyUtils.sBaseConfigResult;
+        BaseConfigResult baseResult = Preference.getBaseConfig();
         if (baseResult == null) {
             return citiesDatas;
         }
