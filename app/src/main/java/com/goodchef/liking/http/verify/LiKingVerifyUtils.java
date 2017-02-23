@@ -42,20 +42,14 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.CityUtils;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 

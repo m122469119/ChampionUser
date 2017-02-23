@@ -12,6 +12,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+        multiDexEnabled true
     }
     signingConfigs {
         myConfig {
@@ -93,4 +94,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.2' // 适用于Android的中国地区词典
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.android.support:multidex:1.0.1'
 }
