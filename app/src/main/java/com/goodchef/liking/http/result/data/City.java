@@ -27,7 +27,7 @@ public class City extends BaseData{
         this.regions = regions;
     }
 
-    public static class RegionsData  extends BaseData{
+    public static class RegionsData  extends BaseData {
         /**
          * province_id : 110000
          * province_name : 北京
