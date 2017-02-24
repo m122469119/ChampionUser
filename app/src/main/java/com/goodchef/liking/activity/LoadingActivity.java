@@ -22,6 +22,8 @@ import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.PatchDowner;
 
+import java.util.ArrayList;
+
 import cn.jiajixin.nuwa.Nuwa;
 
 /**
@@ -91,19 +93,31 @@ public class LoadingActivity extends BaseActivity {
      */
     private int clearToken() {
         String appVersion = Preference.getAppVersion();
-        String currentVersion = EnvironmentUtils.Config.getAppVersionName();
+        String currentVersion = "1.4.2";
         LogUtils.i(TAG, "lastappVersion== " + appVersion + "currentVersion == " + currentVersion);
         if (!StringUtils.isEmpty(appVersion)) {
-            String lastversion[] = appVersion.split(".");
-            String currentversion[] = currentVersion.split(".");
-            int length = currentversion.length - lastversion.length;
-            if (length > 0) {
-                lastversion[currentversion.length - 1] = "0";
-            } else if (length < 0) {
-                currentversion[lastversion.length - 1] = "0";
+            String lastversion[] = appVersion.split("\\.");
+            String currentversion[] = currentVersion.split("\\.");
+
+            //将数组转为list集合
+            ArrayList<String> lastVersionList = new ArrayList<>();
+            for(int i=0 ;i<lastversion.length;i++){
+                lastVersionList.add(lastversion[i]);
             }
-            for (int i = 0; i < currentversion.length; i++) {
-                int number = Integer.parseInt(lastversion[i]) - Integer.parseInt(currentversion[i]);
+
+            ArrayList<String> currentVersionList = new ArrayList<>();
+            for(int i=0;i<currentversion.length;i++){
+                currentVersionList.add(currentversion[i]);
+            }
+
+            int length = currentVersionList.size() - lastVersionList.size();
+            if (length > 0) {
+                lastVersionList.add("0");
+            } else if (length < 0) {
+                currentVersionList.add("0");
+            }
+            for (int i = 0; i < currentVersionList.size(); i++) {
+                int number = Integer.parseInt(lastVersionList.get(i)) - Integer.parseInt(currentVersionList.get(i));
                 if (number != 0) {
                     return number / Math.abs(number);
                 }

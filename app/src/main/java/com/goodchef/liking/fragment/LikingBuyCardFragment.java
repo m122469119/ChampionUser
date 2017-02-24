@@ -240,10 +240,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     public void onEvent(MainAddressChanged mainAddressChanged) {
-//        String cityName = mainAddressChanged.getCityName();
-//        if (!StringUtils.isEmpty(cityName)) {
-//            setHeadNoLocationView(cityName);
-//        }
         latitude = mainAddressChanged.getLatitude() + "";
         longitude = mainAddressChanged.getLongitude() + "";
         cityId = mainAddressChanged.getCityId();
@@ -264,7 +260,6 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     public void onEvent(BuyCardListMessage message) {
         sendBuyCardListRequest();
     }
-
 
     public void onEvent(ChangGymMessage message) {
         sendBuyCardListRequest();
