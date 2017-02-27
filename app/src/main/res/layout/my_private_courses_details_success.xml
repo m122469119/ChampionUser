@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="联系教练"
+            android:text="@string/contact_teacher"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_15"/>
     </LinearLayout>
@@ -75,7 +75,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="剩余上课次数"
+                            android:text="@string/last_residue_time_prompt"
                             android:textColor="@color/lesson_details_gray_back"
                             android:textSize="13sp"/>
 
@@ -100,7 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="购买次数"
+                            android:text="@string/buy_times"
                             android:textColor="@color/lesson_details_gray_back"
                             android:textSize="13sp"/>
 
@@ -135,7 +135,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="上课次数"
+                            android:text="@string/on_courses_times"
                             android:textColor="@color/lesson_details_gray_back"
                             android:textSize="13sp"/>
 
@@ -160,7 +160,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="消课次数"
+                            android:text="@string/cancel_courses_times"
                             android:textColor="@color/lesson_details_gray_back"
                             android:textSize="13sp"/>
 
@@ -185,7 +185,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="失约次数"
+                            android:text="@string/break_a_promise_times"
                             android:textColor="@color/lesson_details_gray_back"
                             android:textSize="13sp"/>
 
@@ -292,7 +292,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="有效期："
+                                android:text="@string/the_period_of_validity"
                                 android:textColor="@color/lesson_details_gray_back"
                                 android:textSize="13sp"/>
 
@@ -325,7 +325,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="订单号"
+                        android:text="@string/order_number_prompt"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -355,7 +355,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="下单时间"
+                        android:text="@string/order_time"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -388,7 +388,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="上课人数"
+                        android:text="@string/attend_class_number"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -418,7 +418,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="上课时长"
+                        android:text="@string/courses_long_date"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -448,7 +448,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="价格"
+                        android:text="@string/prices"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -478,7 +478,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="优惠"
+                        android:text="@string/favorable"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -508,7 +508,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="实际支付"
+                        android:text="@string/actual_payment"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="13sp"/>
 
@@ -535,7 +535,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="支付方式"
+                    android:text="@string/details_pay_type"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="13sp"/>
 

@@ -115,9 +115,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         mCoursesDetailsPresenter.getMyPrivateCoursesDetails(orderId);
     }
 
-    private void sendCompleteRequest() {
-        mCoursesDetailsPresenter.completeMyPrivateCourses(orderId);
-    }
 
     @Override
     public void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData data) {

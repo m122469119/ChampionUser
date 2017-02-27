@@ -74,7 +74,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"
                     android:gravity="left"
-                    android:text="出生年月："
+                    android:text="@string/birthday_number"
                     android:textColor="@color/user_name_text"
                     android:textSize="@dimen/textsize_15"/>
 
@@ -107,7 +107,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"
                     android:gravity="left"
-                    android:text="身高："
+                    android:text="@string/height_sy"
                     android:textColor="@color/user_name_text"
                     android:textSize="@dimen/textsize_15"/>
 
@@ -139,7 +139,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"
                     android:gravity="left"
-                    android:text="体重："
+                    android:text="@string/height_sys"
                     android:textColor="@color/user_name_text"
                     android:textSize="@dimen/textsize_15"/>
 

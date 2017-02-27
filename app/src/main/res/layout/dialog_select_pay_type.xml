@@ -16,7 +16,7 @@
             android:padding="10dp"
             android:textSize="15sp"
             android:textColor="@color/bg_dark_gray_text"
-            android:text="请选择支付方式"/>
+            android:text="@string/please_select_pay_type"/>
         <include
             android:id="@+id/alipay_pay_layout"
             layout="@layout/layout_select_pay_type_item"/>

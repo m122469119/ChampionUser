@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:gravity="center"
-                android:text="你的邀请码"/>
+                android:text="@string/invitation_code"/>
 
             <TextView
                 android:id="@+id/invite_code"
@@ -80,7 +80,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/shape_radius_green_btn_background"
             android:gravity="center"
-            android:text="邀请好友"
+            android:text="@string/invite_friend"
             android:textColor="@color/white"/>
 
         <TextView
@@ -90,7 +90,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/shape_radius_back_btn_background"
             android:gravity="center"
-            android:text="填写邀请码"
+            android:text="@string/input_invitation_code"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </LinearLayout>

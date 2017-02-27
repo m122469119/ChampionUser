@@ -127,8 +127,8 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
         mBirthdayTextView.setText(mBirthdayStr);
-        mHeightTextView.setText(height + " cm");
-        mWeightTextView.setText(weight + " kg");
+        mHeightTextView.setText(height + getString(R.string.cm));
+        mWeightTextView.setText(weight + getString(R.string.kg));
 
         Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
         sendImageFile(mBitmap);

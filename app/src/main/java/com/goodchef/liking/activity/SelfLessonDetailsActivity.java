@@ -90,7 +90,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         }
         String duration = null;
         try {
-            duration = Integer.parseInt(coursesData.getVideoDuration()) / 60 + "min";
+            duration = Integer.parseInt(coursesData.getVideoDuration()) / 60 + getString(R.string.min);
         }catch (Exception e){
             duration = "";
         }

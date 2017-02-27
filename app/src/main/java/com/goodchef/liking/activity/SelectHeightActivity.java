@@ -118,7 +118,7 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
             @Override
             public void onScaleChanged(int scale) {
                 height = scale;
-                mHeightTextView.setText(height + " cm");
+                mHeightTextView.setText(height + getString(R.string.cm));
             }
         });
     }
