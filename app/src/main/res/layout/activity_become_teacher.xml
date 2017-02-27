@@ -63,7 +63,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_four_card_background"
             android:drawableRight="@drawable/icon_triangle"
-            android:hint="请选择城市"
+            android:hint="@string/select_city"
             android:paddingBottom="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

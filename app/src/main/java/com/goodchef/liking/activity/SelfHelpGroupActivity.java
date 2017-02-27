@@ -571,7 +571,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         mCoursesIntroduceTextView.setText(mCoursesData.getDesc());
         String duration = "";
         try{
-            duration = Integer.parseInt(mCoursesData.getVideoDuration()) / 60 + "min";
+            duration = Integer.parseInt(mCoursesData.getVideoDuration()) / 60 + getString(R.string.min);
         }catch (Exception e){}
         mCoursesDurationTextView.setText(getString(R.string.self_courses_time) + duration);
         mGroupCoursesStrongTextView.setText(getString(R.string.courses_strength) + mCoursesData.getIntensity());

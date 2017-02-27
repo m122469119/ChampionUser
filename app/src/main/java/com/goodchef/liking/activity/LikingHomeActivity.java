@@ -380,7 +380,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
             } else if (tag.equals(TAG_MAIN_TAB)) {
-                setHomeMenuReadNotice();
                 showRightMenuDialog();
             }
         } else if (v == mMiddleLayout) {
@@ -409,7 +408,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
                 if (!shoDefaultDialog) {
-                    showNoticeDialog();
+                    setHomeMenuReadNotice();
                 }
             }
         });
@@ -660,10 +659,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             gymName = mNoticeGym.getName();
         }
         setHomeTitle();
-        if (!shoDefaultDialog) {
+        showDefaultGymDialog();
+        if (shoDefaultDialog) {
             setHomeMenuReadNotice();
         }
-        showDefaultGymDialog();
     }
 
     /**
@@ -673,11 +672,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
         if (!Preference.getUserHasCard() && 1 == defaultGym && shoDefaultDialog) {
             if (!isWhetherLocation) {//定位失败
-                shoDefaultDialog =false;
+                shoDefaultDialog = false;
                 setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
             } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
                 if (!CityUtils.isDredge(cityCode)) {
-                    shoDefaultDialog =false;
+                    shoDefaultDialog = false;
                     setDefaultGymDialog(getString(R.string.current_default_gym_no_gym) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
                 }
             }
@@ -787,7 +786,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 firstTime = secondTime;//更新firstTime
                 return true;
             } else {
-                shoDefaultDialog =true;
+                shoDefaultDialog = true;
                 BaseApplication.getInstance().exitApp();
             }
         }

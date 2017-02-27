@@ -24,7 +24,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="更多城市开放中..."
+            android:text="@string/more_city_is_open"
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="10sp"/>
     </LinearLayout>

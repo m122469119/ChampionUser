@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
-            android:text="拍照"
+            android:text="@string/take_a_picture"
             android:textColor="@color/bg_dark_gray_text"
             android:textSize="16sp"/>
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
-            android:text="从相册中选择"
+            android:text="@string/picture_from_album"
             android:textColor="@color/bg_dark_gray_text"
             android:textSize="16sp"/>
 
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:text="取消"
+        android:text="@string/cancel"
         android:textColor="@color/bg_camera_text"
         android:textSize="16sp"/>
 

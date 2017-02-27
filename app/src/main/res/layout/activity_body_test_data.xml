@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="体测数据"
+                android:text="@string/title_body_test"
                 android:textColor="@color/add_minus_dishes_text"
                 android:textSize="16sp"/>
         </RelativeLayout>

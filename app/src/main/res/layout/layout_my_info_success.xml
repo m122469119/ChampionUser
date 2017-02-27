@@ -33,7 +33,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
             android:gravity="right"
-            android:text="修改头像"/>
+            android:text="@string/change_head_image"/>
 
         <ImageView
             android:layout_width="8dp"
@@ -67,7 +67,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="昵称"
+                android:text="@string/user_name"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -81,7 +81,7 @@
                 android:background="@color/transparent"
                 android:gravity="right"
                 android:textCursorDrawable="@null"
-                android:hint="请输入昵称"
+                android:hint="@string/input_user_name"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/lesson_details_dark_back"
@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="性别"/>
+                android:text="@string/sex"/>
 
             <TextView
                 android:id="@+id/select_sex"
@@ -118,7 +118,7 @@
                 android:layout_marginRight="20dp"
                 android:gravity="right"
                 android:padding="10dp"
-                android:text="选择性别"/>
+                android:text="@string/activity_title_sex"/>
 
             <ImageView
                 android:layout_width="8dp"
@@ -150,7 +150,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="出生日期"/>
+                android:text="@string/user_birthday"/>
 
             <TextView
                 android:id="@+id/select_birthday"
@@ -161,7 +161,7 @@
                 android:layout_marginRight="20dp"
                 android:gravity="right"
                 android:padding="10dp"
-                android:text="选择出生日期"/>
+                android:text="@string/activity_title_select_birthday"/>
 
             <ImageView
                 android:layout_width="8dp"
@@ -195,7 +195,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="身高"
+                android:text="@string/height"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -208,7 +208,7 @@
                 android:layout_toRightOf="@+id/user_height"
                 android:background="@color/transparent"
                 android:gravity="right"
-                android:hint="请输入身高"
+                android:hint="@string/input_height"
                 android:inputType="number"
                 android:textCursorDrawable="@null"
                 android:padding="10dp"
@@ -245,7 +245,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="体重"
+                android:text="@string/user_weight"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -258,7 +258,7 @@
                 android:layout_toRightOf="@+id/user_weight"
                 android:background="@color/transparent"
                 android:gravity="right"
-                android:hint="请输入体重"
+                android:hint="@string/input_weight"
                 android:inputType="numberDecimal"
                 android:textCursorDrawable="@null"
                 android:padding="10dp"
@@ -280,7 +280,7 @@
         android:id="@+id/finish_btn"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:text="完成"
+        android:text="@string/finish"
         android:textSize="@dimen/textsize_15"
         android:gravity="center"
         android:layout_marginLeft="15dp"

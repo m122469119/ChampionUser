@@ -11,7 +11,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:layout_marginBottom="10dp"
-        android:text="分享到"
+        android:text="@string/share_arrive"
         android:textColor="@color/white"
         android:textSize="16sp"/>
 
@@ -49,7 +49,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:layout_marginRight="10dp"
-                android:text="微信好友"
+                android:text="@string/weixin_friend"
                 android:textColor="@color/white"
                 android:textSize="13sp"/>
         </LinearLayout>
@@ -76,7 +76,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
-                android:text="朋友圈"
+                android:text="@string/circle_of_friends"
                 android:textColor="@color/white"
                 android:textSize="13sp"/>
         </LinearLayout>
