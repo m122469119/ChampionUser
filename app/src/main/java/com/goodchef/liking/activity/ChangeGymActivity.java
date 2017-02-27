@@ -83,7 +83,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX, 0);
 
-        mTitleTextView.setText(R.string.the_same_city_gym);
+        mRightTitleTextView.setText(R.string.title_change_gym);
         setGymFragment();
         setCityListData();
     }
@@ -111,7 +111,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 if (cityDataList != null && cityDataList.size() > 0) {
                     for (CityData cityData : cityDataList) {
                         if (String.valueOf(cityData.getCityId()).equals(cityId)) {
-                            mRightTitleTextView.setText(cityData.getCityName());
+                            mTitleTextView.setText(cityData.getCityName());
                             break;
                         }
                     }
@@ -135,7 +135,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
      */
     private void jumpToChangeCityActivity() {
         Intent intent = new Intent(this, ChangeCityActivity.class);
-        intent.putExtra(ChangeCityActivity.CITY_NAME, mRightTitleTextView.getText());
+        intent.putExtra(ChangeCityActivity.CITY_NAME, mTitleTextView.getText());
         startActivity(intent);
     }
 
@@ -221,7 +221,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
             case ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT:
                 selectCityName = message.msg1;
                 currentCityName = message.msg1;
-                mRightTitleTextView.setText(selectCityName);
+                mTitleTextView.setText(selectCityName);
                 postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
                 UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
                 break;

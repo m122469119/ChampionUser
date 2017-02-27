@@ -1,6 +1,7 @@
 package com.goodchef.liking.dialog;
 
 import android.content.Context;
+import android.os.Message;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +34,7 @@ public class DefaultGymDialog {
     private TextView mDefaultGymNameTextView;
     private TextView mNoticesTextView;
     private ScrollView mNoticeScrollView;
+    private TextView mNoticeTitle;
 
     public static int noticeType = 0;//公告
     public static int defaultGymType = 1;//默认场馆
@@ -55,6 +57,7 @@ public class DefaultGymDialog {
         mDefaultGymNameTextView = (TextView) window.findViewById(R.id.default_gym_name_TextView);
         mNoticesTextView = (TextView) window.findViewById(R.id.notices_TextView);
         mNoticeScrollView = (ScrollView) window.findViewById(R.id.dialog_default_ScrollView);
+        mNoticeTitle = (TextView) window.findViewById(R.id.notice_title);
         setBottomView();
     }
 
@@ -79,8 +82,26 @@ public class DefaultGymDialog {
      * @param message
      */
     public void setNoticesMessage(String message) {
+        setNoticesMessage("", message);
+    }
+
+
+    /**
+     * 设置公告消息
+     *
+     * @param message
+     */
+    public void setNoticesMessage(String title, String message) {
         mDefaultPromptTextView.setVisibility(View.GONE);
         mDefaultGymNameTextView.setVisibility(View.GONE);
+
+        if (!StringUtils.isEmpty(message)) {
+            mNoticeTitle.setVisibility(View.VISIBLE);
+            mNoticeTitle.setText(title);
+        } else {
+            mNoticeTitle.setVisibility(View.GONE);
+        }
+
         if (!StringUtils.isEmpty(message)) {
             mNoticesTextView.setText(message);
             mNoticesTextView.post(new Runnable() {
@@ -99,6 +120,7 @@ public class DefaultGymDialog {
 
         }
     }
+
 
 
     /**

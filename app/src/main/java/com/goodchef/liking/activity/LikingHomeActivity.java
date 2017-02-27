@@ -477,7 +477,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
         if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
             if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-                defaultGymDialog.setNoticesMessage(mNoticeGym.getAnnouncementInfo());
+                defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
             } else {
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
@@ -485,7 +485,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-            defaultGymDialog.setNoticesMessage(mNoticeGym.getAnnouncementInfo());
+            defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
             Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
