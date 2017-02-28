@@ -2,7 +2,7 @@ package com.goodchef.liking.http.result.data;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * 说明:
@@ -10,13 +10,13 @@ import java.util.List;
  * Time:16/9/5 下午3:06
  */
 public class Announcement extends BaseData{
-    private List<String> mList;
+    private Set<String> mList;
 
-    public List<String> getList() {
+    public Set<String> getList() {
         return mList;
     }
 
-    public void setList(List<String> list) {
+    public void setList(Set<String> list) {
         mList = list;
     }
 }

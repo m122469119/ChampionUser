@@ -36,6 +36,7 @@ import com.goodchef.liking.dialog.DefaultGymDialog;
 import com.goodchef.liking.dialog.HomeRightDialog;
 import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
+import com.goodchef.liking.eventmessages.LikingHomeActivityMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
@@ -49,16 +50,25 @@ import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.http.result.data.NoticeData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
+import com.goodchef.liking.mvp.presenter.LikingHomePresenter;
 import com.goodchef.liking.mvp.view.CheckUpdateAppView;
+import com.goodchef.liking.mvp.view.LikingHomeView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.FileDownloaderManager;
 import com.goodchef.liking.utils.UMengCountUtil;
 
-public class LikingHomeActivity extends BaseActivity implements View.OnClickListener, LikingNearbyAdapter.ShoppingDishChangedListener, CheckUpdateAppView {
+import java.util.Iterator;
+import java.util.Set;
+
+public class LikingHomeActivity extends BaseActivity implements View.OnClickListener,
+        LikingNearbyAdapter.ShoppingDishChangedListener,
+        CheckUpdateAppView,
+        LikingHomeView {
 
     public static final String TAG_MAIN_TAB = "lesson";
     public static final String TAG_NEARBY_TAB = "nearby";
@@ -101,16 +111,19 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
     private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
+    private LikingHomePresenter mPresenter;
     private CheckUpdateAppResult.UpDateAppData mUpDateAppData;
     private FileDownloaderManager mFileDownloaderManager;
     private String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
     public static boolean shoDefaultDialog = true;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liking_home);
+        mPresenter = new LikingHomePresenter(this, this);
         initGymId();
         setTitle(R.string.activity_liking_home);
         RightMenuDialog = new HomeRightDialog(this);
@@ -119,6 +132,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         setViewOnClickListener();
         initData();
     }
+
+
 
     /**
      * 初始化gymId
@@ -146,6 +161,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         firstShowDefaultDialog();
+        mPresenter.showPushDialog();
     }
 
     private void initData() {
@@ -468,7 +484,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     /**
      * 查看公告
      */
-    private void showNoticeDialog() {
+    private DefaultGymDialog showNoticeDialog() {
         UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
         DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
         defaultGymDialog.setCancelable(true);
@@ -497,9 +513,47 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 dialog.dismiss();
             }
         });
-
-
+        return defaultGymDialog;
     }
+
+    @Override
+    public void showNoticesDialog(final Set<NoticeData> noticeDatas) {
+        Iterator<NoticeData> iterator = noticeDatas.iterator();
+        NoticeData next = null;
+        if (iterator.hasNext()) {
+            next = iterator.next();
+            noticeDatas.remove(next);
+        } else {
+            return;
+        }
+
+        UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
+        defaultGymDialog.setCancelable(true);
+        defaultGymDialog.setCanceledOnTouchOutside(true);
+
+        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
+            if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+                defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
+            } else {
+                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+            }
+            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+        } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+            defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
+            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+        } else {
+            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+        }
+        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+            @Override
+            public void onConfirmClickListener(AppCompatDialog dialog) {
+                dialog.dismiss();
+                showNoticesDialog(noticeDatas);
+            }
+        });
+    }
+
 
     /**
      * 开门
@@ -791,6 +845,14 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void onEvent(LikingHomeActivityMessage message){
+        switch (message.what) {
+            case LikingHomeActivityMessage.SHOW_PUSH_DIALOG:
+                mPresenter.showPushDialog();
+                break;
+        }
     }
 
 }

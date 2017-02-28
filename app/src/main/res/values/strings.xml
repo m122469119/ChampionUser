@@ -580,5 +580,6 @@
     <string name="body_quality_score">身体质量指数</string>
     <string name="fat_chinese_name">体脂百分比</string>
     <string name="whr_chinese_name">腰臀百分比</string>
+    <string name="change_city">切换城市</string>
 
 </resources>

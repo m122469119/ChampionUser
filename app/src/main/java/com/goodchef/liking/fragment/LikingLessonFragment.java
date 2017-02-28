@@ -28,6 +28,7 @@ import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
+import com.goodchef.liking.eventmessages.LikingHomeActivityMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
@@ -38,6 +39,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
@@ -395,6 +397,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         } else {
             mHeadInfiteLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Preference.isHomeAnnouncement())
+            postEvent(LikingHomeActivityMessage.obtain(LikingHomeActivityMessage.SHOW_PUSH_DIALOG));
     }
 
     @Override

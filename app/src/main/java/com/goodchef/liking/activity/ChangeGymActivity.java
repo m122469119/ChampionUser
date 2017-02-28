@@ -83,7 +83,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX, 0);
 
-        mRightTitleTextView.setText(R.string.title_change_gym);
+        mRightTitleTextView.setText(R.string.change_city);
         setGymFragment();
         setCityListData();
     }
