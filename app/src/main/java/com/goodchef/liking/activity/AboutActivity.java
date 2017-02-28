@@ -1,68 +1,62 @@
 package com.goodchef.liking.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.mvp.AboutContract;
 import com.goodchef.liking.utils.LikingCallUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/5/26 下午2:02
  */
-public class AboutActivity extends AppBarActivity implements View.OnClickListener {
-    private TextView mVersionNumberTextView;//版本号
-    private TextView mWeChatPublicTextView;
-    private TextView mCooperatePhoneTextView;
+public class AboutActivity extends AppBarActivity implements AboutContract.AboutView {
+    @BindView(R.id.version_number)
+    TextView mVersionNumberTextView;
+    @BindView(R.id.WeChat_public_account)
+    TextView mWeChatPublicAccountTextView;
+    @BindView(R.id.cooperate_phone)
+    TextView mCooperatePhoneTextView;
 
-
+    private AboutContract.AboutPresenter mPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.title_activity_about));
-        initView();
-        initData();
-    }
-
-    private void initView() {
-        mVersionNumberTextView = (TextView) findViewById(R.id.version_number);
-        mWeChatPublicTextView = (TextView) findViewById(R.id.WeChat_public_account);
-        mCooperatePhoneTextView = (TextView) findViewById(R.id.cooperate_phone);
-        mCooperatePhoneTextView.setOnClickListener(this);
-    }
-
-    private void initData() {
-        mVersionNumberTextView.setText(getString(R.string.about_version) + EnvironmentUtils.Config.getAppVersionName());
-        String phone = Preference.getBusinessServicePhone();
-        if (!StringUtils.isEmpty(phone)) {
-            mCooperatePhoneTextView.setText(phone);
-        }
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-        if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-            if (baseConfigData != null) {
-                mWeChatPublicTextView.setText(baseConfigData.getWechat().trim());
-            }
-        }
+        mPresenter = new AboutContract.AboutPresenter(this, this);
+        mPresenter.init();
     }
 
     @Override
-    public void onClick(View v) {
-        if (v == mCooperatePhoneTextView) {
-            String phone = mCooperatePhoneTextView.getText().toString().trim();
-            if (!StringUtils.isEmpty(phone)) {
-                LikingCallUtil.showCallDialog(AboutActivity.this, getString(R.string.confrim_call_business), phone);
-            }
-        }
+    public void updateVersionText(String version) {
+        mVersionNumberTextView.setText(version);
     }
 
+    @Override
+    public void updateCooperatePhoneText(String cooperatePhone) {
+        mCooperatePhoneTextView.setText(cooperatePhone);
+    }
 
+    @Override
+    public void updateWeChatPublicAccountText(String weChatPublicAccount) {
+        mWeChatPublicAccountTextView.setText(weChatPublicAccount);
+    }
+
+    @OnClick(R.id.cooperate_phone)
+    public void onClick() {
+        String phone = mCooperatePhoneTextView.getText().toString().trim();
+        if (!StringUtils.isEmpty(phone)) {
+            LikingCallUtil.showCallDialog(AboutActivity.this, getString(R.string.confrim_call_business), phone);
+        }
+    }
 }

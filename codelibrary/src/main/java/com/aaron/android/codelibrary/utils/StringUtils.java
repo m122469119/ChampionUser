@@ -107,6 +107,18 @@ public class StringUtils {
     }
 
     /**
+     * 检查字符串是否为空，如果为空，抛出NullPointer异常
+     * @param string
+     * @return
+     */
+    public static String checkNotNull(String string) {
+        if (string == null || string.trim().length() == 0) {
+            throw new NullPointerException();
+        }
+        return string;
+    }
+
+    /**
      * 传入的字符串是否相等
      *
      * @param a a字符串

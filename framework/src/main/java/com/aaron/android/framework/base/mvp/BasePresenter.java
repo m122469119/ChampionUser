@@ -17,6 +17,9 @@ public abstract class BasePresenter<T extends BaseView> {
     protected T mView;
     protected final String TAG = getClass().getSimpleName();
 
+    public void init() {
+
+    }
     public BasePresenter(Context context, T mainView) {
         mContext = context;
         mView = mainView;
