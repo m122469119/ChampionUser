@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,14 +33,8 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_name);
         initView();
-        showHomeUpIcon(R.drawable.app_bar_left_quit);
+        showHomeUpIcon(0);
         setTitle(getString(R.string.activity_title_writename));
-        showRightMenu(getString(R.string.skip), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         initData();
         setViewOnRetryRequestListener();
     }
@@ -80,7 +75,6 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
                 PopupUtils.showToast(getString(R.string.name_limit));
                 return;
             }
-
             Intent intent = new Intent(this, UserHeadImageActivity.class);
             intent.putExtra(KEY_USER_NAME, nameStr);
             startActivity(intent);
@@ -95,4 +89,15 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
     public void onEvent(UpDateUserInfoMessage message) {
         this.finish();
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            PopupUtils.showToast(getString(R.string.write_name_key_down_prompt));
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

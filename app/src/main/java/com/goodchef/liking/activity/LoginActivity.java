@@ -1,6 +1,5 @@
 package com.goodchef.liking.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -29,6 +28,7 @@ import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.NumberConstantUtil;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -175,20 +175,27 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             String gymId = userLoginData.getGymId();
             Preference.setLoginGymId(gymId);
             LikingHomeActivity.shoDefaultDialog = true;//将弹出默认场馆的对话框按钮重置
-           // Preference.setShowDefaultGymDialg(true);
-            if (!StringUtils.isEmpty(gymId) && !"0".equals(gymId)){//登录成功,gymId !=0 表示该用户有卡，此时将全局的gymId 换掉
+            if (!StringUtils.isEmpty(gymId) && !"0".equals(gymId)) {//登录成功,gymId !=0 表示该用户有卡，此时将全局的gymId 换掉
                 LikingHomeActivity.gymId = userLoginData.getGymId();
             }
             postEvent(new LoginFinishMessage());
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
             LogUtils.i("newUser", newUser + "");
-            if (newUser == 1) {
-                Intent intent = new Intent(this, WriteNameActivity.class);
-                startActivity(intent);
-            }
+            jumpWriteNameActivity(newUser);
             this.finish();
 
+        }
+    }
+
+    /**
+     * 新用户跳转到填写名称界面
+     *
+     * @param newUser
+     */
+    private void jumpWriteNameActivity(int newUser) {
+        if (newUser == NumberConstantUtil.ONE) {
+            startActivity(WriteNameActivity.class);
         }
     }
 

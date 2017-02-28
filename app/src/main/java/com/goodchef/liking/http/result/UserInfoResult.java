@@ -36,6 +36,10 @@ public class UserInfoResult extends BaseResult {
         private double weight;
         @SerializedName("gender")
         private int gender;
+        @SerializedName("is_update_birthday")
+        private int isUpdateBirthday;
+        @SerializedName("is_update_gender")
+        private int isUpdateGender;
 
         public String getAvatar() {
             return avatar;
@@ -83,6 +87,22 @@ public class UserInfoResult extends BaseResult {
 
         public void setGender(int gender) {
             this.gender = gender;
+        }
+
+        public int getIsUpdateBirthday() {
+            return isUpdateBirthday;
+        }
+
+        public void setIsUpdateBirthday(int isUpdateBirthday) {
+            this.isUpdateBirthday = isUpdateBirthday;
+        }
+
+        public int getIsUpdateGender() {
+            return isUpdateGender;
+        }
+
+        public void setIsUpdateGender(int isUpdateGender) {
+            this.isUpdateGender = isUpdateGender;
         }
     }
 }
