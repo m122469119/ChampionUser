@@ -161,7 +161,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         firstShowDefaultDialog();
-        mPresenter.showPushDialog();
+        if (fragmentTabHost.getTop() == 0)
+            mPresenter.showPushDialog();
     }
 
     private void initData() {
