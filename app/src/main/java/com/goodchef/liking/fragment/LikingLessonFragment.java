@@ -22,6 +22,7 @@ import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
 import com.goodchef.liking.activity.SelfHelpGroupActivity;
+import com.goodchef.liking.activity.WriteNameActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
 import com.goodchef.liking.eventmessages.BuyCardMessage;
@@ -41,6 +42,7 @@ import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -211,9 +213,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         }
     };
 
+    /**
+     * 跳转到自助团体课
+     */
     private View.OnClickListener goToSelfCoursesListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
             startActivity(SelfHelpGroupActivity.class);
         }
     };
@@ -253,6 +259,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         if (courses.getGym() != null) {
+            CoursesResult.Courses.UserInfo userInfo = courses.getUserInfo();
+            UserIsComplete(userInfo);
             mGym = courses.getGym();
             LikingHomeActivity.gymTel = mGym.getTel();
             LikingHomeActivity.gymId = mGym.getGymId();
@@ -292,6 +300,21 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                 mLikingLessonRecyclerAdapter.notifyDataSetChanged();
             }
 
+        }
+    }
+
+    /**
+     * 设置是否完成注册信息
+     * 如果没有完成，跳转到填写个人信息界面
+     * @param userInfo
+     */
+    private void UserIsComplete(CoursesResult.Courses.UserInfo userInfo) {
+        if (userInfo !=null){
+            int userIsComplete = userInfo.getUser_info_complete();
+            LogUtils.i(TAG,"userIsComplete ==  "+userIsComplete+"");
+            if (userIsComplete == NumberConstantUtil.ONE) {//用户注册信息没有提交完成
+                startActivity(WriteNameActivity.class);
+            }
         }
     }
 

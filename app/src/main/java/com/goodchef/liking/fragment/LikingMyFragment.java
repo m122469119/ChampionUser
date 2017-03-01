@@ -420,7 +420,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, getString(R.string.change_person_info));
-                intent.putExtra(LoginActivity.KEY_INTENT_TYPE, 2);
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
@@ -456,14 +455,15 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mContactJoinLayout) {//联系加盟
-            Intent intent = new Intent(getActivity(), ContactJonInActivity.class);
-            startActivity(intent);
+            UMengCountUtil.UmengCount(getActivity(), UmengEventId.CONTACTJONINACTIVITY);
+            startActivity(ContactJonInActivity.class);
         } else if (v == mBecomeTeacherLayout) {//成为教练
-            Intent intent = new Intent(getActivity(), BecomeTeacherActivity.class);
-            startActivity(intent);
+            UMengCountUtil.UmengCount(getActivity(), UmengEventId.BECOMETEACHERACTIVITY);
+            startActivity(BecomeTeacherActivity.class);
         } else if (v == mMoreLayout) {//更多
             startActivity(MoreActivity.class);
         }  else if (v == mSelfHelpGroupLayout) {//自助团体课
+            UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
             startActivity(SelfHelpGroupActivity.class);
         } else if (v == mBodyScoreLayout) {//体测数据
             if (Preference.isLogin()) {
@@ -476,6 +476,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mEverydaySportLayout) {//手环数据
             if (Preference.isLogin()) {
                 if (Preference.isBind()) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.EVERYDAYSPORTACTIVITY);
                     Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
@@ -502,6 +503,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
             if (Preference.isBind()) {//绑定过手环
                 if (initBlueTooth()) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYBRACELETACTIVITY);
                     Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
@@ -513,6 +515,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                     startActivity(intent);
                 }
             } else {//没有绑过
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.BINGBRACELETACTIVITY);
                 Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
                 if (!StringUtils.isEmpty(mBraceletMac)) {
                     intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
@@ -548,6 +551,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 跳转到体测评分界面
      */
     private void jumpBodyTestActivity() {
+        UMengCountUtil.UmengCount(getActivity(), UmengEventId.BODYTESTDATAACTIVITY);
         Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
         intent.putExtra(BodyTestDataActivity.BODY_ID, "");
         intent.putExtra(BodyTestDataActivity.SOURCE, "other");
