@@ -1,20 +1,24 @@
 package com.goodchef.liking.jpush;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageItemInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.http.result.data.AnnouncementDirect;
+import com.goodchef.liking.http.result.data.NoticeData;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
@@ -43,13 +47,14 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String DIRECT_TYPE_OUTER = "outer";
 
 
-
     public static final String DIRECT_UPDATE = "update";
     public static final String FOOD = "food";
     public static final String TEAM = "team";
     public static final String CARD = "card";
     public static final String DIRECT_TYPE_HTML5 = "h5";
-    public static final String DIRECT_ANNOUNCEMENT= "announcement";
+    public static final String DIRECT_ANNOUNCEMENT = "announcement";
+
+    public static final int ANNOUNCEMENT_NITICE_ID = 0x00000001;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -133,7 +138,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         toMyOrderList(context);
                     } else if (TEAM.equals(direct)) { //跳转到课程列表
                         toMyGroupCoursesList(context);
-                    } else if(CARD.equals(direct)) { //点击跳转至我的会员卡
+                    } else if (CARD.equals(direct)) { //点击跳转至我的会员卡
                         toMyCardVipInfo(context);
                     } else if (DIRECT_ANNOUNCEMENT.equals(direct)) {
                         String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
@@ -172,8 +177,6 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     }
 
 
-
-
     private void toMyGroupCoursesList(Context context) {
         LogUtils.d(TAG, "toGroupCourses");
         Intent intent = new Intent(context, MyLessonActivity.class);
@@ -188,7 +191,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         context.startActivity(intent);
     }
 
-    private void toMyCardVipInfo(Context context){
+    private void toMyCardVipInfo(Context context) {
         LogUtils.d(TAG, "MyCardActivity");
         Intent intent = new Intent(context, MyCardActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -204,10 +207,19 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         announcement.getData().setGymContent(alert);
         Preference.setHomeAnnouncementId(announcement.getData());
         if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
+            NoticeData data = announcement.getData();
+            Intent resultIntent = new Intent(context, LikingHomeActivity.class);
+            PendingIntent pendingIntent = PendingIntent.
+                    getBroadcast(context, 0,resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            showNotification(context, ANNOUNCEMENT_NITICE_ID, data.getGymName(), data.getGymContent(), pendingIntent);
+        } else if (AppStatusUtils.getTopActivityClass(context) == LikingHomeActivity.class) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_NOTICE);
             context.startActivity(intent);
         }
+
+
     }
 
 
@@ -267,4 +279,15 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 //            context.sendBroadcast(msgIntent);
 //        }
     }
+
+    private void showNotification(Context context, int id, String title, String content, PendingIntent intent) {
+        Notification.Builder builder = new Notification.Builder(context)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setContentIntent(intent);
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(id, builder.build());
+    }
+
 }

@@ -17,6 +17,15 @@ import static android.content.Context.ACTIVITY_SERVICE;
  */
 
 public class AppStatusUtils {
+
+
+    public static Class getTopActivityClass(Context ctx){
+        ActivityManager am = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        return am.getRunningTasks(2).get(0).topActivity.getClass();
+    }
+
+
+
     /**
      * 判断app是否正在运行
      * @param ctx
@@ -27,12 +36,9 @@ public class AppStatusUtils {
     {
         ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
-        if(runningAppProcesses!=null)
-        {
+        if(runningAppProcesses != null) {
             for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : runningAppProcesses) {
-
-                if(runningAppProcessInfo.processName.startsWith(packageName))
-                {
+                if(runningAppProcessInfo.processName.startsWith(packageName)) {
                     return true;
                 }
             }
