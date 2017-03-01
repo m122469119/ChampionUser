@@ -148,19 +148,11 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    public static final String ACTION = "action";
-    public static final int SHOW_NOTICE = 0x00001111;
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int action = intent.getIntExtra(ACTION, 0);
-        if (action == SHOW_NOTICE && fragmentTabHost.getTop() == 0) {
-            mPresenter.showPushDialog();
-        } else {
-            int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
-            fragmentTabHost.setCurrentTab(tag);
-        }
+        int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
+        fragmentTabHost.setCurrentTab(tag);
     }
 
     @Override

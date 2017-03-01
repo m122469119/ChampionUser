@@ -208,26 +208,10 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         announcement.getData().setGymContent(alert);
         Preference.setHomeAnnouncementId(announcement.getData());
         if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
-            NoticeData data = announcement.getData();
-            Intent resultIntent = new Intent(context, LikingHomeActivity.class);
-            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(LikingHomeActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            showNotification(context, ANNOUNCEMENT_NITICE_ID, data.getGymName(), data.getGymContent(), resultPendingIntent);
-        } else if (AppStatusUtils.getTopActivityClass(context) == LikingHomeActivity.class) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_NOTICE);
             context.startActivity(intent);
         }
-
-
     }
 
 
@@ -287,15 +271,4 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 //            context.sendBroadcast(msgIntent);
 //        }
     }
-
-    private void showNotification(Context context, int id, String title, String content, PendingIntent intent) {
-        Notification.Builder builder = new Notification.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setContentIntent(intent);
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(id, builder.build());
-    }
-
 }
