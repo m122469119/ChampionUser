@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
@@ -209,9 +210,16 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
             NoticeData data = announcement.getData();
             Intent resultIntent = new Intent(context, LikingHomeActivity.class);
-            PendingIntent pendingIntent = PendingIntent.
-                    getBroadcast(context, 0,resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification(context, ANNOUNCEMENT_NITICE_ID, data.getGymName(), data.getGymContent(), pendingIntent);
+            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(LikingHomeActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            showNotification(context, ANNOUNCEMENT_NITICE_ID, data.getGymName(), data.getGymContent(), resultPendingIntent);
         } else if (AppStatusUtils.getTopActivityClass(context) == LikingHomeActivity.class) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
