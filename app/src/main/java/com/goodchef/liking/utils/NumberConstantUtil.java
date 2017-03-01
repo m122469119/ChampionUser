@@ -30,6 +30,9 @@ public class NumberConstantUtil {
     public static final int NINETY = 90;
     public static final int ONE_HUNDRED = 100;
 
+    public static final String STR_ZERO = "0";
+    public static final String STR_ONE = "1";
+
 
 
 }

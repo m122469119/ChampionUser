@@ -183,8 +183,7 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
             int newUser = userLoginData.getNewUser();
             LogUtils.i("newUser", newUser + "");
             jumpWriteNameActivity(newUser);
-            this.finish();
-
+            finish();
         }
     }
 
