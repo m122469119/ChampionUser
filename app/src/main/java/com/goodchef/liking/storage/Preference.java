@@ -408,6 +408,11 @@ public class Preference extends AbsPreference {
         }
     }
 
+    public static void clearAnnouncementId() {
+        String announcement = new Gson().toJson(new Announcement());
+        setObject(ANNOUNCEMENT_ID, announcement);
+    }
+
     public static boolean clearHomeAnnouncement(){
         Gson gson = new Gson();
         String s = gson.toJson(new HomeAnnouncement());

@@ -2,6 +2,8 @@ package com.goodchef.liking.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class AppStatusUtils {
      * @param packageName
      * @return
      */
-    public boolean appIsRunning(Context ctx, String packageName)
+    public static boolean appIsRunning(Context ctx, String packageName)
     {
         ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
@@ -43,7 +45,7 @@ public class AppStatusUtils {
      * @param packageName
      * @return
      */
-    public boolean appIsBackgroundRunning(Context ctx,String packageName)
+    public static boolean appIsBackgroundRunning(Context ctx,String packageName)
     {
         ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
@@ -60,5 +62,16 @@ public class AppStatusUtils {
         }
 
         return false;
+    }
+
+    public static String getAppPackageName(Context ctx) {
+        try {
+            PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+            return packageInfo.packageName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }

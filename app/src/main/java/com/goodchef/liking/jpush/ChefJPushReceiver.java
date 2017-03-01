@@ -3,16 +3,21 @@ package com.goodchef.liking.jpush;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageItemInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
+import com.goodchef.liking.http.result.data.AnnouncementDirect;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.AppStatusUtils;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +42,14 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String DIRECT_TYPE_NATIVE = "native";
     public static final String DIRECT_TYPE_OUTER = "outer";
 
+
+
     public static final String DIRECT_UPDATE = "update";
     public static final String FOOD = "food";
     public static final String TEAM = "team";
     public static final String CARD = "card";
     public static final String DIRECT_TYPE_HTML5 = "h5";
+    public static final String DIRECT_ANNOUNCEMENT= "announcement";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -127,6 +135,9 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         toMyGroupCoursesList(context);
                     } else if(CARD.equals(direct)) { //点击跳转至我的会员卡
                         toMyCardVipInfo(context);
+                    } else if (DIRECT_ANNOUNCEMENT.equals(direct)) {
+                        String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
+                        toNoticeInfo(alert, extras, context);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
@@ -161,6 +172,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     }
 
 
+
+
     private void toMyGroupCoursesList(Context context) {
         LogUtils.d(TAG, "toGroupCourses");
         Intent intent = new Intent(context, MyLessonActivity.class);
@@ -181,6 +194,22 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
+
+    private void toNoticeInfo(String alert, String extras, Context context) {
+        Gson gson = new Gson();
+        AnnouncementDirect announcement = gson.fromJson(extras, AnnouncementDirect.class);
+        if (announcement == null || announcement.getData() == null) {
+            return;
+        }
+        announcement.getData().setGymContent(alert);
+        Preference.setHomeAnnouncementId(announcement.getData());
+        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
+            Intent intent = new Intent(context, LikingHomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
+        }
+    }
+
 
     // 打印所有的 intent extra 数据
     private static String printBundle(Bundle bundle) {

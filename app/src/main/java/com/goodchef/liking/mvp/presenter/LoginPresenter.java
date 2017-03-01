@@ -52,6 +52,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateLoginView(result.getUserLoginData());
+                    Preference.clearAnnouncementId();
+                    Preference.clearHomeAnnouncement();
                 }else {
                     PopupUtils.showToast(result.getMessage());
                 }

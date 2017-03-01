@@ -527,22 +527,21 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         } else {
             return;
         }
-
         UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
         DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
         defaultGymDialog.setCancelable(true);
         defaultGymDialog.setCanceledOnTouchOutside(true);
 
-        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
-            if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-                defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
+        if (!StringUtils.isEmpty(next.getGym_id())) {
+            if (!StringUtils.isEmpty(next.getGymContent())) {
+                defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
             } else {
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
-            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-        } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-            defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
-            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+            Preference.setAnnouncementId(next.getGym_id());
+        } else if (!StringUtils.isEmpty(next.getGymContent())) {
+            defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
+            Preference.setAnnouncementId(next.getGym_id());
         } else {
             defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
         }
@@ -714,8 +713,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             gymName = mNoticeGym.getName();
         }
         setHomeTitle();
-        showDefaultGymDialog();
-        if (shoDefaultDialog) {
+        if (showDefaultGymDialog()) {
             setHomeMenuReadNotice();
         }
     }
@@ -723,7 +721,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     /**
      * 弹出默认场馆的对话框
      */
-    private void showDefaultGymDialog() {
+    private boolean showDefaultGymDialog() {
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
         if (!Preference.getUserHasCard() && 1 == defaultGym && shoDefaultDialog) {
             if (!isWhetherLocation) {//定位失败
@@ -735,7 +733,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setDefaultGymDialog(getString(R.string.current_default_gym_no_gym) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
                 }
             }
+            return false;
         }
+        return true;
     }
 
 

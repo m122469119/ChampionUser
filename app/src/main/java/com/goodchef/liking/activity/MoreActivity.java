@@ -47,6 +47,8 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
     @BindView(R.id.check_update_prompt_TextView)
     TextView mCheckUpdatePromptTextView;
 
+    LoginPresenter mPresenter;
+
     private LinearLayout mAboutUsLayout;//关于我们
 
     public static final String NULL_STRING = "";
@@ -59,6 +61,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more);
         ButterKnife.bind(this);
+        mPresenter = new LoginPresenter(this, this);
         setTitle(getString(R.string.title_activity_more));
         initView();
         initViewIconAndText();
@@ -156,6 +159,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
     /**
      * 退出登录dialog
+     * TODO 清除默认的公告剔除列表
      */
     private void showExitDialog() {
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
@@ -180,8 +184,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
      * 退出登录发送请求
      */
     private void exitLoginRequest() {
-        LoginPresenter loginPresenter = new LoginPresenter(this, this);
-        loginPresenter.userLoginOut();
+        mPresenter.userLoginOut();
     }
 
     @Override
