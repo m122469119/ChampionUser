@@ -464,10 +464,10 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     private void UserChangeInfoPromptTextView() {
         if (isUpdateGender == NumberConstantUtil.ONE && isUpdateBirthday == NumberConstantUtil.ONE) {//性别和生日都能改
             mUserInfoPromptTextView.setVisibility(View.VISIBLE);
-            mUserInfoPromptTextView.setText(getString(R.string.sex) + "、" + getString(R.string.birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
+            mUserInfoPromptTextView.setText(getString(R.string.sex) + "、" + getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
         } else if (isUpdateGender == NumberConstantUtil.ZERO && isUpdateBirthday == NumberConstantUtil.ONE) {//性别不能改，生日可以改
             mUserInfoPromptTextView.setVisibility(View.VISIBLE);
-            mUserInfoPromptTextView.setText(getString(R.string.birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
+            mUserInfoPromptTextView.setText(getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
         } else if (isUpdateGender == NumberConstantUtil.ONE && isUpdateBirthday == NumberConstantUtil.ZERO) {//性别可以改，生日不能改
             mUserInfoPromptTextView.setVisibility(View.VISIBLE);
             mUserInfoPromptTextView.setText(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));

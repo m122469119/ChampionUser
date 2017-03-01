@@ -160,7 +160,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        firstShowDefaultDialog();
         if (fragmentTabHost.getTop() == 0)
             mPresenter.showPushDialog();
     }
@@ -697,7 +696,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public void onEvent(getGymDataMessage message) {
         mGym = message.getGym();
         setHomeTitle();
-        setHomeMenuReadNotice();
+        setHomeMenuReadNotice();//切换场馆有公告就弹出公告
     }
 
     /**
@@ -739,17 +738,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    /**
-     * 首次进来，显示公告逻辑
-     * 需要4个条件
-     * 无卡，并且是默认场馆 ,没有弹出过,没有切换场馆
-     */
-    private void firstShowDefaultDialog() {
-        //1无卡，2并且是默认场馆 ,3没有弹出过,4没有切换场馆，此时显示公告
-        if (!Preference.getUserHasCard() && 1 == defaultGym && !shoDefaultDialog && !isChangeGym) {
-            setHomeMenuReadNotice();
-        }
-    }
+
 
     public void onEvent(BuyCardMessage message) {
         if (message != null && fragmentTabHost != null) {
