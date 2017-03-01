@@ -191,6 +191,7 @@
         <!--填写名称-->
         <activity
             android:name=".activity.WriteNameActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--上传头像-->
         <activity

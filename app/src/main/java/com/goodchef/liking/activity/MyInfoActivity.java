@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,7 +32,6 @@ import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
 import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.BitmapBase64Util;
-import com.goodchef.liking.utils.DecimalFormatUtil;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.VerifyDateUtils;
@@ -80,7 +78,8 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     private CameraPhotoHelper mCameraPhotoHelper;
     private UserInfoPresenter mUserInfoPresenter;
 
-    private int gender = -1;
+    private Integer gender = null;
+
     private String title;
     private boolean isChange = false;
     private UserInfoResult.UserInfoData mUserInfoData;
@@ -177,6 +176,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 } else {
                     isChange = false;
                 }
+
             }
 
             @Override
@@ -239,17 +239,18 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         }
     }
 
-
     private void updateChangeData() {
         String userName = mUserNameEditText.getText().toString().trim();
         String birthday = mSelectBirthdayTextView.getText().toString().trim();
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
+        if (!StringUtils.isEmpty(userName) && userName.equals(mUserInfoData.getName())) {
+            userName = "";
+        }
         if (birthday.equals(getString(R.string.select_birth_date))) {
             birthday = "";
         }
-
         if (!StringUtils.isEmpty(height)) {
             int heightInt = Integer.parseInt(height);
             if (heightInt < 50 || heightInt > 250) {
@@ -257,7 +258,6 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 return;
             }
         }
-
         if (!StringUtils.isEmpty(weight)) {
             double weightInt = Double.parseDouble(weight);
             if (weightInt < 25 || weightInt > 250) {
@@ -265,11 +265,84 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                 return;
             }
         }
-
+        height = compareHeight(height);
+        weight = compareWeight(weight);
+        compareGender();
+        birthday = compareBirthday(birthday);
         if (isChange) {
+            if (StringUtils.isEmpty(userName) && StringUtils.isEmpty(headUrl) && StringUtils.isEmpty(birthday)
+                    && StringUtils.isEmpty(weight) && StringUtils.isEmpty(height) && gender == null) {
+                return;
+            }
             mUserInfoPresenter.updateUserInfo(userName, headUrl, gender, birthday, weight, height);
         }
     }
+
+    /**
+     * 比较性别
+     */
+    private void compareGender() {
+        if (gender != null && mUserInfoData.getGender() == gender) {
+            gender = null;
+        }
+    }
+
+    /**
+     * 比较体重
+     * @param weight
+     * @return
+     */
+    private String compareWeight(String weight) {
+        if (!StringUtils.isEmpty(weight)) {
+            double weightInt = Double.parseDouble(weight);
+            if (weightInt == mUserInfoData.getWeight()) {
+                weight = "";
+            }
+        }
+        return weight;
+    }
+
+    /**
+     * 比较身高
+     * @param height
+     * @return
+     */
+    private String compareHeight(String height) {
+        if (!StringUtils.isEmpty(height)) {
+            int heightInt = Integer.parseInt(height);
+            if (heightInt == mUserInfoData.getHeight()) {
+                height = "";
+            }
+        }
+        return height;
+    }
+
+    /**
+     * 比较出生日期有木有发生更改
+     *
+     * @param birthday
+     * @return
+     */
+    private String compareBirthday(String birthday) {
+        String primaryYear = "";
+        String primaryMonth = "";
+        String primaryDay = "";
+        if (!StringUtils.isEmpty(birthday)) {
+            String a[] = birthday.split("-");
+            if (a.length >= 2) {
+                primaryYear = a[0];
+                primaryMonth = a[1];
+                primaryDay = a[2];
+            }
+            if (!StringUtils.isEmpty(yearStr) && !StringUtils.isEmpty(monthStr) && !StringUtils.isEmpty(dayStr)){
+                if (primaryYear.equals(yearStr) && primaryMonth.equals(monthStr) && primaryDay.equals(dayStr)) {
+                    birthday = "";
+                }
+            }
+        }
+        return birthday;
+    }
+
 
     /**
      * 选择出生日期
@@ -325,14 +398,14 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
                     case R.id.dialog_text_one:
                         mSelectSexTextView.setText(R.string.sex_man);
                         gender = 1;
-                        isChange = true;
+                        setSexChange();
                         PopupUtils.showToast(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
                         dialog.dismiss();
                         break;
                     case R.id.dialog_text_second:
                         mSelectSexTextView.setText(R.string.sex_men);
                         gender = 0;
-                        isChange = true;
+                        setSexChange();
                         PopupUtils.showToast(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
                         dialog.dismiss();
                         break;
@@ -347,6 +420,15 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             }
         });
     }
+
+    private void setSexChange() {
+        if (gender != mUserInfoData.getGender()){
+            isChange = true;
+        }else {
+            isChange = false;
+        }
+    }
+
 
     /**
      * 显示拍照和选择相册dialog
@@ -433,19 +515,19 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             if (weight > 0) {
                 mUserWeightEditText.setText(String.valueOf(weight));
             }
-            gender = userInfoData.getGender();
-            if (gender == 0) {
+            int gender = userInfoData.getGender();
+            if (gender == NumberConstantUtil.ZERO) {
                 mSelectSexTextView.setText(R.string.sex_men);
-            } else if (gender == 1) {
+            } else if (gender == NumberConstantUtil.ONE) {
                 mSelectSexTextView.setText(R.string.sex_man);
             } else {
                 mSelectSexTextView.setText(R.string.select_gender);
             }
+
             isUpdateBirthday = userInfoData.getIsUpdateBirthday();
             isUpdateGender = userInfoData.getIsUpdateGender();
             if (isUpdateGender == NumberConstantUtil.ZERO) {//没有机会修改性别
                 mSelectSexArrow.setVisibility(View.GONE);
-
             } else if (isUpdateGender == NumberConstantUtil.ONE) {
                 mSelectSexArrow.setVisibility(View.VISIBLE);
             }
@@ -453,7 +535,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             if (isUpdateBirthday == NumberConstantUtil.ZERO) {//没有修改的机会生日
                 mSelectBirthdayArrow.setVisibility(View.GONE);
             } else if (isUpdateBirthday == NumberConstantUtil.ONE) {
-
+                mSelectBirthdayArrow.setVisibility(View.VISIBLE);
             }
             UserChangeInfoPromptTextView();
         } else {

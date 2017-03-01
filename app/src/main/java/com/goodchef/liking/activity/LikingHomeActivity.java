@@ -60,6 +60,7 @@ import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.FileDownloaderManager;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.Iterator;
@@ -394,9 +395,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (v == mLikingLeftTitleTextView) {
             if (tag.equals(TAG_MAIN_TAB)) {
-                changeGym(0);//从首页切换过去
+                changeGym(NumberConstantUtil.ZERO);//从首页切换过去
             } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                changeGym(1);//从买卡界面切换过去
+                changeGym(NumberConstantUtil.ONE);//从买卡界面切换过去
             }
         } else if (v == mRightImageView) {
             if (tag.equals(TAG_NEARBY_TAB)) {
@@ -727,7 +728,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private boolean showDefaultGymDialog() {
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
-        if (!Preference.getUserHasCard() && 1 == defaultGym && shoDefaultDialog) {
+        if (!Preference.getUserHasCard() && NumberConstantUtil.ONE == defaultGym && shoDefaultDialog) {
             if (!isWhetherLocation) {//定位失败
                 shoDefaultDialog = false;
                 setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
@@ -747,7 +748,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public void onEvent(BuyCardMessage message) {
         if (message != null && fragmentTabHost != null) {
-            fragmentTabHost.setCurrentTab(1);
+            fragmentTabHost.setCurrentTab(NumberConstantUtil.ONE);
         }
     }
 
