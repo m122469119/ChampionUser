@@ -269,8 +269,6 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     toAnnouncement(alert, extras, context);
                     break;
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

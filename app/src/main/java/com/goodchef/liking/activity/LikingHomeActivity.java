@@ -159,8 +159,8 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         int intExtra = intent.getIntExtra(ACTION, 0);
 
         if (SHOW_PUSH_NOTICE == intExtra) {
-            if (fragmentTabHost.getTop() == 0)
-                mPresenter.showPushDialog();
+            fragmentTabHost.setCurrentTab(0);
+            mPresenter.showPushDialog();
         } else {
             int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
             fragmentTabHost.setCurrentTab(tag);
@@ -501,7 +501,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
         defaultGymDialog.setCancelable(true);
         defaultGymDialog.setCanceledOnTouchOutside(true);
-
+        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + mNoticeGym.getAnnouncementId());
         if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
             if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
                 defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
@@ -538,6 +538,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         } else {
             return;
         }
+
+        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + next.getAid());
+
         if (!Preference.isIdenticalAnnouncement(next.getGym_id())) {
             showNoticesDialog(noticeDatas);
         }
@@ -547,16 +550,16 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         defaultGymDialog.setCancelable(true);
         defaultGymDialog.setCanceledOnTouchOutside(true);
 
-        if (!StringUtils.isEmpty(next.getGym_id())) {
+        if (!StringUtils.isEmpty(next.getAid())) {
             if (!StringUtils.isEmpty(next.getGymContent())) {
                 defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
             } else {
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
-            Preference.setAnnouncementId(next.getGym_id());
+            Preference.setAnnouncementId(next.getAid());
         } else if (!StringUtils.isEmpty(next.getGymContent())) {
             defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
-            Preference.setAnnouncementId(next.getGym_id());
+            Preference.setAnnouncementId(next.getAid());
         } else {
             defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
         }

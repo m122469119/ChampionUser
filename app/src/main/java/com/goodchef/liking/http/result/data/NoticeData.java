@@ -64,7 +64,7 @@ public class NoticeData extends BaseData {
     @Override
     public boolean equals(Object o) {
         if (o != null && o instanceof NoticeData){
-            return gym_id.equals (((NoticeData) o).gym_id );
+            return aid.equals (((NoticeData) o).aid);
         }
         return false;
     }
