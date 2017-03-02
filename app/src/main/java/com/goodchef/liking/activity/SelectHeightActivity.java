@@ -143,6 +143,6 @@ public class SelectHeightActivity extends AppBarActivity implements View.OnClick
     }
 
     public void onEvent(UpDateUserInfoMessage message){
-        this.finish();
+        finish();
     }
 }

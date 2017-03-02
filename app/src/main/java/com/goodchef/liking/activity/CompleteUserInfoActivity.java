@@ -180,7 +180,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
             }
             Preference.setNickName(userName);
             postEvent(new UpDateUserInfoMessage());
-            this.finish();
+            finish();
         }
     }
 

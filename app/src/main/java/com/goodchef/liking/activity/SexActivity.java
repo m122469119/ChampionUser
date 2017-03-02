@@ -141,6 +141,6 @@ public class SexActivity extends AppBarActivity implements View.OnClickListener 
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 }
