@@ -68,8 +68,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     public  void userLoginOut(){
         //极光推送的id,有就传，没有可以不传或者传0
-        //Preference.getJPushRegistrationId()
-        LiKingApi.userLoginOut(Preference.getToken(), "", new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading_data) {
+        String jPushRegisterId = Preference.getJPushRegistrationId();
+        LiKingApi.userLoginOut(Preference.getToken(), jPushRegisterId, new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading_data) {
             @Override
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
