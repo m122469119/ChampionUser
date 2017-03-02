@@ -284,10 +284,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 
         Preference.setHomeAnnouncementId(announcement.getData());
 
-        String topActivityClass = AppStatusUtils.getTopActivityClass(context);
-
-
-        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))){
+        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))
+                || AppStatusUtils.appIsBackgroundRunning(context, AppStatusUtils.getAppPackageName(context))){
             Intent resultIntent = new Intent(context, LikingHomeActivity.class);
             resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -302,8 +300,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     announcement.getData().getGymName(),
                     announcement.getData().getGymContent(),
                     resultPendingIntent);
-        }
-        else if (AppStatusUtils.getTopActivityClass(context).equals("LikingHomeActivity")) {
+        } else if (AppStatusUtils.getTopActivityClass(context).equals("com.goodchef.liking.activity.LikingHomeActivity")) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_PUSH_NOTICE_RECEIVED);
