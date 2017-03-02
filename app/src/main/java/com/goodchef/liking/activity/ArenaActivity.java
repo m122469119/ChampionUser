@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,26 +27,35 @@ import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:查看门店
  * Author shaozucheng
  * Time:16/6/15 下午1:54
  */
-public class ArenaActivity extends AppBarActivity implements GymDetailsView, View.OnClickListener {
+public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
-    private InfiniteViewPager mImageViewPager;
-    private IconPageIndicator mIconPageIndicator;
+    @BindView(R.id.arena_viewpager)
+    InfiniteViewPager mImageViewPager;
+    @BindView(R.id.arena_indicator)
+    IconPageIndicator mIconPageIndicator;
+    @BindView(R.id.area_arrow)
+    ImageView mAreaArrow;
+    @BindView(R.id.public_notice)
+    TextView mPublicNotice;
+    @BindView(R.id.layout_area_announcement)
+    RelativeLayout mAnnouncementLayout;
+    @BindView(R.id.arena_address)
+    TextView mAddressTextView;
+    @BindView(R.id.tag_recyclerView)
+    RecyclerView mRecyclerView;
     private BannerPagerAdapter mBannerPagerAdapter;
-
-    private TextView mAddressTextView;
-    private TextView mPublicNoticeTextView;//公告
-    private RelativeLayout mAnnouncementLayout;
-    private RecyclerView mRecyclerView;
-
     private String announcement;
     private GymDetailsPresenter mGymDetailsPresenter;
     private String gymId;//场馆id
-
     private ArenaTagAdapter mArenaTagAdapter;
 
 
@@ -53,7 +63,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arena);
-        initView();
+        ButterKnife.bind(this);
         initData();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
         setRightMenu();
@@ -94,16 +104,17 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         mGymDetailsPresenter.getGymDetails(gymId);
     }
 
-    private void initView() {
-        mImageViewPager = (InfiniteViewPager) findViewById(R.id.arena_viewpager);
-        mIconPageIndicator = (IconPageIndicator) findViewById(R.id.arena_indicator);
-        mAddressTextView = (TextView) findViewById(R.id.arena_address);
-        mPublicNoticeTextView = (TextView) findViewById(R.id.public_notice);
-        mAnnouncementLayout = (RelativeLayout) findViewById(R.id.layout_area_announcement);
-        mRecyclerView = (RecyclerView) findViewById(R.id.tag_recyclerView);
-        mAnnouncementLayout.setOnClickListener(this);
+    @OnClick(R.id.layout_area_announcement)
+    public void onClick() {
+        final AnnouncementDialog dialog = new AnnouncementDialog(this, announcement);
+        dialog.setViewOnClickListener(v -> {
+            switch (v.getId()) {
+                case R.id.announcement_cancel_image_button:
+                    dialog.dismiss();
+                    break;
+            }
+        });
     }
-
 
     @Override
     public void onResume() {
@@ -170,20 +181,4 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView, Vie
         mImageViewPager.startAutoScroll();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mAnnouncementLayout) {
-            final AnnouncementDialog dialog = new AnnouncementDialog(this, announcement);
-            dialog.setViewOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    switch (v.getId()) {
-                        case R.id.announcement_cancel_image_button:
-                            dialog.dismiss();
-                            break;
-                    }
-                }
-            });
-        }
-    }
 }

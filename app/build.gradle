@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: "cn.jiajixin.nuwa"
-apply plugin: 'android-apt'
+//apply plugin: "cn.jiajixin.nuwa"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -12,7 +11,17 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+        multiDexEnabled = true
+        jackOptions {
+            enabled true
+        }
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+    }
+
     signingConfigs {
         myConfig {
             storeFile file("haochushi")
@@ -64,19 +73,23 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
+
+    /**编译环境配置*/
     compileOptions {
-        sourceCompatibility = rootProject.ext.sourceCompatibility
-        targetCompatibility = rootProject.ext.targetCompatibility
+        sourceCompatibility rootProject.ext.sourceCompatibility
+        targetCompatibility rootProject.ext.targetCompatibility
     }
 
+    /**Android lint检查工具配置*/
     lintOptions {
         abortOnError rootProject.ext.abortOnError
     }
 
-    nuwa {
-        excludeClass = ['com/aaron/android/framework/base/BaseApplication.class']
-    }
+//    nuwa {
+//        excludeClass = ['com/aaron/android/framework/base/BaseApplication.class']
+//    }
 
+    /**打包需要忽略的文件*/
     packagingOptions {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.xml')
         exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
@@ -87,9 +100,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':framework')
-    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
+//    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.google.dagger:dagger:2.10-rc1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.10-rc1'
 }

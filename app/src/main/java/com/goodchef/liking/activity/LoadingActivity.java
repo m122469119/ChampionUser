@@ -21,8 +21,6 @@ import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.PatchDowner;
 
-import cn.jiajixin.nuwa.Nuwa;
-
 /**
  * 说明:
  * Author shaozucheng
@@ -95,7 +93,7 @@ public class LoadingActivity extends BaseActivity {
     private void loadPatch(PatchData patchData) {
         if (patchData != null && patchData.isPatchNeed() && !TextUtils.isEmpty(patchData.getPatchFile())) {
             LogUtils.i("Dust", "加载补丁");
-            Nuwa.loadPatch(this, previousPatchData.getPatchFile());
+//            Nuwa.loadPatch(this, previousPatchData.getPatchFile());
         } else {
             LogUtils.i("Dust", "不加载补丁");
         }

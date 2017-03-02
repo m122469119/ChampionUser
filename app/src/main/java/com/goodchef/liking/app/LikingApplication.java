@@ -1,13 +1,13 @@
 package com.goodchef.liking.app;
 
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.BuildConfig;
 
-import cn.jiajixin.nuwa.Nuwa;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -21,8 +21,9 @@ public class LikingApplication extends BaseApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        /**初始化Hotfix修复框架*/
-        Nuwa.init(base);
+//        /**初始化Hotfix修复框架*/
+//        Nuwa.init(base);
+        MultiDex.install(this);
     }
 
     @Override
