@@ -13,50 +13,59 @@ import com.google.gson.annotations.SerializedName;
 public class NoticeData extends BaseData {
 
 
-        /**
-         * aid : 82
-         * gym_id : 1
-         * gymName : LikingFit复兴店
-         */
+    /**
+     * aid : 82
+     * gym_id : 1
+     * gymName : LikingFit复兴店
+     */
 
-        @SerializedName("aid")
-        private String aid;
-        @SerializedName("gym_id")
-        private String gym_id;
-        @SerializedName("gym_name")
-        private String gym_name;
+    @SerializedName("aid")
+    private String aid;
+    @SerializedName("gym_id")
+    private String gym_id;
+    @SerializedName("gym_name")
+    private String gym_name;
 
-        private String gym_content;
+    private String gym_content;
 
-        public String getAid() {
-            return aid;
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
+
+    public String getGym_id() {
+        return gym_id;
+    }
+
+    public void setGym_id(String gym_id) {
+        this.gym_id = gym_id;
+    }
+
+    public String getGymName() {
+        return gym_name;
+    }
+
+    public void setGymName(String gymName) {
+        this.gym_name = gymName;
+    }
+
+    public String getGymContent() {
+        return gym_content;
+    }
+
+    public void setGymContent(String gyn_content) {
+        this.gym_content = gyn_content;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && o instanceof NoticeData){
+            return gym_id.equals (((NoticeData) o).gym_id );
         }
-
-        public void setAid(String aid) {
-            this.aid = aid;
-        }
-
-        public String getGym_id() {
-            return gym_id;
-        }
-
-        public void setGym_id(String gym_id) {
-            this.gym_id = gym_id;
-        }
-
-        public String getGymName() {
-            return gym_name;
-        }
-
-        public void setGymName(String gymName) {
-            this.gym_name = gymName;
-        }
-
-        public String getGymContent() {
-            return gym_content;
-        }
-
-        public void setGymContent(String gyn_content) {
-            this.gym_content = gyn_content;
-        }
+        return false;
+    }
 }

@@ -55,7 +55,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String DIRECT_TYPE_HTML5 = "h5";
     public static final String DIRECT_ANNOUNCEMENT = "announcement";
 
-    public static final int ANNOUNCEMENT_NITICE_ID = 0x00000001;
+    public static final int ANNOUNCEMENT_NOTICE_ID = 0x00000001;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -207,11 +207,11 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         }
         announcement.getData().setGymContent(alert);
         Preference.setHomeAnnouncementId(announcement.getData());
-        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
-            Intent intent = new Intent(context, LikingHomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(intent);
-        }
+
+        Intent intent = new Intent(context, LikingHomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+
     }
 
 
@@ -255,20 +255,69 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
         LogUtils.d(TAG, "message: " + message + " extras: " + extras);
-//            Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
-//            msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
-//            if (!ExampleUtil.isEmpty(extras)) {
-//                try {
-//                    JSONObject extraJson = new JSONObject(extras);
-//                    if (null != extraJson && extraJson.length() > 0) {
-//                        msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras);
-//                    }
-//                } catch (JSONException e) {
-//
-//                }
-//
-//            }
-//            context.sendBroadcast(msgIntent);
-//        }
+
+        if (StringUtils.isEmpty(extras)) {
+            return;
+        }
+
+        JSONObject extraJsonObject = null;
+        try {
+            extraJsonObject = new JSONObject(extras);
+            String directType = extraJsonObject.getString(EXTRA_KEY_DIRECT);
+            switch (directType) {
+                case DIRECT_ANNOUNCEMENT:
+                    String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
+                    toAnnouncement(alert, extras, context);
+                    break;
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
+
+
+    private void toAnnouncement(String alert, String extras, Context context) {
+        Gson gson = new Gson();
+        AnnouncementDirect announcement = gson.fromJson(extras, AnnouncementDirect.class);
+        if (announcement == null || announcement.getData() == null) {
+            return;
+        }
+        announcement.getData().setGymContent(alert);
+        Preference.setHomeAnnouncementId(announcement.getData());
+
+        Intent resultIntent = new Intent(context, LikingHomeActivity.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(LikingHomeActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        showNotification(context,
+                announcement.getData().getGymName(),
+                announcement.getData().getGymContent(),
+                resultPendingIntent);
+
+    }
+
+
+
+    private void showNotification(Context ctx, String title, String message, PendingIntent intent){
+        Notification.Builder builder = new Notification.Builder(ctx)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(intent);
+        NotificationManager manager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(ANNOUNCEMENT_NOTICE_ID, builder.build());
+    }
+
+
+
 }
