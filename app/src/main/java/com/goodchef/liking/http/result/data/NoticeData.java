@@ -25,7 +25,7 @@ public class NoticeData extends BaseData {
     private String gym_id;
     @SerializedName("gym_name")
     private String gym_name;
-
+    @SerializedName("alert")
     private String gym_content;
 
     public String getAid() {

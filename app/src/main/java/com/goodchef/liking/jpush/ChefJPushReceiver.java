@@ -142,8 +142,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     } else if (CARD.equals(direct)) { //点击跳转至我的会员卡
                         toMyCardVipInfo(context);
                     } else if (DIRECT_ANNOUNCEMENT.equals(direct)) {
-                        String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
-                        toNoticeInfo(alert, extras, context);
+                      //  String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
+                        toNoticeInfo(extras, context);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
@@ -199,13 +199,12 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         context.startActivity(intent);
     }
 
-    private void toNoticeInfo(String alert, String extras, Context context) {
+    private void toNoticeInfo(String extras, Context context) {
         Gson gson = new Gson();
         AnnouncementDirect announcement = gson.fromJson(extras, AnnouncementDirect.class);
         if (announcement == null || announcement.getData() == null) {
             return;
         }
-        announcement.getData().setGymContent(alert);
         Preference.setHomeAnnouncementId(announcement.getData());
 
         Intent intent = new Intent(context, LikingHomeActivity.class);
