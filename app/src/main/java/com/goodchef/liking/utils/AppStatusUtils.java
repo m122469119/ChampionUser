@@ -1,9 +1,12 @@
 package com.goodchef.liking.utils;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+
+import com.aaron.android.codelibrary.utils.LogUtils;
 
 import java.util.List;
 
@@ -19,9 +22,10 @@ import static android.content.Context.ACTIVITY_SERVICE;
 public class AppStatusUtils {
 
 
-    public static Class getTopActivityClass(Context ctx){
-        ActivityManager am = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
-        return am.getRunningTasks(2).get(0).topActivity.getClass();
+    public static String getTopActivityClass(Context ctx){
+        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        return cn.getClassName();
     }
 
 
