@@ -427,6 +427,9 @@ public class Preference extends AbsPreference {
         Gson gson = new Gson();
         String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
         HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
+        if(announcement == null) {
+            announcement = new HomeAnnouncement();
+        }
         announcement.addNotice(noticeData);
         String s = gson.toJson(announcement);
         setObject(ANNOUNCEMENT_HOME_ID, s);
