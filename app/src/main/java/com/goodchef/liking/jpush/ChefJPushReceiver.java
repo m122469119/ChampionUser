@@ -209,8 +209,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 
         Intent intent = new Intent(context, LikingHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_PUSH_NOTICE);
         context.startActivity(intent);
-
     }
 
 
