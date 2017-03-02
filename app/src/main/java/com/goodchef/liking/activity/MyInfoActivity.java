@@ -250,6 +250,8 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         }
         if (birthday.equals(getString(R.string.select_birth_date))) {
             birthday = "";
+        } else {
+            birthday = compareBirthday(birthday);
         }
         if (!StringUtils.isEmpty(height)) {
             int heightInt = Integer.parseInt(height);
@@ -268,7 +270,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         height = compareHeight(height);
         weight = compareWeight(weight);
         compareGender();
-        birthday = compareBirthday(birthday);
+
         if (isChange) {
             if (StringUtils.isEmpty(userName) && StringUtils.isEmpty(headUrl) && StringUtils.isEmpty(birthday)
                     && StringUtils.isEmpty(weight) && StringUtils.isEmpty(height) && gender == null) {
@@ -289,6 +291,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     /**
      * 比较体重
+     *
      * @param weight
      * @return
      */
@@ -304,6 +307,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     /**
      * 比较身高
+     *
      * @param height
      * @return
      */
@@ -324,18 +328,31 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
      * @return
      */
     private String compareBirthday(String birthday) {
+        String currentYear = "";
+        String currentMonth = "";
+        String currentDay = "";
+
         String primaryYear = "";
         String primaryMonth = "";
         String primaryDay = "";
-        if (!StringUtils.isEmpty(birthday)) {
-            String a[] = birthday.split("-");
-            if (a.length >= 2) {
-                primaryYear = a[0];
-                primaryMonth = a[1];
-                primaryDay = a[2];
-            }
-            if (!StringUtils.isEmpty(yearStr) && !StringUtils.isEmpty(monthStr) && !StringUtils.isEmpty(dayStr)){
-                if (primaryYear.equals(yearStr) && primaryMonth.equals(monthStr) && primaryDay.equals(dayStr)) {
+
+        if (mUserInfoData != null) {
+            String primaryBirthday = mUserInfoData.getBirthday();
+            if (!StringUtils.isEmpty(birthday) && !StringUtils.isEmpty(primaryBirthday)) {
+                String a[] = birthday.split("-");
+                if (a.length >= 2) {
+                    currentYear = a[0];
+                    currentMonth = a[1];
+                    currentDay = a[2];
+                }
+                String b[] = primaryBirthday.split("-");
+                if (b.length >= 2) {
+                    primaryYear = b[0];
+                    primaryMonth = b[1];
+                    primaryDay = b[2];
+                }
+
+                if (primaryYear.equals(currentYear) && primaryMonth.equals(currentMonth) && primaryDay.equals(currentDay)) {
                     birthday = "";
                 }
             }
@@ -422,9 +439,9 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     }
 
     private void setSexChange() {
-        if (gender != mUserInfoData.getGender()){
+        if (gender != mUserInfoData.getGender()) {
             isChange = true;
-        }else {
+        } else {
             isChange = false;
         }
     }

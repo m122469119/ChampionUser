@@ -194,7 +194,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 
 

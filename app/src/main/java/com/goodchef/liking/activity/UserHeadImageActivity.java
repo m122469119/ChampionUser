@@ -185,7 +185,7 @@ public class UserHeadImageActivity extends AppBarActivity implements View.OnClic
     }
 
     public void onEvent(UpDateUserInfoMessage message){
-        this.finish();
+        finish();
     }
 
 

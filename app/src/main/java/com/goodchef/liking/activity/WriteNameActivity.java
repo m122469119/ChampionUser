@@ -87,7 +87,7 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 
 

@@ -207,11 +207,11 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         }
         announcement.getData().setGymContent(alert);
         Preference.setHomeAnnouncementId(announcement.getData());
-        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
+        //if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
-        }
+        //}
     }
 
 
