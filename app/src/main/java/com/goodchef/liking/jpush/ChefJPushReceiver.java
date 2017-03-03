@@ -314,9 +314,12 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setWhen(System.currentTimeMillis())
-                .setContentIntent(intent);
+                .setContentIntent(intent)
+                ;
+        Notification build = builder.build();
+        build.flags = Notification.FLAG_AUTO_CANCEL;
         NotificationManager manager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(ANNOUNCEMENT_NOTICE_ID, builder.build());
+        manager.notify(ANNOUNCEMENT_NOTICE_ID, build);
     }
 
 
