@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
@@ -284,8 +285,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 
         Preference.setHomeAnnouncementId(announcement.getData());
 
-        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))
-                || AppStatusUtils.appIsBackgroundRunning(context, AppStatusUtils.getAppPackageName(context))){
+        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context)) || BaseActivity.isPause){
             Intent resultIntent = new Intent(context, LikingHomeActivity.class);
             resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

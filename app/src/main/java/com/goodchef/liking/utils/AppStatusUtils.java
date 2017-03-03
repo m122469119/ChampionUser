@@ -62,7 +62,6 @@ public class AppStatusUtils {
         if(runningAppProcesses!=null)
         {
             for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : runningAppProcesses) {
-
                 if(runningAppProcessInfo.processName.startsWith(packageName))
                 {
                     return runningAppProcessInfo.importance!= ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
