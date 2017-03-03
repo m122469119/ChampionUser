@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClic
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
@@ -157,7 +158,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                     mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                 }
                 mMyTextView.setVisibility(View.VISIBLE);
-                mMyTextView.setText(getActivity().getString(R.string.buy_card_stadium) + mMyGym.getGymName());
+                mMyTextView.setText(ResourceUtils.getString(R.string.buy_card_stadium) + mMyGym.getGymName());
             } else {
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {

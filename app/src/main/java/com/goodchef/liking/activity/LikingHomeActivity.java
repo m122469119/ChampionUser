@@ -157,14 +157,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         int intExtra = intent.getIntExtra(ACTION, 0);
-
         if (SHOW_PUSH_NOTICE == intExtra) {
             fragmentTabHost.setCurrentTab(0);
             mPresenter.showPushDialog();
         } else if (SHOW_PUSH_NOTICE_RECEIVED == intExtra) {
-            if (fragmentTabHost.getTop() == 0) {
+            if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB)) {
                 mPresenter.showPushDialog();
             }
         } else {
@@ -178,7 +176,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        if (fragmentTabHost.getTop() == 0)
+        if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB))
             mPresenter.showPushDialog();
     }
 
