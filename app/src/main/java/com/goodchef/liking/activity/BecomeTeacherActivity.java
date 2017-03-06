@@ -8,16 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.RegularUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.mvp.BecomeTeacherContract;
-import com.goodchef.liking.mvp.presenter.ContactJoinPresenter;
-import com.goodchef.liking.mvp.view.ContactJoinView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
