@@ -588,5 +588,6 @@
     <string name="myinfo_sex_and_birthday_only_change_one_times">仅可修改一次，请慎重修改</string>
     <string name="user_can_not_revise_info">您的修改次数已用完，如有疑问请联系客服</string>
     <string name="go_to_grade">去评分</string>
+    <string name="default_head_image_prompt">默认头像岂能表现您的颜值？</string>
 
 </resources>
