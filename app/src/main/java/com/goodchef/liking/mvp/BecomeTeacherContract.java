@@ -28,7 +28,7 @@ public interface BecomeTeacherContract {
         String getBecomeTeacherCity();
         void setBecomeTeacherNameEditText();
         void setBecomeTeacherPhoneEditText();
-        void updateContactJoinView();
+        void updateBecomeTeacherView();
     }
 
       class BecomeTeacherPresenter extends BasePresenter<BecomeTeacherView>{
@@ -73,7 +73,7 @@ public interface BecomeTeacherContract {
                   public void onSuccess(BaseResult result) {
                       super.onSuccess(result);
                       if (LiKingVerifyUtils.isValid(mContext, result)) {
-                          mView.updateContactJoinView();
+                          mView.updateBecomeTeacherView();
                       } else {
                           PopupUtils.showToast(result.getMessage());
                       }

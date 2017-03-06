@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/26 下午2:28
  */
-public class BecomeTeacherActivity extends AppBarActivity implements ContactJoinView ,BecomeTeacherContract.BecomeTeacherView{
+public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeacherContract.BecomeTeacherView{
     @BindView(R.id.become_teacher_name_editText)
     EditText mBecomeTeacherNameEditText;
     @BindView(R.id.become_teacher_phone_editText)
@@ -148,7 +148,7 @@ public class BecomeTeacherActivity extends AppBarActivity implements ContactJoin
     }
 
     @Override
-    public void updateContactJoinView() {
+    public void updateBecomeTeacherView() {
         PopupUtils.showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
         mBecomeTeacherNameEditText.setText("");
         mBecomeTeacherPhoneEditText.setText("");

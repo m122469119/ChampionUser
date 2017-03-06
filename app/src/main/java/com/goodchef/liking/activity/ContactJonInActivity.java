@@ -8,46 +8,45 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.codelibrary.utils.RegularUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.mvp.presenter.ContactJoinPresenter;
-import com.goodchef.liking.mvp.view.ContactJoinView;
+import com.goodchef.liking.mvp.ContactJoinContract;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:联系加盟
  * Author shaozucheng
  * Time:16/5/27 下午2:14
  */
-public class ContactJonInActivity extends AppBarActivity implements View.OnClickListener, ContactJoinView {
-    private EditText mNameEditText;
-    private EditText mPhoneEditText;
-    private TextView mCityTextView;
-    private TextView mImmediatelySubmitBtn;
+public class ContactJonInActivity extends AppBarActivity implements ContactJoinContract.ContactJoinContractView {
+    @BindView(R.id.name_editText)
+    EditText mNameEditText;
+    @BindView(R.id.phone_editText)
+    EditText mPhoneEditText;
+    @BindView(R.id.city_TextView)
+    TextView mCityTextView;
+    @BindView(R.id.immediately_submit)
+    TextView mImmediatelySubmit;
 
-    private ContactJoinPresenter mContactJoinPresenter;
+    private ContactJoinContract.ContactJoinContractPresenter mContactJoinContractPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_join);
+        mContactJoinContractPresenter = new ContactJoinContract.ContactJoinContractPresenter(this,this);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.title_activity_contact_join));
         initView();
     }
 
     private void initView() {
-        mNameEditText = (EditText) findViewById(R.id.name_editText);
-        mPhoneEditText = (EditText) findViewById(R.id.phone_editText);
-        mCityTextView = (TextView) findViewById(R.id.city_editText);
-        mImmediatelySubmitBtn = (TextView) findViewById(R.id.immediately_submit);
-
-        mImmediatelySubmitBtn.setOnClickListener(this);
-        mCityTextView.setOnClickListener(this);
-
         mNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,12 +86,15 @@ public class ContactJonInActivity extends AppBarActivity implements View.OnClick
 
     }
 
-    @Override
+    @OnClick({R.id.immediately_submit,R.id.city_TextView})
     public void onClick(View v) {
-        if (v == mImmediatelySubmitBtn) {
-            sendConfirmRequest();
-        } else if (v == mCityTextView) {
-            showSelectCityDialog();
+        switch (v.getId()){
+            case R.id.immediately_submit:
+                mContactJoinContractPresenter.sendConfirmRequest();
+                break;
+            case R.id.city_TextView:
+                showSelectCityDialog();
+                break;
         }
     }
 
@@ -113,43 +115,34 @@ public class ContactJonInActivity extends AppBarActivity implements View.OnClick
         });
     }
 
-    private void sendConfirmRequest() {
-        String name = mNameEditText.getText().toString().trim();
-        String phone = mPhoneEditText.getText().toString().trim();
-        String city = mCityTextView.getText().toString();
 
-        if (StringUtils.isEmpty(name)) {
-            PopupUtils.showToast(getString(R.string.name_not_blank));
-            mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        } else if (name.length() > 15) {
-            PopupUtils.showToast(getString(R.string.name_length_surpass_15));
-            mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        }
-        if (StringUtils.isEmpty(phone)) {
-            PopupUtils.showToast(getString(R.string.phone_not_blank));
-            mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        }
-        if (!RegularUtils.isMobileExact(phone)) {
-            PopupUtils.showToast(getString(R.string.phone_input_error));
-            mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        }
-        if (StringUtils.isEmpty(city)) {
-            PopupUtils.showToast(getString(R.string.select_city));
-            return;
-        }
-
-        if (mContactJoinPresenter == null) {
-            mContactJoinPresenter = new ContactJoinPresenter(this, this);
-        }
-        mContactJoinPresenter.joinAllpy(name, phone, city, 0);
+    @Override
+    public String getUserName() {
+        return mNameEditText.getText().toString().trim();
     }
 
     @Override
-    public void updateContactJoinView() {
+    public String getUserPhone() {
+        return mPhoneEditText.getText().toString().trim();
+    }
+
+    @Override
+    public String getUserSelectCity() {
+        return mCityTextView.getText().toString();
+    }
+
+    @Override
+    public void setNameEditText() {
+        mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
+    }
+
+    @Override
+    public void setPhoneEditText() {
+        mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
+    }
+
+    @Override
+    public void updateContactJoinContractView() {
         PopupUtils.showToast(getString(R.string.submit_success_wait_contact));
         mNameEditText.setText("");
         mPhoneEditText.setText("");
