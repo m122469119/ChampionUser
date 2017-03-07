@@ -7,45 +7,51 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
 import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.data.ShareData;
+import com.goodchef.liking.mvp.UserExerciseContract;
 import com.goodchef.liking.mvp.presenter.SharePresenter;
-import com.goodchef.liking.mvp.presenter.UserExercisePresenter;
 import com.goodchef.liking.mvp.view.ShareView;
-import com.goodchef.liking.mvp.view.UserExerciseView;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 说明:训练数据
  * Author shaozucheng
  * Time:16/7/2 下午4:45
  */
-public class MyTrainDataActivity extends AppBarActivity implements UserExerciseView, ShareView {
-    private TextView mTrainTime;//训练时间
-    private TextView mTrainDistance;//训练距离
-    private TextView mTrainCal;//消耗卡路里
+public class MyTrainDataActivity extends AppBarActivity implements UserExerciseContract.UserExerciseView, ShareView {
 
-    private TextView mTrainCountAll;//训练总次数
-    private TextView mTrainTimeAll;//训练总时间
-    private TextView mTrainDistanceALL;//训练总距离
-    private TextView mTrainCalALl;//消耗总卡路里
+    @BindView(R.id.my_train_time) TextView mTrainTime;//训练时间
+    @BindView(R.id.my_train_distance) TextView mTrainDistance;//训练距离
+    @BindView(R.id.my_train_cal) TextView mTrainCal;//消耗卡路里
 
-    private UserExercisePresenter mUserExercisePresenter;
-    private LikingStateView mStateView;
+    @BindView(R.id.my_train_count_all) TextView mTrainCountAll;//训练总次数
+    @BindView(R.id.my_train_time_all) TextView mTrainTimeAll;//训练总时间
+    @BindView(R.id.my_train_distance_all) TextView mTrainDistanceALL;//训练总距离
+    @BindView(R.id.my_train_cal_all) TextView mTrainCalALl;//消耗总卡路里
+
+    @BindView(R.id.my_train_state_view)
+    LikingStateView mStateView;
+    private UserExerciseContract.UserExercisePresenter mUserExercisePresenter;
     private SharePresenter mSharePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_train_data);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_train_data));
         initView();
-        mUserExercisePresenter = new UserExercisePresenter(this, this);
+        mUserExercisePresenter = new UserExerciseContract.UserExercisePresenter(this, this);
         if (mSharePresenter == null) {
             mSharePresenter = new SharePresenter(this, this);
         }
@@ -54,15 +60,6 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseV
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.my_train_state_view);
-        mTrainTime = (TextView) findViewById(R.id.my_train_time);
-        mTrainDistance = (TextView) findViewById(R.id.my_train_distance);
-        mTrainCal = (TextView) findViewById(R.id.my_train_cal);
-
-        mTrainCountAll = (TextView) findViewById(R.id.my_train_count_all);
-        mTrainTimeAll = (TextView) findViewById(R.id.my_train_time_all);
-        mTrainDistanceALL = (TextView) findViewById(R.id.my_train_distance_all);
-        mTrainCalALl = (TextView) findViewById(R.id.my_train_cal_all);
 
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -101,6 +98,11 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseV
             mStateView.setState(StateView.State.NO_DATA);
         }
 
+    }
+
+    @Override
+    public void showToast(String message) {
+        PopupUtils.showToast(message);
     }
 
     private View.OnClickListener shareListener = new View.OnClickListener() {

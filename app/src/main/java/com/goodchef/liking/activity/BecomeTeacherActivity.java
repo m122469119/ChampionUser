@@ -8,50 +8,52 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.RegularUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.mvp.presenter.ContactJoinPresenter;
-import com.goodchef.liking.mvp.view.ContactJoinView;
+import com.goodchef.liking.mvp.BecomeTeacherContract;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:成为私教
  * Author shaozucheng
  * Time:16/5/26 下午2:28
  */
-public class BecomeTeacherActivity extends AppBarActivity implements View.OnClickListener, ContactJoinView {
-    private EditText mNameEditText;
-    private EditText mPhoneEditText;
-    private TextView mCityTextView;
-    private TextView mImmediatelyBtn;
+public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeacherContract.BecomeTeacherView{
+    @BindView(R.id.become_teacher_name_editText)
+    EditText mBecomeTeacherNameEditText;
+    @BindView(R.id.become_teacher_phone_editText)
+    EditText mBecomeTeacherPhoneEditText;
+    @BindView(R.id.become_teacher_city_TextView)
+    TextView mBecomeTeacherCityTextView;
+    @BindView(R.id.become_teacher_immediately_submit)
+    TextView mBecomeTeacherImmediatelySubmit;
 
-    private ContactJoinPresenter mContactJoinPresenter;
+
+
+    private BecomeTeacherContract.BecomeTeacherPresenter mBecomeTeacherPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_become_teacher);
+        mBecomeTeacherPresenter = new BecomeTeacherContract.BecomeTeacherPresenter(this,this);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.title_become_private_teacher));
         initView();
     }
 
     private void initView() {
-        mNameEditText = (EditText) findViewById(R.id.become_teacher_name_editText);
-        mPhoneEditText = (EditText) findViewById(R.id.become_teacher_phone_editText);
-        mCityTextView = (TextView) findViewById(R.id.become_teacher_city_editText);
-        mImmediatelyBtn = (TextView) findViewById(R.id.become_teacher_immediately_submit);
-
-        mImmediatelyBtn.setOnClickListener(this);
-        mCityTextView.setOnClickListener(this);
-        mNameEditText.addTextChangedListener(new TextWatcher() {
+        mBecomeTeacherNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (mNameEditText.requestFocus()) {
-                    mNameEditText.setBackgroundResource(R.drawable.shape_four_card_green_background);
+                if (mBecomeTeacherNameEditText.requestFocus()) {
+                    mBecomeTeacherNameEditText.setBackgroundResource(R.drawable.shape_four_card_green_background);
                 }
             }
 
@@ -65,11 +67,11 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
 
             }
         });
-        mPhoneEditText.addTextChangedListener(new TextWatcher() {
+        mBecomeTeacherPhoneEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (mPhoneEditText.requestFocus()) {
-                    mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_green_background);
+                if (mBecomeTeacherPhoneEditText.requestFocus()) {
+                    mBecomeTeacherPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_green_background);
                 }
             }
 
@@ -85,12 +87,16 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
         });
     }
 
-    @Override
+
+    @OnClick({R.id.become_teacher_immediately_submit, R.id.become_teacher_city_TextView})
     public void onClick(View v) {
-        if (v == mImmediatelyBtn) {
-            sendConfirmRequest();
-        } else if (v == mCityTextView) {
-            showSelectCityDialog();
+        switch (v.getId()) {
+            case R.id.become_teacher_immediately_submit://立即提交
+                mBecomeTeacherPresenter.sendConfirmRequest();
+                break;
+            case R.id.become_teacher_city_TextView://选择城市
+                showSelectCityDialog();
+                break;
         }
     }
 
@@ -106,53 +112,45 @@ public class BecomeTeacherActivity extends AppBarActivity implements View.OnClic
         dialog.setPositiveClickListener(new SelectCityDialog.confirmClickListener() {
             @Override
             public void OnConfirmClickListener(AppCompatDialog dialog, City.RegionsData regionsData, City.RegionsData.CitiesData citiesData) {
-                mCityTextView.setText(regionsData.getProvinceName() + " - " + citiesData.getCityName());
+                mBecomeTeacherCityTextView.setText(regionsData.getProvinceName() + " - " + citiesData.getCityName());
                 dialog.dismiss();
             }
         });
     }
 
-    private void sendConfirmRequest() {
-        String name = mNameEditText.getText().toString().trim();
-        String phone = mPhoneEditText.getText().toString().trim();
-        String city = mCityTextView.getText().toString().trim();
-
-        if (StringUtils.isEmpty(name)) {
-            PopupUtils.showToast(getString(R.string.name_not_blank));
-            mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        } else if (name.length() > 15) {
-            PopupUtils.showToast(getString(R.string.name_length_surpass_15));
-            mNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        }
-        if (StringUtils.isEmpty(phone)) {
-            PopupUtils.showToast(getString(R.string.phone_not_blank));
-            mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        }
-        if (!RegularUtils.isMobileExact(phone)) {
-            PopupUtils.showToast(getString(R.string.phone_input_error));
-            mPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
-            return;
-        }
-        if (StringUtils.isEmpty(city)) {
-            PopupUtils.showToast(getString(R.string.city_not_blank));
-            return;
-        }
-
-        if (mContactJoinPresenter == null) {
-            mContactJoinPresenter = new ContactJoinPresenter(this, this);
-            mContactJoinPresenter.joinAllpy(name, phone, city, 1);
-        }
+    @Override
+    public String getBecomeTeacherName() {
+        return mBecomeTeacherNameEditText.getText().toString().trim();
     }
 
     @Override
-    public void updateContactJoinView() {
+    public String getBecomeTeacherPhone() {
+        return mBecomeTeacherPhoneEditText.getText().toString().trim();
+    }
+
+    @Override
+    public String getBecomeTeacherCity() {
+        return mBecomeTeacherCityTextView.getText().toString().trim();
+    }
+
+    @Override
+    public void setBecomeTeacherNameEditText() {
+        mBecomeTeacherNameEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
+    }
+
+    @Override
+    public void setBecomeTeacherPhoneEditText() {
+        mBecomeTeacherPhoneEditText.setBackgroundResource(R.drawable.shape_four_card_red_background);
+    }
+
+    @Override
+    public void updateBecomeTeacherView() {
         PopupUtils.showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
-        mNameEditText.setText("");
-        mPhoneEditText.setText("");
-        mCityTextView.setText("");
+        mBecomeTeacherNameEditText.setText("");
+        mBecomeTeacherPhoneEditText.setText("");
+        mBecomeTeacherCityTextView.setText("");
         finish();
     }
+
+
 }
