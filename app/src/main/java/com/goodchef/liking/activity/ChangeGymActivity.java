@@ -16,99 +16,90 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.ResourceUtils;
-import com.aaron.android.thirdparty.map.LocationListener;
-import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
-import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeGymCityAdapter;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.fragment.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
-import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.mvp.ChangeGymContract;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 
-import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明: 切换场馆
  * Author shaozucheng
  * Time:16/9/14 下午3:24
  */
-public class ChangeGymActivity extends SwipeBackActivity implements View.OnClickListener {
-    private DrawerLayout mDrawerLayout;
-    private ListView mListView;
+public class ChangeGymActivity extends SwipeBackActivity implements ChangeGymContract.ChangeGymView{
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.right_drawer)
+    ListView mListView;
+    @BindView(R.id.change_gym_toolbar_right_title)
+    TextView mRightTitleTextView;
+    @BindView(R.id.change_gym_toolbar_right_icon)
+    ImageView mRightIconArrow;
+    @BindView(R.id.change_gym_toolbar_title)
+    TextView mTitleTextView;
+    @BindView(R.id.change_gym_toolbar_left_icon)
+    ImageView mLeftIcon;
 
     private View mCityHeadView;
     private View mCityFootView;
-    private TextView mRightTitleTextView;
-    private ImageView mRightIconArrow;
-    private TextView mTitleTextView;
-    private ImageView mLeftIcon;
     private TextView mCityHeadText;
     private RelativeLayout mCurrentCityLayout;
     private RelativeLayout mLayoutCityFootView;
 
-
-    private String currentCityName;//当前定位城市
-    private String currentCityId;//当前定位的城市id
-
-    private String selectCityName;//选择的城市名称
-    private String cityId;//选择的城市id
-    private boolean isLoaction;//是否定位
     private String gymId;//场馆id
     private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
 
-    private ChangeGymCityAdapter mChangeGymCityAdapter;
-
-    private AmapGDLocation mAmapGDLocation;
-    private List<CityData> cityDataList;//开通服务的城市列表
-    private String longitude;
-    private String latitude;
-    private boolean isSecondLocation = false;
-
+    ChangeGymContract.ChangeGymPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chang_gym);
+        ButterKnife.bind(this);
+        mPresenter = new ChangeGymContract.ChangeGymPresenter(this, this);
         initView();
         initData();
-        setViewOnClickListener();
-        initTitleLocation();
+        mPresenter.initTitleLocation();
     }
 
     private void initView() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mListView = (ListView) findViewById(R.id.right_drawer);
-        mRightTitleTextView = (TextView) findViewById(R.id.change_gym_toolbar_right_title);
-        mRightIconArrow = (ImageView) findViewById(R.id.change_gym_toolbar_right_icon);
-        mTitleTextView = (TextView) findViewById(R.id.change_gym_toolbar_title);
-        mLeftIcon = (ImageView) findViewById(R.id.change_gym_toolbar_left_icon);
         initCityHeadView();
         initCityFootView();
-    }
-
-    private void setViewOnClickListener() {
-        mRightTitleTextView.setOnClickListener(this);
-        mRightIconArrow.setOnClickListener(this);
-        mLeftIcon.setOnClickListener(this);
     }
 
     private void initCityHeadView() {
         mCityHeadView = LayoutInflater.from(this).inflate(R.layout.item_city_head_view, mListView, false);
         mCityHeadText = (TextView) mCityHeadView.findViewById(R.id.city_head_test);
         mCurrentCityLayout = (RelativeLayout) mCityHeadView.findViewById(R.id.layout_current_city);
-        mCurrentCityLayout.setOnClickListener(this);
+        mCurrentCityLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPresenter.isLocation()) {
+                    setDrawerLayout();
+                    mRightTitleTextView.setText(mPresenter.getCurrentCityName());
+                    if (!StringUtils.isEmpty(mPresenter.doLocationCity())) {//如果当前城市在开通范围城市范围之内
+                        mPresenter.compareSelectCity(mPresenter.getCurrentCityName());
+                        postEvent(new RefreshChangeCityMessage(mPresenter.doLocationCity(), mPresenter.getLongitude(), mPresenter.getLatitude()));
+                    }
+                } else {
+                    mPresenter.setIsSecondLocation(true);
+                    mPresenter.initTitleLocation();
+                }
+            }
+        });
     }
 
     private void initCityFootView() {
@@ -116,56 +107,35 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         mLayoutCityFootView = (RelativeLayout) mCityFootView.findViewById(R.id.layout_city_foot_view);
     }
 
-
     private void initData() {
-        cityId = getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID);
-        isLoaction = getIntent().getBooleanExtra(LikingHomeActivity.KEY_WHETHER_LOCATION, false);
+        mPresenter.setCityId(getIntent().getStringExtra(LikingHomeActivity.KEY_SELECT_CITY_ID));
+        mPresenter.setIsLoaction(getIntent().getBooleanExtra(LikingHomeActivity.KEY_WHETHER_LOCATION, false));
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         tabIndex = getIntent().getIntExtra(LikingHomeActivity.KEY_TAB_INDEX, 0);
 
         mTitleTextView.setText(getString(R.string.title_change_gym));
+
         setGymFragment();
         setCityListData();
     }
-
 
     private void setGymFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putString(LikingHomeActivity.KEY_SELECT_CITY_ID, cityId);
+        bundle.putString(LikingHomeActivity.KEY_SELECT_CITY_ID, mPresenter.getCityId());
         bundle.putInt(LikingHomeActivity.KEY_TAB_INDEX, tabIndex);
         bundle.putString(LikingLessonFragment.KEY_GYM_ID, gymId);
-        bundle.putBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION, isLoaction);
+        bundle.putBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION, mPresenter.isLocation());
         fragmentTransaction.add(R.id.gym_content_frame, ChangeGymFragment.newInstance(bundle));
         fragmentTransaction.commit();
     }
 
-
     private void setCityListData() {
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-        if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-            if (baseConfigData != null) {
-                cityDataList = baseConfigData.getCityList();
-                if (cityDataList != null && cityDataList.size() > 0) {
-                    for (CityData cityData : cityDataList) {
-                        if (String.valueOf(cityData.getCityId()).equals(cityId)) {
-                            mRightTitleTextView.setText(cityData.getCityName());
-                            cityData.setSelct(true);
-                            selectCityName = cityData.getCityName();
-                        }
-                    }
-                    mChangeGymCityAdapter = new ChangeGymCityAdapter(this);
-                    mChangeGymCityAdapter.setData(cityDataList);
-                    mListView.setAdapter(mChangeGymCityAdapter);
-                    setCityOnItemClickListener();
-                    setCityFootView();
-                }
-            }
-        }
+        mPresenter.setCityListData();
+        setCityOnItemClickListener();
+        setCityFootView();
     }
-
 
     private void setCityOnItemClickListener() {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -175,71 +145,29 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
                 if (textView != null) {
                     CityData cityData = (CityData) textView.getTag();
                     if (cityData != null) {
-                        selectCityName = cityData.getCityName();
-                        compareSelectCity(selectCityName);
-                        compareCurrentCity(selectCityName);
+                        mPresenter.setSelectCityName(cityData.getCityName());
+                        mPresenter.compareSelectCity(mPresenter.getSelectCityName());
+                        mPresenter.compareCurrentCity(mPresenter.getSelectCityName());
                         setDrawerLayout();
-                        mRightTitleTextView.setText(selectCityName);
-                        postEvent(new RefreshChangeCityMessage(String.valueOf(cityData.getCityId()), longitude, latitude));
-                        UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, selectCityName);
+                        mRightTitleTextView.setText(mPresenter.getSelectCityName());
+                        postEvent(new RefreshChangeCityMessage(String.valueOf(cityData.getCityId()), mPresenter.getLongitude(), mPresenter.getLatitude()));
+                        UMengCountUtil.UmengCount(ChangeGymActivity.this, UmengEventId.CHANGE_CITY, mPresenter.getSelectCityName());
                     }
                 }
             }
         });
     }
 
-    /**
-     * 比较选择的城市列表中的城市名称是否相等
-     *
-     * @param cityName
-     */
-    private void compareSelectCity(String cityName) {
-        if (mChangeGymCityAdapter != null) {
-            List<CityData> list = mChangeGymCityAdapter.getDataList();
-            if (list != null && list.size() > 0) {
-                for (CityData data : list) {
-                    if (cityName.equals(data.getCityName()) || cityName.contains(data.getCityName())) {
-                        data.setSelct(true);
-                    } else {
-                        data.setSelct(false);
-                    }
-                }
-            }
-            mChangeGymCityAdapter.notifyDataSetChanged();
-        }
-    }
-
-
-    private void compareCurrentCity(String cityName) {
-        if (!StringUtils.isEmpty(currentCityName)) {
-            if (currentCityName.equals(cityName) || currentCityName.contains(cityName)) {
-                mCityHeadText.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-            } else {
-                mCityHeadText.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
-            }
-        }
-    }
-
-
-    @Override
+    @OnClick({R.id.change_gym_toolbar_right_title,
+            R.id.change_gym_toolbar_right_icon,
+            R.id.change_gym_toolbar_left_icon,
+    })
     public void onClick(View v) {
         if (v == mRightTitleTextView || v == mRightIconArrow) {
             UMengCountUtil.UmengCount(this, UmengEventId.RIGHT_ICON_ARROW_BTN);
             setDrawerLayout();
         } else if (v == mLeftIcon) {
             finish();
-        } else if (v == mCurrentCityLayout) {
-            if (isLoaction) {
-                setDrawerLayout();
-                mRightTitleTextView.setText(currentCityName);
-                if (!StringUtils.isEmpty(doLocationCity())) {//如果当前城市在开通范围城市范围之内
-                    compareSelectCity(currentCityName);
-                    postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
-                }
-            } else {
-                isSecondLocation = true;
-                initTitleLocation();
-            }
         }
     }
 
@@ -251,70 +179,8 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         }
     }
 
-
-    /***
-     * 初始化定位
-     */
-    private void initTitleLocation() {
-        mAmapGDLocation = new AmapGDLocation(this);
-        mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
-            @Override
-            public void receive(AMapLocation object) {
-                LiKingVerifyUtils.initApi(ChangeGymActivity.this);
-                if (object != null && object.getErrorCode() == 0) {//定位成功
-                    isLoaction = true;
-                    currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                    currentCityId = object.getCityCode();
-                    longitude = object.getLongitude() + "";
-                    latitude = object.getLatitude() + "";
-
-                    //虚拟定位
-//                    currentCityName = "徐州市";
-//                    currentCityId = "123456";
-//                    longitude = 117.20;
-//                    latitude = 34.26;
-
-                    if (isSecondLocation) {
-                        postEvent(new RefreshChangeCityMessage(doLocationCity(), longitude, latitude));
-                    }
-                } else {//定位失败
-                    isLoaction = false;
-                }
-                setCityHeadView();
-            }
-
-            @Override
-            public void start() {
-                isLoaction = false;
-            }
-
-            @Override
-            public void end() {
-                LogUtils.i("dust", "定位结束...");
-            }
-        });
-        mAmapGDLocation.start();
-    }
-
-    private void setCityHeadView() {
-        if (mChangeGymCityAdapter != null) {
-            if (mCityHeadView != null) {
-                mListView.removeHeaderView(mCityHeadView);
-                if (isLoaction) {
-                    mCityHeadText.setText(getString(R.string.current_city) + currentCityName);
-                } else {
-                    mCityHeadText.setText(getString(R.string.location_fail_repeat_location));
-                }
-                mListView.addHeaderView(mCityHeadView);
-            }
-        }
-        if (!StringUtils.isEmpty(selectCityName)) {
-            compareCurrentCity(selectCityName);
-        }
-    }
-
     private void setCityFootView() {
-        if (mChangeGymCityAdapter != null) {
+        if (mPresenter.getChangeGymCityAdapter() != null) {
             if (mCityFootView != null) {
                 setFootViewHeight();
                 mListView.addFooterView(mCityFootView);
@@ -322,17 +188,15 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         }
     }
 
-
     private void setFootViewHeight() {
         int heightPixels = DisplayUtils.getHeightPixels();
         int ActionBarHeight = DisplayUtils.getActionBarSize(this);
-        int cityListHeight = 0;
         int footViewContentHeight = DisplayUtils.dp2px(100);
-        if (cityDataList != null && cityDataList.size() > 0) {
-            cityListHeight = (cityDataList.size() + 1) * DisplayUtils.dp2px(40);
+        int cityListHeight = 0;
+        if (mPresenter.getCityDataList() != null && mPresenter.getCityDataList().size() > 0) {
+            cityListHeight = (mPresenter.getCityDataList().size() + 1) * DisplayUtils.dp2px(40);
         }
         int blankHeight;
-
         WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);
         if (hasSoft) {
@@ -341,7 +205,6 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
         } else {
             blankHeight = heightPixels - ActionBarHeight - cityListHeight - DisplayUtils.dp2px(30);
         }
-
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) mLayoutCityFootView.getLayoutParams();
         if (blankHeight > 0 && blankHeight > footViewContentHeight) {
             layoutParams.height = blankHeight;
@@ -349,44 +212,51 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
             layoutParams.height = layoutParams.WRAP_CONTENT;
         }
         mLayoutCityFootView.setLayoutParams(layoutParams);
-
     }
 
-
-    /**
-     * 处理当前定位城市是否在开通城市范围之内
-     */
-    private String doLocationCity() {
-        String cityId = "";
-        if (cityDataList != null && cityDataList.size() > 0) {
-            for (CityData cityData : cityDataList) {
-                if (currentCityName.equals(cityData.getCityName()) || currentCityName.contains(cityData.getCityName())) {
-                    cityId = cityData.getCityId() + "";
-                    return cityId;
+    @Override
+    public void setCityHeadView() {
+        if (mPresenter.getChangeGymCityAdapter() != null) {
+            if (mCityHeadView != null) {
+                mListView.removeHeaderView(mCityHeadView);
+                if (mPresenter.isLocation()) {
+                    mCityHeadText.setText(getString(R.string.current_city) + mPresenter.getCurrentCityName());
+                } else {
+                    mCityHeadText.setText(getString(R.string.location_fail_repeat_location));
                 }
-            }
-            if (StringUtils.isEmpty(cityId)) {
-                cityId = currentCityId;
+                mListView.addHeaderView(mCityHeadView);
             }
         }
-        return cityId;
+        if (!StringUtils.isEmpty(mPresenter.getSelectCityName())) {
+            mPresenter.compareCurrentCity(mPresenter.getSelectCityName());
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (mAmapGDLocation != null) {
-            mAmapGDLocation.stop();
-        }
+        mPresenter.onStop();
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mAmapGDLocation != null) {
-            mAmapGDLocation.destroy();
-        }
+        mPresenter.onDestroy();
+    }
+
+    @Override
+    public void setRightTitleTextViewText(String text) {
+        mRightTitleTextView.setText(text);
+    }
+
+    @Override
+    public void setListViewAdapter(ChangeGymCityAdapter adapter) {
+        mListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setCityHeadTextTextColor(int color) {
+        mCityHeadText.setTextColor(color);
     }
 
 }
