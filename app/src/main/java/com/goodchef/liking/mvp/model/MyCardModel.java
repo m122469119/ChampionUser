@@ -12,7 +12,20 @@ import com.goodchef.liking.storage.Preference;
 
 public class MyCardModel {
 
+    /**
+     * 获取我的会员卡
+     * @param requestCallback
+     */
     public void getMyCard(RequestCallback requestCallback) {
         LiKingApi.getMyCard(Preference.getToken(), requestCallback);
+    }
+
+    /**
+     * 我的会员卡详情
+     * @param orderId
+     * @param requestCallback
+     */
+    public void getCardDetails(String orderId, RequestCallback requestCallback) {
+        LiKingApi.getCardDetails(Preference.getToken(), orderId, requestCallback);
     }
 }
