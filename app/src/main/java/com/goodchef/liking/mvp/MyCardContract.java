@@ -6,10 +6,9 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.mvp.model.MyCardModel;
+import com.goodchef.liking.mvp.model.CardModel;
 
 /**
  * 说明:
@@ -26,11 +25,11 @@ public interface MyCardContract {
 
     class MyCardPresenter extends BasePresenter<MyCardView> {
 
-        private MyCardModel mMyCardModel;
+        private CardModel mMyCardModel;
 
         public MyCardPresenter(Context context, MyCardView mainView) {
             super(context, mainView);
-            mMyCardModel = new MyCardModel();
+            mMyCardModel = new CardModel();
         }
 
         public void sendMyCardRequest() {

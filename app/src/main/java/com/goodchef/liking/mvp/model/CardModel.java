@@ -10,7 +10,21 @@ import com.goodchef.liking.storage.Preference;
  * Time: 下午6:01
  */
 
-public class MyCardModel {
+public class CardModel {
+
+    /**
+     * 健身卡列表
+     * @param longitude
+     * @param latitude
+     * @param cityId
+     * @param districtId
+     * @param gymId
+     * @param type
+     * @param requestCallback
+     */
+    public void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type, RequestCallback requestCallback) {
+        LiKingApi.getCardList(Preference.getToken(), longitude, latitude, cityId, districtId, gymId, type, requestCallback);
+    }
 
     /**
      * 获取我的会员卡
@@ -28,4 +42,5 @@ public class MyCardModel {
     public void getCardDetails(String orderId, RequestCallback requestCallback) {
         LiKingApi.getCardDetails(Preference.getToken(), orderId, requestCallback);
     }
+
 }

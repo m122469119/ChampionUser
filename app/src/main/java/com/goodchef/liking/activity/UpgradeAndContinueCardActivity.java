@@ -8,12 +8,14 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.mvp.UpgradeAndContinueCardContract;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.storage.UmengEventId;
@@ -23,33 +25,35 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 说明:升级卡或者续卡
  * Author shaozucheng
  * Time:16/6/30 上午10:02
  */
-public class UpgradeAndContinueCardActivity extends AppBarActivity implements CardListView {
+public class UpgradeAndContinueCardActivity extends AppBarActivity implements UpgradeAndContinueCardContract.CardListView {
 
-    private PullToRefreshRecyclerView mRecyclerView;
+    @BindView(R.id.upgrade_and_continue_recycleView) PullToRefreshRecyclerView mRecyclerView;
     private int buyType;
     private String title;
 
     private UpgradeContinueCardAdapter mUpgradeContinueCardAdapter;
-    private CardListPresenter mCardListPresenter;
-    private LikingStateView mStateView;
+    private UpgradeAndContinueCardContract.CardListPresenter mCardListPresenter;
+    @BindView(R.id.upgrade_continue_state_view) LikingStateView mStateView;
     private String mGymId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrade_and_continue);
+        ButterKnife.bind(this);
         initView();
         initData();
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.upgrade_continue_state_view);
-        mRecyclerView = (PullToRefreshRecyclerView) findViewById(R.id.upgrade_and_continue_recycleView);
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mStateView.setState(StateView.State.LOADING);
@@ -66,7 +70,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         title = getIntent().getStringExtra(MyCardActivity.KEY_INTENT_TITLE);
         mGymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(title);
-        mCardListPresenter = new CardListPresenter(this, this);
+        mCardListPresenter = new UpgradeAndContinueCardContract.CardListPresenter(this, this);
         mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
     }
 
@@ -86,6 +90,11 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
         } else {
             setNoUpGradeCard();
         }
+    }
+
+    @Override
+    public void showToast(String message) {
+        PopupUtils.showToast(message);
     }
 
     private void setNoUpGradeCard() {
