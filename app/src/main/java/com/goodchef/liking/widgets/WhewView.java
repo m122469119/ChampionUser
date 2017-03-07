@@ -28,19 +28,16 @@ public class WhewView extends View {
 
     public WhewView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-// TODO Auto-generated constructor stub
         init();
     }
 
     public WhewView(Context context, AttributeSet attrs) {
         super(context, attrs);
-// TODO Auto-generated constructor stub
         init();
     }
 
     public WhewView(Context context) {
         super(context);
-// TODO Auto-generated constructor stub
         init();
     }
 
