@@ -16,8 +16,6 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.mvp.UpgradeAndContinueCardContract;
-import com.goodchef.liking.mvp.presenter.CardListPresenter;
-import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
