@@ -29,13 +29,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:我的会员卡
  * Author shaozucheng
  * Time:16/6/21 下午3:54
  */
-public class MyCardActivity extends AppBarActivity implements View.OnClickListener, MyCardContract.MyCardView {
+public class MyCardActivity extends AppBarActivity implements MyCardContract.MyCardView {
     public static final String KEY_INTENT_TITLE = "key_intent_title";
 
     @BindView(R.id.card_number) TextView mCardNumberTextView;//卡号
@@ -63,7 +64,6 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_card));
         initView();
-        setViewOnClickListener();
         mMyCardPresenter = new MyCardContract.MyCardPresenter(this, this);
         initData();
     }
@@ -78,31 +78,28 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         });
     }
 
-    private void setViewOnClickListener() {
-        mPromotionCardBtn.setOnClickListener(this);
-        mFlowCardBtn.setOnClickListener(this);
-    }
-
     private void initData() {
         mStateView.setState(StateView.State.LOADING);
         mMyCardPresenter.sendMyCardRequest();
     }
 
-    @Override
+    @OnClick({R.id.my_promotion_card, R.id.my_card_flow_card})
     public void onClick(View v) {
         UMengCountUtil.UmengCount(this, UmengEventId.UPGRADEANDCONTINUECARDACTIVITY);
-        if (v == mPromotionCardBtn) {//升级卡
-            Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
-            intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
-            intent.putExtra(KEY_INTENT_TITLE, getString(R.string.promotion_card));
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-            startActivity(intent);
-        } else if (v == mFlowCardBtn) {//续卡
-            Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
-            intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
-            intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-            startActivity(intent);
+        Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
+        switch (v.getId()) {
+            case R.id.my_promotion_card://升级卡
+                intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
+                intent.putExtra(KEY_INTENT_TITLE, getString(R.string.promotion_card));
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                startActivity(intent);
+                break;
+            case R.id.my_card_flow_card://续卡
+                intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
+                intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                startActivity(intent);
+                break;
         }
     }
 
