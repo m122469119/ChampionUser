@@ -23,7 +23,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.BindBraceleContract;
-import com.goodchef.liking.mvp.view.BindDevicesView;
 import com.goodchef.liking.widgets.RoundImageView;
 import com.goodchef.liking.widgets.WhewView;
 
@@ -38,7 +37,7 @@ import butterknife.OnClick;
  * version 1.0.0
  */
 
-public class BingBraceletActivity extends AppBarActivity implements BindDevicesView, BindBraceleContract.BindBraceleView{
+public class BingBraceletActivity extends AppBarActivity implements BindBraceleContract.BindBraceleView{
 
     @BindView(R.id.blue_tooth_WhewView)
     WhewView mBlueToothWhewView;
