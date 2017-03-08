@@ -141,7 +141,9 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     };
 
     private void sendRequest(int page) {
-        mMyGroupCoursesPresenter = new MyGroupCoursesPresenter(getActivity(), this);
+        if (mMyGroupCoursesPresenter ==null){
+            mMyGroupCoursesPresenter = new MyGroupCoursesPresenter(getActivity(), this);
+        }
         mMyGroupCoursesPresenter.getMyGroupList(page, MyGroupLessonFragment.this);
     }
 
@@ -152,6 +154,11 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         if (myGroupCoursesDataList != null) {
             updateListView(myGroupCoursesDataList);
         }
+    }
+
+    @Override
+    public void updateLoadHomePage() {
+        loadHomePage();
     }
 
     /**
@@ -203,33 +210,14 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendCancelCoursesRequest(orderId);
+                mMyGroupCoursesPresenter.sendCancelCoursesRequest(orderId);
                 dialog.dismiss();
             }
         });
         builder.create().show();
     }
 
-    //发送取消请求
-    private void sendCancelCoursesRequest(String orderId) {
-        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(getActivity(), R.string.loading_data) {
-            @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    PopupUtils.showToast(R.string.cancel_success);
-                    loadHomePage();
-                } else {
-                    PopupUtils.showToast(result.getMessage());
-                }
-            }
 
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-            }
-        });
-    }
 
     @Override
     protected boolean isEventTarget() {
