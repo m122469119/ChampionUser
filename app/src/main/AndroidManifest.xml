@@ -302,6 +302,11 @@
             android:name=".activity.MoreActivity"
             android:screenOrientation="portrait"/>
 
+        <!--优惠券详情-->
+        <activity android:name=".activity.CouponsDetailsActivity"
+            android:screenOrientation="portrait"
+            />
+
         <!--支付宝h5页面-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -354,6 +359,9 @@
                 <category android:name="com.goodchef.liking"/>
             </intent-filter>
         </activity>
+
+
+
         <!-- Required  SDK核心功能-->
         <service
             android:name="cn.jpush.android.service.DownloadService"

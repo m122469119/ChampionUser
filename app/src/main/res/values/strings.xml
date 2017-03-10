@@ -589,5 +589,10 @@
     <string name="user_can_not_revise_info">您的修改次数已用完，如有疑问请联系客服</string>
     <string name="go_to_grade">去评分</string>
     <string name="default_head_image_prompt">默认头像岂能表现您的颜值？</string>
-
+    <string name="price_type">¥</string>
+    <string name="already_used">已使用</string>
+    <string name="already_past">已过期</string>
+    <string name="can_used_venue">使用场馆</string>
+    <string name="find_all">查看全部</string>
+    <string name="used_need_know">使用须知</string>
 </resources>
