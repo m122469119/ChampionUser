@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
-import com.aaron.android.codelibrary.utils.DateUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -32,24 +31,35 @@ import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
-import java.util.Date;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:首次登陆完成个人信息界面
  * Author shaozucheng
  * Time:16/8/19 下午2:35
  */
-public class CompleteUserInfoActivity extends AppBarActivity implements View.OnClickListener, UserInfoView {
+public class CompleteUserInfoActivity extends AppBarActivity implements UserInfoView {
 
-    private LikingStateView mStateView;
-    private HImageView mHImageView;
-    private TextView mUserNameTextView;
-    private TextView mBirthdayTextView;
-    private TextView mHeightTextView;
-    private ImageView mSexManImage;
-    private ImageView mSexWomenImage;
-    private TextView mWeightTextView;
-    private TextView mCompleteBtn;
+    @BindView(R.id.complete_userInfo_state_view)
+    LikingStateView mStateView;
+    @BindView(R.id.complete_user_head_image)
+    HImageView mHImageView;
+    @BindView(R.id.user_name_text)
+    TextView mUserNameTextView;
+    @BindView(R.id.sex_man_image)
+    ImageView mSexManImage;
+    @BindView(R.id.sex_women_image)
+    ImageView mSexWomenImage;
+    @BindView(R.id.birthday_text)
+    TextView mBirthdayTextView;
+    @BindView(R.id.height_text)
+    TextView mHeightTextView;
+    @BindView(R.id.weight_text)
+    TextView mWeightTextView;
+    @BindView(R.id.complete_userInfo_btn)
+    TextView mCompleteBtn;
 
     private String userName;
     private String mLocalHeadImageUrl;
@@ -66,27 +76,13 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_user_info);
+        ButterKnife.bind(this);
+        mUserInfoPresenter = new UserInfoPresenter(this, this);
         setTitle(getString(R.string.activity_title_complete_userinfo));
         showHomeUpIcon(0);
-        initView();
         initData();
         getIntentData();
-        mUserInfoPresenter = new UserInfoPresenter(this, this);
     }
-
-    private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.complete_userInfo_state_view);
-        mHImageView = (HImageView) findViewById(R.id.complete_user_head_image);
-        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
-        mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
-        mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
-        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
-        mHeightTextView = (TextView) findViewById(R.id.height_text);
-        mWeightTextView = (TextView) findViewById(R.id.weight_text);
-        mCompleteBtn = (TextView) findViewById(R.id.complete_userInfo_btn);
-        mCompleteBtn.setOnClickListener(this);
-    }
-
 
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -134,7 +130,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
         sendImageFile(mBitmap);
     }
 
-    @Override
+    @OnClick({R.id.complete_userInfo_btn})
     public void onClick(View v) {
         if (v == mCompleteBtn) {
             postEvent(new UpDateUserInfoMessage());
@@ -191,7 +187,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             postEvent(new UpDateUserInfoMessage());
-            this.finish();
+            finish();
         }
         return super.onKeyDown(keyCode, event);
     }
