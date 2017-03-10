@@ -22,29 +22,42 @@ import com.goodchef.liking.utils.VerifyDateUtils;
 import com.goodchef.liking.widgets.RulerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:首次登陆选择出生日期
  * Author shaozucheng
  * Time:16/8/16 下午3:25
  */
-public class SelectBirthdayActivity extends AppBarActivity implements View.OnClickListener {
+public class SelectBirthdayActivity extends AppBarActivity  {
     public static final String KEY_BIRTHDAY = "key_birthday";
     public static final String KEY_BIRTHDAY_FORMAT = "key_birthday_format";
-    private LikingStateView mStateView;
-    private HImageView mHImageView;
-    private TextView mUserNameTextView;
-    private ImageView mSexManImage;
-    private ImageView mSexWomenImage;
-    private TextView mBirthdayTextView;
-    private TextView mNextBtn;
+    @BindView(R.id.select_birthady_state_view)
+    LikingStateView mSelectBirthadyStateView;
+    @BindView(R.id.select_birthday_head_image)
+    HImageView mHImageView;
+    @BindView(R.id.user_name_text)
+    TextView mUserNameTextView;
+    @BindView(R.id.sex_man_image)
+    ImageView mSexManImage;
+    @BindView(R.id.sex_women_image)
+    ImageView mSexWomenImage;
+    @BindView(R.id.birthday_text)
+    TextView mBirthdayTextView;
+    @BindView(R.id.year_ruler_view)
+    RulerView mYearRulerView;
+    @BindView(R.id.month_ruler_view)
+    RulerView mMonthRulerView;
+    @BindView(R.id.day_ruler_view)
+    RulerView mDayRulerView;
+    @BindView(R.id.select_birthday_next_btn)
+    TextView mNextBtn;
 
     private String userName;
     private String mLocalHeadImageUrl;
     private int sex;
-
-    private RulerView mYearRulerView;
-    private RulerView mMontyRulerView;
-    private RulerView mDayRulerView;
 
     private int year = 1950;
     private int month = 1;
@@ -55,6 +68,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_birthday);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.activity_title_select_birthday));
         iniView();
         initData();
@@ -62,30 +76,16 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
     }
 
     private void iniView() {
-        mStateView = (LikingStateView) findViewById(R.id.select_birthady_state_view);
-        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
-        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
-        mHImageView = (HImageView) findViewById(R.id.select_birthday_head_image);
-        mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
-        mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
-        mNextBtn = (TextView) findViewById(R.id.select_birthday_next_btn);
-
-        mYearRulerView = (RulerView) findViewById(R.id.year_ruler_view);
-        mMontyRulerView = (RulerView) findViewById(R.id.month_ruler_view);
-        mDayRulerView = (RulerView) findViewById(R.id.day_ruler_view);
-
-        mNextBtn.setOnClickListener(this);
-
         setRuleView();
     }
 
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-            mStateView.setState(StateView.State.SUCCESS);
+            mSelectBirthadyStateView.setState(StateView.State.SUCCESS);
         } else {
-            mStateView.setState(StateView.State.FAILED);
+            mSelectBirthadyStateView.setState(StateView.State.FAILED);
         }
-        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+        mSelectBirthadyStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
                 initData();
@@ -118,7 +118,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
 
     private void setRuleView() {
         mYearRulerView.smoothScrollTo(37);
-        mMontyRulerView.smoothScrollTo(2);
+        mMonthRulerView.smoothScrollTo(2);
         mDayRulerView.smoothScrollTo(11);
 
         mYearRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
@@ -130,7 +130,7 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
             }
         });
 
-        mMontyRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
+        mMonthRulerView.setOnScaleListener(new RulerView.OnScaleListener() {
             @Override
             public void onScaleChanged(int scale) {
                 month = scale;
@@ -162,29 +162,36 @@ public class SelectBirthdayActivity extends AppBarActivity implements View.OnCli
         }
     }
 
-    @Override
+    @OnClick({R.id.select_birthday_next_btn})
     public void onClick(View v) {
         if (v == mNextBtn) {
-            String monthFormat;
-            String dayFormat;
-            if (month < 10) {
-                monthFormat = "0" + month;
-            } else {
-                monthFormat = month + "";
-            }
-            if (day < 10) {
-                dayFormat = "0" + day;
-            } else {
-                dayFormat = day + "";
-            }
-            Intent intent = new Intent(this, SelectHeightActivity.class);
-            intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
-            intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
-            intent.putExtra(SexActivity.KEY_SEX, sex);
-            intent.putExtra(KEY_BIRTHDAY, mBirthdayTextView.getText().toString().trim());
-            intent.putExtra(KEY_BIRTHDAY_FORMAT, year + "-" + monthFormat + "-" + dayFormat);
-            startActivity(intent);
+            doBirthdayData();
         }
+    }
+
+    /**
+     * 处理出生日期
+     */
+    private void doBirthdayData() {
+        String monthFormat;
+        String dayFormat;
+        if (month < 10) {
+            monthFormat = "0" + month;
+        } else {
+            monthFormat = month + "";
+        }
+        if (day < 10) {
+            dayFormat = "0" + day;
+        } else {
+            dayFormat = day + "";
+        }
+        Intent intent = new Intent(this, SelectHeightActivity.class);
+        intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
+        intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
+        intent.putExtra(SexActivity.KEY_SEX, sex);
+        intent.putExtra(KEY_BIRTHDAY, mBirthdayTextView.getText().toString().trim());
+        intent.putExtra(KEY_BIRTHDAY_FORMAT, year + "-" + monthFormat + "-" + dayFormat);
+        startActivity(intent);
     }
 
 
