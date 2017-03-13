@@ -11,6 +11,9 @@ import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * Created on 17/3/13.
  *
@@ -27,6 +30,8 @@ public class LoginContract {
 
         public void userLogin(String phone, String captcha) {
             LikingApiService.Creator.getInstance().userLogin(UrlList.sHostVersion, phone, captcha)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
                     .subscribe(userLoginResult -> {
                         if (LiKingVerifyUtils.isValid(mContext, userLoginResult)) {
                             mView.updateLoginView(userLoginResult.getUserLoginData());
