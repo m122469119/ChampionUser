@@ -206,7 +206,8 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void userLogin(String phone, String captcha, RequestCallback<UserLoginResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_LOGIN, UserLoginResult.class, null, getCommonRequestParams().append("phone", phone).append("captcha", captcha), callback);
+        VolleyHttpRequestClient.doPost(UrlList.USER_LOGIN, UserLoginResult.class, null, getCommonRequestParams()
+                .append("phone", phone).append("captcha", captcha), callback);
     }
 
 

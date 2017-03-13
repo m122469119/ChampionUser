@@ -488,7 +488,7 @@ public class Preference extends AbsPreference {
             }
             String apiVersion = baseConfigResult.getBaseConfigData().getApiVersion();
             if (!StringUtils.isEmpty(apiVersion)) {
-                UrlList.HOST_VERSION = File.separator + apiVersion;
+                UrlList.sHostVersion = File.separator + apiVersion;
             }
         }
         String baseConfig = new Gson().toJson(baseConfigResult);

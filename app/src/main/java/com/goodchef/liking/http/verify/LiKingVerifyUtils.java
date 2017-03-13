@@ -201,7 +201,7 @@ public class LiKingVerifyUtils {
                     sBaseConfigResult = result;
                     BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
                     if (baseConfigData != null) {
-                        UrlList.HOST_VERSION = File.separator + baseConfigData.getApiVersion();
+                        UrlList.sHostVersion = File.separator + baseConfigData.getApiVersion();
                     }
                     //解析已开通城市
                     loadOpenCitysInfo(context);

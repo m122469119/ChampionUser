@@ -26,10 +26,14 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
+import com.goodchef.liking.module.user.LoginContract;
 import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -37,68 +41,66 @@ import cn.jpush.android.api.JPushInterface;
  * Author shaozucheng
  * Time:16/6/6 上午10:04
  */
-public class LoginActivity extends AppBarActivity implements View.OnClickListener, LoginView {
+public class LoginActivity extends AppBarActivity implements LoginContract.LoginView, LoginView {
     public static final String KEY_TITLE_SET_USER_INFO = "key_title_set_user_info";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
-    private EditText mLoginPhoneEditText;//输入手机号
-    private EditText mCodeEditText;//输入验证码
-    private TextView mSendCodeBtn;//获取验证码按钮
-    private TextView mRegisterBtn;//注册协议
-    private Button mLoginBtn;//登录按钮
+    @BindView(R.id.et_login_phone)
+    EditText mLoginPhoneEditText;//输入手机号
+    @BindView(R.id.send_verification_code_btn)
+    TextView mSendCodeBtn;//获取验证码按钮
+    @BindView(R.id.et_verification_code)
+    EditText mCodeEditText;//输入验证码
+    @BindView(R.id.register_agree_on)
+    TextView mRegisterBtn;//注册协议
+    @BindView(R.id.login_btn)
+    Button mLoginBtn;//登录按钮
 
     private String phoneStr;
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
+    private LoginContract.LoginPresenter mLoginPresenter;
+    private LoginPresenter mLoginPresenter1;
 
-    private LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
         setTitle(R.string.login_btn_text);
         initData();
     }
 
     private void initData() {
-        initView();
         mMyCountdownTime = new MyCountdownTime(60000, 1000);
-        mLoginPresenter = new LoginPresenter(this, this);
+        mLoginPresenter = new LoginContract.LoginPresenter(this, this);
+        mLoginPresenter1 = new LoginPresenter(this, this);
         mSendCodeBtn.setText(getString(R.string.get_version_code));
         showHomeUpIcon(R.drawable.app_bar_left_quit);
-        setViewOnClickListener();
     }
 
-    private void initView() {
-        mLoginPhoneEditText = (EditText) findViewById(R.id.et_login_phone);
-        mCodeEditText = (EditText) findViewById(R.id.et_verification_code);
-        mSendCodeBtn = (TextView) findViewById(R.id.send_verification_code_btn);
-        mRegisterBtn = (TextView) findViewById(R.id.register_agree_on);
-        mLoginBtn = (Button) findViewById(R.id.login_btn);
-    }
-
-    private void setViewOnClickListener() {
-        mSendCodeBtn.setOnClickListener(this);
-        mLoginBtn.setOnClickListener(this);
-        mRegisterBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == mSendCodeBtn) {
-            getVerificationCode();
-        } else if (v == mLoginBtn) {
-            login();
-        } else if (v == mRegisterBtn) {
-            BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-            if (baseConfigResult != null) {
-                BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-                if (baseConfigData != null) {
-                    String agreeUrl = baseConfigData.getAgreeUrl();
-                    if (!StringUtils.isEmpty(agreeUrl)) {
-                        HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.user_agreement));
+    @OnClick({R.id.send_verification_code_btn, R.id.register_agree_on, R.id.login_btn})
+    public void buttonClick(View view) {
+        switch (view.getId()) {
+            case R.id.login_btn:
+                login();
+                break;
+            case R.id.register_agree_on:
+                BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+                if (baseConfigResult != null) {
+                    BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                    if (baseConfigData != null) {
+                        String agreeUrl = baseConfigData.getAgreeUrl();
+                        if (!StringUtils.isEmpty(agreeUrl)) {
+                            HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.user_agreement));
+                        }
                     }
                 }
-            }
+                break;
+            case R.id.send_verification_code_btn:
+                getVerificationCode();
+                break;
+            default:
+                break;
         }
     }
 
@@ -117,11 +119,9 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         requestLogin(phoneStr, code);
     }
 
-
     private void requestLogin(String phoneStr, String code) {
         mLoginPresenter.userLogin(phoneStr, code);
     }
-
 
     /**
      * 获取验证码
@@ -130,10 +130,9 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
         if (checkPhone()) {
             //发送请求
             mMyCountdownTime.start();
-            mLoginPresenter.getVerificationCode(phoneStr);
+            mLoginPresenter1.getVerificationCode(phoneStr);
         }
     }
-
 
     /**
      * 校验手机号码
@@ -181,7 +180,6 @@ public class LoginActivity extends AppBarActivity implements View.OnClickListene
                 startActivity(intent);
             }
             this.finish();
-
         }
     }
 
