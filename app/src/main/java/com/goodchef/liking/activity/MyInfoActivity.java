@@ -39,21 +39,35 @@ import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:修改个人信息
  * Author shaozucheng
  * Time:16/5/27 下午3:11
  */
-public class MyInfoActivity extends AppBarActivity implements View.OnClickListener, UserInfoView {
-    private RelativeLayout mHeadImageLayout;
-    private HImageView mHeadImage;
-    private EditText mUserNameEditText;
-    private TextView mSelectSexTextView;
-    private TextView mSelectBirthdayTextView;
-    private EditText mUserHeightEditText;
-    private EditText mUserWeightEditText;
-    private TextView mFinishBtn;
-    private LikingStateView mStateView;
+public class MyInfoActivity extends AppBarActivity implements UserInfoView {
+    @BindView(R.id.my_info_state_view)
+    LikingStateView mStateView;
+    @BindView(R.id.head_image)
+    HImageView mHeadImage;
+    @BindView(R.id.layout_head_image)
+    RelativeLayout mHeadImageLayout;
+    @BindView(R.id.edit_user_name)
+    EditText mUserNameEditText;
+    @BindView(R.id.select_sex)
+    TextView mSelectSexTextView;
+    @BindView(R.id.select_birthday)
+    TextView mSelectBirthdayTextView;
+    @BindView(R.id.edit_height)
+    EditText mUserHeightEditText;
+    @BindView(R.id.edit_weight)
+    EditText mUserWeightEditText;
+    @BindView(R.id.finish_btn)
+    TextView mFinishBtn;
+
 
     private CameraPhotoHelper mCameraPhotoHelper;
     private UserInfoPresenter mUserInfoPresenter;
@@ -71,8 +85,8 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
+        ButterKnife.bind(this);
         initView();
-        setViewOnClickListener();
         initData();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
         mCameraPhotoHelper = new CameraPhotoHelper(this);
@@ -83,7 +97,6 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         super.onConfigurationChanged(newConfig);
         mCameraPhotoHelper.onConfigurationChanged(newConfig);
     }
-
 
     private void initData() {
         mUserInfoPresenter = new UserInfoPresenter(this, this);
@@ -99,15 +112,6 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.my_info_state_view);
-        mHeadImageLayout = (RelativeLayout) findViewById(R.id.layout_head_image);
-        mHeadImage = (HImageView) findViewById(R.id.head_image);
-        mUserNameEditText = (EditText) findViewById(R.id.edit_user_name);
-        mSelectSexTextView = (TextView) findViewById(R.id.select_sex);
-        mSelectBirthdayTextView = (TextView) findViewById(R.id.select_birthday);
-        mUserHeightEditText = (EditText) findViewById(R.id.edit_height);
-        mUserWeightEditText = (EditText) findViewById(R.id.edit_weight);
-        mFinishBtn = (TextView) findViewById(R.id.finish_btn);
         setFlag();
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -194,14 +198,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         });
     }
 
-    private void setViewOnClickListener() {
-        mHeadImageLayout.setOnClickListener(this);
-        mSelectSexTextView.setOnClickListener(this);
-        mSelectBirthdayTextView.setOnClickListener(this);
-        mFinishBtn.setOnClickListener(this);
-    }
-
-    @Override
+    @OnClick({R.id.layout_head_image,R.id.select_sex,R.id.select_birthday,R.id.finish_btn})
     public void onClick(View v) {
         if (v == mHeadImageLayout) {
             showCameraDialog();
@@ -387,7 +384,7 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             if (!StringUtils.isEmpty(birthday)) {
                 mSelectBirthdayTextView.setText(birthday);
                 String a[] = birthday.split("-");
-                if (a != null && a.length >= 2) {
+                if (a.length >= 2) {
                     yearStr = a[0];
                     monthStr = a[1];
                     dayStr = a[2];

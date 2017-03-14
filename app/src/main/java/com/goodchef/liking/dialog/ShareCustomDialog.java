@@ -20,7 +20,7 @@ import com.goodchef.liking.R;
  */
 public class ShareCustomDialog {
 
-    private Context context;
+    private Context mContext;
     private Dialog mDialog;
 
 
@@ -31,7 +31,7 @@ public class ShareCustomDialog {
 
 
     public ShareCustomDialog(Context context) {
-        this.context = context;
+        this.mContext = context;
         mDialog = new android.app.AlertDialog.Builder(context, R.style.share_dialog_no_screen).create();
         //这一行很重要
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.CENTER, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
