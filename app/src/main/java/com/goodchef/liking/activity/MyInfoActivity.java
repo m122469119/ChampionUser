@@ -60,7 +60,6 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
 
     private int gender = -1;
     private String title;
-    private int intentType;
     private boolean isChange = false;
     private UserInfoResult.UserInfoData mUserInfoData;
     private String headUrl = "";
@@ -89,19 +88,8 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
     private void initData() {
         mUserInfoPresenter = new UserInfoPresenter(this, this);
         title = getIntent().getStringExtra(LoginActivity.KEY_TITLE_SET_USER_INFO);
-        intentType = getIntent().getIntExtra(LoginActivity.KEY_INTENT_TYPE, 0);
         if (!StringUtils.isEmpty(title)) {
             setTitle(title);
-        }
-        if (intentType == 1) {
-            showRightMenu(getString(R.string.skip), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        } else if (intentType == 2) {
-            showRightMenu("");
         }
         setInfoRequest();
     }
