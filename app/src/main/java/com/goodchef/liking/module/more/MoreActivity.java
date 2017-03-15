@@ -56,7 +56,6 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         initView();
         initViewIconAndText();
         setViewOnClickListener();
-        
         sendUpdateAppRequest();
     }
 
