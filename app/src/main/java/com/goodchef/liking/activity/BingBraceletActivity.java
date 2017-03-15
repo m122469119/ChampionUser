@@ -29,6 +29,7 @@ import com.goodchef.liking.widgets.WhewView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:绑定手环
@@ -481,7 +482,7 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceleC
                         }
                     });
                     mPresenter.setBlueToothTime();
-                    mPresenter.sendBindDeviceRequest();
+                    mPresenter.sendBindDeviceRequest(JPushInterface.getUdid(this));
                 } else if (data[4] == 0x01) {
                     LogUtils.i("BleService", "登录失败");
                 }

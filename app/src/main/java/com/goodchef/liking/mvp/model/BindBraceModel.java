@@ -15,6 +15,7 @@ import com.aaron.android.codelibrary.utils.SecurityUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.utils.DeviceUtils;
+import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created on 2017/3/6
@@ -132,10 +135,10 @@ public class BindBraceModel {
     /**
      * 发送绑定手环信息
      */
-    public void bindDevices(RequestCallback<BaseResult> requestCallback) {
+    public void bindDevices(String devicesId,RequestCallback<BaseResult> requestCallback) {
         String osName = Build.MODEL;
         String osVersion = Build.VERSION.RELEASE;
-        LiKingApi.bindDevices(mBindDevicesName, mFirmwareInfo, SecurityUtils.MD5.get16MD5String(DeviceUtils.getDeviceInfo(BaseApplication.getInstance())), "android" , osName, osVersion, requestCallback);
+        LiKingApi.bindDevices(mBindDevicesName, mFirmwareInfo, devicesId, "android" , osName, osVersion, requestCallback);
     }
 
 

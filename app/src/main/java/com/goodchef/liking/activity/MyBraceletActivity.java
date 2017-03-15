@@ -40,6 +40,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:我的手环
@@ -660,7 +661,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         if (mUnBindDevicesPresenter == null) {
             mUnBindDevicesPresenter = new UnBindDevicesPresenter(this, this);
         }
-        mUnBindDevicesPresenter.unBindDevices();
+        mUnBindDevicesPresenter.unBindDevices(JPushInterface.getUdid(this));
     }
 
     @Override

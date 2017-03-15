@@ -154,18 +154,18 @@ public interface BindBraceleContract {
         /**
          * 发送绑定请求到后端
          */
-        public void sendBindDeviceRequest() {
+        public void sendBindDeviceRequest(String devicesId) {
             if (isLoginSuccess && !isSendRequest) {
                 isSendRequest = true;
-                sendDevicesRequest();
+                sendDevicesRequest(devicesId);
             }
         }
 
         /**
          * 发送绑定手环信息
          */
-        private void sendDevicesRequest() {
-            mModel.bindDevices(new RequestCallback<BaseResult>() {
+        private void sendDevicesRequest(String devicesId) {
+            mModel.bindDevices(devicesId,new RequestCallback<BaseResult>() {
                 @Override
                 public void onSuccess(BaseResult result) {
                     if (LiKingVerifyUtils.isValid(mContext, result)) {

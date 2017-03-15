@@ -27,8 +27,8 @@ public class UnBindDevicesPresenter extends BasePresenter<UnBindDevicesView> {
         super(context, mainView);
     }
 
-    public void unBindDevices() {
-        LiKingApi.unBindDevices(SecurityUtils.MD5.get16MD5String(DeviceUtils.getDeviceInfo(BaseApplication.getInstance())), new RequestCallback<BaseResult>() {
+    public void unBindDevices(String devicesId) {
+        LiKingApi.unBindDevices(devicesId, new RequestCallback<BaseResult>() {
             @Override
             public void onSuccess(BaseResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
