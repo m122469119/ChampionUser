@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +21,12 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.WriteNameActivity;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.module.user.LoginContract;
-import com.goodchef.liking.mvp.presenter.LoginPresenter;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
 
@@ -58,7 +57,6 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     private String phoneStr;
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
     private LoginContract.LoginPresenter mLoginPresenter;
-    private LoginPresenter mLoginPresenter1;
 
 
     @Override
@@ -73,7 +71,6 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     private void initData() {
         mMyCountdownTime = new MyCountdownTime(60000, 1000);
         mLoginPresenter = new LoginContract.LoginPresenter(this, this);
-        mLoginPresenter1 = new LoginPresenter(this, this);
         mSendCodeBtn.setText(getString(R.string.get_version_code));
         showHomeUpIcon(R.drawable.app_bar_left_quit);
     }
@@ -130,7 +127,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
         if (checkPhone()) {
             //发送请求
             mMyCountdownTime.start();
-            mLoginPresenter1.getVerificationCode(phoneStr);
+            mLoginPresenter.getVerificationCode(phoneStr);
         }
     }
 
@@ -165,12 +162,6 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     @Override
     public void updateLoginView(UserLoginResult.UserLoginData userLoginData) {
         if (userLoginData != null) {
-            Preference.setToken(userLoginData.getToken());
-            Preference.setNickName(userLoginData.getName());
-            Preference.setUserIconUrl(userLoginData.getAvatar());
-            Preference.setUserPhone(userLoginData.getPhone());
-            Preference.setIsNewUser(userLoginData.getNewUser());
-            Preference.setIsVip(userLoginData.getIsVip());
             postEvent(new LoginFinishMessage());
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
@@ -223,9 +214,9 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     /**
      * 发送验证码按钮 60s倒计时
      */
-    class MyCountdownTime extends CountDownTimer {
+    final class MyCountdownTime extends CountDownTimer {
 
-        public MyCountdownTime(long millisInFuture, long countDownInterval) {
+        MyCountdownTime(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
 

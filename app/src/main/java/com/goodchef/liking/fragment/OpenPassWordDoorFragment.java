@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.mvp.presenter.UserAuthPresenter;
 import com.goodchef.liking.mvp.view.UserAuthView;

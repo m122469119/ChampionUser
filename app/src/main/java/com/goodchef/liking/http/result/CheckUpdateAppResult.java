@@ -18,17 +18,17 @@ public class CheckUpdateAppResult extends BaseResult {
      */
 
     @SerializedName("data")
-    private UpDateAppData data;
+    private UpdateAppData data;
 
-    public UpDateAppData getData() {
+    public UpdateAppData getData() {
         return data;
     }
 
-    public void setData(UpDateAppData data) {
+    public void setData(UpdateAppData data) {
         this.data = data;
     }
 
-    public static class UpDateAppData {
+    public static class UpdateAppData {
         /**
          * update : 1
          * title : 更新提示

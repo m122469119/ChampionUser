@@ -27,6 +27,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
 import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.storage.Preference;

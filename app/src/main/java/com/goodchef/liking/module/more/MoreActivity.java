@@ -1,6 +1,5 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.more;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,9 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
-import com.goodchef.liking.http.result.UserLoginResult;
-import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
-import com.goodchef.liking.mvp.presenter.LoginPresenter;
-import com.goodchef.liking.mvp.view.CheckUpdateAppView;
-import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.FileDownloaderManager;
 
@@ -36,7 +30,7 @@ import butterknife.ButterKnife;
  * version 1.0.0
  */
 
-public class MoreActivity extends AppBarActivity implements View.OnClickListener, LoginView, CheckUpdateAppView {
+public class MoreActivity extends AppBarActivity implements View.OnClickListener, MoreContract.MoreView {
 
     @BindView(R.id.login_out_btn)
     TextView mLoginOutBtn;
@@ -49,9 +43,8 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
     private LinearLayout mAboutUsLayout;//关于我们
 
-    public static final String NULL_STRING = "";
-    private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
-    private CheckUpdateAppResult.UpDateAppData mUpDateAppData;
+    private MoreContract.MorePresenter mPresenter;
+    private CheckUpdateAppResult.UpdateAppData mUpdateAppData;
     private FileDownloaderManager mFileDownloaderManager;
 
     @Override
@@ -95,10 +88,10 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
      * 发送请求
      */
     private void sendUpdateAppRequest() {
-        if (mCheckUpdateAppPresenter == null) {
-            mCheckUpdateAppPresenter = new CheckUpdateAppPresenter(this, this);
+        if (mPresenter == null) {
+            mPresenter = new MoreContract.MorePresenter(this, this);
         }
-        mCheckUpdateAppPresenter.getUpdateApp();
+        mPresenter.checkAppUpdate();
     }
 
     private void setViewOnClickListener() {
@@ -112,8 +105,8 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         if (v == mAboutUsLayout) {//关于我们
             startActivity(AboutActivity.class);
         } else if (v == mLayoutCheckUpdate) {//检测更新
-            if (mUpDateAppData != null) {
-                int update = mUpDateAppData.getUpdate();
+            if (mUpdateAppData != null) {
+                int update = mUpdateAppData.getUpdate();
                 if (update == 1 || update == 2) {
                     showCheckUpdateDialog();
                 }
@@ -132,25 +125,18 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        textView.setText((mUpDateAppData.getTitle()));
+        textView.setText((mUpdateAppData.getTitle()));
         builder.setCustomTitle(view);
-        builder.setMessage(mUpDateAppData.getContent());
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (!StringUtils.isEmpty(mUpDateAppData.getUrl())) {
-                    mFileDownloaderManager = new FileDownloaderManager(MoreActivity.this);
-                    mFileDownloaderManager.downloadFile(mUpDateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
-                }
-                dialog.dismiss();
-            }
-        });
+        builder.setMessage(mUpdateAppData.getContent());
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(R.string.dialog_app_update,
+                (dialog, which) -> {
+                    if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
+                        mFileDownloaderManager = new FileDownloaderManager(MoreActivity.this);
+                        mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
+                    }
+                    dialog.dismiss();
+                });
         builder.create().show();
     }
 
@@ -160,18 +146,10 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
     private void showExitDialog() {
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         builder.setMessage(getString(R.string.login_exit_message));
-        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                exitLoginRequest();
-                dialog.dismiss();
-            }
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
+            exitLoginRequest();
+            dialog.dismiss();
         });
         builder.create().show();
     }
@@ -180,28 +158,14 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
      * 退出登录发送请求
      */
     private void exitLoginRequest() {
-        LoginPresenter loginPresenter = new LoginPresenter(this, this);
-        loginPresenter.userLoginOut();
-    }
-
-    @Override
-    public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
-
-    }
-
-    @Override
-    public void updateLoginView(UserLoginResult.UserLoginData userLoginData) {
-
+        if (mPresenter == null) {
+            mPresenter = new MoreContract.MorePresenter(this, this);
+        }
+        mPresenter.loginOut();
     }
 
     @Override
     public void updateLoginOut() {
-        Preference.setToken(NULL_STRING);
-        Preference.setNickName(NULL_STRING);
-        Preference.setUserPhone(NULL_STRING);
-        Preference.setIsNewUser(null);
-        Preference.setUserIconUrl(NULL_STRING);
-        Preference.setIsBind("0");
         PopupUtils.showToast(getString(R.string.exit_login_success));
         postEvent(new LoginOutMessage());
         mLoginOutBtn.setVisibility(View.GONE);
@@ -209,16 +173,16 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
     }
 
     @Override
-    public void updateCheckUpdateAppView(CheckUpdateAppResult.UpDateAppData upDateAppData) {
-        mUpDateAppData = upDateAppData;
-        int update = mUpDateAppData.getUpdate();
+    public void updateCheckUpdateAppView(CheckUpdateAppResult.UpdateAppData updateAppData) {
+        mUpdateAppData = updateAppData;
+        int update = mUpdateAppData.getUpdate();
         if (update == 0) {//无更新
             Preference.setUpdateApp(0);
             mCheckUpdatePromptTextView.setVisibility(View.VISIBLE);
             mCheckUpdateImageView.setVisibility(View.GONE);
         } else if (update == 1 || update == 2) {//有更新
             Preference.setUpdateApp(1);
-            Preference.setNewApkName(upDateAppData.getLastestVer());
+            Preference.setNewApkName(updateAppData.getLastestVer());
             mCheckUpdatePromptTextView.setVisibility(View.GONE);
             mCheckUpdateImageView.setVisibility(View.VISIBLE);
         }

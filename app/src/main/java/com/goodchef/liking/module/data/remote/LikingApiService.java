@@ -1,8 +1,9 @@
 package com.goodchef.liking.module.data.remote;
 
-import com.aaron.android.framework.library.http.retrofit.ServiceGenerator;
-import com.goodchef.liking.http.api.LikingCommonInterceptor;
+import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.UserLoginResult;
+import com.goodchef.liking.http.result.VerificationCodeResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
@@ -18,25 +19,45 @@ import retrofit2.http.Query;
 
 public interface LikingApiService {
     String PATH_VERSION = "version";
+    String KEY_PHONE = "phone";
+    String KEY_TOKEN = "token";
 
-    @POST(LikingApiService.Urls.USER_LOGIN)
+    @POST(Urls.USER_LOGIN)
     Observable<UserLoginResult> userLogin(@Path(PATH_VERSION) String version,
                                           @Query("phone") String phone,
                                           @Query("captcha") String captcha);
 
-    class Creator {
-        public static LikingApiService getInstance() {
-            return LikingNewApiHolder.sLikingApiService;
-        }
-        static class LikingNewApiHolder {
-            private static LikingApiService sLikingApiService = ServiceGenerator.createService(LikingApiService.class, new LikingCommonInterceptor());
-        }
-    }
+    @POST(Urls.GET_VERIFICATION_CODE)
+    Observable<VerificationCodeResult> getVerificationCode(@Query(KEY_PHONE) String phone);
+
+    @POST(Urls.CHECK_UPDATE)
+    Observable<CheckUpdateAppResult> getCheckUpdateAppResult(@Path(PATH_VERSION) String version);
+
+    @POST(Urls.USER_LOGOUT)
+    Observable<BaseResult> userLogout(@Path(PATH_VERSION) String version,
+                                      @Query(KEY_TOKEN) String token,
+                                      @Query("registration_id") String registrationId);
 
     class Urls {
         private static final String sVersion = "{version}/";
-        /**基础配置*/
-        public static final String USER_LOGIN = sVersion + "user/login";
+        /**
+         * 获取验证码
+         */
+        static final String GET_VERIFICATION_CODE = "sms/captcha";
+        /**
+         * 检查更新
+         */
+        static final String CHECK_UPDATE = sVersion + "check-update/check-update";
+        /**
+         * 用户登录
+         */
+        static final String USER_LOGIN = sVersion + "user/login";
+        /**
+         * 用户登出
+         */
+        static final String USER_LOGOUT = sVersion + "user/logout";
+
+
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
 //        /**获取首页课程列表*/

@@ -97,7 +97,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
     private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
-    private CheckUpdateAppResult.UpDateAppData mUpDateAppData;
+    private CheckUpdateAppResult.UpdateAppData mUpdateAppData;
     private FileDownloaderManager mFileDownloaderManager;
 
     @Override
@@ -141,28 +141,28 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void updateCheckUpdateAppView(CheckUpdateAppResult.UpDateAppData upDateAppData) {
-        mUpDateAppData = upDateAppData;
+    public void updateCheckUpdateAppView(CheckUpdateAppResult.UpdateAppData updateAppData) {
+        mUpdateAppData = updateAppData;
         checkUpdateApp();
     }
 
     private void checkUpdateApp() {
-        if (mUpDateAppData == null) {
+        if (mUpdateAppData == null) {
             return;
         }
-        int update = mUpDateAppData.getUpdate();
+        int update = mUpdateAppData.getUpdate();
         if (update == 0) {//无更新
             Preference.setUpdateApp(0);
         } else if (update == 1) {//有更新
             Preference.setUpdateApp(1);
-            Preference.setNewApkName(mUpDateAppData.getLastestVer());
+            Preference.setNewApkName(mUpdateAppData.getLastestVer());
             if (Preference.getIsUpdate()) {
                 Preference.setIsUpdateApp(false);
                 showCheckUpdateDialog(false);
             }
         } else if (update == 2) {//强制更新
             Preference.setUpdateApp(2);
-            Preference.setNewApkName(mUpDateAppData.getLastestVer());
+            Preference.setNewApkName(mUpdateAppData.getLastestVer());
             showCheckUpdateDialog(true);
         }
     }
@@ -177,9 +177,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        textView.setText((mUpDateAppData.getTitle()));
+        textView.setText((mUpdateAppData.getTitle()));
         builder.setCustomTitle(view);
-        builder.setMessage(mUpDateAppData.getContent());
+        builder.setMessage(mUpdateAppData.getContent());
         if (!isForceUpdate) {
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
@@ -191,9 +191,9 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!StringUtils.isEmpty(mUpDateAppData.getUrl())) {
+                if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
                     mFileDownloaderManager = new FileDownloaderManager(LikingHomeActivity.this);
-                    mFileDownloaderManager.downloadFile(mUpDateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
+                    mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
                 }
                 dialog.dismiss();
             }

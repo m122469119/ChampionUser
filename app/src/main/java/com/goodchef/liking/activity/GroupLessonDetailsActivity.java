@@ -42,6 +42,7 @@ import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
@@ -375,9 +376,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
     }
 
-    @OnClick({R.id.group_immediately_submit_btn,R.id.cancel_order_btn,R.id.layout_gym_introduce,R.id.layout_group_details,R.id.layout_group_courses_share})
+    @OnClick({R.id.group_immediately_submit_btn, R.id.cancel_order_btn, R.id.layout_gym_introduce, R.id.layout_group_details, R.id.layout_group_courses_share})
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.group_immediately_submit_btn://立即购买
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
                 if (Preference.isLogin()) {

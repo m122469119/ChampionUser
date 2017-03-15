@@ -26,6 +26,7 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.mvp.ShareContract;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
@@ -71,8 +72,6 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     RecyclerView mTrainItemRecyclerView;//训练项目布局
     @BindView(R.id.card_rule)
     TextView mCardRuleTextView;//规则
-    @BindView(R.id.private_lesson_immediately_submit)
-    TextView mImmediatelySubmitBtn;//立即支付
 
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
