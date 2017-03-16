@@ -449,10 +449,10 @@
         <!-- JPush极光推送-->
 
         <!-- 友盟统计组件-->
-        <!--正式key: 5792d1a767e58ee14d002e2c 测试：5784523067e58eb7470009e4  -->
+        <!--正式key: 58c8edf0f29d981433000116 测试：  -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5792d1a767e58ee14d002e2c">
+            android:value="58c8edf0f29d981433000116">
         </meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"

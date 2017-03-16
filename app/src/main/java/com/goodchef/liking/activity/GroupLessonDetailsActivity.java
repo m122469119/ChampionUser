@@ -132,6 +132,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setContentView(R.layout.activity_group_lesson_details);
         ButterKnife.bind(this);
         mSharePresenter = new ShareContract.SharePresenter(this, this);
+        mGroupCoursesDetailsPresenter = new GroupCoursesDetailsPresenter(this,this);
         setTitle(getString(R.string.title_gruop_detials));
         initData();
         setViewOnClickListener();
@@ -173,81 +174,91 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      */
     private void setBottomCoursesState() {
         if (mCoursesState == -1) {
-            if (isFree == COURSES_IS_FREE) {//免费
-                mCoursesStateLayout.setVisibility(View.GONE);
-                mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
-                if (!StringUtils.isEmpty(guota)) {
-                    if (Integer.parseInt(guota) == 0) {
-                        mImmediatelySubmitBtn.setText(R.string.appointment_fill);
-                        mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
-                        mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-                        mImmediatelySubmitBtn.setEnabled(false);
-                    } else {
-                        mImmediatelySubmitBtn.setText(R.string.immadetails_appointment);
-                        mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
-                        mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.white));
-                        mImmediatelySubmitBtn.setEnabled(true);
-                    }
-                } else {
-                    mImmediatelySubmitBtn.setText(R.string.immadetails_appointment);
-                    mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
-                    mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.white));
-                    mImmediatelySubmitBtn.setEnabled(true);
-                }
-            } else if (isFree == COURSES_NOT_FREE) {//收费
-                mImmediatelySubmitBtn.setVisibility(View.GONE);
-                mCoursesStateLayout.setVisibility(View.VISIBLE);
-                mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-                mStatePromptTextView.setText(getString(R.string.money_symbol) + price);
-                mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
-                mStatePromptTextView.setBackgroundColor(0);
-                mCancelOrderBtn.setText(R.string.immediately_buy_btn);
-                mCancelOrderBtn.setEnabled(true);
-            }
-
+            setBottomCoursesStateFreeView();
         } else if (mCoursesState == COURSES_STATE_NOT_START) {//未开始
-            mCoursesStateLayout.setVisibility(View.VISIBLE);
-            mImmediatelySubmitBtn.setVisibility(View.GONE);
-            mStatePromptTextView.setText(R.string.not_start_courses);
-            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-            mStatePromptTextView.setBackgroundColor(ResourceUtils.getColor(R.color.state_prompt_none));
-            mCancelOrderBtn.setText(R.string.cancel_appointment);
-            mCancelOrderBtn.setVisibility(View.VISIBLE);
-            mCancelOrderBtn.setEnabled(true);
-            mStatePromptTextView.setGravity(Gravity.CENTER);
+            setBottomCoursesStateNoStartView();
         } else if (mCoursesState == COURSES_STATE_PROCESS) {//进行中
-            mCoursesStateLayout.setVisibility(View.VISIBLE);
-            mImmediatelySubmitBtn.setVisibility(View.GONE);
-            mStatePromptTextView.setText(R.string.start_process);
-            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-            mStatePromptTextView.setBackgroundColor(0);
-            mCancelOrderBtn.setVisibility(View.GONE);
-            mCancelOrderBtn.setEnabled(false);
-            mStatePromptTextView.setGravity(Gravity.CENTER);
+            setBottomCoursesStateSameView(R.string.start_process);
         } else if (mCoursesState == COURSES_STATE_OVER) {//已结束
-            mCoursesStateLayout.setVisibility(View.VISIBLE);
-            mImmediatelySubmitBtn.setVisibility(View.GONE);
-            mStatePromptTextView.setText(R.string.courses_complete);
-            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-            mStatePromptTextView.setBackgroundColor(0);
-            mCancelOrderBtn.setVisibility(View.GONE);
-            mCancelOrderBtn.setEnabled(false);
-            mStatePromptTextView.setGravity(Gravity.CENTER);
+            setBottomCoursesStateSameView(R.string.courses_complete);
         } else if (mCoursesState == COURSES_STATE_CANCEL) {//已取消
-            mCoursesStateLayout.setVisibility(View.VISIBLE);
-            mImmediatelySubmitBtn.setVisibility(View.GONE);
-            mStatePromptTextView.setText(R.string.courses_cancel);
-            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-            mStatePromptTextView.setBackgroundColor(0);
-            mCancelOrderBtn.setVisibility(View.GONE);
-            mCancelOrderBtn.setEnabled(false);
-            mStatePromptTextView.setGravity(Gravity.CENTER);
+            setBottomCoursesStateSameView(R.string.courses_cancel);
         }
+    }
+
+    /**
+     * 设置底部相同情况的view
+     * @param start_process
+     */
+    private void setBottomCoursesStateSameView(int start_process) {
+        mCoursesStateLayout.setVisibility(View.VISIBLE);
+        mImmediatelySubmitBtn.setVisibility(View.GONE);
+        mStatePromptTextView.setText(start_process);
+        mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+        mStatePromptTextView.setBackgroundColor(0);
+        mCancelOrderBtn.setVisibility(View.GONE);
+        mCancelOrderBtn.setEnabled(false);
+        mStatePromptTextView.setGravity(Gravity.CENTER);
+    }
+
+    /**
+     * 设置底部未开始view
+     */
+    private void setBottomCoursesStateNoStartView() {
+        mCoursesStateLayout.setVisibility(View.VISIBLE);
+        mImmediatelySubmitBtn.setVisibility(View.GONE);
+        mStatePromptTextView.setText(R.string.not_start_courses);
+        mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.white));
+        mStatePromptTextView.setBackgroundColor(ResourceUtils.getColor(R.color.state_prompt_none));
+        mCancelOrderBtn.setText(R.string.cancel_appointment);
+        mCancelOrderBtn.setVisibility(View.VISIBLE);
+        mCancelOrderBtn.setEnabled(true);
+        mStatePromptTextView.setGravity(Gravity.CENTER);
+    }
+
+    /**
+     * 设置底部团体课免费
+     */
+    private void setBottomCoursesStateFreeView() {
+        if (isFree == COURSES_IS_FREE) {//免费
+            mCoursesStateLayout.setVisibility(View.GONE);
+            mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
+            if (!StringUtils.isEmpty(guota)) {
+                if (Integer.parseInt(guota) == 0) {
+                    mImmediatelySubmitBtn.setText(R.string.appointment_fill);
+                    mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
+                    mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+                    mImmediatelySubmitBtn.setEnabled(false);
+                } else {
+                    setImmediatelySubmitBtnView();
+                }
+            } else {
+                setImmediatelySubmitBtnView();
+            }
+        } else if (isFree == COURSES_NOT_FREE) {//收费
+            mImmediatelySubmitBtn.setVisibility(View.GONE);
+            mCoursesStateLayout.setVisibility(View.VISIBLE);
+            mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+            mStatePromptTextView.setText(getString(R.string.money_symbol) + price);
+            mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
+            mStatePromptTextView.setBackgroundColor(0);
+            mCancelOrderBtn.setText(R.string.immediately_buy_btn);
+            mCancelOrderBtn.setEnabled(true);
+        }
+    }
+
+    /**
+     * 设置提交按钮
+     */
+    private void setImmediatelySubmitBtnView() {
+        mImmediatelySubmitBtn.setText(R.string.immadetails_appointment);
+        mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
+        mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+        mImmediatelySubmitBtn.setEnabled(true);
     }
 
     private void requestData() {
         mStateView.setState(StateView.State.LOADING);
-        mGroupCoursesDetailsPresenter = new GroupCoursesDetailsPresenter(this, this);
         mGroupCoursesDetailsPresenter.getGroupCoursesDetails(scheduleId);
     }
 
@@ -268,7 +279,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         Intent intent = new Intent(this, MyLessonActivity.class);
         intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
         startActivity(intent);
-        this.finish();
+        finish();
     }
 
     @Override
@@ -288,10 +299,19 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, 1);
                 startActivity(intent);
                 dialog.dismiss();
-                GroupLessonDetailsActivity.this.finish();
+                finish();
             }
         });
         builder.create().show();
+    }
+
+    @Override
+    public void updateCancelOrderView() {
+        PopupUtils.showToast(getString(R.string.cancel_success));
+        postEvent(new CancelGroupCoursesMessage());
+        mCoursesState = 3;
+        setBottomCoursesState();
+        requestData();
     }
 
     /**
@@ -343,7 +363,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * @param gymNumbersDatas
      */
     private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas) {
-        mJoinUserNumbers.setText(gymNumbersDatas.size() + " 人");
+        mJoinUserNumbers.setText(gymNumbersDatas.size() + getString(R.string.people));
         mUserListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mGroupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
         mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
@@ -361,11 +381,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mGroupLessonDetailsAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
-                    Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
-                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+                    jumpArenaActivity();
                 }
 
                 @Override
@@ -376,17 +392,22 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
     }
 
+    /**
+     * 跳转到ArenaActivity
+     */
+    private void jumpArenaActivity() {
+        UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
+        Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
+        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+    }
+
     @OnClick({R.id.group_immediately_submit_btn, R.id.cancel_order_btn, R.id.layout_gym_introduce, R.id.layout_group_details, R.id.layout_group_courses_share})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.group_immediately_submit_btn://立即购买
-                UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
-                if (Preference.isLogin()) {
-                    mGroupCoursesDetailsPresenter.orderGroupCourses(gymId, scheduleId, Preference.getToken());
-                } else {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                }
+                doSubmit();
                 break;
             case R.id.cancel_order_btn://取消预定
                 cancelOrder();
@@ -396,13 +417,26 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
                 Intent intent = new Intent(this, ArenaActivity.class);
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-                this.startActivity(intent);
-                this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+                startActivity(intent);
+                overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
                 break;
             case R.id.layout_group_courses_share://分享
                 mSharePresenter.getGroupShareData(scheduleId);
                 mShareLayout.setEnabled(false);
                 break;
+        }
+    }
+
+    /**
+     * 处理提交事情
+     */
+    private void doSubmit() {
+        UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
+        if (Preference.isLogin()) {
+            mGroupCoursesDetailsPresenter.orderGroupCourses(gymId, scheduleId, Preference.getToken());
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -441,36 +475,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendCancelCoursesRequest(orderId);
+               mGroupCoursesDetailsPresenter.sendCancelCoursesRequest(orderId);
                 dialog.dismiss();
             }
         });
         builder.create().show();
-    }
-
-
-    //发送取消请求
-    private void sendCancelCoursesRequest(String orderId) {
-        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(GroupLessonDetailsActivity.this, R.string.loading_data) {
-            @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(GroupLessonDetailsActivity.this, result)) {
-                    PopupUtils.showToast(getString(R.string.cancel_success));
-                    postEvent(new CancelGroupCoursesMessage());
-                    mCoursesState = 3;
-                    setBottomCoursesState();
-                    requestData();
-                } else {
-                    PopupUtils.showToast(result.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-            }
-        });
     }
 
     @Override
