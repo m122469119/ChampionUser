@@ -9,17 +9,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.DecriptUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.CouponsDetailsActivity;
 import com.goodchef.liking.activity.ShoppingCartActivity;
 import com.goodchef.liking.adapter.CouponsAdapter;
+import com.goodchef.liking.adapter.CouponsPersonAdapter;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
+import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.mvp.presenter.CouponPresenter;
@@ -47,7 +51,6 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     private String scheduleId;
     private String gymId;
 
-    private CouponsAdapter mCouponsAdapter;
 
     public static CouponsFragment newInstance(Bundle args) {
         CouponsFragment fragment = new CouponsFragment();
@@ -122,18 +125,23 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
 
     private void initRecycleView() {
-        mCouponsAdapter = new CouponsAdapter(getActivity());
-        setRecyclerAdapter(mCouponsAdapter);
+        setRecyclerViewPadding(DisplayUtils.dp2px(10), 0, DisplayUtils.dp2px(10), 0);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponsAdapter.setOnItemClickListener(new CouponsAdapter.OnItemClickListener() {
+            CouponsPersonAdapter couponsPersonAdapter = new CouponsPersonAdapter(getActivity());
+            setRecyclerAdapter(couponsPersonAdapter);
+            couponsPersonAdapter.setOnItemClickListener(new CouponsPersonAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View v, CouponsResult.CouponData.Coupon coupon) {
+                public void onItemClick(View v, CouponsPersonResult.DataBean.CouponListBean coupon) {
                     //在购票界面跳转
                     Intent intent = new Intent(getActivity(), CouponsDetailsActivity.class);
+                    intent.setAction(CouponsDetailsActivity.ACTION_SHOW_DETAILS);
+                    intent.putExtra(CouponsDetailsActivity.COUPONS, coupon);
                     getActivity().startActivity(intent);
                 }
             });
         } else {
+            CouponsAdapter mCouponsAdapter = new CouponsAdapter(getActivity());
+            setRecyclerAdapter(mCouponsAdapter);
             mCouponsAdapter.setOnItemClickListener(new CouponsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, CouponsResult.CouponData.Coupon coupon) {
@@ -153,7 +161,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     private void sendRequest(int page) {
         mCouponPresenter = new CouponPresenter(getActivity(), this);
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getCoupons(null, null, null, null, null, null, page, gymId, CouponsFragment.this);
+            mCouponPresenter.getMyConpons(page, CouponsFragment.this);
         } else {
             mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, gymId, CouponsFragment.this);
         }
@@ -177,6 +185,11 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
             }
             updateListView(list);
         }
+    }
+
+    @Override
+    public void updateMyCouponData(CouponsPersonResult.DataBean dataBean) {
+        updateListView(dataBean.getCoupon_list());
     }
 
     @Override

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        >
+        <TextView
+            android:id="@+id/txt_item_coupons_gym_name"
+            android:text="Liking健身SOHO健身房"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/normal_text_size_13sp"
+            android:textColor="@color/liking_lesson_text"/>
+        <TextView
+            android:id="@+id/txt_item_coupons_gym_distance"
+            android:text="5.3km"
+            android:textSize="@dimen/normal_text_size_13sp"
+            android:textColor="@color/buy_card_prompt_text"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>

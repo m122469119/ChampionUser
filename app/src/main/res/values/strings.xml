@@ -595,4 +595,12 @@
     <string name="can_used_venue">使用场馆</string>
     <string name="find_all">查看全部</string>
     <string name="used_need_know">使用须知</string>
+    <string name="apply_venue">适用场馆</string>
+    
+    
+    <string name="validity">有效期</string>
+    <string name="service_conditions">使用条件</string>
+    <string name="commodity">适用商品</string>
+
+    <string name="coupons_details">优惠券详情</string>
 </resources>

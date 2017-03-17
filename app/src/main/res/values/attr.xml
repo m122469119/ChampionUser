@@ -66,4 +66,7 @@
         <attr name="delayedTime" format="float"/>
     </declare-styleable>
 
+    <attr name="head_content_line" format="reference"/>
+    <attr name="content_content_line" format="reference"/>
+    <attr name="foot_content_line" format="reference"/>
 </resources>

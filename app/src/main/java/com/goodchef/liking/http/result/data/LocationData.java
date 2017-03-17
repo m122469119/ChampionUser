@@ -13,6 +13,9 @@ public class LocationData extends BaseData{
     private String cityName;
     private boolean isPositionSuccess;
 
+    public LocationData() {
+    }
+
     public LocationData(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isPositionSuccess) {
         this.cityId = cityId;
         this.districtId = districtId;

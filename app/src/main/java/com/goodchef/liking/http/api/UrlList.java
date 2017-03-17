@@ -155,4 +155,10 @@ public class UrlList {
     public static final String USER_CHECK_UPDATES = getVersionHostUrl() + "/check-update/check-update";
     /**获取城市列表*/
     public static final String CITY_LIST = getVersionHostUrl() + "/gym/open-city";
+
+    /** 个人界面获取优惠券*/
+    public static final String GET_MY_COUPON = getVersionHostUrl() + "/coupon/get-my-coupon";
+    /** 获取优惠券详情*/
+    public static final String GET_COUPON_DETAIL = getVersionHostUrl() + "/coupon/get-coupon-detail";
+
 }
