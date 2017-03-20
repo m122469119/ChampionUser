@@ -56,6 +56,7 @@ public class CouponsDetailsActivity extends AppBarActivity implements CouponsDet
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CouponsDetailsActivity.this, CouponsGymActivity.class);
+                intent.setAction(CouponsGymActivity.ACTION_SHOW_GYM);
                 intent.putExtra(CouponsGymActivity.COUPONS_CODE, mBean.getCoupon_code());
                 startActivity(intent);
             }

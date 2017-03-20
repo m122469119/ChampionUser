@@ -213,8 +213,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 intent.putExtra(KEY_CARD_ID, mCardId + "");
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
-                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
                 }
                 startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
             } else {
@@ -286,8 +286,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 提交支付请求
      */
     private void senSubmitRequest() {
-        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCouponCode(), payType, submitGymId);
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCoupon_code(), payType, submitGymId);
         } else {
             mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType, submitGymId);
         }
@@ -321,27 +321,25 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 处理优惠券
      */
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
-        String minAmountStr = mCoupon.getMinAmount();//优惠券最低使用标准
+
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double couponAmount = Double.parseDouble(couponAmountStr);
-        double minAmount = Double.parseDouble(minAmountStr);
+
         double price = Double.parseDouble(cardPrice);
-        if (price >= minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
-            mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
-            if (price >= couponAmount) {
-                //订单的价格大于优惠券的面额
-                double amount = price - couponAmount;
-                if (amount >= 0) {
-                    mCardTotalMoney = amount + "";
-                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
-                }
-            } else {//订单的面额小于优惠券的面额
-                mCardTotalMoney = "0.00";
+
+        mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
+        if (price >= couponAmount) {
+            //订单的价格大于优惠券的面额
+            double amount = price - couponAmount;
+            if (amount >= 0) {
+                mCardTotalMoney = amount + "";
                 mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
             }
-        } else {//优惠券不可用
-            mCouponsMoneyTextView.setText("");
+        } else {//订单的面额小于优惠券的面额
+            mCardTotalMoney = "0.00";
+            mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
         }
+
 
     }
 

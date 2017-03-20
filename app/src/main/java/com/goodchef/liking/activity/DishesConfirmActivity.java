@@ -30,6 +30,7 @@ import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.GymListResult;
@@ -226,8 +227,9 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_COURSE_ID, "");
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
-            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
+            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
             }
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
@@ -251,8 +253,8 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
                 PopupUtils.showToast(getString(R.string.please_select_pay_type));
                 return;
             }
-            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-                mNutritionMealConfirmPresenter.submitFoodOrder(gymId, mSelectMealtime, mCoupon.getCouponCode(), createDishesJson(), payType);
+            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                mNutritionMealConfirmPresenter.submitFoodOrder(gymId, mSelectMealtime, mCoupon.getCoupon_code(), createDishesJson(), payType);
             } else {
                 mNutritionMealConfirmPresenter.submitFoodOrder(gymId, mSelectMealtime, null, createDishesJson(), payType);
             }
@@ -377,28 +379,24 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
      * 处理优惠券
      */
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
-        String minAmountStr = mCoupon.getMinAmount();//优惠券最低使用标准
+
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double coursesPrice = Double.parseDouble(totalAmount);//订单的总价
         double couponAmount = Double.parseDouble(couponAmountStr);
-        double minAmount = Double.parseDouble(minAmountStr);
-        if (coursesPrice >= minAmount) {//订单价格>优惠券最低使用值，该优惠券可用
-            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
-            if (coursesPrice >= couponAmount) {
-                //订单的价格大于优惠券的面额
-                double amount = coursesPrice - couponAmount;
-                if (amount >= 0) {
-                    mDishesCouponMoney.setText(getString(R.string.has_coupons) + mCoupon.getAmount());
-                    mDishesMoneyextView.setText(getString(R.string.money_symbol) + amount);
-                }
-            } else {//订单的面额小于优惠券的面额
+
+        mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
+        if (coursesPrice >= couponAmount) {
+            //订单的价格大于优惠券的面额
+            double amount = coursesPrice - couponAmount;
+            if (amount >= 0) {
                 mDishesCouponMoney.setText(getString(R.string.has_coupons) + mCoupon.getAmount());
-                mDishesMoneyextView.setText(getString(R.string.money_symbol) + "0.00");
+                mDishesMoneyextView.setText(getString(R.string.money_symbol) + amount);
             }
-        } else {//优惠券不可用
-            mDishesCouponMoney.setText("");
-            mCouponTitleTextView.setText("");
+        } else {//订单的面额小于优惠券的面额
+            mDishesCouponMoney.setText(getString(R.string.has_coupons) + mCoupon.getAmount());
+            mDishesMoneyextView.setText(getString(R.string.money_symbol) + "0.00");
         }
+
     }
 
     /**

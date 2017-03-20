@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.aaron.android.framework.utils.DisplayUtils;
+
 /**
  * Created on 2017/3/17
  * Created by sanfen
@@ -60,28 +62,25 @@ public class CouponsDecoration extends RecyclerView.ItemDecoration {
     public void drawHorizontalLine(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
-
         final int childCount = parent.getChildCount();
-
+        int itemCount = state.getItemCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
-
             //获得child的布局信息
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;
-
-
-            if (i == 0) {
+            int pos = parent.getChildAdapterPosition(child);
+            if (pos == 0) {
                 final int bottom = top + mHeaderDivider.getIntrinsicHeight();
                 mHeaderDivider.setBounds(left, top, right, bottom);
                 mHeaderDivider.draw(c);
-            } else if (i == childCount - 1) {
+            } else if (pos == itemCount - 1) {
                 final int bottom = top + mFlootDivider.getIntrinsicHeight();
                 mFlootDivider.setBounds(left, top, right, bottom);
                 mFlootDivider.draw(c);
             } else {
                 final int bottom = top + mContentDivider.getIntrinsicHeight();
-                mContentDivider.setBounds(left, top, right, bottom);
+                mContentDivider.setBounds(left + DisplayUtils.dp2px(15), top, right, bottom);
                 mContentDivider.draw(c);
             }
         }
@@ -92,23 +91,26 @@ public class CouponsDecoration extends RecyclerView.ItemDecoration {
         int top = parent.getPaddingTop();
         int bottom = parent.getHeight() - parent.getPaddingBottom();
         final int childCount = parent.getChildCount();
+        int itemCount = state.getItemCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
+            int pos = parent.getChildAdapterPosition(child);
 
             //获得child的布局信息
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left = child.getRight() + params.rightMargin;
-            if (i == 0) {
+
+            if (pos == 0) {
                 final int right = left + mHeaderDivider.getIntrinsicWidth();
                 mHeaderDivider.setBounds(left, top, right, bottom);
                 mHeaderDivider.draw(c);
-            } else if (i == childCount - 1) {
+            } else if (i == itemCount - 1) {
                 final int right = left + mContentDivider.getIntrinsicWidth();
                 mContentDivider.setBounds(left, top, right, bottom);
                 mContentDivider.draw(c);
             } else {
                 final int right = left + mFlootDivider.getIntrinsicWidth();
-                mFlootDivider.setBounds(left, top, right, bottom);
+                mFlootDivider.setBounds(left + DisplayUtils.dp2px(15), top, right, bottom);
                 mFlootDivider.draw(c);
             }
         }
@@ -120,10 +122,13 @@ public class CouponsDecoration extends RecyclerView.ItemDecoration {
         if (mOrientation == HORIZONTAL_LIST) {
             //画横线，就是往下偏移一个分割线的高度
             final int childCount = parent.getChildCount();
+            int itemCount = state.getItemCount();
             for (int i = 0; i < childCount; i++) {
-                if (i == 0) {
+                final View child = parent.getChildAt(i);
+                int pos = parent.getChildAdapterPosition(child);
+                if (pos == 0) {
                     outRect.set(0, 0, 0, mHeaderDivider.getIntrinsicHeight());
-                } else if (i == childCount - 1) {
+                } else if (i == itemCount - 1) {
                     outRect.set(0, 0, 0, mFlootDivider.getIntrinsicHeight());
                 } else {
                     outRect.set(0, 0, 0, mContentDivider.getIntrinsicHeight());
@@ -134,10 +139,13 @@ public class CouponsDecoration extends RecyclerView.ItemDecoration {
         } else {
             //画竖线，就是往右偏移一个分割线的宽度
             final int childCount = parent.getChildCount();
+            int itemCount = state.getItemCount();
             for (int i = 0; i < childCount; i++) {
-                if (i == 0) {
+                final View child = parent.getChildAt(i);
+                int pos = parent.getChildAdapterPosition(child);
+                if (pos == 0) {
                     outRect.set(0, 0, mHeaderDivider.getIntrinsicWidth(), 0);
-                } else if (i == childCount - 1) {
+                } else if (i == itemCount - 1) {
                     outRect.set(0, 0, mFlootDivider.getIntrinsicWidth(), 0);
                 } else {
                     outRect.set(0, 0, mContentDivider.getIntrinsicWidth(), 0);

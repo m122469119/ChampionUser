@@ -170,12 +170,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
     @Override
     public void updateCouponData(CouponsResult.CouponData couponData) {
-        List<CouponsResult.CouponData.Coupon> list = couponData.getCouponList();
+        List<CouponsResult.CouponData.Coupon> list = couponData.getCoupon_list();
         if (list != null) {
             if (list.size() > 0) {
                 if (!StringUtils.isEmpty(couponId)) {
                     for (CouponsResult.CouponData.Coupon coupon : list) {
-                        if (coupon.getCouponCode().equals(couponId)) {
+                        if (coupon.getCoupon_code().equals(couponId)) {
                             coupon.setSelect(true);
                         } else {
                             coupon.setSelect(false);

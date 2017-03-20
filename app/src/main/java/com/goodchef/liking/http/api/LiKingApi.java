@@ -27,6 +27,7 @@ import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
+import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -1125,6 +1126,14 @@ public class LiKingApi {
                         .append("longitude", longitude)
                         .append("latitude", latitude),
                 callback);
+    }
+
+    public static void getCouponsGym(int page, String coupon_code, String longitude, String latitude, RequestCallback<CouponsCities> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_COUPON_GYM, CouponsCities.class, getCommonRequestParams()
+                        .append(PAGE, page)
+                        .append("coupon_code", coupon_code)
+                        .append("longitude", longitude)
+                        .append("latitude", latitude), callback);
     }
 
 }

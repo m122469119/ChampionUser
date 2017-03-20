@@ -178,8 +178,9 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
             UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
             Intent intent = new Intent(this, CouponsActivity.class);
             intent.putExtra(CouponsActivity.KEY_SCHEDULE_ID, scheduleId);
-            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCouponCode());
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
+            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
             }
             intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "GroupCoursesChargeConfirmActivity");
             startActivityForResult(intent, INTENT_REQUEST_CODE_GROUP_COURSES_COUPON);
@@ -206,8 +207,8 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
             return;
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
-        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCouponCode())) {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, mCoupon.getCouponCode(), payType);
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, mCoupon.getCoupon_code(), payType);
         } else {
             mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, "", payType);
         }
@@ -308,24 +309,18 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
      * 处理优惠券
      */
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
-        String minAmountStr = mCoupon.getMinAmount();//优惠券最低使用标准
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double coursesPrice = Double.parseDouble(mAmountCount);
         double couponAmount = Double.parseDouble(couponAmountStr);
-        double minAmount = Double.parseDouble(minAmountStr);
-        if (coursesPrice >= minAmount) {//课程价格>优惠券最低使用值，该优惠券可用
-            mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
-            if (coursesPrice >= couponAmount) {
-                //课程的价格大于优惠券的面额
-                double amount = coursesPrice - couponAmount;
-                if (amount >= 0) {
-                    mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + amount);
-                }
-            } else {//课程的面额小于优惠券的面额
-                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + "0.00");
+        mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
+        if (coursesPrice >= couponAmount) {
+            //课程的价格大于优惠券的面额
+            double amount = coursesPrice - couponAmount;
+            if (amount >= 0) {
+                mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + amount);
             }
-        } else {//优惠券不可用
-            mCouponTitleTextView.setText("");
+        } else {//课程的面额小于优惠券的面额
+            mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + "0.00");
         }
     }
 

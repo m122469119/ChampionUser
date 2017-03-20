@@ -161,4 +161,6 @@ public class UrlList {
     /** 获取优惠券详情*/
     public static final String GET_COUPON_DETAIL = getVersionHostUrl() + "/coupon/get-coupon-detail";
 
+    /** 获取场馆列表*/
+    public static final String GET_COUPON_GYM = getVersionHostUrl() + "/coupon/get-coupon-gym";
 }

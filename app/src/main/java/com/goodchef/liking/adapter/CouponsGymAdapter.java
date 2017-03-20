@@ -1,12 +1,18 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
+import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CouponsCities;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created on 2017/3/15
@@ -15,19 +21,30 @@ import com.goodchef.liking.http.result.CouponsCities;
  * @version 1.0.0
  */
 
-public class CouponsGymAdapter extends BaseRecycleViewAdapter<CouponsGymAdapter.ViewHolder, CouponsCities> {
+public class CouponsGymAdapter extends BaseRecycleViewAdapter<CouponsGymAdapter.ViewHolder, CouponsCities.DataBean.GymListBean> {
+
+    public Context mContext;
 
 
     public CouponsGymAdapter(Context context) {
         super(context);
+        this.mContext = context;
     }
 
     @Override
     protected ViewHolder createViewHolder(ViewGroup parent) {
-        return null;
+        View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_coupons_gym, null);
+        return new ViewHolder(inflate);
     }
 
-    class ViewHolder extends BaseRecycleViewHolder<CouponsCities> {
+    class ViewHolder extends BaseRecycleViewHolder<CouponsCities.DataBean.GymListBean> {
+        @BindView(R.id.txt_item_coupons_gym_name)
+        TextView mName;
+        @BindView(R.id.txt_item_coupons_gym_address)
+        TextView mAddress;
+        @BindView(R.id.txt_item_coupons_gym_distance)
+        TextView mDistance;
+
         /**
          * Constructor
          *
@@ -35,10 +52,14 @@ public class CouponsGymAdapter extends BaseRecycleViewAdapter<CouponsGymAdapter.
          */
         public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
-        public void bindViews(CouponsCities object) {
+        public void bindViews(CouponsCities.DataBean.GymListBean object) {
+            mName.setText(object.getGym_name());
+            mDistance.setText(object.getDistance());
+            mAddress.setText(object.getGym_address());
 
         }
     }

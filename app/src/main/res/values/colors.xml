@@ -83,8 +83,8 @@
 
     <color name="coupons_gym_title_596167">#596167</color>
     <color name="coupons_gym_distance_aeb2b5">#aeb2b5</color>
-    <color name="coupons_gym_head_line_6d7db">#d6d7db</color>
-    <color name="coupons_gym_content_line_6d7db">#efeff1</color>
+    <color name="coupons_gym_head_line_d6d7db">#d6d7db</color>
+    <color name="coupons_gym_content_line_efeff1">#efeff1</color>
     <color name="coupons_gym_rv_bg">#edeef2</color>
     
 </resources>

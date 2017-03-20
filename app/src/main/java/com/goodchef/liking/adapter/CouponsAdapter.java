@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
@@ -24,15 +25,8 @@ import butterknife.ButterKnife;
 
 public class CouponsAdapter extends BaseRecycleViewAdapter {
 
-    private static final String COUPON_TYPE_YINGYANGCANG = "1";//1营养餐
-    private static final String COUPON_TYPE_PRIVATE_COURSES = "2";//2 私教课
-    private static final String COUPON_TYPE_BUY_CARD = "3";// 3 购卡
-    private static final String COUPON_TYPE_GRUOP_COURSES = "4";//团体课优惠券
-
-    private static final String COUPON_STATUS_NOT_USED = "0";//0未使用
-    private static final String COUPON_STATUS_USED = "1";//1已使用
-    private static final String COUPON_STATUS_OVERDUE = "2";// 2已过期
-    private static final String COUPON_STATUS_NO_SUBJECT = "3";//不符合该项目
+    private static final String COUPON_NOT_CAN_USE = "0";//不能使用
+    private static final String COUPON_CAN_USE = "1";//能使用
 
     private Context mContext;
     private OnItemClickListener mClickListener;
@@ -57,18 +51,6 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
     }
 
     final class CouponsViewHolder extends BaseRecycleViewHolder<CouponsResult.CouponData.Coupon> {
-//        LinearLayout mRootCouponsLayout;
-//        LinearLayout mLeftLayout;//左边布局
-//        TextView mTitleTextView;//title
-//        TextView mTypeTextView;//优惠券类型
-//        TextView mEndTimeTextView;//到期时间
-//        ImageView mCouponsLogon;//logo
-//        LinearLayout mRightLayout;//右边的布局
-//        TextView mAmountTextView;//金额
-//        TextView mAmountYuanTextView;//提示
-//        ImageView mOverdueImageView;
-//        LinearLayout mSelectCouponLayout;
-//        TextView mSelectCouponTextView;
 
         @BindView(R.id.rl_item_coupons)
         View mItemView;
@@ -96,13 +78,17 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
 
         @Override
         public void bindViews(final CouponsResult.CouponData.Coupon object) {
-            String couponsStatus = object.getCouponStatus();
-            String couponType = object.getCouponType();
-            String minAmount = object.getMinAmount();
+            String couponsStatus = object.getCan_use();
 
-            if (couponsStatus.equals(COUPON_STATUS_NOT_USED)) {//没有使用
-                boolean isSelect = object.isSelect();
-               // setNotUsedBackGround(couponType, minAmount);
+            if (couponsStatus.equals(COUPON_NOT_CAN_USE)) {//不可用
+                mHideView.setVisibility(View.VISIBLE);
+                mItemView.setEnabled(false);
+                if (StringUtils.isEmpty(object.getNot_use_desc())){
+                    mHideText.setText("不可用");
+                } else {
+                    mHideText.setText(object.getNot_use_desc());
+                }
+            } else if (couponsStatus.equals(COUPON_CAN_USE)) {//可用
                 mHideView.setVisibility(View.GONE);
                 if (mClickListener != null) {
                     mItemView.setEnabled(true);
@@ -115,30 +101,20 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
                 } else {
                     mHideView.setEnabled(false);
                 }
-               // setSelectCouponView(isSelect, object.getAmount());
-            } else if (couponsStatus.equals(COUPON_STATUS_USED)) {//使用过
-                //setUsedBackGround(couponType, minAmount);
-                mHideView.setVisibility(View.VISIBLE);
-                mItemView.setEnabled(false);
-                mHideText.setText(mContext.getString(R.string.already_used));
-            } else if (couponsStatus.equals(COUPON_STATUS_OVERDUE)) {//过期
-                mHideView.setVisibility(View.VISIBLE);
-              //  setUsedBackGround(couponType, minAmount);
-                mItemView.setEnabled(false);
-                mHideText.setText(mContext.getString(R.string.already_past));
-              //  setSelectCouponView(false, "0");
-            } else if (couponsStatus.equals(COUPON_STATUS_NO_SUBJECT)) {//不符合该项目
-                mHideView.setVisibility(View.GONE);
-              //  setNotProjectBackGround(couponType, minAmount);
-                mItemView.setEnabled(false);
-             //   setSelectCouponView(false, "0");
-
-
             }
+
+            mNext.setVisibility(View.GONE);
+
+            if (object.isSelect()) {
+                mDraw.setVisibility(View.VISIBLE);
+            } else {
+                mDraw.setVisibility(View.GONE);
+            }
+
             mTitle.setText(object.getTitle());
+            mPrice.setText(object.getAmount());
             setContentTop(object);
             setContentBottom(object);
-
         }
 
 
@@ -150,7 +126,7 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
           * @param object  : CouponsResult.CouponData.Coupon
          */
         private void setContentTop(CouponsResult.CouponData.Coupon object){
-            mContentTop.setText(object.getAmount());
+            mContentTop.setText(object.getUse_desc());
         }
 
         /**
@@ -167,146 +143,8 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
          */
         private void setContentBottom(CouponsResult.CouponData.Coupon object) {
             mContentBottom.setText(mContext.getString(R.string.the_period_of_validity)
-                    + object.getEndTime()
-                    + mContext.getString(R.string.expire));
+                    + object.getValid_date());
         }
-
-
-
-//
-//        //选择过的优惠券
-//        private void setSelectCouponView(boolean isSelect, String amount) {
-//            if (isSelect) {
-//                mSelectCouponLayout.setVisibility(View.VISIBLE);
-//                mSelectCouponTextView.setVisibility(View.VISIBLE);
-//                mSelectCouponTextView.setText(getString(R.string.selected) + amount + getString(R.string.yuan_coupons));
-//            } else {
-//                mSelectCouponLayout.setVisibility(View.GONE);
-//                mSelectCouponTextView.setVisibility(View.GONE);
-//            }
-//        }
-//
-//        //设置没有使用过是的背景
-//        private void setNotUsedBackGround(String couponType, String minAmount) {
-//            mTitleTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
-//            mEndTimeTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-//            mCouponsLogon.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_logo));
-//            mAmountTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-//            mAmountYuanTextView.setTextColor(ResourceUtils.getColor(R.color.white));
-//            double minAmountDouble = Double.parseDouble(minAmount);
-//            if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
-//                mRightLayout.setBackgroundResource(R.drawable.coupons_right_orange_backround);
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_orange));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.nutritious_food_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.utritious_food_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
-//                mRightLayout.setBackgroundResource(R.drawable.coupons_right_blue_background);
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.private_courses_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.private_courses_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
-//                mRightLayout.setBackgroundResource(R.drawable.coupons_right_green_background);
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.buy_card_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
-//                mRightLayout.setBackgroundResource(R.drawable.coupons_right_blue_background);
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.group_courses_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.group_courses_no_doorsill);
-//                }
-//            }
-//        }
-//
-//        //设置已经使用过的优惠券
-//        private void setUsedBackGround(String couponType, String minAmount) {
-//            mRightLayout.setBackgroundResource(R.drawable.coupons_right_gray_background);
-//            mTitleTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
-//            mEndTimeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
-//            mCouponsLogon.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_logo_gray));
-//            mAmountTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray_text));
-//            mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
-//            mAmountYuanTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray_text));
-//            double minAmountDouble = Double.parseDouble(minAmount);
-//
-//            if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.nutritious_food_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.utritious_food_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.private_courses_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.private_courses_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.buy_card_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.group_courses_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.group_courses_no_doorsill);
-//                }
-//            }
-//        }
-
-//        //设不符合该项目的优惠券
-//        private void setNotProjectBackGround(String couponType, String minAmount) {
-//            mRightLayout.setBackgroundResource(R.drawable.coupons_right_gray_background);
-//            mTitleTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
-//            mEndTimeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray));
-//            mCouponsLogon.setImageDrawable(ResourceUtils.getDrawable(R.drawable.coupons_logo_gray));
-//            mAmountTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray_text));
-//            mAmountYuanTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_gray_text));
-//            double minAmountDouble = Double.parseDouble(minAmount);
-//            if (couponType.equals(COUPON_TYPE_YINGYANGCANG)) {//营养餐
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.nutritious_food_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.utritious_food_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_PRIVATE_COURSES)) {//私教课
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.private_courses_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.private_courses_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_BUY_CARD)) {//购卡
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_green));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.buy_card_dedicated) + minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.buy_card_no_doorsill);
-//                }
-//            } else if (couponType.equals(COUPON_TYPE_GRUOP_COURSES)) {//团体课
-//                mTypeTextView.setTextColor(ResourceUtils.getColor(R.color.coupons_blue));
-//                if (minAmountDouble > 0.00) {
-//                    mTypeTextView.setText(getString(R.string.group_courses_dedicated)+ minAmount + getString(R.string.can_uses));
-//                } else {
-//                    mTypeTextView.setText(R.string.group_courses_no_doorsill);
-//                }
-//            }
-//        }
-
 
     }
 }

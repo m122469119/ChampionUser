@@ -3,7 +3,7 @@
     android:shape="rectangle" >
 
     <!-- solid指定形状的填充色，只有android:color一个属性 -->
-    <solid android:color="@color/coupons_gym_head_line_6d7db" />
+    <solid android:color="@color/coupons_gym_head_line_d6d7db" />
     <!-- padding设置内容区域离边界的间距 -->
     <padding
         android:left="0dp"
