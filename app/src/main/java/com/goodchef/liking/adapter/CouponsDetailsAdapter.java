@@ -165,18 +165,18 @@ public class CouponsDetailsAdapter extends RecyclerView.Adapter {
      * @param position
      */
     private void setTitleViewHolder(TitleViewHolder viewHolder, int position) {
+        viewHolder.mReadMoreLayout.setVisibility(View.GONE);
+
         if (position == 0) {
             viewHolder.mTitle.setText(mContext.getString(R.string.can_used_venue));
             if (mCoupon.getShow_all() == 1)
                 viewHolder.mReadMoreLayout.setVisibility(View.VISIBLE);
-
             if (mOnReadAllClickListener != null) {
                 viewHolder.mReadMoreLayout.setOnClickListener(mOnReadAllClickListener);
             }
-
         } else {
             viewHolder.mTitle.setText(mContext.getString(R.string.used_need_know));
-            viewHolder.mReadMoreLayout.setVisibility(View.GONE);
+
         }
     }
 

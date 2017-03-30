@@ -15,6 +15,7 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.MyCardResult;
@@ -176,4 +177,13 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
     public void handleNetworkFailure() {
         mStateView.setState(StateView.State.FAILED);
     }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+    public void onEvent(LoginFinishMessage message){
+        initData();
+    }
+
 }

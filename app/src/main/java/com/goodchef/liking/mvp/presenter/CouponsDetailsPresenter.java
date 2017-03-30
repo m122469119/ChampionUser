@@ -38,7 +38,7 @@ public class CouponsDetailsPresenter extends BasePresenter<CouponsDetailsView> {
             locationData = new LocationData();
         }
 
-        LiKingApi.getConponsDetail(coupons_id, locationData.getLongitude(), locationData.getLongitude(), new RequestCallback<CouponsDetailsResult>() {
+        LiKingApi.getConponsDetail(coupons_id, locationData.getLongitude(), locationData.getLatitude(), new RequestCallback<CouponsDetailsResult>() {
             @Override
             public void onSuccess(CouponsDetailsResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

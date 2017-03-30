@@ -36,7 +36,7 @@ public class CouponsCitysPresenter extends BasePresenter<CouponsCitysView> {
             locationData = new LocationData();
         }
 
-        LiKingApi.getCouponsGym(page, coupons_id, locationData.getLongitude(), locationData.getLongitude(), new PagerRequestCallback<CouponsCities>(clazz) {
+        LiKingApi.getCouponsGym(page, coupons_id, locationData.getLongitude(), locationData.getLatitude(), new PagerRequestCallback<CouponsCities>(clazz) {
             @Override
             public void onSuccess(CouponsCities result) {
                 super.onSuccess(result);

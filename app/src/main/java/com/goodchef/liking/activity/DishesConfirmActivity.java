@@ -384,7 +384,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         double coursesPrice = Double.parseDouble(totalAmount);//订单的总价
         double couponAmount = Double.parseDouble(couponAmountStr);
 
-        mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
+        mCouponTitleTextView.setText(mCoupon.getAmount() + getString(R.string.yuan));
         if (coursesPrice >= couponAmount) {
             //订单的价格大于优惠券的面额
             double amount = coursesPrice - couponAmount;

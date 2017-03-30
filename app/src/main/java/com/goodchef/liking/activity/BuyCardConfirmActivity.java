@@ -94,6 +94,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private int mCardId;//会员卡ID
     private int buyType; //1 购卡  2 续卡  3 升级卡
     private String cardPrice;//卡的金额
+
     private LikingStateView mStateView;
     private String explain;
     private String gymId = "0";
@@ -327,7 +328,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
         double price = Double.parseDouble(cardPrice);
 
-        mCouponsMoneyTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
+        mCouponsMoneyTextView.setText(mCoupon.getAmount() + getString(R.string.yuan));
         if (price >= couponAmount) {
             //订单的价格大于优惠券的面额
             double amount = price - couponAmount;

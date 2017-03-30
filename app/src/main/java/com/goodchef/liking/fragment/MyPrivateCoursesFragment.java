@@ -14,6 +14,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
@@ -114,5 +115,9 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
 
     public void onEvent(LoginOutFialureMessage message){
         getActivity().finish();
+    }
+
+    public void onEvent(LoginFinishMessage message){
+        loadHomePage();
     }
 }

@@ -486,7 +486,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double coursesPrice = Double.parseDouble(mAmountCount);
         double couponAmount = Double.parseDouble(couponAmountStr);
-        mCouponTitleTextView.setText(mCoupon.getTitle() + mCoupon.getAmount() + getString(R.string.yuan));
+        mCouponTitleTextView.setText(mCoupon.getAmount() + getString(R.string.yuan));
         if (coursesPrice >= couponAmount) {
             //课程的价格大于优惠券的面额
             double amount = coursesPrice - couponAmount;

@@ -29,7 +29,7 @@ public class CouponsPersonResult extends BaseResult {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean extends BaseData{
         private List<CouponListBean> coupon_list;
 
         public List<CouponListBean> getCoupon_list() {
