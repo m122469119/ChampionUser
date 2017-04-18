@@ -17,9 +17,13 @@ public abstract class BasePresenter<T extends BaseView> {
     protected T mView;
     protected final String TAG = getClass().getSimpleName();
 
+    /**
+     * 初始化操作
+     */
     public void init() {
 
     }
+
     public BasePresenter(Context context, T mainView) {
         mContext = context;
         mView = mainView;
@@ -27,30 +31,5 @@ public abstract class BasePresenter<T extends BaseView> {
 
     public void postEvent(BaseMessage message) {
         EventBus.getDefault().post(message);
-    }
-
-
-    public void onCreate(){
-
-    }
-    public void onStart(){
-
-    }
-    public void onResume(){
-
-    }
-
-    public void onPause(){
-
-    }
-
-    public void onStop(){
-
-    }
-    public void onRestart(){
-
-    }
-    public void onDestroy(){
-
     }
 }

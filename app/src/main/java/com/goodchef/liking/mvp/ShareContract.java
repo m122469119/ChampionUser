@@ -93,7 +93,8 @@ public interface ShareContract {
              });
          }
 
-         public void showShareDialog(Context context,final ShareData shareData) {
+
+         public void showShareDialog(final Context context, final ShareData shareData) {
              final ShareCustomDialog shareCustomDialog = new ShareCustomDialog(context);
              shareCustomDialog.setViewOnClickListener(new View.OnClickListener() {
                  @Override

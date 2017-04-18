@@ -24,15 +24,16 @@ public class ServiceGenerator {
     private static Retrofit.Builder sRetrofitBuilder = new Retrofit.Builder()
             .baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+
     /**
-     *
      * @param serviceClass api class<>
-     * @param interceptor 添加公共参数
-     * @param <S> api class
+     * @param interceptor  添加公共参数
+     * @param <S>          api class
      * @return
      */
     public static <S> S createService(Class<S> serviceClass, Interceptor interceptor) {
-        Retrofit retrofit = sRetrofitBuilder.client(sOkHttpClientBuilder.addInterceptor(interceptor).build()).build();
+        Retrofit retrofit = sRetrofitBuilder.client(
+                sOkHttpClientBuilder.addInterceptor(interceptor).build()).build();
         return retrofit.create(serviceClass);
     }
 }

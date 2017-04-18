@@ -11,11 +11,7 @@ import android.text.TextUtils;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.SecurityUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
-import com.aaron.android.framework.base.BaseApplication;
-import com.aaron.android.framework.utils.DeviceUtils;
-import com.goodchef.liking.activity.LoginActivity;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -25,8 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created on 2017/3/6
@@ -61,7 +55,7 @@ public class BindBraceModel {
         void callback();
     }
 
-    public BindBraceModel(Context context, Callback callback) {
+    public BindBraceModel(Context context, final Callback callback) {
        mBleManager = new BleManager(context, new BluetoothAdapter.LeScanCallback() {
            @Override
            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
@@ -109,7 +103,9 @@ public class BindBraceModel {
         }
     }
 
-
+    /**
+     * 获取蓝牙服务
+     */
     public void getBlueToothServices() {
         List<BluetoothGattService> bluetoothGattServices = mBleManager.getSupportedGattServices();
         BluetoothGattService bleService = null;

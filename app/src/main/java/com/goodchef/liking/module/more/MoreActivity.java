@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.more;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,9 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.AboutActivity;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.module.about.AboutActivity;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.FileDownloaderManager;
 
@@ -128,14 +129,23 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         textView.setText((mUpdateAppData.getTitle()));
         builder.setCustomTitle(view);
         builder.setMessage(mUpdateAppData.getContent());
-        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.setPositiveButton(R.string.dialog_app_update,
-                (dialog, which) -> {
-                    if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
-                        mFileDownloaderManager = new FileDownloaderManager(MoreActivity.this);
-                        mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
+                            mFileDownloaderManager = new FileDownloaderManager(MoreActivity.this);
+                            mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
+                        }
+                        dialog.dismiss();
                     }
-                    dialog.dismiss();
                 });
         builder.create().show();
     }
@@ -146,10 +156,18 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
     private void showExitDialog() {
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
         builder.setMessage(getString(R.string.login_exit_message));
-        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-        builder.setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
-            exitLoginRequest();
-            dialog.dismiss();
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitLoginRequest();
+                dialog.dismiss();
+            }
         });
         builder.create().show();
     }
@@ -177,12 +195,9 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         mUpdateAppData = updateAppData;
         int update = mUpdateAppData.getUpdate();
         if (update == 0) {//无更新
-            Preference.setUpdateApp(0);
             mCheckUpdatePromptTextView.setVisibility(View.VISIBLE);
             mCheckUpdateImageView.setVisibility(View.GONE);
         } else if (update == 1 || update == 2) {//有更新
-            Preference.setUpdateApp(1);
-            Preference.setNewApkName(updateAppData.getLastestVer());
             mCheckUpdatePromptTextView.setVisibility(View.GONE);
             mCheckUpdateImageView.setVisibility(View.VISIBLE);
         }

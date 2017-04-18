@@ -183,9 +183,8 @@ public interface BindBraceleContract {
             });
         }
 
-        @Override
-        public void onPause() {
-            super.onPause();
+
+        public void pauseBle() {
             if (BleUtils.isSupportBleDevice(mContext)
                     && mModel.mBleManager.isOpen()
                     && mConnectionState && mModel.writecharacteristic != null) {
@@ -194,9 +193,10 @@ public interface BindBraceleContract {
             }
         }
 
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
+        /**
+         * 断开蓝牙连接，并且清理相关资源
+         */
+        public void releaseBleConnect() {
             mModel.mBleManager.release();
         }
 

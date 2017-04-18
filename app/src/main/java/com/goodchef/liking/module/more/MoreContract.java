@@ -46,6 +46,7 @@ class MoreContract {
                         public void onNext(CheckUpdateAppResult result) {
                             super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
+                                mMoreModel.saveUpdateInfo(result.getData());
                                 mView.updateCheckUpdateAppView(result.getData());
                             } else {
                                 PopupUtils.showToast(result.getMessage());

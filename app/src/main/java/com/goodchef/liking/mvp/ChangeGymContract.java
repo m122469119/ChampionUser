@@ -135,17 +135,13 @@ public interface ChangeGymContract {
                     mAmapGDLocationModel.currentCityId);
         }
 
-        @Override
-        public void onStop() {
-            super.onStop();
+        public void stopLocation() {
             if (mAmapGDLocationModel.mAmapGDLocation != null) {
                 mAmapGDLocationModel.mAmapGDLocation.stop();
             }
         }
 
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
+        public void detroyLocation() {
             if (mAmapGDLocationModel.mAmapGDLocation != null) {
                 mAmapGDLocationModel.mAmapGDLocation.destroy();
             }

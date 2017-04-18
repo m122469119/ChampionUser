@@ -107,11 +107,14 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     @OnClick(R.id.layout_area_announcement)
     public void onClick() {
         final AnnouncementDialog dialog = new AnnouncementDialog(this, announcement);
-        dialog.setViewOnClickListener(v -> {
-            switch (v.getId()) {
-                case R.id.announcement_cancel_image_button:
-                    dialog.dismiss();
-                    break;
+        dialog.setViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.announcement_cancel_image_button:
+                        dialog.dismiss();
+                        break;
+                }
             }
         });
     }

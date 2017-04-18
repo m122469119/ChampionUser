@@ -19,6 +19,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 class MoreModel {
+    public static final int NO_UPDATE = 0;
+
     final Observable<CheckUpdateAppResult> getCheckUpdateAppResult() {
         return LikingNewApi.getInstance().getCheckUpdateAppResult(UrlList.sHostVersion)
                 .subscribeOn(Schedulers.io())
@@ -38,5 +40,18 @@ class MoreModel {
         Preference.setIsNewUser(null);
         Preference.setUserIconUrl(ConstantUtils.BLANK_STRING);
         Preference.setIsBind("0");
+    }
+
+    public void saveUpdateInfo(CheckUpdateAppResult.UpdateAppData updateAppData) {
+        if (updateAppData == null) {
+            return;
+        }
+        int update = updateAppData.getUpdate();
+        if (update == NO_UPDATE) {//无更新
+            Preference.setUpdateApp(0);
+        } else if (update == 1 || update == 2) {//有更新
+            Preference.setUpdateApp(1);
+            Preference.setNewApkName(updateAppData.getLastestVer());
+        }
     }
 }

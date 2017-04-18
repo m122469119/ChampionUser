@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.joinus.contractjoin;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
@@ -14,7 +14,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.mvp.ContactJoinContract;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

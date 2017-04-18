@@ -169,7 +169,7 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceleC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        mPresenter.releaseBleConnect();
     }
 
 
@@ -543,7 +543,7 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceleC
     @Override
     protected void onPause() {
         super.onPause();
-        mPresenter.onPause();
+        mPresenter.pauseBle();
         unregisterReceiver(mGattUpdateReceiver);
     }
 }

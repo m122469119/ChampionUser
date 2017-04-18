@@ -235,13 +235,13 @@ public class ChangeGymActivity extends SwipeBackActivity implements ChangeGymCon
     @Override
     protected void onStop() {
         super.onStop();
-        mPresenter.onStop();
+        mPresenter.stopLocation();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        mPresenter.detroyLocation();
     }
 
     @Override

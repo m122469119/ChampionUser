@@ -38,6 +38,13 @@ public interface LikingApiService {
                                       @Query(KEY_TOKEN) String token,
                                       @Query("registration_id") String registrationId);
 
+    @POST(Urls.JOIN_APPLY)
+    Observable<BaseResult> joinApply(@Path(PATH_VERSION) String version,
+                                     @Query("name") String name,
+                                     @Query("phone") String phone,
+                                     @Query("city") String city,
+                                     @Query("type") int type);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -57,6 +64,10 @@ public interface LikingApiService {
          */
         static final String USER_LOGOUT = sVersion + "user/logout";
 
+        /**
+         * 联系加盟或成为教练
+         */
+        static final String JOIN_APPLY = sVersion + "user/join-apply";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

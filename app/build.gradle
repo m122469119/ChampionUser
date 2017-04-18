@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 //apply plugin: "cn.jiajixin.nuwa"
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,17 +12,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        multiDexEnabled = true
-        jackOptions {
-            enabled true
-        }
+        multiDexEnabled true
     }
-
-    dexOptions {
-        javaMaxHeapSize "4g"
-        jumboMode = true
-    }
-
     signingConfigs {
         myConfig {
             storeFile file("haochushi")
@@ -73,14 +65,11 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
-
-    /**编译环境配置*/
     compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibility
-        targetCompatibility rootProject.ext.targetCompatibility
+        sourceCompatibility = rootProject.ext.sourceCompatibility
+        targetCompatibility = rootProject.ext.targetCompatibility
     }
 
-    /**Android lint检查工具配置*/
     lintOptions {
         abortOnError rootProject.ext.abortOnError
     }
@@ -89,7 +78,6 @@ android {
 //        excludeClass = ['com/aaron/android/framework/base/BaseApplication.class']
 //    }
 
-    /**打包需要忽略的文件*/
     packagingOptions {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.xml')
         exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
@@ -103,6 +91,8 @@ dependencies {
 //    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.2' // 适用于Android的中国地区词典
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.android.support:multidex:1.0.1'
 }

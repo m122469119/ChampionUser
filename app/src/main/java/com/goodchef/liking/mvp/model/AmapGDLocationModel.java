@@ -35,7 +35,7 @@ public class AmapGDLocationModel {
     /***
      * 初始化定位
      */
-    public void initTitleLocation(Context context, Callback callback) {
+    public void initTitleLocation(final Context context, final Callback callback) {
         mAmapGDLocation = new AmapGDLocation(context);
         mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
             @Override
