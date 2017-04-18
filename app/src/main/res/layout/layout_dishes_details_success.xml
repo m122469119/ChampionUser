@@ -114,7 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/kacl"
+                        android:text="卡路里"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
@@ -158,7 +158,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/dishes_protein"
+                        android:text="蛋白质"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
@@ -201,7 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/carbon_and_water"
+                        android:text="碳水化合物"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 
@@ -244,7 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/dishes_fat"
+                        android:text="脂肪"
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="15sp"/>
 

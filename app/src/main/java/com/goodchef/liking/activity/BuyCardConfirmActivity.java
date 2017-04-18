@@ -36,6 +36,7 @@ import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.ConfirmCard;
 import com.goodchef.liking.http.result.data.PayResultData;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.storage.Preference;
@@ -186,7 +187,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         sendConfirmCardRequest();
-        setGymId();
+
     }
 
     private void sendConfirmCardRequest() {
@@ -209,6 +210,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         } else if (v == mCouponsLayout) {//选优惠券
             if (Preference.isLogin()) {
                 UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
+                setGymId();
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                 intent.putExtra(KEY_CARD_ID, mCardId + "");
@@ -295,12 +297,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
     private void setGymId() {
-        if (buyType == BUY_TYPE_BUY) {//买卡
-            submitGymId = LikingHomeActivity.gymId;
-        } else if (buyType == BUY_TYPE_CONTINUE) {//续卡
+        if (buyType == BUY_TYPE_BUY) {
             submitGymId = gymId;
-        } else if (buyType == BUY_TYPE_UPGRADE) {//升级卡
-            submitGymId = gymId;
+            LikingHomeActivity.gymId = gymId;
+        } else if (buyType == BUY_TYPE_CONTINUE) {
+            submitGymId = "0";
+        } else if (buyType == BUY_TYPE_UPGRADE) {
+            submitGymId = "0";
         }
     }
 

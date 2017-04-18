@@ -22,23 +22,29 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:选择体重
  * Author shaozucheng
  * Time:16/8/16 下午4:17
  */
-public class SelectWeightActivity extends AppBarActivity implements View.OnClickListener {
+public class SelectWeightActivity extends AppBarActivity {
+
     public static final String KEY_WEIGHT = "key_weight";
-    private LikingStateView mStateView;
-    private HImageView mHImageView;
-    private TextView mUserNameTextView;
-    private TextView mBirthdayTextView;
-    private TextView mHeightTextView;
-    private ImageView mSexManImage;
-    private ImageView mSexWomenImage;
-    private TextView mWeightTextView;
-    private RulerView mWeightRulerView;
-    private TextView mNextBtn;
+
+    @BindView(R.id.select_weight_state_view) LikingStateView mStateView;
+    @BindView(R.id.select_weight_head_image) HImageView mHImageView;
+    @BindView(R.id.user_name_text) TextView mUserNameTextView;
+    @BindView(R.id.birthday_text) TextView mBirthdayTextView;
+    @BindView(R.id.height_text) TextView mHeightTextView;
+    @BindView(R.id.sex_man_image) ImageView mSexManImage;
+    @BindView(R.id.sex_women_image) ImageView mSexWomenImage;
+    @BindView(R.id.weight_text) TextView mWeightTextView;
+    @BindView(R.id.weight_ruler_view) RulerView mWeightRulerView;
+    @BindView(R.id.select_weight_next_btn) TextView mNextBtn;
 
     private String userName;
     private String mLocalHeadImageUrl;
@@ -54,6 +60,7 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_weight);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.activity_title_weight));
         initView();
         initData();
@@ -61,18 +68,6 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.select_weight_state_view);
-        mHImageView = (HImageView) findViewById(R.id.select_weight_head_image);
-        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
-        mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
-        mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
-        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
-        mHeightTextView = (TextView) findViewById(R.id.height_text);
-        mWeightTextView = (TextView) findViewById(R.id.weight_text);
-        mWeightRulerView = (RulerView) findViewById(R.id.weight_ruler_view);
-        mNextBtn = (TextView) findViewById(R.id.select_weight_next_btn);
-
-        mNextBtn.setOnClickListener(this);
         setRulerView();
     }
 
@@ -115,8 +110,8 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
             mSexWomenImage.setVisibility(View.VISIBLE);
             mWeightRulerView.smoothScrollTo(57);
         }
-        mBirthdayTextView.setText(getString(R.string.birthday) + mBirthdayStr);
-        mHeightTextView.setText(getString(R.string.select_weight) + height + getString(R.string.cm));
+        mBirthdayTextView.setText(R.string.birthday + mBirthdayStr);
+        mHeightTextView.setText(getString(R.string.select_weight) + height + " cm");
     }
 
     private void setRulerView() {
@@ -125,26 +120,27 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
             @Override
             public void onScaleChanged(int scale) {
                 mScale = scale;
-                mWeightTextView.setText(weightList.get(scale) + getString(R.string.kg));
+                mWeightTextView.setText(weightList.get(scale) + " kg");
             }
         });
     }
 
-    @Override
+    @OnClick({R.id.select_weight_next_btn})
     public void onClick(View v) {
-        if (v == mNextBtn) {
-            Intent intent = new Intent(this, CompleteUserInfoActivity.class);
-            intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
-            intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
-            intent.putExtra(SexActivity.KEY_SEX, sex);
-            intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY, mBirthdayStr);
-            intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT, mBirthdayStrFormat);
-            intent.putExtra(SelectHeightActivity.KEY_HEIGHT, height);
-            intent.putExtra(KEY_WEIGHT, weightList.get(mScale));
-            startActivity(intent);
+        switch (v.getId()) {
+            case R.id.select_weight_next_btn:
+                Intent intent = new Intent(this, CompleteUserInfoActivity.class);
+                intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
+                intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
+                intent.putExtra(SexActivity.KEY_SEX, sex);
+                intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY, mBirthdayStr);
+                intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT, mBirthdayStrFormat);
+                intent.putExtra(SelectHeightActivity.KEY_HEIGHT, height);
+                intent.putExtra(KEY_WEIGHT, weightList.get(mScale));
+                startActivity(intent);
+                break;
         }
     }
-
 
     @Override
     protected boolean isEventTarget() {
@@ -152,6 +148,6 @@ public class SelectWeightActivity extends AppBarActivity implements View.OnClick
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        finish();
+        this.finish();
     }
 }

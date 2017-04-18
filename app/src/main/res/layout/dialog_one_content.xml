@@ -23,15 +23,4 @@
         android:padding="@dimen/spacing_12dp"
         android:textColor="@color/lesson_details_gray_back"
         android:textSize="@dimen/textsize_small"/>
-
-    <TextView
-        android:id="@+id/second_dialog_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/spacing_4dp"
-        android:visibility="gone"
-        android:padding="@dimen/spacing_12dp"
-        android:textColor="@color/lesson_details_gray_back"
-        android:textSize="@dimen/textsize_small"/>
 </LinearLayout>

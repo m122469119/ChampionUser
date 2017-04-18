@@ -20,7 +20,7 @@
         android:layout_marginTop="4dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/no_courses_data"
+        android:text="暂无课程"
         android:textColor="@color/add_minus_dishes_text"
         android:textSize="16sp"/>
 </LinearLayout>

@@ -85,5 +85,12 @@ public class UnBindDevicesDialog {
         mDialog.dismiss();
     }
 
+   public interface CancelOnClickListener {
+        void onCancelClickListener(AppCompatDialog dialog);
+    }
+
+   public interface ConfirmOnClickListener {
+        void onConfirmClickListener(AppCompatDialog dialog);
+    }
 
 }

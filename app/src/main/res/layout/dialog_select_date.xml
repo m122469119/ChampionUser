@@ -20,7 +20,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="12dp"
-            android:text="@string/cancel"
+            android:text="取消"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_15"/>
 
@@ -34,7 +34,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="12dp"
-            android:text="@string/confirm"
+            android:text="确定"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_15"/>
     </LinearLayout>

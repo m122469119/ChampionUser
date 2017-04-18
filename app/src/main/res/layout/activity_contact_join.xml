@@ -54,14 +54,14 @@
             android:textSize="14sp"/>
 
         <TextView
-            android:id="@+id/city_editText"
+            android:id="@+id/city_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_four_card_background"
-            android:hint="@string/select_city"
+            android:hint="请选择城市"
             android:inputType="text"
             android:paddingBottom="12dp"
             android:paddingLeft="10dp"
@@ -80,7 +80,7 @@
             android:gravity="center"
             android:lineSpacingExtra="3dp"
             android:padding="10dp"
-            android:text="@string/info_submit_success_and_waite"
+            android:text="信息提交成功后商务人员会与您联系,请耐心等待"
             android:textColor="@color/add_minus_dishes_text"
             android:textSize="13sp"/>
     </LinearLayout>

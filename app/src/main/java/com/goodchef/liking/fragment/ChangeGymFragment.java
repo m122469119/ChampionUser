@@ -15,7 +15,6 @@ import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClic
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
@@ -35,23 +34,15 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 说明:切换场馆
  * Author shaozucheng
  * Time:16/9/18 下午3:30
  */
 public class ChangeGymFragment extends BaseFragment implements CheckGymView, View.OnClickListener {
-    @BindView(R.id.my_gym)
-    TextView mMyTextView;
-    @BindView(R.id.change_gym_RecyclerView)
-    PullToRefreshRecyclerView mRecyclerView;
-    @BindView(R.id.change_gym_state_view)
-    LikingStateView mStateView;
-
-
+    private LikingStateView mStateView;
+    private PullToRefreshRecyclerView mRecyclerView;
+    private TextView mMyTextView;
     private View mNoCardHeadView;
 
     private ChangeGymAdapter mChangeGymAdapter;
@@ -78,15 +69,18 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_gym, container, false);
-        ButterKnife.bind(this, view);
-        initView();
+        initView(view);
         getInitData();
         setNetWorkView();
         setViewOnClickListener();
         return view;
     }
 
-    private void initView() {
+    private void initView(View view) {
+        mStateView = (LikingStateView) view.findViewById(R.id.change_gym_state_view);
+        mRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.change_gym_RecyclerView);
+        mMyTextView = (TextView) view.findViewById(R.id.my_gym);
+
         mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
         mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -158,7 +152,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                     mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                 }
                 mMyTextView.setVisibility(View.VISIBLE);
-                mMyTextView.setText(ResourceUtils.getString(R.string.buy_card_stadium) + mMyGym.getGymName());
+                mMyTextView.setText(getActivity().getString(R.string.buy_card_stadium) + mMyGym.getGymName());
             } else {
                 if (mNoCardHeadView != null) {
                     if (Preference.isLogin()) {
@@ -270,12 +264,11 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
      */
     private void jumpLikingHomeActivity(String gymId) {
         UMengCountUtil.UmengCount(getActivity(), UmengEventId.GYMCOURSESACTIVITY);
-        LikingHomeActivity.gymId = gymId;
-        LikingHomeActivity.isChangeGym = true;
-        postEvent(new ChangGymMessage(tabIndex));
+        postEvent(new ChangGymMessage(gymId, tabIndex));
         Intent intent = new Intent(getActivity(), LikingHomeActivity.class);
         intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
         startActivity(intent);
+        LikingHomeActivity.gymId = gymId;
         getActivity().finish();
     }
 

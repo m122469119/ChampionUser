@@ -27,7 +27,7 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
         mData = data;
     }
 
-    public static class SelfHelpGroupCoursesData extends BaseData{
+    public static class SelfHelpGroupCoursesData {
         /**
          * date : 20161104
          * hour : [{"hour":"17:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"18:00","available":false,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"19:00","available":false,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"20:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"21:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"22:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"23:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]}]
@@ -64,7 +64,7 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
             mTime = time;
         }
 
-        public static class TimeData extends BaseData{
+        public static class TimeData {
             @SerializedName("date")
             private String mDate;
             @SerializedName("day")

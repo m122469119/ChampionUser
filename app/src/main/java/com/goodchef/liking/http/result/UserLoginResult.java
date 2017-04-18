@@ -44,8 +44,6 @@ public class UserLoginResult extends BaseResult {
         private int newUser;
         @SerializedName("is_vip")
         private int isVip;
-        @SerializedName("gym_id")
-        private String gymId;
 
         public String getToken() {
             return token;
@@ -93,14 +91,6 @@ public class UserLoginResult extends BaseResult {
 
         public void setIsVip(int isVip) {
             this.isVip = isVip;
-        }
-
-        public String getGymId() {
-            return gymId;
-        }
-
-        public void setGymId(String gymId) {
-            this.gymId = gymId;
         }
     }
 }

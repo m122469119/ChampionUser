@@ -50,7 +50,7 @@
                 android:layout_below="@+id/bracelet_power_MyCustomCircleView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/spacing_4dp"
-                android:text="@string/devices_power"
+                android:text="设备电量"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_medium"
                 android:visibility="gone"/>

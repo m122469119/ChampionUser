@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/spacing_12dp"
-                    android:text="@string/body_analyze_result"
+                    android:text="身体成分分析结果"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_15"/>
 
@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/analyze_result"
+                        android:text="分析结论："
                         android:textColor="@color/add_minus_dishes_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/compared_with_the_fat"
+                        android:text="与肌肉相比，体脂肪偏高"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_15"/>
 
@@ -87,7 +87,7 @@
         android:gravity="center"
         android:minWidth="100dp"
         android:padding="@dimen/spacing_8dp"
-        android:text="@string/history_record"
+        android:text="历史记录"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_small"/>
 

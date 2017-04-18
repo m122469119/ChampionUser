@@ -323,6 +323,13 @@ public class StringUtils {
         float result = (float) (Math.round(source * decimalInt)) / decimalInt;
         return String.valueOf(result);
     }
+
+    public static String checkNotNull(String string) {
+        if (string == null) {
+            return "";
+        }
+        return string;
+    }
 }
 
 

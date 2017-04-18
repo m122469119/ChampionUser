@@ -30,7 +30,7 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_small"
             android:textColor="@color/lesson_details_dark_back"
-            android:text="@string/courses"/>
+            android:text="课程"/>
     </LinearLayout>
 
     <LinearLayout
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_small"
             android:textColor="@color/lesson_details_dark_back"
-            android:text="@string/order"/>
+            android:text="订单"/>
     </LinearLayout>
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_small"
             android:textColor="@color/lesson_details_dark_back"
-            android:text="@string/user_card"/>
+            android:text="会员卡"/>
     </LinearLayout>
 
     <LinearLayout
@@ -99,6 +99,6 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_small"
             android:textColor="@color/lesson_details_dark_back"
-            android:text="@string/layout_coupons"/>
+            android:text="优惠券"/>
     </LinearLayout>
 </LinearLayout>

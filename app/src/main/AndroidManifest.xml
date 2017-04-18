@@ -4,6 +4,7 @@
     android:versionCode="143"
     android:versionName="1.4.3">
 
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
@@ -12,30 +13,31 @@
 
     <permission
         android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature" />
-    <!-- JPush极光推送 -->
-    <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- 【必选】用以设置前台是否显示通知 -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <!-- JPush极光推送 -->
+        android:protectionLevel="signature"/>
+    <!-- JPush极光推送-->
+    <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!--【必选】用以设置前台是否显示通知-->
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <!-- JPush极光推送-->
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -84,28 +86,28 @@
             android:screenOrientation="portrait" />
         <!-- 关于我们 -->
         <activity
-            android:name=".activity.AboutActivity"
-            android:screenOrientation="portrait" />
-        <!-- 成为教练 -->
+            android:name=".module.about.AboutActivity"
+            android:screenOrientation="portrait"/>
+        <!--成为教练-->
         <activity
-            android:name=".activity.BecomeTeacherActivity"
-            android:screenOrientation="portrait" />
-        <!-- 周边-菜品详情 -->
+            android:name=".module.joinus.becomecoach.BecomeTeacherActivity"
+            android:screenOrientation="portrait"/>
+        <!--周边-菜品详情-->
         <activity
             android:name=".activity.DishesDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 联系加盟 -->
         <activity
-            android:name=".activity.ContactJonInActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的信息 -->
+
+            android:name=".module.joinus.contractjoin.ContactJonInActivity"
+            android:screenOrientation="portrait"/>
+        <!--我的信息-->
         <activity
             android:name=".activity.MyInfoActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!-- 图片选择 -->
-        <activity android:name=".widgets.camera.AlbumActivity" />
-        <!-- 我的课程 -->
+            android:screenOrientation="portrait"/>
+        <!-- 图片选择-->
+        <activity android:name=".widgets.camera.AlbumActivity"/>
+        <!--我的课程-->
         <activity
             android:name=".activity.MyLessonActivity"
             android:screenOrientation="portrait" />
@@ -116,11 +118,14 @@
             android:windowSoftInputMode="stateUnspecified|adjustPan" />
         <!-- 用户登录 -->
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".module.login.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!-- 查看所有门店 -->
-        <!-- 查看场馆 -->
+            android:screenOrientation="portrait"/>
+        <!--查看所有门店-->
+        <activity
+            android:name=".activity.LookStoreMapActivity"
+            android:screenOrientation="portrait"/>
+        <!--查看场馆-->
         <activity
             android:name=".activity.ArenaActivity"
             android:screenOrientation="portrait" />
@@ -288,26 +293,19 @@
             android:screenOrientation="portrait" />
 
         <!-- 手环数据 -->
+        <!--每日运动-->
         <activity
             android:name=".activity.EveryDaySportActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- 切换城市 -->
-        <activity
-            android:name=".activity.ChangeCityActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateUnspecified|adjustPan" />
-
-        <!-- 更多 -->
-        <activity
-            android:name=".activity.MoreActivity"
             android:screenOrientation="portrait" />
 
         <!-- 优惠券详情 -->
         <activity
             android:name=".activity.CouponsDetailsActivity"
             android:screenOrientation="portrait" />
+        <!--更多-->
+        <activity
+            android:name=".module.more.MoreActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- 支付宝h5页面 -->
         <activity

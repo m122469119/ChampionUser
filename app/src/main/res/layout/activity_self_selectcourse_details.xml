@@ -39,7 +39,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/icon_group_courses_details"
                     android:gravity="center"
-                    android:text="@string/layout_self_help_group"
+                    android:text="自助团体课"
                     android:textColor="@color/liking_lesson_group_text"
                     android:textSize="12sp"/>
 
@@ -116,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:text="@string/strength"
+                        android:text="强度："
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -146,7 +146,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="10dp"
-                    android:text="@string/courses_introduces"
+                    android:text="课程介绍"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 

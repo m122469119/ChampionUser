@@ -30,7 +30,7 @@
             android:id="@+id/dir_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/all_picture"
+            android:text="所有图片"
             android:textSize="10sp" />
 
         <TextView

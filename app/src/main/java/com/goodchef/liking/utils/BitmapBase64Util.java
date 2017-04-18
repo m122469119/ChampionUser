@@ -76,12 +76,14 @@ public class BitmapBase64Util {
             byte[] imgBytes = out.toByteArray();
             return Base64.encodeToString(imgBytes, Base64.DEFAULT);
         } catch (Exception e) {
+            // TODO Auto-generated catch block
             return null;
         } finally {
             try {
                 out.flush();
                 out.close();
             } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

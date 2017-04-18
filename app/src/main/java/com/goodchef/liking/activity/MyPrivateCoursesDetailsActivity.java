@@ -115,6 +115,9 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         mCoursesDetailsPresenter.getMyPrivateCoursesDetails(orderId);
     }
 
+    private void sendCompleteRequest() {
+        mCoursesDetailsPresenter.completeMyPrivateCourses(orderId);
+    }
 
     @Override
     public void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData data) {
@@ -187,7 +190,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     public void onClick(View v) {
       if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
-                LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
+                LikingCallUtil.showCallDialog(MyPrivateCoursesDetailsActivity.this, getString(R.string.confrim_contact_teacher), mTeacherPhone);
             }
         }
     }

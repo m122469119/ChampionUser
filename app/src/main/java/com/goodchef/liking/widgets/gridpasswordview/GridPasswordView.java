@@ -308,6 +308,7 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
         super.onRestoreInstanceState(state);
     }
 
+    //TODO
     //@Override
     private void setError(String error) {
         mInputView.setError(error);

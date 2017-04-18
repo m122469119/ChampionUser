@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="left|center"
-                android:text="@string/buy_type"
+                android:text="购买方式"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="13sp"/>
 
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right|center"
-                android:text="@string/flow_card"
+                android:text="续卡"
                 android:textColor="@color/add_minus_dishes_text"
                 android:textSize="13sp"/>
         </LinearLayout>
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="left|center"
-                android:text="@string/end_time"
+                android:text="有效期"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="13sp"/>
 
@@ -176,6 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right|center"
+                android:text="22-95-9-34"
                 android:textColor="@color/add_minus_dishes_text"
                 android:textSize="13sp"/>
         </LinearLayout>
@@ -199,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left|center"
-                android:text="@string/use_times"
+                android:text="使用时段"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="13sp"/>
 
@@ -234,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="left|center"
-                android:text="@string/pay_type"
+                android:text="支付方式"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -270,7 +271,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="left|center"
-                android:text="@string/favourable_number"
+                android:text="优惠金额"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -306,7 +307,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="left|center"
-                android:text="@string/prices"
+                android:text="价格"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 

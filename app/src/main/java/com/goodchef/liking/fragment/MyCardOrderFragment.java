@@ -27,6 +27,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.data.OrderCardData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.mvp.CardOrderContract;
 import com.goodchef.liking.storage.Preference;
 
 import java.util.List;
@@ -36,11 +37,12 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/28 下午2:54
  */
-public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment {
+public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CardOrderContract.CardOrderView {
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyCardOrderAdapter mMyCardOrderAdapter;
 
+    private CardOrderContract.CardOrderPresenter mOrderPresenter;
 
     public static MyCardOrderFragment newInstance() {
         Bundle args = new Bundle();
@@ -60,6 +62,9 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         mMyCardOrderAdapter = new MyCardOrderAdapter(getActivity());
         setRecyclerAdapter(mMyCardOrderAdapter);
         onItemClick();
+        if(mOrderPresenter == null) {
+            mOrderPresenter = new CardOrderContract.CardOrderPresenter(this.getContext(), this, this);
+        }
     }
 
     private void setNoDataView() {
@@ -106,25 +111,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
 
 
     private void sendGetListRequest(int page) {
-        LiKingApi.getCardOrderList(Preference.getToken(), page, new PagerRequestCallback<OrderCardListResult>(this) {
-            @Override
-            public void onSuccess(OrderCardListResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    List<OrderCardData> listData = result.getData().getOrderCardList();
-                    if (listData != null) {
-                        updateListView(listData);
-                    }
-                } else {
-                    PopupUtils.showToast(result.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-            }
-        });
+        mOrderPresenter.getCardOrderList(page);
     }
 
     @Override
@@ -134,6 +121,18 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
 
     public void onEvent(LoginOutFialureMessage message) {
         getActivity().finish();
+    }
+
+    @Override
+    public void updateCardOrderListView(List<OrderCardData> listData) {
+        if (listData != null) {
+            updateListView(listData);
+        }
+    }
+
+    @Override
+    public void showToast(String message) {
+        PopupUtils.showToast(message);
     }
 
 

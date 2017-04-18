@@ -43,6 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:text="教练名称"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_15"/>
 
@@ -51,6 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:text="增肌 , 减肥"
                     android:textColor="@color/lesson_details_gray_back"
                     android:textSize="12sp"/>
 
@@ -63,7 +65,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/the_period_of_validity"
+                        android:text="有效期："
                         android:textColor="@color/lesson_details_gray_back"
                         android:textSize="13sp"/>
 
@@ -71,6 +73,7 @@
                         android:id="@+id/period_of_validity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="2016/05-2016/10"
                         android:textColor="@color/my_group_green_text"
                         android:textSize="13sp"/>
                 </LinearLayout>
@@ -84,6 +87,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:text="已支付"
                 android:textColor="@color/my_group_green_text"/>
         </RelativeLayout>
 

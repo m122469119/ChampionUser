@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.aaron.android.framework.utils.PopupUtils;
-import com.goodchef.liking.R;
 
 /**
  * 低功耗蓝牙设备搜索器
@@ -43,7 +42,7 @@ public class BleScanner {
      */
     public void scanLeDevice(final boolean enable) {
         if (!BleUtils.isSupportBleDevice(mContext)) {
-            PopupUtils.showToast(mContext.getString(R.string.devices_no_support_ble));
+            PopupUtils.showToast("该设备不支持蓝牙4.0");
             return;
         }
         if (enable) {

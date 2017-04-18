@@ -16,7 +16,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="12dp"
-        android:lines="1"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="13sp"
         android:visibility="gone"/>

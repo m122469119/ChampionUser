@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/course_name"
+                        android:text="课程名称"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/courses_teacher"
+                        android:text="课程教练"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -122,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/courses_time"
+                        android:text="课程时长"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:padding="10dp"
-                        android:text="@string/courses_strength_prompt"
+                        android:text="课程强度"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -188,7 +188,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/on_courses_time"
+                        android:text="上课时间"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -219,7 +219,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/on_courses_address"
+                        android:text="上课地点"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -253,7 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/order_number_prompt"
+                        android:text="订单号"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -284,7 +284,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/order_time"
+                        android:text="下单时间"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -318,7 +318,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/prices"
+                        android:text="价格"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -349,7 +349,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/favorable"
+                        android:text="优惠"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -380,7 +380,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/out_of_pocket"
+                        android:text="实付"
                         android:textColor="@color/liking_lesson_text"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -413,7 +413,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="2"
-                    android:text="@string/pay_type"
+                    android:text="支付方式"
                     android:textColor="@color/liking_lesson_text"
                     android:textSize="@dimen/textsize_small"/>
 

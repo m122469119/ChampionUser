@@ -16,7 +16,7 @@
         android:id="@+id/textview_download_apk"
         android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/download_plan"
+              android:text="下载进度:0.0%"
               android:textColor="@color/black"
               android:textSize="@dimen/textsize_small"/>
 </LinearLayout>

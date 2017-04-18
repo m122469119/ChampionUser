@@ -63,15 +63,4 @@
         android:text="@string/head_image_next_btn"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_small"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/head_image_next_btn"
-        android:layout_marginBottom="@dimen/spacing_12dp"
-        android:gravity="center"
-        android:padding="@dimen/spacing_12dp"
-        android:text="@string/default_head_image_prompt"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_small"/>
 </RelativeLayout>

@@ -74,7 +74,7 @@ public class GymDetailsResult extends BaseResult {
             this.imgs = imgs;
         }
 
-        public static class ImgsData extends BaseData{
+        public static class ImgsData {
             @SerializedName("title")
             private String title;
             @SerializedName("url")

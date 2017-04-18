@@ -22,6 +22,7 @@ import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.data.Food;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
@@ -65,7 +66,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     private void setRightMenu() {
-        showRightMenu(getString(R.string.clear_shop_car), new View.OnClickListener() {
+        showRightMenu("清空购物车", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showClearShoppingCartDialog();
@@ -114,7 +115,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     public void onShoppingDishAdded(Food foodData) {
         int riceNum = foodData.getSelectedOrderNum();
         if (riceNum >= foodData.getRestStock()) {
-            PopupUtils.showToast(getString(R.string.single_buy_more) + foodData.getRestStock() + getString(R.string.part));
+            PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
         }
         if (!buyList.contains(foodData)) {
             buyList.add(foodData);

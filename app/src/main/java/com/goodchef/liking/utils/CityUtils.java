@@ -37,6 +37,36 @@ public class CityUtils {
         if (StringUtils.isEmpty(cityCode)) {
             return cityId;
         }
+//        if (StringUtils.isEmpty(provinceName) && StringUtils.isEmpty(cityName)) {
+//            return cityId;
+//        }
+//        BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
+//        if (baseConfigResult == null) {
+//            return cityId;
+//        }
+//        BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+//        if (baseConfigData == null) {
+//            return cityId;
+//        }
+//        List<CityData> cityDataList = baseConfigData.getCityList();
+//        if (ListUtils.isEmpty(cityDataList)) {
+//            return cityId;
+//        }
+//        for (CityData cityData : cityDataList) {
+//            if (cityData == null) {
+//                continue;
+//            }
+//            if (!StringUtils.isEmpty(cityName) &&
+//                    (cityName.contains(cityData.getCityName()) || cityData.getCityName().contains(cityName))) {
+//                cityId = String.valueOf(cityData.getCityId());
+//                break;
+//            }
+//            if (!StringUtils.isEmpty(provinceName) &&
+//                    (provinceName.contains(cityData.getCityName()) || cityData.getCityName().contains(provinceName))) {
+//                cityId = String.valueOf(cityData.getCityId());
+//                break;
+//            }
+//        }
         ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
         City.RegionsData.CitiesData city = citiesMap.get(cityCode);
         if (city != null && !StringUtils.isEmpty(city.getCityName())) {
@@ -59,7 +89,37 @@ public class CityUtils {
         if (StringUtils.isEmpty(districtName)) {
             return districtId;
         }
-
+//        BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
+//        if (baseConfigResult == null) {
+//            return districtId;
+//        }
+//        BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+//        if (baseConfigData == null) {
+//            return districtId;
+//        }
+//        List<CityData> cityDataList = baseConfigData.getCityList();
+//        if (ListUtils.isEmpty(cityDataList)) {
+//            return districtId;
+//        }
+//        for (CityData cityData : cityDataList) {
+//            if (cityData == null) {
+//                continue;
+//            }
+//            List<CityData.DistrictData> districtDataList = cityData.getDistrict();
+//            if (ListUtils.isEmpty(districtDataList)) {
+//                continue;
+//            }
+//            for (CityData.DistrictData districtData : districtDataList) {
+//                if (districtData == null) {
+//                    continue;
+//                }
+//                if (!StringUtils.isEmpty(districtName) &&
+//                        (districtName.contains(districtData.getDistrictName()) || districtData.getDistrictName().contains(districtName))) {
+//                    districtId = String.valueOf(districtData.getDistrictId());
+//                    break;
+//                }
+//            }
+//        }
         ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
         City.RegionsData.CitiesData city = citiesMap.get(cityCode);
         if (city != null && !StringUtils.isEmpty(city.getCityName())) {
@@ -109,11 +169,7 @@ public class CityUtils {
         return latitudeStr;
     }
 
-    /**
-     * 解析本地城市地区 得到List集合
-     * @param context
-     * @return
-     */
+
     public static List<City.RegionsData> getLocalCityList(Context context) {
         List<City.RegionsData> cityList = new ArrayList<>();
         String jsonStr = ReadProvincesCitiesJson.getJson(context);//获取省市json串
@@ -125,11 +181,6 @@ public class CityUtils {
         return cityList;
     }
 
-    /**
-     *  解析本地城市地区 得到Map集合
-     * @param context
-     * @return
-     */
     public static ArrayMap<String, City.RegionsData.CitiesData> getLocalCityMap(Context context) {
         //城市code 以及下面地方放在map中
         ArrayMap<String, City.RegionsData.CitiesData> citiesMap = new ArrayMap<>();
@@ -142,36 +193,6 @@ public class CityUtils {
             }
         }
         return citiesMap;
-    }
-
-
-    /**
-     * 定位成功，判断当前城市是否在我们开通的城市范围内
-     * @param cityCode
-     * @return
-     */
-    public static boolean isDredge(String cityCode){
-        boolean cityIsDredge = false;
-        BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
-        if (baseConfigResult ==null){
-            return false;
-        }
-        BaseConfigResult.BaseConfigData configData = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
-        if (configData ==null){
-            return false;
-        }
-        List<String> openCityCodes = configData.getOpenCity();
-        if (ListUtils.isEmpty(openCityCodes)){
-            return false;
-        }
-
-        for (int i=0 ;i<openCityCodes.size();i++){
-            if (openCityCodes.get(i).equals(cityCode)){
-                cityIsDredge = true;
-                break;
-            }
-        }
-        return cityIsDredge;
     }
 
 }

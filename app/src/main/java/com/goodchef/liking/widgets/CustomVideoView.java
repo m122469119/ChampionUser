@@ -205,6 +205,7 @@ public class CustomVideoView extends SurfaceView implements MediaPlayerControl {
             return;
         }
         // Tell the music playback service to pause
+        // TODO: these constants need to be published somewhere in the framework.
         Intent i = new Intent("com.android.music.musicservicecommand");
         i.putExtra("command", "pause");
         mContext.sendBroadcast(i);
@@ -588,16 +589,19 @@ public class CustomVideoView extends SurfaceView implements MediaPlayerControl {
 
     @Override
     public boolean canPause() {
+        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean canSeekBackward() {
+        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean canSeekForward() {
+        // TODO Auto-generated method stub
         return false;
     }
 

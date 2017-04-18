@@ -21,15 +21,15 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BecomeTeacherActivity;
+import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.activity.BingBraceletActivity;
 import com.goodchef.liking.activity.BodyTestDataActivity;
-import com.goodchef.liking.activity.ContactJonInActivity;
+import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
 import com.goodchef.liking.activity.CouponsActivity;
 import com.goodchef.liking.activity.EveryDaySportActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.activity.LoginActivity;
-import com.goodchef.liking.activity.MoreActivity;
+import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.more.MoreActivity;
 import com.goodchef.liking.activity.MyBraceletActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
@@ -96,6 +96,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private TextView mTrainTimeData;//训练时间
     private TextView mHeadPersonDataTextView;
 
+    private TextView mContactSetviceBtn;//联系客服
 
 
     private LikingStateView mStateView;
@@ -299,6 +300,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
         mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
         mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
+        mContactSetviceBtn = (TextView) view.findViewById(R.id.contact_service);
 
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -332,6 +334,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mTrainLayout.setOnClickListener(this);
         mEverydaySportLayout.setOnClickListener(this);
 
+        mContactSetviceBtn.setOnClickListener(this);
     }
 
 
@@ -420,6 +423,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, getString(R.string.change_person_info));
+                intent.putExtra(LoginActivity.KEY_INTENT_TYPE, 2);
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
@@ -455,15 +459,19 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mContactJoinLayout) {//联系加盟
-            UMengCountUtil.UmengCount(getActivity(), UmengEventId.CONTACTJONINACTIVITY);
-            startActivity(ContactJonInActivity.class);
+            Intent intent = new Intent(getActivity(), ContactJonInActivity.class);
+            startActivity(intent);
         } else if (v == mBecomeTeacherLayout) {//成为教练
-            UMengCountUtil.UmengCount(getActivity(), UmengEventId.BECOMETEACHERACTIVITY);
-            startActivity(BecomeTeacherActivity.class);
+            Intent intent = new Intent(getActivity(), BecomeTeacherActivity.class);
+            startActivity(intent);
         } else if (v == mMoreLayout) {//更多
             startActivity(MoreActivity.class);
-        }  else if (v == mSelfHelpGroupLayout) {//自助团体课
-            UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
+        } else if (v == mContactSetviceBtn) {
+            String phone = Preference.getCustomerServicePhone();
+            if (!StringUtils.isEmpty(phone)) {
+                LikingCallUtil.showCallDialog(getActivity(), getString(R.string.confrim_contact_customer_service), phone);
+            }
+        } else if (v == mSelfHelpGroupLayout) {//自助团体课
             startActivity(SelfHelpGroupActivity.class);
         } else if (v == mBodyScoreLayout) {//体测数据
             if (Preference.isLogin()) {
@@ -473,10 +481,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             jumpBraceletActivity();
-        } else if (v == mEverydaySportLayout) {//手环数据
+        } else if (v == mEverydaySportLayout) {//每日运动
             if (Preference.isLogin()) {
                 if (Preference.isBind()) {
-                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.EVERYDAYSPORTACTIVITY);
                     Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
@@ -503,7 +510,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
             if (Preference.isBind()) {//绑定过手环
                 if (initBlueTooth()) {
-                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYBRACELETACTIVITY);
                     Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
@@ -515,7 +521,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                     startActivity(intent);
                 }
             } else {//没有绑过
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.BINGBRACELETACTIVITY);
                 Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
                 if (!StringUtils.isEmpty(mBraceletMac)) {
                     intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
@@ -551,7 +556,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 跳转到体测评分界面
      */
     private void jumpBodyTestActivity() {
-        UMengCountUtil.UmengCount(getActivity(), UmengEventId.BODYTESTDATAACTIVITY);
         Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
         intent.putExtra(BodyTestDataActivity.BODY_ID, "");
         intent.putExtra(BodyTestDataActivity.SOURCE, "other");

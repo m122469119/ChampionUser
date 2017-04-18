@@ -77,7 +77,7 @@ public class SelectCoursesListAdapter extends BaseRecycleViewAdapter<SelectCours
             }
             String duration = "";
             try{
-                duration = Integer.parseInt(object.getVideoDuration()) / 60 + mContext.getString(R.string.min);
+                duration = Integer.parseInt(object.getVideoDuration()) / 60 + "min";
             }catch (Exception e){
             }
             mGroupCoursesDurationTextView.setText(mContext.getString(R.string.self_courses_time)+ duration);

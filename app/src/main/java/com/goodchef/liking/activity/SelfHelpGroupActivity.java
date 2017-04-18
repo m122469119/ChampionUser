@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
@@ -32,6 +31,7 @@ import com.goodchef.liking.eventmessages.SelectCoursesMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.SelfHelpGroupCoursesPresenter;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
 import com.goodchef.liking.storage.Preference;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明:自助团体课
+ * 说明:
  * Author: shaozucheng
  * Time: 下午4:05
  */
@@ -571,7 +571,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         mCoursesIntroduceTextView.setText(mCoursesData.getDesc());
         String duration = "";
         try{
-            duration = Integer.parseInt(mCoursesData.getVideoDuration()) / 60 + getString(R.string.min);
+            duration = Integer.parseInt(mCoursesData.getVideoDuration()) / 60 + "min";
         }catch (Exception e){}
         mCoursesDurationTextView.setText(getString(R.string.self_courses_time) + duration);
         mGroupCoursesStrongTextView.setText(getString(R.string.courses_strength) + mCoursesData.getIntensity());

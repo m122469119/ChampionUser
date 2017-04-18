@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/weixin_public_number"
+                android:text="微信公共号："
                 android:paddingBottom="10dp"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="15sp"/>

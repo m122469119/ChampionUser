@@ -94,7 +94,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
         public void bindViews(Food object) {
             ButtonClickListener buttonClickListener = new ButtonClickListener();
             mDishesNameTextView.setText(object.getGoodsName());
-            mDishesMoneyTextView.setText(mContext.getString(R.string.money_symbol) + object.getPrice());
+            mDishesMoneyTextView.setText("¥ " + object.getPrice());
 
             List<String> tagList = object.getTags();
             StringBuffer stringBuffer = new StringBuffer();
@@ -106,9 +106,9 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             mDishesTypeTextView.setText(stringBuffer.toString());
             String allEat = object.getAllEat();
             if (Integer.parseInt(allEat) > 0) {
-                mBuyPersonTextView.setText(allEat + mContext.getString(R.string.people_buyed));
+                mBuyPersonTextView.setText(allEat + "人购买过");
             } else {
-                mBuyPersonTextView.setText(R.string.waite_you_taste_first);
+                mBuyPersonTextView.setText("等你首尝");
             }
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
@@ -120,7 +120,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             int leftNum = object.getLeftNum();
 
             if (leftNum > 0) {//剩余份数大于0时才能购买
-                mSurplusNumberTextView.setText(mContext.getString(R.string.remian_number) + leftNum + mContext.getString(R.string.part));
+                mSurplusNumberTextView.setText("还剩" + leftNum + "份");
                 mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
                 if (selectNum == 0) {
                     mReduceImageView.setVisibility(View.INVISIBLE);
@@ -140,7 +140,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
                     mBuyNumberTextView.setText(String.valueOf(object.getSelectedOrderNum()));
                 }
             } else {
-                mSurplusNumberTextView.setText(R.string.sell_out);
+                mSurplusNumberTextView.setText("已售罄");
                 mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.bg_gray_text));
                 mReduceImageView.setVisibility(View.INVISIBLE);
                 mBuyNumberTextView.setVisibility(View.INVISIBLE);

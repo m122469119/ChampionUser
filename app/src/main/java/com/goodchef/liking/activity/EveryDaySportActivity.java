@@ -49,7 +49,7 @@ import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 
 /**
- * 说明:手环数据
+ * 说明:每日运动
  * Author : shaozucheng
  * Time: 下午6:46
  * version 1.0.0

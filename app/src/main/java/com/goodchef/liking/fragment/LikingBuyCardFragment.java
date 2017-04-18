@@ -240,6 +240,10 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     public void onEvent(MainAddressChanged mainAddressChanged) {
+//        String cityName = mainAddressChanged.getCityName();
+//        if (!StringUtils.isEmpty(cityName)) {
+//            setHeadNoLocationView(cityName);
+//        }
         latitude = mainAddressChanged.getLatitude() + "";
         longitude = mainAddressChanged.getLongitude() + "";
         cityId = mainAddressChanged.getCityId();
@@ -261,27 +265,36 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         sendBuyCardListRequest();
     }
 
+
     public void onEvent(ChangGymMessage message) {
+        LikingHomeActivity.gymId = message.getGymId();
+        int index = message.getIndex();
+        //  if (index == 1) {//从买卡界面切换场馆过来
         sendBuyCardListRequest();
+        //}
     }
 
     public void onEvent(LoginOutMessage message) {
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginFinishMessage message) {
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(CoursesErrorMessage message) {
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
     public void onEvent(LoginOutFialureMessage message) {
+        LikingHomeActivity.gymId = "0";
         sendBuyCardListRequest();
     }
 
-    public void onEvent(RefreshBuyCardMessage message) {
+    public void onEvent(RefreshBuyCardMessage message){
         sendBuyCardListRequest();
     }
 

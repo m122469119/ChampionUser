@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="@string/new_user_get_experience_chance"
+            android:text="新用户可获得一次体验机会"
             android:textColor="@color/white"
             android:textSize="15sp"/>
 
@@ -71,7 +71,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_radius_green_btn_background"
                 android:gravity="center"
-                android:text="@string/get_in_door_pwd"
+                android:text="获取进门密码"
                 android:textColor="@color/white"/>
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_radius_green_btn_background"
                 android:gravity="center"
-                android:text="@string/get_out_door_pwd"
+                android:text="获取出门密码"
                 android:textColor="@color/white"/>
 
         </LinearLayout>

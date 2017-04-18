@@ -34,7 +34,7 @@
         android:paddingBottom="@dimen/spacing_12dp"
         android:paddingLeft="@dimen/spacing_12dp"
         android:paddingRight="@dimen/spacing_12dp"
-        android:text="@string/after_the_unbundling_can_upload_data"
+        android:text="解绑后，手环将无法上传数据！"
         android:textColor="@color/white"
         android:textSize="16sp"/>
 

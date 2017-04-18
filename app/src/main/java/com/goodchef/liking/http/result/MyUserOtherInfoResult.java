@@ -1,6 +1,5 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.google.gson.annotations.SerializedName;
 
@@ -29,7 +28,7 @@ public class MyUserOtherInfoResult extends BaseResult {
         this.data = data;
     }
 
-    public static class UserOtherInfoData extends BaseData{
+    public static class UserOtherInfoData {
         /**
          * is_vip : 0
          * card : {}

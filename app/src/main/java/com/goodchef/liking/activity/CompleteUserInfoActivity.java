@@ -2,7 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
-import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -18,7 +17,6 @@ import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -33,22 +31,35 @@ import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:首次登陆完成个人信息界面
  * Author shaozucheng
  * Time:16/8/19 下午2:35
  */
-public class CompleteUserInfoActivity extends AppBarActivity implements View.OnClickListener, UserInfoView {
+public class CompleteUserInfoActivity extends AppBarActivity implements UserInfoView {
 
-    private LikingStateView mStateView;
-    private HImageView mHImageView;
-    private TextView mUserNameTextView;
-    private TextView mBirthdayTextView;
-    private TextView mHeightTextView;
-    private ImageView mSexManImage;
-    private ImageView mSexWomenImage;
-    private TextView mWeightTextView;
-    private TextView mCompleteBtn;
+    @BindView(R.id.complete_userInfo_state_view)
+    LikingStateView mStateView;
+    @BindView(R.id.complete_user_head_image)
+    HImageView mHImageView;
+    @BindView(R.id.user_name_text)
+    TextView mUserNameTextView;
+    @BindView(R.id.sex_man_image)
+    ImageView mSexManImage;
+    @BindView(R.id.sex_women_image)
+    ImageView mSexWomenImage;
+    @BindView(R.id.birthday_text)
+    TextView mBirthdayTextView;
+    @BindView(R.id.height_text)
+    TextView mHeightTextView;
+    @BindView(R.id.weight_text)
+    TextView mWeightTextView;
+    @BindView(R.id.complete_userInfo_btn)
+    TextView mCompleteBtn;
 
     private String userName;
     private String mLocalHeadImageUrl;
@@ -57,35 +68,21 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     private String mBirthdayStrFormat;
     private int height;
     private String weight;
-    private String headUrl = "";
+    private String headUrl;
 
     private UserInfoPresenter mUserInfoPresenter;
-    private Bitmap mBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_user_info);
+        ButterKnife.bind(this);
+        mUserInfoPresenter = new UserInfoPresenter(this, this);
         setTitle(getString(R.string.activity_title_complete_userinfo));
         showHomeUpIcon(0);
-        initView();
         initData();
         getIntentData();
     }
-
-    private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.complete_userInfo_state_view);
-        mHImageView = (HImageView) findViewById(R.id.complete_user_head_image);
-        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
-        mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
-        mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
-        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
-        mHeightTextView = (TextView) findViewById(R.id.height_text);
-        mWeightTextView = (TextView) findViewById(R.id.weight_text);
-        mCompleteBtn = (TextView) findViewById(R.id.complete_userInfo_btn);
-        mCompleteBtn.setOnClickListener(this);
-    }
-
 
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -126,27 +123,19 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
         mBirthdayTextView.setText(mBirthdayStr);
-        mHeightTextView.setText(height + getString(R.string.cm));
-        mWeightTextView.setText(weight + getString(R.string.kg));
+        mHeightTextView.setText(height + " cm");
+        mWeightTextView.setText(weight + " kg");
 
-        mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
+        Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
+        sendImageFile(mBitmap);
     }
 
-    @Override
+    @OnClick({R.id.complete_userInfo_btn})
     public void onClick(View v) {
         if (v == mCompleteBtn) {
-            sendImageFile(mBitmap);
+            postEvent(new UpDateUserInfoMessage());
+            this.finish();
         }
-    }
-
-    /**
-     * 提交用户信息
-     */
-    private void sendUserInfo() {
-        if (mUserInfoPresenter == null) {
-            mUserInfoPresenter = new UserInfoPresenter(this, this);
-        }
-        mUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStrFormat, weight, height + "");
     }
 
     private void sendImageFile(Bitmap mBitmap) {
@@ -157,15 +146,16 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(CompleteUserInfoActivity.this, result)) {
                     headUrl = result.getData().getUrl();
-                    LogUtils.i(TAG, "headUrl= " + headUrl);
-                    sendUserInfo();
+                    Log.e("headUrl", headUrl);
+                    if (!StringUtils.isEmpty(headUrl)) {
+                        mUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStrFormat, weight, height + "");
+                    }
                 }
             }
 
             @Override
             public void onFailure(RequestError error) {
                 super.onFailure(error);
-                sendUserInfo();
             }
         });
     }
@@ -179,8 +169,6 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
                 Preference.setUserIconUrl(imageUrl);
             }
             Preference.setNickName(userName);
-            postEvent(new UpDateUserInfoMessage());
-            finish();
         }
     }
 
@@ -198,8 +186,8 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            PopupUtils.showToast(getString(R.string.confirm_submit_user_info));
-            return false;
+            postEvent(new UpDateUserInfoMessage());
+            finish();
         }
         return super.onKeyDown(keyCode, event);
     }

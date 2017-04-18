@@ -10,7 +10,6 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.codelibrary.utils.DateUtils;
-import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BaseView;
@@ -24,7 +23,7 @@ import com.goodchef.liking.activity.ChangeGymActivity;
 import com.goodchef.liking.activity.GroupCoursesChargeConfirmActivity;
 import com.goodchef.liking.activity.GroupLessonDetailsActivity;
 import com.goodchef.liking.activity.InviteFriendsActivity;
-import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyCardDetailsActivity;
 import com.goodchef.liking.activity.MyChargeGroupCoursesDetailsActivity;
@@ -202,7 +201,7 @@ public class LiKingVerifyUtils {
                     sBaseConfigResult = result;
                     BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
                     if (baseConfigData != null) {
-                        UrlList.HOST_VERSION = File.separator + baseConfigData.getApiVersion();
+                        UrlList.sHostVersion = File.separator + baseConfigData.getApiVersion();
                     }
                     //解析已开通城市
                     loadOpenCitysInfo(context);
@@ -224,31 +223,6 @@ public class LiKingVerifyUtils {
             }
         });
     }
-
-
-    public static List<City.RegionsData.CitiesData> getCitiesDataList() {
-        List<City.RegionsData.CitiesData> citiesDatas = new ArrayList<>();
-        BaseConfigResult baseResult = Preference.getBaseConfig();
-        if (baseResult == null) {
-            return citiesDatas;
-        }
-        BaseConfigResult.BaseConfigData baseConfig = baseResult.getBaseConfigData();
-        if (baseConfig == null) {
-            return citiesDatas;
-        }
-        List<CityData> cityList = baseConfig.getCityList();
-        if (ListUtils.isEmpty(cityList)) {
-            return citiesDatas;
-        }
-        for (int i = 0; i < cityList.size(); i++) {
-            City.RegionsData.CitiesData cityBean = new City.RegionsData.CitiesData();
-            cityBean.setCityName(cityList.get(i).getCityName());
-            cityBean.setCityId(cityList.get(i).getCityId() + "");
-            citiesDatas.add(cityBean);
-        }
-        return citiesDatas;
-    }
-
 
     /**
      * 加载以开放城市信息

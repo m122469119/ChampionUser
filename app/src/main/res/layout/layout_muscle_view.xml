@@ -89,7 +89,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:text="@string/normal"
+                            android:text="正常"
                             android:textColor="@color/add_minus_dishes_text"/>
                     </LinearLayout>
 
@@ -136,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:text="@string/normal"
+                            android:text="正常"
                             android:textColor="@color/add_minus_dishes_text"/>
                     </LinearLayout>
 
@@ -184,7 +184,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:text="@string/normal"
+                            android:text="正常"
                             android:textColor="@color/add_minus_dishes_text"/>
                     </LinearLayout>
 
@@ -232,7 +232,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/spacing_4dp"
-                            android:text="@string/normal"
+                            android:text="正常"
                             android:textColor="@color/add_minus_dishes_text"/>
                     </LinearLayout>
                 </RelativeLayout>

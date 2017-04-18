@@ -55,7 +55,7 @@
             android:textSize="@dimen/textsize_small"/>
 
         <TextView
-            android:id="@+id/become_teacher_city_editText"
+            android:id="@+id/become_teacher_city_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -63,7 +63,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_four_card_background"
             android:drawableRight="@drawable/icon_triangle"
-            android:hint="@string/select_city"
+            android:hint="请选择城市"
             android:paddingBottom="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

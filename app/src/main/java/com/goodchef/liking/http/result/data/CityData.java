@@ -53,7 +53,7 @@ public class CityData extends BaseData {
         mDistrict = district;
     }
 
-    public static class DistrictData extends BaseData{
+    public static class DistrictData {
         @SerializedName("district_name")
         private String mDistrictName;
         @SerializedName("district_id")

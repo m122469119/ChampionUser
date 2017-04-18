@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@string/sell_out"
+            android:text="已售罄"
             android:textColor="@color/change_shop_gray_back"
             android:textSize="14sp"
             android:visibility="gone"/>

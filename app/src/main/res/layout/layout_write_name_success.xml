@@ -14,7 +14,7 @@
         android:layout_marginTop="180dp"
         android:background="@color/transparent"
         android:gravity="center"
-        android:hint="@string/liking_fans"
+        android:hint="Liking fans(修改默认呢称)"
         android:paddingBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -42,16 +42,5 @@
         android:gravity="center"
         android:text="@string/next_text"
         android:textColor="@color/white"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:padding="@dimen/spacing_12dp"
-        android:textColor="@color/white"
-        android:text="@string/default_name_input_prompt"
-        android:layout_marginBottom="@dimen/spacing_12dp"
-        android:layout_above="@id/write_name_next_btn"
-        android:textSize="@dimen/textsize_small"
-        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

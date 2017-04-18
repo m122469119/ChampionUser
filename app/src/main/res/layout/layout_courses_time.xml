@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/input_courses_number"
+        android:text="请填写上课次数"
         android:textColor="@color/lesson_details_gray_back"/>
 
 

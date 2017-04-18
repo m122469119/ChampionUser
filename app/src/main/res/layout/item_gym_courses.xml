@@ -55,6 +55,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
+                            android:text="核心力量训练"
                             android:textColor="@color/white"
                             android:textSize="14sp"/>
 
@@ -89,7 +90,7 @@
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="15dp"
-                            android:text="@string/remaining_places"
+                            android:text="剩余名额："
                             android:textColor="@color/white"
                             android:textSize="12sp"/>
                     </RelativeLayout>
@@ -112,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/group_courses"
+            android:text="团体课"
             android:textColor="@color/liking_lesson_group_text"
             android:textSize="12sp"/>
     </RelativeLayout>

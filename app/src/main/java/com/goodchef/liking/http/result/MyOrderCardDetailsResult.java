@@ -1,6 +1,5 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.google.gson.annotations.SerializedName;
@@ -24,7 +23,7 @@ public class MyOrderCardDetailsResult extends BaseResult {
         this.data = data;
     }
 
-    public static class OrderCardDetailsData  extends BaseData{
+    public static class OrderCardDetailsData  {
 
         @SerializedName("order_id")
         private String orderId;

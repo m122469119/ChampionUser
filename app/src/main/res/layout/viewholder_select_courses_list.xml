@@ -52,6 +52,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingBottom="4dp"
+                        android:text="核心力量训练"
                         android:textColor="@color/white"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -60,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="@string/self_courses_time"
+                        android:text="时长:"
                         android:textColor="@color/white"
                         android:textSize="@dimen/textsize_small"/>
                 </LinearLayout>

@@ -49,7 +49,7 @@
             android:background="@drawable/icon_buy_background"
             android:gravity="center"
             android:paddingBottom="3dp"
-            android:text="@string/buy"
+            android:text="购买"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
     </RelativeLayout>

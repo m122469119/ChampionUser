@@ -7,14 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
 import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
@@ -26,16 +23,11 @@ import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
-import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.mvp.presenter.MyGroupCoursesPresenter;
-import com.goodchef.liking.mvp.presenter.SharePresenter;
 import com.goodchef.liking.mvp.view.MyGroupCourseView;
-import com.goodchef.liking.mvp.view.ShareView;
-import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 
@@ -46,13 +38,13 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:42
  */
-public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyGroupCourseView,ShareView {
+public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyGroupCourseView, ShareContract.ShareView {
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupCoursesAdapter mGroupLessonAdapter;
 
     private MyGroupCoursesPresenter mMyGroupCoursesPresenter;
-    private SharePresenter mSharePresenter;
+    private ShareContract.SharePresenter mSharePresenter;
 
     @Override
     protected void requestData(int page) {
@@ -61,6 +53,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     @Override
     protected void initViews() {
+        mSharePresenter = new ShareContract.SharePresenter(getActivity(), this);
         setNoDataView();
         setPullMode(PullMode.PULL_BOTH);
         getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
@@ -142,7 +135,9 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     };
 
     private void sendRequest(int page) {
-        mMyGroupCoursesPresenter = new MyGroupCoursesPresenter(getActivity(), this);
+        if (mMyGroupCoursesPresenter == null) {
+            mMyGroupCoursesPresenter = new MyGroupCoursesPresenter(getActivity(), this);
+        }
         mMyGroupCoursesPresenter.getMyGroupList(page, MyGroupLessonFragment.this);
     }
 
@@ -153,6 +148,11 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         if (myGroupCoursesDataList != null) {
             updateListView(myGroupCoursesDataList);
         }
+    }
+
+    @Override
+    public void updateLoadHomePage() {
+        loadHomePage();
     }
 
     /**
@@ -181,7 +181,6 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             if (textView != null) {
                 MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                 if (data != null) {
-                    mSharePresenter = new SharePresenter(getActivity(), MyGroupLessonFragment.this);
                     mSharePresenter.getGroupShareData(data.getScheduleId());
                 }
             }
@@ -204,33 +203,13 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendCancelCoursesRequest(orderId);
+                mMyGroupCoursesPresenter.sendCancelCoursesRequest(orderId);
                 dialog.dismiss();
             }
         });
         builder.create().show();
     }
 
-    //发送取消请求
-    private void sendCancelCoursesRequest(String orderId) {
-        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(getActivity(), R.string.loading_data) {
-            @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(getActivity(), result)) {
-                    PopupUtils.showToast(R.string.cancel_success);
-                    loadHomePage();
-                } else {
-                    PopupUtils.showToast(result.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-            }
-        });
-    }
 
     @Override
     protected boolean isEventTarget() {
@@ -242,7 +221,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     }
 
 
-    public void onEvent(LoginOutFialureMessage message){
+    public void onEvent(LoginOutFialureMessage message) {
         getActivity().finish();
     }
 
@@ -284,9 +263,8 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             }
         });
     }
-
     @Override
     public void updateShareView(ShareData shareData) {
-        showShareDialog(shareData);
+        mSharePresenter.showShareDialog(getActivity(), shareData);
     }
 }

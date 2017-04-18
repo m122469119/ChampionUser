@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:text="核心力量训练"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
 
@@ -39,7 +40,7 @@
             android:layout_marginTop="60dp"
             android:paddingBottom="6dp"
             android:layout_marginLeft="10dp"
-            android:text="@string/self_courses_time"
+            android:text="时长:"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_small"/>
 
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:text="@string/courses_strength"
+            android:text="课程强度:"
             android:textColor="@color/white"
             android:visibility="gone"
             android:textSize="@dimen/textsize_small"/>

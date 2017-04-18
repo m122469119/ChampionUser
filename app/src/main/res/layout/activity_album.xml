@@ -40,7 +40,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="@string/all_picture"
+                android:text="所有图片"
                 android:textColor="@android:color/white"/>
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:text="@string/zero_pager"
+                android:text="0张"
                 android:textColor="@android:color/white"/>
         </RelativeLayout>
     </RelativeLayout>

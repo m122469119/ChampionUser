@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LoginActivity;
+import com.goodchef.liking.module.login.LoginActivity;
 
 
 /**

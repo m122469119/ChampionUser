@@ -89,10 +89,10 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/courses_time_minus"
-                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:paddingTop="7dp"
+                            android:paddingBottom="10dp"
                             android:textColor="@color/add_minus_dishes_text"
                             android:textSize="@dimen/textsize_15"/>
 
@@ -157,10 +157,10 @@
                     <ImageView
                         android:layout_width="8dp"
                         android:layout_height="12dp"
+                        android:visibility="gone"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
-                        android:src="@drawable/bg_right_arrow"
-                        android:visibility="gone"/>
+                        android:src="@drawable/bg_right_arrow"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -220,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:padding="10dp"
-                        android:text="@string/courses_people_number"
+                        android:text="上课人数"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -320,18 +320,6 @@
             </RelativeLayout>
 
             <include layout="@layout/layout_pay"/>
-
-            <TextView
-                android:id="@+id/private_buy_protocol"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/lesson_details_dark_back"
-                android:textSize="@dimen/textsize_small"
-                android:layout_marginTop="@dimen/spacing_8dp"
-                android:layout_marginBottom="@dimen/spacing_4dp"
-                android:padding="@dimen/spacing_12dp"
-                android:text="@string/private_buy_protocol"/>
         </LinearLayout>
     </ScrollView>
 

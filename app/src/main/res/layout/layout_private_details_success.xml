@@ -192,7 +192,7 @@
                     android:gravity="center"
                     android:paddingBottom="12dp"
                     android:paddingTop="12dp"
-                    android:text="@string/support_teacher_gym"
+                    android:text="支持教学健身房"
                     android:textColor="@color/white"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -219,7 +219,7 @@
                     android:gravity="center"
                     android:paddingBottom="12dp"
                     android:paddingTop="12dp"
-                    android:text="@string/train_project"
+                    android:text="训练项目"
                     android:textColor="@color/white"
                     android:textSize="@dimen/textsize_small"/>
 

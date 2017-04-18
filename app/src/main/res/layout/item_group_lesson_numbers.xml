@@ -69,6 +69,7 @@
                 android:id="@+id/group_lesson_gym_join_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="刚刚"
                 android:textSize="13sp"/>
         </LinearLayout>
     </LinearLayout>
