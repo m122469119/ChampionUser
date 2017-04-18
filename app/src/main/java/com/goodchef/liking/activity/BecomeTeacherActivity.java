@@ -13,7 +13,7 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.mvp.BecomeTeacherContract;
+import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
