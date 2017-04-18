@@ -300,7 +300,7 @@ public class GroupCoursesResult extends BaseResult {
             }
         }
 
-        public static class GymNumbersData {
+        public static class GymNumbersData extends BaseData{
             @SerializedName("avatar")
             private String avatar;
             @SerializedName("name")

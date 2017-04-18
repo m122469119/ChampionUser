@@ -12,5 +12,4 @@ public interface GroupCourserDetailsView extends BaseNetworkLoadView {
     void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData);
     void updateOrderGroupCourses();
     void updateErrorNoCard(String errorMessage);
-    void updateCancelOrderView();
 }

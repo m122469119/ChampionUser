@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -30,6 +31,7 @@ import com.goodchef.liking.adapter.PrivateCoursesTrainItemAdapter;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
@@ -37,6 +39,7 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.result.data.PlacesData;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -73,6 +76,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private TextView mCoursesTimesPrompt;//课程次数提示
     private ImageView mMinusImageView;//减号
     private ImageView mAddImageView;//加号
+    private TextView mPrivateBuyProtocolTextView;
 
     private RelativeLayout mAlipayLayout;//支付布局
     private RelativeLayout mWechatLayout;
@@ -100,7 +104,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private String mAmountCount;//课程总金额
 
     private ArrayList<PlacesData> mPlacesDataList;//上课地点集合
-    private String gymId;//场馆id
+    //  private String gymId;//场馆id
 
 
     @Override
@@ -134,6 +138,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
         mMinusImageView = (ImageView) findViewById(R.id.courses_time_minus);
         mAddImageView = (ImageView) findViewById(R.id.courses_time_add);
+        mPrivateBuyProtocolTextView = (TextView) findViewById(R.id.private_buy_protocol);
 
         mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
         mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
@@ -156,6 +161,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         mAddImageView.setOnClickListener(this);
         mCoursesAddressTextView.setOnClickListener(this);
         mCoursesTimesTextView.setOnClickListener(this);
+        mPrivateBuyProtocolTextView.setOnClickListener(this);
     }
 
     private void initPayModule() {
@@ -172,7 +178,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        //   gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(teacherName);
         mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmPresenter(this, this);
         mStateView.setState(StateView.State.LOADING);
@@ -180,7 +186,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     private void sendRequest() {
-        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(gymId, trainerId);
+        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(LikingHomeActivity.gymId, trainerId);
     }
 
     @Override
@@ -213,7 +219,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     mPlacesDataList.get(i).setSelect(false);
                 }
             }
-            gymId = mPlacesDataList.get(0).getGymId();
+            // gymId = mPlacesDataList.get(0).getGymId();
             mCoursesAddressTextView.setText(mPlacesDataList.get(0).getAddress());
         }
     }
@@ -350,6 +356,17 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             } else {
                 showCoursesTimesDialog();
             }
+        } else if (v == mPrivateBuyProtocolTextView) {
+            BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+            if (baseConfigResult != null) {
+                BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                if (baseConfigData != null) {
+                    String agreeUrl = baseConfigData.getTrainerProtocol();
+                    if (!StringUtils.isEmpty(agreeUrl)) {
+                        HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.platform_private_teacher_pro));
+                    }
+                }
+            }
         }
     }
 
@@ -398,7 +415,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         if (mCoupon != null) {
             mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCoupon_code(), payType, mCoursesTimes, LikingHomeActivity.gymId);
         } else {
-            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType, mCoursesTimes, gymId);
+            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType, mCoursesTimes, LikingHomeActivity.gymId);
         }
     }
 
@@ -449,7 +466,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 PlacesData placesData = (PlacesData) data.getSerializableExtra(ChangeAddressActivity.KEY_ADDRESS_DATA);
                 if (placesData != null) {
                     mCoursesAddressTextView.setText(placesData.getAddress());
-                    gymId = placesData.getGymId();
+                    // gymId = placesData.getGymId();
                     for (PlacesData place : mPlacesDataList) {
                         if (place.getGymId().equals(placesData.getGymId())) {
                             place.setSelect(placesData.isSelect());
@@ -573,13 +590,13 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     public void onEvent(WXPayEntryActivity.WechatPayMessage wechatMessage) {
         if (wechatMessage.isPaySuccess()) {
             jumpToMyCoursesActivity();
-        }else {
+        } else {
             setPayFailView();
         }
     }
 
-    private void setPayFailView(){
-        if (mCoupon !=null && !StringUtils.isEmpty(mCoupon.getAmount())){
+    private void setPayFailView() {
+        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getAmount())) {
             mCouponTitleTextView.setText("");
             mCoursesMoneyTextView.setText(getString(R.string.money_symbol) + mAmountCount);
             mCoupon = null;

@@ -22,7 +22,7 @@
                 android:background="@color/add_minus_dishes_text"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="仅支持到健身房取餐"
+                android:text="@string/only_support_gym_get_lunch"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_small"
                 />
@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:padding="10dp"
-                        android:text="切换门店"
+                        android:text="@string/change_gym_shop"
                         android:textColor="@color/add_minus_dishes_text"
                         android:textSize="@dimen/textsize_15"/>
                 </RelativeLayout>

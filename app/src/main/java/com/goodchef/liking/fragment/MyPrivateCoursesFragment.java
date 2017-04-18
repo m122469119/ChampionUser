@@ -40,9 +40,7 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
     }
 
     private void sendRequest(int page) {
-        if (mMyPrivateCoursesPresenter == null) {
-            mMyPrivateCoursesPresenter = new MyPrivateCoursesPresenter(getActivity(), this);
-        }
+        mMyPrivateCoursesPresenter = new MyPrivateCoursesPresenter(getActivity(), this);
         mMyPrivateCoursesPresenter.getMyPrivateCourses(page, MyPrivateCoursesFragment.this);
     }
 
@@ -115,7 +113,7 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
         loadHomePage();
     }
 
-    public void onEvent(LoginOutFialureMessage message) {
+    public void onEvent(LoginOutFialureMessage message){
         getActivity().finish();
     }
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/eeeff3"
+        android:gravity="center"
+        android:text="@string/telephone"
+        android:textColor="@color/lesson_details_dark_back" />
+
+    <LinearLayout
+        android:id="@+id/gym_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:text="@string/gym_phone"
+            android:textColor="@color/lesson_details_dark_back" />
+
+
+        <TextView
+            android:id="@+id/gym_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="暂无"
+            android:textColor="@color/lesson_details_dark_back" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/liking_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:text="@string/liking_phone"
+            android:textColor="@color/lesson_details_dark_back" />
+
+
+        <TextView
+            android:id="@+id/liking_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="@string/not_available"
+            android:textColor="@color/lesson_details_dark_back" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/eeeff3" />
+
+    <TextView
+        android:id="@+id/cancel_txt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="@color/lesson_details_dark_back" />
+
+
+</LinearLayout>

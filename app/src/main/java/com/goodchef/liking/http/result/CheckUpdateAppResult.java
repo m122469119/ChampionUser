@@ -1,5 +1,6 @@
 package com.goodchef.liking.http.result;
 
+import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,17 +19,17 @@ public class CheckUpdateAppResult extends BaseResult {
      */
 
     @SerializedName("data")
-    private UpdateAppData data;
+    private UpDateAppData data;
 
-    public UpdateAppData getData() {
+    public UpDateAppData getData() {
         return data;
     }
 
-    public void setData(UpdateAppData data) {
+    public void setData(UpDateAppData data) {
         this.data = data;
     }
 
-    public static class UpdateAppData {
+    public static class UpDateAppData extends BaseData{
         /**
          * update : 1
          * title : 更新提示

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="今日训练"
+            android:text="@string/today_train_data"
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="@dimen/textsize_small"/>
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="距离"
+                android:text="@string/distance"
                 android:textSize="@dimen/textsize_small"/>
 
             <TextView
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="消耗"
+                android:text="@string/consume"
                 android:textSize="@dimen/textsize_small"/>
 
         </LinearLayout>
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="总共训练时间"
+            android:text="@string/my_train_all_time"
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="@dimen/textsize_small"/>
 
@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="训练次数"
+                android:text="@string/train_times"
                 android:textSize="@dimen/textsize_small"/>
 
             <TextView
@@ -216,7 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="距离"
+                android:text="@string/distance"
                 android:textSize="@dimen/textsize_small"/>
 
             <TextView
@@ -224,7 +224,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="累计消耗"
+                android:text="@string/total_consume"
                 android:textSize="@dimen/textsize_small"/>
 
         </LinearLayout>
@@ -255,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="3dp"
-                    android:text="次"
+                    android:text="@string/times"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="15sp"
                     android:textStyle="bold"/>

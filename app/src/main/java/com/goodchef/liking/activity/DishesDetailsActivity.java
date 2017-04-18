@@ -191,7 +191,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
      */
     private void setDishesLefNumView(int leftNmu) {
         if (leftNmu > 0) {
-            mSurplusNumberTextView.setText("还剩" + leftNmu + "份");
+            mSurplusNumberTextView.setText(getString(R.string.remian_number) + leftNmu + getString(R.string.part));
             mSurplusNumberTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
             mAddReduceLayout.setVisibility(View.VISIBLE);
             mImmediatelyBuyBtn.setBackgroundResource(R.color.add_minus_dishes_text);
@@ -231,7 +231,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     public void onClick(View v) {
         if (v == mAddImageBtn) {
             if (mSelectNum == mFood.getRestStock()){
-                PopupUtils.showToast("单个最多只能购买" + mFood.getRestStock() + "份");
+                PopupUtils.showToast(getString(R.string.single_buy_more) + mFood.getRestStock() + getString(R.string.part));
                 return;
             }
             mFood.setSelectedOrderNum(++mSelectNum);
@@ -257,7 +257,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
                     startActivityForResult(intent, INTENT_REQUEST_CODE_DEISH_DETAILS_CART);
                 }
             } else {
-                PopupUtils.showToast("您还没有添加任何营养餐");
+                PopupUtils.showToast(getString(R.string.you_has_not_add_dishes));
             }
         }
     }

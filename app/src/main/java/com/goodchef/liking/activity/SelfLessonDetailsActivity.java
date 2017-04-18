@@ -17,9 +17,6 @@ import com.goodchef.liking.utils.LikingCallUtil;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 说明:
  * Author: chenl
@@ -29,22 +26,29 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
 
     public static final String KEY_SELF_LESSON_DETAILS = "selflessondetails";
 
-    @BindView(R.id.self_lesson_details_shop_image) HImageView mShopImageView;
-    @BindView(R.id.courses_time) TextView mCoursesTimeTextView;//时间
-    @BindView(R.id.rating_courses) RatingBar mRatingBar;//强度
-    @BindView(R.id.courses_tags) TextView mCoursesTags;//标签
-    @BindView(R.id.courses_introduce) TextView mCoursesIntroduce;//介绍
+    private HImageView mShopImageView;
+    private TextView mCoursesTimeTextView;//时间
+//    private TextView mCoursesApplianceTextView;//器械
+    private RatingBar mRatingBar;//强度
+    private TextView mCoursesTags;//标签
+    private TextView mCoursesIntroduce;//介绍
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self_selectcourse_details);
-        ButterKnife.bind(this);
         initView();
         initData();
     }
 
+
     private void initView() {
+        mShopImageView = (HImageView) findViewById(R.id.self_lesson_details_shop_image);
+        mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
+//        mCoursesApplianceTextView = (TextView) findViewById(R.id.courses_appliance);
+        mRatingBar = (RatingBar) findViewById(R.id.rating_courses);
+        mCoursesTags = (TextView) findViewById(R.id.courses_tags);
+        mCoursesIntroduce = (TextView) findViewById(R.id.courses_introduce);
         setRightMenu();
     }
 
@@ -52,10 +56,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(SelfLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(SelfLessonDetailsActivity.this);
             }
         });
     }
@@ -89,7 +90,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         }
         String duration = null;
         try {
-            duration = Integer.parseInt(coursesData.getVideoDuration()) / 60 + "min";
+            duration = Integer.parseInt(coursesData.getVideoDuration()) / 60 + getString(R.string.min);
         }catch (Exception e){
             duration = "";
         }

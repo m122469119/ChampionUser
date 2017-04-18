@@ -1,5 +1,6 @@
 package com.goodchef.liking.http.result;
 
+import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.goodchef.liking.http.result.data.BodyData;
 import com.google.gson.annotations.SerializedName;
@@ -151,7 +152,7 @@ public class BodyTestResult extends BaseResult {
             mFooter = footer;
         }
 
-        public static class UserDataData {
+        public static class UserDataData extends BaseData{
             @SerializedName("gender")
             private String mGender;
             @SerializedName("name")
@@ -204,7 +205,7 @@ public class BodyTestResult extends BaseResult {
             }
         }
 
-        public static class TopDataData {
+        public static class TopDataData extends BaseData{
             @SerializedName("body_time")
             private String mBodyTime;
             @SerializedName("score")
@@ -247,7 +248,7 @@ public class BodyTestResult extends BaseResult {
             }
         }
 
-        public static class BodyAnalysisData {
+        public static class BodyAnalysisData extends BaseData{
             @SerializedName("advise")
             private String mAdvise;
             @SerializedName("type")
@@ -299,7 +300,7 @@ public class BodyTestResult extends BaseResult {
                 mBodyData = bodyData;
             }
 
-            public static class BodyDataData {
+            public static class BodyDataData extends BaseData{
                 @SerializedName("value")
                 private String mValue;
                 @SerializedName("criterion_max")
@@ -365,7 +366,7 @@ public class BodyTestResult extends BaseResult {
             }
         }
 
-        public static class FatAnalysisData {
+        public static class FatAnalysisData extends BaseData{
             @SerializedName("advise")
             private String mAdvise;
             @SerializedName("type")

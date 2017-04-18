@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="填写邀请码"
+            android:text="@string/title_write_invite_code"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_15"/>
 

@@ -28,6 +28,8 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
+import com.goodchef.liking.dialog.CancelOnClickListener;
+import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.UnBindDevicesDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 import com.goodchef.liking.fragment.LikingMyFragment;
@@ -40,7 +42,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:我的手环
@@ -637,14 +638,14 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
      */
     private void showUnbindDialog() {
         UnBindDevicesDialog devicesDialog = new UnBindDevicesDialog(this);
-        devicesDialog.setCancelClickListener(new UnBindDevicesDialog.CancelOnClickListener() {
+        devicesDialog.setCancelClickListener(new CancelOnClickListener() {
             @Override
             public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
             }
         });
 
-        devicesDialog.setConfirmClickListener(new UnBindDevicesDialog.ConfirmOnClickListener() {
+        devicesDialog.setConfirmClickListener(new ConfirmOnClickListener() {
             @Override
             public void onConfirmClickListener(AppCompatDialog dialog) {
 //                if (EnvironmentUtils.Config.isDebugMode()) {
@@ -661,7 +662,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         if (mUnBindDevicesPresenter == null) {
             mUnBindDevicesPresenter = new UnBindDevicesPresenter(this, this);
         }
-        mUnBindDevicesPresenter.unBindDevices(JPushInterface.getUdid(this));
+        mUnBindDevicesPresenter.unBindDevices();
     }
 
     @Override

@@ -16,25 +16,22 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyCardOrderFragment;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
-import com.goodchef.liking.mvp.MyCardDetailsContract;
+import com.goodchef.liking.mvp.presenter.MyCardDetailsPresenter;
+import com.goodchef.liking.mvp.view.MyCardDetailsView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 说明:我的会员卡详情
  * Author shaozucheng
  * Time:16/7/1 下午2:23
  */
-public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetailsContract.MyCardDetailsView {
+public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetailsView {
     private static final int BUY_TYPE_BUY = 1;//买卡
     private static final int BUY_TYPE_CONTINUE = 2;//续卡
     private static final int BUY_TYPE_UPGRADE = 3;//升级卡
@@ -43,36 +40,49 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     private static final int PAY_TYPE_FREE = 3;//免金额
 
 
-    @BindView(R.id.card_order_number) TextView mOrderNumberTextView;
-    @BindView(R.id.card_buy_time) TextView mBuyTimeTextView;
-    @BindView(R.id.card_buy_state) TextView mBuyStateTextView;
-    @BindView(R.id.card_buy_way) TextView mBuyWayTextView;
-    @BindView(R.id.card_period_of_validity) TextView mPeriodOfValidityTextView;
-    @BindView(R.id.card_buy_type) TextView mBuyTypeTextView;
-    @BindView(R.id.card_price) TextView mCardPriceTextView;
-    @BindView(R.id.card_limint_recyclerView) RecyclerView mTimeLimitRecyclerView;
-    @BindView(R.id.layout_favourable) LinearLayout mFavourableLayout;
-    @BindView(R.id.favourable_number) TextView mFavourableNumberTextView;
-    @BindView(R.id.favourable_line) ImageView mImageViewLine;
-    @BindView(R.id.gym_name) TextView mGymNameTextView;
-    @BindView(R.id.gym_address) TextView mGymAddressTextView;
-    @BindView(R.id.my_card_details_state_view) LikingStateView mStateView;
+    private TextView mOrderNumberTextView;
+    private TextView mBuyTimeTextView;
+    private TextView mBuyStateTextView;
+    private TextView mBuyWayTextView;
+    private TextView mPeriodOfValidityTextView;
+    private TextView mBuyTypeTextView;
+    private TextView mCardPriceTextView;
+    private RecyclerView mTimeLimitRecyclerView;
+    private LinearLayout mFavourableLayout;
+    private TextView mFavourableNumberTextView;
+    private ImageView mImageViewLine;
+    private TextView mGymNameTextView;
+    private TextView mGymAddressTextView;
+    private LikingStateView mStateView;
 
     private String orderId;//订单id
 
-    private MyCardDetailsContract.MyCardDetailsPresenter mMyCardDetailsPresenter;
+    private MyCardDetailsPresenter mMyCardDetailsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_card_details);
-        ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_card_details));
         initView();
         iniData();
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.my_card_details_state_view);
+        mOrderNumberTextView = (TextView) findViewById(R.id.card_order_number);
+        mBuyTimeTextView = (TextView) findViewById(R.id.card_buy_time);
+        mBuyStateTextView = (TextView) findViewById(R.id.card_buy_state);
+        mBuyWayTextView = (TextView) findViewById(R.id.card_buy_way);
+        mPeriodOfValidityTextView = (TextView) findViewById(R.id.card_period_of_validity);
+        mBuyTypeTextView = (TextView) findViewById(R.id.card_buy_type);
+        mCardPriceTextView = (TextView) findViewById(R.id.card_price);
+        mTimeLimitRecyclerView = (RecyclerView) findViewById(R.id.card_limint_recyclerView);
+        mFavourableLayout = (LinearLayout) findViewById(R.id.layout_favourable);
+        mFavourableNumberTextView = (TextView) findViewById(R.id.favourable_number);
+        mImageViewLine = (ImageView) findViewById(R.id.favourable_line);
+        mGymNameTextView = (TextView) findViewById(R.id.gym_name) ;
+        mGymAddressTextView = (TextView) findViewById(R.id.gym_address) ;
 
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -85,7 +95,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
 
     private void iniData() {
         orderId = getIntent().getStringExtra(MyCardOrderFragment.KEY_ORDER_ID);
-        mMyCardDetailsPresenter = new MyCardDetailsContract.MyCardDetailsPresenter(this, this);
+        mMyCardDetailsPresenter = new MyCardDetailsPresenter(this, this);
         sendCardDetailsRequest();
     }
 
@@ -151,11 +161,6 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
-    }
-
-    @Override
-    public void showToast(String message) {
-        PopupUtils.showToast(message);
     }
 
     @Override

@@ -8,17 +8,17 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
  * Time:16/6/7 上午10:13
  */
 public class UrlList {
-    public static String sHostVersion = "/v2";
+    public static String HOST_VERSION = "/v2";
 
-    private static String getVersionHostUrl() {
-        return getHostUrl() + sHostVersion;
+    public static String getVersionHostUrl() {
+        return getHostUrl() + HOST_VERSION;
     }
 
-    private static String getHostUrl() {
+    public static String getHostUrl() {
         return EnvironmentUtils.Config.getHttpRequestUrlHost();
     }
     /**基础配置*/
-    static final String BASE_CONFIG = getHostUrl() +  "/config/config";
+    public static final String BASE_CONFIG = getHostUrl() +  "/config/config";
     /**同步时间戳*/
     public static final String SYNC_SERVER_TIMESTAMP = getHostUrl() + "/time/timestamp/";
     /**获取验证码*/

@@ -83,7 +83,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="有效期："
+                    android:text="@string/the_period_of_validity"
                     android:textColor="@color/lesson_details_gray_back"
                     android:textSize="12sp"/>
 

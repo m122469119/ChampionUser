@@ -46,6 +46,9 @@ public class BaseConfigResult extends BaseResult {
         private String agreeUrl;
         @SerializedName("service_url")
         private String serviceUrl;
+        @SerializedName("trainer_protocol")
+        private String trainerProtocol;
+
 
         @SerializedName("update")
         private UpdateData mUpdateData;
@@ -139,6 +142,14 @@ public class BaseConfigResult extends BaseResult {
 
         public void setOpenCity(List<String> openCity) {
             this.openCity = openCity;
+        }
+
+        public String getTrainerProtocol() {
+            return trainerProtocol;
+        }
+
+        public void setTrainerProtocol(String trainerProtocol) {
+            this.trainerProtocol = trainerProtocol;
         }
 
         public static class UpdateData extends BaseData {

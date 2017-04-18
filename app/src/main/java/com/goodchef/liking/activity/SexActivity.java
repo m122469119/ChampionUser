@@ -20,37 +20,23 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 说明:首次登陆选择性别
  * Author shaozucheng
  * Time:16/8/15 下午3:34
  */
-public class SexActivity extends AppBarActivity {
+public class SexActivity extends AppBarActivity implements View.OnClickListener {
     public static final String KEY_SEX = "KEY_SEX";
-    @BindView(R.id.sex_state_view)
-    LikingStateView mSexStateView;
-    @BindView(R.id.head_image)
-    HImageView mHImageView;
-    @BindView(R.id.user_name_text)
-    TextView mUserNameTextView;
-    @BindView(R.id.sex_man_image)
-    TextView mSexManImage;
-    @BindView(R.id.sex_man_text)
-    TextView mSexManTextView;
-    @BindView(R.id.layout_sex_man)
-    LinearLayout mSexManLayout;
-    @BindView(R.id.sex_women_image)
-    TextView mSexWomenImage;
-    @BindView(R.id.sex_women_text)
-    TextView mSexWomenTextView;
-    @BindView(R.id.layout_sex_women)
-    LinearLayout mSexWomenLayout;
-    @BindView(R.id.sex_next_btn)
-    TextView mNextButton;
+    private LikingStateView mStateView;
+    private HImageView mHImageView;
+    private TextView mUserNameTextView;
+    private LinearLayout mSexManLayout;
+    private LinearLayout mSexWomenLayout;
+    private TextView mSexManImage;
+    private TextView mSexWomenImage;
+    private TextView mSexManTextView;
+    private TextView mSexWomenTextView;
+    private TextView mNextButton;
 
     private String userName;
     private String mLocalHeadImageUrl;
@@ -60,20 +46,39 @@ public class SexActivity extends AppBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sex);
-        ButterKnife.bind(this);
+        initView();
         initData();
+        setViewOnClickListener();
         setTitle(getString(R.string.activity_title_sex));
         getIntentData();
     }
 
+    private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.sex_state_view);
+        mHImageView = (HImageView) findViewById(R.id.head_image);
+        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
+        mSexManLayout = (LinearLayout) findViewById(R.id.layout_sex_man);
+        mSexWomenLayout = (LinearLayout) findViewById(R.id.layout_sex_women);
+        mSexManImage = (TextView) findViewById(R.id.sex_man_image);
+        mSexWomenImage = (TextView) findViewById(R.id.sex_women_image);
+        mSexManTextView = (TextView) findViewById(R.id.sex_man_text);
+        mSexWomenTextView = (TextView) findViewById(R.id.sex_women_text);
+        mNextButton = (TextView) findViewById(R.id.sex_next_btn);
+    }
+
+    private void setViewOnClickListener() {
+        mSexManLayout.setOnClickListener(this);
+        mSexWomenLayout.setOnClickListener(this);
+        mNextButton.setOnClickListener(this);
+    }
 
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-            mSexStateView.setState(StateView.State.SUCCESS);
+            mStateView.setState(StateView.State.SUCCESS);
         } else {
-            mSexStateView.setState(StateView.State.FAILED);
+            mStateView.setState(StateView.State.FAILED);
         }
-        mSexStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
                 initData();
@@ -95,26 +100,22 @@ public class SexActivity extends AppBarActivity {
 
     }
 
-    @OnClick({R.id.layout_sex_man, R.id.layout_sex_women, R.id.sex_next_btn})
+    @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.layout_sex_man:
-                setSexManCheck();
-                break;
-            case R.id.layout_sex_women:
-                setWomenCheck();
-                break;
-            case R.id.sex_next_btn:
-                if (sex == -1) {
-                    PopupUtils.showToast(getString(R.string.select_gender));
-                    return;
-                }
-                Intent intent = new Intent(this, SelectBirthdayActivity.class);
-                intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
-                intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
-                intent.putExtra(KEY_SEX, sex);
-                startActivity(intent);
-                break;
+        if (v == mSexManLayout) {
+            setSexManCheck();
+        } else if (v == mSexWomenLayout) {
+            setWomenCheck();
+        } else if (v == mNextButton) {
+            if (sex == -1) {
+                PopupUtils.showToast(getString(R.string.select_gender));
+                return;
+            }
+            Intent intent = new Intent(this, SelectBirthdayActivity.class);
+            intent.putExtra(WriteNameActivity.KEY_USER_NAME, userName);
+            intent.putExtra(UserHeadImageActivity.KEY_HEAD_IMAGE, mLocalHeadImageUrl);
+            intent.putExtra(KEY_SEX, sex);
+            startActivity(intent);
         }
     }
 
@@ -140,6 +141,6 @@ public class SexActivity extends AppBarActivity {
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 }

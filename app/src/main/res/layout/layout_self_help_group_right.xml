@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="操房使用时段:"
+                android:text="@string/gym_user_date"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -49,8 +49,8 @@
             android:id="@+id/layout_select_group_courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="选择锻炼课程"
+                    android:text="@string/select_train_courses"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -101,8 +101,8 @@
                         android:id="@+id/self_group_courses_none_hint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:ellipsize="end"
+                        android:gravity="center"
                         android:lines="1"
                         android:padding="10dp"
                         android:text="@string/self_group_courses_none_hint"
@@ -136,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="最多容纳人数"
+                    android:text="@string/more_people_number"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small"/>
 
@@ -158,8 +158,5 @@
                 android:layout_marginLeft="10dp"
                 android:background="@color/line"/>
         </LinearLayout>
-
-
-
     </LinearLayout>
 </ScrollView>

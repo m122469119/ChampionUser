@@ -11,5 +11,5 @@ import com.goodchef.liking.http.result.CheckUpdateAppResult;
  */
 
 public interface CheckUpdateAppView extends BaseView {
-    void updateCheckUpdateAppView(CheckUpdateAppResult.UpdateAppData updateAppData);
+    void updateCheckUpdateAppView(CheckUpdateAppResult.UpDateAppData upDateAppData);
 }

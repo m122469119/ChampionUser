@@ -26,9 +26,11 @@ public class CoursesResult extends BaseResult {
     public static class Courses {
         @SerializedName("gym")
         private Gym mGym;
-
         @SerializedName("courses")
         List<CoursesData> mCoursesDataList;
+
+        @SerializedName("user_info")
+        private UserInfo mUserInfo;
 
         public List<CoursesData> getCoursesDataList() {
             return mCoursesDataList;
@@ -44,6 +46,14 @@ public class CoursesResult extends BaseResult {
 
         public void setGym(Gym gym) {
             mGym = gym;
+        }
+
+        public UserInfo getUserInfo() {
+            return mUserInfo;
+        }
+
+        public void setUserInfo(UserInfo userInfo) {
+            mUserInfo = userInfo;
         }
 
         public static class CoursesData extends BaseData {
@@ -202,7 +212,7 @@ public class CoursesResult extends BaseResult {
             }
         }
 
-        public static class Gym extends BaseData{
+        public static class Gym extends BaseData {
             @SerializedName("name")
             private String name;
             @SerializedName("distance")
@@ -221,6 +231,14 @@ public class CoursesResult extends BaseResult {
             private int canSchedule = -1;
             @SerializedName("presale")
             private String presale;
+            @SerializedName("default_gym")
+            private int defaultGym;
+            @SerializedName("tel")
+            private String tel;
+            @SerializedName("biz_status")
+            private String bizStatus;
+            @SerializedName("biz_alert")
+            private String bizAlert;
 
             public String getName() {
                 return name;
@@ -292,6 +310,51 @@ public class CoursesResult extends BaseResult {
 
             public void setCityName(String cityName) {
                 this.cityName = cityName;
+            }
+
+            public int getDefaultGym() {
+                return defaultGym;
+            }
+
+            public void setDefaultGym(int defaultGym) {
+                this.defaultGym = defaultGym;
+            }
+
+            public String getTel() {
+                return tel;
+            }
+
+            public void setTel(String tel) {
+                this.tel = tel;
+            }
+
+            public String getBizStatus() {
+                return bizStatus;
+            }
+
+            public void setBizStatus(String bizStatus) {
+                this.bizStatus = bizStatus;
+            }
+
+            public String getBizAlert() {
+                return bizAlert;
+            }
+
+            public void setBizAlert(String bizAlert) {
+                this.bizAlert = bizAlert;
+            }
+        }
+
+        public static class UserInfo extends BaseData{
+            @SerializedName("user_info_complete")
+            private int user_info_complete;
+
+            public int getUser_info_complete() {
+                return user_info_complete;
+            }
+
+            public void setUser_info_complete(int user_info_complete) {
+                this.user_info_complete = user_info_complete;
             }
         }
     }

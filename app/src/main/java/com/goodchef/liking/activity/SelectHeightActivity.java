@@ -20,36 +20,23 @@ import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.RulerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 说明:首次登陆选择身高
  * Author shaozucheng
  * Time:16/8/19 上午10:12
  */
-public class SelectHeightActivity extends AppBarActivity{
+public class SelectHeightActivity extends AppBarActivity implements View.OnClickListener {
 
     public static final String KEY_HEIGHT = "key_height";
-    @BindView(R.id.select_height_state_view)
-    LikingStateView mSelectHeightStateView;
-    @BindView(R.id.select_height_head_image)
-    HImageView mHImageView;
-    @BindView(R.id.user_name_text)
-    TextView mUserNameTextView;
-    @BindView(R.id.sex_man_image)
-    ImageView mSexManImage;
-    @BindView(R.id.sex_women_image)
-    ImageView mSexWomenImage;
-    @BindView(R.id.birthday_text)
-    TextView mBirthdayTextView;
-    @BindView(R.id.height_text)
-    TextView mHeightTextView;
-    @BindView(R.id.height_ruler_view)
-    RulerView mHeightRulerView;
-    @BindView(R.id.select_height_next_btn)
-    TextView mNextBtn;
+    private LikingStateView mStateView;
+    private HImageView mHImageView;
+    private TextView mUserNameTextView;
+    private ImageView mSexManImage;
+    private ImageView mSexWomenImage;
+    private TextView mBirthdayTextView;
+    private TextView mHeightTextView;
+    private RulerView mHeightRulerView;
+    private TextView mNextBtn;
 
     private String userName;
     private String mLocalHeadImageUrl;
@@ -62,7 +49,6 @@ public class SelectHeightActivity extends AppBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_height);
-        ButterKnife.bind(this);
         setTitle(getString(R.string.title_activity_height));
         initView();
         initData();
@@ -70,16 +56,28 @@ public class SelectHeightActivity extends AppBarActivity{
     }
 
     private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.select_height_state_view);
+        mHImageView = (HImageView) findViewById(R.id.select_height_head_image);
+        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
+        mSexManImage = (ImageView) findViewById(R.id.sex_man_image);
+        mSexWomenImage = (ImageView) findViewById(R.id.sex_women_image);
+        mBirthdayTextView = (TextView) findViewById(R.id.birthday_text);
+        mHeightTextView = (TextView) findViewById(R.id.height_text);
+        mHeightRulerView = (RulerView) findViewById(R.id.height_ruler_view);
+        mNextBtn = (TextView) findViewById(R.id.select_height_next_btn);
+
+        mNextBtn.setOnClickListener(this);
         setHeightRuler();
     }
 
+
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-            mSelectHeightStateView.setState(StateView.State.SUCCESS);
+            mStateView.setState(StateView.State.SUCCESS);
         } else {
-            mSelectHeightStateView.setState(StateView.State.FAILED);
+            mStateView.setState(StateView.State.FAILED);
         }
-        mSelectHeightStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
                 initData();
@@ -96,8 +94,8 @@ public class SelectHeightActivity extends AppBarActivity{
         mUserNameTextView.setText(userName);
 
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            LogUtils.i(TAG, mLocalHeadImageUrl);
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
+            LogUtils.i(TAG,mLocalHeadImageUrl);
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLocalHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
@@ -112,6 +110,7 @@ public class SelectHeightActivity extends AppBarActivity{
             mSexWomenImage.setVisibility(View.VISIBLE);
         }
         mBirthdayTextView.setText(getString(R.string.birthday) + mBirthdayStr);
+
     }
 
     private void setHeightRuler() {
@@ -119,12 +118,12 @@ public class SelectHeightActivity extends AppBarActivity{
             @Override
             public void onScaleChanged(int scale) {
                 height = scale;
-                mHeightTextView.setText(height + " cm");
+                mHeightTextView.setText(height + getString(R.string.cm));
             }
         });
     }
 
-    @OnClick({R.id.select_height_next_btn})
+    @Override
     public void onClick(View v) {
         if (v == mNextBtn) {
             Intent intent = new Intent(this, SelectWeightActivity.class);
@@ -133,7 +132,7 @@ public class SelectHeightActivity extends AppBarActivity{
             intent.putExtra(SexActivity.KEY_SEX, sex);
             intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY, mBirthdayStr);
             intent.putExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT, mBirthdayStrFormat);
-            intent.putExtra(KEY_HEIGHT, height);
+            intent.putExtra(KEY_HEIGHT,height);
             startActivity(intent);
         }
     }
@@ -143,7 +142,7 @@ public class SelectHeightActivity extends AppBarActivity{
         return true;
     }
 
-    public void onEvent(UpDateUserInfoMessage message) {
+    public void onEvent(UpDateUserInfoMessage message){
         finish();
     }
 }

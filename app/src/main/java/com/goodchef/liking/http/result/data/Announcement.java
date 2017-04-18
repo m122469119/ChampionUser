@@ -1,20 +1,22 @@
 package com.goodchef.liking.http.result.data;
 
-import java.util.List;
+import com.aaron.android.codelibrary.http.result.BaseData;
+
+import java.util.Set;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/9/5 下午3:06
  */
-public class Announcement {
-    private List<String> mList;
+public class Announcement extends BaseData{
+    private Set<String> mList;
 
-    public List<String> getList() {
+    public Set<String> getList() {
         return mList;
     }
 
-    public void setList(List<String> list) {
+    public void setList(Set<String> list) {
         mList = list;
     }
 }

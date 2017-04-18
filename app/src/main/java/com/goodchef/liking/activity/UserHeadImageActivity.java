@@ -26,27 +26,19 @@ import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 说明:首次登陆添加头像
  * Author shaozucheng
  * Time:16/8/15 上午11:16
  */
-public class UserHeadImageActivity extends AppBarActivity  {
+public class UserHeadImageActivity extends AppBarActivity implements View.OnClickListener {
     public static final String KEY_HEAD_IMAGE = "key_head_image";
-    @BindView(R.id.user_head_image_state_view)
-    LikingStateView mUserHeadImageStateView;
-    @BindView(R.id.user_name_text)
-    TextView mUserNameTextView;
-    @BindView(R.id.head_image)
-    HImageView mHImageView;
-    @BindView(R.id.head_select_image_prompt)
-    TextView mSelectImageTextView;
-    @BindView(R.id.head_image_next_btn)
-    TextView mNextBtn;
+    private LikingStateView mStateView;
+    private TextView mUserNameTextView;
+    private TextView mSelectImageTextView;
+    private HImageView mHImageView;
+    private TextView mNextBtn;
+
     private String userName;
     private CameraPhotoHelper mCameraPhotoHelper;
     private String mLoaclHeadUrl = "";
@@ -55,8 +47,9 @@ public class UserHeadImageActivity extends AppBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_head_image);
-        ButterKnife.bind(this);
         setTitle(getString(R.string.activity_title_userHeadImage));
+        initView();
+        setViewOnClickListener();
         initData();
         getIntentData();
         mCameraPhotoHelper = new CameraPhotoHelper(this);
@@ -66,20 +59,34 @@ public class UserHeadImageActivity extends AppBarActivity  {
     protected void onResume() {
         super.onResume();
         if (!StringUtils.isEmpty(mLoaclHeadUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
+            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build());
         }
     }
 
+    private void initView() {
+        mStateView = (LikingStateView) findViewById(R.id.user_head_image_state_view);
+        mUserNameTextView = (TextView) findViewById(R.id.user_name_text);
+        mHImageView = (HImageView) findViewById(R.id.head_image);
+        mSelectImageTextView = (TextView) findViewById(R.id.head_select_image_prompt);
+        mNextBtn = (TextView) findViewById(R.id.head_image_next_btn);
+    }
+
+    private void setViewOnClickListener() {
+        mNextBtn.setOnClickListener(this);
+        mHImageView.setOnClickListener(this);
+        mSelectImageTextView.setOnClickListener(this);
+    }
+
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-            mUserHeadImageStateView.setState(StateView.State.SUCCESS);
+            mStateView.setState(StateView.State.SUCCESS);
         } else {
-            mUserHeadImageStateView.setState(StateView.State.FAILED);
+            mStateView.setState(StateView.State.FAILED);
         }
-        mUserHeadImageStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
                 initData();
@@ -87,12 +94,12 @@ public class UserHeadImageActivity extends AppBarActivity  {
         });
     }
 
-    private void getIntentData() {
+    private void getIntentData(){
         userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
         mUserNameTextView.setText(userName);
     }
 
-    @OnClick({R.id.head_image,R.id.head_select_image_prompt,R.id.head_image_next_btn})
+    @Override
     public void onClick(View v) {
         if (v == mHImageView || v == mSelectImageTextView) {
             showCameraDialog();
@@ -144,7 +151,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
                 if (mBitmap != null) {
                     mLoaclHeadUrl = imagePath;
-                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
+                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
                             .resize(100, 100)
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
@@ -160,7 +167,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
                 if (mBitmap != null) {
                     LogUtils.i("imagepath =", imagePathList.get(0));
                     mLoaclHeadUrl = imagePathList.get(0);
-                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
+                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView,mLoaclHeadUrl)
                             .resize(100, 100)
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
@@ -177,7 +184,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
         return true;
     }
 
-    public void onEvent(UpDateUserInfoMessage message) {
+    public void onEvent(UpDateUserInfoMessage message){
         finish();
     }
 

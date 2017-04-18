@@ -191,7 +191,7 @@ public class MyDishesOrderDetailsResult extends BaseResult {
             this.foodList = foodList;
         }
 
-        public static class FoodListData {
+        public static class FoodListData extends BaseData{
             @SerializedName("food_name")
             private String foodName;
             @SerializedName("food_num")

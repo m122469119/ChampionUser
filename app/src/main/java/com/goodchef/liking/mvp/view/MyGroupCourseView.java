@@ -10,5 +10,4 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
  */
 public interface MyGroupCourseView extends BaseView {
     void updateMyGroupCoursesView(MyGroupCoursesResult.MyGroupCoursesData myGroupCoursesData);
-    void updateLoadHomePage();
 }

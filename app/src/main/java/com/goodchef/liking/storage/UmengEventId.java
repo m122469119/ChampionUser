@@ -141,5 +141,35 @@ public class UmengEventId {
      * 查看公告按钮
      */
     public static final String CHECK_ANNOUNCEMENT = "check_Announcement";
+    /**
+     * 查看联系加盟界面
+     */
+    public static final String CONTACTJONINACTIVITY = "ContactJonInActivity";
+    /**
+     * 查看成为教练界面
+     */
+    public static final String BECOMETEACHERACTIVITY = "BecomeTeacherActivity";
+    /**
+     * 查看自助团体课界面
+     */
+    public static final String SELFHELPGROUPACTIVITY = "SelfHelpGroupActivity";
+    /**
+     * 查看体测数据界面
+     */
+    public static final String BODYTESTDATAACTIVITY = "BodyTestDataActivity";
+    /**
+     * 查看绑定手环界面
+     */
+    public static final String BINGBRACELETACTIVITY = "BingBraceletActivity";
+    /**
+     * 查看我的手环界面
+     */
+    public static final String MYBRACELETACTIVITY = "MyBraceletActivity";
+
+    /**
+     * 查看手环数据界面
+     */
+    public static final String EVERYDAYSPORTACTIVITY = "EveryDaySportActivity";
+
 
 }

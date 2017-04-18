@@ -1,6 +1,8 @@
 package com.goodchef.liking.http.result.data;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
+import com.github.promeg.pinyinhelper.Pinyin;
+import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class City extends BaseData{
         this.regions = regions;
     }
 
-    public static class RegionsData {
+    public static class RegionsData  extends BaseData {
         /**
          * province_id : 110000
          * province_name : 北京
@@ -63,7 +65,7 @@ public class City extends BaseData{
             this.cities = cities;
         }
 
-        public static class CitiesData {
+        public static class CitiesData extends BaseIndexPinyinBean {
             /**
              * city_id : 110100
              * city_code : 010
@@ -79,6 +81,8 @@ public class City extends BaseData{
             private String cityName;
             @SerializedName("districts")
             private List<DistrictsData> districts;
+
+            private String pinyin;
 
             public String getCityId() {
                 return cityId;
@@ -102,6 +106,11 @@ public class City extends BaseData{
 
             public void setCityName(String cityName) {
                 this.cityName = cityName;
+                pinyin = Pinyin.toPinyin(cityName, ",");
+            }
+
+            public String getPinyin(){
+                return pinyin;
             }
 
             public List<DistrictsData> getDistricts() {
@@ -110,6 +119,11 @@ public class City extends BaseData{
 
             public void setDistricts(List<DistrictsData> districts) {
                 this.districts = districts;
+            }
+
+            @Override
+            public String getTarget() {
+                return cityName;
             }
 
             public static class DistrictsData {
@@ -122,6 +136,8 @@ public class City extends BaseData{
                 private String districtId;
                 @SerializedName("district_name")
                 private String districtName;
+
+                private String pinyin;
 
                 public String getDistrictId() {
                     return districtId;
@@ -137,6 +153,11 @@ public class City extends BaseData{
 
                 public void setDistrictName(String districtName) {
                     this.districtName = districtName;
+                    pinyin = Pinyin.toPinyin(districtName, ",");
+                }
+
+                public String getPinyin(){
+                    return pinyin;
                 }
             }
         }

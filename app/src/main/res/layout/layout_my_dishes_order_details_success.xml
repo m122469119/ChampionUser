@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="10dp"
-                        android:text="优惠券"
+                        android:text="@string/layout_coupons"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="14sp"/>
 
@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="10dp"
-                        android:text="实际支付"
+                        android:text="@string/actual_payment"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="14sp"/>
 
@@ -338,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="10dp"
-                        android:text="下单时间"
+                        android:text="@string/order_time"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="14sp"/>
 
