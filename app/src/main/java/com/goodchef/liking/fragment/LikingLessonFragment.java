@@ -97,6 +97,10 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     @Override
     protected void requestData(int page) {
         LogUtils.d(TAG, "swipeRefresh page: " + page);
+        loadData(page);
+    }
+
+    private void loadData(int page) {
         if (isFirstMessage) {
             getCoursesRequest(page);
             requestBanner();
@@ -459,7 +463,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             mDistrictId = mainAddressChanged.getDistrictId();
             LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
             isFirstMessage = true;
-            loadHomePage();
+            loadData(1);
         } catch (Exception e) {
             e.printStackTrace();
         }

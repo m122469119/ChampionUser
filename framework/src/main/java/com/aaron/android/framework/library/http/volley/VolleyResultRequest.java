@@ -41,7 +41,7 @@ public class VolleyResultRequest<T extends BaseResult> extends Request<T> {
     private Map<String, Object> mParams;
     private Map<String, String> mHeaders;
     private Class<T> mClass;
-    private static final int TIMEOUT_MS = 5000; //超时时间
+    private static final int TIMEOUT_MS = 10000; //超时时间
     private static final int MAX_RETRIES_COUNT = 0; //最大重连次数
     private static final float BACKOFF_MULT = 1f;
     private RequestCallback<T> mRequestCallback;
