@@ -1,6 +1,5 @@
 package com.goodchef.liking.activity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.aaron.android.framework.base.widget.recycleview.RecyclerItemDecoratio
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.android.thirdparty.share.weixin.WeixinShare;
@@ -32,8 +30,6 @@ import com.aaron.android.thirdparty.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
-import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
-import com.goodchef.liking.dialog.PhoneDialog;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
@@ -344,6 +340,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mTeacherNamelayout.setVisibility(View.GONE);
         } else {
             mTeacherNamelayout.setVisibility(View.VISIBLE);
+            mTeacherNameTextView.setText(groupLessonData.getTrainerName());
         }
 
         String rat = groupLessonData.getIntensity();
@@ -366,7 +363,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * @param gymNumbersDatas
      */
     private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas) {
-        mJoinUserNumbers.setText(gymNumbersDatas.size() + " 人");
+        mJoinUserNumbers.setText(gymNumbersDatas.size() + getString(R.string.single_people));
         mUserListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mGroupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
         mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
