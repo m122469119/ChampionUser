@@ -665,17 +665,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == INTENT_REQUEST_CODE_SHOP_CART) {//从购物车回来时，带回购物车数据，从新计算购物车数量
-            } else if (requestCode == INTENT_REQUEST_CODE_DISHES_DETIALS) {//从单个商品详情回来，带回购买数据集合，从新计算购物车数量
-            }
-        }
-    }
-
     public void onEvent(LikingHomeNoNetWorkMessage message) {
         initTitleLocation();
     }

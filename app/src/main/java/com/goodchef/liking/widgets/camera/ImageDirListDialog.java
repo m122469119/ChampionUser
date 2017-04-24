@@ -11,10 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.aaron.android.framework.utils.DialogUtils;
-import com.aaron.android.thirdparty.camera.ImageFolder;
-import com.aaron.android.thirdparty.camera.OnImageDirSelected;
 import com.goodchef.liking.R;
 import com.goodchef.liking.utils.NavigationBarUtil;
+import com.liking.camera.ImageFolder;
+import com.liking.camera.OnImageDirSelected;
 
 import java.util.List;
 

@@ -9,11 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.thirdparty.camera.ImageFolder;
-import com.aaron.android.thirdparty.camera.OnImageDirSelected;
-import com.aaron.android.thirdparty.camera.ScanPictureData;
-import com.aaron.android.thirdparty.camera.ScanPictureTask;
 import com.goodchef.liking.R;
+import com.liking.camera.ImageFolder;
+import com.liking.camera.OnImageDirSelected;
+import com.liking.camera.ScanPictureData;
+import com.liking.camera.ScanPictureTask;
 
 import java.io.File;
 import java.io.FilenameFilter;

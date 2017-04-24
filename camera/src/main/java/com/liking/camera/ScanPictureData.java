@@ -1,4 +1,4 @@
-package com.aaron.android.thirdparty.camera;
+package com.liking.camera;
 
 import java.io.File;
 import java.util.ArrayList;

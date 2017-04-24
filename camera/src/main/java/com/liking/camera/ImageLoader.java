@@ -1,4 +1,4 @@
-package com.aaron.android.thirdparty.camera;
+package com.liking.camera;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -83,11 +83,13 @@ android {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
     }
 
+    buildToolsVersion '25.0.2'
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':framework')
+    compile project(':camera')
 //    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'

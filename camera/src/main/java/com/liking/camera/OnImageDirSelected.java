@@ -1,4 +1,4 @@
-package com.aaron.android.thirdparty.camera;
+package com.liking.camera;
 
 /**
  * 说明:从扫描文件选择不同文件夹，（即切换图片文件夹数据源）需要实现该接口

@@ -7,8 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
-import com.aaron.android.thirdparty.camera.ImageFolder;
 import com.goodchef.liking.R;
+import com.liking.camera.ImageFolder;
 
 /**
  * 说明:图片文件夹适配器

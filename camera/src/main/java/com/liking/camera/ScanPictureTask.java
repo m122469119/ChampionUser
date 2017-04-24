@@ -1,4 +1,4 @@
-package com.aaron.android.thirdparty.camera;
+package com.liking.camera;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
