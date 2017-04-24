@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aaron.android.codelibrary.utils.ListUtils;
+import com.aaron.common.utils.ListUtils;
 
 import java.util.ArrayList;
 import java.util.List;

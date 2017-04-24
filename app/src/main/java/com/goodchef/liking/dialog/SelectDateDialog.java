@@ -8,7 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.widgets.wheelpicker.core.AbstractWheelPicker;

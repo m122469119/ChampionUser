@@ -9,25 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
-import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyCardDetailsActivity;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
-import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.data.OrderCardData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.CardOrderContract;
-import com.goodchef.liking.storage.Preference;
 
 import java.util.List;
 

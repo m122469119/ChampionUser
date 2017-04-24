@@ -10,8 +10,8 @@ import android.text.TextUtils;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;

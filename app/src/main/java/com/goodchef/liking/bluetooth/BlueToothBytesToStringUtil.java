@@ -1,6 +1,6 @@
 package com.goodchef.liking.bluetooth;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.utils.DecimalFormatUtil;
 
 import java.util.ArrayList;

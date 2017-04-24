@@ -2,7 +2,6 @@ package com.goodchef.liking.utils;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,9 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.FileUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.FileUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.downloadprovider.FileDownloadService;
 import com.aaron.android.framework.library.storage.DiskStorageManager;

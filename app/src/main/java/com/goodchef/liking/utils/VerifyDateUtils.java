@@ -1,6 +1,6 @@
 package com.goodchef.liking.utils;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 
 /**
  * 说明:校验时间工具类

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 
 /**
  * Created on 2015/3/23 14:00.

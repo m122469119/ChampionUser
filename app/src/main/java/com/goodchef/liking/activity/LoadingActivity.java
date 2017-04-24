@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;

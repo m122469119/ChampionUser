@@ -14,8 +14,8 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;

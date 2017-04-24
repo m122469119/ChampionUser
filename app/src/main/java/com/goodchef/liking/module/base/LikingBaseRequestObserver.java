@@ -1,7 +1,7 @@
 package com.goodchef.liking.module.base;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

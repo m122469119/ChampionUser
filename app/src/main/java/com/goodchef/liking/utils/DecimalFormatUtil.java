@@ -1,6 +1,6 @@
 package com.goodchef.liking.utils;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 
 import java.text.DecimalFormat;
 

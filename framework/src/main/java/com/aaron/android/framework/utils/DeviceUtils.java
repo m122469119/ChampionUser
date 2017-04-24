@@ -5,7 +5,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.aaron.android.codelibrary.utils.SecurityUtils;
+import com.aaron.common.utils.SecurityUtils;
 
 /**
  * Created on 15/7/23.

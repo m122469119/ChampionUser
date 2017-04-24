@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.aaron.android.codelibrary.utils.FileUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.FileUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.storage.Preference;

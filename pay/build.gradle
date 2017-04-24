@@ -1,0 +1,8 @@
+apply from: '../libraryCommon.gradle'
+
+dependencies {
+    compile project(':common')
+    compile files("libs/alipaySingle-20160825.jar")
+    compile files("libs/libammsdk.jar")
+
+}

@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aaron.android.codelibrary.utils.ListUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.ListUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.github.mikephil.charting.charts.LineChart;

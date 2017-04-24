@@ -5,7 +5,7 @@ import com.aaron.android.codelibrary.http.NetworkErrorResponse;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 
 import java.io.IOException;
 

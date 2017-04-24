@@ -1,8 +1,8 @@
 package com.aaron.android.framework.library.storage;
 
 import com.aaron.android.framework.utils.DiskStorageUtils;
-import com.aaron.android.codelibrary.utils.FileUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.FileUtils;
+import com.aaron.common.utils.LogUtils;
 
 import java.io.File;
 

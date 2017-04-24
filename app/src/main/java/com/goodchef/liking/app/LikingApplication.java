@@ -3,7 +3,7 @@ package com.goodchef.liking.app;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.BuildConfig;

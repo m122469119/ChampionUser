@@ -8,9 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.ListUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.ListUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;

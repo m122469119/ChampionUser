@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 
 import com.aaron.android.codelibrary.http.result.DataListExtraResult;
 import com.aaron.android.codelibrary.http.result.ExtraData;
-import com.aaron.android.codelibrary.utils.ListUtils;
+import com.aaron.common.utils.ListUtils;
 import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
 import com.aaron.android.framework.utils.PopupUtils;

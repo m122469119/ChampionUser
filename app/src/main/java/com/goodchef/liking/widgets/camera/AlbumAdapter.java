@@ -13,7 +13,7 @@ import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.goodchef.liking.R;
-import com.liking.camera.SelectImageFromAlbum;
+import com.aaron.camera.SelectImageFromAlbum;
 
 import java.util.ArrayList;
 

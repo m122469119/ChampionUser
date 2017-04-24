@@ -90,6 +90,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':framework')
     compile project(':camera')
+    compile project(':pay')
 //    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
@@ -97,4 +98,5 @@ dependencies {
     compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.2' // 适用于Android的中国地区词典
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.android.support:multidex:1.0.1'
+    compile project(path: ':share')
 }

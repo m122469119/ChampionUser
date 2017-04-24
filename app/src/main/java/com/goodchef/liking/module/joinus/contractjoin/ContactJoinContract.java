@@ -3,8 +3,8 @@ package com.goodchef.liking.module.joinus.contractjoin;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.codelibrary.utils.RegularUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.RegularUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.aaron.android.framework.utils.PopupUtils;

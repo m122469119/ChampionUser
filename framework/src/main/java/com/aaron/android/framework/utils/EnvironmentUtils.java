@@ -10,8 +10,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;

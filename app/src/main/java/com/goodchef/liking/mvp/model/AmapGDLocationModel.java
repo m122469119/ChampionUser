@@ -2,8 +2,8 @@ package com.goodchef.liking.mvp.model;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.thirdparty.map.LocationListener;
 import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;

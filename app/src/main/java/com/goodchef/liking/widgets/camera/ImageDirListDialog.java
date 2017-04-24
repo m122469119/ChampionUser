@@ -13,8 +13,8 @@ import android.widget.ListView;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.utils.NavigationBarUtil;
-import com.liking.camera.ImageFolder;
-import com.liking.camera.OnImageDirSelected;
+import com.aaron.camera.ImageFolder;
+import com.aaron.camera.OnImageDirSelected;
 
 import java.util.List;
 

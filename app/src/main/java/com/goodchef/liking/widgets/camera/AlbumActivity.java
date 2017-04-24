@@ -10,10 +10,10 @@ import android.widget.Toast;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
-import com.liking.camera.ImageFolder;
-import com.liking.camera.OnImageDirSelected;
-import com.liking.camera.ScanPictureData;
-import com.liking.camera.ScanPictureTask;
+import com.aaron.camera.ImageFolder;
+import com.aaron.camera.OnImageDirSelected;
+import com.aaron.camera.ScanPictureData;
+import com.aaron.camera.ScanPictureTask;
 
 import java.io.File;
 import java.io.FilenameFilter;

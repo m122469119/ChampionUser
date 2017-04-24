@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DisplayUtils;

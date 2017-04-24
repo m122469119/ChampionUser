@@ -2,7 +2,7 @@ package com.goodchef.liking.mvp;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.aaron.android.framework.utils.ResourceUtils;

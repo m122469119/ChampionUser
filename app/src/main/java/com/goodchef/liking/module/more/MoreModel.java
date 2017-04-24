@@ -1,7 +1,7 @@
 package com.goodchef.liking.module.more;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.codelibrary.utils.ConstantUtils;
+import com.aaron.common.utils.ConstantUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.module.data.remote.LikingNewApi;

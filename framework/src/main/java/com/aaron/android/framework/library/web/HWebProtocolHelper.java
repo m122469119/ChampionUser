@@ -1,6 +1,6 @@
 package com.aaron.android.framework.library.web;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 
 /**
  * Created on 15/11/9.

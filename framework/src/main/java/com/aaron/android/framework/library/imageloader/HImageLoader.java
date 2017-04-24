@@ -9,7 +9,7 @@ import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
 import com.aaron.android.codelibrary.imageloader.ImageConfig;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.codelibrary.imageloader.ImageLoaderCallback;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.imageloader.Supplier.MemorySupplier;
 import com.facebook.cache.disk.DiskCacheConfig;

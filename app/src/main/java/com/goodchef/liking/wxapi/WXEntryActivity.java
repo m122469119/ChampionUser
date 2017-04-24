@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.utils.PopupUtils;
-import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
+import com.aaron.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;

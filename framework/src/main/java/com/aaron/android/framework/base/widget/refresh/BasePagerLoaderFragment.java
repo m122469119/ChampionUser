@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.utils.EnvironmentUtils;

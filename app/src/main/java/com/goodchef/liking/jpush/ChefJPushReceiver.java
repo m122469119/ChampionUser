@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyLessonActivity;

@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.model;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.storage.Preference;

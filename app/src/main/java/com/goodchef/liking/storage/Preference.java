@@ -1,8 +1,8 @@
 package com.goodchef.liking.storage;
 
-import com.aaron.android.codelibrary.utils.ConstantUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.ConstantUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.library.storage.AbsPreference;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.api.UrlList;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.eventbus.BaseMessage;
-import com.aaron.android.thirdparty.pay.weixin.utils.WeixinPayConstants;
+import com.aaron.pay.weixin.utils.WeixinPayConstants;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CustomAlertDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;

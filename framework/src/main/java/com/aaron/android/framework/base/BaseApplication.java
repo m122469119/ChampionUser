@@ -2,7 +2,7 @@ package com.aaron.android.framework.base;
 
 import android.app.Application;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.library.thread.TaskScheduler;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 

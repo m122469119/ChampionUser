@@ -1,7 +1,7 @@
 package com.goodchef.liking.http.api;
 
-import com.aaron.android.codelibrary.utils.DecriptUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.DecriptUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 
 

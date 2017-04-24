@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 
 import java.util.List;

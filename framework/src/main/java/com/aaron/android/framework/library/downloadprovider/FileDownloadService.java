@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
 
-import com.aaron.android.codelibrary.utils.FileUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.FileUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
-import com.aaron.android.codelibrary.utils.LogUtils;
+import com.aaron.common.utils.LogUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

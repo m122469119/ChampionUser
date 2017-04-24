@@ -3,7 +3,7 @@ package com.aaron.android.framework.base.web;
 import android.content.Context;
 import android.content.Intent;
 
-import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.common.utils.StringUtils;
 
 /**
  * Created on 15/10/14.

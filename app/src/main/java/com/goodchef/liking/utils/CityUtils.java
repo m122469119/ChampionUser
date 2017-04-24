@@ -3,13 +3,10 @@ package com.goodchef.liking.utils;
 import android.content.Context;
 import android.support.v4.util.ArrayMap;
 
-import com.aaron.android.codelibrary.utils.ListUtils;
-import com.aaron.android.codelibrary.utils.LogUtils;
-import com.aaron.android.codelibrary.utils.StringUtils;
-import com.goodchef.liking.http.result.BaseConfigResult;
+import com.aaron.common.utils.ListUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.ReadProvincesCitiesJson;
 import com.google.gson.Gson;
 
