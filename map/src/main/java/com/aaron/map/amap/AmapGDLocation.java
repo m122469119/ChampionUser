@@ -1,9 +1,9 @@
-package com.aaron.android.thirdparty.map.amap;
+package com.aaron.map.amap;
 
 import android.content.Context;
 
 import com.aaron.common.utils.LogUtils;
-import com.aaron.android.thirdparty.map.Location;
+import com.aaron.map.Location;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;

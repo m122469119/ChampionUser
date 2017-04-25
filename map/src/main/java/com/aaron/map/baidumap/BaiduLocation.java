@@ -1,9 +1,9 @@
-package com.aaron.android.thirdparty.map.baidumap;
+package com.aaron.map.baidumap;
 
 import android.content.Context;
 
 import com.aaron.common.utils.LogUtils;
-import com.aaron.android.thirdparty.map.Location;
+import com.aaron.map.Location;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;

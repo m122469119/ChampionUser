@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.thirdparty.map.LocationListener;
-import com.aaron.android.thirdparty.map.amap.AmapGDLocation;
+import com.aaron.map.LocationListener;
+import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 

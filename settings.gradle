@@ -1,1 +1,1 @@
-include ':app', ':framework', ':camera', ':pay', ':share', ':common', 'thirdparty', ':codelibrary'
+include ':app', ':framework', ':camera', ':pay', ':share', ':common', ':map', 'thirdparty', ':codelibrary'
