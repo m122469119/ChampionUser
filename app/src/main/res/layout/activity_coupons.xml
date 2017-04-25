@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_my_coupons_head_back"
             android:gravity="left|center_vertical"
-            android:hint="请输入兑换码"
+            android:hint="@string/please_input_exchange_code"
             android:inputType="text"
             android:textColorHint="@color/bg_hint_gray"
             android:padding="10dp"
@@ -41,7 +41,7 @@
             android:gravity="center"
             android:minWidth="80dp"
             android:padding="10dp"
-            android:text="兑换"
+            android:text="@string/exchange"
             android:textColor="@color/white"
             android:textSize="13sp"/>
 

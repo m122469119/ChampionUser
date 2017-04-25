@@ -19,6 +19,7 @@ import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyCardDetailsActivity;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.data.OrderCardData;
 import com.goodchef.liking.mvp.CardOrderContract;
@@ -128,6 +129,11 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         PopupUtils.showToast(message);
     }
 
+
+
+    public void onEvent(LoginFinishMessage message){
+        loadHomePage();
+    }
 
     public class MyCardOrderAdapter extends BaseRecycleViewAdapter<MyCardOrderAdapter.MyCardOrderViewHolder, OrderCardData> {
 

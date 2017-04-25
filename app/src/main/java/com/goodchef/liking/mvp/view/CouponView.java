@@ -1,6 +1,7 @@
 package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.mvp.BaseView;
+import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 
 /**
@@ -10,4 +11,6 @@ import com.goodchef.liking.http.result.CouponsResult;
  */
 public interface CouponView extends BaseView{
     void updateCouponData(CouponsResult.CouponData couponData);
+
+    void updateMyCouponData(CouponsPersonResult.DataBean dataBean);
 }

@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.goodchef.liking"
-          android:versionCode="141"
-          android:versionName="1.4.1">
-
+    package="com.goodchef.liking"
+    android:versionCode="143"
+    android:versionName="1.4.3">
 
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="true"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
     <permission
         android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature"/>
-    <!-- JPush极光推送-->
-    <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!--【必选】用以设置前台是否显示通知-->
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <!-- JPush极光推送-->
+        android:protectionLevel="signature" />
+    <!-- JPush极光推送 -->
+    <uses-permission android:name="com.goodchef.liking.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 【必选】用以设置前台是否显示通知 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- JPush极光推送 -->
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="true"/>
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name=".app.LikingApplication"
@@ -54,35 +54,36 @@
         android:theme="@style/LikingTheme">
         <activity android:name=".activity.LoadingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".bluetooth.BleService"
-            android:enabled="true"/>
-        <!--首页-->
+            android:enabled="true" />
+        <!-- 首页 -->
         <activity
             android:name=".activity.LikingHomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseThemeMain"/>
+            android:theme="@style/AppBaseThemeMain" />
 
-        <!--引导页-->
+        <!-- 引导页 -->
         <activity
             android:name=".activity.GuideActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--团体课程详情-->
+        <!-- 团体课程详情 -->
         <activity
             android:name=".activity.GroupLessonDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <!--私教课程详情-->
+            android:screenOrientation="portrait" />
+        <!-- 私教课程详情 -->
         <activity
             android:name=".activity.PrivateLessonDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <!--关于我们-->
+            android:screenOrientation="portrait" />
+        <!-- 关于我们 -->
         <activity
 
             android:name=".module.about.AboutActivity"
@@ -94,199 +95,203 @@
         <!--周边-菜品详情-->
         <activity
             android:name=".activity.DishesDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <!--联系加盟-->
+            android:screenOrientation="portrait" />
+        <!-- 联系加盟 -->
         <activity
             android:name=".module.joinus.contractjoin.ContactJonInActivity"
+            android:screenOrientation="portrait"/>
+        <!--切换城市-->
+        <activity
+            android:name=".activity.ChangeCityActivity"
             android:screenOrientation="portrait"/>
         <!--我的信息-->
         <activity
             android:name=".activity.MyInfoActivity"
-            android:screenOrientation="portrait"/>
-        <!-- 图片选择-->
-        <activity android:name=".widgets.camera.AlbumActivity"/>
-        <!--我的课程-->
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 图片选择 -->
+        <activity android:name=".widgets.camera.AlbumActivity" />
+        <!-- 我的课程 -->
         <activity
             android:name=".activity.MyLessonActivity"
-            android:screenOrientation="portrait"/>
-        <!--我的优惠券-->
+            android:screenOrientation="portrait" />
+        <!-- 我的优惠券 -->
         <activity
             android:name=".activity.CouponsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateUnspecified|adjustPan"/>
-        <!--用户登录-->
+            android:windowSoftInputMode="stateUnspecified|adjustPan" />
+        <!-- 用户登录 -->
         <activity
             android:name=".module.login.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
-        <!--查看所有门店-->
-        <activity
-            android:name=".activity.LookStoreMapActivity"
-            android:screenOrientation="portrait"/>
-        <!--查看场馆-->
+            android:screenOrientation="portrait" />
+        <!-- 查看所有门店 -->
+        <!-- 查看场馆 -->
         <activity
             android:name=".activity.ArenaActivity"
-            android:screenOrientation="portrait"/>
-        <!--私教课确认订单-->
+            android:screenOrientation="portrait" />
+        <!-- 私教课确认订单 -->
         <activity
             android:name=".activity.OrderPrivateCoursesConfirmActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateUnspecified|adjustPan"/>
-        <!--买卡确认页-->
+            android:windowSoftInputMode="stateUnspecified|adjustPan" />
+        <!-- 买卡确认页 -->
         <activity
             android:name=".activity.BuyCardConfirmActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
-        <!--我的私教课订单详情-->
+            android:screenOrientation="portrait" />
+        <!-- 我的私教课订单详情 -->
         <activity
             android:name=".activity.MyPrivateCoursesDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <!--我的会员卡-->
+            android:screenOrientation="portrait" />
+        <!-- 我的会员卡 -->
         <activity
             android:name=".activity.MyCardActivity"
-            android:screenOrientation="portrait"/>
-        <!--购物车-->
+            android:screenOrientation="portrait" />
+        <!-- 购物车 -->
         <activity
             android:name=".activity.ShoppingCartActivity"
-            android:screenOrientation="portrait"/>
-        <!--确认订单页-->
+            android:screenOrientation="portrait" />
+        <!-- 确认订单页 -->
         <activity
             android:name=".activity.DishesConfirmActivity"
-            android:screenOrientation="portrait"/>
-        <!--切换门店-->
+            android:screenOrientation="portrait" />
+        <!-- 切换门店 -->
         <activity
             android:name=".activity.ChangeShopActivity"
-            android:screenOrientation="portrait"/>
-        <!--我的订单-->
+            android:screenOrientation="portrait" />
+        <!-- 我的订单 -->
         <activity
             android:name=".activity.MyOrderActivity"
-            android:screenOrientation="portrait"/>
-        <!--营养餐订单详情-->
+            android:screenOrientation="portrait" />
+        <!-- 营养餐订单详情 -->
         <activity
             android:name=".activity.MyDishesOrderDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <!--升级卡和续卡-->
+            android:screenOrientation="portrait" />
+        <!-- 升级卡和续卡 -->
         <activity
             android:name=".activity.UpgradeAndContinueCardActivity"
-            android:screenOrientation="portrait"/>
-        <!--我的会员卡详情-->
+            android:screenOrientation="portrait" />
+        <!-- 我的会员卡详情 -->
         <activity
             android:name=".activity.MyCardDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <!--我的训练数据-->
+            android:screenOrientation="portrait" />
+        <!-- 我的训练数据 -->
         <activity
             android:name=".activity.MyTrainDataActivity"
-            android:screenOrientation="portrait"/>
-        <!--团体课课程时间列表-->
+            android:screenOrientation="portrait" />
+        <!-- 团体课课程时间列表 -->
         <activity
             android:name=".activity.GymCoursesActivity"
-            android:screenOrientation="portrait"/>
-        <!--开门-->
+            android:screenOrientation="portrait" />
+        <!-- 开门 -->
         <activity
             android:name=".activity.OpenTheDoorActivity"
-            android:screenOrientation="portrait"/>
-        <!--邀请好友-->
+            android:screenOrientation="portrait" />
+        <!-- 邀请好友 -->
         <activity
             android:name=".activity.InviteFriendsActivity"
-            android:screenOrientation="portrait"/>
-        <!--邀请好友-->
+            android:screenOrientation="portrait" />
+        <!-- 邀请好友 -->
         <activity
             android:name=".activity.WriteInviteCodeActivity"
-            android:screenOrientation="portrait"/>
-        <!--填写名称-->
+            android:screenOrientation="portrait" />
+        <!-- 填写名称 -->
         <activity
             android:name=".activity.WriteNameActivity"
-            android:screenOrientation="portrait"/>
-        <!--上传头像-->
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 上传头像 -->
         <activity
             android:name=".activity.UserHeadImageActivity"
-            android:screenOrientation="portrait"/>
-        <!--选择性别-->
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 选择性别 -->
         <activity
             android:name=".activity.SexActivity"
-            android:screenOrientation="portrait"/>
-        <!--选择生日-->
+            android:screenOrientation="portrait" />
+        <!-- 选择生日 -->
         <activity
             android:name=".activity.SelectBirthdayActivity"
-            android:screenOrientation="portrait"/>
-        <!--选择身高-->
+            android:screenOrientation="portrait" />
+        <!-- 选择身高 -->
         <activity
             android:name=".activity.SelectHeightActivity"
-            android:screenOrientation="portrait"/>
-        <!--选择体重-->
+            android:screenOrientation="portrait" />
+        <!-- 选择体重 -->
         <activity
             android:name=".activity.SelectWeightActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--完成个人信息-->
+        <!-- 完成个人信息 -->
         <activity
             android:name=".activity.CompleteUserInfoActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--收费团体课详情界面-->
+        <!-- 收费团体课详情界面 -->
         <activity
             android:name=".activity.MyChargeGroupCoursesDetailsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--选择课程地址-->
+        <!-- 选择课程地址 -->
         <activity
             android:name=".activity.ChangeAddressActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--付费团体课确认订单-->
+        <!-- 付费团体课确认订单 -->
         <activity
             android:name=".activity.GroupCoursesChargeConfirmActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--切换场馆-->
+        <!-- 切换场馆 -->
         <activity
             android:name=".activity.ChangeGymActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--自助团体课-->
+        <!-- 自助团体课 -->
         <activity
             android:name=".activity.SelfHelpGroupActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--绑定手环-->
+        <!-- 绑定手环 -->
         <activity
             android:name=".activity.BingBraceletActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--自助团详情-->
+        <!-- 自助团详情 -->
         <activity
             android:name=".activity.SelfLessonDetailsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--选择排课表-->
+        <!-- 选择排课表 -->
         <activity
             android:name=".activity.SelectCoursesListActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--体测历史-->
+        <!-- 体测历史 -->
         <activity
             android:name=".activity.BodyTestHistoryActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--体测数据-->
+        <!-- 体测数据 -->
         <activity
             android:name=".activity.BodyTestDataActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--体测数据图-->
+        <!-- 体测数据图 -->
         <activity
             android:name=".activity.BodyAnalyzeChartActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--蓝牙帮助界面-->
+        <!-- 蓝牙帮助界面 -->
         <activity
             android:name=".activity.BlueToothHelpActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--我的手环-->
+        <!-- 我的手环 -->
         <activity
             android:name=".activity.MyBraceletActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- 手环数据 -->
         <!--每日运动-->
@@ -303,76 +308,75 @@
             android:name=".module.more.MoreActivity"
             android:screenOrientation="portrait"/>
 
-        <!--支付宝h5页面-->
+        <!-- 支付宝h5页面 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"/>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"/>
-        <!--微信支付-->
+            android:screenOrientation="behind" />
+        <!-- 微信支付 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            />
-        <!-- 微信分享回调-->
+            android:launchMode="singleTop" />
+        <!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- 高德地图注册信息-->
-        <!--测试key:d599392f8c7be8820ac37204819a453b  正式key :0cfa755090bd4282a06a7db550ab7cf3-->
+        <!-- 高德地图注册信息 -->
+        <!-- 测试key:d599392f8c7be8820ac37204819a453b  正式key :0cfa755090bd4282a06a7db550ab7cf3 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="0cfa755090bd4282a06a7db550ab7cf3"/>
-        <service android:name="com.amap.api.location.APSService"/>
+            android:value="0cfa755090bd4282a06a7db550ab7cf3" />
 
+        <service android:name="com.amap.api.location.APSService" />
 
         <!-- JPush极光推送 -->
-        <!-- Rich push 核心功能 since 2.0.6-->
+        <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
-            android:theme="@style/MyDialogStyle"/>
+            android:theme="@style/MyDialogStyle" />
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity"/>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="com.goodchef.liking"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.goodchef.liking" />
             </intent-filter>
         </activity>
-        <!-- Required  SDK核心功能-->
+
+        <!-- Required  SDK核心功能 -->
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
 
-
-        <!-- Required SDK 核心功能-->
+        <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER"/>
-                <action android:name="cn.jpush.android.intent.REPORT"/>
-                <action android:name="cn.jpush.android.intent.PushService"/>
-                <action android:name="cn.jpush.android.intent.PUSH_TIME"/>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
 
@@ -383,93 +387,90 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService"/>
-                <category android:name="com.goodchef.liking"/>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+
+                <category android:name="com.goodchef.liking" />
             </intent-filter>
-
         </service>
+        <service android:name="com.aaron.android.framework.library.downloadprovider.FileDownloadService" />
 
-
-        <service android:name="com.aaron.android.framework.library.downloadprovider.FileDownloadService"/>
-
-
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
-                <!--Required  显示通知栏 -->
-                <category android:name="com.goodchef.liking"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+                <!-- Required  显示通知栏 -->
+                <category android:name="com.goodchef.liking" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
             <!-- Optional -->
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
             </intent-filter>
-
         </receiver>
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false"/>
+            android:exported="false" />
         <receiver
             android:name=".jpush.ChefJPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION"/>
-                <!--Required  用户注册SDK的intent-->
-                <action android:name="cn.jpush.android.intent.UNREGISTRATION"/>
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/>
-                <!--Required  用户接收SDK消息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/>
-                <!--Required  用户接收SDK通知栏信息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/>
-                <!--Required  用户打开自定义通知栏的intent-->
-                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK"/>
-                <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
-                <action android:name="cn.jpush.android.intent.CONNECTION"/>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
+                <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.goodchef.liking"/>
+                <category android:name="com.goodchef.liking" />
             </intent-filter>
         </receiver>
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
-            android:value="self"/>
+            android:value="self" />
 
-        <!--  测试环境:  3aacb84f6265be5b84b19ba9
-         正式环境:  e5358bc1d6c75830a71046ec  -->
+        <!--
+         测试环境:  3aacb84f6265be5b84b19ba9
+         正式环境:  e5358bc1d6c75830a71046ec
+        -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="e5358bc1d6c75830a71046ec"/>
-        <!--  </>值来自开发者平台取得的AppKey-->
-        <!-- JPush极光推送-->
+            android:value="e5358bc1d6c75830a71046ec" />
+        <!-- </>值来自开发者平台取得的AppKey -->
+        <!-- JPush极光推送 -->
 
-        <!-- 友盟统计组件-->
-        <!--正式key: 58c8edf0f29d981433000116 测试：  -->
+
+        <!-- 友盟统计组件 -->
+        <!-- 正式key: 5792d1a767e58ee14d002e2c 测试：5784523067e58eb7470009e4 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58c8edf0f29d981433000116">
-        </meta-data>
+            android:value="5792d1a767e58ee14d002e2c"></meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="3837120f438c55b3cfd60fe4fb68bf0b">
-        </meta-data>
+            android:value="3837120f438c55b3cfd60fe4fb68bf0b"></meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="umeng">
-        </meta-data>
+            android:value="umeng"></meta-data>
 
+        <activity android:name=".activity.CouponsGymActivity"></activity>
     </application>
 
 </manifest>

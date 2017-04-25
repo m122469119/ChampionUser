@@ -8,13 +8,13 @@ import com.aaron.android.codelibrary.http.NetworkErrorResponse;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.common.utils.DateUtils;
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.statistics.NetworkStatistics;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.common.utils.DateUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
@@ -25,7 +25,11 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
+import com.goodchef.liking.http.result.CouponsCities;
+import com.goodchef.liking.http.result.CouponsDetailsResult;
+import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.DishesOrderListResult;
@@ -87,6 +91,8 @@ public class LiKingApi {
     public static long sTimestampOffset = 0;
     public static long sRequestTimestamp = 0;
     public static long sRequestSyncTimestamp = 0;
+
+    public static final String PAGE = "page";
 
     public static RequestParams getCommonRequestParams() {
         if (VolleyHttpRequestClient.sNetworkStatistics == null) {
@@ -1096,4 +1102,36 @@ public class LiKingApi {
     public static void getUpdateApp(RequestCallback<CheckUpdateAppResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_CHECK_UPDATES, CheckUpdateAppResult.class, getCommonRequestParams(), callback);
     }
+
+    /**
+     * 获取城市列表
+     */
+    public static void getCityList(RequestCallback<CityListResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CityListResult.class, getCommonRequestParams(), callback);
+    }
+
+    public static void getMyConpons(int page, RequestCallback<CouponsPersonResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_MY_COUPON, CouponsPersonResult.class, getCommonRequestParams()
+                        .append(KEY_TOKEN, Preference.getToken())
+                        .append(PAGE, page),
+                callback);
+    }
+
+    public static void getConponsDetail(String coupon_code, String longitude, String latitude, RequestCallback<CouponsDetailsResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_COUPON_DETAIL, CouponsDetailsResult.class, getCommonRequestParams()
+                        .append(KEY_TOKEN, Preference.getToken())
+                        .append("coupon_code", coupon_code)
+                        .append("longitude", longitude)
+                        .append("latitude", latitude),
+                callback);
+    }
+
+    public static void getCouponsGym(int page, String coupon_code, String longitude, String latitude, RequestCallback<CouponsCities> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.GET_COUPON_GYM, CouponsCities.class, getCommonRequestParams()
+                        .append(PAGE, page)
+                        .append("coupon_code", coupon_code)
+                        .append("longitude", longitude)
+                        .append("latitude", latitude), callback);
+    }
+
 }

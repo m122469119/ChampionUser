@@ -15,25 +15,27 @@ import de.greenrobot.event.EventBus;
  *
  * @author ran.huang
  * @version 3.0.1
- *
- *
- * 基类，
+ *          <p>
+ *          <p>
+ *          基类，
  */
 public class BaseActivity extends AppCompatActivity {
     public final String TAG = getClass().getName();
+    public static boolean isPause = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtils.d(TAG, TAG + "----onCreate");
-        if (isEventTarget()) {
+        if (isEventTarget() && !EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        isPause = false;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        LogUtils.d(TAG, TAG + "----onStart");
     }
 
     @Override
@@ -42,6 +44,7 @@ public class BaseActivity extends AppCompatActivity {
         LogUtils.d(TAG, TAG + "----onResume");
         MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
+        isPause = false;
     }
 
     @Override
@@ -50,12 +53,14 @@ public class BaseActivity extends AppCompatActivity {
         LogUtils.d(TAG, TAG + "----onPause");
         MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
+        isPause = true;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         LogUtils.d(TAG, TAG + "----onStop");
+        isPause = true;
     }
 
     protected void postEvent(BaseMessage object) {
@@ -68,10 +73,11 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (isEventTarget()) {
+        if (isEventTarget() && EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         LogUtils.d(TAG, TAG + "----onDestroy");
+        isPause = false;
         super.onDestroy();
     }
 

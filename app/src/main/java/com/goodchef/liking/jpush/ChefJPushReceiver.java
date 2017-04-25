@@ -1,18 +1,28 @@
 package com.goodchef.liking.jpush;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
+import com.aaron.android.framework.base.ui.BaseActivity;
+import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
+import com.goodchef.liking.http.result.data.AnnouncementDirect;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.AppStatusUtils;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +47,15 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String DIRECT_TYPE_NATIVE = "native";
     public static final String DIRECT_TYPE_OUTER = "outer";
 
+
     public static final String DIRECT_UPDATE = "update";
     public static final String FOOD = "food";
     public static final String TEAM = "team";
     public static final String CARD = "card";
     public static final String DIRECT_TYPE_HTML5 = "h5";
+    public static final String DIRECT_ANNOUNCEMENT = "announcement";
+
+    public static final int ANNOUNCEMENT_NOTICE_ID = 0x00000001;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,7 +73,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
             LogUtils.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             LogUtils.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-
+            processCustomMessage(context, bundle);
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             LogUtils.d(TAG, "[MyReceiver] 用户点击打开了通知");
             handleNotificationMessage(context, bundle);
@@ -125,8 +139,11 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         toMyOrderList(context);
                     } else if (TEAM.equals(direct)) { //跳转到课程列表
                         toMyGroupCoursesList(context);
-                    } else if(CARD.equals(direct)) { //点击跳转至我的会员卡
+                    } else if (CARD.equals(direct)) { //点击跳转至我的会员卡
                         toMyCardVipInfo(context);
+                    } else if (DIRECT_ANNOUNCEMENT.equals(direct)) {
+                        //  String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
+                        toNoticeInfo(extras, context);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
@@ -175,12 +192,27 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         context.startActivity(intent);
     }
 
-    private void toMyCardVipInfo(Context context){
+    private void toMyCardVipInfo(Context context) {
         LogUtils.d(TAG, "MyCardActivity");
         Intent intent = new Intent(context, MyCardActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
+
+    private void toNoticeInfo(String extras, Context context) {
+        Gson gson = new Gson();
+        AnnouncementDirect announcement = gson.fromJson(extras, AnnouncementDirect.class);
+        if (announcement == null || announcement.getData() == null) {
+            return;
+        }
+        Preference.setHomeAnnouncementId(announcement.getData());
+
+        Intent intent = new Intent(context, LikingHomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_PUSH_NOTICE);
+        context.startActivity(intent);
+    }
+
 
     // 打印所有的 intent extra 数据
     private static String printBundle(Bundle bundle) {
@@ -222,20 +254,72 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
         LogUtils.d(TAG, "message: " + message + " extras: " + extras);
-//            Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
-//            msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
-//            if (!ExampleUtil.isEmpty(extras)) {
-//                try {
-//                    JSONObject extraJson = new JSONObject(extras);
-//                    if (null != extraJson && extraJson.length() > 0) {
-//                        msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras);
-//                    }
-//                } catch (JSONException e) {
-//
-//                }
-//
-//            }
-//            context.sendBroadcast(msgIntent);
-//        }
+
+        if (StringUtils.isEmpty(extras)) {
+            return;
+        }
+
+        JSONObject extraJsonObject = null;
+        try {
+            extraJsonObject = new JSONObject(extras);
+            String directType = extraJsonObject.getString(EXTRA_KEY_DIRECT);
+            switch (directType) {
+                case DIRECT_ANNOUNCEMENT:
+                    String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
+                    toAnnouncement(extras, context);
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
+
+    private void toAnnouncement(String extras, Context context) {
+        Gson gson = new Gson();
+        AnnouncementDirect announcement = gson.fromJson(extras, AnnouncementDirect.class);
+        if (announcement == null || announcement.getData() == null) {
+            return;
+        }
+
+        Preference.setHomeAnnouncementId(announcement.getData());
+
+        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context)) || BaseActivity.isPause){
+            Intent resultIntent = new Intent(context, LikingHomeActivity.class);
+            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(LikingHomeActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            showNotification(context,
+                    announcement.getData().getGymName(),
+                    announcement.getData().getGymContent(),
+                    resultPendingIntent);
+        } else if (AppStatusUtils.getTopActivityClass(context).equals("com.goodchef.liking.activity.LikingHomeActivity")) {
+            Intent intent = new Intent(context, LikingHomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_PUSH_NOTICE_RECEIVED);
+            context.startActivity(intent);
+        }
+    }
+
+    private void showNotification(Context ctx, String title, String message, PendingIntent intent) {
+        Notification.Builder builder = new Notification.Builder(ctx)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(intent)
+                ;
+        Notification build = builder.build();
+        build.flags = Notification.FLAG_AUTO_CANCEL;
+        NotificationManager manager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(ANNOUNCEMENT_NOTICE_ID, build);
+    }
+
+
 }

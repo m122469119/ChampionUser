@@ -17,7 +17,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 说明:我的课程
@@ -118,4 +117,7 @@ public class MyLessonActivity extends SwipeBackActivity {
             return mIndex;
         }
     }
+
+
+
 }

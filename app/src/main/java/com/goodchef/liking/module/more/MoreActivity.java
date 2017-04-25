@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
@@ -152,6 +152,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
     /**
      * 退出登录dialog
+     * TODO 清除默认的公告剔除列表
      */
     private void showExitDialog() {
         final HBaseDialog.Builder builder = new HBaseDialog.Builder(this);

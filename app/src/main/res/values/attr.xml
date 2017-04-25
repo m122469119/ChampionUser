@@ -55,4 +55,18 @@
         <attr name="border_outside_color" format="color"></attr>
     </declare-styleable>
 
+    <attr name="indexBarTextSize" format="dimension" />
+
+    <declare-styleable name="IndexBar">
+        <attr name="indexBarTextSize" />
+        <attr name="indexBarPressBackground" format="color" />
+    </declare-styleable>
+    
+    <declare-styleable name="TimerEditView">
+        <attr name="delayedTime" format="float"/>
+    </declare-styleable>
+
+    <attr name="head_content_line" format="reference"/>
+    <attr name="content_content_line" format="reference"/>
+    <attr name="foot_content_line" format="reference"/>
 </resources>

@@ -66,7 +66,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     }
 
     private void setRightMenu() {
-        showRightMenu("清空购物车", new View.OnClickListener() {
+        showRightMenu(getString(R.string.clear_shop_car), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showClearShoppingCartDialog();
@@ -115,7 +115,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     public void onShoppingDishAdded(Food foodData) {
         int riceNum = foodData.getSelectedOrderNum();
         if (riceNum >= foodData.getRestStock()) {
-            PopupUtils.showToast("单个最多只能购买" + foodData.getRestStock() + "份");
+            PopupUtils.showToast(getString(R.string.single_buy_more) + foodData.getRestStock() + getString(R.string.part));
         }
         if (!buyList.contains(foodData)) {
             buyList.add(foodData);

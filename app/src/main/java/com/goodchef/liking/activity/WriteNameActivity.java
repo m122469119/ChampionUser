@@ -2,6 +2,7 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,14 +42,8 @@ public class WriteNameActivity extends AppBarActivity {
         setContentView(R.layout.activity_write_name);
         ButterKnife.bind(this);
         initView();
-        showHomeUpIcon(R.drawable.app_bar_left_quit);
+        showHomeUpIcon(0);
         setTitle(getString(R.string.activity_title_writename));
-        showRightMenu(getString(R.string.skip), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         initData();
         setViewOnRetryRequestListener();
     }
@@ -79,31 +74,21 @@ public class WriteNameActivity extends AppBarActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.write_name_next_btn:
-                doWriteName();
+                String nameStr = mWriteNameEditText.getText().toString().trim();
+                if (StringUtils.isEmpty(nameStr)) {
+                    PopupUtils.showToast(getString(R.string.input_name));
+                    return;
+                }
+                if (nameStr.length() > 15) {
+                    PopupUtils.showToast(getString(R.string.name_limit));
+                    return;
+                }
+                Intent intent = new Intent(this, UserHeadImageActivity.class);
+                intent.putExtra(KEY_USER_NAME, nameStr);
+                startActivity(intent);
                 break;
         }
     }
-
-
-    /**
-     * 处理用户先写用户名
-     */
-    private void doWriteName() {
-        String nameStr = mWriteNameEditText.getText().toString().trim();
-        if (StringUtils.isEmpty(nameStr)) {
-            PopupUtils.showToast(getString(R.string.input_name));
-            return;
-        }
-        if (nameStr.length() > 15) {
-            PopupUtils.showToast(getString(R.string.name_limit));
-            return;
-        }
-
-        Intent intent = new Intent(this, UserHeadImageActivity.class);
-        intent.putExtra(KEY_USER_NAME, nameStr);
-        startActivity(intent);
-    }
-
 
     @Override
     protected boolean isEventTarget() {
@@ -111,6 +96,17 @@ public class WriteNameActivity extends AppBarActivity {
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            PopupUtils.showToast(getString(R.string.write_name_key_down_prompt));
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

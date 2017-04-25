@@ -201,7 +201,7 @@ public class SelectBirthdayActivity extends AppBarActivity  {
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 
 

@@ -23,7 +23,7 @@
             android:paddingTop="5dp"
             android:textColor="@drawable/select_gym_courses_text_back"
             android:gravity="center"
-            android:text="今天"/>
+            android:text="@string/today"/>
 
         <TextView
             android:id="@+id/gym_show_date"
@@ -32,7 +32,7 @@
             android:paddingTop="5dp"
             android:textColor="@drawable/select_gym_courses_text_back"
             android:gravity="center"
-            android:text="03-24"/>
+           />
 
     </LinearLayout>
 

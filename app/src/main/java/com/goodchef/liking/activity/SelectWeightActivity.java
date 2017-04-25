@@ -110,8 +110,8 @@ public class SelectWeightActivity extends AppBarActivity {
             mSexWomenImage.setVisibility(View.VISIBLE);
             mWeightRulerView.smoothScrollTo(57);
         }
-        mBirthdayTextView.setText(R.string.birthday + mBirthdayStr);
-        mHeightTextView.setText(getString(R.string.select_weight) + height + " cm");
+        mBirthdayTextView.setText(getString(R.string.birthday) + mBirthdayStr);
+        mHeightTextView.setText(getString(R.string.select_weight) + height + getString(R.string.cm));
     }
 
     private void setRulerView() {
@@ -120,7 +120,7 @@ public class SelectWeightActivity extends AppBarActivity {
             @Override
             public void onScaleChanged(int scale) {
                 mScale = scale;
-                mWeightTextView.setText(weightList.get(scale) + " kg");
+                mWeightTextView.setText(weightList.get(scale) + getString(R.string.kg));
             }
         });
     }
@@ -148,6 +148,6 @@ public class SelectWeightActivity extends AppBarActivity {
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 }

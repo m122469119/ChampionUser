@@ -38,7 +38,7 @@
         android:paddingLeft="@dimen/spacing_20dp"
         android:paddingRight="@dimen/spacing_20dp"
         android:paddingTop="@dimen/spacing_12dp"
-        android:text="	• 	点击手环按钮调至测量页面   "
+        android:text="@string/click_button_measure"
         android:textColor="@color/lesson_details_dark_back"
         android:textSize="@dimen/textsize_small"/>
 
@@ -49,7 +49,7 @@
         android:paddingLeft="@dimen/spacing_20dp"
         android:paddingRight="@dimen/spacing_20dp"
         android:paddingTop="@dimen/spacing_12dp"
-        android:text="	• 	紧贴手腕稍等一会   "
+        android:text="@string/close_to_the_wrist_wait_for_a_moment"
         android:textColor="@color/lesson_details_dark_back"
         android:textSize="@dimen/textsize_small"/>
 
@@ -60,7 +60,7 @@
         android:paddingLeft="@dimen/spacing_20dp"
         android:paddingRight="@dimen/spacing_20dp"
         android:paddingTop="@dimen/spacing_12dp"
-        android:text="	• 	手环震动测量完成    "
+        android:text="@string/bracelet_shake_measure_finish"
         android:textColor="@color/lesson_details_dark_back"
         android:textSize="@dimen/textsize_small"/>
 
@@ -70,7 +70,7 @@
         android:paddingBottom="@dimen/spacing_20dp"
         android:paddingLeft="@dimen/spacing_20dp"
         android:paddingRight="@dimen/spacing_20dp"
-        android:text="     （测量失败,请重新测量）   "
+        android:text="@string/measure_fail_please_repeat_measure"
         android:textColor="@color/lesson_details_gray_back"
         android:textSize="@dimen/textsize_small"/>
 

@@ -13,7 +13,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
@@ -23,6 +22,7 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
@@ -106,13 +106,14 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     TextView mCancelOrderBtn;//取消预订
     @BindView(R.id.layout_group_state)
     LinearLayout mCoursesStateLayout;
+    @BindView(R.id.group_teacher_name)
+    TextView mTeacherNameTextView;
 
     private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
     private GroupCoursesDetailsPresenter mGroupCoursesDetailsPresenter;
     private String scheduleId;//排期id
     private int mCoursesState = -1;//课程状态
     private String orderId;//订单id
-    private String gymId;//场馆id
     private String guota;//预约人数
     private int isFree;//是否免费
     private int scheduleType = -1;
@@ -137,19 +138,18 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
         mCoursesState = getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1);
         orderId = getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         requestData();
         setRightMenu();
     }
 
+    /**
+     *
+     */
     private void setRightMenu() {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(GroupLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(GroupLessonDetailsActivity.this);
             }
         });
     }
@@ -315,7 +315,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * @param groupLessonData
      */
     private void setDetailsData(GroupCoursesResult.GroupLessonData groupLessonData) {
-        gymId = groupLessonData.getGymId();
+      //  gymId = groupLessonData.getGymId();
         setTitle(groupLessonData.getCourseName());
         List<String> coursesImageList = groupLessonData.getCourseImgs();
         if (coursesImageList != null && coursesImageList.size() > 0) {
@@ -336,6 +336,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mTeacherNamelayout.setVisibility(View.GONE);
         } else {
             mTeacherNamelayout.setVisibility(View.VISIBLE);
+            mTeacherNameTextView.setText(groupLessonData.getTrainerName());
         }
 
         String rat = groupLessonData.getIntensity();
@@ -376,7 +377,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             mGroupLessonDetailsAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    jumpArenaActivity();
+                    UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
+                    Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
                 }
 
                 @Override
@@ -387,73 +392,55 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         }
     }
 
-    /**
-     * 跳转到ArenaActivity
-     */
-    private void jumpArenaActivity() {
-        UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
-        Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
-        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-        startActivity(intent);
-        overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
-    }
-
     @OnClick({R.id.group_immediately_submit_btn, R.id.cancel_order_btn, R.id.layout_gym_introduce, R.id.layout_group_details, R.id.layout_group_courses_share})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.group_immediately_submit_btn://立即购买
-                doSubmit();
+                UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
+                if (Preference.isLogin()) {
+                    mGroupCoursesDetailsPresenter.orderGroupCourses(LikingHomeActivity.gymId, scheduleId, Preference.getToken());
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.cancel_order_btn://取消预定
-                cancelOrder();
+                if (isFree == COURSES_IS_FREE) {//免费
+                    showCancelCoursesDialog();
+                } else if (isFree == COURSES_NOT_FREE) {//收费
+                    if (Preference.isLogin()) {
+                        Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
+                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
+                        // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+
+                }
+
                 break;
             case R.id.layout_gym_introduce:
             case R.id.layout_group_details://进入门店详情
                 UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
                 Intent intent = new Intent(this, ArenaActivity.class);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-                startActivity(intent);
-                overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
+                this.startActivity(intent);
+                this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+
                 break;
             case R.id.layout_group_courses_share://分享
+                if (mSharePresenter == null) {
+                    mSharePresenter = new ShareContract.SharePresenter(this, this);
+                }
                 mSharePresenter.getGroupShareData(scheduleId);
                 mShareLayout.setEnabled(false);
+
                 break;
         }
     }
-
-    /**
-     * 处理提交事情
-     */
-    private void doSubmit() {
-        UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
-        if (Preference.isLogin()) {
-            mGroupCoursesDetailsPresenter.orderGroupCourses(gymId, scheduleId, Preference.getToken());
-        } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    /**
-     * 取消预订
-     */
-    private void cancelOrder() {
-        if (isFree == COURSES_IS_FREE) {//免费
-            showCancelCoursesDialog();
-        } else if (isFree == COURSES_NOT_FREE) {//收费
-            if (Preference.isLogin()) {
-                Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
-                intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            }
-        }
-    }
-
 
     /**
      * 取消预约团体课

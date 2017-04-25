@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
@@ -25,8 +24,8 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.ShareData;
-import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.storage.Preference;
@@ -76,7 +75,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
-    private String gymId;
+    // private String gymId;
     private ShareContract.SharePresenter mSharePresenter;
 
 
@@ -97,26 +96,25 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 sendDetailsRequest();
             }
         });
-
     }
 
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
-        gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        //  gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(teacherName);
         setRightMenu();
         sendDetailsRequest();
     }
 
+    /**
+     *
+     */
     private void setRightMenu() {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(PrivateLessonDetailsActivity.this, getString(R.string.confrim_contact_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(PrivateLessonDetailsActivity.this);
             }
         });
     }
@@ -186,6 +184,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     /**
      * 设置训练项目
+     *
      * @param coursesDataList 训练项目数据
      */
     private void setTrainItemRecyclerData(List<PrivateCoursesResult.PrivateCoursesData.CoursesData> coursesDataList) {
@@ -200,29 +199,25 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.private_lesson_immediately_submit://立即预约
-                jumpOrderPrivateCoursesConfirmActivity();
+                UMengCountUtil.UmengBtnCount(PrivateLessonDetailsActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_SUBMIT_BUTTON);
+                if (Preference.isLogin()) {
+                    Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
+                    intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
+                    intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
+                    // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.layout_private_courses_share://分享
+                if (mSharePresenter == null) {
+                    mSharePresenter = new ShareContract.SharePresenter(this, this);
+                }
                 mSharePresenter.getPrivateShareData(trainerId);
                 mShareLayout.setEnabled(false);
                 break;
-        }
-    }
-
-    /**
-     * 跳转到私教课确认界面
-     */
-    private void jumpOrderPrivateCoursesConfirmActivity() {
-        UMengCountUtil.UmengBtnCount(PrivateLessonDetailsActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_SUBMIT_BUTTON);
-        if (Preference.isLogin()) {
-            Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
-            intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
-            intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
         }
     }
 

@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:gravity="center"
-                android:text="低"
+                android:text="@string/low"
                 android:textColor="@color/cb8babc"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="标准"
+                android:text="@string/standard"
                 android:textColor="@color/cb8babc"/>
 
             <View
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:gravity="center"
-                android:text="高"
+                android:text="@string/tall"
                 android:textColor="@color/cb8babc"/>
 
             <View
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:paddingLeft="@dimen/spacing_12dp"
-            android:text="体重(kg)"
+            android:text="@string/weight_kg"
             android:textColor="@color/lesson_details_dark_back"
             android:textSize="@dimen/textsize_small"/>
 
@@ -105,7 +105,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:paddingLeft="@dimen/spacing_12dp"
-            android:text="23.3kg"
             android:textColor="@color/add_minus_dishes_text"
             android:textSize="@dimen/textsize_small"/>
     </LinearLayout>

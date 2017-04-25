@@ -310,8 +310,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
             }
             mAMap.clear();
             setMapMarkView();
-            // showGymView(gymDto);
-            jumpLikingHomeActivity(gymDto);
+            jumpLikingHomeActivity();
         }
         return false;
     }
@@ -319,32 +318,16 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
     /**
      * 跳转到首页
      *
-     * @param mGymDto
      */
-    private void jumpLikingHomeActivity(CheckGymListResult.CheckGymData.CheckGym mGymDto) {
+    private void jumpLikingHomeActivity() {
         UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
-        postEvent(new ChangGymMessage(String.valueOf(mGymDto.getGymId()), tabIndex));
+        postEvent(new ChangGymMessage(tabIndex));
         Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
         intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
         startActivity(intent);
         this.finish();
     }
 
-    /**
-     * 展示场馆信息
-     */
-//    private void showGymView(final CheckGymListResult.CheckGymData.CheckGym mGymDto) {
-//        mGymLayout.setVisibility(View.VISIBLE);
-//        mGymLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
-//                Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
-//                postEvent(new ChangGymMessage(mGymDto.getGymId() + ""));
-//                startActivity(intent);
-//            }
-//        });
-//    }
     @Override
     public void onMapClick(LatLng latLng) {
     }
@@ -378,7 +361,6 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                 } else {
                     mGymLayout.setVisibility(View.GONE);
                 }
-                //  showGymView(mCheckGym);
             } else {
                 mGymLayout.setVisibility(View.GONE);
                 mNoDataLayout.setVisibility(View.VISIBLE);
@@ -409,7 +391,7 @@ public class LookStoreMapActivity extends AppBarActivity implements LocationSour
                 UMengCountUtil.UmengCount(LookStoreMapActivity.this, UmengEventId.GYMCOURSESACTIVITY);
                 Intent intent = new Intent(LookStoreMapActivity.this, LikingHomeActivity.class);
                 intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
-                postEvent(new ChangGymMessage(String.valueOf(myGymData.getGymId()), tabIndex));
+                postEvent(new ChangGymMessage(tabIndex));
                 startActivity(intent);
                 this.finish();
             }

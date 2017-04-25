@@ -14,4 +14,5 @@ public interface ChargeGroupCoursesView extends BaseNetworkLoadView {
     void updatePaySubmitView(PayResultData payResultData);
     void updateBuyCoursesErrorView();
     void updateErrorNoCard(String errorMessage);
+    void updateBuyCoursesNotOnGym(String errorMessage);
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/shape_radius_white_back"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notice_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="62dp"
+            android:gravity="center"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_medium" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/gym_default_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:paddingBottom="@dimen/spacing_4dp"
+                android:paddingTop="@dimen/spacing_8dp"
+                android:textColor="@color/lesson_details_gray_back"
+                android:textSize="@dimen/textsize_15"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/default_gym_name_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingBottom="@dimen/spacing_8dp"
+                android:paddingTop="@dimen/spacing_12dp"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_15" />
+
+
+            <ScrollView
+                android:id="@+id/dialog_default_ScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadingEdge="vertical"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/notices_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_8dp"
+                    android:layout_marginRight="@dimen/spacing_8dp"
+                    android:paddingLeft="@dimen/spacing_12dp"
+                    android:paddingRight="@dimen/spacing_12dp"
+                    android:paddingTop="@dimen/spacing_8dp"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_15" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/go_to_change_gym_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/spacing_12dp"
+                android:text="@string/immedately_change_gym"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_15" />
+
+            <TextView
+                android:id="@+id/waite_change_gym_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/spacing_12dp"
+                android:text="@string/waite_again"
+                android:textColor="@color/add_minus_dishes_text"
+                android:textSize="@dimen/textsize_15" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/default_gym_ImageView"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/dialog_icon_prompt" />
+
+</RelativeLayout>

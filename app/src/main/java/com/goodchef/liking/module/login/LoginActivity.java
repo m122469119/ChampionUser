@@ -1,6 +1,5 @@
 package com.goodchef.liking.module.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -29,6 +28,7 @@ import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.view.LoginView;
 import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.utils.NumberConstantUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -166,11 +166,10 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
             uploadDeviceInfo();
             int newUser = userLoginData.getNewUser();
             LogUtils.i("newUser", newUser + "");
-            if (newUser == 1) {
-                Intent intent = new Intent(this, WriteNameActivity.class);
-                startActivity(intent);
+            if (newUser == NumberConstantUtil.ONE) {
+                startActivity(WriteNameActivity.class);
             }
-            this.finish();
+            finish();
         }
     }
 

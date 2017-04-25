@@ -2,13 +2,12 @@ package com.goodchef.liking.mvp;
 
 import android.content.Context;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
-import com.goodchef.liking.adapter.ChangeGymCityAdapter;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.mvp.model.AmapGDLocationModel;
@@ -27,7 +26,6 @@ public interface ChangeGymContract {
 
     interface ChangeGymView extends BaseView{
         void setRightTitleTextViewText(String text);
-        void setListViewAdapter(ChangeGymCityAdapter adapter);
 
         void setCityHeadTextTextColor(int color);
 
@@ -45,30 +43,10 @@ public interface ChangeGymContract {
         private String selectCityName;//选择的城市名称
         private String cityId;//选择的城市id
 
-        private ChangeGymCityAdapter mChangeGymCityAdapter;
-
-
         public ChangeGymPresenter(Context context, ChangeGymView mainView) {
             super(context, mainView);
             mModel = new ChangeGymModel();
             mAmapGDLocationModel = new AmapGDLocationModel();
-        }
-
-        public void setCityListData() {
-            List<CityData> cityDataList = mModel.getCityListData();
-
-            if (cityDataList != null && cityDataList.size() > 0) {
-                for (CityData cityData : cityDataList) {
-                    if (String.valueOf(cityData.getCityId()).equals(cityId)) {
-                        mView.setRightTitleTextViewText(cityData.getCityName());
-                        cityData.setSelct(true);
-                        selectCityName = cityData.getCityName();
-                    }
-                }
-                mChangeGymCityAdapter = new ChangeGymCityAdapter(mContext);
-                mChangeGymCityAdapter.setData(cityDataList);
-                mView.setListViewAdapter(mChangeGymCityAdapter);
-            }
         }
 
         public void initTitleLocation(){
@@ -106,27 +84,6 @@ public interface ChangeGymContract {
                 } else {
                     mView.setCityHeadTextTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
                 }
-            }
-        }
-
-        /**
-         * 比较选择的城市列表中的城市名称是否相等
-         *
-         * @param cityName
-         */
-        public void compareSelectCity(String cityName) {
-            if (mChangeGymCityAdapter != null) {
-                List<CityData> list = mChangeGymCityAdapter.getDataList();
-                if (list != null && list.size() > 0) {
-                    for (CityData data : list) {
-                        if (cityName.equals(data.getCityName()) || cityName.contains(data.getCityName())) {
-                            data.setSelct(true);
-                        } else {
-                            data.setSelct(false);
-                        }
-                    }
-                }
-                mChangeGymCityAdapter.notifyDataSetChanged();
             }
         }
 
@@ -195,8 +152,5 @@ public interface ChangeGymContract {
             return cityId;
         }
 
-        public ChangeGymCityAdapter getChangeGymCityAdapter() {
-            return mChangeGymCityAdapter;
-        }
     }
 }

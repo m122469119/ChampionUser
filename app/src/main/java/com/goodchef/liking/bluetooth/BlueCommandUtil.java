@@ -407,7 +407,6 @@ public class BlueCommandUtil {
             xmlUTF8 = URLEncoder.encode(xmString, "UTF-8");
             System.out.println("utf-8 编码：" + xmlUTF8);
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return xmlUTF8;

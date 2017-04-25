@@ -8,13 +8,15 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.Announcement;
+import com.goodchef.liking.http.result.data.HomeAnnouncement;
 import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.http.result.data.NoticeData;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 说明:
@@ -41,9 +43,13 @@ public class Preference extends AbsPreference {
     public static final String IS_VIP = "is_vip";//是否
     public static final String IS_BIND = "is_bind";
     public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
-    public static List<String> announcementList = new ArrayList<>();
+    public static final String SHOW_DEFAULT_GYM_DIALOG = "SHOW_DEFAULT_GYM_DIALOG";
+    public static Set<String> announcementList = new HashSet<>();
     public static final String NEW_APK_NAME = "new_apk_name";
     public static final String UPDATE_APP = "update_app";
+    public static final String LOGIN_GYM_ID = "login_gym_id";//登录后返回的gymId
+    public static final String ANNOUNCEMENT_HOME_ID = "announcement_home_id";
+
 
     /**
      * 获取token
@@ -291,6 +297,56 @@ public class Preference extends AbsPreference {
         return isVip;
     }
 
+    /**
+     * 设置登录的gymId
+     *
+     * @param gymId 场馆id
+     * @return
+     */
+    public static boolean setLoginGymId(String gymId) {
+        return setObject(LOGIN_GYM_ID, gymId);
+    }
+
+    /**
+     * 获取登录的gymId
+     *
+     * @return
+     */
+    public static String getLoginGymId() {
+        return (String) getObject(LOGIN_GYM_ID, "");
+    }
+
+    /**
+     * 判断当前用户是否有卡
+     * @return
+     */
+    public static boolean getUserHasCard() {
+        String gym = getLoginGymId();
+        if (!StringUtils.isEmpty(gym) && !"0".equals(gym)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+//    /**
+//     * 设置是否弹出默认场馆对话框
+//     *
+//     * @param show
+//     * @return
+//     */
+//    public static boolean setShowDefaultGymDialg(boolean show) {
+//        return setObject(SHOW_DEFAULT_GYM_DIALOG, show);
+//    }
+//
+//    /**
+//     * 获取是否弹出默认对话框
+//     *
+//     * @return
+//     */
+//    public static boolean getShowDefaultGymDialg() {
+//        return (boolean) getObject(SHOW_DEFAULT_GYM_DIALOG, true);
+//    }
 
     /***
      * 设置定位信息
@@ -343,15 +399,7 @@ public class Preference extends AbsPreference {
     public static boolean setAnnouncementId(String announcementId) {
         if (!StringUtils.isEmpty(announcementId)) {
             Announcement announcementObject = new Announcement();
-            if (announcementList != null && announcementList.size() > 0) {
-                for (int i = 0; i < announcementList.size(); i++) {
-                    if (!announcementList.get(i).equals(announcementId)) {
-                        announcementList.add(announcementId);
-                    }
-                }
-            } else {
-                announcementList.add(announcementId);
-            }
+            announcementList.add(announcementId);
             announcementObject.setList(announcementList);
             String announcement = new Gson().toJson(announcementObject);
             return setObject(ANNOUNCEMENT_ID, announcement);
@@ -360,49 +408,71 @@ public class Preference extends AbsPreference {
         }
     }
 
+    public static void clearAnnouncementId() {
+        String announcement = new Gson().toJson(new Announcement());
+        setObject(ANNOUNCEMENT_ID, announcement);
+    }
+
+    public static boolean clearHomeAnnouncement(){
+        Gson gson = new Gson();
+        String s = gson.toJson(new HomeAnnouncement());
+        setObject(ANNOUNCEMENT_HOME_ID, s);
+        return true;
+    }
+
+    public static boolean setHomeAnnouncementId(NoticeData noticeData){
+        if (noticeData == null){
+            return false;
+        }
+        Gson gson = new Gson();
+        String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
+        HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
+        if(announcement == null) {
+            announcement = new HomeAnnouncement();
+        }
+        announcement.addNotice(noticeData);
+        String s = gson.toJson(announcement);
+        setObject(ANNOUNCEMENT_HOME_ID, s);
+        return true;
+    }
+
+    public static HomeAnnouncement getHomeAnnouncement(){
+        Gson gson = new Gson();
+        String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
+        HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
+        return announcement;
+    }
+
+
+
+    /**
+     * 判断push的公告是否为空
+     * @return
+     */
+    public static boolean isHomeAnnouncement(){
+        Gson gson = new Gson();
+        String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
+        HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
+        return announcement != null && announcement.getNoticeDatas() != null && announcement.getNoticeDatas().size() > 0;
+    }
+
+
     /***
      * 获取公告id
      *
      * @return
      */
     public static boolean isIdenticalAnnouncement(String announcementId) {
-        boolean isIdenticalAnnouncement = false;
-        if (!StringUtils.isEmpty(announcementId)) {
-            String announcementStr = (String) getObject(ANNOUNCEMENT_ID, NULL_STRING);
-            Announcement announcement = new Gson().fromJson(announcementStr, Announcement.class);
-            if (announcement != null) {
-                List<String> announcementList = announcement.getList();
-                boolean ishas = false;
-                String announcementIdStr = "";
-                if (announcementList != null && announcementList.size() > 0) {
-                    for (int i = 0; i < announcementList.size(); i++) {
-                        if (announcementList.get(i).equals(announcementId)) {
-                            ishas = true;
-                            announcementIdStr = announcementList.get(i);
-                            break;
-                        }
-                    }
-                    if (ishas) {//如果存在
-                        if (announcementIdStr.equals(announcementId)) {
-                            isIdenticalAnnouncement = false;
-                            return isIdenticalAnnouncement;
-                        }
-                    } else {//如果不存在
-                        isIdenticalAnnouncement = true;
-                        return isIdenticalAnnouncement;
-                    }
-                } else {
-                    isIdenticalAnnouncement = true;
-                }
-            } else {
-                isIdenticalAnnouncement = true;
-            }
-
-        } else {
-            isIdenticalAnnouncement = false;
+        if (StringUtils.isEmpty(announcementId)) {
+            return false;
         }
+        String announcementStr = (String) getObject(ANNOUNCEMENT_ID, NULL_STRING);
+        Announcement announcement = new Gson().fromJson(announcementStr, Announcement.class);
+        if (announcement == null || announcement.getList() == null || announcement.getList().size() < 0) {
+            return true;
+        }
+        return !announcement.getList().contains(announcementId);
 
-        return isIdenticalAnnouncement;
     }
 
     public static boolean isNewVersion() {

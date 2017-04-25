@@ -81,10 +81,10 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
 
         @Override
         public void bindViews(DishesOrderListResult.DishesOrderData.DishesOrder object) {
-            mSerialNumberTextView.setText("流水号：" + object.getSerialNumber());
-            mOrderNumberTextView.setText("订单号：" + object.getOrderId());
+            mSerialNumberTextView.setText(mContext.getString(R.string.serial_number) + object.getSerialNumber());
+            mOrderNumberTextView.setText(mContext.getString(R.string.order_number) + object.getOrderId());
             mDishesNameTextView.setText(object.getGymName());
-            mDishesMoneyTextView.setText("¥ " + object.getOrderAmount());
+            mDishesMoneyTextView.setText(mContext.getString(R.string.money_symbol) + object.getOrderAmount());
             mGetMealsTimeTextView.setText(object.getFetchTime());
             mGetMealsAddressTextView.setText(object.getGymAddress());
             int state = object.getOrderStatus();
@@ -113,7 +113,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
                 if (orderSurplusTime > 0) {//倒计时未过
                     String str = DateUtils.formatTime((long) orderSurplusTime * 1000);
                     LogUtils.i("", "orderSurplusTime: " + orderSurplusTime + " str: " + str);
-                    mPaySurplusTimeTextView.setText("剩余支付时间：" + str);
+                    mPaySurplusTimeTextView.setText(mContext.getString(R.string.surplus_pay_time) + str);
                 } else if (orderSurplusTime == 0) {//倒计时时间已过
                     mConfirmGetDishesBtn.setVisibility(View.GONE);
                     mPayLayout.setVisibility(View.GONE);

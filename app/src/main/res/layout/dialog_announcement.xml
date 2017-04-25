@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:text="公告"
+        android:text="@string/notice"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_15"
         />

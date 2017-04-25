@@ -140,6 +140,6 @@ public class SexActivity extends AppBarActivity {
     }
 
     public void onEvent(UpDateUserInfoMessage message) {
-        this.finish();
+        finish();
     }
 }

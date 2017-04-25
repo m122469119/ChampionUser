@@ -2,7 +2,6 @@ package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -12,81 +11,82 @@ import java.util.List;
  * Time:16/6/16 下午2:00
  */
 public class CouponsResult extends BaseResult {
-    @SerializedName("data")
-    private CouponData mCouponData;
 
-    public CouponData getCouponData() {
-        return mCouponData;
+    /**
+     * data : {"has_more":0,"coupon_list":[{"coupon_code":"58be571b9239a","title":"liking coupon","amount":"8000.00","can_use":"0","use_desc":"满10可用,适用于私教课","valid_date":"2017.03.07-2017.09.03","not_use_desc":"适用于私教课"}]}
+     */
+
+    private CouponData data;
+
+    public CouponData getData() {
+        return data;
     }
 
-    public void setCouponData(CouponData couponData) {
-        mCouponData = couponData;
+    public void setData(CouponData data) {
+        this.data = data;
     }
 
-    public static class CouponData extends BaseData {
-        @SerializedName("has_more")
-        private int hasMore;
-        @SerializedName("coupon_list")
-        private List<Coupon> mCouponList;
+    public static class CouponData extends BaseData{
+        /**
+         * has_more : 0
+         * coupon_list : [{"coupon_code":"58be571b9239a","title":"liking coupon","amount":"8000.00","can_use":"0","use_desc":"满10可用,适用于私教课","valid_date":"2017.03.07-2017.09.03","not_use_desc":"适用于私教课"}]
+         */
 
-        public int getHasMore() {
-            return hasMore;
+        private int has_more;
+        private List<Coupon> coupon_list;
+
+        public int getHas_more() {
+            return has_more;
         }
 
-        public void setHasMore(int hasMore) {
-            this.hasMore = hasMore;
+        public void setHas_more(int has_more) {
+            this.has_more = has_more;
         }
 
-        public List<Coupon> getCouponList() {
-            return mCouponList;
+        public List<Coupon> getCoupon_list() {
+            return coupon_list;
         }
 
-        public void setCouponList(List<Coupon> couponList) {
-            mCouponList = couponList;
+        public void setCoupon_list(List<Coupon> coupon_list) {
+            this.coupon_list = coupon_list;
         }
 
-        public static class Coupon extends BaseData {
-            @SerializedName("coupon_code")
-            private String couponCode;
-            @SerializedName("start_time")
-            private String startTime;
-            @SerializedName("end_time")
-            private String endTime;
-            @SerializedName("title")
+        public static class Coupon extends BaseData{
+            /**
+             * coupon_code : 58be571b9239a
+             * title : liking coupon
+             * amount : 8000.00
+             * can_use : 0
+             * use_desc : 满10可用,适用于私教课
+             * valid_date : 2017.03.07-2017.09.03
+             * not_use_desc : 适用于私教课
+             */
+
+            private String coupon_code;
             private String title;
-            @SerializedName("coupon_status")
-            private String couponStatus;
-            @SerializedName("coupon_type")
-            private String couponType;
-            @SerializedName("min_amount")
-            private String minAmount;
-            @SerializedName("amount")
             private String amount;
+            private String can_use;
+            private String use_desc;
+            private String valid_date;
+            private String not_use_desc;
 
-            private boolean isSelect;
 
-            public String getCouponCode() {
-                return couponCode;
+            private boolean select;
+
+            public boolean isSelect() {
+                return select;
             }
 
-            public void setCouponCode(String couponCode) {
-                this.couponCode = couponCode;
+            public void setSelect(boolean select) {
+                this.select = select;
             }
 
-            public String getStartTime() {
-                return startTime;
+            public String getCoupon_code() {
+                return coupon_code;
             }
 
-            public void setStartTime(String startTime) {
-                this.startTime = startTime;
-            }
-
-            public String getEndTime() {
-                return endTime;
-            }
-
-            public void setEndTime(String endTime) {
-                this.endTime = endTime;
+            public void setCoupon_code(String coupon_code) {
+                this.coupon_code = coupon_code;
             }
 
             public String getTitle() {
@@ -97,30 +97,6 @@ public class CouponsResult extends BaseResult {
                 this.title = title;
             }
 
-            public String getCouponStatus() {
-                return couponStatus;
-            }
-
-            public void setCouponStatus(String couponStatus) {
-                this.couponStatus = couponStatus;
-            }
-
-            public String getCouponType() {
-                return couponType;
-            }
-
-            public void setCouponType(String couponType) {
-                this.couponType = couponType;
-            }
-
-            public String getMinAmount() {
-                return minAmount;
-            }
-
-            public void setMinAmount(String minAmount) {
-                this.minAmount = minAmount;
-            }
-
             public String getAmount() {
                 return amount;
             }
@@ -129,14 +105,37 @@ public class CouponsResult extends BaseResult {
                 this.amount = amount;
             }
 
-            public boolean isSelect() {
-                return isSelect;
+            public String getCan_use() {
+                return can_use;
             }
 
-            public void setSelect(boolean select) {
-                isSelect = select;
+            public void setCan_use(String can_use) {
+                this.can_use = can_use;
+            }
+
+            public String getUse_desc() {
+                return use_desc;
+            }
+
+            public void setUse_desc(String use_desc) {
+                this.use_desc = use_desc;
+            }
+
+            public String getValid_date() {
+                return valid_date;
+            }
+
+            public void setValid_date(String valid_date) {
+                this.valid_date = valid_date;
+            }
+
+            public String getNot_use_desc() {
+                return not_use_desc;
+            }
+
+            public void setNot_use_desc(String not_use_desc) {
+                this.not_use_desc = not_use_desc;
             }
         }
     }
-
 }

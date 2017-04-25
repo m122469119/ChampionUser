@@ -1,15 +1,20 @@
 package com.goodchef.liking.http.result.data;
 
+import com.aaron.android.codelibrary.http.result.BaseData;
+
 /**
  * Created by Lennon on 16/3/2.
  */
-public class LocationData {
+public class LocationData extends BaseData{
     private String cityId;
     private String districtId;
     private String longitude;
     private String latitude;
     private String cityName;
     private boolean isPositionSuccess;
+
+    public LocationData() {
+    }
 
     public LocationData(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isPositionSuccess) {
         this.cityId = cityId;

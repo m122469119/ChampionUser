@@ -83,11 +83,11 @@ public class CouponsActivity extends AppBarActivity {
         scheduleId = getIntent().getStringExtra(KEY_SCHEDULE_ID);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
 
+
+        mExchangeCouponsLayout.setVisibility(View.VISIBLE);
         if (intentType.equals(TYPE_MY_COUPONS)) {
-            mExchangeCouponsLayout.setVisibility(View.VISIBLE);
             setTitle(getString(R.string.title_activity_my_coupons));
         } else {
-            mExchangeCouponsLayout.setVisibility(View.GONE);
             setTitle(getString(R.string.title_activity_select_coupon));
         }
         setCouponsFragment();

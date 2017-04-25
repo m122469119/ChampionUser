@@ -9,14 +9,15 @@ import android.support.v4.util.ArrayMap;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.common.utils.DateUtils;
-import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BaseView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.library.thread.TaskScheduler;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.DateUtils;
+import com.aaron.common.utils.ListUtils;
+import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.activity.ChangeGymActivity;
@@ -224,51 +225,89 @@ public class LiKingVerifyUtils {
         });
     }
 
+
+    public static List<City.RegionsData.CitiesData> getCitiesDataList() {
+        List<City.RegionsData.CitiesData> citiesDatas = new ArrayList<>();
+        BaseConfigResult baseResult = Preference.getBaseConfig();
+        if (baseResult == null) {
+            return citiesDatas;
+        }
+        BaseConfigResult.BaseConfigData baseConfig = baseResult.getBaseConfigData();
+        if (baseConfig == null) {
+            return citiesDatas;
+        }
+        List<CityData> cityList = baseConfig.getCityList();
+        if (ListUtils.isEmpty(cityList)) {
+            return citiesDatas;
+        }
+        for (int i = 0; i < cityList.size(); i++) {
+            City.RegionsData.CitiesData cityBean = new City.RegionsData.CitiesData();
+            cityBean.setCityName(cityList.get(i).getCityName());
+            cityBean.setCityId(cityList.get(i).getCityId() + "");
+            citiesDatas.add(cityBean);
+        }
+        return citiesDatas;
+    }
+
+
     /**
      * 加载以开放城市信息
      */
     public static void loadOpenCitysInfo(final Context context) {
+        loadOpenCitysInfo(context, null);
+    }
+
+    public static void loadOpenCitysInfo(final Context context, final List<String> openCities) {
         TaskScheduler.execute(new Runnable() {
-                                  @Override
-                                  public void run() {
-                                      ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
-                                      List<CityData> cityList = new ArrayList<>();
-                                      List<String> openCityCodes = sBaseConfigResult.getBaseConfigData().getOpenCity();
-                                      for (String cityCode : openCityCodes) {
-                                          CityData cityData = null;
-                                          City.RegionsData.CitiesData crc = citiesMap.get(cityCode);
-                                          try {
-                                              if (crc != null) {
-                                                  //城市
-                                                  cityData = new CityData();
-                                                  cityData.setCityId(Integer.valueOf(crc.getCityId()));
-                                                  cityData.setCityName(crc.getCityName());
-                                                  List<CityData.DistrictData> districtAll = new ArrayList<>();
-                                                  cityData.setDistrict(districtAll);
+            @Override
+            public void run() {
+                ArrayMap<String, City.RegionsData.CitiesData> citiesMap = CityUtils.getLocalCityMap(context);
+                List<CityData> cityList = new ArrayList<>();
+                List<String> openCityCodes;
+                BaseConfigResult.BaseConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
+                if (baseConfigData == null) {
+                    return;
+                }
+                if (openCities == null) {
+                    openCityCodes = baseConfigData.getOpenCity();
+                } else {
+                    openCityCodes = openCities;
+                }
 
-                                                  //地方
-                                                  List<City.RegionsData.CitiesData.DistrictsData> districts = crc.getDistricts();
-                                                  if (districts != null) {
-                                                      for (City.RegionsData.CitiesData.DistrictsData district : districts) {
-                                                          CityData.DistrictData districtData = new CityData.DistrictData();
-                                                          districtData.setDistrictId(Integer.parseInt(district.getDistrictId()));
-                                                          districtData.setDistrictName(district.getDistrictName());
-                                                          districtAll.add(districtData);
-                                                      }
-                                                  }
-                                              }
-                                          } catch (Exception e) {
-                                          }
+                for (String cityCode : openCityCodes) {
+                    CityData cityData = null;
+                    City.RegionsData.CitiesData crc = citiesMap.get(cityCode);
+                    try {
+                        if (crc != null) {
+                            //城市
+                            cityData = new CityData();
+                            cityData.setCityId(Integer.valueOf(crc.getCityId()));
+                            cityData.setCityName(crc.getCityName());
+                            List<CityData.DistrictData> districtAll = new ArrayList<>();
+                            cityData.setDistrict(districtAll);
 
-                                          if (cityData != null) {
-                                              cityList.add(cityData);
-                                          }
-                                      }
-                                      sBaseConfigResult.getBaseConfigData().setCityList(cityList);
-                                      Preference.setBaseConfig(sBaseConfigResult);
-                                  }
-                              }
-        );
+                            //地方
+                            List<City.RegionsData.CitiesData.DistrictsData> districts = crc.getDistricts();
+                            if (districts != null) {
+                                for (City.RegionsData.CitiesData.DistrictsData district : districts) {
+                                    CityData.DistrictData districtData = new CityData.DistrictData();
+                                    districtData.setDistrictId(Integer.parseInt(district.getDistrictId()));
+                                    districtData.setDistrictName(district.getDistrictName());
+                                    districtAll.add(districtData);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
+
+                    if (cityData != null) {
+                        cityList.add(cityData);
+                    }
+                }
+                sBaseConfigResult.getBaseConfigData().setCityList(cityList);
+                Preference.setBaseConfig(sBaseConfigResult);
+            }
+        });
     }
 
     public static boolean checkLogin(Context context) {

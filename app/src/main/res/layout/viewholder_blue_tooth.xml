@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="@dimen/spacing_12dp"
-            android:text="连接"
+            android:text="@string/connect"
             android:textColor="@color/c4A90E2"
             android:textSize="@dimen/textsize_15"/>
 

@@ -9,9 +9,10 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -20,6 +21,8 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.PatchDowner;
+
+import java.util.ArrayList;
 
 /**
  * 说明:
@@ -68,6 +71,10 @@ public class LoadingActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                int number = clearToken();
+                if (number < 0) {
+                    Preference.setToken("");
+                }
                 if (Preference.isNewVersion()) {
                     Preference.setIsUpdateApp(true);//设置可以弹出更新对话框
                     jumpToGuideActivity();
@@ -76,6 +83,45 @@ public class LoadingActivity extends BaseActivity {
                 }
             }
         }, DURATION);
+    }
+
+    /**
+     * 1、4.2之前的版本都要清空token，因为1.4.2之后的版本登录后的规则发生改变
+     * 如果是<0都要将前面的token清空
+     */
+    private int clearToken() {
+        String appVersion = Preference.getAppVersion();
+        String currentVersion = "1.4.2";
+        LogUtils.i(TAG, "lastappVersion== " + appVersion + "currentVersion == " + currentVersion);
+        if (!StringUtils.isEmpty(appVersion)) {
+            String lastversion[] = appVersion.split("\\.");
+            String currentversion[] = currentVersion.split("\\.");
+
+            //将数组转为list集合
+            ArrayList<String> lastVersionList = new ArrayList<>();
+            for(int i=0 ;i<lastversion.length;i++){
+                lastVersionList.add(lastversion[i]);
+            }
+
+            ArrayList<String> currentVersionList = new ArrayList<>();
+            for(int i=0;i<currentversion.length;i++){
+                currentVersionList.add(currentversion[i]);
+            }
+
+            int length = currentVersionList.size() - lastVersionList.size();
+            if (length > 0) {
+                lastVersionList.add("0");
+            } else if (length < 0) {
+                currentVersionList.add("0");
+            }
+            for (int i = 0; i < currentVersionList.size(); i++) {
+                int number = Integer.parseInt(lastVersionList.get(i)) - Integer.parseInt(currentVersionList.get(i));
+                if (number != 0) {
+                    return number / Math.abs(number);
+                }
+            }
+        }
+        return 0;
     }
 
     private void jumpToGuideActivity() {

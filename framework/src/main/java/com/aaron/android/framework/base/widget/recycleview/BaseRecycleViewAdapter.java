@@ -166,7 +166,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewHolder<T>
         if (list != null) {
             mDataList = new ArrayList<>(list);
         } else {
-            mDataList = new ArrayList<>();
+            mDataList.clear();
         }
     }
 

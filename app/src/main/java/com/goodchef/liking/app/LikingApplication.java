@@ -1,6 +1,7 @@
 package com.goodchef.liking.app;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.multidex.MultiDex;
 
 import com.aaron.common.utils.LogUtils;
@@ -19,23 +20,30 @@ import cn.jpush.android.api.JPushInterface;
 public class LikingApplication extends BaseApplication {
 
     @Override
-    protected void attachBaseContext(Context base) {
+    public void onCreate() {
+        super.onCreate();
+
+    }
+
+    @Override
+    protected void attachBaseContext(final Context base) {
         super.attachBaseContext(base);
 //        /**初始化Hotfix修复框架*/
 //        Nuwa.init(base);
+        /**解决65535方法问题*/
         MultiDex.install(this);
     }
 
     @Override
     protected void initialize() {
-        LogUtils.i(TAG, "initialize---");
+        LogUtils.i(TAG, "initialize---" + this);
         JPushInterface.setDebugMode(EnvironmentUtils.Config.isTestMode());
         JPushInterface.init(this);
     }
 
     @Override
     protected void backgroundInitialize() {
-        LogUtils.i(TAG, "backgroundInitialize---");
+        LogUtils.i(TAG, "backgroundInitialize---" + this);
     }
 
     @Override
@@ -48,4 +56,33 @@ public class LikingApplication extends BaseApplication {
         configData.setUrlHost(BuildConfig.HTTP_HOST);
         return configData;
     }
+
+
+    @Override
+    public void onTerminate() {
+        // 程序终止的时候执行
+        LogUtils.d(TAG, "onTerminate--" + this);
+        super.onTerminate();
+    }
+
+    @Override
+    public void onLowMemory() {
+        // 低内存的时候执行
+        LogUtils.d(TAG, "onLowMemory--" + this);
+        super.onLowMemory();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        // 程序在内存清理的时候执行
+        LogUtils.d(TAG, "onTrimMemory--" + this);
+        super.onTrimMemory(level);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        LogUtils.d(TAG, "onConfigurationChanged--" + this);
+        super.onConfigurationChanged(newConfig);
+    }
+
 }

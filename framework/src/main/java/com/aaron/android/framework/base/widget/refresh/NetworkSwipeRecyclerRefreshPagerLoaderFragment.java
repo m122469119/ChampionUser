@@ -158,4 +158,7 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
     }
 
+    public void addRecyclerItemDecoration(RecyclerView.ItemDecoration decoration){
+        mRecyclerView.addItemDecoration(decoration);
+    }
 }

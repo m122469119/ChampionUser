@@ -6,6 +6,17 @@
               android:background="@color/app_content_background"
               android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/my_edit_userInfo_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_8dp"
+        android:background="@color/add_minus_dishes_text"
+        android:gravity="center"
+        android:padding="@dimen/spacing_12dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_small"/>
+
     <RelativeLayout
         android:id="@+id/layout_head_image"
         android:layout_width="match_parent"
@@ -33,7 +44,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
             android:gravity="right"
-            android:text="修改头像"/>
+            android:text="@string/change_head_image"/>
 
         <ImageView
             android:layout_width="8dp"
@@ -67,7 +78,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="昵称"
+                android:text="@string/user_name"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -80,12 +91,12 @@
                 android:layout_toRightOf="@+id/user_name"
                 android:background="@color/transparent"
                 android:gravity="right"
-                android:textCursorDrawable="@null"
-                android:hint="请输入昵称"
-                android:inputType="text"
+                android:hint="@string/input_user_name"
+                android:inputType="textPersonName"
                 android:padding="10dp"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textColorHint="@color/bg_hint_gray"
+                android:textCursorDrawable="@null"
                 android:textSize="@dimen/textsize_small"/>
         </RelativeLayout>
 
@@ -95,42 +106,40 @@
             android:layout_marginLeft="10dp"
             android:background="@color/line"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_weight="2"
                 android:padding="10dp"
-                android:text="性别"/>
+                android:text="@string/sex"/>
 
             <TextView
                 android:id="@+id/select_sex"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_weight="1"
                 android:gravity="right"
                 android:padding="10dp"
-                android:text="选择性别"/>
+                android:text="@string/activity_title_sex"/>
 
             <ImageView
+                android:id="@+id/select_sex_arrow"
                 android:layout_width="8dp"
                 android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
-                android:src="@drawable/bg_right_arrow"/>
+                android:src="@drawable/bg_right_arrow"
+                android:visibility="visible"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -138,42 +147,40 @@
             android:layout_marginLeft="10dp"
             android:background="@color/line"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_weight="2"
                 android:padding="10dp"
-                android:text="出生日期"/>
+                android:text="@string/user_birthday"/>
 
             <TextView
                 android:id="@+id/select_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_weight="1"
                 android:gravity="right"
                 android:padding="10dp"
-                android:text="选择出生日期"/>
+                android:text="@string/activity_title_select_birthday"/>
 
             <ImageView
+                android:id="@+id/select_birthday_arrow"
                 android:layout_width="8dp"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
-                android:src="@drawable/bg_right_arrow"/>
+                android:src="@drawable/bg_right_arrow"
+                android:visibility="visible"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -195,7 +202,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="身高"
+                android:text="@string/height"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -208,12 +215,12 @@
                 android:layout_toRightOf="@+id/user_height"
                 android:background="@color/transparent"
                 android:gravity="right"
-                android:hint="请输入身高"
+                android:hint="@string/input_height"
                 android:inputType="number"
-                android:textCursorDrawable="@null"
                 android:padding="10dp"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textColorHint="@color/bg_hint_gray"
+                android:textCursorDrawable="@null"
                 android:textSize="@dimen/textsize_small"/>
 
             <TextView
@@ -222,7 +229,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:text="cm"/>
+                android:text="@string/cm"/>
         </RelativeLayout>
 
         <View
@@ -245,7 +252,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="10dp"
-                android:text="体重"
+                android:text="@string/user_weight"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textSize="@dimen/textsize_small"/>
 
@@ -258,12 +265,12 @@
                 android:layout_toRightOf="@+id/user_weight"
                 android:background="@color/transparent"
                 android:gravity="right"
-                android:hint="请输入体重"
+                android:hint="@string/input_weight"
                 android:inputType="numberDecimal"
-                android:textCursorDrawable="@null"
                 android:padding="10dp"
                 android:textColor="@color/lesson_details_dark_back"
                 android:textColorHint="@color/bg_hint_gray"
+                android:textCursorDrawable="@null"
                 android:textSize="@dimen/textsize_small"/>
 
             <TextView
@@ -272,7 +279,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:text="kg"/>
+                android:text="@string/kg"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -280,12 +287,12 @@
         android:id="@+id/finish_btn"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:text="完成"
-        android:textSize="@dimen/textsize_15"
-        android:gravity="center"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textColor="@color/white"
+        android:layout_marginTop="15dp"
         android:background="@drawable/shape_radius_green_btn_background"
-        android:layout_marginTop="15dp"/>
+        android:gravity="center"
+        android:text="@string/finish"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_15"/>
 </LinearLayout>

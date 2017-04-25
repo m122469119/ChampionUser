@@ -15,7 +15,9 @@ import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.mvp.UpgradeAndContinueCardContract;
+import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -42,13 +44,32 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
     @BindView(R.id.upgrade_continue_state_view) LikingStateView mStateView;
     private String mGymId;
 
+    private String longitude = "0";
+    private String latitude = "0";
+    private String cityId = "310100";
+    private String districtId = "310104";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrade_and_continue);
         ButterKnife.bind(this);
+        setLocationData();
         initView();
         initData();
+    }
+
+    /**
+     * 从本地拿到定位的经纬度和城市等信息
+     */
+    private void setLocationData() {
+        LocationData locationData = Preference.getLocationData();
+        if (locationData != null) {
+            longitude = locationData.getLongitude();
+            latitude = locationData.getLatitude();
+            cityId = locationData.getCityId();
+            districtId = locationData.getDistrictId();
+        }
     }
 
     private void initView() {
@@ -58,7 +79,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
-                mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
+                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, mGymId, buyType);
             }
         });
     }
@@ -69,7 +90,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
         mGymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(title);
         mCardListPresenter = new UpgradeAndContinueCardContract.CardListPresenter(this, this);
-        mCardListPresenter.getCardList("0", "0", "310100", "310104", "0", buyType);
+        mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, mGymId, buyType);
     }
 
     @Override

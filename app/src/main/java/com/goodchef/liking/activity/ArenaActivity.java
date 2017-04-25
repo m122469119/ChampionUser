@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ArenaTagAdapter;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
@@ -19,7 +19,6 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.mvp.presenter.GymDetailsPresenter;
 import com.goodchef.liking.mvp.view.GymDetailsView;
-import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -73,10 +72,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
         setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = Preference.getCustomerServicePhone();
-                if (!StringUtils.isEmpty(phone)) {
-                    LikingCallUtil.showCallDialog(ArenaActivity.this, getString(R.string.confrim_call_customer_service), phone);
-                }
+                LikingCallUtil.showPhoneDialog(ArenaActivity.this);
             }
         });
     }

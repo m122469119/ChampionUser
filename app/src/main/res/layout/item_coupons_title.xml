@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:background="@color/split_line_color"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:id="@+id/txt_coupons_used_venue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/can_used_venue"
+            android:textColor="@color/buy_card_prompt_text"
+            android:textSize="@dimen/big_text_size_23sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_coupons_read_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:id="@+id/txt_coupons_read_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/find_all"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/liking_green_btn_back"
+                android:textSize="@dimen/normal_text_size_12sp"
+                />
+
+            <ImageView
+                android:id="@+id/img_coupons_read_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/arrowhead" />
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</LinearLayout>

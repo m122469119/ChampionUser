@@ -21,7 +21,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (isEventTarget()) {
+        if (isEventTarget() && !EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -46,7 +46,7 @@ public class BaseFragment extends Fragment {
     }
     @Override
     public void onDestroy() {
-        if (isEventTarget()) {
+        if (isEventTarget() && EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();

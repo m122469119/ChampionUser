@@ -140,9 +140,6 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceleC
         mOpenBlueToothTextView.setTextColor(ResourceUtils.getColor(R.color.c4A90E2));
     }
 
-
-
-
     /**
      * 展示蓝牙提示
      */
