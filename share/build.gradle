@@ -2,7 +2,6 @@ apply from: '../libraryCommon.gradle'
 
 dependencies {
     compile project(':common')
-    provided files("../pay/libs/alipaySingle-20160825.jar")
     provided files("../pay/libs/libammsdk.jar")
 }
 android {

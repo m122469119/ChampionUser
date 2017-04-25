@@ -81,13 +81,16 @@ android {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.xml')
         exclude('META-INF/maven/com.squareup.okio/okio/pom.properties')
     }
+
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':framework')
-    compile project(':camera')
-    compile project(':pay')
+    compile project(path: ':framework')
+    compile project(path: ':camera')
+    compile project(path: ':pay')
+    compile project(path: ':map')
+    compile project(path: ':share')
 //    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
@@ -96,8 +99,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.android.support:multidex:1.0.1'
     compile project(path: ':share')
-
-
     //tinker
     compile("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
     provided("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }

@@ -1,4 +1,4 @@
-package com.aaron.android.thirdparty.map;
+package com.aaron.map;
 
 import android.content.Context;
 
