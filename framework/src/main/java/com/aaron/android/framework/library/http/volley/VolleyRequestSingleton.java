@@ -19,10 +19,13 @@ public class VolleyRequestSingleton {
     private RequestQueue mRequestQueue;
     private static Context sContext;
 
-    public static synchronized VolleyRequestSingleton getInstance(Context context) {
+    public static void init(Context mContext) {
         if (sVolleyRequestSingleton == null) {
-            sVolleyRequestSingleton = new VolleyRequestSingleton(context);
+            sVolleyRequestSingleton = new VolleyRequestSingleton(mContext);
         }
+    }
+
+    public static synchronized VolleyRequestSingleton getInstance(Context context) {
         return sVolleyRequestSingleton;
     }
     private VolleyRequestSingleton(Context context) {
@@ -47,4 +50,6 @@ public class VolleyRequestSingleton {
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
+
+
 }

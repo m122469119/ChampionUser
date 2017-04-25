@@ -678,7 +678,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                 firstTime = secondTime;//更新firstTime
                 return true;
             } else {
-                BaseApplication.getInstance().exitApp();
+                BaseApplication.exitApp();
             }
         }
         return super.onKeyDown(keyCode, event);

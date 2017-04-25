@@ -1,5 +1,7 @@
 package com.goodchef.liking.storage;
 
+import android.app.Application;
+
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
@@ -514,5 +516,6 @@ public class Preference extends AbsPreference {
         String patchDataString = (String) getObject(PATCH_DATA, NULL_STRING);
         return new Gson().fromJson(patchDataString, PatchData.class);
     }
+
 
 }

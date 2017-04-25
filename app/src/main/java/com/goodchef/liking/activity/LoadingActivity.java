@@ -20,6 +20,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.PatchDowner;
+import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
 /**
  * 说明:
@@ -94,6 +95,7 @@ public class LoadingActivity extends BaseActivity {
         if (patchData != null && patchData.isPatchNeed() && !TextUtils.isEmpty(patchData.getPatchFile())) {
             LogUtils.i("Dust", "加载补丁");
 //            Nuwa.loadPatch(this, previousPatchData.getPatchFile());
+            TinkerInstaller.onReceiveUpgradePatch(this.getApplication(),previousPatchData.getPatchFile());
         } else {
             LogUtils.i("Dust", "不加载补丁");
         }

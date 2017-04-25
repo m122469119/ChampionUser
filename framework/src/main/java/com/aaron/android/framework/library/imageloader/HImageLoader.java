@@ -9,9 +9,8 @@ import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
 import com.aaron.android.codelibrary.imageloader.ImageConfig;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.codelibrary.imageloader.ImageLoaderCallback;
-import com.aaron.common.utils.LogUtils;
-import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.library.imageloader.Supplier.MemorySupplier;
+import com.aaron.common.utils.LogUtils;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -65,9 +64,9 @@ public class HImageLoader implements ImageLoader {
     };
 
     private ImagePipelineConfig initImageLoaderConfig(ImageCacheParams params) {
-        LogUtils.i("aaron", "imageLoader cache directory: " + BaseApplication.getInstance().getExternalCacheDir());
-        return ImagePipelineConfig.newBuilder(BaseApplication.getInstance())
-                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(BaseApplication.getInstance())
+        LogUtils.i("aaron", "imageLoader cache directory: " + params.getContext().getExternalCacheDir());
+        return ImagePipelineConfig.newBuilder(params.getContext())
+                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(params.getContext())
                         .setBaseDirectoryPath(new File(params.getDirectoryPath()))
                         .setBaseDirectoryName(params.getDirectoryName())
                         .setMaxCacheSize(params.getMaxDiskCacheSize())

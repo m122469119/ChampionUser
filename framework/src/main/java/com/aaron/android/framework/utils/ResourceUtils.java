@@ -1,10 +1,9 @@
 package com.aaron.android.framework.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-
-import com.aaron.android.framework.base.BaseApplication;
 
 /**
  * Created on 下午9:26.
@@ -13,13 +12,22 @@ import com.aaron.android.framework.base.BaseApplication;
  * @version 1.0.0
  */
 public class ResourceUtils {
+
+    private static Context mContext;
+
+    public static void init(Context context){
+        mContext = context;
+    }
+
+
     /**
      *
      * @return 获取Resuorce
      */
     public static Resources getResources() {
-        return BaseApplication.getInstance().getResources();
+        return mContext.getResources();
     }
+
 
     /**
      *
@@ -27,7 +35,7 @@ public class ResourceUtils {
      * @return 本地资源图片
      */
     public static Drawable getDrawable(int resId) {
-        return ContextCompat.getDrawable(BaseApplication.getInstance(), resId);
+        return ContextCompat.getDrawable(mContext, resId);
     }
 
     /**

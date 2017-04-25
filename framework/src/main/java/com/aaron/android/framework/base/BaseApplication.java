@@ -17,7 +17,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
  */
 public abstract class BaseApplication extends Application {
 
-    private static BaseApplication sApplication;
+    private static Application sApplication;
     protected final String TAG = getClass().getSimpleName();
     private ProcessInit mMainProcessInit;
 
@@ -62,14 +62,14 @@ public abstract class BaseApplication extends Application {
      * 获取Application实例
      * @return BaseApplication
      */
-    public static BaseApplication getInstance() {
+    public static Application getInstance() {
         return sApplication;
     }
 
     /**
      * 退出应用
      */
-    public void exitApp() {
+    public static void exitApp() {
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
     }
