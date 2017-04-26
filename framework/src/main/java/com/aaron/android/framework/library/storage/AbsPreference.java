@@ -3,7 +3,6 @@ package com.aaron.android.framework.library.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 
 /**
@@ -14,14 +13,18 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
  */
 public abstract class AbsPreference {
     private static SharedPreferences sPreferences;
+    private static final String TAG = "AbsPreference";
+
+    public static void init(Context context){
+        if (sPreferences == null) {
+            sPreferences = context.getSharedPreferences(EnvironmentUtils.Config.getAppFlag(), Context.MODE_PRIVATE);
+        }
+    }
 
     /**
      * 初始化SharedPreferences
      */
     protected static SharedPreferences getInstance() {
-        if (sPreferences == null) {
-            sPreferences = BaseApplication.getInstance().getSharedPreferences(EnvironmentUtils.Config.getAppFlag(), Context.MODE_PRIVATE);
-        }
         return sPreferences;
     }
 

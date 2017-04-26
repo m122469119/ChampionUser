@@ -1,5 +1,6 @@
 package com.aaron.android.codelibrary.imageloader;
 
+import android.content.Context;
 import android.widget.ImageView;
 
 /**

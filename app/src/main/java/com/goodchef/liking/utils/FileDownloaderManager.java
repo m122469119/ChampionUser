@@ -130,7 +130,7 @@ public class FileDownloaderManager {
                     intent1.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent1);
-                    BaseApplication.getInstance().exitApp();
+                    BaseApplication.exitApp();
                 }
             }
         }
