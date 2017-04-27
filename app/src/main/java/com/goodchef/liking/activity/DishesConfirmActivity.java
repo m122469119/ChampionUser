@@ -13,12 +13,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.pay.alipay.AliPay;
 import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
@@ -220,7 +219,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
             if (mealTimeList != null && mealTimeList.size() > 0) {
                 showMealTimeDialog();
             } else {
-                PopupUtils.showToast(getString(R.string.no_time_get_dinner));
+               showToast(getString(R.string.no_time_get_dinner));
             }
         } else if (v == mCouponsLayout) {//选择优惠券
             UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
@@ -246,11 +245,11 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
         } else if (v == mImmediatelyPayBtn) {
             String mealTime = mGetMealsTimeTextView.getText().toString();
             if (StringUtils.isEmpty(mealTime)) {
-                PopupUtils.showToast(getString(R.string.select_dinner_time));
+                showToast(getString(R.string.select_dinner_time));
                 return;
             }
             if (payType.equals("-1")) {
-                PopupUtils.showToast(getString(R.string.please_select_pay_type));
+                showToast(getString(R.string.please_select_pay_type));
                 return;
             }
             if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
@@ -289,7 +288,7 @@ public class DishesConfirmActivity extends AppBarActivity implements View.OnClic
     public void updateSubmitOrderView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast(getString(R.string.pay_success));
+            showToast(getString(R.string.pay_success));
             postEvent(new FreePayMessage());
             jumpIntentDishesOrderList();
         } else {

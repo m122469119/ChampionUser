@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.mvp.BaseView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
@@ -49,7 +48,7 @@ class MoreContract {
                                 mMoreModel.saveUpdateInfo(result.getData());
                                 mView.updateCheckUpdateAppView(result.getData());
                             } else {
-                                PopupUtils.showToast(result.getMessage());
+                                mView.showToast(result.getMessage());
                             }
                         }
 
@@ -73,7 +72,7 @@ class MoreContract {
                                 mMoreModel.clearUserInfo();
                                 mView.updateLoginOut();
                             } else {
-                                PopupUtils.showToast(result.getMessage());
+                                mView.showToast(result.getMessage());
                             }
                         }
 

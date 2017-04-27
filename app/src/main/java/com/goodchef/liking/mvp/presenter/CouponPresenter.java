@@ -6,7 +6,6 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CouponsPersonResult;
@@ -36,7 +35,7 @@ public class CouponPresenter extends BasePresenter<CouponView> {
                     mView.updateCouponData(result.getData());
                 } else {
                     postEvent(new CouponErrorMessage());
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -57,7 +56,7 @@ public class CouponPresenter extends BasePresenter<CouponView> {
                     mView.updateMyCouponData(result.getData());
                 } else {
                     postEvent(new CouponErrorMessage());
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
             @Override

@@ -11,14 +11,13 @@ import android.widget.TextView;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.RegularUtils;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.RegularUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.WriteNameActivity;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
@@ -110,7 +109,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
         }
         String code = mCodeEditText.getText().toString().trim();
         if (StringUtils.isEmpty(code)) {
-            PopupUtils.showToast(getString(R.string.version_code_not_blank));
+            showToast(getString(R.string.version_code_not_blank));
             return;
         }
         requestLogin(phoneStr, code);
@@ -137,11 +136,11 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     private boolean checkPhone() {
         phoneStr = mLoginPhoneEditText.getText().toString().trim();
         if (StringUtils.isEmpty(phoneStr)) {
-            PopupUtils.showToast(getString(R.string.hint_login_phone));
+            showToast(getString(R.string.hint_login_phone));
             return false;
         }
         if (!RegularUtils.isMobileExact(phoneStr)) {
-            PopupUtils.showToast(getString(R.string.phone_format_error));
+            showToast(getString(R.string.phone_format_error));
             return false;
         }
         return true;
@@ -150,7 +149,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     @Override
     public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
         mCodeEditText.setText("");
-        PopupUtils.showToast(getString(R.string.version_code_sended));
+        showToast(getString(R.string.version_code_sended));
         if (!EnvironmentUtils.Config.isDebugMode()) {
             return;
         }

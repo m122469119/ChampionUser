@@ -58,4 +58,6 @@ public class AboutActivity extends AppBarActivity implements AboutContract.About
             LikingCallUtil.showCallDialog(AboutActivity.this, getString(R.string.confrim_call_business), phone);
         }
     }
+
+
 }

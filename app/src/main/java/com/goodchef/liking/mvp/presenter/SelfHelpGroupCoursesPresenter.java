@@ -1,18 +1,12 @@
 package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.activity.SelfHelpGroupActivity;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
@@ -39,7 +33,7 @@ public class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCo
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateSelfHelpGroupCoursesView(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -61,7 +55,7 @@ public class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCo
                    mView.updateNoCardView(result.getMessage());
                 } else {
                     mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

@@ -43,7 +43,7 @@ public class BleScanner {
      */
     public void scanLeDevice(final boolean enable) {
         if (!BleUtils.isSupportBleDevice(mContext)) {
-            PopupUtils.showToast(mContext.getString(R.string.devices_no_support_ble));
+            PopupUtils.showToast(mContext, mContext.getString(R.string.devices_no_support_ble));
             return;
         }
         if (enable) {

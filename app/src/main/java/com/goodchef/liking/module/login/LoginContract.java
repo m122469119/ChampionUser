@@ -3,8 +3,7 @@ package com.goodchef.liking.module.login;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.mvp.BaseView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -47,7 +46,7 @@ class LoginContract {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateVerificationCodeView(result.getVerificationCodeData());
                             } else {
-                                PopupUtils.showToast(result.getMessage());
+                                mView.showToast(result.getMessage());
                             }
                         }
 
@@ -78,7 +77,7 @@ class LoginContract {
                                     mView.updateLoginView(value.getUserLoginData());
                                 }
                             } else {
-                                PopupUtils.showToast(value.getMessage());
+                                mView.showToast(value.getMessage());
                             }
                         }
 
@@ -96,5 +95,6 @@ class LoginContract {
         void updateLoginView(UserLoginResult.UserLoginData userLoginData);
 
         void updateLoginOut();
+
     }
 }

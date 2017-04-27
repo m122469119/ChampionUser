@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
@@ -231,7 +230,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
     public void onClick(View v) {
         if (v == mAddImageBtn) {
             if (mSelectNum == mFood.getRestStock()){
-                PopupUtils.showToast(getString(R.string.single_buy_more) + mFood.getRestStock() + getString(R.string.part));
+                showToast(getString(R.string.single_buy_more) + mFood.getRestStock() + getString(R.string.part));
                 return;
             }
             mFood.setSelectedOrderNum(++mSelectNum);
@@ -257,7 +256,7 @@ public class DishesDetailsActivity extends AppBarActivity implements FoodDetails
                     startActivityForResult(intent, INTENT_REQUEST_CODE_DEISH_DETAILS_CART);
                 }
             } else {
-                PopupUtils.showToast(getString(R.string.you_has_not_add_dishes));
+                showToast(getString(R.string.you_has_not_add_dishes));
             }
         }
     }

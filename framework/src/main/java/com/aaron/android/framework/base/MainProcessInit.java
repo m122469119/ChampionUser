@@ -66,7 +66,7 @@ public class MainProcessInit implements ProcessInit {
      */
     private int getMaxCacheSize() {
         final int maxMemory =
-                Math.min(((ActivityManager) (BaseApplication.getInstance().getSystemService(Context.ACTIVITY_SERVICE))).getMemoryClass() * ByteConstants.MB, Integer.MAX_VALUE);
+                Math.min(((ActivityManager) (mContext.getSystemService(Context.ACTIVITY_SERVICE))).getMemoryClass() * ByteConstants.MB, Integer.MAX_VALUE);
         int memory;
         if (maxMemory < 32 * ByteConstants.MB) {
             memory = 4 * ByteConstants.MB;

@@ -38,8 +38,15 @@ public class LikingApplicationLike extends  DefaultApplicationLike{
 
     private ProcessInit mMainProcessInit;
 
+    private static Application sApplication;
+
     public LikingApplicationLike(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
+        sApplication = application;
+    }
+
+    public static Application getApp() {
+        return sApplication;
     }
 
 

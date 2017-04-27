@@ -3,6 +3,7 @@ package com.aaron.android.framework.base.mvp;
 import android.content.Context;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 
 import de.greenrobot.event.EventBus;
 

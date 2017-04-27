@@ -9,14 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.MyCardDetailsActivity;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
@@ -123,13 +122,6 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
             updateListView(listData);
         }
     }
-
-    @Override
-    public void showToast(String message) {
-        PopupUtils.showToast(message);
-    }
-
-
 
     public void onEvent(LoginFinishMessage message){
         loadHomePage();

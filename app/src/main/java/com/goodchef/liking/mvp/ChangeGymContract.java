@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
 import com.amap.api.location.AMapLocation;

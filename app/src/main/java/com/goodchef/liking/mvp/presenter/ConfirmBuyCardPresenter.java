@@ -7,7 +7,6 @@ import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
@@ -55,7 +54,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                     } else if (result.getCode() == 240000 || result.getCode() == 240001) {
                         mView.updateErrorView(result.getMessage());
                     } else {
-                        PopupUtils.showToast(result.getMessage());
+                        mView.showToast(result.getMessage());
                     }
                 }
             }
@@ -75,7 +74,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateSubmitPayView(result.getPayData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

@@ -598,7 +598,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void changeGym(int index) {
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            PopupUtils.showToast(getString(R.string.network_no_connection));
+            showToast(getString(R.string.network_no_connection));
             return;
         }
         if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId())) {
@@ -614,7 +614,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             intent.putExtra(KEY_TAB_INDEX, index);
             startActivity(intent);
         } else {
-            PopupUtils.showToast(getString(R.string.network_home_error));
+            showToast(getString(R.string.network_home_error));
         }
     }
 
@@ -840,7 +840,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             long secondTime = System.currentTimeMillis();
             if (secondTime - firstTime > 2000) {//如果两次按键时间间隔大于2秒，则不退出
-                PopupUtils.showToast(getString(R.string.exit_app));//再按一次退出应用
+                showToast(getString(R.string.exit_app));//再按一次退出应用
                 firstTime = secondTime;//更新firstTime
                 return true;
             } else {

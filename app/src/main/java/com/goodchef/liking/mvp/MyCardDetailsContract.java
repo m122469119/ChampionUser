@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;

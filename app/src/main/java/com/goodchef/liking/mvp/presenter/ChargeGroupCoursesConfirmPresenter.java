@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -42,10 +41,10 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
                     mView.updateErrorNoCard(result.getMessage());
                 } else if (result.getCode() == LiKingRequestCode.LOGIN_TOKEN_INVALID) {
                     mView.updateBuyCoursesErrorView();
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                     EventBus.getDefault().post(new LoginOutFialureMessage());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                     mView.updateBuyCoursesErrorView();
                 }
             }
@@ -65,7 +64,7 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updatePaySubmitView(result.getPayData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

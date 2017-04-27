@@ -8,7 +8,7 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Volley RequestQueue单例
- *
+ * <p>
  * Created by AaronHuang on 15/6/8.
  *
  * @version 3.0.1
@@ -19,15 +19,16 @@ public class VolleyRequestSingleton {
     private RequestQueue mRequestQueue;
     private static Context sContext;
 
-    public static void init(Context mContext) {
+    public static void init(Context context) {
         if (sVolleyRequestSingleton == null) {
-            sVolleyRequestSingleton = new VolleyRequestSingleton(mContext);
+            sVolleyRequestSingleton = new VolleyRequestSingleton(context);
         }
     }
 
-    public static synchronized VolleyRequestSingleton getInstance(Context context) {
+    public static synchronized VolleyRequestSingleton getInstance() {
         return sVolleyRequestSingleton;
     }
+
     private VolleyRequestSingleton(Context context) {
         sContext = context;
         mRequestQueue = getRequestQueue();
@@ -44,6 +45,7 @@ public class VolleyRequestSingleton {
 
     /**
      * 添加一个request到Volley的RequestQueue
+     *
      * @param req request
      * @param <T> 请求数据泛型
      */

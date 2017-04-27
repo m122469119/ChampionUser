@@ -6,12 +6,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
@@ -178,7 +177,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     @Override
     public void updateComplete() {
-        PopupUtils.showToast(getString(R.string.my_courses_details_complete));
+        showToast(getString(R.string.my_courses_details_complete));
         postEvent(new MyPrivateCoursesCompleteMessage());
         sendRequest();
     }

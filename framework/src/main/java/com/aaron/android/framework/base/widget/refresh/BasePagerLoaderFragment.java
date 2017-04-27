@@ -121,10 +121,10 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
                 if (isFirstLoad) {
                     mStateView.setState(StateView.State.FAILED);
                 } else {
-                    PopupUtils.showToast(R.string.network_no_connection);
+                    PopupUtils.showToast(getActivity(), R.string.network_no_connection);
                 }
             } else {
-                PopupUtils.showToast(R.string.network_no_connection);
+                PopupUtils.showToast(getActivity(), R.string.network_no_connection);
             }
             requestFinished();
             return;

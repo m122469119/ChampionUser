@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -76,11 +75,11 @@ public class WriteNameActivity extends AppBarActivity {
             case R.id.write_name_next_btn:
                 String nameStr = mWriteNameEditText.getText().toString().trim();
                 if (StringUtils.isEmpty(nameStr)) {
-                    PopupUtils.showToast(getString(R.string.input_name));
+                    showToast(getString(R.string.input_name));
                     return;
                 }
                 if (nameStr.length() > 15) {
-                    PopupUtils.showToast(getString(R.string.name_limit));
+                    showToast(getString(R.string.name_limit));
                     return;
                 }
                 Intent intent = new Intent(this, UserHeadImageActivity.class);
@@ -103,7 +102,7 @@ public class WriteNameActivity extends AppBarActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            PopupUtils.showToast(getString(R.string.write_name_key_down_prompt));
+            showToast(getString(R.string.write_name_key_down_prompt));
             return false;
         }
         return super.onKeyDown(keyCode, event);

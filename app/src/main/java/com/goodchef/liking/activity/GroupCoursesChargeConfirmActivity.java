@@ -9,12 +9,11 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
 import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
@@ -203,7 +202,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
      */
     private void sendBuyCoursesRequest() {
         if (payType.equals("-1")) {
-            PopupUtils.showToast(getString(R.string.please_select_pay_type));
+            showToast(getString(R.string.please_select_pay_type));
             return;
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
@@ -219,7 +218,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     public void updatePaySubmitView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == PAY_TYPE) {//3 免金额支付
-            PopupUtils.showToast(getString(R.string.pay_success));
+            showToast(getString(R.string.pay_success));
             postEvent(new BuyGroupCoursesAliPayMessage());
             jumpToMyCoursesActivity();
         } else {

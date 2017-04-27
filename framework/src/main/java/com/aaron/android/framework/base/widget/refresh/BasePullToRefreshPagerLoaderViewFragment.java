@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 
 /**
@@ -36,7 +35,7 @@ public abstract class BasePullToRefreshPagerLoaderViewFragment<T extends PullToR
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 setRefreshViewPull(true);
-                String label = DateUtils.formatDateTime(BaseApplication.getInstance().getApplicationContext(), System.currentTimeMillis(),
+                String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(),
                         DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 loadHomePage();

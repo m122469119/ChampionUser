@@ -7,15 +7,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
@@ -98,7 +97,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
             showCameraDialog();
         } else if (v == mNextBtn) {
             if (StringUtils.isEmpty(mLoaclHeadUrl)) {
-                PopupUtils.showToast(getString(R.string.select_head));
+                showToast(getString(R.string.select_head));
                 return;
             }
             Intent intent = new Intent(this, SexActivity.class);
@@ -149,7 +148,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
                 } else {
-                    PopupUtils.showToast(getString(R.string.repeat_select_picture));
+                    showToast(getString(R.string.repeat_select_picture));
                 }
             }
 
@@ -165,7 +164,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
                             .setLoadType(ImageLoader.LoaderType.FILE)
                             .build());
                 } else {
-                    PopupUtils.showToast(getString(R.string.repeat_select_picture));
+                    showToast(getString(R.string.repeat_select_picture));
                 }
             }
         });

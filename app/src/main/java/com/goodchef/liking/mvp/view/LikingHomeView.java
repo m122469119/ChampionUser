@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.view;
 
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.data.NoticeData;
 
 import java.util.Set;

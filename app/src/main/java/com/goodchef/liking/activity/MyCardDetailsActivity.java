@@ -11,12 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.MyCardOrderFragment;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
@@ -155,7 +154,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
 
     @Override
     public void showToast(String message) {
-        PopupUtils.showToast(message);
+       showToast(message);
     }
 
     @Override

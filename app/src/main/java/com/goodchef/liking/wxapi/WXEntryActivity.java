@@ -64,7 +64,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 result = R.string.share_fail;
                 break;
         }
-        PopupUtils.showToast(getString(result));
+        PopupUtils.showToast(this, getString(result));
         finish();
     }
 

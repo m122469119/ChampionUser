@@ -20,7 +20,6 @@ import com.aaron.android.framework.base.widget.recycleview.RecyclerItemDecoratio
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
@@ -302,7 +301,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
     @Override
     public void updateCancelOrderView() {
-        PopupUtils.showToast(getString(R.string.cancel_success));
+        showToast(getString(R.string.cancel_success));
         postEvent(new CancelGroupCoursesMessage());
         mCoursesState = 3;
         setBottomCoursesState();

@@ -1,7 +1,7 @@
 package com.goodchef.liking.mvp.view;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.data.City;
 
 import java.util.List;

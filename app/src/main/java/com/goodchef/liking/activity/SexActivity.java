@@ -7,15 +7,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -106,7 +105,7 @@ public class SexActivity extends AppBarActivity {
                 break;
             case R.id.sex_next_btn:
                 if (sex == -1) {
-                    PopupUtils.showToast(getString(R.string.select_gender));
+                    showToast(getString(R.string.select_gender));
                     return;
                 }
                 Intent intent = new Intent(this, SelectBirthdayActivity.class);

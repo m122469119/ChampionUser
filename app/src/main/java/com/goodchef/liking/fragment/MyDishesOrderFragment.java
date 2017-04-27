@@ -10,15 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.common.utils.DateUtils;
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.DateUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
 import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
@@ -327,7 +326,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     public void updateMyDishesPayView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast(getString(R.string.pay_success));
+        showToast(getString(R.string.pay_success));
             loadHomePage();
         } else {
             handlePay(payResultData);

@@ -9,8 +9,8 @@ import android.support.v4.util.ArrayMap;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.mvp.BaseNetworkLoadView;
-import com.aaron.android.framework.base.mvp.BaseView;
+import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.library.thread.TaskScheduler;
@@ -131,7 +131,7 @@ public class LiKingVerifyUtils {
                 case LiKingRequestCode.VERIFICATION_INCORRECT:
                 case LiKingRequestCode.LOGOUT_FAILURE:
                 case LiKingRequestCode.ILLEGAL_VERIFICATION_CODE:
-                    PopupUtils.showToast(result.getMessage());
+                    PopupUtils.showToast(context, result.getMessage());
                     break;
                 default:
                     break;

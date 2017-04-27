@@ -1,4 +1,4 @@
-package com.aaron.android.framework.base.mvp;
+package com.aaron.android.framework.base.mvp.view;
 
 /**
  * Created on 16/2/22.
@@ -6,7 +6,7 @@ package com.aaron.android.framework.base.mvp;
  * @author aaron.huang
  * @version 1.0.0
  */
-public interface BaseNetworkLoadView extends BaseView{
+public interface BaseNetworkLoadView extends BaseView {
     /**
      * 网络连接异常时更新对应View
      */

@@ -6,7 +6,6 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -33,7 +32,7 @@ public class BodyHistoryPresenter extends BasePresenter<BodyHistoryView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateBodyHistoryView(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

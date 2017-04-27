@@ -3,11 +3,10 @@ package com.goodchef.liking.module.joinus.becomecoach;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.mvp.BaseView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -34,6 +33,8 @@ public interface BecomeTeacherContract {
         void setBecomeTeacherPhoneEditText();
 
         void updateBecomeTeacherView();
+
+        void showToast(String message);
     }
 
     class BecomeTeacherPresenter extends BasePresenter<BecomeTeacherView> {
@@ -51,26 +52,26 @@ public interface BecomeTeacherContract {
             String city = mView.getBecomeTeacherCity();
 
             if (StringUtils.isEmpty(name)) {
-                PopupUtils.showToast(mContext.getString(R.string.name_not_blank));
+                mView.showToast(mContext.getString(R.string.name_not_blank));
                 mView.setBecomeTeacherNameEditText();
                 return;
             } else if (name.length() > 15) {
-                PopupUtils.showToast(mContext.getString(R.string.name_length_surpass_15));
+                mView.showToast(mContext.getString(R.string.name_length_surpass_15));
                 mView.setBecomeTeacherNameEditText();
                 return;
             }
             if (StringUtils.isEmpty(phone)) {
-                PopupUtils.showToast(mContext.getString(R.string.phone_not_blank));
+                mView.showToast(mContext.getString(R.string.phone_not_blank));
                 mView.setBecomeTeacherPhoneEditText();
                 return;
             }
             if (!RegularUtils.isMobileExact(phone)) {
-                PopupUtils.showToast(mContext.getString(R.string.phone_input_error));
+                mView.showToast(mContext.getString(R.string.phone_input_error));
                 mView.setBecomeTeacherPhoneEditText();
                 return;
             }
             if (StringUtils.isEmpty(city)) {
-                PopupUtils.showToast(mContext.getString(R.string.city_not_blank));
+                mView.showToast(mContext.getString(R.string.city_not_blank));
                 return;
             }
 
@@ -82,7 +83,7 @@ public interface BecomeTeacherContract {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateBecomeTeacherView();
                             } else {
-                                PopupUtils.showToast(result.getMessage());
+                                mView.showToast(result.getMessage());
                             }
                         }
 

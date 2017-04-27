@@ -7,7 +7,6 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
@@ -32,7 +31,7 @@ public class HomeCoursesPresenter extends BasePresenter<HomeCourseView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateBanner(result.getBannerData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -51,7 +50,7 @@ public class HomeCoursesPresenter extends BasePresenter<HomeCourseView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateCourseView(result.getCourses());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

@@ -14,12 +14,11 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.dialog.SelectDateDialog;
@@ -218,13 +217,13 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
             showCameraDialog();
         } else if (v == mSelectSexTextView) {//选择性别
             if (isUpdateGender == NumberConstantUtil.ZERO) {//没有机会修改性别
-                PopupUtils.showToast(getString(R.string.user_can_not_revise_info));
+                showToast(getString(R.string.user_can_not_revise_info));
             } else if (isUpdateGender == NumberConstantUtil.ONE) {
                 showSelectSexDialog();
             }
         } else if (v == mSelectBirthdayTextView) {//选择出生日期
             if (isUpdateBirthday == NumberConstantUtil.ZERO) {
-                PopupUtils.showToast(getString(R.string.user_can_not_revise_info));
+                showToast(getString(R.string.user_can_not_revise_info));
             } else if (isUpdateBirthday == NumberConstantUtil.ONE) {
                 showSelectDateDialog();
             }
@@ -250,14 +249,14 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
         if (!StringUtils.isEmpty(height)) {
             int heightInt = Integer.parseInt(height);
             if (heightInt < 50 || heightInt > 250) {
-                PopupUtils.showToast(getString(R.string.height_input_error_prompt));
+                showToast(getString(R.string.height_input_error_prompt));
                 return;
             }
         }
         if (!StringUtils.isEmpty(weight)) {
             double weightInt = Double.parseDouble(weight);
             if (weightInt < 25 || weightInt > 250) {
-                PopupUtils.showToast(getString(R.string.weight_input_error_prompt));
+                showToast(getString(R.string.weight_input_error_prompt));
                 return;
             }
         }
@@ -383,13 +382,13 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
                         if (VerifyDateUtils.isVerifyDate(str)) {
                             mSelectBirthdayTextView.setText(str);
                             isChange = true;
-                            PopupUtils.showToast(getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
+                           showToast(getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
                             dateDialog.dismiss();
                         } else {
                             yearStr = "";
                             monthStr = "";
                             dayStr = "";
-                            PopupUtils.showToast(getString(R.string.select_date_error_prompt));
+                            showToast(getString(R.string.select_date_error_prompt));
                         }
                         break;
                 }
@@ -410,14 +409,14 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
                         mSelectSexTextView.setText(R.string.sex_man);
                         gender = 1;
                         setSexChange();
-                        PopupUtils.showToast(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
+                        showToast(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
                         dialog.dismiss();
                         break;
                     case R.id.dialog_text_second:
                         mSelectSexTextView.setText(R.string.sex_men);
                         gender = 0;
                         setSexChange();
-                        PopupUtils.showToast(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
+                        showToast(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
                         dialog.dismiss();
                         break;
                 }
@@ -476,7 +475,7 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
                 if (mBitmap != null) {
                     sendImageFile(mBitmap);
                 } else {
-                    PopupUtils.showToast(getString(R.string.please_select_picture));
+                    showToast(getString(R.string.please_select_picture));
                 }
             }
 
@@ -487,7 +486,7 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
                 if (mBitmap != null) {
                     sendImageFile(bitmapList.get(0));
                 } else {
-                    PopupUtils.showToast(getString(R.string.please_select_picture));
+                    showToast(getString(R.string.please_select_picture));
                 }
             }
         });
@@ -571,7 +570,7 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
 
     @Override
     public void updateUserInfo() {
-        PopupUtils.showToast(getString(R.string.update_success));
+        showToast(getString(R.string.update_success));
         mUserInfoPresenter.getUserInfo();
     }
 

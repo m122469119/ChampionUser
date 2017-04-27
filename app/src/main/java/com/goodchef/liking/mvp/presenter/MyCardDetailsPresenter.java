@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -29,7 +28,7 @@ public class MyCardDetailsPresenter extends BasePresenter<MyCardDetailsView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateMyCardDetailsView(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

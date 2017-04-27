@@ -8,7 +8,6 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
@@ -113,7 +112,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
 
     @Override
     public void showToast(String message) {
-        PopupUtils.showToast(message);
+        showToast(message);
     }
 
     private void setNoUpGradeCard() {

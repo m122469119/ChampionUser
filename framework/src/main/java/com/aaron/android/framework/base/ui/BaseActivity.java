@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.eventbus.BaseMessage;
 import com.umeng.analytics.MobclickAgent;
@@ -83,6 +84,10 @@ public class BaseActivity extends AppCompatActivity {
 
     protected boolean isEventTarget() {
         return false;
+    }
+
+    public void showToast(String message) {
+        PopupUtils.showToast(this, message);
     }
 
 }

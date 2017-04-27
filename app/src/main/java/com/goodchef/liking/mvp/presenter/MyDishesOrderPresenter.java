@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -32,7 +31,7 @@ public class MyDishesOrderPresenter extends BasePresenter<MyDishesOrderView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateMyDishesPayView(result.getPayData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -51,7 +50,7 @@ public class MyDishesOrderPresenter extends BasePresenter<MyDishesOrderView> {
                 if (LiKingVerifyUtils.isValid(mContext,result)){
                     mView.updateCancelDishesOrder();
                 }else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -70,7 +69,7 @@ public class MyDishesOrderPresenter extends BasePresenter<MyDishesOrderView> {
                 if (LiKingVerifyUtils.isValid(mContext,result)){
                     mView.updateCompleteDishesOrder();
                 }else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
@@ -176,7 +175,7 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
 
     @Override
     public void showToast(String message) {
-        PopupUtils.showToast(message);
+        showToast(message);
     }
 
     @Override

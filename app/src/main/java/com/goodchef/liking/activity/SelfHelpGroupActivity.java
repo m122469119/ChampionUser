@@ -14,15 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.aaron.common.utils.StringUtils;
+
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
 import com.goodchef.liking.eventmessages.NoCardMessage;
@@ -177,10 +177,10 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                 return;
             }
             if (StringUtils.isEmpty(roomId)) {
-                PopupUtils.showToast(getString(R.string.no_select_room));
+                showToast(getString(R.string.no_select_room));
             }
             if (StringUtils.isEmpty(coursesId)) {
-                PopupUtils.showToast(getString(R.string.no_select_courses));
+                showToast(getString(R.string.no_select_courses));
                 return;
             }
             sendOrderRequest();
@@ -228,7 +228,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
     @Override
     public void updateOrderView() {
-        PopupUtils.showToast(getString(R.string.order_success));
+        showToast(getString(R.string.order_success));
         Intent intent = new Intent(this, MyLessonActivity.class);
         intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
         startActivity(intent);

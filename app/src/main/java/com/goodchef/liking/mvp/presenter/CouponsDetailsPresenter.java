@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
@@ -41,7 +40,7 @@ public class CouponsDetailsPresenter extends BasePresenter<CouponsDetailsView> {
                     mView.updateCouponData(result.getData());
                 } else {
                     postEvent(new CouponErrorMessage());
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

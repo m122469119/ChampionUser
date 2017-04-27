@@ -6,8 +6,7 @@ import android.view.View;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.mvp.BaseView;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.share.weixin.WeixinShare;
 import com.aaron.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
@@ -44,7 +43,7 @@ public interface ShareContract {
                      if (LiKingVerifyUtils.isValid(mContext, result)) {
                          mView.updateShareView(result.getShareData());
                      } else {
-                         PopupUtils.showToast(result.getMessage());
+                         mView.showToast(result.getMessage());
                      }
                  }
 
@@ -63,7 +62,7 @@ public interface ShareContract {
                      if (LiKingVerifyUtils.isValid(mContext, result)) {
                          mView.updateShareView(result.getShareData());
                      } else {
-                         PopupUtils.showToast(result.getMessage());
+                         mView.showToast(result.getMessage());
                      }
                  }
 
@@ -82,7 +81,7 @@ public interface ShareContract {
                      if (LiKingVerifyUtils.isValid(mContext, result)) {
                          mView.updateShareView(result.getShareData());
                      } else {
-                         PopupUtils.showToast(result.getMessage());
+                         mView.showToast(result.getMessage());
                      }
                  }
 

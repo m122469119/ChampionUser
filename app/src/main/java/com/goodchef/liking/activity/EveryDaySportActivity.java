@@ -20,12 +20,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BleService;
@@ -940,7 +939,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
      */
     private void showPromptHeartRateDialog() {
         if (writecharacteristic == null) {
-            PopupUtils.showToast(getString(R.string.connect_bluetooth_heart_rate));
+            showToast(getString(R.string.connect_bluetooth_heart_rate));
             return;
         }
         if (heartDialog == null) {

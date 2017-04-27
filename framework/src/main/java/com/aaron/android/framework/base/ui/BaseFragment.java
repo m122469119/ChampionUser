@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.aaron.android.framework.utils.PopupUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import de.greenrobot.event.EventBus;
@@ -58,5 +59,9 @@ public class BaseFragment extends Fragment {
 
     protected boolean isEventTarget() {
         return false;
+    }
+
+    public void showToast(String message) {
+        PopupUtils.showToast(getActivity(), message);
     }
 }

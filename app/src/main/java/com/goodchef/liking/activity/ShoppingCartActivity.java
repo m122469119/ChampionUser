@@ -8,11 +8,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.aaron.common.utils.ListUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
+import com.aaron.common.utils.ListUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ShoppingCartAdapter;
 import com.goodchef.liking.eventmessages.ClearCartMessage;
@@ -115,7 +114,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     public void onShoppingDishAdded(Food foodData) {
         int riceNum = foodData.getSelectedOrderNum();
         if (riceNum >= foodData.getRestStock()) {
-            PopupUtils.showToast(getString(R.string.single_buy_more) + foodData.getRestStock() + getString(R.string.part));
+            showToast(getString(R.string.single_buy_more) + foodData.getRestStock() + getString(R.string.part));
         }
         if (!buyList.contains(foodData)) {
             buyList.add(foodData);

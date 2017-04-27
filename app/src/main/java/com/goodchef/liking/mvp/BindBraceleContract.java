@@ -8,11 +8,10 @@ import android.view.View;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.base.mvp.BaseView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
@@ -172,7 +171,7 @@ public interface BindBraceleContract {
                         mView.updateBindDevicesView();
                     } else {
                         mView.updateBindDevicesView();
-                        PopupUtils.showToast(result.getMessage());
+                        mView.showToast(result.getMessage());
                     }
                 }
 

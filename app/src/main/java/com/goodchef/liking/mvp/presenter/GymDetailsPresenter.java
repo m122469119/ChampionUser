@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -30,7 +29,7 @@ public class GymDetailsPresenter extends BasePresenter<GymDetailsView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateGymDetailsView(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

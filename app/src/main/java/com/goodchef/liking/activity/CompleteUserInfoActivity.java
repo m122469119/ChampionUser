@@ -15,7 +15,6 @@ import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
 import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
@@ -197,7 +196,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            PopupUtils.showToast(getString(R.string.confirm_submit_user_info));
+            showToast(getString(R.string.confirm_submit_user_info));
             return false;
         }
         return super.onKeyDown(keyCode, event);

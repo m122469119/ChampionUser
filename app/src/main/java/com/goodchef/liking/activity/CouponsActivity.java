@@ -10,10 +10,9 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.InputMethodManagerUtils;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
@@ -117,7 +116,7 @@ public class CouponsActivity extends AppBarActivity {
                 InputMethodManagerUtils.hideKeyboard(mEditCoupons);
                 String couponsNumber = mEditCoupons.getText().toString().trim();
                 if (StringUtils.isEmpty(couponsNumber)) {
-                    PopupUtils.showToast(getString(R.string.input_coupon_code));
+                    showToast(getString(R.string.input_coupon_code));
                 } else {
                     sendExchangeCouponsRequest(couponsNumber);
                 }
@@ -131,18 +130,18 @@ public class CouponsActivity extends AppBarActivity {
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(CouponsActivity.this, result)) {
-                    PopupUtils.showToast(getString(R.string.exchange_success));
+                    showToast(getString(R.string.exchange_success));
                     mEditCoupons.setText("");//清空兑换码
                     postEvent(new ExchangeCouponsMessage());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    showToast(result.getMessage());
                 }
             }
 
             @Override
             public void onFailure(RequestError error) {
                 super.onFailure(error);
-                PopupUtils.showToast(getString(R.string.network_error));
+                showToast(getString(R.string.network_error));
             }
         });
     }

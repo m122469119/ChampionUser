@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -32,7 +31,7 @@ public class NutritionMealConfirmPresenter extends BasePresenter<NutritionMealCo
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateNutritionMealConfirmView(result.getConfirmData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -51,7 +50,7 @@ public class NutritionMealConfirmPresenter extends BasePresenter<NutritionMealCo
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateSubmitOrderView(result.getPayData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

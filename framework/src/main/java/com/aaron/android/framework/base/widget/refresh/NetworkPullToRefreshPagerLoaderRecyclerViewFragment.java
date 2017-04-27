@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 
 import com.aaron.android.codelibrary.http.result.DataListExtraResult;
 import com.aaron.android.codelibrary.http.result.ExtraData;
-import com.aaron.common.utils.ListUtils;
 import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
-import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.ListUtils;
 
 import java.util.List;
 
@@ -84,7 +83,7 @@ public abstract class NetworkPullToRefreshPagerLoaderRecyclerViewFragment extend
                     clearListViewContent();
                     getStateView().setState(StateView.State.NO_DATA);
                 } else {
-                    PopupUtils.showToast("没有更多数据了");
+                    showToast("没有更多数据了");
                 }
             } else {
                 getStateView().setState(StateView.State.SUCCESS);

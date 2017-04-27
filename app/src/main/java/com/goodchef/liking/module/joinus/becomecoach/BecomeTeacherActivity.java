@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
@@ -23,7 +22,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/26 下午2:28
  */
-public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeacherContract.BecomeTeacherView{
+public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeacherContract.BecomeTeacherView {
     @BindView(R.id.become_teacher_name_editText)
     EditText mBecomeTeacherNameEditText;
     @BindView(R.id.become_teacher_phone_editText)
@@ -34,14 +33,13 @@ public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeach
     TextView mBecomeTeacherImmediatelySubmit;
 
 
-
     private BecomeTeacherContract.BecomeTeacherPresenter mBecomeTeacherPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_become_teacher);
-        mBecomeTeacherPresenter = new BecomeTeacherContract.BecomeTeacherPresenter(this,this);
+        mBecomeTeacherPresenter = new BecomeTeacherContract.BecomeTeacherPresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_become_private_teacher));
         initView();
@@ -144,12 +142,11 @@ public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeach
 
     @Override
     public void updateBecomeTeacherView() {
-        PopupUtils.showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
+        showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
         mBecomeTeacherNameEditText.setText("");
         mBecomeTeacherPhoneEditText.setText("");
         mBecomeTeacherCityTextView.setText("");
         finish();
     }
-
 
 }

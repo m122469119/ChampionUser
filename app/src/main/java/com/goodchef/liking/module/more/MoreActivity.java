@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
@@ -116,7 +115,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
             if (Preference.isLogin()) {
                 showExitDialog();
             } else {
-                PopupUtils.showToast(getString(R.string.not_login));
+                showToast(getString(R.string.not_login));
             }
         }
     }
@@ -185,7 +184,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
     @Override
     public void updateLoginOut() {
-        PopupUtils.showToast(getString(R.string.exit_login_success));
+        showToast(getString(R.string.exit_login_success));
         postEvent(new LoginOutMessage());
         mLoginOutBtn.setVisibility(View.GONE);
         finish();

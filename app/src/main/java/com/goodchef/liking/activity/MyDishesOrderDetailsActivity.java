@@ -150,7 +150,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
                 if (LiKingVerifyUtils.isValid(MyDishesOrderDetailsActivity.this, result)) {
                     setDetailsData(result.getOrderDetailsData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    showToast(result.getMessage());
                 }
             }
 
@@ -314,7 +314,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
     public void updateMyDishesPayView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
         if (payType == 3) {//3 免金额支付
-            PopupUtils.showToast(R.string.pay_success);
+            PopupUtils.showToast(this, R.string.pay_success);
             sendDetailsRequest();
         } else {
             handlePay(payResultData);

@@ -1,15 +1,13 @@
 package com.aaron.android.framework.library.downloadprovider;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
 
 import com.aaron.common.utils.FileUtils;
-import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,12 +70,11 @@ public class FileDownloadService extends Service {
 
         private String getDiskCacheDir() {
             String cachePath;
-            Context context = BaseApplication.getInstance();
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                     || !Environment.isExternalStorageRemovable()) {
-                cachePath = context.getExternalCacheDir().getPath();
+                cachePath = getExternalCacheDir().getPath();
             } else {
-                cachePath = context.getCacheDir().getPath();
+                cachePath = getCacheDir().getPath();
             }
             return cachePath;
         }

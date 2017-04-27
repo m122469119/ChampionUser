@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.data.ShareData;
@@ -95,7 +94,7 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseC
 
     @Override
     public void showToast(String message) {
-        PopupUtils.showToast(message);
+        showToast(message);
     }
 
     private View.OnClickListener shareListener = new View.OnClickListener() {

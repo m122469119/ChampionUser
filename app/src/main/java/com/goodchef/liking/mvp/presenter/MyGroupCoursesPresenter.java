@@ -34,7 +34,7 @@ public class MyGroupCoursesPresenter extends BasePresenter<MyGroupCourseView> {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateMyGroupCoursesView(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -51,10 +51,10 @@ public class MyGroupCoursesPresenter extends BasePresenter<MyGroupCourseView> {
             public void onSuccess(BaseResult result) {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
-                    PopupUtils.showToast(R.string.cancel_success);
+                    PopupUtils.showToast(mContext, R.string.cancel_success);
                     mView.updateLoadHomePage();
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

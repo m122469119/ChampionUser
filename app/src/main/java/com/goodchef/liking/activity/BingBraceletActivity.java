@@ -14,11 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.fragment.LikingMyFragment;
@@ -94,7 +93,7 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceleC
             @Override
             public void onClick(View v) {
                 if (connectState == 1) {
-                    PopupUtils.showToast(getString(R.string.connect_not_jump_help));
+                    showToast(getString(R.string.connect_not_jump_help));
                     return;
                 }
                 startActivity(BlueToothHelpActivity.class);

@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -33,7 +32,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updatePrivateCoursesConfirm(result.getData());
                 } else {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -52,7 +51,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateSubmitOrderCourses(result.getPayData());
                 } else if (result.getCode() != 221009) {
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 
@@ -71,7 +70,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
                     mView.updateOrderCalculate(true, result.getData());
                 } else {
                     mView.updateOrderCalculate(false, result.getData());
-                    PopupUtils.showToast(result.getMessage());
+                    mView.showToast(result.getMessage());
                 }
             }
 

@@ -9,10 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,7 +38,7 @@ public class ContactJonInActivity extends AppBarActivity implements ContactJoinC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_join);
-        mContactJoinContractPresenter = new ContactJoinContract.ContactJoinContractPresenter(this,this);
+        mContactJoinContractPresenter = new ContactJoinContract.ContactJoinContractPresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_activity_contact_join));
         initView();
@@ -84,9 +84,9 @@ public class ContactJonInActivity extends AppBarActivity implements ContactJoinC
 
     }
 
-    @OnClick({R.id.immediately_submit,R.id.city_TextView})
+    @OnClick({R.id.immediately_submit, R.id.city_TextView})
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.immediately_submit:
                 mContactJoinContractPresenter.sendConfirmRequest();
                 break;
@@ -141,7 +141,7 @@ public class ContactJonInActivity extends AppBarActivity implements ContactJoinC
 
     @Override
     public void updateContactJoinContractView() {
-        PopupUtils.showToast(getString(R.string.submit_success_wait_contact));
+        showToast(getString(R.string.submit_success_wait_contact));
         mNameEditText.setText("");
         mPhoneEditText.setText("");
         mCityTextView.setText("");

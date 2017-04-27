@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.http.result.data.City;
@@ -145,7 +144,7 @@ public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeach
 
     @Override
     public void updateBecomeTeacherView() {
-        PopupUtils.showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
+        showToast(getString(R.string.submit_success_and_waiting_we_can_call_you));
         mBecomeTeacherNameEditText.setText("");
         mBecomeTeacherPhoneEditText.setText("");
         mBecomeTeacherCityTextView.setText("");
