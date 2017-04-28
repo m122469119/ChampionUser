@@ -10,7 +10,7 @@ import com.aaron.android.codelibrary.http.result.DataListExtraResult;
 import com.aaron.android.codelibrary.http.result.ExtraData;
 import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
-import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshListView;
+import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshListView;
 import com.aaron.common.utils.ListUtils;
 
 import java.util.List;

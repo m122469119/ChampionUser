@@ -5,8 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
+import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 
 
 /**

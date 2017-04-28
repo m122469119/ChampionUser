@@ -91,6 +91,7 @@ dependencies {
     compile project(path: ':pay')
     compile project(path: ':map')
     compile project(path: ':share')
+    compile project(path: ':jpush')
 //    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
@@ -98,7 +99,6 @@ dependencies {
     compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.2' // 适用于Android的中国地区词典
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.android.support:multidex:1.0.1'
-    compile project(path: ':share')
     //tinker
     compile("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
     provided("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshListView
+<com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshListView
     android:id="@+id/pull_refresh_list"
     style="@style/Style_Base_ListView"
     xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,0 +1,6 @@
+apply from: '../libraryCommon.gradle'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+}

@@ -77,7 +77,7 @@ public class LikingApplicationLike extends  DefaultApplicationLike{
         getApplication().registerActivityLifecycleCallbacks(callback);
     }
 
-    protected EnvironmentUtils.Config.ConfigData buildConfigData(){
+    private EnvironmentUtils.Config.ConfigData buildConfigData(){
         EnvironmentUtils.Config.ConfigData configData = new EnvironmentUtils.Config.ConfigData();
         configData.setAppFlag(BuildConfig.APP_FLAG);
         configData.setAppVersionCode(BuildConfig.VERSION_CODE);
@@ -103,7 +103,7 @@ public class LikingApplicationLike extends  DefaultApplicationLike{
         });
     }
 
-    protected void initialize() {
+    private void initialize() {
         LogUtils.i(TAG, "initialize---" + this);
         JPushInterface.setDebugMode(EnvironmentUtils.Config.isTestMode());
         JPushInterface.init(getApplication());
@@ -112,7 +112,7 @@ public class LikingApplicationLike extends  DefaultApplicationLike{
         ResourceUtils.init(getApplication());
     }
 
-    protected void backgroundInitialize() {
+    private void backgroundInitialize() {
         LogUtils.i(TAG, "backgroundInitialize---" + this);
     }
 

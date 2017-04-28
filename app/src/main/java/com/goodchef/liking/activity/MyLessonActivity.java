@@ -96,7 +96,7 @@ public class MyLessonActivity extends SwipeBackActivity {
     }
 
 
-    enum MyOrderTab {
+    private enum MyOrderTab {
         TAB_GROUP_LESSON(INDEX_GROUP_LESSON, R.string.tab_title_group_lesson),
         TAB_PRIVATE_LESSON(INDEX_PRIVATE_LESSON, R.string.tab_title_private_lesson);
 

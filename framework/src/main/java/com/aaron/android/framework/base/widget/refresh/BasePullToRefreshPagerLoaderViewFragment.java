@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
+import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 
 /**
  * Created on 15/7/27.

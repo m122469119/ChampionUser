@@ -16,7 +16,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
-import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
+import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.ChangeGymAdapter;

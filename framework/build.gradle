@@ -33,7 +33,6 @@ def supportLibVersion = "23.4.0"
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':thirdparty')
     compile project(':codelibrary')
     /** 响应式开发-EventBus */
     compile 'de.greenrobot:eventbus:2.4.0'
