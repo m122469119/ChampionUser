@@ -23,7 +23,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 import java.util.ArrayList;
 

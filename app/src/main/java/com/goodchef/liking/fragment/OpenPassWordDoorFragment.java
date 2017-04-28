@@ -16,7 +16,7 @@ import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.mvp.presenter.UserAuthPresenter;
 import com.goodchef.liking.mvp.view.UserAuthView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 

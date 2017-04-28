@@ -6,7 +6,7 @@ import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.umeng.analytics.MobclickAgent;
 

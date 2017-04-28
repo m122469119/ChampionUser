@@ -9,7 +9,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 /**
  * Created on 17/2/28.

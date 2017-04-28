@@ -11,7 +11,7 @@ import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.base.LikingBaseRequestObserver;
 import com.goodchef.liking.module.base.ProgressObserver;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 /**
  * Created on 17/3/15.

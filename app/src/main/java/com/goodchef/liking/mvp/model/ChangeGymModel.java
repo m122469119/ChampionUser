@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp.model;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 import java.util.List;
 

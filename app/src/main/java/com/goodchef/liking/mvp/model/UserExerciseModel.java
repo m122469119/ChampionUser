@@ -2,7 +2,7 @@ package com.goodchef.liking.mvp.model;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 /**
  * 说明:

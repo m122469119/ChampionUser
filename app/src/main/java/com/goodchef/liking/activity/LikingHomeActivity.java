@@ -55,7 +55,7 @@ import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
 import com.goodchef.liking.mvp.presenter.LikingHomePresenter;
 import com.goodchef.liking.mvp.view.CheckUpdateAppView;
 import com.goodchef.liking.mvp.view.LikingHomeView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.FileDownloaderManager;

@@ -50,7 +50,7 @@ import com.goodchef.liking.mvp.presenter.MyUserInfoOtherPresenter;
 import com.goodchef.liking.mvp.presenter.UserExercisePresenter;
 import com.goodchef.liking.mvp.view.MyUserInfoOtherView;
 import com.goodchef.liking.mvp.view.UserExerciseView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;

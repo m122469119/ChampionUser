@@ -5,7 +5,7 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.http.result.data.HomeAnnouncement;
 import com.goodchef.liking.mvp.view.LikingHomeView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 /**
  * Created on 2017/2/28

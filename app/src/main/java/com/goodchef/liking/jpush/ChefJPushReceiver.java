@@ -20,7 +20,7 @@ import com.goodchef.liking.activity.MyCardActivity;
 import com.goodchef.liking.activity.MyLessonActivity;
 import com.goodchef.liking.activity.MyOrderActivity;
 import com.goodchef.liking.http.result.data.AnnouncementDirect;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
 

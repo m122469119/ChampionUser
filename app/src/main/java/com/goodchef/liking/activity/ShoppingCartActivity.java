@@ -22,7 +22,7 @@ import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
 import java.util.ArrayList;

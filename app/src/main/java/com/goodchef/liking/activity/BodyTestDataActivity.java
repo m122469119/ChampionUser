@@ -30,7 +30,7 @@ import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.data.BodyData;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.AppBarStateChangeListener;

@@ -22,7 +22,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.model.ChangeCityModel;
 import com.goodchef.liking.mvp.model.IChangeCityModel;
 import com.goodchef.liking.mvp.view.ChangeCityView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.CityUtils;
 
 import java.util.ArrayList;

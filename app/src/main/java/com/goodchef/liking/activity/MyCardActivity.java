@@ -21,7 +21,7 @@ import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.MyCardContract;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.ListViewUtil;
 import com.goodchef.liking.utils.UMengCountUtil;

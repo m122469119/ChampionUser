@@ -1,12 +1,10 @@
-package com.goodchef.liking.storage;
+package com.goodchef.liking.module.data.local;
 
-import android.app.Application;
-
+import com.aaron.android.framework.library.storage.AbsPreference;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.library.storage.AbsPreference;
-import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.Announcement;

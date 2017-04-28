@@ -17,7 +17,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.module.about.AboutActivity;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.FileDownloaderManager;
 
 import butterknife.BindView;

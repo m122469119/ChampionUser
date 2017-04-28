@@ -17,7 +17,7 @@ import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.GuideFragment;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.widgets.CustomVideoView;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;

@@ -3,7 +3,7 @@ package com.goodchef.liking.module.login;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 
 import io.reactivex.Observable;
 

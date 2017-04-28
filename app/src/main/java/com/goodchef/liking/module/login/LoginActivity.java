@@ -26,7 +26,7 @@ import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.view.LoginView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.NumberConstantUtil;
 
 import butterknife.BindView;

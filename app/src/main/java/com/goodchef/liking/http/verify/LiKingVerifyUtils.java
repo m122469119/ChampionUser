@@ -46,7 +46,7 @@ import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.view.BaseLoginView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.utils.CityUtils;
 
 import java.io.File;

@@ -35,7 +35,7 @@ import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
 import com.goodchef.liking.mvp.view.UnBindDevicesView;
-import com.goodchef.liking.storage.Preference;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import java.util.List;
