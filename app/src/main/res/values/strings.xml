@@ -600,4 +600,6 @@
     <string name="service_conditions">使用条件</string>
     <string name="commodity">适用商品</string>
     <string name="coupons_details">优惠券详情</string>
+    <string name="single_people">人</string>
+    <string name="confirm_call">您确定拨打电话吗？</string>
 </resources>

@@ -21,7 +21,6 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
@@ -106,7 +105,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public boolean isWhetherLocation = false;
     public static String gymId;
     public static String gymName = "";
-    private String mUserCityId;
     public static String gymTel = "";
     public static int defaultGym;
     private long firstTime = 0;//第一点击返回键
@@ -143,7 +141,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void initGymId() {
         String id = Preference.getLoginGymId();
-        if (!"0".equals(id)) {
+        if (!StringUtils.isEmpty(id) && !"0".equals(id)) {
             gymId = id;
         } else {
             gymId = "0";

@@ -238,6 +238,7 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
+
         if (!StringUtils.isEmpty(userName) && userName.equals(mUserInfoData.getName())) {
             userName = "";
         }
@@ -245,6 +246,10 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
             birthday = "";
         } else {
             birthday = compareBirthday(birthday);
+        }
+        if (userName.length() > 15) {
+            showToast(getString(R.string.name_limit));
+            return;
         }
         if (!StringUtils.isEmpty(height)) {
             int heightInt = Integer.parseInt(height);

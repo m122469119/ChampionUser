@@ -463,7 +463,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             mDistrictId = mainAddressChanged.getDistrictId();
             LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
             isFirstMessage = true;
-            loadData(1);
+            loadHomePage();
         } catch (Exception e) {
             e.printStackTrace();
         }
