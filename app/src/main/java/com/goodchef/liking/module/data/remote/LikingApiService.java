@@ -1,7 +1,11 @@
 package com.goodchef.liking.module.data.remote;
 
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.MyCardResult;
+import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 
@@ -21,6 +25,8 @@ public interface LikingApiService {
     String PATH_VERSION = "version";
     String KEY_PHONE = "phone";
     String KEY_TOKEN = "token";
+    String KEY_DISTRICT_ID = "district_id";
+    String KEY_CITY_ID = "city_id";
 
     @POST(Urls.USER_LOGIN)
     Observable<UserLoginResult> userLogin(@Path(PATH_VERSION) String version,
@@ -45,6 +51,28 @@ public interface LikingApiService {
                                      @Query("city") String city,
                                      @Query("type") int type);
 
+    @POST(Urls.GET_MY_CARD)
+    Observable<MyCardResult> getMyCard(@Path(PATH_VERSION) String version,
+                                       @Query(KEY_TOKEN) String token);
+
+    @POST(Urls.GET_CARD_ORDER_DETAILS)
+    Observable<MyOrderCardDetailsResult> getMyOrderCardDetails(@Path(PATH_VERSION) String version,
+                                                               @Query(KEY_TOKEN) String token,
+                                                               @Query("order_id") String orderId);
+    @POST(Urls.CARD_LIST)
+    Observable<CardResult> getCardList(@Path(PATH_VERSION) String version,
+                                       @Query(KEY_TOKEN) String token,
+                                       @Query("longitude") String longitude,
+                                       @Query("latitude") String latitude,
+                                       @Query(KEY_CITY_ID) String cityId,
+                                       @Query(KEY_DISTRICT_ID) String districtId,
+                                       @Query("gym_id") String gymId,
+                                       @Query("type") int type);
+    @POST(Urls.GET_CARD_ORDER_LIST)
+    Observable<OrderCardListResult> getCardOrderList(@Path(PATH_VERSION) String version,
+                                                     @Query(KEY_TOKEN) String token,
+                                                     @Query("page") int page);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -68,6 +96,27 @@ public interface LikingApiService {
          * 联系加盟或成为教练
          */
         static final String JOIN_APPLY = sVersion + "user/join-apply";
+
+        /**
+         * 获取我的会员卡
+         */
+        static final String GET_MY_CARD = sVersion + "card/get-my-card";
+
+        /**
+         * 我的会员卡详情
+         */
+        public static final String GET_CARD_ORDER_DETAILS = sVersion + "order/get-card-order-detail";
+
+        /**
+         * 健身卡列表
+         */
+        public static final String CARD_LIST = sVersion + "card/list";
+
+        /**
+         * 获取我的会员卡订单列表
+         */
+        public static final String GET_CARD_ORDER_LIST = sVersion + "order/get-card-order-list";
+
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

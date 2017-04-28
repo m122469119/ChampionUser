@@ -1,16 +1,14 @@
-package com.goodchef.liking.mvp;
+package com.goodchef.liking.module.card.order;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
-import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
-import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.data.OrderCardData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.mvp.model.OrderModel;
+import com.goodchef.liking.module.base.LikingBaseRequestObserver;
+import com.goodchef.liking.module.card.CardModel;
 
 import java.util.List;
 
@@ -24,25 +22,23 @@ public interface CardOrderContract {
 
     interface CardOrderView extends BaseView {
         void updateCardOrderListView(List<OrderCardData> listData);
-        void showToast(String message);
     }
 
     class CardOrderPresenter extends BasePresenter<CardOrderView> {
 
-        private OrderModel mOrderModel;
-        private BasePagerLoaderFragment mFragment;
+        private CardModel mCardModel;
 
-        public CardOrderPresenter(Context context, CardOrderView mainView, BasePagerLoaderFragment fragment) {
+        public CardOrderPresenter(Context context, CardOrderView mainView) {
             super(context, mainView);
-            mFragment = fragment;
-            mOrderModel = new OrderModel();
+            mCardModel = new CardModel();
         }
 
         public void getCardOrderList(int page) {
-            mOrderModel.getCardOrderList(page, new PagerRequestCallback<OrderCardListResult>(mFragment) {
+            mCardModel.getCardOrderList(page)
+            .subscribe(new LikingBaseRequestObserver<OrderCardListResult>() {
                 @Override
-                public void onSuccess(OrderCardListResult result) {
-                    super.onSuccess(result);
+                public void onNext(OrderCardListResult result) {
+                    super.onNext(result);
                     if (LiKingVerifyUtils.isValid(mContext, result)) {
                         List<OrderCardData> listData = result.getData().getOrderCardList();
                         mView.updateCardOrderListView(listData);
@@ -53,8 +49,8 @@ public interface CardOrderContract {
                 }
 
                 @Override
-                public void onFailure(RequestError error) {
-                    super.onFailure(error);
+                public void onError(Throwable e) {
+                    super.onError(e);
                 }
             });
         }

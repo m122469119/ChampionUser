@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.card.order;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,10 +17,8 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.MyCardOrderFragment;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
-import com.goodchef.liking.mvp.MyCardDetailsContract;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
@@ -89,7 +87,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     }
 
     private void sendCardDetailsRequest() {
-        mMyCardDetailsPresenter.getCardDetails(orderId);
+        mMyCardDetailsPresenter.getMyCardDetails(orderId);
     }
 
     @Override
@@ -150,11 +148,6 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
-    }
-
-    @Override
-    public void showToast(String message) {
-       showToast(message);
     }
 
     @Override

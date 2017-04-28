@@ -146,9 +146,9 @@
             android:screenOrientation="portrait" />
         <!-- 我的会员卡 -->
         <activity
-            android:name=".activity.MyCardActivity"
-            android:screenOrientation="portrait" />
-        <!-- 购物车 -->
+            android:name=".module.card.my.MyCardActivity"
+            android:screenOrientation="portrait"/>
+        <!--购物车-->
         <activity
             android:name=".activity.ShoppingCartActivity"
             android:screenOrientation="portrait" />
@@ -170,13 +170,13 @@
             android:screenOrientation="portrait" />
         <!-- 升级卡和续卡 -->
         <activity
-            android:name=".activity.UpgradeAndContinueCardActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的会员卡详情 -->
+            android:name=".module.card.my.UpgradeAndContinueCardActivity"
+            android:screenOrientation="portrait"/>
+        <!--我的会员卡详情-->
         <activity
-            android:name=".activity.MyCardDetailsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的训练数据 -->
+            android:name=".module.card.order.MyCardDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <!--我的训练数据-->
         <activity
             android:name=".activity.MyTrainDataActivity"
             android:screenOrientation="portrait" />

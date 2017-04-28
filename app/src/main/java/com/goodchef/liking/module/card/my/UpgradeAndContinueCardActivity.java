@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.card.my;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,12 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.mvp.UpgradeAndContinueCardContract;
 import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -108,11 +108,6 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
         } else {
             setNoUpGradeCard();
         }
-    }
-
-    @Override
-    public void showToast(String message) {
-        showToast(message);
     }
 
     private void setNoUpGradeCard() {

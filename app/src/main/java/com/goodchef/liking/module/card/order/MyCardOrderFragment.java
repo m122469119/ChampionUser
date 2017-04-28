@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.card.order;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,11 +17,9 @@ import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
 import com.aaron.android.framework.library.imageloader.HImageView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.MyCardDetailsActivity;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.data.OrderCardData;
-import com.goodchef.liking.mvp.CardOrderContract;
 
 import java.util.List;
 
@@ -56,7 +54,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         setRecyclerAdapter(mMyCardOrderAdapter);
         onItemClick();
         if(mOrderPresenter == null) {
-            mOrderPresenter = new CardOrderContract.CardOrderPresenter(this.getContext(), this, this);
+            mOrderPresenter = new CardOrderContract.CardOrderPresenter(this.getContext(), this);
         }
     }
 
