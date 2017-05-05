@@ -3,9 +3,9 @@ package com.aaron.pay.weixin;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.aaron.common.utils.ApkUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.SecurityUtils;
-import com.aaron.pay.ApkUtils;
 import com.aaron.pay.Pay;
 import com.aaron.pay.R;
 import com.aaron.pay.weixin.utils.WeixinPayConstants;
