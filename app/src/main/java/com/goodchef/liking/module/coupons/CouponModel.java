@@ -2,10 +2,10 @@ package com.goodchef.liking.module.coupons;
 
 import android.text.TextUtils;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
@@ -31,7 +31,7 @@ public class CouponModel {
      * @param code 优惠券码
      * @return
      */
-    public Observable<BaseResult> exchangeCoupon(String code) {
+    public Observable<LikingResult> exchangeCoupon(String code) {
         return LikingNewApi.getInstance().exchangeCoupon(UrlList.sHostVersion, Preference.getToken(), code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

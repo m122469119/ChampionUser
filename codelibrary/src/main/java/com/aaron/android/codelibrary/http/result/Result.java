@@ -8,6 +8,6 @@ import java.io.Serializable;
  * @author aaron.huang
  * @version 1.0.0
  */
-public interface ResultInterface extends Serializable {
-    public boolean isSuccess();
+public interface Result extends Serializable {
+    boolean isSuccess();
 }

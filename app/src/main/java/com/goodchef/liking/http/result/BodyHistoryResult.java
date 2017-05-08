@@ -1,6 +1,5 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
  * version 1.0.0
  */
 
-public class BodyHistoryResult extends BaseResult {
+public class BodyHistoryResult extends LikingResult {
 
 
     @SerializedName("data")

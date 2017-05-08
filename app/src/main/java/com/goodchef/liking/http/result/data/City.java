@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.google.gson.annotations.SerializedName;
@@ -14,7 +14,7 @@ import java.util.List;
  * version 1.0.0
  */
 
-public class City extends BaseData{
+public class City extends Data {
 
     @SerializedName("regions")
     private List<RegionsData> regions;
@@ -27,7 +27,7 @@ public class City extends BaseData{
         this.regions = regions;
     }
 
-    public static class RegionsData  extends BaseData {
+    public static class RegionsData  extends Data {
         /**
          * province_id : 110000
          * province_name : 北京

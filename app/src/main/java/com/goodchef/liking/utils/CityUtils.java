@@ -155,7 +155,7 @@ public class CityUtils {
         if (baseConfigResult ==null){
             return false;
         }
-        BaseConfigResult.BaseConfigData configData = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
+        BaseConfigResult.ConfigData configData = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
         if (configData ==null){
             return false;
         }

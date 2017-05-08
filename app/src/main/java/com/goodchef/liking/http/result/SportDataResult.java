@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * version 1.0.0
  */
 
-public class SportDataResult extends BaseResult {
+public class SportDataResult extends LikingResult {
 
     /**
      * data : {"today":{"step_num":"2","distance":"2.0","kcal":"2","bpm":"2"},"all":{"all_step":"6","all_distance":"6.0","all_kcal":"6","avg_bpm":"2"}}
@@ -28,7 +27,7 @@ public class SportDataResult extends BaseResult {
         this.data = data;
     }
 
-    public static class SportData extends BaseData{
+    public static class SportData extends Data {
         /**
          * today : {"step_num":"2","distance":"2.0","kcal":"2","bpm":"2"}
          * all : {"all_step":"6","all_distance":"6.0","all_kcal":"6","avg_bpm":"2"}
@@ -55,7 +54,7 @@ public class SportDataResult extends BaseResult {
             this.all = all;
         }
 
-        public static class TodayData extends BaseData{
+        public static class TodayData extends Data {
             /**
              * step_num : 2
              * distance : 2.0
@@ -105,7 +104,7 @@ public class SportDataResult extends BaseResult {
             }
         }
 
-        public static class AllData extends BaseData{
+        public static class AllData extends Data {
             /**
              * all_step : 6
              * all_distance : 6.0

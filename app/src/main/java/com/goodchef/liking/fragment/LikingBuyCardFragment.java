@@ -289,7 +289,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         boolean isContains = false;
         BaseConfigResult baseConfigResult = Preference.getBaseConfig();
         if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {
                 List<CityData> cityDataList = baseConfigData.getCityList();
                 if (cityDataList != null && cityDataList.size() > 0) {

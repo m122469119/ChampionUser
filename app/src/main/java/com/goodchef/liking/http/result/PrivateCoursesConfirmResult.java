@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.goodchef.liking.http.result.data.PlacesData;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/16 上午10:17
  */
-public class PrivateCoursesConfirmResult extends BaseResult {
+public class PrivateCoursesConfirmResult extends LikingResult {
     @SerializedName("data")
     private PrivateCoursesConfirmData data;
 
@@ -24,7 +23,7 @@ public class PrivateCoursesConfirmResult extends BaseResult {
         this.data = data;
     }
 
-    public class PrivateCoursesConfirmData extends BaseData {
+    public class PrivateCoursesConfirmData extends Data {
         @SerializedName("people_num")
         private String peopleNum;
         @SerializedName("duration")
@@ -88,7 +87,7 @@ public class PrivateCoursesConfirmResult extends BaseResult {
             this.placesList = placesList;
         }
 
-        public class Courses extends BaseData {
+        public class Courses extends Data {
             @SerializedName("course_id")
             private String courseId;
             @SerializedName("name")

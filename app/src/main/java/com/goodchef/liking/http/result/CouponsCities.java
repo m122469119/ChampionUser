@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  */
 
-public class CouponsCities extends BaseResult {
+public class CouponsCities extends LikingResult {
 
 
     /**
@@ -29,7 +28,7 @@ public class CouponsCities extends BaseResult {
         this.data = data;
     }
 
-    public static class DataBean extends BaseData{
+    public static class DataBean extends Data {
         /**
          * has_more : 1
          * gym_list : [{"gym_name":"新尚广场健身房","distance":"42km"},{"gym_name":"佘山健身房","distance":"96.8km"},{"gym_name":"青浦健身房","distance":"98.9km"},{"gym_name":"LikingFit凌空店","distance":"106.6km"}]
@@ -63,7 +62,7 @@ public class CouponsCities extends BaseResult {
             this.gym_list = gym_list;
         }
 
-        public static class GymListBean extends BaseData{
+        public static class GymListBean extends Data {
             /**
              * gym_name : 新尚广场健身房
              * distance : 42km

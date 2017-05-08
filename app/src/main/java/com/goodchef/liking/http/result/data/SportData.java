@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * version 1.0.0
  */
 
-public class SportData extends BaseData{
+public class SportData extends Data {
     @SerializedName("step_num")
     private String step_num;
     @SerializedName("distance")

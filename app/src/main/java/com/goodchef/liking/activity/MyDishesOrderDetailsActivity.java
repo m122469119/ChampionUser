@@ -217,7 +217,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
         long limitTime;
         BaseConfigResult baseConfigResult = Preference.getBaseConfig();
         if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {
                 String limitTimeStr = baseConfigData.getCountSecond();
                 if (StringUtils.isEmpty(limitTimeStr)) {

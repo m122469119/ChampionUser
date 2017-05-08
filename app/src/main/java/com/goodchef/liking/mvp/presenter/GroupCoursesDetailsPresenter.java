@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -45,16 +45,16 @@ public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDeta
     }
 
     public void orderGroupCourses(String gymId, String scheduleId, String token) {
-        LiKingApi.orderGroupCourses(gymId, scheduleId, token, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
+        LiKingApi.orderGroupCourses(gymId, scheduleId, token, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateOrderGroupCourses();
-                } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
-                    mView.updateErrorNoCard(result.getMessage());
-                } else if (result.getCode() != LiKingRequestCode.BUY_COURSES_ERROR) {
-                    mView.showToast(result.getMessage());
+                } else if (likingResult.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
+                    mView.updateErrorNoCard(likingResult.getMessage());
+                } else if (likingResult.getCode() != LiKingRequestCode.BUY_COURSES_ERROR) {
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 
@@ -68,14 +68,14 @@ public class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDeta
 
     //发送取消请求
     public void sendCancelCoursesRequest(String orderId) {
-        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
+        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateCancelOrderView();
                 } else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

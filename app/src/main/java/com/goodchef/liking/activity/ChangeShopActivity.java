@@ -11,12 +11,12 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.utils.ResourceUtils;
-import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.GymListResult;

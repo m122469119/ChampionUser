@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aaron.android.codelibrary.http.result.DataListExtraResult;
-import com.aaron.android.codelibrary.http.result.ExtraData;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.android.framework.R;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
@@ -59,36 +57,6 @@ public abstract class NetworkSwipeRecyclerRefreshPagerLoaderFragment extends Bas
 
     protected boolean isSlideToBottom(RecyclerView recyclerView) {
         return !ViewCompat.canScrollVertically(recyclerView, 1);
-    }
-
-    /**
-     * 数据回调后，通知ListView更新
-     *
-     * @param result DataListExtraResult
-     */
-    public void updateListView(DataListExtraResult result) {
-        if (result != null) {
-            if (result.getDataList() != null) {
-                if (isRequestHomePage()) {
-                    mRecyclerViewAdapter.setData(result.getDataList());
-                    ExtraData extraData = result.getExtraData();
-                    if (extraData != null) {
-                        int pageTotal = extraData.getPageTotal();
-                        if (pageTotal >= 1) {
-                            setTotalPage(pageTotal);
-                        }
-                    }
-                } else {
-                    mRecyclerViewAdapter.addData(result.getDataList());
-                }
-                mRecyclerViewAdapter.notifyDataSetChanged();
-            } else {
-                clearListViewContent();
-                if (isRequestHomePage()) {
-                    getStateView().setState(StateView.State.NO_DATA);
-                }
-            }
-        }
     }
 
     public RecyclerView getRecyclerView() {

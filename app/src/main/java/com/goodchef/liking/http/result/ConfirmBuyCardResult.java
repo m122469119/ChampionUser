@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.goodchef.liking.http.result.data.ConfirmCard;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/29 下午4:28
  */
-public class ConfirmBuyCardResult extends BaseResult {
+public class ConfirmBuyCardResult extends LikingResult {
 
     @SerializedName("data")
     private ConfirmBuyCardData data;
@@ -25,7 +24,7 @@ public class ConfirmBuyCardResult extends BaseResult {
         this.data = data;
     }
 
-    public static class ConfirmBuyCardData extends BaseData {
+    public static class ConfirmBuyCardData extends Data {
         @SerializedName("ads_url")
         private String adsUrl;
         @SerializedName("deadline")

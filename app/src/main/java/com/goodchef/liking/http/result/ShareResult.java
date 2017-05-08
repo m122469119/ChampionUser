@@ -1,6 +1,5 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/8/26 上午10:11
  */
-public class ShareResult extends BaseResult {
+public class ShareResult extends LikingResult {
     @SerializedName("data")
     private ShareData mShareData;
 

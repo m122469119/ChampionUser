@@ -1,10 +1,11 @@
 package com.goodchef.liking.module.data.remote;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.alipay.tscenter.biz.rpc.vkeydfp.result.BaseResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
@@ -16,7 +17,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
-import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -47,16 +47,16 @@ public interface LikingApiService {
     Observable<CheckUpdateAppResult> getCheckUpdateAppResult(@Path(PATH_VERSION) String version);
 
     @POST(Urls.USER_LOGOUT)
-    Observable<BaseResult> userLogout(@Path(PATH_VERSION) String version,
-                                      @Query(KEY_TOKEN) String token,
-                                      @Query("registration_id") String registrationId);
+    Observable<LikingResult> userLogout(@Path(PATH_VERSION) String version,
+                                        @Query(KEY_TOKEN) String token,
+                                        @Query("registration_id") String registrationId);
 
     @POST(Urls.JOIN_APPLY)
-    Observable<BaseResult> joinApply(@Path(PATH_VERSION) String version,
-                                     @Query("name") String name,
-                                     @Query("phone") String phone,
-                                     @Query("city") String city,
-                                     @Query("type") int type);
+    Observable<LikingResult> joinApply(@Path(PATH_VERSION) String version,
+                                       @Query("name") String name,
+                                       @Query("phone") String phone,
+                                       @Query("city") String city,
+                                       @Query("type") int type);
 
     @POST(Urls.GET_MY_CARD)
     Observable<MyCardResult> getMyCard(@Path(PATH_VERSION) String version,
@@ -88,7 +88,7 @@ public interface LikingApiService {
                                                        @Query(KEY_TOKEN) String token);
 
     @POST(Urls.COUPON_EXCHANGE_COUPON)
-    Observable<BaseResult> exchangeCoupon(@Path(PATH_VERSION) String version,
+    Observable<LikingResult> exchangeCoupon(@Path(PATH_VERSION) String version,
                                           @Query(KEY_TOKEN) String token,
                                           @Query("exchange_code") String code);
 
@@ -97,7 +97,7 @@ public interface LikingApiService {
                                                  @Query(KEY_TOKEN) String token,
                                                  @Query("page") int page);
     @POST(Urls.GET_COUPON)
-    Observable<CouponsResult> getCoupons(@Path(PATH_VERSION) String version,@QueryMap Map<String,String> map);
+    Observable<CouponsResult> getCoupons(@Path(PATH_VERSION) String version, @QueryMap Map<String,String> map);
 
     class Urls {
         private static final String sVersion = "{version}/";

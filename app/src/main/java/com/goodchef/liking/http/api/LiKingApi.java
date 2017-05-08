@@ -7,7 +7,7 @@ import android.util.Base64;
 import com.aaron.android.codelibrary.http.NetworkErrorResponse;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.statistics.NetworkStatistics;
 import com.aaron.android.framework.library.http.volley.VolleyHttpRequestClient;
@@ -142,9 +142,9 @@ public class LiKingApi {
                     errorMessageString.append("errorMessage: " + error.getMessage());
                     String errorMessage = errorMessageString.toString();
                     LogUtils.d(TAG, "errorMessage: " + errorMessage);
-                    uploadNetworkError(base64EncodeUrl, errorMessage, new RequestCallback<BaseResult>() {
+                    uploadNetworkError(base64EncodeUrl, errorMessage, new RequestCallback<LikingResult>() {
                         @Override
-                        public void onSuccess(BaseResult result) {
+                        public void onSuccess(LikingResult likingResult) {
                             LogUtils.d(TAG, "upload error message success");
                         }
 
@@ -224,8 +224,8 @@ public class LiKingApi {
      * @param registrationId 极光注册ID //没有可不传或传0
      * @param callback       RequestCallback
      */
-    public static void userLoginOut(String token, String registrationId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.LOGIN_OUT, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token).append("registration_id", registrationId), callback);
+    public static void userLoginOut(String token, String registrationId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.LOGIN_OUT, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token).append("registration_id", registrationId), callback);
     }
 
 
@@ -297,8 +297,8 @@ public class LiKingApi {
      * @param token      token
      * @param callback   RequestCallback
      */
-    public static void orderGroupCourses(String gymId, String scheduleId, String token, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.ORDER_GROUP_COURSES, BaseResult.class, getCommonRequestParams().append("gym_id", gymId).append("schedule_id", scheduleId).append(KEY_TOKEN, token), callback);
+    public static void orderGroupCourses(String gymId, String scheduleId, String token, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.ORDER_GROUP_COURSES, LikingResult.class, getCommonRequestParams().append("gym_id", gymId).append("schedule_id", scheduleId).append(KEY_TOKEN, token), callback);
     }
 
     /**
@@ -438,8 +438,8 @@ public class LiKingApi {
      * @param orderId  订单id
      * @param callback RequestCallback
      */
-    public static void completerMyPrivateCourses(String token, String orderId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.COMPLETE_MY_PRIVATE_COURSES, BaseResult.class, getCommonRequestParams()
+    public static void completerMyPrivateCourses(String token, String orderId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COMPLETE_MY_PRIVATE_COURSES, LikingResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
@@ -451,8 +451,8 @@ public class LiKingApi {
      * @param orderId  订单id
      * @param callback RequestCallback
      */
-    public static void cancelGroupCourses(String token, String orderId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.CANCEL_GROUP_COURSES, BaseResult.class, getCommonRequestParams()
+    public static void cancelGroupCourses(String token, String orderId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.CANCEL_GROUP_COURSES, LikingResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
@@ -577,8 +577,8 @@ public class LiKingApi {
      * @param orderId  订单id
      * @param callback RequestCallback
      */
-    public static void cancelMyDishesOrder(String token, String orderId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.FOOD_CANCEL_ORDER, BaseResult.class, getCommonRequestParams()
+    public static void cancelMyDishesOrder(String token, String orderId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_CANCEL_ORDER, LikingResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
@@ -589,8 +589,8 @@ public class LiKingApi {
      * @param orderId  订单id
      * @param callback RequestCallback
      */
-    public static void completeMyDishesOrder(String token, String orderId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.FOOD_COMPLETE_ORDER, BaseResult.class, getCommonRequestParams()
+    public static void completeMyDishesOrder(String token, String orderId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.FOOD_COMPLETE_ORDER, LikingResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, token).append("order_id", orderId), callback);
     }
 
@@ -635,8 +635,8 @@ public class LiKingApi {
      * @param exchangeCode 优惠券码
      * @param callback     RequestCallback
      */
-    public static void exchangeCoupon(String token, String exchangeCode, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.COUPON_EXCHANGE_COUPON, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+    public static void exchangeCoupon(String token, String exchangeCode, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COUPON_EXCHANGE_COUPON, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("exchange_code", exchangeCode), callback);
     }
 
@@ -701,7 +701,7 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.GET_USER_INFO, UserInfoResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
     }
 
-    public static void updateUserInfo(String token, String name, String avatar, Integer gender, String birthday, String weight, String height, RequestCallback<BaseResult> callback) {
+    public static void updateUserInfo(String token, String name, String avatar, Integer gender, String birthday, String weight, String height, RequestCallback<LikingResult> callback) {
         RequestParams params = getCommonRequestParams().append(KEY_TOKEN, token);
         if (!StringUtils.isEmpty(name)) {
             params.append("name", name);
@@ -721,7 +721,7 @@ public class LiKingApi {
         if (!StringUtils.isEmpty(height)) {
             params.append("height", height);
         }
-        VolleyHttpRequestClient.doPost(UrlList.UPDATE_USER, BaseResult.class, params, callback);
+        VolleyHttpRequestClient.doPost(UrlList.UPDATE_USER, LikingResult.class, params, callback);
     }
 
     /***
@@ -744,8 +744,8 @@ public class LiKingApi {
      * @param registration_id 极光推送id
      * @param callback        RequestCallback
      */
-    public static void uploadUserDevice(String token, String device_id, String device_token, String registration_id, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_DEVICE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+    public static void uploadUserDevice(String token, String device_id, String device_token, String registration_id, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_DEVICE, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("device_id", device_id).append("device_token", device_token).append("registration_id", registration_id).append("os_version", Build.VERSION.RELEASE)
                 .append("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL), callback);
     }
@@ -767,8 +767,8 @@ public class LiKingApi {
      * @param code     邀请码
      * @param callback RequestCallback
      */
-    public static void exchangeInviteCode(String token, String code, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.EXCHANGE_INVITE_CODE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+    public static void exchangeInviteCode(String token, String code, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.EXCHANGE_INVITE_CODE, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("code", code), callback);
     }
 
@@ -782,8 +782,8 @@ public class LiKingApi {
      * @param type     类型 0加盟  1成为教练
      * @param callback RequestCallback
      */
-    public static void joinApply(String name, String phone, String city, int type, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.JOIN_APPLY, BaseResult.class, getCommonRequestParams().append("name", name)
+    public static void joinApply(String name, String phone, String city, int type, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.JOIN_APPLY, LikingResult.class, getCommonRequestParams().append("name", name)
                 .append("phone", phone).append("city", city).append("type", type), callback);
     }
 
@@ -849,8 +849,8 @@ public class LiKingApi {
      * @param url          请求链接
      * @param errorMessage 错误信息
      */
-    public static void uploadNetworkError(String url, String errorMessage, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.UPLOAD_ERROR, BaseResult.class, getCommonRequestParams().append("url", url)
+    public static void uploadNetworkError(String url, String errorMessage, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.UPLOAD_ERROR, LikingResult.class, getCommonRequestParams().append("url", url)
                 .append("error_msg", errorMessage), callback);
     }
 
@@ -984,8 +984,8 @@ public class LiKingApi {
      * @param peopleNum   人数
      * @param callback    RequestCallback
      */
-    public static void orderCourses(String token, String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.COURSE_ADD_SCHEDULE, BaseResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
+    public static void orderCourses(String token, String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.COURSE_ADD_SCHEDULE, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("gym_id", gymId).append("room_id", roomId).append("course_id", coursesId).append("course_date", coursesDate)
                 .append("start_time", startTime).append("end_time", endTime).append("price", price)
                 .append("people_num", peopleNum), callback);
@@ -1046,8 +1046,8 @@ public class LiKingApi {
      * @param osVersion       用户手环设备版本
      * @param callback        RequestCallback
      */
-    public static void bindDevices(String braceletName, String braceletVersion, String deviceId, String platform, String deviceName, String osVersion, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_BIND_DEVICE, BaseResult.class, getCommonRequestParams()
+    public static void bindDevices(String braceletName, String braceletVersion, String deviceId, String platform, String deviceName, String osVersion, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_BIND_DEVICE, LikingResult.class, getCommonRequestParams()
                 .append(KEY_TOKEN, Preference.getToken()).append("bracelet_name", braceletName)
                 .append("bracelet_version", braceletVersion).append("device_id", deviceId)
                 .append("platform", platform).append("device_name", deviceName).append("os_version", osVersion), callback);
@@ -1059,8 +1059,8 @@ public class LiKingApi {
      * @param devicesId 设备id
      * @param callback  RequestCallback
      */
-    public static void unBindDevices(String devicesId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_UNBIND, BaseResult.class, getCommonRequestParams()
+    public static void unBindDevices(String devicesId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_UNBIND, LikingResult.class, getCommonRequestParams()
                 .append("device_id", devicesId).append(KEY_TOKEN, Preference.getToken()), callback);
     }
 
@@ -1071,8 +1071,8 @@ public class LiKingApi {
      * @param deviceId  设备id
      * @param callback  RequestCallback
      */
-    public static void sendSportData(String sportData, String deviceId, RequestCallback<BaseResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_SAVE_SPORT_DATA, BaseResult.class, getCommonRequestParams()
+    public static void sendSportData(String sportData, String deviceId, RequestCallback<LikingResult> callback) {
+        VolleyHttpRequestClient.doPost(UrlList.USER_SAVE_SPORT_DATA, LikingResult.class, getCommonRequestParams()
                 .append("sport_data", sportData).append("device_id", deviceId).append(KEY_TOKEN, Preference.getToken()), callback);
     }
 

@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/8/23 下午4:23
  */
-public class OrderCalculateResult extends BaseResult {
+public class OrderCalculateResult extends LikingResult {
     @SerializedName("data")
     private OrderCalculateData data;
 
@@ -21,7 +20,7 @@ public class OrderCalculateResult extends BaseResult {
         this.data = data;
     }
 
-    public class OrderCalculateData extends BaseData {
+    public class OrderCalculateData extends Data {
         @SerializedName("end_time")
         private String endTime;
         @SerializedName("people_num")

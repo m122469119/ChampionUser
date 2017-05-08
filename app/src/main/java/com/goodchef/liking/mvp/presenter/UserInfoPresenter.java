@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -43,14 +43,14 @@ public class UserInfoPresenter extends BasePresenter<UserInfoView> {
     }
 
     public void updateUserInfo(String name, String avatar, Integer gender, String birthday, String weight, String height) {
-        LiKingApi.updateUserInfo(Preference.getToken(), name, avatar, gender, birthday, weight, height, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading) {
+        LiKingApi.updateUserInfo(Preference.getToken(), name, avatar, gender, birthday, weight, height, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateUserInfo();
                 } else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

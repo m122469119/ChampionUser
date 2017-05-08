@@ -1,6 +1,6 @@
 package com.aaron.android.codelibrary.http;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 
 /**
  * Created on 15/6/9.
@@ -8,7 +8,7 @@ import com.aaron.android.codelibrary.http.result.BaseResult;
  * @author ran.huang
  * @version 3.0.1
  */
-public abstract class RequestCallback<T extends BaseResult> {
+public abstract class RequestCallback<T extends Result> {
 
     public void onStart() {
 

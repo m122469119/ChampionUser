@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 
 import java.util.Set;
 
@@ -9,7 +9,7 @@ import java.util.Set;
  * Author shaozucheng
  * Time:16/9/5 下午3:06
  */
-public class Announcement extends BaseData{
+public class Announcement extends Data {
     private Set<String> mList;
 
     public Set<String> getList() {

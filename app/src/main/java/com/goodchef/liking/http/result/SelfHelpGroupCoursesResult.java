@@ -1,8 +1,7 @@
 package com.goodchef.liking.http.result;
 
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  * Time: 下午12:26
  */
 
-public class SelfHelpGroupCoursesResult extends BaseResult {
+public class SelfHelpGroupCoursesResult extends LikingResult {
 
 
     @SerializedName("data")
@@ -27,7 +26,7 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
         mData = data;
     }
 
-    public static class SelfHelpGroupCoursesData extends BaseData{
+    public static class SelfHelpGroupCoursesData extends Data {
         /**
          * date : 20161104
          * hour : [{"hour":"17:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"18:00","available":false,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"19:00","available":false,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"20:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"21:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"22:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]},{"hour":"23:00","available":true,"filled":true,"room":[{"id":10001,"name":"101","capacity":100,"scheduled":false,"schedule_id":0}]}]
@@ -64,7 +63,7 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
             mTime = time;
         }
 
-        public static class TimeData extends BaseData{
+        public static class TimeData extends Data {
             @SerializedName("date")
             private String mDate;
             @SerializedName("day")
@@ -103,7 +102,7 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                 mDay = day;
             }
 
-            public static class HourData extends BaseData {
+            public static class HourData extends Data {
 
                 private String mDate;
                 @SerializedName("hour")
@@ -200,7 +199,7 @@ public class SelfHelpGroupCoursesResult extends BaseResult {
                     this.duration = duration;
                 }
 
-                public static class RoomData extends BaseData {
+                public static class RoomData extends Data {
                     @SerializedName("id")
                     private int mId;
                     @SerializedName("name")

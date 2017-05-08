@@ -2,7 +2,7 @@ package com.aaron.android.framework.library.http.volley;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestObjects;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class VolleyRequestObjects<T extends BaseResult> extends RequestObjects {
+public class VolleyRequestObjects<T extends Result> extends RequestObjects {
     private static final String TAG = "VolleyRequestObjects";
     private int mMethod;
     private String mUrl;

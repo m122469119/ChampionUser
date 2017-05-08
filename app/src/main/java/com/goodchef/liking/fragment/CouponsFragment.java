@@ -10,13 +10,10 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
-import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
-import com.goodchef.liking.module.coupons.CouponContract;
-import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.activity.CouponsDetailsActivity;
 import com.goodchef.liking.activity.ShoppingCartActivity;
 import com.goodchef.liking.adapter.CouponsAdapter;
@@ -26,8 +23,8 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.Food;
-import com.goodchef.liking.mvp.presenter.CouponPresenter;
-import com.goodchef.liking.mvp.view.CouponView;
+import com.goodchef.liking.module.coupons.CouponContract;
+import com.goodchef.liking.module.coupons.CouponsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +165,6 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
     @Override
     public void updateCouponData(CouponsResult.CouponData couponData) {
-        requestSuccess();
         List<CouponsResult.CouponData.Coupon> list = couponData.getCoupon_list();
         if (list != null) {
             if (list.size() > 0) {

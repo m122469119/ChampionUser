@@ -19,9 +19,6 @@ import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.mvp.presenter.BodyHistoryPresenter;
 import com.goodchef.liking.mvp.view.BodyHistoryView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 说明:
  * Author : shaozucheng

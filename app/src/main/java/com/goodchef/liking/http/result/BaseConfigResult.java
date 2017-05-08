@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.google.gson.annotations.SerializedName;
@@ -13,20 +12,20 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/7/8 上午11:06
  */
-public class BaseConfigResult extends BaseResult {
+public class BaseConfigResult extends LikingResult {
 
     @SerializedName("data")
-    private BaseConfigData mBaseConfigData;
+    private ConfigData mBaseConfigData;
 
-    public BaseConfigData getBaseConfigData() {
+    public ConfigData getBaseConfigData() {
         return mBaseConfigData;
     }
 
-    public void setBaseConfigData(BaseConfigData baseConfigData) {
+    public void setBaseConfigData(ConfigData baseConfigData) {
         mBaseConfigData = baseConfigData;
     }
 
-    public static class BaseConfigData extends BaseData {
+    public static class ConfigData extends Data {
 
         @SerializedName("customer_phone")
         private String customerPhone;
@@ -152,7 +151,7 @@ public class BaseConfigResult extends BaseResult {
             this.trainerProtocol = trainerProtocol;
         }
 
-        public static class UpdateData extends BaseData {
+        public static class UpdateData extends Data {
 
             /**
              * update : 0

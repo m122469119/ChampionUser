@@ -1,9 +1,10 @@
-package com.goodchef.liking.module.base;
+package com.goodchef.liking.module.base.rxobserver;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.utils.ResourceUtils;
 
 import io.reactivex.disposables.Disposable;
@@ -15,7 +16,7 @@ import io.reactivex.disposables.Disposable;
  * @version 1.0.0
  */
 
-public class ProgressObserver<T extends BaseResult> extends LikingBaseRequestObserver<T> {
+public class ProgressObserver<T extends LikingResult> extends BaseRequestObserver<T> {
     private static final String TAG = "ProgressObserver";
     private ProgressDialog mProgressDialog;
 

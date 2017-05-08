@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -24,13 +24,13 @@ public class UnBindDevicesPresenter extends BasePresenter<UnBindDevicesView> {
     }
 
     public void unBindDevices(String devicesId) {
-        LiKingApi.unBindDevices(devicesId, new RequestCallback<BaseResult>() {
+        LiKingApi.unBindDevices(devicesId, new RequestCallback<LikingResult>() {
             @Override
-            public void onSuccess(BaseResult result) {
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateUnBindDevicesView();
                 } else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

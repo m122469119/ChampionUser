@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/8/25 下午3:21
  */
-public class GymData extends BaseData {
+public class GymData extends Data {
 
 
     /**

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -83,7 +83,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
             case R.id.register_agree_on:
                 BaseConfigResult baseConfigResult = Preference.getBaseConfig();
                 if (baseConfigResult != null) {
-                    BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                    BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                     if (baseConfigData != null) {
                         String agreeUrl = baseConfigData.getAgreeUrl();
                         if (!StringUtils.isEmpty(agreeUrl)) {
@@ -180,9 +180,9 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
         if (StringUtils.isEmpty(jPushRegisterId)) {
             return;
         }
-        LiKingApi.uploadUserDevice(Preference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<BaseResult>() {
+        LiKingApi.uploadUserDevice(Preference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<LikingResult>() {
             @Override
-            public void onSuccess(BaseResult result) {
+            public void onSuccess(LikingResult likingResult) {
                 LogUtils.i(TAG, "uploadDeviceInfo success!");
             }
 

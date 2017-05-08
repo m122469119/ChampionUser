@@ -1,6 +1,6 @@
-package com.goodchef.liking.module.base;
+package com.aaron.android.framework.library.http.rxobserver;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
 
 import io.reactivex.Observer;
@@ -13,8 +13,8 @@ import io.reactivex.disposables.Disposable;
  * @version 1.0.0
  */
 
-public class LikingBaseRequestObserver<T extends BaseResult> implements Observer<T> {
-    private static final String TAG = "LikingBaseRequestObserver";
+public class BaseRequestObserver<T extends Result> implements Observer<T> {
+    protected final String TAG = getClass().getName();
     private Disposable mDisposable;
     @Override
     public void onSubscribe(Disposable d) {

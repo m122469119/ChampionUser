@@ -2,7 +2,7 @@ package com.goodchef.liking.module.joinus.becomecoach;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.RegularUtils;
@@ -10,7 +10,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.ProgressObserver;
+import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.joinus.JoinModel;
 
 /**
@@ -76,14 +76,14 @@ public interface BecomeTeacherContract {
             }
 
             mJoinModel.joinAppLy(UrlList.sHostVersion, name, phone, city, 1)
-                    .subscribe(new ProgressObserver<BaseResult>(mContext, R.string.loading) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
                         @Override
-                        public void onNext(BaseResult result) {
-                            super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
+                        public void onNext(LikingResult likingResult) {
+                            super.onNext(likingResult);
+                            if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                                 mView.updateBecomeTeacherView();
                             } else {
-                                mView.showToast(result.getMessage());
+                                mView.showToast(likingResult.getMessage());
                             }
                         }
 

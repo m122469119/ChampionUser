@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
@@ -35,15 +35,15 @@ public interface WriteInviteCodeContract {
         }
 
         public void sendConfirmRequest(String writeCode) {
-            LiKingApi.exchangeInviteCode(Preference.getToken(), writeCode, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading) {
+            LiKingApi.exchangeInviteCode(Preference.getToken(), writeCode, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading) {
                 @Override
-                public void onSuccess(BaseResult result) {
-                    super.onSuccess(result);
-                    if (LiKingVerifyUtils.isValid(mContext, result)) {
+                public void onSuccess(LikingResult likingResult) {
+                    super.onSuccess(likingResult);
+                    if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                         mView.showToast(mContext.getString(R.string.exchange_success));
                         mView.updateWriteInviteCodeView();
                     } else {
-                        mView.updateErrorPromptView(result.getMessage());
+                        mView.updateErrorPromptView(likingResult.getMessage());
 
                     }
                 }

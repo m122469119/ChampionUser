@@ -5,7 +5,7 @@ import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.LikingBaseRequestObserver;
+import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
 
 /**
  * 说明:
@@ -29,7 +29,7 @@ public interface UserExerciseContract {
 
         public void getExerciseData() {
             mUserExerciseModel.getExerciseData()
-                    .subscribe(new LikingBaseRequestObserver<UserExerciseResult>(){
+                    .subscribe(new LikingBaseObserver<UserExerciseResult>(){
                         @Override
                         public void onNext(UserExerciseResult result) {
                             super.onNext(result);

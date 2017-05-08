@@ -1,7 +1,6 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
-import android.test.suitebuilder.TestMethod;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;

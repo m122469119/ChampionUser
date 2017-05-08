@@ -9,7 +9,7 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.bluetooth.BleManager;
@@ -131,7 +131,7 @@ public class BindBraceModel {
     /**
      * 发送绑定手环信息
      */
-    public void bindDevices(String devicesId,RequestCallback<BaseResult> requestCallback) {
+    public void bindDevices(String devicesId,RequestCallback<LikingResult> requestCallback) {
         String osName = Build.MODEL;
         String osVersion = Build.VERSION.RELEASE;
         LiKingApi.bindDevices(mBindDevicesName, mFirmwareInfo, devicesId, "android" , osName, osVersion, requestCallback);

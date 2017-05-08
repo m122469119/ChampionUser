@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
@@ -164,14 +164,14 @@ public interface BindBraceleContract {
          * 发送绑定手环信息
          */
         private void sendDevicesRequest(String devicesId) {
-            mModel.bindDevices(devicesId,new RequestCallback<BaseResult>() {
+            mModel.bindDevices(devicesId,new RequestCallback<LikingResult>() {
                 @Override
-                public void onSuccess(BaseResult result) {
-                    if (LiKingVerifyUtils.isValid(mContext, result)) {
+                public void onSuccess(LikingResult likingResult) {
+                    if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                         mView.updateBindDevicesView();
                     } else {
                         mView.updateBindDevicesView();
-                        mView.showToast(result.getMessage());
+                        mView.showToast(likingResult.getMessage());
                     }
                 }
 

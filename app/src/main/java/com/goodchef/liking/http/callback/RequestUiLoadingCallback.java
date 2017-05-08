@@ -4,14 +4,14 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.widgets.dialog.LiKingLoadingDialog;
 
 
 /**
  * Created by Lennon on 15/6/18.
  */
-public abstract class RequestUiLoadingCallback<T extends BaseResult> extends RequestCallback<T> {
+public abstract class RequestUiLoadingCallback<T extends LikingResult> extends RequestCallback<T> {
     private LiKingLoadingDialog mLoadingDialog;
 
     public RequestUiLoadingCallback(Context ctx, String msg, boolean cancelable) {

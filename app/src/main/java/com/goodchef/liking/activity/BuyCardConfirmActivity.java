@@ -238,7 +238,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         } else if (v == mAgreeProtocolTextView) {
             BaseConfigResult baseConfigResult = Preference.getBaseConfig();
             if (baseConfigResult != null) {
-                BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                 if (baseConfigData != null) {
                     String serviceUrl = baseConfigData.getServiceUrl();
                     if (!StringUtils.isEmpty(serviceUrl)) {

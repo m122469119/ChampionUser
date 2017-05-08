@@ -3,7 +3,7 @@ package com.aaron.android.framework.library.http.volley;
 import com.aaron.android.codelibrary.http.NetworkErrorResponse;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.android.volley.AuthFailureError;
@@ -34,7 +34,7 @@ import java.util.Map;
  * @author ran.huang
  * @version 3.0.1
  */
-public class VolleyResultRequest<T extends BaseResult> extends Request<T> {
+public class VolleyResultRequest<T extends Result> extends Request<T> {
 
     private static final String TAG = "ResultRequest";
     private Gson mGson = new Gson();

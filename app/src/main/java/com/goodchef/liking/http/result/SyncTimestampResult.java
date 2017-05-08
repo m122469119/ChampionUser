@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -10,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class SyncTimestampResult extends BaseResult {
+public class SyncTimestampResult extends LikingResult {
 
     /**
      * timestamp : 1453277900
@@ -27,7 +26,7 @@ public class SyncTimestampResult extends BaseResult {
         return mData;
     }
 
-    public static class TimestampData extends BaseData{
+    public static class TimestampData extends Data {
         @SerializedName("timestamp")
         private String mTimestamp;
 

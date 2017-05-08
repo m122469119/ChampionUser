@@ -4,7 +4,7 @@ import com.aaron.android.codelibrary.http.HttpRequestClient;
 import com.aaron.android.codelibrary.http.NetworkErrorResponse;
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
 
 import java.io.IOException;
@@ -23,20 +23,20 @@ public class RetrofitHttpRequestClient implements HttpRequestClient<RetrofitRequ
 
     private static final String TAG = "RetrofitHttpRequestClient";
 
-    public static <T extends BaseResult> void call(RequestCallback<T> requestCallback, Call<T> call) {
+    public static <T extends Result> void call(RequestCallback<T> requestCallback, Call<T> call) {
         RetrofitRequestCall<T> retrofitRequestCall = new RetrofitRequestCall<>(call);
         RetrofitHttpRequestClient retrofitHttpRequestClient = new RetrofitHttpRequestClient();
         retrofitHttpRequestClient.execute(requestCallback, retrofitRequestCall);
     }
 
-    public static <T extends BaseResult> T call(Call<T> call) {
+    public static <T extends Result> T call(Call<T> call) {
         RetrofitRequestCall<T> retrofitRequestCall = new RetrofitRequestCall<>(call);
         RetrofitHttpRequestClient retrofitHttpRequestClient = new RetrofitHttpRequestClient();
         return retrofitHttpRequestClient.execute(retrofitRequestCall);
     }
 
     @Override
-    public <T extends BaseResult> void execute(final RequestCallback<T> requestCallback, RetrofitRequestCall requestObjects) {
+    public <T extends Result> void execute(final RequestCallback<T> requestCallback, RetrofitRequestCall requestObjects) {
         Call<T> call = buildRequest(requestObjects);
         if (requestCallback != null) {
             requestCallback.onStart();
@@ -83,7 +83,7 @@ public class RetrofitHttpRequestClient implements HttpRequestClient<RetrofitRequ
     }
 
     @Override
-    public <T extends BaseResult> T execute(RetrofitRequestCall requestObjects) {
+    public <T extends Result> T execute(RetrofitRequestCall requestObjects) {
         Call<T> call = buildRequest(requestObjects);
         Response<T> response = null;
         try {
@@ -98,7 +98,7 @@ public class RetrofitHttpRequestClient implements HttpRequestClient<RetrofitRequ
         return response.body();
     }
 
-    public <T extends BaseResult> Call<T> buildRequest(RetrofitRequestCall<T> requestObjects) {
+    public <T extends Result> Call<T> buildRequest(RetrofitRequestCall<T> requestObjects) {
         Call<T> call;
         if (requestObjects != null) {
             call = requestObjects.getCall();

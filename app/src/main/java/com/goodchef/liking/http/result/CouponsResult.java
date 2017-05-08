@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/16 下午2:00
  */
-public class CouponsResult extends BaseResult {
+public class CouponsResult extends LikingResult {
 
     /**
      * data : {"has_more":0,"coupon_list":[{"coupon_code":"58be571b9239a","title":"liking coupon","amount":"8000.00","can_use":"0","use_desc":"满10可用,适用于私教课","valid_date":"2017.03.07-2017.09.03","not_use_desc":"适用于私教课"}]}
@@ -26,7 +25,7 @@ public class CouponsResult extends BaseResult {
         this.data = data;
     }
 
-    public static class CouponData extends BaseData{
+    public static class CouponData extends Data {
         /**
          * has_more : 0
          * coupon_list : [{"coupon_code":"58be571b9239a","title":"liking coupon","amount":"8000.00","can_use":"0","use_desc":"满10可用,适用于私教课","valid_date":"2017.03.07-2017.09.03","not_use_desc":"适用于私教课"}]
@@ -51,7 +50,7 @@ public class CouponsResult extends BaseResult {
             this.coupon_list = coupon_list;
         }
 
-        public static class Coupon extends BaseData{
+        public static class Coupon extends Data {
             /**
              * coupon_code : 58be571b9239a
              * title : liking coupon

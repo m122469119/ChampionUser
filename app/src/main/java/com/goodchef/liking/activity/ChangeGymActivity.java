@@ -105,7 +105,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
     private void setCityListData() {
         BaseConfigResult baseConfigResult = Preference.getBaseConfig();
         if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {
                 cityDataList = baseConfigData.getCityList();
                 if (cityDataList != null && cityDataList.size() > 0) {

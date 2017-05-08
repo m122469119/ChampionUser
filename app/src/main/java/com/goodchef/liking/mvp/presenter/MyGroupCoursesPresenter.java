@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
@@ -46,15 +46,15 @@ public class MyGroupCoursesPresenter extends BasePresenter<MyGroupCourseView> {
     }
 
     public void sendCancelCoursesRequest(String orderId){
-        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading_data) {
+        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     PopupUtils.showToast(mContext, R.string.cancel_success);
                     mView.updateLoadHomePage();
                 } else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

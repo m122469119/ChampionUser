@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.goodchef.liking.http.result.data.BodyHistoryData;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * version 1.0.0
  */
 
-public class BodyModelNavigationResult extends BaseResult {
+public class BodyModelNavigationResult extends LikingResult {
 
 
     @SerializedName("data")
@@ -62,7 +61,7 @@ public class BodyModelNavigationResult extends BaseResult {
             mHistoryData = historyData;
         }
 
-        public static class NavData extends BaseData{
+        public static class NavData extends Data {
             @SerializedName("column")
             private String mColumn;
             @SerializedName("chinese_name")

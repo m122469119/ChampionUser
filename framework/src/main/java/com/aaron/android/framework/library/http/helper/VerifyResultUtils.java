@@ -2,7 +2,7 @@ package com.aaron.android.framework.library.http.helper;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 
 /**
  * Created on 15/7/4.
@@ -16,7 +16,7 @@ public class VerifyResultUtils {
      * @param result BaseResult
      * @return boolean
      */
-    public static boolean checkResultSuccess(Context context, BaseResult result) {
+    public static boolean checkResultSuccess(Context context, Result result) {
         if (context == null || result == null) {
             return false;
         }

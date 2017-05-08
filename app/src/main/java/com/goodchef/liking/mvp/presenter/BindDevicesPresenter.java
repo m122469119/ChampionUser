@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestCallback;
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -23,14 +23,14 @@ public class BindDevicesPresenter extends BasePresenter<BindDevicesView> {
     }
 
     public void bindDevices(String braceletName, String braceletVersion, String deviceId, String platform, String deviceName, String osVersion) {
-        LiKingApi.bindDevices(braceletName, braceletVersion, deviceId, platform, deviceName, osVersion, new RequestCallback<BaseResult>() {
+        LiKingApi.bindDevices(braceletName, braceletVersion, deviceId, platform, deviceName, osVersion, new RequestCallback<LikingResult>() {
             @Override
-            public void onSuccess(BaseResult result) {
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateBindDevicesView();
                 } else {
                     mView.updateBindDevicesView();
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

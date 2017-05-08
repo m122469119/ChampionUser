@@ -2,15 +2,15 @@ package com.goodchef.liking.module.coupons;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.LikingBaseRequestObserver;
+import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
 
 /**
  * 说明:
@@ -39,9 +39,9 @@ public interface CouponContract {
 
         //兑换优惠券
         public void sendExchangeCouponsRequest(String code) {
-            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseRequestObserver<BaseResult>() {
+            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>() {
                 @Override
-                public void onNext(BaseResult result) {
+                public void onNext(LikingResult result) {
                     super.onNext(result);
                     if (LiKingVerifyUtils.isValid(mContext, result)) {
                         mView.updateExchangeCode();
@@ -60,7 +60,7 @@ public interface CouponContract {
 
         //获取我的优惠券
         public void getMyCoupons(int page) {
-            mCouponModel.getMyCoupons(page).subscribe(new LikingBaseRequestObserver<CouponsPersonResult>() {
+            mCouponModel.getMyCoupons(page).subscribe(new LikingBaseObserver<CouponsPersonResult>() {
                 @Override
                 public void onNext(CouponsPersonResult result) {
                     super.onNext(result);
@@ -93,7 +93,7 @@ public interface CouponContract {
          * @param gymId       场馆id
          */
         public void getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, int page, String gymId) {
-            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new LikingBaseRequestObserver<CouponsResult>() {
+            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new LikingBaseObserver<CouponsResult>() {
                 @Override
                 public void onNext(CouponsResult result) {
                     super.onNext(result);

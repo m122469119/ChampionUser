@@ -6,7 +6,7 @@ import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.LikingBaseRequestObserver;
+import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.module.card.CardModel;
 
 /**
@@ -32,7 +32,7 @@ public interface MyCardContract {
 
         public void sendMyCardRequest() {
             mCardModel.getMyCard()
-                    .subscribe(new LikingBaseRequestObserver<MyCardResult>() {
+                    .subscribe(new BaseRequestObserver<MyCardResult>() {
                         @Override
                         public void onNext(MyCardResult result) {
                             super.onNext(result);

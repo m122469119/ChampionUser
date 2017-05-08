@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/12 下午5:45
  */
-public class GroupCoursesResult extends BaseResult {
+public class GroupCoursesResult extends LikingResult {
 
     /**
      * course_name : 美男子教你练腹肌
@@ -39,7 +38,7 @@ public class GroupCoursesResult extends BaseResult {
         mGroupLessonData = groupLessonData;
     }
 
-    public static class GroupLessonData extends BaseData {
+    public static class GroupLessonData extends Data {
 
 
         /**
@@ -300,7 +299,7 @@ public class GroupCoursesResult extends BaseResult {
             }
         }
 
-        public static class GymNumbersData extends BaseData{
+        public static class GymNumbersData extends Data {
             @SerializedName("avatar")
             private String avatar;
             @SerializedName("name")

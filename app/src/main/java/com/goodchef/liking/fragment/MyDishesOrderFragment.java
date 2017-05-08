@@ -149,7 +149,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     private void setOrderListData(List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList) {
         BaseConfigResult baseConfigResult = Preference.getBaseConfig();
         if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+            BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (orderList != null && orderList.size() > 0) {
                 for (int i = 0; i < orderList.size(); i++) {
                     long serviceTime = DateUtils.currentDataSeconds() + LiKingApi.sTimestampOffset;//服务器当前时间

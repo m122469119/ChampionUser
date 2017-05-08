@@ -166,7 +166,7 @@ public class LoadingActivity extends BaseActivity {
         if (initApiFinishedMessage.isSuccess()) {
             BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
             if (baseConfigResult != null) {
-                BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                 if (baseConfigData != null) {
                     PatchData patchData = baseConfigData.getPatchData();
                     if (patchData != null) {

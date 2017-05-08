@@ -1,8 +1,7 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.google.gson.annotations.SerializedName;
+import com.aaron.android.codelibrary.http.result.Data;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @version 1.0.0
  */
 
-public class CouponsPersonResult extends BaseResult {
+public class CouponsPersonResult extends LikingResult {
 
 
     /**
@@ -30,7 +29,7 @@ public class CouponsPersonResult extends BaseResult {
         this.data = data;
     }
 
-    public static class DataBean extends BaseData{
+    public static class DataBean extends Data {
         @SerializedName("coupon_list")
         private List<CouponListBean> couponList;
 
@@ -42,7 +41,7 @@ public class CouponsPersonResult extends BaseResult {
             this.couponList = couponList;
         }
 
-        public static class CouponListBean extends BaseData{
+        public static class CouponListBean extends Data {
             /**
              * coupon_code : 582e64d7bcf2a
              * title : liking coupon

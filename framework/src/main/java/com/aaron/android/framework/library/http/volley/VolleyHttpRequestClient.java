@@ -2,7 +2,7 @@ package com.aaron.android.framework.library.http.volley;
 
 import com.aaron.android.codelibrary.http.HttpRequestClient;
 import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.android.framework.library.http.RequestParams;
 import com.aaron.android.framework.library.http.statistics.NetworkStatistics;
 import com.android.volley.Request;
@@ -31,9 +31,9 @@ public class VolleyHttpRequestClient implements HttpRequestClient<VolleyRequestO
      * @param requestCallback 请求回调
      * @param <T> 数据类型 BaseResult泛型类型
      */
-    public static <T extends BaseResult> void doGet(String url, Class<T> cls,
-                                                  Map<String, String> headers,
-                                                  Map<String, Object> params, RequestCallback<T> requestCallback) {
+    public static <T extends Result> void doGet(String url, Class<T> cls,
+                                                Map<String, String> headers,
+                                                Map<String, Object> params, RequestCallback<T> requestCallback) {
         VolleyHttpRequestClient volleyAsyncRequestClient = new VolleyHttpRequestClient();
         VolleyRequestObjects<T> objects = new VolleyRequestObjects<>(Request.Method.GET, url, cls, headers, params);
         volleyAsyncRequestClient.execute(requestCallback, objects);
@@ -48,9 +48,9 @@ public class VolleyHttpRequestClient implements HttpRequestClient<VolleyRequestO
      * @param requestCallback 请求回调
      * @param <T> 数据类型 BaseResult泛型类型
      */
-    public static <T extends BaseResult> void doPost(String url, Class<T> cls,
-                                  Map<String, String> headers,
-                                  RequestParams requestParams, RequestCallback<T> requestCallback) {
+    public static <T extends Result> void doPost(String url, Class<T> cls,
+                                                 Map<String, String> headers,
+                                                 RequestParams requestParams, RequestCallback<T> requestCallback) {
         VolleyHttpRequestClient volleyAsyncRequest = new VolleyHttpRequestClient();
         Map<String, Object> params;
         if (requestParams != null) {
@@ -69,8 +69,8 @@ public class VolleyHttpRequestClient implements HttpRequestClient<VolleyRequestO
      * @param requestCallback 请求回调
      * @param <T> 数据类型 BaseResult泛型类型
      */
-    public static <T extends BaseResult> void doPost(String url, Class<T> cls,
-                                  RequestParams requestParams, RequestCallback<T> requestCallback) {
+    public static <T extends Result> void doPost(String url, Class<T> cls,
+                                                 RequestParams requestParams, RequestCallback<T> requestCallback) {
         doPost(url, cls, null, requestParams, requestCallback);
     }
 
@@ -81,7 +81,7 @@ public class VolleyHttpRequestClient implements HttpRequestClient<VolleyRequestO
      * @param <T> BaseResult泛型
      */
     @Override
-    public <T extends BaseResult> void execute(RequestCallback<T> requestCallback, VolleyRequestObjects requestObjects) {
+    public <T extends Result> void execute(RequestCallback<T> requestCallback, VolleyRequestObjects requestObjects) {
         VolleyResultRequest<T> request = requestObjects.buildVolleyResultRequest(requestCallback);
         if (requestCallback != null) {
             requestCallback.onStart();
@@ -90,7 +90,7 @@ public class VolleyHttpRequestClient implements HttpRequestClient<VolleyRequestO
     }
 
     @Override
-    public <T extends BaseResult> T execute(VolleyRequestObjects requestObjects) {
+    public <T extends Result> T execute(VolleyRequestObjects requestObjects) {
         return null;
     }
 }

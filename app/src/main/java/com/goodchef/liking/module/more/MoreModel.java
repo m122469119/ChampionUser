@@ -1,6 +1,6 @@
 package com.goodchef.liking.module.more;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.common.utils.ConstantUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
@@ -27,7 +27,7 @@ class MoreModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    final Observable<BaseResult> userLogout(String version, String token, String registerId) {
+    final Observable<LikingResult> userLogout(String version, String token, String registerId) {
         return LikingNewApi.getInstance().userLogout(version, token, registerId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

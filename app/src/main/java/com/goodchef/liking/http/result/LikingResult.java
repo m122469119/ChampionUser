@@ -1,5 +1,7 @@
-package com.aaron.android.codelibrary.http.result;
+package com.goodchef.liking.http.result;
 
+import com.aaron.android.codelibrary.http.result.Result;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,15 +10,14 @@ import com.google.gson.annotations.SerializedName;
  * @author ran.huang
  * @version 3.0.1
  */
-public class BaseResult implements ResultInterface {
+public class LikingResult implements Result {
     @SerializedName("err_code")
     private int mCode;
 
     @SerializedName("err_msg")
-    private String message;
+    private String mMessage;
 
     /**
-     *
      * @return 请求状态码
      */
     public int getCode() {
@@ -24,11 +25,11 @@ public class BaseResult implements ResultInterface {
     }
 
     public String getMessage() {
-        return message;
+        return mMessage;
     }
 
     @Override
     public boolean isSuccess() {
-        return mCode == ServerRequestCode.SUCCESS;
+        return mCode == LiKingRequestCode.SUCCESS;
     }
 }

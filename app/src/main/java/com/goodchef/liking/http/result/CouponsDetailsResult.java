@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Data;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  */
 
-public class CouponsDetailsResult extends BaseResult {
+public class CouponsDetailsResult extends LikingResult {
 
 
     /**
@@ -29,7 +28,7 @@ public class CouponsDetailsResult extends BaseResult {
         this.data = data;
     }
 
-    public static class DataBean extends BaseData{
+    public static class DataBean extends Data {
         /**
          * title : liking coupon
          * amount : 300.00
@@ -106,7 +105,7 @@ public class CouponsDetailsResult extends BaseResult {
         }
 
 
-        public static class DescListBean extends BaseData{
+        public static class DescListBean extends Data {
             /**
              * title : 有效期
              * name : 2016.11.18-2017.05.17
@@ -133,7 +132,7 @@ public class CouponsDetailsResult extends BaseResult {
         }
 
 
-        public static class GymListBean extends BaseData{
+        public static class GymListBean extends Data {
             /**
              * gym_name : 新尚广场健身房
              * distance : 42km

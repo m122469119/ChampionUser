@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/7/8 下午2:23
  */
-public class CityData extends BaseData {
+public class CityData extends Data {
 
     @SerializedName("city_id")
     private int cityId;
@@ -53,7 +53,7 @@ public class CityData extends BaseData {
         mDistrict = district;
     }
 
-    public static class DistrictData extends BaseData{
+    public static class DistrictData extends Data {
         @SerializedName("district_name")
         private String mDistrictName;
         @SerializedName("district_id")

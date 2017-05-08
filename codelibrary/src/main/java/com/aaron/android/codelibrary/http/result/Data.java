@@ -8,5 +8,5 @@ import java.io.Serializable;
  * @author ran.huang
  * @version 1.0.0
  */
-public class BaseData implements Serializable {
+public class Data implements Serializable {
 }

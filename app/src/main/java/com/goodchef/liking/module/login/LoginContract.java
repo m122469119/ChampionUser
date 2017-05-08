@@ -8,7 +8,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.ProgressObserver;
+import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -43,14 +43,14 @@ public class MyDishesOrderPresenter extends BasePresenter<MyDishesOrderView> {
     }
 
     public void cancelMyDishesOrder(String orderId){
-        LiKingApi.cancelMyDishesOrder(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading) {
+        LiKingApi.cancelMyDishesOrder(Preference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext,R.string.loading) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)){
                     mView.updateCancelDishesOrder();
                 }else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 
@@ -62,14 +62,14 @@ public class MyDishesOrderPresenter extends BasePresenter<MyDishesOrderView> {
     }
 
     public void completeDishesOrder(String orderId){
-        LiKingApi.completeMyDishesOrder(Preference.getToken(), orderId, new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading) {
+        LiKingApi.completeMyDishesOrder(Preference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext,R.string.loading) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)){
                     mView.updateCompleteDishesOrder();
                 }else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

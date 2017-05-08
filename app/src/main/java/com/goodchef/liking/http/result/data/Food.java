@@ -3,7 +3,7 @@ package com.goodchef.liking.http.result.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/24 上午10:04
  */
-public class Food extends BaseData implements Parcelable {
+public class Food extends Data implements Parcelable {
 
     @SerializedName("goods_id")
     private String goodsId;

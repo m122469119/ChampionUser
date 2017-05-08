@@ -149,7 +149,7 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
     /**
      * 如果分页数据加载失败，在请求错误回调中重置当前page值
      */
-    protected void requestFailure() {
+    public void requestFailure() {
         requestFinished();
         if (!isRequestHomePage()) {
             mPager.setCurrent(mPager.getCurrent() - 1);
@@ -158,7 +158,7 @@ public abstract class BasePagerLoaderFragment extends BaseFragment {
         }
     }
 
-    protected void requestSuccess() {
+    public void requestSuccess() {
         if (isRequestHomePage()) {
             mStateView.setState(StateView.State.SUCCESS);
         }

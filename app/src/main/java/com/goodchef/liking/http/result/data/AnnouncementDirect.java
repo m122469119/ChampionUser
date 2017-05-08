@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.android.codelibrary.http.result.Data;
 
 /**
  * Created on 2017/3/1
@@ -9,7 +9,7 @@ import com.aaron.android.codelibrary.http.result.BaseData;
  * @version 1.0.0
  */
 
-public class AnnouncementDirect extends BaseData{
+public class AnnouncementDirect extends Data {
 
     /**
      * directType : native

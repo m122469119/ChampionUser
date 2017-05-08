@@ -2,15 +2,15 @@ package com.goodchef.liking.module.more;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.LikingBaseRequestObserver;
-import com.goodchef.liking.module.base.ProgressObserver;
+import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
+import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.data.local.Preference;
 
 /**
@@ -40,7 +40,7 @@ class MoreContract {
          */
         void checkAppUpdate() {
             mMoreModel.getCheckUpdateAppResult()
-                    .subscribe(new LikingBaseRequestObserver<CheckUpdateAppResult>() {
+                    .subscribe(new BaseRequestObserver<CheckUpdateAppResult>() {
                         @Override
                         public void onNext(CheckUpdateAppResult result) {
                             super.onNext(result);
@@ -64,15 +64,15 @@ class MoreContract {
          */
         void loginOut() {
             mMoreModel.userLogout(UrlList.sHostVersion, Preference.getToken(), "")
-                    .subscribe(new ProgressObserver<BaseResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
                         @Override
-                        public void onNext(BaseResult result) {
-                            super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
+                        public void onNext(LikingResult likingResult) {
+                            super.onNext(likingResult);
+                            if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                                 mMoreModel.clearUserInfo();
                                 mView.updateLoginOut();
                             } else {
-                                mView.showToast(result.getMessage());
+                                mView.showToast(likingResult.getMessage());
                             }
                         }
 

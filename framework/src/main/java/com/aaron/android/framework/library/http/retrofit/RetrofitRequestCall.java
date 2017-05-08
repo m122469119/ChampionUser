@@ -2,7 +2,7 @@ package com.aaron.android.framework.library.http.retrofit;
 
 
 import com.aaron.android.codelibrary.http.RequestObjects;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.android.codelibrary.http.result.Result;
 
 import retrofit2.Call;
 
@@ -12,7 +12,7 @@ import retrofit2.Call;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class RetrofitRequestCall<T extends BaseResult> extends RequestObjects {
+public class RetrofitRequestCall<T extends Result> extends RequestObjects {
     private Call<T> mCall;
 
     public RetrofitRequestCall(Call<T> call) {
