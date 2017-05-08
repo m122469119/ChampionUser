@@ -6,6 +6,7 @@ import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
+import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 
@@ -73,6 +74,10 @@ public interface LikingApiService {
                                                      @Query(KEY_TOKEN) String token,
                                                      @Query("page") int page);
 
+    @POST(Urls.GET_USER_EXERCISE_DATA)
+    Observable<UserExerciseResult> getUserExerciseData(@Path(PATH_VERSION) String version,
+                                                       @Query(KEY_TOKEN) String token);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -116,6 +121,11 @@ public interface LikingApiService {
          * 获取我的会员卡订单列表
          */
         public static final String GET_CARD_ORDER_LIST = sVersion + "order/get-card-order-list";
+
+        /**
+         * 获取的运动数据
+         */
+        public static final String GET_USER_EXERCISE_DATA = sVersion + "user/get-sports-data";
 
 
 //        /**同步时间戳*/

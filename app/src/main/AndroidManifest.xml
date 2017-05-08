@@ -178,7 +178,7 @@
             android:screenOrientation="portrait"/>
         <!--我的训练数据-->
         <activity
-            android:name=".activity.MyTrainDataActivity"
+            android:name=".module.train.MyTrainDataActivity"
             android:screenOrientation="portrait" />
         <!-- 团体课课程时间列表 -->
         <activity

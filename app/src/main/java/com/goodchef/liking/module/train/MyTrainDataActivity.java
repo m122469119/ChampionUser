@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.train;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.mvp.ShareContract;
-import com.goodchef.liking.mvp.UserExerciseContract;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -90,11 +89,6 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseC
             mStateView.setState(StateView.State.NO_DATA);
         }
 
-    }
-
-    @Override
-    public void showToast(String message) {
-        showToast(message);
     }
 
     private View.OnClickListener shareListener = new View.OnClickListener() {
