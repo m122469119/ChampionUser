@@ -25,7 +25,7 @@ import com.goodchef.liking.module.card.my.MyCardActivity;
 import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.activity.BingBraceletActivity;
 import com.goodchef.liking.activity.BodyTestDataActivity;
-import com.goodchef.liking.activity.CouponsActivity;
+import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.activity.EveryDaySportActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.MyBraceletActivity;

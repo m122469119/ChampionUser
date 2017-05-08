@@ -2,6 +2,7 @@ package com.goodchef.liking.http.result;
 
 import com.aaron.android.codelibrary.http.result.BaseData;
 import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class CouponsPersonResult extends BaseResult {
     /**
      * data : {"coupon_list":[{"coupon_code":"582e64d7bcf2a","title":"liking coupon","amount":"500.00","coupon_status":"0","use_desc":"满10可用,适用于团体课","valid_date":"2016.11.18-2017.05.17"},{"coupon_code":"582e63bd647d0","title":"liking coupon","amount":"100.00","coupon_status":"0","use_desc":"满10可用,适用于私教课","valid_date":"2016.11.18-2017.05.17"}]}
      */
-
+   @SerializedName("data")
     private DataBean data;
 
     public DataBean getData() {
@@ -30,14 +31,15 @@ public class CouponsPersonResult extends BaseResult {
     }
 
     public static class DataBean extends BaseData{
-        private List<CouponListBean> coupon_list;
+        @SerializedName("coupon_list")
+        private List<CouponListBean> couponList;
 
-        public List<CouponListBean> getCoupon_list() {
-            return coupon_list;
+        public List<CouponListBean> getCouponList() {
+            return couponList;
         }
 
-        public void setCoupon_list(List<CouponListBean> coupon_list) {
-            this.coupon_list = coupon_list;
+        public void setCouponList(List<CouponListBean> couponList) {
+            this.couponList = couponList;
         }
 
         public static class CouponListBean extends BaseData{
@@ -51,16 +53,22 @@ public class CouponsPersonResult extends BaseResult {
              */
 
             //优惠券码，用于后面获取详情页参数
+                    @SerializedName("coupon_code")
             private String coupon_code;
             //优惠券标题
+            @SerializedName("title")
             private String title;
             //面值
+            @SerializedName("amount")
             private String amount;
             //优惠券状态: 0 可适用, 1 已使用 , 2 已过期
+            @SerializedName("coupon_status")
             private String coupon_status;
             //优惠券使用描述
+            @SerializedName("use_desc")
             private String use_desc;
             //优惠券有效期
+            @SerializedName("valid_date")
             private String valid_date;
 
             public String getCoupon_code() {

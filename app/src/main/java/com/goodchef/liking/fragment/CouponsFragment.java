@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
-import com.goodchef.liking.activity.CouponsActivity;
+import com.goodchef.liking.module.coupons.CouponContract;
+import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.activity.CouponsDetailsActivity;
 import com.goodchef.liking.activity.ShoppingCartActivity;
 import com.goodchef.liking.adapter.CouponsAdapter;
@@ -35,9 +37,10 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/16 下午2:28
  */
-public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponView {
+public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponContract.CouponView {
 
-    private CouponPresenter mCouponPresenter;
+    // private CouponPresenter mCouponPresenter;
+    private CouponContract.CouponPresenter mCouponPresenter;
 
     private String intentType;
     private String courseId = "";
@@ -99,11 +102,6 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
         scheduleId = getArguments().getString(CouponsActivity.KEY_SCHEDULE_ID);
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
-//        if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-//            setPullMode(PullMode.PULL_BOTH);
-//        } else {
-//            setPullMode(PullMode.PULL_UP);
-//        }
         setPullMode(PullMode.PULL_BOTH);
     }
 
@@ -157,17 +155,20 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
 
     private void sendRequest(int page) {
-        mCouponPresenter = new CouponPresenter(getActivity(), this);
+        if (mCouponPresenter == null) {
+            mCouponPresenter = new CouponContract.CouponPresenter(getActivity(), this);
+        }
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getMyConpons(page, CouponsFragment.this);
+            mCouponPresenter.getMyCoupons(page);
         } else {
-            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, gymId, CouponsFragment.this);
+            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, gymId);
         }
     }
 
 
     @Override
     public void updateCouponData(CouponsResult.CouponData couponData) {
+        requestSuccess();
         List<CouponsResult.CouponData.Coupon> list = couponData.getCoupon_list();
         if (list != null) {
             if (list.size() > 0) {
@@ -186,8 +187,19 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     }
 
     @Override
+    public void onPageFailureView() {
+        requestFailure();
+    }
+
+    @Override
+    public void updateExchangeCode() {
+
+    }
+
+    @Override
     public void updateMyCouponData(CouponsPersonResult.DataBean dataBean) {
-        updateListView(dataBean.getCoupon_list());
+        requestSuccess();
+        updateListView(dataBean.getCouponList());
     }
 
     @Override

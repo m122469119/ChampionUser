@@ -3,6 +3,8 @@ package com.goodchef.liking.module.data.remote;
 import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.CouponsPersonResult;
+import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
@@ -10,10 +12,14 @@ import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * Created on 17/3/13.
@@ -60,6 +66,7 @@ public interface LikingApiService {
     Observable<MyOrderCardDetailsResult> getMyOrderCardDetails(@Path(PATH_VERSION) String version,
                                                                @Query(KEY_TOKEN) String token,
                                                                @Query("order_id") String orderId);
+
     @POST(Urls.CARD_LIST)
     Observable<CardResult> getCardList(@Path(PATH_VERSION) String version,
                                        @Query(KEY_TOKEN) String token,
@@ -69,14 +76,28 @@ public interface LikingApiService {
                                        @Query(KEY_DISTRICT_ID) String districtId,
                                        @Query("gym_id") String gymId,
                                        @Query("type") int type);
+
     @POST(Urls.GET_CARD_ORDER_LIST)
     Observable<OrderCardListResult> getCardOrderList(@Path(PATH_VERSION) String version,
                                                      @Query(KEY_TOKEN) String token,
                                                      @Query("page") int page);
 
+
     @POST(Urls.GET_USER_EXERCISE_DATA)
     Observable<UserExerciseResult> getUserExerciseData(@Path(PATH_VERSION) String version,
                                                        @Query(KEY_TOKEN) String token);
+
+    @POST(Urls.COUPON_EXCHANGE_COUPON)
+    Observable<BaseResult> exchangeCoupon(@Path(PATH_VERSION) String version,
+                                          @Query(KEY_TOKEN) String token,
+                                          @Query("exchange_code") String code);
+
+    @POST(Urls.GET_MY_COUPON)
+    Observable<CouponsPersonResult> getMyCoupons(@Path(PATH_VERSION) String version,
+                                                 @Query(KEY_TOKEN) String token,
+                                                 @Query("page") int page);
+    @POST(Urls.GET_COUPON)
+    Observable<CouponsResult> getCoupons(@Path(PATH_VERSION) String version,@QueryMap Map<String,String> map);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -126,6 +147,22 @@ public interface LikingApiService {
          * 获取的运动数据
          */
         public static final String GET_USER_EXERCISE_DATA = sVersion + "user/get-sports-data";
+
+         /**
+         * 兑换优惠券
+         */
+        public static final String COUPON_EXCHANGE_COUPON = sVersion + "coupon/exchange-coupon";
+
+        /**
+         * 个人界面获取优惠券
+         */
+        public static final String GET_MY_COUPON = sVersion + "coupon/get-my-coupon";
+
+        /**
+         * 获取优惠券
+         */
+        public static final String GET_COUPON = sVersion + "coupon/fetch-coupon";
+
 
 
 //        /**同步时间戳*/

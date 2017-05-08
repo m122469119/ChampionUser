@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.coupons;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +14,8 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.activity.ShoppingCartActivity;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.fragment.CouponsFragment;
@@ -21,18 +23,23 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
+import com.goodchef.liking.http.result.CouponsPersonResult;
+import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.Preference;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 说明:我的优惠券
  * Author shaozucheng
  * Time:16/6/16 下午2:17
  */
-public class CouponsActivity extends AppBarActivity {
+public class CouponsActivity extends AppBarActivity  implements CouponContract.CouponView{
     public static final String KEY_COURSE_ID = "key_course_id";
     public static final String TYPE_MY_COUPONS = "MyCoupons";
     public static final String INTENT_KEY_COUPONS_DATA = "intent_key_coupons_data";
@@ -40,9 +47,12 @@ public class CouponsActivity extends AppBarActivity {
     public static final String KEY_SCHEDULE_ID = "schedule_id";
     public static final String KEY_SELECT_TIMES = "select_times";
 
-    private EditText mEditCoupons;//填写优惠券
-    private TextView mExchangeButton;//兑换优惠券按钮
-    private LinearLayout mExchangeCouponsLayout;//优惠券布局
+    @BindView(R.id.edit_coupons_number)
+    EditText mEditCoupons;//填写优惠券
+    @BindView(R.id.exchange_coupons_button)
+    TextView mExchangeButton;//兑换优惠券按钮
+    @BindView(R.id.layout_exchange_coupon)
+    LinearLayout mExchangeCouponsLayout;//优惠券布局
 
     private String intentType = "";
     private String coursesId;//课程id
@@ -54,20 +64,17 @@ public class CouponsActivity extends AppBarActivity {
     private String scheduleId;//排期id
     private String gymId;//场馆id
 
+    private CouponContract.CouponPresenter mCouponPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupons);
-        initView();
+        ButterKnife.bind(this);
+        mCouponPresenter = new CouponContract.CouponPresenter(this,this);
         initData();
         doExchangeCoupons();
-    }
-
-    private void initView() {
-        mEditCoupons = (EditText) findViewById(R.id.edit_coupons_number);
-        mExchangeButton = (TextView) findViewById(R.id.exchange_coupons_button);
-        mExchangeCouponsLayout = (LinearLayout) findViewById(R.id.layout_exchange_coupon);
     }
 
     private void initData() {
@@ -118,30 +125,8 @@ public class CouponsActivity extends AppBarActivity {
                 if (StringUtils.isEmpty(couponsNumber)) {
                     showToast(getString(R.string.input_coupon_code));
                 } else {
-                    sendExchangeCouponsRequest(couponsNumber);
+                    mCouponPresenter.sendExchangeCouponsRequest(couponsNumber);
                 }
-            }
-        });
-    }
-
-    private void sendExchangeCouponsRequest(String code) {
-        LiKingApi.exchangeCoupon(Preference.getToken(), code, new RequestUiLoadingCallback<BaseResult>(this, R.string.loading_data) {
-            @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(CouponsActivity.this, result)) {
-                    showToast(getString(R.string.exchange_success));
-                    mEditCoupons.setText("");//清空兑换码
-                    postEvent(new ExchangeCouponsMessage());
-                } else {
-                    showToast(result.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-                showToast(getString(R.string.network_error));
             }
         });
     }
@@ -153,5 +138,27 @@ public class CouponsActivity extends AppBarActivity {
 
     public void onEvent(CouponErrorMessage message) {
         finish();
+    }
+
+    @Override
+    public void updateExchangeCode() {
+        showToast(getString(R.string.exchange_success));
+        mEditCoupons.setText("");//清空兑换码
+        postEvent(new ExchangeCouponsMessage());
+    }
+
+    @Override
+    public void updateMyCouponData(CouponsPersonResult.DataBean dataBean) {
+
+    }
+
+    @Override
+    public void updateCouponData(CouponsResult.CouponData couponData) {
+
+    }
+
+    @Override
+    public void onPageFailureView() {
+
     }
 }

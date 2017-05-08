@@ -27,6 +27,7 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.PayResultData;
+import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.mvp.presenter.ChargeGroupCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.ChargeGroupCoursesView;
 import com.goodchef.liking.storage.UmengEventId;

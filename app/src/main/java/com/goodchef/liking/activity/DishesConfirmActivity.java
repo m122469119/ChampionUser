@@ -37,6 +37,7 @@ import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.MealTimeData;
 import com.goodchef.liking.http.result.data.PayResultData;
+import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.mvp.presenter.NutritionMealConfirmPresenter;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
 import com.goodchef.liking.storage.UmengEventId;
