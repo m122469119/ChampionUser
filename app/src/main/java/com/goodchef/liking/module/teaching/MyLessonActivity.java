@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.MyGroupLessonFragment;
-import com.goodchef.liking.fragment.MyPrivateCoursesFragment;
+import com.goodchef.liking.module.teaching.personalcourse.MyPrivateCoursesFragment;
+import com.goodchef.liking.module.teaching.teamcourse.MyGroupLessonFragment;
 
 import java.util.ArrayList;
 import java.util.List;

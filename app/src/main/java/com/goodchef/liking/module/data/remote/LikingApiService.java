@@ -7,7 +7,9 @@ import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyCardResult;
+import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
@@ -16,6 +18,8 @@ import com.goodchef.liking.http.result.VerificationCodeResult;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -99,6 +103,24 @@ public interface LikingApiService {
     @POST(Urls.GET_COUPON)
     Observable<CouponsResult> getCoupons(@Path(PATH_VERSION) String version, @QueryMap Map<String,String> map);
 
+    @FormUrlEncoded
+    @POST(Urls.MY_ORDER_COURSES_LIST)
+    Observable<MyGroupCoursesResult> getTeamCourseList(@Path(PATH_VERSION) String version,
+                                                       @Field(KEY_TOKEN) String token,
+                                                       @Field("page") int page);
+
+    @FormUrlEncoded
+    @POST(Urls.CANCEL_GROUP_COURSES)
+    Observable<LikingResult> cancelTeamCourse(@Path(PATH_VERSION) String version,
+                                              @Field(KEY_TOKEN) String token,
+                                              @Field("order_id")String orderId);
+
+    @FormUrlEncoded
+    @POST(Urls.MY_ORDER_PRIVATE_LIST)
+    Observable<MyPrivateCoursesResult> getPersonalCourseList(@Path(PATH_VERSION) String version,
+                                                             @Field(KEY_TOKEN) String token,
+                                                             @Field("page")int page);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -163,6 +185,20 @@ public interface LikingApiService {
          */
         public static final String GET_COUPON = sVersion + "coupon/fetch-coupon";
 
+        /**
+         * 团体课列表
+         */
+        public static final String MY_ORDER_COURSES_LIST = sVersion + "order/team-course-list";
+
+        /**
+         * 取消团体课
+         */
+        public static final String CANCEL_GROUP_COURSES = sVersion + "order/cancel-team-course";
+
+        /**
+         * 我的私教课列表
+         */
+        public static final String MY_ORDER_PRIVATE_LIST = sVersion + "order/personal-course-list";
 
 
 //        /**同步时间戳*/

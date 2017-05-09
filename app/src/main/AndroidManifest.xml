@@ -113,7 +113,7 @@
         <activity android:name=".widgets.camera.AlbumActivity" />
         <!-- 我的课程 -->
         <activity
-            android:name=".activity.MyLessonActivity"
+            android:name=".module.teaching.MyLessonActivity"
             android:screenOrientation="portrait" />
         <!-- 我的优惠券 -->
         <activity

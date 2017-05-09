@@ -38,6 +38,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.result.data.PlacesData;
 import com.goodchef.liking.module.coupons.CouponsActivity;
+import com.goodchef.liking.module.teaching.MyLessonActivity;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
 import com.goodchef.liking.module.data.local.Preference;

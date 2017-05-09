@@ -18,8 +18,6 @@ import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
-import com.goodchef.liking.mvp.presenter.MyPrivateCoursesPresenter;
-import com.goodchef.liking.mvp.view.MyPrivateCoursesView;
 
 import java.util.List;
 
@@ -28,11 +26,11 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:43
  */
-public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyPrivateCoursesView {
+public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements PersonalCourseContract.MyPrivateCoursesView {
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyPrivateCoursesAdapter mPrivateLessonAdapter;
-    private MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
+    private PersonalCourseContract.MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
 
     @Override
     protected void requestData(int page) {
@@ -41,9 +39,9 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
 
     private void sendRequest(int page) {
         if (mMyPrivateCoursesPresenter == null) {
-            mMyPrivateCoursesPresenter = new MyPrivateCoursesPresenter(getActivity(), this);
+            mMyPrivateCoursesPresenter = new PersonalCourseContract.MyPrivateCoursesPresenter(getActivity(), this);
         }
-        mMyPrivateCoursesPresenter.getMyPrivateCourses(page, MyPrivateCoursesFragment.this);
+        mMyPrivateCoursesPresenter.getMyPrivateCourses(page);
     }
 
 
