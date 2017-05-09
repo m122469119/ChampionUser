@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.web.HDefaultWebActivity;

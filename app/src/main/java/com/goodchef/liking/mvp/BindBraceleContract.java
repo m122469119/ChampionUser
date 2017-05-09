@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;

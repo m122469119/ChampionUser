@@ -3,8 +3,8 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;

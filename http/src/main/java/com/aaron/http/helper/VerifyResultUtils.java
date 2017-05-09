@@ -1,8 +1,8 @@
-package com.aaron.android.framework.library.http.helper;
+package com.aaron.http.helper;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.Result;
+import com.aaron.http.code.result.Result;
 
 /**
  * Created on 15/7/4.

@@ -1,6 +1,6 @@
-package com.aaron.android.codelibrary.http;
+package com.aaron.http.code;
 
-import com.aaron.android.codelibrary.http.result.Result;
+import com.aaron.http.code.result.Result;
 
 /**
  * Created on 15/6/9.

@@ -2,16 +2,11 @@ package com.goodchef.liking.module.teaching.personalcourse;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
-import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
-import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
-import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
-import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.teaching.CourseModel;
 
 /**

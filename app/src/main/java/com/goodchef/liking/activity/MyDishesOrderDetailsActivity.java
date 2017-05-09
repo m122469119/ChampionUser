@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.aaron.common.utils.DateUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;

@@ -1,11 +1,10 @@
-package com.aaron.android.framework.library.http.volley;
+package com.aaron.http.volley;
 
-import com.aaron.android.codelibrary.http.NetworkErrorResponse;
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
-import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.http.code.NetworkErrorResponse;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.http.code.result.Result;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -41,7 +40,7 @@ public class VolleyResultRequest<T extends Result> extends Request<T> {
     private Map<String, Object> mParams;
     private Map<String, String> mHeaders;
     private Class<T> mClass;
-    private static final int TIMEOUT_MS = EnvironmentUtils.Config.isDebugMode() ? 10000 : 5000; //超时时间
+    private static final int TIMEOUT_MS = 5000; //超时时间
     private static final int MAX_RETRIES_COUNT = 0; //最大重连次数
     private static final float BACKOFF_MULT = 1f;
     private RequestCallback<T> mRequestCallback;
@@ -155,9 +154,10 @@ public class VolleyResultRequest<T extends Result> extends Request<T> {
                 }
             }
             mRequestCallback.onFailure(requestError);
-            if (EnvironmentUtils.Network.isNetWorkAvailable() && VolleyHttpRequestClient.sNetworkStatistics != null) {
-                VolleyHttpRequestClient.sNetworkStatistics.post(requestError);
-            }
+            //TODO 网络异常上报应该放到app module处理
+//            if (EnvironmentUtils.Network.isNetWorkAvailable() && VolleyHttpRequestClient.sNetworkStatistics != null) {
+//                VolleyHttpRequestClient.sNetworkStatistics.post(requestError);
+//            }
         }
     }
 

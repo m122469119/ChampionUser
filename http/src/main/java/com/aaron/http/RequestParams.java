@@ -1,4 +1,4 @@
-package com.aaron.android.framework.library.http;
+package com.aaron.http;
 
 import java.util.HashMap;
 import java.util.Map;

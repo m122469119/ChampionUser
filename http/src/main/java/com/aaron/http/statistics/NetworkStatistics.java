@@ -1,6 +1,7 @@
-package com.aaron.android.framework.library.http.statistics;
+package com.aaron.http.statistics;
 
-import com.aaron.android.codelibrary.http.RequestError;
+
+import com.aaron.http.code.RequestError;
 
 /**
  * Created on 16/7/21.

@@ -5,12 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.util.ArrayMap;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.library.http.helper.VerifyResultUtils;
+import com.aaron.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.library.thread.TaskScheduler;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.DateUtils;

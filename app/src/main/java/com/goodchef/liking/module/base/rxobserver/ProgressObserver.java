@@ -3,7 +3,7 @@ package com.goodchef.liking.module.base.rxobserver;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
+import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.utils.ResourceUtils;
 

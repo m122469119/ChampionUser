@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 
-import com.aaron.android.framework.library.http.volley.VolleyRequestSingleton;
+import com.aaron.http.volley.VolleyRequestSingleton;
 import com.aaron.android.framework.library.thread.TaskScheduler;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;

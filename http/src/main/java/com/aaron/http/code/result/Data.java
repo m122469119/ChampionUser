@@ -1,4 +1,4 @@
-package com.aaron.android.codelibrary.http.result;
+package com.aaron.http.code.result;
 
 import java.io.Serializable;
 

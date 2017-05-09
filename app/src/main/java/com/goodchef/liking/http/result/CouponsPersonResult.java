@@ -1,7 +1,7 @@
 package com.goodchef.liking.http.result;
 
 import com.google.gson.annotations.SerializedName;
-import com.aaron.android.codelibrary.http.result.Data;
+import com.aaron.http.code.result.Data;
 
 import java.util.List;
 

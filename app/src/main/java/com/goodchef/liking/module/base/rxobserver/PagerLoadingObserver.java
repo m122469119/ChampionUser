@@ -2,7 +2,7 @@ package com.goodchef.liking.module.base.rxobserver;
 
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
-import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
+import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.http.result.LikingResult;
 
 /**

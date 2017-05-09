@@ -2,8 +2,8 @@ package com.goodchef.liking.http.callback;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.widgets.dialog.LiKingLoadingDialog;
 

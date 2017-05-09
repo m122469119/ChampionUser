@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.Data;
+import com.aaron.http.code.result.Data;
 
 /**
  * Created on 2017/3/11

@@ -9,7 +9,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
+import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.data.local.Preference;
 

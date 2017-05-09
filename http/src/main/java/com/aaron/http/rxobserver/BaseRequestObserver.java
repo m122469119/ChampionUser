@@ -1,6 +1,6 @@
-package com.aaron.android.framework.library.http.rxobserver;
+package com.aaron.http.rxobserver;
 
-import com.aaron.android.codelibrary.http.result.Result;
+import com.aaron.http.code.result.Result;
 import com.aaron.common.utils.LogUtils;
 
 import io.reactivex.Observer;

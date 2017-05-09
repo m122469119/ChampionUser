@@ -2,7 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.R;

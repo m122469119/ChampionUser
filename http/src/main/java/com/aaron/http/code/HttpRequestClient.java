@@ -1,6 +1,6 @@
-package com.aaron.android.codelibrary.http;
+package com.aaron.http.code;
 
-import com.aaron.android.codelibrary.http.result.Result;
+import com.aaron.http.code.result.Result;
 
 /**
  * 网络请求接口Interface,由具体的实现

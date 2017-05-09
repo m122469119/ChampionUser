@@ -6,7 +6,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestError;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.share.weixin.WeixinShare;

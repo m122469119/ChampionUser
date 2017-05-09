@@ -1,10 +1,10 @@
-package com.aaron.android.framework.library.http.volley;
+package com.aaron.http.volley;
 
-import com.aaron.android.codelibrary.http.HttpRequestClient;
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.result.Result;
-import com.aaron.android.framework.library.http.RequestParams;
-import com.aaron.android.framework.library.http.statistics.NetworkStatistics;
+import com.aaron.http.RequestParams;
+import com.aaron.http.code.HttpRequestClient;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.result.Result;
+import com.aaron.http.statistics.NetworkStatistics;
 import com.android.volley.Request;
 
 import java.util.HashMap;

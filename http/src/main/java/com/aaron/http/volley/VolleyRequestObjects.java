@@ -1,10 +1,10 @@
-package com.aaron.android.framework.library.http.volley;
+package com.aaron.http.volley;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestObjects;
-import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestObjects;
+import com.aaron.http.code.result.Result;
 
 import java.util.Map;
 

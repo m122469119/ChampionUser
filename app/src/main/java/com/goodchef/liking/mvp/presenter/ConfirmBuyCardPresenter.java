@@ -3,8 +3,8 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.goodchef.liking.R;

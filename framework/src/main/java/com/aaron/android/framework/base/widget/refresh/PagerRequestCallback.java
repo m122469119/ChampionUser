@@ -1,8 +1,9 @@
 package com.aaron.android.framework.base.widget.refresh;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.Result;
+
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.http.code.result.Result;
 
 /**
  * Created on 16/8/24.

@@ -1,6 +1,6 @@
 package com.goodchef.liking.mvp.model;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
+import com.aaron.http.code.RequestCallback;
 import com.goodchef.liking.http.result.CityListResult;
 
 /**

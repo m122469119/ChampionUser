@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.Result;
+import com.aaron.http.code.result.Result;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.google.gson.annotations.SerializedName;
 

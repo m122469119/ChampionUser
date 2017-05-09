@@ -5,7 +5,7 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.BasePresenter;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.aaron.android.framework.library.http.rxobserver.BaseRequestObserver;
+import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.module.card.CardModel;
 
 /**

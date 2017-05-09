@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.Data;
+import com.aaron.http.code.result.Data;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.google.gson.annotations.SerializedName;

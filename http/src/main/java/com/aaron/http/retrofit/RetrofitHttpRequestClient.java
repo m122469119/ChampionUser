@@ -1,11 +1,11 @@
-package com.aaron.android.framework.library.http.retrofit;
+package com.aaron.http.retrofit;
 
-import com.aaron.android.codelibrary.http.HttpRequestClient;
-import com.aaron.android.codelibrary.http.NetworkErrorResponse;
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.Result;
 import com.aaron.common.utils.LogUtils;
+import com.aaron.http.code.HttpRequestClient;
+import com.aaron.http.code.NetworkErrorResponse;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.http.code.result.Result;
 
 import java.io.IOException;
 

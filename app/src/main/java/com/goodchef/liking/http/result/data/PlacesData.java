@@ -3,7 +3,7 @@ package com.goodchef.liking.http.result.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.aaron.android.codelibrary.http.result.Data;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**

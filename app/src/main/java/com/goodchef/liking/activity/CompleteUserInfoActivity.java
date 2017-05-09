@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.http.code.RequestError;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;

@@ -1,8 +1,8 @@
-package com.aaron.android.framework.library.http.retrofit;
+package com.aaron.http.retrofit;
 
 
-import com.aaron.android.codelibrary.http.RequestObjects;
-import com.aaron.android.codelibrary.http.result.Result;
+import com.aaron.http.code.RequestObjects;
+import com.aaron.http.code.result.Result;
 
 import retrofit2.Call;
 
