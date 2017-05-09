@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.teaching.personalcourse;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
