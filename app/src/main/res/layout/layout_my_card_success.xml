@@ -224,6 +224,7 @@
                 android:id="@+id/upgrade_card_prompt_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
                 android:layout_marginTop="@dimen/spacing_12dp"
                 android:gravity="center"
                 android:padding="@dimen/spacing_12dp"

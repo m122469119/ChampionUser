@@ -127,13 +127,13 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
         if (myCardData != null) {
             mStateView.setState(StateView.State.SUCCESS);
             hasCard = myCardData.getHasCard();
-            shoRenewCard(myCardData);
+            showRenewCard(myCardData);
             if (hasCard == NumberConstantUtil.ONE) {//有卡
                 mNoCardLayout.setVisibility(View.GONE);
                 mRootScrollView.setVisibility(View.VISIBLE);
                 String title = myCardData.getShowDesc();
                 if (!StringUtils.isEmpty(title)) {
-                    mUpgradeCardPromptTextView.setText(title);
+                    mUpgradeCardPromptTextView.setText(title.replace("\\n", "\n"));
                 }
                 showMyCardInfo(myCardData);
             } else {//没卡
@@ -171,10 +171,11 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     /**
      * 展示是否有续卡按钮
+     * w
      *
      * @param myCardData
      */
-    private void shoRenewCard(MyCardResult.MyCardData myCardData) {
+    private void showRenewCard(MyCardResult.MyCardData myCardData) {
         int showRenewCard = myCardData.getShowRenewCard();
         if (showRenewCard == NumberConstantUtil.ZERO) {//不展示续卡按钮
             mFlowCardBtn.setVisibility(View.GONE);
