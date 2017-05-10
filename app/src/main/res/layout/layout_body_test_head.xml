@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.aaron.android.framework.library.imageloader.HImageView
+            <com.aaron.imageloader.code.HImageView
                 android:id="@+id/head_image_background"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
@@ -174,7 +174,7 @@
 
     </RelativeLayout>
 
-    <com.aaron.android.framework.library.imageloader.HImageView
+    <com.aaron.imageloader.code.HImageView
         android:id="@+id/body_head_image"
         android:layout_width="60dp"
         android:layout_height="60dp"

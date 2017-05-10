@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.aaron.android.codelibrary.imageloader.ImageLoader;
+import com.aaron.imageloader.ImageLoader;
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
-import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
-import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
-import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.imageloader.code.HImageConfigBuilder;
+import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.aaron.camera.SelectImageFromAlbum;
 

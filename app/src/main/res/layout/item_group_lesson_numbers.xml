@@ -17,7 +17,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.aaron.android.framework.library.imageloader.HImageView
+            <com.aaron.imageloader.code.HImageView
                 android:id="@+id/group_lesson_gym_head_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

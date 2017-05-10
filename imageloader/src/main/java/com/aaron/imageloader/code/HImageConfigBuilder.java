@@ -1,9 +1,9 @@
-package com.aaron.android.framework.library.imageloader;
+package com.aaron.imageloader.code;
 
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.aaron.android.codelibrary.imageloader.ImageConfigBuilder;
+import com.aaron.imageloader.ImageConfigBuilder;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
 import com.facebook.drawee.drawable.ScalingUtils;

@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp">
 
-                <com.aaron.android.framework.library.imageloader.HImageView
+                <com.aaron.imageloader.code.HImageView
                     android:id="@+id/group_lesson_details_shop_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -308,7 +308,7 @@
                 android:layout_height="160dp"
                 android:visibility="gone">
 
-                <com.aaron.android.framework.library.imageloader.HImageView
+                <com.aaron.imageloader.code.HImageView
                     android:id="@+id/teacher_imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

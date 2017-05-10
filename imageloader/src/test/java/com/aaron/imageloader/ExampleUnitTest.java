@@ -1,4 +1,4 @@
-package com.liking.imageloader;
+package com.aaron.imageloader;
 
 import org.junit.Test;
 

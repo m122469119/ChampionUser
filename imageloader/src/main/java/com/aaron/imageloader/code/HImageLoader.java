@@ -1,16 +1,16 @@
-package com.aaron.android.framework.library.imageloader;
+package com.aaron.imageloader.code;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.widget.ImageView;
 
-import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
-import com.aaron.android.codelibrary.imageloader.ImageConfig;
-import com.aaron.android.codelibrary.imageloader.ImageLoader;
-import com.aaron.android.codelibrary.imageloader.ImageLoaderCallback;
-import com.aaron.android.framework.library.imageloader.Supplier.MemorySupplier;
+import com.aaron.imageloader.code.Supplier.MemorySupplier;
 import com.aaron.common.utils.LogUtils;
+import com.aaron.imageloader.ImageCacheParams;
+import com.aaron.imageloader.ImageConfig;
+import com.aaron.imageloader.ImageLoader;
+import com.aaron.imageloader.ImageLoaderCallback;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.drawee.backends.pipeline.Fresco;

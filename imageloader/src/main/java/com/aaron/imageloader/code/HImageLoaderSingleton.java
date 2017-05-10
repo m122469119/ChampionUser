@@ -1,6 +1,7 @@
-package com.aaron.android.framework.library.imageloader;
+package com.aaron.imageloader.code;
 
-import com.aaron.android.codelibrary.imageloader.ImageLoader;
+
+import com.aaron.imageloader.ImageLoader;
 
 /**
  * 图片加载器单例

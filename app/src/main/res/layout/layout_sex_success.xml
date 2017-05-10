@@ -12,7 +12,7 @@
         android:layout_marginTop="100dp"
         android:orientation="vertical">
 
-        <com.aaron.android.framework.library.imageloader.HImageView
+        <com.aaron.imageloader.code.HImageView
             xmlns:fresco="http://schemas.android.com/apk/res-auto"
             android:id="@+id/head_image"
             android:layout_width="80dp"

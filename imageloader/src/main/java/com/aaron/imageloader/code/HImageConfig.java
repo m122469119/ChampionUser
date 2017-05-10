@@ -1,9 +1,9 @@
-package com.aaron.android.framework.library.imageloader;
+package com.aaron.imageloader.code;
 
 import android.net.Uri;
 
-import com.aaron.android.codelibrary.imageloader.ImageConfig;
-import com.aaron.android.codelibrary.imageloader.ImageLoader;
+import com.aaron.imageloader.ImageConfig;
+import com.aaron.imageloader.ImageLoader;
 import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
 
 /**

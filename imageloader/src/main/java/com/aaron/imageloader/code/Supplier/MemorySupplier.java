@@ -1,4 +1,4 @@
-package com.aaron.android.framework.library.imageloader.Supplier;
+package com.aaron.imageloader.code.Supplier;
 
 import com.facebook.common.internal.Supplier;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;

@@ -1,4 +1,4 @@
-package com.liking.imageloader;
+package com.aaron.imageloader;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

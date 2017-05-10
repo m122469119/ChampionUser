@@ -4,12 +4,12 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
 
-import com.aaron.android.codelibrary.imageloader.ImageCacheParams;
-import com.aaron.common.utils.LogUtils;
-import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
+import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.android.framework.library.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.imageloader.ImageCacheParams;
 import com.facebook.common.util.ByteConstants;
 
 /**
