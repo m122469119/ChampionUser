@@ -1,11 +1,27 @@
 package com.goodchef.liking.module.teaching;
 
+import android.text.TextUtils;
+import android.util.SparseArray;
+
+import com.aaron.android.codelibrary.http.RequestCallback;
+import com.aaron.android.codelibrary.http.RequestError;
+import com.aaron.android.framework.library.http.RequestParams;
+import com.goodchef.liking.R;
+import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
+import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
+import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
+import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,7 +44,8 @@ public class CourseModel {
      */
     public Observable<MyGroupCoursesResult> getMyGroupList(int page) {
 
-        return LikingNewApi.getInstance().getTeamCourseList(UrlList.sHostVersion, Preference.getToken(), page)
+        return LikingNewApi.getInstance()
+                .getTeamCourseList(UrlList.sHostVersion, Preference.getToken(), page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -40,7 +57,8 @@ public class CourseModel {
      */
     public Observable<LikingResult> sendCancelCoursesRequest(String orderId) {
 
-        return LikingNewApi.getInstance().cancelTeamCourse(UrlList.sHostVersion, Preference.getToken(), orderId)
+        return LikingNewApi.getInstance()
+                .cancelTeamCourse(UrlList.sHostVersion, Preference.getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -52,9 +70,55 @@ public class CourseModel {
      */
     public Observable<MyPrivateCoursesResult> getMyPrivateCourses(int page) {
 
-        return LikingNewApi.getInstance().getPersonalCourseList(UrlList.sHostVersion, Preference.getToken(), page)
+        return LikingNewApi.getInstance()
+                .getPersonalCourseList(UrlList.sHostVersion, Preference.getToken(), page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     * 获取团体课详情
+     *
+     * @param scheduleId 课程排序id
+     * @return
+     */
+    public Observable<GroupCoursesResult> getGroupCoursesDetails(String scheduleId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("schedule_id", scheduleId);
+        String token = Preference.getToken();
+        if (!TextUtils.isEmpty(token)) {
+            map.put("token", token);
+        }
+        return LikingNewApi.getInstance()
+                .getCourseInfo(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 团体课预约
+     *
+     * @param scheduleId 团体课排期id
+     */
+
+    public Observable<LikingResult> orderGroupCourses(String gymId, String scheduleId) {
+
+        return LikingNewApi.getInstance()
+                .teamCourseReserve(UrlList.sHostVersion, Preference.getToken(), gymId, scheduleId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 获取我的付费团体课详情
+     *
+     * @param orderId
+     */
+    public Observable<MyChargeGroupCoursesDetailsResult> getChargeGroupCoursesDetails(String orderId) {
+
+        return LikingNewApi.getInstance()
+                .chargeGroupCoursesDetails(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

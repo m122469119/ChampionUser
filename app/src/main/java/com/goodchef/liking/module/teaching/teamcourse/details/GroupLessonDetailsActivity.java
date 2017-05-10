@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.teaching.teamcourse.details;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.ArenaActivity;
+import com.goodchef.liking.activity.GroupCoursesChargeConfirmActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
@@ -35,13 +38,11 @@ import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
+import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.teaching.MyLessonActivity;
 import com.goodchef.liking.module.teaching.teamcourse.MyGroupLessonFragment;
 import com.goodchef.liking.mvp.ShareContract;
-import com.goodchef.liking.mvp.presenter.GroupCoursesDetailsPresenter;
-import com.goodchef.liking.mvp.view.GroupCourserDetailsView;
-import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -58,7 +59,8 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/24 下午3:21
  */
-public class GroupLessonDetailsActivity extends AppBarActivity implements GroupCourserDetailsView, ShareContract.ShareView {
+public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCourseDetailsContract.GroupCourserDetailsView, ShareContract.ShareView {
+
     private static final int COURSES_STATE_NOT_START = 0;// 未开始
     private static final int COURSES_STATE_PROCESS = 1;//进行中
     private static final int COURSES_STATE_OVER = 2;//已结束
@@ -66,6 +68,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     private static final int COURSES_IS_FREE = 0;//免费团体课
     private static final int COURSES_NOT_FREE = 1;//收费费团体课
     private static final int COURSES_SELF = 2;//自助团体课
+
     @BindView(R.id.group_courses_details_state_view)
     LikingStateView mStateView;
     @BindView(R.id.group_lesson_details_shop_image)
@@ -109,17 +112,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     @BindView(R.id.group_teacher_name)
     TextView mTeacherNameTextView;
 
-    private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
-    private GroupCoursesDetailsPresenter mGroupCoursesDetailsPresenter;
-    private String scheduleId;//排期id
-    private int mCoursesState = -1;//课程状态
-    private String orderId;//订单id
-    private String guota;//预约人数
-    private int isFree;//是否免费
-    private int scheduleType = -1;
-    private String price;//价格
+    private TeamCourseDetailsContract.GroupCoursesDetailsPresenter mDetailsPresenter;
     private ShareContract.SharePresenter mSharePresenter;
 
+    private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
     private GroupLessonNumbersAdapter mGroupLessonNumbersAdapter;
 
     @Override
@@ -128,16 +124,16 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         setContentView(R.layout.activity_group_lesson_details);
         ButterKnife.bind(this);
         mSharePresenter = new ShareContract.SharePresenter(this, this);
-        mGroupCoursesDetailsPresenter = new GroupCoursesDetailsPresenter(this,this);
+        mDetailsPresenter = new TeamCourseDetailsContract.GroupCoursesDetailsPresenter(this,this);
         setTitle(getString(R.string.title_gruop_detials));
         initData();
         setViewOnClickListener();
     }
 
     private void initData() {
-        scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
-        mCoursesState = getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1);
-        orderId = getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID);
+        mDetailsPresenter.setScheduleId(getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID));
+        mDetailsPresenter.setCoursesState(getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1));
+        mDetailsPresenter.setOrderId(getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID));
         requestData();
         setRightMenu();
     }
@@ -168,15 +164,15 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * 设置底部view的状态
      */
     private void setBottomCoursesState() {
-        if (mCoursesState == -1) {
+        if (mDetailsPresenter.mCoursesState == -1) {
             setBottomCoursesStateFreeView();
-        } else if (mCoursesState == COURSES_STATE_NOT_START) {//未开始
+        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_NOT_START) {//未开始
             setBottomCoursesStateNoStartView();
-        } else if (mCoursesState == COURSES_STATE_PROCESS) {//进行中
+        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_PROCESS) {//进行中
             setBottomCoursesStateSameView(R.string.start_process);
-        } else if (mCoursesState == COURSES_STATE_OVER) {//已结束
+        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_OVER) {//已结束
             setBottomCoursesStateSameView(R.string.courses_complete);
-        } else if (mCoursesState == COURSES_STATE_CANCEL) {//已取消
+        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_CANCEL) {//已取消
             setBottomCoursesStateSameView(R.string.courses_cancel);
         }
     }
@@ -215,11 +211,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
      * 设置底部团体课免费
      */
     private void setBottomCoursesStateFreeView() {
-        if (isFree == COURSES_IS_FREE) {//免费
+        if (mDetailsPresenter.isFree == COURSES_IS_FREE) {//免费
             mCoursesStateLayout.setVisibility(View.GONE);
             mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
-            if (!StringUtils.isEmpty(guota)) {
-                if (Integer.parseInt(guota) == 0) {
+            if (!StringUtils.isEmpty(mDetailsPresenter.quota)) {
+                if (Integer.parseInt(mDetailsPresenter.quota) == 0) {
                     mImmediatelySubmitBtn.setText(R.string.appointment_fill);
                     mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
                     mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
@@ -230,11 +226,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             } else {
                 setImmediatelySubmitBtnView();
             }
-        } else if (isFree == COURSES_NOT_FREE) {//收费
+        } else if (mDetailsPresenter.isFree == COURSES_NOT_FREE) {//收费
             mImmediatelySubmitBtn.setVisibility(View.GONE);
             mCoursesStateLayout.setVisibility(View.VISIBLE);
             mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-            mStatePromptTextView.setText(getString(R.string.money_symbol) + price);
+            mStatePromptTextView.setText(getString(R.string.money_symbol) + mDetailsPresenter.price);
             mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
             mStatePromptTextView.setBackgroundColor(0);
             mCancelOrderBtn.setText(R.string.immediately_buy_btn);
@@ -254,7 +250,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
     private void requestData() {
         mStateView.setState(StateView.State.LOADING);
-        mGroupCoursesDetailsPresenter.getGroupCoursesDetails(scheduleId);
+        mDetailsPresenter.getGroupCoursesDetails(mDetailsPresenter.scheduleId);
     }
 
 
@@ -304,7 +300,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
     public void updateCancelOrderView() {
         showToast(getString(R.string.cancel_success));
         postEvent(new CancelGroupCoursesMessage());
-        mCoursesState = 3;
+        mDetailsPresenter.mCoursesState = 3;
         setBottomCoursesState();
         requestData();
     }
@@ -324,15 +320,14 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 HImageLoaderSingleton.getInstance().loadImage(mShopImageView, coursesImageUrl);
             }
         }
-        guota = groupLessonData.getQuota();
+
         mScheduleResultTextView.setText(groupLessonData.getQuotaDesc());
         mCoursesTimeTextView.setText(groupLessonData.getCourseDate());
         if (!TextUtils.isEmpty(groupLessonData.getGymAddress())) {
             mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
         }
         mShopPlaceTextView.setText(groupLessonData.getPlaceInfo());
-        scheduleType = groupLessonData.getScheduleType();
-        if (COURSES_SELF == scheduleType) {//如果是自助课程隐藏教练显示
+        if (COURSES_SELF == mDetailsPresenter.scheduleType) {//如果是自助课程隐藏教练显示
             mTeacherNamelayout.setVisibility(View.GONE);
         } else {
             mTeacherNamelayout.setVisibility(View.VISIBLE);
@@ -346,8 +341,6 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         mCoursesIntroduceTextView.setText(groupLessonData.getCourseDesc());
         setStadiumImage(groupLessonData.getGymImgs());
         setGroupLessonNumbers(groupLessonData.getGymNumbers());
-        isFree = groupLessonData.getIsFree();
-        price = groupLessonData.getPrice();
         String tagName = groupLessonData.getTagName();
         mGroupCoursesTagTextView.setText(tagName);
         setBottomCoursesState();
@@ -398,7 +391,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
             case R.id.group_immediately_submit_btn://立即购买
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
                 if (Preference.isLogin()) {
-                    mGroupCoursesDetailsPresenter.orderGroupCourses(LikingHomeActivity.gymId, scheduleId, Preference.getToken());
+                    mDetailsPresenter.orderGroupCourses(LikingHomeActivity.gymId);
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
@@ -406,12 +399,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
 
                 break;
             case R.id.cancel_order_btn://取消预定
-                if (isFree == COURSES_IS_FREE) {//免费
+                if (mDetailsPresenter.isFree == COURSES_IS_FREE) {//免费
                     showCancelCoursesDialog();
-                } else if (isFree == COURSES_NOT_FREE) {//收费
+                } else if (mDetailsPresenter.isFree == COURSES_NOT_FREE) {//收费
                     if (Preference.isLogin()) {
                         Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
-                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, scheduleId);
+                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, mDetailsPresenter.scheduleId);
                         // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                         startActivity(intent);
                     } else {
@@ -435,7 +428,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
                 if (mSharePresenter == null) {
                     mSharePresenter = new ShareContract.SharePresenter(this, this);
                 }
-                mSharePresenter.getGroupShareData(scheduleId);
+                mSharePresenter.getGroupShareData(mDetailsPresenter.scheduleId);
                 mShareLayout.setEnabled(false);
 
                 break;
@@ -457,7 +450,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements GroupC
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               mGroupCoursesDetailsPresenter.sendCancelCoursesRequest(orderId);
+                mDetailsPresenter.sendCancelCoursesRequest();
                 dialog.dismiss();
             }
         });

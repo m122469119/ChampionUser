@@ -5,8 +5,10 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyCardResult;
+import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
@@ -19,6 +21,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -120,6 +123,24 @@ public interface LikingApiService {
     Observable<MyPrivateCoursesResult> getPersonalCourseList(@Path(PATH_VERSION) String version,
                                                              @Field(KEY_TOKEN) String token,
                                                              @Field("page")int page);
+    @FormUrlEncoded
+    @POST(Urls.GROUP_LESSON_DETAILS)
+    Observable<GroupCoursesResult> getCourseInfo(@Path(PATH_VERSION) String version,
+                                                 @FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST(Urls.ORDER_GROUP_COURSES)
+    Observable<LikingResult> teamCourseReserve(@Path(PATH_VERSION) String version,
+                                               @Field(KEY_TOKEN) String token,
+                                               @Field("gym_id") String gymId,
+                                               @Field("schedule_id") String scheduleId);
+
+    @FormUrlEncoded
+    @POST(Urls.ORDER_GET_COURSE_DETAIL)
+    Observable<MyChargeGroupCoursesDetailsResult>
+                            chargeGroupCoursesDetails(@Path(PATH_VERSION) String version,
+                                                      @Field(KEY_TOKEN) String token,
+                                                      @Field("order_id")String orderId);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -199,6 +220,21 @@ public interface LikingApiService {
          * 我的私教课列表
          */
         public static final String MY_ORDER_PRIVATE_LIST = sVersion + "order/personal-course-list";
+
+        /**
+         * 团体课详情
+         */
+        public static final String GROUP_LESSON_DETAILS = sVersion + "course/info";
+
+        /**
+         * 预约团体课
+         */
+        public static final String ORDER_GROUP_COURSES = sVersion + "order/team-course-reserve";
+
+        /**
+         * 获取我的付费团体课详情
+         */
+        public static final String ORDER_GET_COURSE_DETAIL = sVersion + "order/get-course-detail";
 
 
 //        /**同步时间戳*/

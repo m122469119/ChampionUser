@@ -33,6 +33,7 @@ import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.teaching.MyLessonActivity;
+import com.goodchef.liking.module.teaching.teamcourse.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.mvp.presenter.SelfHelpGroupCoursesPresenter;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
 import com.goodchef.liking.module.data.local.Preference;
