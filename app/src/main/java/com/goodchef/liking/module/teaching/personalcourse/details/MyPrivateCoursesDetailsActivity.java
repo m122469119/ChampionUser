@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.teaching.personalcourse.details;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -8,92 +8,93 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
-import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.module.teaching.personalcourse.MyPrivateCoursesFragment;
-import com.goodchef.liking.mvp.presenter.MyPrivateCoursesDetailsPresenter;
-import com.goodchef.liking.mvp.view.MyPrivateCoursesDetailsView;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 说明:我的私教课详情
  * Author shaozucheng
  * Time:16/6/20 下午7:08
  */
-public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements MyPrivateCoursesDetailsView, View.OnClickListener {
+public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsView, View.OnClickListener {
+
     private static final int COURSES_STATE_PAYED = 0;//0 已支付
     private static final int COURSES_STATE_COMPLETE = 1;//1 已完成
     private static final int COURSES_STATE_CANCEL = 2; //  2已取消
-    private TextView mContactTeacherBtn;//联系教练
-    private TextView mCoursesTitleTextView;//训练项目
-    private TextView mCoursesStateTextView;//状态
-    private TextView mPrivateTeacherNameTextView;//教练名称
-    private TextView mCoursesTagsTextView;//tag
-    private TextView mPeriodOfValidityTextView;//有效期
-    private TextView mOrderNumberTextView;//订单号
-    private TextView mOrderTimeTextView;//下单时间
-    private TextView mCoursesPersonNumberTextView;//上课人数
-    private TextView mTimesTextView;//上课时长
-    private TextView mCoursesPriceTextView;//价格
-    private TextView mFavourableTextView;//优惠
-    private TextView mRealityPriceTextView;//实际价格
-    private TextView mPayTypeTextView;//支付方式
-    private HImageView mHImageView;
-    private LinearLayout mBottomLayout;
 
-    private TextView CoursesNotice;//公告
-    private TextView mSurplusCoursesTimesTextView;//剩余课次
-    private TextView mBuyCoursesTimesTextView;//购买次数
-    private TextView mGoClassTimesTextView;//上课次数
-    private TextView mCancelCoursesTimesTextView;//消课次数
-    private TextView mBreakPromiseTimesTextView;//失约次数
+    @BindView(R.id.my_private_courses_state_view)
+    LikingStateView mStateView;
+    @BindView(R.id.details_contact_teacher)
+    TextView mContactTeacherBtn;//联系教练
+    @BindView(R.id.details_courses_title)
+    TextView mCoursesTitleTextView;//训练项目
+    @BindView(R.id.details_courses_state)
+    TextView mCoursesStateTextView;//状态
+    @BindView(R.id.details_private_teacher_name)
+    TextView mPrivateTeacherNameTextView;//教练名称
+    @BindView(R.id.details_courses_tags)
+    TextView mCoursesTagsTextView;//tag
+    @BindView(R.id.details_period_of_validity)
+    TextView mPeriodOfValidityTextView;//有效期
+    @BindView(R.id.details_order_number)
+    TextView mOrderNumberTextView;//订单号
+    @BindView(R.id.details_order_time)
+    TextView mOrderTimeTextView;//下单时间
+    @BindView(R.id.details_courses_person_number)
+    TextView mCoursesPersonNumberTextView;//上课人数
+    @BindView(R.id.details_courses_person_time)
+    TextView mTimesTextView;//上课时长
+    @BindView(R.id.details_courses_price)
+    TextView mCoursesPriceTextView;//价格
+    @BindView(R.id.details_favourable)
+    TextView mFavourableTextView;//优惠
+    @BindView(R.id.details_reality_price)
+    TextView mRealityPriceTextView;//实际价格
+    @BindView(R.id.details_pay_type)
+    TextView mPayTypeTextView;//支付方式
+    @BindView(R.id.details_private_lesson_image)
+    HImageView mHImageView;
+    @BindView(R.id.layout_bottom)
+    LinearLayout mBottomLayout;
 
+    @BindView(R.id.courses_notice)
+    TextView CoursesNotice;//公告
+    @BindView(R.id.surplus_courses_times)
+    TextView mSurplusCoursesTimesTextView;//剩余课次
+    @BindView(R.id.buy_courses_times)
+    TextView mBuyCoursesTimesTextView;//购买次数
+    @BindView(R.id.do_class_times)
+    TextView mGoClassTimesTextView;//上课次数
+    @BindView(R.id.cancel_courses_times)
+    TextView mCancelCoursesTimesTextView;//消课次数
+    @BindView(R.id.break_a_promise_times)
+    TextView mBreakPromiseTimesTextView;//失约次数
 
-    private MyPrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
+    private MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String orderId;
     private String mTeacherPhone;
-    private LikingStateView mStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_private_courses_details);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.title_courses_details));
         initView();
         initData();
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.my_private_courses_state_view);
-        mContactTeacherBtn = (TextView) findViewById(R.id.details_contact_teacher);
-        mCoursesTitleTextView = (TextView) findViewById(R.id.details_courses_title);
-        mCoursesStateTextView = (TextView) findViewById(R.id.details_courses_state);
-        mPrivateTeacherNameTextView = (TextView) findViewById(R.id.details_private_teacher_name);
-        mCoursesTagsTextView = (TextView) findViewById(R.id.details_courses_tags);
-        mPeriodOfValidityTextView = (TextView) findViewById(R.id.details_period_of_validity);
-        mOrderNumberTextView = (TextView) findViewById(R.id.details_order_number);
-        mOrderTimeTextView = (TextView) findViewById(R.id.details_order_time);
-        mCoursesPersonNumberTextView = (TextView) findViewById(R.id.details_courses_person_number);
-        mTimesTextView = (TextView) findViewById(R.id.details_courses_person_time);
-        mCoursesPriceTextView = (TextView) findViewById(R.id.details_courses_price);
-        mFavourableTextView = (TextView) findViewById(R.id.details_favourable);
-        mRealityPriceTextView = (TextView) findViewById(R.id.details_reality_price);
-        mPayTypeTextView = (TextView) findViewById(R.id.details_pay_type);
-        mHImageView = (HImageView) findViewById(R.id.details_private_lesson_image);
-        mBottomLayout = (LinearLayout) findViewById(R.id.layout_bottom);
-
-        CoursesNotice = (TextView) findViewById(R.id.courses_notice);
-        mSurplusCoursesTimesTextView = (TextView) findViewById(R.id.surplus_courses_times);
-        mBuyCoursesTimesTextView = (TextView) findViewById(R.id.buy_courses_times);
-        mGoClassTimesTextView = (TextView) findViewById(R.id.do_class_times);
-        mCancelCoursesTimesTextView = (TextView) findViewById(R.id.cancel_courses_times);
-        mBreakPromiseTimesTextView = (TextView) findViewById(R.id.break_a_promise_times);
-
         mContactTeacherBtn.setOnClickListener(this);
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -106,7 +107,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     private void initData() {
         orderId = getIntent().getStringExtra(MyPrivateCoursesFragment.KEY_ORDER_ID);
-        mCoursesDetailsPresenter = new MyPrivateCoursesDetailsPresenter(this, this);
+        mCoursesDetailsPresenter = new MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsPresenter(this, this);
         sendRequest();
     }
 
@@ -128,7 +129,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
             CoursesNotice.setText(data.getPrompt());
             mSurplusCoursesTimesTextView.setText(data.getLeft_times());
-             mBuyCoursesTimesTextView.setText(data.getBuyTimes());
+            mBuyCoursesTimesTextView.setText(data.getBuyTimes());
             mCancelCoursesTimesTextView.setText(data.getDestroy_times());
             mGoClassTimesTextView.setText(data.getCompleteTimes());
             mBreakPromiseTimesTextView.setText(data.getMiss_times());
@@ -184,7 +185,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     @Override
     public void onClick(View v) {
-      if (v == mContactTeacherBtn) {
+        if (v == mContactTeacherBtn) {
             if (!StringUtils.isEmpty(mTeacherPhone)) {
                 LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
             }

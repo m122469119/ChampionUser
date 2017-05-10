@@ -11,6 +11,7 @@ import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
@@ -142,6 +143,19 @@ public interface LikingApiService {
                                                       @Field(KEY_TOKEN) String token,
                                                       @Field("order_id")String orderId);
 
+    @FormUrlEncoded
+    @POST(Urls.MY_ORDER_PRIVATE_DETAILS)
+    Observable<MyPrivateCoursesDetailsResult>
+                            getPersonalCourseDetails(@Path(PATH_VERSION) String version,
+                                                     @Field(KEY_TOKEN) String token,
+                                                     @Field("order_id")String orderId);
+
+    @FormUrlEncoded
+    @POST(Urls.COMPLETE_MY_PRIVATE_COURSES)
+    Observable<LikingResult> completeTrainerCourse(@Path(PATH_VERSION) String version,
+                                                   @Field(KEY_TOKEN) String token,
+                                                   @Field("order_id")String orderId);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -236,6 +250,15 @@ public interface LikingApiService {
          */
         public static final String ORDER_GET_COURSE_DETAIL = sVersion + "order/get-course-detail";
 
+        /**
+         * 我的私教课详情
+         */
+        public static final String MY_ORDER_PRIVATE_DETAILS = sVersion + "order/course-detail";
+
+        /**
+         * 私教课确认完成
+         */
+        public static final String COMPLETE_MY_PRIVATE_COURSES =  sVersion + "order/complete-trainer-course";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

@@ -10,16 +10,16 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.Preference;
-import com.goodchef.liking.module.teaching.personalcourse.PersonalCourseContract;
+import com.goodchef.liking.module.teaching.personalcourse.MyPersonalCourseContract;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/6/18 下午2:58
  */
-public class MyPrivateCoursesPresenter extends BasePresenter<PersonalCourseContract.MyPrivateCoursesView> {
+public class MyPrivateCoursesPresenter extends BasePresenter<MyPersonalCourseContract.MyPrivateCoursesView> {
 
-    public MyPrivateCoursesPresenter(Context context, PersonalCourseContract.MyPrivateCoursesView mainView) {
+    public MyPrivateCoursesPresenter(Context context, MyPersonalCourseContract.MyPrivateCoursesView mainView) {
         super(context, mainView);
     }
 

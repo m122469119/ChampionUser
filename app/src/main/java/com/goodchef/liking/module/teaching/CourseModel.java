@@ -7,6 +7,7 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
+import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
@@ -20,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created on 2017/05/09
- * desc: 课程相关
+ * desc: 课程相关(团体课、私教课)
  *
  * @author: chenlei
  * @version:1.0
@@ -109,6 +110,32 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .chargeGroupCoursesDetails(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /***
+     * 获取我的私教课详情
+     *
+     * @param orderId  订单id
+     */
+    public Observable<MyPrivateCoursesDetailsResult> getMyPrivateCoursesDetails(String orderId) {
+
+        return LikingNewApi.getInstance()
+                .getPersonalCourseDetails(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 完成我的私教课
+     *
+     * @param orderId  订单id
+     */
+    public Observable<LikingResult> completeMyPrivateCourses(String orderId) {
+
+        return LikingNewApi.getInstance()
+                .completeTrainerCourse(UrlList.sHostVersion, Preference.getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -12,12 +12,12 @@ import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.MyPrivateCoursesDetailsActivity;
 import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.module.teaching.personalcourse.details.MyPrivateCoursesDetailsActivity;
 
 import java.util.List;
 
@@ -26,11 +26,11 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:43
  */
-public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements PersonalCourseContract.MyPrivateCoursesView {
+public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyPersonalCourseContract.MyPrivateCoursesView {
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyPrivateCoursesAdapter mPrivateLessonAdapter;
-    private PersonalCourseContract.MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
+    private MyPersonalCourseContract.MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
 
     @Override
     protected void requestData(int page) {
@@ -39,7 +39,7 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
 
     private void sendRequest(int page) {
         if (mMyPrivateCoursesPresenter == null) {
-            mMyPrivateCoursesPresenter = new PersonalCourseContract.MyPrivateCoursesPresenter(getActivity(), this);
+            mMyPrivateCoursesPresenter = new MyPersonalCourseContract.MyPrivateCoursesPresenter(getActivity(), this);
         }
         mMyPrivateCoursesPresenter.getMyPrivateCourses(page);
     }

@@ -17,7 +17,7 @@ import com.goodchef.liking.module.teaching.CourseModel;
  * @version:1.0
  */
 
-public interface PersonalCourseContract {
+public interface MyPersonalCourseContract {
 
     interface MyPrivateCoursesView extends BaseView {
         void updatePrivateCoursesView(MyPrivateCoursesResult.PrivateCoursesData privateCoursesData);
