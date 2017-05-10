@@ -57,6 +57,10 @@ public class CardResult extends BaseResult {
             private String categoryUrl;
             @SerializedName("price")
             private String price;
+            @SerializedName("use_status")
+            private int useStatus;
+            @SerializedName("use_desc")
+            private String useDesc;
 
             public int getCategoryId() {
                 return categoryId;
@@ -88,6 +92,22 @@ public class CardResult extends BaseResult {
 
             public void setPrice(String price) {
                 this.price = price;
+            }
+
+            public int getUseStatus() {
+                return useStatus;
+            }
+
+            public void setUseStatus(int useStatus) {
+                this.useStatus = useStatus;
+            }
+
+            public String getUseDesc() {
+                return useDesc;
+            }
+
+            public void setUseDesc(String useDesc) {
+                this.useDesc = useDesc;
             }
         }
     }

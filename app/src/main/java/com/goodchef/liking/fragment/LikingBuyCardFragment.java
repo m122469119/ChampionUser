@@ -1,5 +1,6 @@
 package com.goodchef.liking.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
@@ -31,10 +33,8 @@ import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
-import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CoursesResult;
-import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
@@ -42,6 +42,7 @@ import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -126,14 +127,11 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             public void onItemClick(View view, int position) {
                 CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
                 if (card != null) {
-                    if (!StringUtils.isEmpty(mGymData.getGymId())) {
-                        UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
-                        Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
-                        intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
-                        intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
-                        intent.putExtra(KEY_BUY_TYPE, 1);
-                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymData.getGymId());
-                        startActivity(intent);
+                    int status = card.getUseStatus();
+                    if (status == NumberConstantUtil.ZERO) {//0表示不可进入购卡确认页
+                        showCanNotIntoConfirmActivity(card.getUseDesc());
+                    } else if (status == NumberConstantUtil.ONE) {
+                        jumpCardConfirmActivity(card);
                     }
                 }
             }
@@ -143,6 +141,42 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                 return false;
             }
         });
+    }
+
+
+    /**
+     * 展示为什么不能进入购卡确认 页面的对话框
+     *
+     * @param message
+     */
+    private void showCanNotIntoConfirmActivity(String message) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setNegativeButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+
+    /**
+     * 跳转到购卡详情页面
+     *
+     * @param card
+     */
+    private void jumpCardConfirmActivity(CardResult.CardData.Card card) {
+        if (!StringUtils.isEmpty(mGymData.getGymId())) {
+            UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
+            Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
+            intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
+            intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
+            intent.putExtra(KEY_BUY_TYPE, NumberConstantUtil.ONE);
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymData.getGymId());
+            startActivity(intent);
+        }
     }
 
     private void setNoDataView() {
@@ -216,17 +250,17 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
                     mBuyCardAdapter.setData(list);
                     mRecyclerView.setAdapter(mBuyCardAdapter);
                     setItemClickListener();
-                    String cityName = locationData.getCityName();
+//                    String cityName = locationData.getCityName();
 
-                    boolean isLocation = locationData.isPositionSuccess();
-                    if (!isLocation) {
-                        SetHeadView();
-                        mCityOpenTextView.setText(R.string.location_fails_confirm);
-                    } else if (!StringUtils.isEmpty(cityName)) {
-                        setHeadNoLocationView(cityName);
-                    } else {
-                        removeHeadView();
-                    }
+//                    boolean isLocation = locationData.isPositionSuccess();
+//                    if (!isLocation) {
+//                        SetHeadView();
+//                        mCityOpenTextView.setText(R.string.location_fails_confirm);
+//                    } else if (!StringUtils.isEmpty(cityName)) {
+//                        setHeadNoLocationView(cityName);
+//                    } else {
+//                        removeHeadView();
+//                    }
                 }
             } else if (list == null || list.size() == 0) {
                 setNoDataView();
@@ -285,46 +319,46 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         sendBuyCardListRequest();
     }
 
-    private void setHeadNoLocationView(String cityName) {
-        boolean isContains = false;
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
-        if (baseConfigResult != null) {
-            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-            if (baseConfigData != null) {
-                List<CityData> cityDataList = baseConfigData.getCityList();
-                if (cityDataList != null && cityDataList.size() > 0) {
-                    for (CityData data : cityDataList) {
-                        if (cityName.contains(data.getCityName()) || cityName.equals(data.getCityName())) {
-                            isContains = true;
-                            break;
-                        }
-                    }
-                    if (isContains) {
-                        removeHeadView();
-                    } else {
-                        SetHeadView();
-                        mCityOpenTextView.setText(R.string.current_city_no_dredge);
-                    }
-                }
-            }
-        }
-    }
+//    private void setHeadNoLocationView(String cityName) {
+//        boolean isContains = false;
+//        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+//        if (baseConfigResult != null) {
+//            BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+//            if (baseConfigData != null) {
+//                List<CityData> cityDataList = baseConfigData.getCityList();
+//                if (cityDataList != null && cityDataList.size() > 0) {
+//                    for (CityData data : cityDataList) {
+//                        if (cityName.contains(data.getCityName()) || cityName.equals(data.getCityName())) {
+//                            isContains = true;
+//                            break;
+//                        }
+//                    }
+//                    if (isContains) {
+//                        removeHeadView();
+//                    } else {
+//                        SetHeadView();
+//                        mCityOpenTextView.setText(R.string.current_city_no_dredge);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-    private void SetHeadView() {
-        if (mBuyCardAdapter != null) {
-            if (mHeadView != null) {
-                mBuyCardAdapter.addHeaderView(mHeadView);
-            }
-        }
-    }
+//    private void SetHeadView() {
+//        if (mBuyCardAdapter != null) {
+//            if (mHeadView != null) {
+//                mBuyCardAdapter.addHeaderView(mHeadView);
+//            }
+//        }
+//    }
 
-    private void removeHeadView() {
-        if (mBuyCardAdapter != null) {
-            if (mHeadView != null) {
-                mBuyCardAdapter.removeHeaderView(mHeadView);
-            }
-        }
-    }
+//    private void removeHeadView() {
+//        if (mBuyCardAdapter != null) {
+//            if (mHeadView != null) {
+//                mBuyCardAdapter.removeHeaderView(mHeadView);
+//            }
+//        }
+//    }
 
     @Override
     public void handleNetworkFailure() {

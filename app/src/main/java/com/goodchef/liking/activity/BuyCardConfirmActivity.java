@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aaron.android.codelibrary.utils.ListUtils;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
@@ -40,6 +41,7 @@ import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.storage.Preference;
 import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -366,9 +368,18 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
             }
             confirmCardList = confirmBuyCardData.getCardList();
-            setCardView(confirmCardList);
-            mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
-            mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
+            int showLimit = confirmBuyCardData.getShowTimeLimit();
+            if (showLimit == NumberConstantUtil.ZERO) {//如果是0不显示选择错峰和全通卡的选项
+                mCardRecyclerView.setVisibility(View.GONE);
+            } else if (showLimit == NumberConstantUtil.ONE) {//如果是1显示
+                mCardRecyclerView.setVisibility(View.VISIBLE);
+                if (!ListUtils.isEmpty(confirmCardList)) {//设置卡的类型
+                    setCardView(confirmCardList);
+                    mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
+                    mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
+                }
+            }
+
             mCardGymName = confirmBuyCardData.getGymName();
             mGymNameTextView.setText(mCardGymName);
             mGymAddressTextView.setText(confirmBuyCardData.getGymAddress());
@@ -383,7 +394,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     @Override
     public void updateSubmitPayView(PayResultData payResultData) {
         int payType = payResultData.getPayType();
-        if (payType == 3) {//3 免金额支付
+        if (payType == NumberConstantUtil.THREE) {//3 免金额支付
             PopupUtils.showToast(getString(R.string.pay_success));
             jumpOrderActivity();
         } else {
@@ -444,9 +455,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 if (object != null) {
                     for (ConfirmCard data : confirmCardList) {
                         if (data.getType() == object.getType()) {
-                            data.setQulification(1);
+                            data.setQulification(NumberConstantUtil.ONE);
                         } else {
-                            data.setQulification(0);
+                            data.setQulification(NumberConstantUtil.ZERO);
                         }
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
@@ -467,7 +478,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      */
     private void setCardView(List<ConfirmCard> confirmCardList) {
         for (ConfirmCard card : confirmCardList) {
-            if (card.getQulification() == 1) {
+            if (card.getQulification() == NumberConstantUtil.ONE) {
                 mCardMoneyTextView.setVisibility(View.VISIBLE);
                 mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                 mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
@@ -576,7 +587,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private void jumpOrderActivity() {
         Intent intent = new Intent(this, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, NumberConstantUtil.ONE);
         startActivity(intent);
         finish();
     }

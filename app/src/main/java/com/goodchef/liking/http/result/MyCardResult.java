@@ -31,6 +31,10 @@ public class MyCardResult extends BaseResult {
         private MyCard mMyCard;
         @SerializedName("activity_title")
         private String activityTitle;
+        @SerializedName("show_desc")
+        private String showDesc;
+        @SerializedName("show_renew_card")
+        private int showRenewCard;
 
         public int getHasCard() {
             return hasCard;
@@ -54,6 +58,22 @@ public class MyCardResult extends BaseResult {
 
         public void setActivityTitle(String activityTitle) {
             this.activityTitle = activityTitle;
+        }
+
+        public String getShowDesc() {
+            return showDesc;
+        }
+
+        public void setShowDesc(String showDesc) {
+            this.showDesc = showDesc;
+        }
+
+        public int getShowRenewCard() {
+            return showRenewCard;
+        }
+
+        public void setShowRenewCard(int showRenewCard) {
+            this.showRenewCard = showRenewCard;
         }
 
         public static class MyCard extends BaseData {

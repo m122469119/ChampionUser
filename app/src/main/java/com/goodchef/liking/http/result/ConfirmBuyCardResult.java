@@ -44,6 +44,8 @@ public class ConfirmBuyCardResult extends BaseResult {
         private String gymName;
         @SerializedName("gym_address")
         private String gymAddress;
+        @SerializedName("show_time_limit")
+        private int showTimeLimit;
 
 
         public String getAdsUrl() {
@@ -116,6 +118,14 @@ public class ConfirmBuyCardResult extends BaseResult {
 
         public void setGymAddress(String gymAddress) {
             this.gymAddress = gymAddress;
+        }
+
+        public int getShowTimeLimit() {
+            return showTimeLimit;
+        }
+
+        public void setShowTimeLimit(int showTimeLimit) {
+            this.showTimeLimit = showTimeLimit;
         }
     }
 }
