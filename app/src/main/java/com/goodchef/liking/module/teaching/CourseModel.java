@@ -1,22 +1,13 @@
 package com.goodchef.liking.module.teaching;
 
 import android.text.TextUtils;
-import android.util.SparseArray;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.library.http.RequestParams;
-import com.goodchef.liking.R;
-import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
-import com.goodchef.liking.http.verify.LiKingRequestCode;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
