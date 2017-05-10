@@ -131,7 +131,6 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
             if (hasCard == NumberConstantUtil.ONE) {//有卡
                 mNoCardLayout.setVisibility(View.GONE);
                 mRootScrollView.setVisibility(View.VISIBLE);
-                mFlowCardBtn.setVisibility(View.VISIBLE);
                 String title = myCardData.getShowDesc();
                 if (!StringUtils.isEmpty(title)) {
                     mUpgradeCardPromptTextView.setText(title);

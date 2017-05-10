@@ -605,4 +605,5 @@
     <string name="coupons_details">优惠券详情</string>
     <string name="single_people">人</string>
     <string name="confirm_call">您确定拨打电话吗？</string>
+    <string name="not_buy_card_prompt">温馨提示</string>
 </resources>

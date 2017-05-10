@@ -324,12 +324,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
      * 处理优惠券
      */
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
-
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double couponAmount = Double.parseDouble(couponAmountStr);
-
         double price = Double.parseDouble(cardPrice);
-
         mCouponsMoneyTextView.setText(mCoupon.getAmount() + getString(R.string.yuan));
         if (price >= couponAmount) {
             //订单的价格大于优惠券的面额
@@ -371,6 +368,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             int showLimit = confirmBuyCardData.getShowTimeLimit();
             if (showLimit == NumberConstantUtil.ZERO) {//如果是0不显示选择错峰和全通卡的选项
                 mCardRecyclerView.setVisibility(View.GONE);
+                if (!ListUtils.isEmpty(confirmCardList)) {//不显示选择卡类型是，从卡列表中选出默认选中的那个卡种
+                    setCardOnlyView();
+                }
             } else if (showLimit == NumberConstantUtil.ONE) {//如果是1显示
                 mCardRecyclerView.setVisibility(View.VISIBLE);
                 if (!ListUtils.isEmpty(confirmCardList)) {//设置卡的类型
@@ -389,6 +389,26 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mStateView.setState(StateView.State.NO_DATA);
         }
 
+    }
+
+    /**
+     * 不显示选择卡类型是，从卡列表中选出默认选中的那个卡种,并且显示价格
+     */
+    private void setCardOnlyView() {
+        for (ConfirmCard card : confirmCardList) {
+            if (card.getQulification() == NumberConstantUtil.ONE) {
+                mCardMoneyTextView.setVisibility(View.VISIBLE);
+                mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
+                mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+                mCardId = card.getCardId();
+                mCardType = card.getName();
+                if (buyType != BUY_TYPE_UPGRADE) {
+                    cardPrice = card.getPrice();
+                    mCardTotalMoney = cardPrice;
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
+                }
+            }
+        }
     }
 
     @Override

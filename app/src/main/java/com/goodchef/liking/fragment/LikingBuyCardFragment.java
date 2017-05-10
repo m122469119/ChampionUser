@@ -151,7 +151,12 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
      */
     private void showCanNotIntoConfirmActivity(String message) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(getActivity());
-        builder.setMessage(message);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_one_content, null, false);
+        TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
+        TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
+        titleTextView.setText(getString(R.string.not_buy_card_prompt));
+        contentTextView.setText(message);
+        builder.setCustomView(view);
         builder.setNegativeButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
