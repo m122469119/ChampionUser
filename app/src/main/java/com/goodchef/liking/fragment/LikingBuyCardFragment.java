@@ -154,7 +154,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_one_content, null, false);
         TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
         TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
-        titleTextView.setText(getString(R.string.not_buy_card_prompt));
+        titleTextView.setVisibility(View.GONE);
         contentTextView.setText(message);
         builder.setCustomView(view);
         builder.setNegativeButton(R.string.dialog_know, new DialogInterface.OnClickListener() {

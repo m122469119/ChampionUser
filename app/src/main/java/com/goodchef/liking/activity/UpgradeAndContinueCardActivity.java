@@ -11,6 +11,7 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.thirdparty.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
@@ -139,5 +140,16 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Ca
     @Override
     public void handleNetworkFailure() {
         mStateView.setState(StateView.State.FAILED);
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(BuyCardSuccessMessage message) {
+        if (message != null) {
+            finish();
+        }
     }
 }

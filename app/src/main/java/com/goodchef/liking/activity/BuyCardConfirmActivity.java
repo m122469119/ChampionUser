@@ -28,6 +28,7 @@ import com.aaron.android.thirdparty.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
@@ -268,13 +269,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         mMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
 
         builder.setCustomView(view);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.again_think, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.buy_card_confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 senSubmitRequest();
@@ -550,7 +551,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         @Override
         public void onSuccess() {
             LogUtils.i(TAG, "alipay sucess");
-
             jumpOrderActivity();
         }
 
@@ -606,6 +606,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
     private void jumpOrderActivity() {
+        postEvent(new BuyCardSuccessMessage());
+        Preference.setLoginGymId(submitGymId);
         Intent intent = new Intent(this, MyOrderActivity.class);
         intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, NumberConstantUtil.ONE);
         startActivity(intent);

@@ -13,6 +13,8 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
+import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
@@ -108,7 +110,7 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
             Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
             intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, NumberConstantUtil.TWO);
             intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, Preference.getLoginGymId());
+            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
             startActivity(intent);
         }
     }
@@ -198,6 +200,12 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
 
     public void onEvent(LoginFinishMessage message) {
         initData();
+    }
+
+    public void onEvent(BuyCardSuccessMessage message) {
+        if (message != null) {
+            finish();
+        }
     }
 
 }
