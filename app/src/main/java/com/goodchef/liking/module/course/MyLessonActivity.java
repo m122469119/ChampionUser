@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching;
+package com.goodchef.liking.module.course;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import com.aaron.android.framework.base.adapter.TabFragmentPagerAdapter;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.teaching.personalcourse.MyPrivateCoursesFragment;
-import com.goodchef.liking.module.teaching.teamcourse.MyGroupLessonFragment;
+import com.goodchef.liking.module.course.personal.MyPrivateCoursesFragment;
+import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
 
 import java.util.ArrayList;
 import java.util.List;

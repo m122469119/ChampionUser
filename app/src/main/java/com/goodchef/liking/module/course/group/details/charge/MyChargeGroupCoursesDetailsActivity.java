@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.teamcourse.details.charge;
+package com.goodchef.liking.module.course.group.details.charge;
 
 import android.os.Bundle;
 import android.widget.RatingBar;
@@ -9,7 +9,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
-import com.goodchef.liking.module.teaching.teamcourse.MyGroupLessonFragment;
+import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import butterknife.BindView;

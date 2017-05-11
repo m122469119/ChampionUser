@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.teamcourse.details.charge;
+package com.goodchef.liking.module.course.group.details.charge;
 
 import android.content.Context;
 
@@ -7,7 +7,7 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.teaching.CourseModel;
+import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/10

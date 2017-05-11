@@ -44,7 +44,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.more.MoreActivity;
-import com.goodchef.liking.module.teaching.MyLessonActivity;
+import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.train.MyTrainDataActivity;
 import com.goodchef.liking.mvp.presenter.MyUserInfoOtherPresenter;
 import com.goodchef.liking.mvp.presenter.UserExercisePresenter;

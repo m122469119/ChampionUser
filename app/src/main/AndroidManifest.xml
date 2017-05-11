@@ -77,7 +77,7 @@
 
         <!-- 团体课程详情 -->
         <activity
-            android:name=".module.teaching.teamcourse.details.GroupLessonDetailsActivity"
+            android:name=".module.course.group.details.GroupLessonDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 私教课程详情 -->
         <activity
@@ -113,7 +113,7 @@
         <activity android:name=".widgets.camera.AlbumActivity" />
         <!-- 我的课程 -->
         <activity
-            android:name=".module.teaching.MyLessonActivity"
+            android:name=".module.course.MyLessonActivity"
             android:screenOrientation="portrait" />
         <!-- 我的优惠券 -->
         <activity
@@ -142,7 +142,7 @@
             android:screenOrientation="portrait" />
         <!-- 我的私教课订单详情 -->
         <activity
-            android:name=".module.teaching.personalcourse.details.MyPrivateCoursesDetailsActivity"
+            android:name=".module.course.personal.details.MyPrivateCoursesDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 我的会员卡 -->
         <activity
@@ -230,7 +230,7 @@
 
         <!-- 收费团体课详情界面 -->
         <activity
-            android:name=".module.teaching.teamcourse.details.charge.MyChargeGroupCoursesDetailsActivity"
+            android:name=".module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity"
             android:screenOrientation="portrait" />
 
         <!-- 选择课程地址 -->

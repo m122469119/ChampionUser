@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.personalcourse.details;
+package com.goodchef.liking.module.course.personal.details;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.teaching.CourseModel;
+import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/10

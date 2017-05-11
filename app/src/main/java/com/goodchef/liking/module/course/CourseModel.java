@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching;
+package com.goodchef.liking.module.course;
 
 import android.text.TextUtils;
 

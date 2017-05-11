@@ -10,7 +10,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.Preference;
-import com.goodchef.liking.module.teaching.personalcourse.MyPersonalCourseContract;
+import com.goodchef.liking.module.course.personal.MyPersonalCourseContract;
 
 /**
  * 说明:

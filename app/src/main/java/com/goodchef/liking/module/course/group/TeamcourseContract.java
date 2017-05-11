@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.teamcourse;
+package com.goodchef.liking.module.course.group;
 
 import android.content.Context;
 
@@ -11,7 +11,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
 import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.teaching.CourseModel;
+import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/09

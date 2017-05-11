@@ -26,7 +26,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GymCoursesResult;
-import com.goodchef.liking.module.teaching.teamcourse.details.GroupLessonDetailsActivity;
+import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.mvp.presenter.GymCoursesPresenter;
 import com.goodchef.liking.mvp.view.GymCoursesView;
 import com.goodchef.liking.storage.UmengEventId;

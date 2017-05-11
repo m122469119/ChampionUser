@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.personalcourse;
+package com.goodchef.liking.module.course.personal;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
-import com.goodchef.liking.module.teaching.personalcourse.details.MyPrivateCoursesDetailsActivity;
+import com.goodchef.liking.module.course.personal.details.MyPrivateCoursesDetailsActivity;
 
 import java.util.List;
 

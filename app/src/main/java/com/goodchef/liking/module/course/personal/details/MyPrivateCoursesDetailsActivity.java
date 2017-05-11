@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.personalcourse.details;
+package com.goodchef.liking.module.course.personal.details;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
-import com.goodchef.liking.module.teaching.personalcourse.MyPrivateCoursesFragment;
+import com.goodchef.liking.module.course.personal.MyPrivateCoursesFragment;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 

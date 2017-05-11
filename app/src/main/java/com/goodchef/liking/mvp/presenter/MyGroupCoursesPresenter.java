@@ -14,7 +14,7 @@ import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.Preference;
-import com.goodchef.liking.module.teaching.teamcourse.TeamcourseContract;
+import com.goodchef.liking.module.course.group.TeamcourseContract;
 
 /**
  * 说明:

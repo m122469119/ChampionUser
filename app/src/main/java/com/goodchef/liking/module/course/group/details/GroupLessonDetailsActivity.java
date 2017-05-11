@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.teaching.teamcourse.details;
+package com.goodchef.liking.module.course.group.details;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,8 +40,8 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.teaching.MyLessonActivity;
-import com.goodchef.liking.module.teaching.teamcourse.MyGroupLessonFragment;
+import com.goodchef.liking.module.course.MyLessonActivity;
+import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
 import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
