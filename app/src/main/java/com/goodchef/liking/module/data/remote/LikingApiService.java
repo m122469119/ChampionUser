@@ -14,6 +14,7 @@ import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
+import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
@@ -156,6 +157,16 @@ public interface LikingApiService {
                                                    @Field(KEY_TOKEN) String token,
                                                    @Field("order_id")String orderId);
 
+    @FormUrlEncoded
+    @POST(Urls.COURSE_GYM_SCHEDULE_INFO)
+    Observable<SelfHelpGroupCoursesResult>
+                            getSelfHelpScheduleInfo(@Path(PATH_VERSION) String version,
+                                                    @FieldMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST(Urls.COURSE_ADD_SCHEDULE)
+    Observable<LikingResult> joinSelfHelpCourses(@Path(PATH_VERSION) String version,
+                                                 @FieldMap Map<String, String> map);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -259,6 +270,16 @@ public interface LikingApiService {
          * 私教课确认完成
          */
         public static final String COMPLETE_MY_PRIVATE_COURSES =  sVersion + "order/complete-trainer-course";
+
+        /**
+         * 获取用户自助排课页面的时间表
+         */
+        public static final String COURSE_GYM_SCHEDULE_INFO = sVersion + "course/gym-schedule-info";
+
+        /**
+         * 预约团体课
+         */
+        public static final String COURSE_ADD_SCHEDULE = sVersion + "course/add-schedule";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

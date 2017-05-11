@@ -250,7 +250,7 @@
 
         <!-- 自助团体课 -->
         <activity
-            android:name=".activity.SelfHelpGroupActivity"
+            android:name=".module.course.selfhelp.SelfHelpGroupActivity"
             android:screenOrientation="portrait" />
 
         <!-- 绑定手环 -->
