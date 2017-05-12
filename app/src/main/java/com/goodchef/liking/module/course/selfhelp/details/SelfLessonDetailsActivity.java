@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.course.selfhelp.details;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -7,9 +7,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
-import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.utils.LikingCallUtil;

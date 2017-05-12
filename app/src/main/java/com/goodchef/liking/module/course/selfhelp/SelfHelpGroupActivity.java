@@ -25,7 +25,6 @@ import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.activity.SelectCoursesListActivity;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
@@ -35,6 +34,7 @@ import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
+import com.goodchef.liking.module.course.selfhelp.list.SelectCoursesListActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
@@ -51,6 +51,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:自助团体课
@@ -166,29 +167,32 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         mSelfHelpGroupCoursesPresenter.getSelfHelpCourses(LikingHomeActivity.gymId);
     }
 
-    @Override
+    @OnClick({R.id.layout_select_group_courses, R.id.self_help_immediately_appointment_TextView})
     public void onClick(View v) {
-        if (v == mSelectCoursesLayout) {//选择课程
-            Intent intent = new Intent(this, SelectCoursesListActivity.class);
-            String ssid = mSelectLastCoursesData.getCourseId();
-            if (TextUtils.isEmpty(ssid)) {
-                ssid = "";
-            }
-            intent.putExtra(SelectCoursesListActivity.KEY_SELECT_COURSES_ID, ssid);
-            startActivity(intent);
-        } else if (v == mImmediatelyTextView) {//立即预约
-            if (!LikingPreference.isLogin()) {
-                startActivity(LoginActivity.class);
-                return;
-            }
-            if (StringUtils.isEmpty(roomId)) {
-                showToast(getString(R.string.no_select_room));
-            }
-            if (StringUtils.isEmpty(coursesId)) {
-                showToast(getString(R.string.no_select_courses));
-                return;
-            }
-            sendOrderRequest();
+        switch (v.getId()) {
+            case R.id.layout_select_group_courses:
+                Intent intent = new Intent(this, SelectCoursesListActivity.class);
+                String ssid = mSelectLastCoursesData.getCourseId();
+                if (TextUtils.isEmpty(ssid)) {
+                    ssid = "";
+                }
+                intent.putExtra(SelectCoursesListActivity.KEY_SELECT_COURSES_ID, ssid);
+                startActivity(intent);
+                break;
+            case R.id.self_help_immediately_appointment_TextView:
+                if (!LikingPreference.isLogin()) {
+                    startActivity(LoginActivity.class);
+                    return;
+                }
+                if (StringUtils.isEmpty(roomId)) {
+                    showToast(getString(R.string.no_select_room));
+                }
+                if (StringUtils.isEmpty(coursesId)) {
+                    showToast(getString(R.string.no_select_courses));
+                    return;
+                }
+                sendOrderRequest();
+                break;
         }
     }
 

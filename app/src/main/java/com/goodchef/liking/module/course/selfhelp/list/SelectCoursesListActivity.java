@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.course.selfhelp.list;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.SelectCoursesListFragment;
 
 /**
  * 说明:选择排课列表

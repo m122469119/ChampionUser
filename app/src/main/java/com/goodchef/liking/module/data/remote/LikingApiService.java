@@ -14,6 +14,7 @@ import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
+import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserLoginResult;
@@ -167,6 +168,11 @@ public interface LikingApiService {
     Observable<LikingResult> joinSelfHelpCourses(@Path(PATH_VERSION) String version,
                                                  @FieldMap Map<String, String> map);
 
+    @FormUrlEncoded
+    @POST(Urls.COURSE_CAN_SCHEDULE_COURSE_LIST)
+    Observable<SelfGroupCoursesListResult> getScheduleCourseList(@Path(PATH_VERSION) String version,
+                                                                 @Field("page")int page);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -280,6 +286,11 @@ public interface LikingApiService {
          * 预约团体课
          */
         public static final String COURSE_ADD_SCHEDULE = sVersion + "course/add-schedule";
+
+        /**
+         * 选择排课列表
+         */
+        public static final String COURSE_CAN_SCHEDULE_COURSE_LIST = sVersion + "course/can-schedule-course-list";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

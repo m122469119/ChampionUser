@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.course.selfhelp.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +12,10 @@ import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefre
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.SelectCoursesListActivity;
-import com.goodchef.liking.activity.SelfLessonDetailsActivity;
 import com.goodchef.liking.adapter.SelectCoursesListAdapter;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
-import com.goodchef.liking.mvp.presenter.SelectCoursesListPresenter;
-import com.goodchef.liking.mvp.view.SelectCoursesListView;
+import com.goodchef.liking.module.course.selfhelp.details.SelfLessonDetailsActivity;
 
 import java.util.List;
 
@@ -28,10 +25,10 @@ import java.util.List;
  * Time: 下午2:13
  */
 
-public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements SelectCoursesListView {
+public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements SelfHelpCourseListContract.SelectCoursesListView {
 
 
-    private SelectCoursesListPresenter mSelectCoursesListPresenter;
+    private SelfHelpCourseListContract.SelectCoursesListPresenter mSelectCoursesListPresenter;
 
     private SelectCoursesListAdapter mSelectCoursesListAdapter;
 
@@ -51,9 +48,9 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
 
     private void sendRequest(int page) {
         if (mSelectCoursesListPresenter == null) {
-            mSelectCoursesListPresenter = new SelectCoursesListPresenter(getActivity(), this);
+            mSelectCoursesListPresenter = new SelfHelpCourseListContract.SelectCoursesListPresenter(getActivity(), this);
         }
-        mSelectCoursesListPresenter.getCoursesList(page, this);
+        mSelectCoursesListPresenter.getCoursesList(page);
         mSelectCoursesListPresenter.setSelectCoursesId(mCurrCourseId);
     }
 

@@ -260,12 +260,12 @@
 
         <!-- 自助团详情 -->
         <activity
-            android:name=".activity.SelfLessonDetailsActivity"
+            android:name=".module.course.selfhelp.details.SelfLessonDetailsActivity"
             android:screenOrientation="portrait" />
 
         <!-- 选择排课表 -->
         <activity
-            android:name=".activity.SelectCoursesListActivity"
+            android:name=".module.course.selfhelp.list.SelectCoursesListActivity"
             android:screenOrientation="portrait" />
 
         <!-- 体测历史 -->

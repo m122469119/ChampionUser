@@ -9,6 +9,7 @@ import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
@@ -184,6 +185,18 @@ public class CourseModel {
         map.put("people_num", peopleNum);
         return LikingNewApi.getInstance()
                 .joinSelfHelpCourses(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /***
+     * 获取选择自助团体课的列表
+     *
+     * @param page     页码
+     */
+    public Observable<SelfGroupCoursesListResult> getSelfCoursesList(int page) {
+        return LikingNewApi.getInstance()
+                .getScheduleCourseList(UrlList.sHostVersion, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
