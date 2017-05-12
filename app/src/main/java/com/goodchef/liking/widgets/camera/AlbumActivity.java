@@ -62,6 +62,9 @@ public class AlbumActivity extends AppBarActivity implements OnImageDirSelected 
         showRightMenu("完成", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mAlbumAdapter == null) {
+                    return;
+                }
                 CameraPhotoHelper.selectAlbumEnter(AlbumActivity.this, mAlbumAdapter.getSelectImageFormAlbum());
             }
         });

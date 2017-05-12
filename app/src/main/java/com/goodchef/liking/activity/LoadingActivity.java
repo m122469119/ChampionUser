@@ -93,7 +93,7 @@ public class LoadingActivity extends BaseActivity {
      */
     private int clearToken() {
         String appVersion = Preference.getAppVersion();
-        String currentVersion = "1.4.2";
+        String currentVersion = "1.4.5";
         LogUtils.i(TAG, "lastappVersion== " + appVersion + "currentVersion == " + currentVersion);
         if (!StringUtils.isEmpty(appVersion)) {
             String lastversion[] = appVersion.split("\\.");
