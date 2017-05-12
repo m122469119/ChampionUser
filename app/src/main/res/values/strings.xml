@@ -608,4 +608,5 @@
     <string name="not_buy_card_prompt">温馨提示</string>
     <string name="again_think">再考虑下</string>
     <string name="buy_card_confirm">确认无误</string>
+    <string name="confirm_contact_teacher">您确定联系教练吗？</string>
 </resources>

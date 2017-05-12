@@ -178,13 +178,15 @@ public class MyCardActivity extends AppBarActivity implements View.OnClickListen
      * @param myCardData
      */
     private void showRenewCard(MyCardResult.MyCardData myCardData) {
-        int showRenewCard = myCardData.getShowRenewCard();
-        if (showRenewCard == NumberConstantUtil.ZERO) {//不展示续卡按钮
-            mFlowCardBtn.setVisibility(View.GONE);
-            mFlowCardBtn.setEnabled(false);
-        } else if (showRenewCard == NumberConstantUtil.ONE) {//展示续卡按钮
-            mFlowCardBtn.setVisibility(View.VISIBLE);
-            mFlowCardBtn.setEnabled(true);
+        String showRenewCard = myCardData.getShowRenewCard() + "";
+        if (!StringUtils.isEmpty(showRenewCard)) {
+            if (showRenewCard.equals(NumberConstantUtil.STR_ZERO)) {//不展示续卡按钮
+                mFlowCardBtn.setVisibility(View.GONE);
+                mFlowCardBtn.setEnabled(false);
+            } else if (showRenewCard.equals(NumberConstantUtil.STR_ONE)) {//展示续卡按钮
+                mFlowCardBtn.setVisibility(View.VISIBLE);
+                mFlowCardBtn.setEnabled(true);
+            }
         }
     }
 

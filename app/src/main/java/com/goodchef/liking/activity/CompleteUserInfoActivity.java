@@ -12,6 +12,7 @@ import com.aaron.android.codelibrary.http.RequestError;
 import com.aaron.android.codelibrary.imageloader.ImageLoader;
 import com.aaron.android.codelibrary.utils.LogUtils;
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.library.imageloader.HImageConfigBuilder;
@@ -38,7 +39,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * Author shaozucheng
  * Time:16/8/19 下午2:35
  */
-public class CompleteUserInfoActivity extends AppBarActivity implements View.OnClickListener, UserInfoView {
+public class CompleteUserInfoActivity extends BaseActivity implements View.OnClickListener, UserInfoView {
 
     private LikingStateView mStateView;
     private HImageView mHImageView;
@@ -66,8 +67,6 @@ public class CompleteUserInfoActivity extends AppBarActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_user_info);
-        setTitle(getString(R.string.activity_title_complete_userinfo));
-        showHomeUpIcon(0);
         initView();
         initData();
         getIntentData();

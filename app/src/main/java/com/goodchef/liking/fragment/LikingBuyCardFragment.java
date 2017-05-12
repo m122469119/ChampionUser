@@ -127,11 +127,13 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             public void onItemClick(View view, int position) {
                 CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
                 if (card != null) {
-                    int status = card.getUseStatus();
-                    if (status == NumberConstantUtil.ZERO) {//0表示不可进入购卡确认页
-                        showCanNotIntoConfirmActivity(card.getUseDesc());
-                    } else if (status == NumberConstantUtil.ONE) {
-                        jumpCardConfirmActivity(card);
+                    String status = card.getUseStatus() + "";
+                    if (!StringUtils.isEmpty(status)) {
+                        if (status.equals(NumberConstantUtil.STR_ZERO)) {//0表示不可进入购卡确认页
+                            showCanNotIntoConfirmActivity(card.getUseDesc());
+                        } else if (status.equals(NumberConstantUtil.STR_ONE)) {
+                            jumpCardConfirmActivity(card);
+                        }
                     }
                 }
             }
