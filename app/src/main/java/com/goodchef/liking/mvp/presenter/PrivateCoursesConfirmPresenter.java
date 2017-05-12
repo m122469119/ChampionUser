@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -13,7 +13,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -26,7 +26,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
     }
 
     public void orderPrivateCoursesConfirm(String gymId, String trainerId) {
-        LiKingApi.orderPrivateCoursesConfirm(gymId, trainerId, Preference.getToken(), new RequestCallback<PrivateCoursesConfirmResult>() {
+        LiKingApi.orderPrivateCoursesConfirm(gymId, trainerId, LikingPreference.getToken(), new RequestCallback<PrivateCoursesConfirmResult>() {
             @Override
             public void onSuccess(PrivateCoursesConfirmResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -44,7 +44,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
     }
 
     public void submitPrivateCourses(String courseId, String couponCode, String payType, int selectTimes, String gymId) {
-        LiKingApi.submitPrivateCourses(Preference.getToken(), courseId, couponCode, payType, selectTimes, gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
+        LiKingApi.submitPrivateCourses(LikingPreference.getToken(), courseId, couponCode, payType, selectTimes, gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);
@@ -63,7 +63,7 @@ public class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCourses
     }
 
     public void orderCalculate(String courseId, String selectTimes) {
-        LiKingApi.orderCalculate(Preference.getToken(), courseId, selectTimes, new RequestCallback<OrderCalculateResult>() {
+        LiKingApi.orderCalculate(LikingPreference.getToken(), courseId, selectTimes, new RequestCallback<OrderCalculateResult>() {
             @Override
             public void onSuccess(OrderCalculateResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

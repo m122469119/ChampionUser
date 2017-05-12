@@ -3,7 +3,7 @@ package com.goodchef.liking.module.joinus.contractjoin;
 import android.content.Context;
 
 import com.goodchef.liking.http.result.LikingResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;

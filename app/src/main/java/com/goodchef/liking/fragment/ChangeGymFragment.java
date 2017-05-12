@@ -27,7 +27,7 @@ import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
 import com.goodchef.liking.mvp.view.CheckGymView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -128,7 +128,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     }
 
     private void initData() {
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         sendGymRequest(Integer.parseInt(selectCityId), locationData.getLongitude(), locationData.getLatitude());
     }
 
@@ -161,7 +161,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 mMyTextView.setText(ResourceUtils.getString(R.string.buy_card_stadium) + mMyGym.getGymName());
             } else {
                 if (mNoCardHeadView != null) {
-                    if (Preference.isLogin()) {
+                    if (LikingPreference.isLogin()) {
                         mChangeGymAdapter.removeHeaderView(mNoCardHeadView);
                         mChangeGymAdapter.addHeaderView(mNoCardHeadView);
                     } else {
@@ -190,7 +190,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
             myGymTextView.setVisibility(View.VISIBLE);
             myGymTextView.setText(getString(R.string.buy_card_stadium) + mMyGym.getGymName());
         } else {
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 imageView.setVisibility(View.VISIBLE);
             } else {
                 imageView.setVisibility(View.GONE);

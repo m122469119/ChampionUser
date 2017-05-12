@@ -28,7 +28,7 @@ import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -200,7 +200,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
         switch (v.getId()) {
             case R.id.private_lesson_immediately_submit://立即预约
                 UMengCountUtil.UmengBtnCount(PrivateLessonDetailsActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_SUBMIT_BUTTON);
-                if (Preference.isLogin()) {
+                if (LikingPreference.isLogin()) {
                     Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                     intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
                     intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);

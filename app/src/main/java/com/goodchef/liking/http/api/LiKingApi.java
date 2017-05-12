@@ -65,7 +65,7 @@ import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -258,7 +258,7 @@ public class LiKingApi {
      */
     public static void getGroupLessonDetails(String scheduleId, RequestCallback<GroupCoursesResult> callback) {
         RequestParams params = getCommonRequestParams().append("schedule_id", scheduleId);
-        String token = Preference.getToken();
+        String token = LikingPreference.getToken();
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
         }
@@ -274,7 +274,7 @@ public class LiKingApi {
      */
     public static void getPrivateCoursesDetails(String trainerId, RequestCallback<PrivateCoursesResult> callback) {
         RequestParams params = getCommonRequestParams().append("trainer_id", trainerId);
-        String token = Preference.getToken();
+        String token = LikingPreference.getToken();
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
         }
@@ -999,7 +999,7 @@ public class LiKingApi {
      */
     public static void getBodyTestData(String bodyId, RequestCallback<BodyTestResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_GET_USER_BODY, BodyTestResult.class, getCommonRequestParams()
-                .append("body_id", bodyId).append(KEY_TOKEN, Preference.getToken()), callback);
+                .append("body_id", bodyId).append(KEY_TOKEN, LikingPreference.getToken()), callback);
     }
 
     /***
@@ -1009,7 +1009,7 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getBodyHistory(int page, RequestCallback<BodyHistoryResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_GET_BODY_LIST, BodyHistoryResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()).append("page", page)
+        VolleyHttpRequestClient.doPost(UrlList.USER_GET_BODY_LIST, BodyHistoryResult.class, getCommonRequestParams().append(KEY_TOKEN, LikingPreference.getToken()).append("page", page)
                 , callback);
     }
 
@@ -1021,7 +1021,7 @@ public class LiKingApi {
      */
     public static void getBodyHistoryTitleList(String modules, RequestCallback<BodyModelNavigationResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_BODY_MODULES_HISTORY, BodyModelNavigationResult.class, getCommonRequestParams()
-                .append("modules", modules).append(KEY_TOKEN, Preference.getToken()), callback);
+                .append("modules", modules).append(KEY_TOKEN, LikingPreference.getToken()), callback);
     }
 
     /**
@@ -1032,7 +1032,7 @@ public class LiKingApi {
      */
     public static void getBodyHistoryList(String column, RequestCallback<BodyAnalyzeHistoryResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_BODY_COLUMN_HISTORY, BodyAnalyzeHistoryResult.class, getCommonRequestParams()
-                .append(KEY_TOKEN, Preference.getToken()).append("column", column), callback);
+                .append(KEY_TOKEN, LikingPreference.getToken()).append("column", column), callback);
     }
 
     /**
@@ -1048,7 +1048,7 @@ public class LiKingApi {
      */
     public static void bindDevices(String braceletName, String braceletVersion, String deviceId, String platform, String deviceName, String osVersion, RequestCallback<LikingResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_BIND_DEVICE, LikingResult.class, getCommonRequestParams()
-                .append(KEY_TOKEN, Preference.getToken()).append("bracelet_name", braceletName)
+                .append(KEY_TOKEN, LikingPreference.getToken()).append("bracelet_name", braceletName)
                 .append("bracelet_version", braceletVersion).append("device_id", deviceId)
                 .append("platform", platform).append("device_name", deviceName).append("os_version", osVersion), callback);
     }
@@ -1061,7 +1061,7 @@ public class LiKingApi {
      */
     public static void unBindDevices(String devicesId, RequestCallback<LikingResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_UNBIND, LikingResult.class, getCommonRequestParams()
-                .append("device_id", devicesId).append(KEY_TOKEN, Preference.getToken()), callback);
+                .append("device_id", devicesId).append(KEY_TOKEN, LikingPreference.getToken()), callback);
     }
 
     /**
@@ -1073,7 +1073,7 @@ public class LiKingApi {
      */
     public static void sendSportData(String sportData, String deviceId, RequestCallback<LikingResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.USER_SAVE_SPORT_DATA, LikingResult.class, getCommonRequestParams()
-                .append("sport_data", sportData).append("device_id", deviceId).append(KEY_TOKEN, Preference.getToken()), callback);
+                .append("sport_data", sportData).append("device_id", deviceId).append(KEY_TOKEN, LikingPreference.getToken()), callback);
     }
 
     /**
@@ -1082,7 +1082,7 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getSportData(RequestCallback<SportDataResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_SPORT_LIST, SportDataResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()), callback);
+        VolleyHttpRequestClient.doPost(UrlList.USER_SPORT_LIST, SportDataResult.class, getCommonRequestParams().append(KEY_TOKEN, LikingPreference.getToken()), callback);
     }
 
     /**
@@ -1091,7 +1091,7 @@ public class LiKingApi {
      * @param callback RequestCallback
      */
     public static void getMyUserInfoData(RequestCallback<MyUserOtherInfoResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_GET_USER_INFO, MyUserOtherInfoResult.class, getCommonRequestParams().append(KEY_TOKEN, Preference.getToken()), callback);
+        VolleyHttpRequestClient.doPost(UrlList.USER_GET_USER_INFO, MyUserOtherInfoResult.class, getCommonRequestParams().append(KEY_TOKEN, LikingPreference.getToken()), callback);
     }
 
     /**
@@ -1112,14 +1112,14 @@ public class LiKingApi {
 
     public static void getMyConpons(int page, RequestCallback<CouponsPersonResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_MY_COUPON, CouponsPersonResult.class, getCommonRequestParams()
-                        .append(KEY_TOKEN, Preference.getToken())
+                        .append(KEY_TOKEN, LikingPreference.getToken())
                         .append(PAGE, page),
                 callback);
     }
 
     public static void getConponsDetail(String coupon_code, String longitude, String latitude, RequestCallback<CouponsDetailsResult> callback) {
         VolleyHttpRequestClient.doPost(UrlList.GET_COUPON_DETAIL, CouponsDetailsResult.class, getCommonRequestParams()
-                        .append(KEY_TOKEN, Preference.getToken())
+                        .append(KEY_TOKEN, LikingPreference.getToken())
                         .append("coupon_code", coupon_code)
                         .append("longitude", longitude)
                         .append("latitude", latitude),

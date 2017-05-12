@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.joinus;
 
+import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
@@ -14,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class JoinModel {
+public class JoinModel extends BaseModel {
     public Observable<LikingResult> joinAppLy(String version, String name, String phone, String city, int type) {
         return LikingNewApi.getInstance().joinApply(version, name, phone, city, type)
                 .subscribeOn(Schedulers.io())

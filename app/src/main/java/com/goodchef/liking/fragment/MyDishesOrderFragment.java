@@ -37,7 +37,7 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.MyDishesOrderPresenter;
 import com.goodchef.liking.mvp.view.MyDishesOrderView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.widgets.dialog.SelectPayTypeCustomDialog;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
@@ -129,7 +129,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
 
     private void sendListRequest(int page) {
-        LiKingApi.getDishesOrderList(Preference.getToken(), page, new PagerRequestCallback<DishesOrderListResult>(this) {
+        LiKingApi.getDishesOrderList(LikingPreference.getToken(), page, new PagerRequestCallback<DishesOrderListResult>(this) {
             @Override
             public void onSuccess(DishesOrderListResult result) {
                 super.onSuccess(result);
@@ -147,7 +147,7 @@ public class MyDishesOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     }
 
     private void setOrderListData(List<DishesOrderListResult.DishesOrderData.DishesOrder> orderList) {
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
         if (baseConfigResult != null) {
             BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (orderList != null && orderList.size() > 0) {

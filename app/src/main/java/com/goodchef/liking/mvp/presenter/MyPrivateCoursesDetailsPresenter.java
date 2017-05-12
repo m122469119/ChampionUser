@@ -5,14 +5,14 @@ import android.content.Context;
 import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.MyPrivateCoursesDetailsView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -25,7 +25,7 @@ public class MyPrivateCoursesDetailsPresenter extends BasePresenter<MyPrivateCou
     }
 
     public void getMyPrivateCoursesDetails(String orderId) {
-        LiKingApi.getMyPrivateCoursesDetails(Preference.getToken(), orderId, new RequestCallback<MyPrivateCoursesDetailsResult>() {
+        LiKingApi.getMyPrivateCoursesDetails(LikingPreference.getToken(), orderId, new RequestCallback<MyPrivateCoursesDetailsResult>() {
             @Override
             public void onSuccess(MyPrivateCoursesDetailsResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -43,7 +43,7 @@ public class MyPrivateCoursesDetailsPresenter extends BasePresenter<MyPrivateCou
     }
 
     public void completeMyPrivateCourses(String orderId) {
-        LiKingApi.completerMyPrivateCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
+        LiKingApi.completerMyPrivateCourses(LikingPreference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(LikingResult likingResult) {
                 super.onSuccess(likingResult);

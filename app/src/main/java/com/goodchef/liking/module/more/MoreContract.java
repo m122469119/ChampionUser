@@ -3,7 +3,7 @@ package com.goodchef.liking.module.more;
 import android.content.Context;
 
 import com.goodchef.liking.http.result.LikingResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
@@ -11,7 +11,7 @@ import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * Created on 17/3/15.
@@ -63,7 +63,7 @@ class MoreContract {
          * 用户登出
          */
         void loginOut() {
-            mMoreModel.userLogout(UrlList.sHostVersion, Preference.getToken(), "")
+            mMoreModel.userLogout(UrlList.sHostVersion, LikingPreference.getToken(), "")
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(LikingResult likingResult) {

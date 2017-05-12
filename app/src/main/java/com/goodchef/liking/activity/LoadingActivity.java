@@ -18,12 +18,19 @@ import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.PatchDowner;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
 import java.util.ArrayList;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -45,11 +52,24 @@ public class LoadingActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        previousPatchData = Preference.getPatchData();
+        previousPatchData = LikingPreference.getPatchData();
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             LiKingVerifyUtils.initApi(this);
         }
         setCompleteLayoutView();
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                LogUtils.e(TAG, "subscribe thread: " + Thread.currentThread().getName());
+                e.onNext(new Object());
+            }
+        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                LogUtils.e(TAG, "accept thread: " + Thread.currentThread().getName());
+            }
+        });
     }
 
     private void setCompleteLayoutView() {
@@ -74,10 +94,10 @@ public class LoadingActivity extends BaseActivity {
             public void run() {
                 int number = clearToken();
                 if (number < 0) {
-                    Preference.setToken("");
+                    LikingPreference.setToken("");
                 }
-                if (Preference.isNewVersion()) {
-                    Preference.setIsUpdateApp(true);//设置可以弹出更新对话框
+                if (LikingPreference.isNewVersion()) {
+                    LikingPreference.setIsUpdateApp(true);//设置可以弹出更新对话框
                     jumpToGuideActivity();
                 } else {
                     jumpToMainActivity();
@@ -91,7 +111,7 @@ public class LoadingActivity extends BaseActivity {
      * 如果是<0都要将前面的token清空
      */
     private int clearToken() {
-        String appVersion = Preference.getAppVersion();
+        String appVersion = LikingPreference.getAppVersion();
         String currentVersion = "1.4.2";
         LogUtils.i(TAG, "lastappVersion== " + appVersion + "currentVersion == " + currentVersion);
         if (!StringUtils.isEmpty(appVersion)) {

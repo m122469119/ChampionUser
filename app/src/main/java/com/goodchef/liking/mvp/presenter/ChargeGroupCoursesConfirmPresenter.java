@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -14,7 +14,7 @@ import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ChargeGroupCoursesView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 import de.greenrobot.event.EventBus;
 
@@ -30,7 +30,7 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
     }
 
     public void getChargeGroupCoursesConfirmData(String gymId, String scheduleId) {
-        LiKingApi.chargeGroupCoursesConfirm(Preference.getToken(), gymId, scheduleId, new RequestCallback<ChargeGroupConfirmResult>() {
+        LiKingApi.chargeGroupCoursesConfirm(LikingPreference.getToken(), gymId, scheduleId, new RequestCallback<ChargeGroupConfirmResult>() {
             @Override
             public void onSuccess(ChargeGroupConfirmResult result) {
                 if (result.getCode() == 0) {
@@ -57,7 +57,7 @@ public class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGrou
     }
 
     public void chargeGroupCoursesImmediately(String gymId, String scheduleId, String couponCode, String payType) {
-        LiKingApi.chargeGroupCoursesImmediately(Preference.getToken(), gymId, scheduleId, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
+        LiKingApi.chargeGroupCoursesImmediately(LikingPreference.getToken(), gymId, scheduleId, couponCode, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);

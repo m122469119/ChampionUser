@@ -16,7 +16,7 @@ import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.mvp.presenter.UserAuthPresenter;
 import com.goodchef.liking.mvp.view.UserAuthView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 
@@ -103,7 +103,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     public void onClick(View v) {
         if (v == mGetIntoPasswordBtn) {
             UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.GET_INTO_PASSWORD_BUTTON);
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 mUserAuthPresenter.getUserAuthCode(1);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -111,7 +111,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
             }
         } else if (v == mGetOutPasswordBtn) {
             UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.GET_OUT_PASSWORD_BUTTON);
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 mUserAuthPresenter.getUserAuthCode(2);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

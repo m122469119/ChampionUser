@@ -2,7 +2,7 @@ package com.goodchef.liking.module.course.group;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;

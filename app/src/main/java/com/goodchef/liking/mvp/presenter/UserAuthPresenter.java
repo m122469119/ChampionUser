@@ -3,14 +3,14 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.http.code.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.UserAuthView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -23,7 +23,7 @@ public class UserAuthPresenter extends BasePresenter<UserAuthView> {
     }
 
     public void getUserAuthCode(int inout) {
-        LiKingApi.getUserAuthCode(Preference.getToken(), inout, new RequestUiLoadingCallback<UserAuthCodeResult>(mContext, R.string.loading_data) {
+        LiKingApi.getUserAuthCode(LikingPreference.getToken(), inout, new RequestUiLoadingCallback<UserAuthCodeResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(UserAuthCodeResult result) {
                 super.onSuccess(result);

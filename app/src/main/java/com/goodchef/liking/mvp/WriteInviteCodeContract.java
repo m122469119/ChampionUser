@@ -4,13 +4,13 @@ import android.content.Context;
 
 import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -35,7 +35,7 @@ public interface WriteInviteCodeContract {
         }
 
         public void sendConfirmRequest(String writeCode) {
-            LiKingApi.exchangeInviteCode(Preference.getToken(), writeCode, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading) {
+            LiKingApi.exchangeInviteCode(LikingPreference.getToken(), writeCode, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading) {
                 @Override
                 public void onSuccess(LikingResult likingResult) {
                     super.onSuccess(likingResult);

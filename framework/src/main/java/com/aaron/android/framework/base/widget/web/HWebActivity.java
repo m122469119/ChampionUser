@@ -1,10 +1,9 @@
-package com.aaron.android.framework.base.web;
+package com.aaron.android.framework.base.widget.web;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.library.web.HWebView;
 
 /**
  * Created on 15/10/14.

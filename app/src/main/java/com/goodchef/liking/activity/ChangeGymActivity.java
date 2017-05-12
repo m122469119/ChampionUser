@@ -21,7 +21,7 @@ import com.goodchef.liking.fragment.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 
@@ -103,7 +103,7 @@ public class ChangeGymActivity extends SwipeBackActivity implements View.OnClick
 
 
     private void setCityListData() {
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
         if (baseConfigResult != null) {
             BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {

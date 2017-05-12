@@ -24,7 +24,7 @@ import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
 import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.utils.BitmapBase64Util;
@@ -174,9 +174,9 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
         if (userInfoData != null) {
             String imageUrl = userInfoData.getAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                Preference.setUserIconUrl(imageUrl);
+                LikingPreference.setUserIconUrl(imageUrl);
             }
-            Preference.setNickName(userName);
+            LikingPreference.setNickName(userName);
             postEvent(new UpDateUserInfoMessage());
             finish();
         }

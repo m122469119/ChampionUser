@@ -2,7 +2,7 @@ package com.goodchef.liking.module.card.my;
 
 import android.content.Context;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.aaron.http.rxobserver.BaseRequestObserver;

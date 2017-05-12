@@ -7,7 +7,7 @@ import android.media.ExifInterface;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.aaron.android.framework.library.storage.DiskStorageManager;
+import com.aaron.android.framework.base.storage.DiskStorageManager;
 
 import java.io.BufferedInputStream;
 import java.io.File;

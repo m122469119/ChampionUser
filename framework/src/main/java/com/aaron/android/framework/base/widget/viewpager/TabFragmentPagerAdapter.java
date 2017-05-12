@@ -1,4 +1,4 @@
-package com.aaron.android.framework.base.adapter;
+package com.aaron.android.framework.base.widget.viewpager;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

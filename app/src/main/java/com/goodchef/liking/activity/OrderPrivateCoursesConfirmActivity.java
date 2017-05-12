@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -41,7 +41,7 @@ import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
 import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -359,7 +359,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 showCoursesTimesDialog();
             }
         } else if (v == mPrivateBuyProtocolTextView) {
-            BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+            BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
             if (baseConfigResult != null) {
                 BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                 if (baseConfigData != null) {

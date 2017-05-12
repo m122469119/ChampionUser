@@ -2,15 +2,15 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.course.personal.MyPersonalCourseContract;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -24,7 +24,7 @@ public class MyPrivateCoursesPresenter extends BasePresenter<MyPersonalCourseCon
     }
 
     public void getMyPrivateCourses(int page, BasePagerLoaderFragment fragment) {
-        LiKingApi.getMyPrivateList(Preference.getToken(), page, new PagerRequestCallback<MyPrivateCoursesResult>(fragment) {
+        LiKingApi.getMyPrivateList(LikingPreference.getToken(), page, new PagerRequestCallback<MyPrivateCoursesResult>(fragment) {
             @Override
             public void onSuccess(MyPrivateCoursesResult result) {
                 super.onSuccess(result);

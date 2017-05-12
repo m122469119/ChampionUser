@@ -1,6 +1,6 @@
 package com.goodchef.liking.module.data.local;
 
-import com.aaron.android.framework.library.storage.AbsPreference;
+import com.aaron.android.framework.base.storage.AbsPreference;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
@@ -23,7 +23,7 @@ import java.util.Set;
  * Author shaozucheng
  * Time:16/6/7 上午11:49
  */
-public class Preference extends AbsPreference {
+public class LikingPreference extends AbsPreference {
     public static final String TOKEN = "token";
     public static final String NICKNAME = "nickname";
     public static final String USER_ICON_URL = "headimgurl";

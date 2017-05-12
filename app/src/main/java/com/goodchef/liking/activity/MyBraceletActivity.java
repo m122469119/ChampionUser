@@ -35,7 +35,7 @@ import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.mvp.presenter.UnBindDevicesPresenter;
 import com.goodchef.liking.mvp.view.UnBindDevicesView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import java.util.List;
@@ -482,7 +482,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             @Override
             public void run() {
                 if (!StringUtils.isEmpty(mBluetoothDevice.getName())) {
-                    Preference.setBlueToothName(mBluetoothDevice.getAddress(), mBluetoothDevice.getName());
+                    LikingPreference.setBlueToothName(mBluetoothDevice.getAddress(), mBluetoothDevice.getName());
                 }
                 mMyBraceletTextView.setText(R.string.connect_success);
             }
@@ -511,7 +511,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                 isGetAllData = true;
                 mUnbindTextView.setVisibility(View.VISIBLE);
                 setSynchronizationPowerView(500);
-                if (Preference.getFirstBindBracelet()) {
+                if (LikingPreference.getFirstBindBracelet()) {
                     showFirstCheckPromptDialog();
                 }
             }
@@ -572,7 +572,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
             }
         });
         builder.create().show();
-        Preference.setFirstBindBracelet(false);
+        LikingPreference.setFirstBindBracelet(false);
     }
 
 
@@ -598,7 +598,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
                         mLayoutBluetoothConnectFail.setVisibility(View.GONE);
                         mDevicesVersionTextView.setText(mFirmwareInfo);
                         if (StringUtils.isEmpty(BlueToothName)) {
-                            mCurrentDevicesNameTextView.setText(Preference.getBlueToothName(mBluetoothDevice.getAddress()));
+                            mCurrentDevicesNameTextView.setText(LikingPreference.getBlueToothName(mBluetoothDevice.getAddress()));
                         } else {
                             mCurrentDevicesNameTextView.setText(BlueToothName);
                         }
@@ -671,7 +671,7 @@ public class MyBraceletActivity extends AppBarActivity implements View.OnClickLi
         if (mBleManager.isOpen() && mConnectionState && writecharacteristic != null) {
             mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getDisconnectBlueTooth());
         }
-        Preference.setIsBind("0");
+        LikingPreference.setIsBind("0");
         finish();
     }
 

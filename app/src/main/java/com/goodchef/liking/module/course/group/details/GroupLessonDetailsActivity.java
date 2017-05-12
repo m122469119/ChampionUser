@@ -38,11 +38,11 @@ import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
-import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
 import com.goodchef.liking.mvp.ShareContract;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -390,7 +390,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
         switch (v.getId()) {
             case R.id.group_immediately_submit_btn://立即购买
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
-                if (Preference.isLogin()) {
+                if (LikingPreference.isLogin()) {
                     mDetailsPresenter.orderGroupCourses(LikingHomeActivity.gymId);
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);
@@ -402,7 +402,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
                 if (mDetailsPresenter.isFree == COURSES_IS_FREE) {//免费
                     showCancelCoursesDialog();
                 } else if (mDetailsPresenter.isFree == COURSES_NOT_FREE) {//收费
-                    if (Preference.isLogin()) {
+                    if (LikingPreference.isLogin()) {
                         Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
                         intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, mDetailsPresenter.scheduleId);
                         // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);

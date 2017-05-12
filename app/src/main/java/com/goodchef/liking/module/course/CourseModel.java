@@ -10,7 +10,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class CourseModel {
     public Observable<MyGroupCoursesResult> getMyGroupList(int page) {
 
         return LikingNewApi.getInstance()
-                .getTeamCourseList(UrlList.sHostVersion, Preference.getToken(), page)
+                .getTeamCourseList(UrlList.sHostVersion, LikingPreference.getToken(), page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -51,7 +51,7 @@ public class CourseModel {
     public Observable<LikingResult> sendCancelCoursesRequest(String orderId) {
 
         return LikingNewApi.getInstance()
-                .cancelTeamCourse(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .cancelTeamCourse(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -64,7 +64,7 @@ public class CourseModel {
     public Observable<MyPrivateCoursesResult> getMyPrivateCourses(int page) {
 
         return LikingNewApi.getInstance()
-                .getPersonalCourseList(UrlList.sHostVersion, Preference.getToken(), page)
+                .getPersonalCourseList(UrlList.sHostVersion, LikingPreference.getToken(), page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -78,7 +78,7 @@ public class CourseModel {
     public Observable<GroupCoursesResult> getGroupCoursesDetails(String scheduleId) {
         Map<String, String> map = new HashMap<>();
         map.put("schedule_id", scheduleId);
-        String token = Preference.getToken();
+        String token = LikingPreference.getToken();
         if (!TextUtils.isEmpty(token)) {
             map.put("token", token);
         }
@@ -97,7 +97,7 @@ public class CourseModel {
     public Observable<LikingResult> orderGroupCourses(String gymId, String scheduleId) {
 
         return LikingNewApi.getInstance()
-                .teamCourseReserve(UrlList.sHostVersion, Preference.getToken(), gymId, scheduleId)
+                .teamCourseReserve(UrlList.sHostVersion, LikingPreference.getToken(), gymId, scheduleId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -110,7 +110,7 @@ public class CourseModel {
     public Observable<MyChargeGroupCoursesDetailsResult> getChargeGroupCoursesDetails(String orderId) {
 
         return LikingNewApi.getInstance()
-                .chargeGroupCoursesDetails(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .chargeGroupCoursesDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -123,7 +123,7 @@ public class CourseModel {
     public Observable<MyPrivateCoursesDetailsResult> getMyPrivateCoursesDetails(String orderId) {
 
         return LikingNewApi.getInstance()
-                .getPersonalCourseDetails(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .getPersonalCourseDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -136,7 +136,7 @@ public class CourseModel {
     public Observable<LikingResult> completeMyPrivateCourses(String orderId) {
 
         return LikingNewApi.getInstance()
-                .completeTrainerCourse(UrlList.sHostVersion, Preference.getToken(), orderId)
+                .completeTrainerCourse(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -149,7 +149,7 @@ public class CourseModel {
     public Observable<SelfHelpGroupCoursesResult> getSelfHelpScheduleInfo(String gymId) {
         Map<String, String> map = new HashMap<>();
         map.put("gym_id", gymId);
-        String token = Preference.getToken();
+        String token = LikingPreference.getToken();
         if (!TextUtils.isEmpty(token)) {
             map.put("token", token);
         }
@@ -173,7 +173,7 @@ public class CourseModel {
      */
     public Observable<LikingResult> joinSelfHelpCourses(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum) {
         Map<String, String> map = new HashMap<>();
-        map.put("token", Preference.getToken());
+        map.put("token", LikingPreference.getToken());
         map.put("gym_id", gymId);
         map.put("room_id", roomId);
         map.put("course_id", coursesId);

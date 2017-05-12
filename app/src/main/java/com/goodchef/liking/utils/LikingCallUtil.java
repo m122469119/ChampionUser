@@ -9,7 +9,7 @@ import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.dialog.PhoneDialog;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -41,7 +41,7 @@ public class LikingCallUtil {
     public static void showPhoneDialog(final Activity context){
         final PhoneDialog mPhoneDialog = new PhoneDialog(context, R.style.phone_style);
         mPhoneDialog.setGymPhoneText(LikingHomeActivity.gymTel)
-                    .setLikingPhoneText(Preference.getCustomerServicePhone())
+                    .setLikingPhoneText(LikingPreference.getCustomerServicePhone())
                     .setOnCancelListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

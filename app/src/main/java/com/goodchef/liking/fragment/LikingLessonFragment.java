@@ -40,7 +40,7 @@ import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivit
 import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
 import com.goodchef.liking.mvp.presenter.HomeCoursesPresenter;
 import com.goodchef.liking.mvp.view.HomeCourseView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -429,7 +429,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     @Override
     public void onStart() {
         super.onStart();
-        if (Preference.isHomeAnnouncement())
+        if (LikingPreference.isHomeAnnouncement())
             postEvent(LikingHomeActivityMessage.obtain(LikingHomeActivityMessage.SHOW_PUSH_DIALOG));
     }
 

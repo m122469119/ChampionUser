@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.aaron.http.code.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.goodchef.liking.http.api.LiKingApi;

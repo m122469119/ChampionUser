@@ -2,11 +2,12 @@ package com.goodchef.liking.module.coupons;
 
 import android.text.TextUtils;
 
+import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class CouponModel {
+public class CouponModel extends BaseModel {
 
     /**
      * 兑换优惠券
@@ -32,7 +33,7 @@ public class CouponModel {
      * @return
      */
     public Observable<LikingResult> exchangeCoupon(String code) {
-        return LikingNewApi.getInstance().exchangeCoupon(UrlList.sHostVersion, Preference.getToken(), code)
+        return LikingNewApi.getInstance().exchangeCoupon(UrlList.sHostVersion, LikingPreference.getToken(), code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -44,7 +45,7 @@ public class CouponModel {
      * @return
      */
     public Observable<CouponsPersonResult> getMyCoupons(int page) {
-        return LikingNewApi.getInstance().getMyCoupons(UrlList.sHostVersion, Preference.getToken(), page)
+        return LikingNewApi.getInstance().getMyCoupons(UrlList.sHostVersion, LikingPreference.getToken(), page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -66,7 +67,7 @@ public class CouponModel {
         Map<String, String> map = new HashMap<>();
         map.put("version", UrlList.sHostVersion);
         map.put("page", page + "");
-        map.put("token", Preference.getToken());
+        map.put("token", LikingPreference.getToken());
         if (!TextUtils.isEmpty(courseId)) {
             map.put("course_id", courseId);
         }

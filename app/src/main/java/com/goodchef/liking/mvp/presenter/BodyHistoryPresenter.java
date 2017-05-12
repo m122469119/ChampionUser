@@ -2,7 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.http.code.RequestError;

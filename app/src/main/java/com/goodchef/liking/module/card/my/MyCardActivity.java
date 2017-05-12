@@ -20,7 +20,7 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.ListViewUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -109,7 +109,7 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
                 }
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 3);
                 intent.putExtra(KEY_INTENT_TITLE, getString(R.string.promotion_card));
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, Preference.getLoginGymId());
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingPreference.getLoginGymId());
                 startActivity(intent);
                 break;
             case R.id.my_card_flow_card://续卡
@@ -119,7 +119,7 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
                 }
                 intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 2);
                 intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, Preference.getLoginGymId());
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingPreference.getLoginGymId());
                 startActivity(intent);
                 break;
             }

@@ -40,7 +40,7 @@ import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.CardListPresenter;
 import com.goodchef.liking.mvp.view.CardListView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -110,7 +110,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
     }
 
     private void getLocationData() {
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData != null) {
             longitude = locationData.getLongitude() + "";
             latitude = locationData.getLatitude() + "";
@@ -210,7 +210,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
             }
             List<CardResult.CardData.Card> list = cardData.getCardList();
             if (list != null && list.size() > 0) {
-                LocationData locationData = Preference.getLocationData();
+                LocationData locationData = LikingPreference.getLocationData();
                 if (locationData != null) {
                     mBuyCardAdapter = new BuyCardAdapter(getActivity());
                     mBuyCardAdapter.setData(list);
@@ -287,7 +287,7 @@ public class LikingBuyCardFragment extends BaseFragment implements CardListView 
 
     private void setHeadNoLocationView(String cityName) {
         boolean isContains = false;
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
         if (baseConfigResult != null) {
             BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {

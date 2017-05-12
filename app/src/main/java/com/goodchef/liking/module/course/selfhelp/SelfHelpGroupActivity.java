@@ -35,8 +35,8 @@ import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
-import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -177,7 +177,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
             intent.putExtra(SelectCoursesListActivity.KEY_SELECT_COURSES_ID, ssid);
             startActivity(intent);
         } else if (v == mImmediatelyTextView) {//立即预约
-            if (!Preference.isLogin()) {
+            if (!LikingPreference.isLogin()) {
                 startActivity(LoginActivity.class);
                 return;
             }

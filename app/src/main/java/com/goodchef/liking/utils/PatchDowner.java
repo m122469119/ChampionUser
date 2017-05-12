@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import com.aaron.common.utils.FileUtils;
 import com.aaron.common.utils.LogUtils;
-import com.aaron.android.framework.library.storage.DiskStorageManager;
+import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.goodchef.liking.http.result.data.PatchData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -83,7 +83,7 @@ public class PatchDowner extends AsyncTask<PatchData, Integer, PatchData> {
     protected void onPostExecute(PatchData s) {
         if (s != null) {
             LogUtils.i("Dust", s.toString());
-            Preference.savePatchData(s);
+            LikingPreference.savePatchData(s);
         }
     }
 }

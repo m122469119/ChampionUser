@@ -17,7 +17,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.InviteFriendResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:邀请好友
@@ -59,7 +59,7 @@ public class InviteFriendsActivity extends AppBarActivity implements View.OnClic
     }
 
     private void initData() {
-        LiKingApi.getInviteCode(Preference.getToken(), new RequestUiLoadingCallback<InviteFriendResult>(this, R.string.loading_data) {
+        LiKingApi.getInviteCode(LikingPreference.getToken(), new RequestUiLoadingCallback<InviteFriendResult>(this, R.string.loading_data) {
             @Override
             public void onSuccess(InviteFriendResult result) {
                 super.onSuccess(result);

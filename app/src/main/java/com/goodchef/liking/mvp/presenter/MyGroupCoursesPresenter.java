@@ -2,7 +2,7 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.aaron.android.framework.utils.PopupUtils;
@@ -13,8 +13,8 @@ import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
 import com.goodchef.liking.module.course.group.TeamcourseContract;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -27,7 +27,7 @@ public class MyGroupCoursesPresenter extends BasePresenter<TeamcourseContract.My
     }
 
     public void getMyGroupList(int page, BasePagerLoaderFragment fragment) {
-        LiKingApi.getMyGroupList(Preference.getToken(), page, new PagerRequestCallback<MyGroupCoursesResult>(fragment) {
+        LiKingApi.getMyGroupList(LikingPreference.getToken(), page, new PagerRequestCallback<MyGroupCoursesResult>(fragment) {
             @Override
             public void onSuccess(MyGroupCoursesResult result) {
                 super.onSuccess(result);
@@ -46,7 +46,7 @@ public class MyGroupCoursesPresenter extends BasePresenter<TeamcourseContract.My
     }
 
     public void sendCancelCoursesRequest(String orderId){
-        LiKingApi.cancelGroupCourses(Preference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
+        LiKingApi.cancelGroupCourses(LikingPreference.getToken(), orderId, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(LikingResult likingResult) {
                 super.onSuccess(likingResult);

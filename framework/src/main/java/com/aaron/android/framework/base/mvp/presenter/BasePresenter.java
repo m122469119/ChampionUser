@@ -1,4 +1,4 @@
-package com.aaron.android.framework.base.mvp;
+package com.aaron.android.framework.base.mvp.presenter;
 
 import android.content.Context;
 

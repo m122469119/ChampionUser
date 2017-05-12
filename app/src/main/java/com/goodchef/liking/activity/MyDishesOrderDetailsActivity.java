@@ -34,7 +34,7 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.presenter.MyDishesOrderPresenter;
 import com.goodchef.liking.mvp.view.MyDishesOrderView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.dialog.SelectPayTypeCustomDialog;
@@ -144,7 +144,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
 
 
     private void sendDetailsRequest() {
-        LiKingApi.getDishesDetails(Preference.getToken(), orderId, new RequestCallback<MyDishesOrderDetailsResult>() {
+        LiKingApi.getDishesDetails(LikingPreference.getToken(), orderId, new RequestCallback<MyDishesOrderDetailsResult>() {
             @Override
             public void onSuccess(MyDishesOrderDetailsResult result) {
                 if (LiKingVerifyUtils.isValid(MyDishesOrderDetailsActivity.this, result)) {
@@ -215,7 +215,7 @@ public class MyDishesOrderDetailsActivity extends AppBarActivity implements MyDi
 
     private Long getLimitTime() {
         long limitTime;
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
         if (baseConfigResult != null) {
             BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {

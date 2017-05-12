@@ -1,4 +1,4 @@
-package com.aaron.android.framework.library.web;
+package com.aaron.android.framework.base.widget.web;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;

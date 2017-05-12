@@ -1,4 +1,4 @@
-package com.aaron.android.framework.library.web;
+package com.aaron.android.framework.base.widget.web;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

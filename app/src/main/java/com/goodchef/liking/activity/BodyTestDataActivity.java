@@ -30,7 +30,7 @@ import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.data.BodyData;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.AppBarStateChangeListener;
@@ -455,7 +455,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
      */
     private void setUserData(BodyTestResult.BodyTestData.UserDataData bodyUserData) {
         mUserNameTextView.setText(bodyUserData.getName());
-        Preference.setNickName(bodyUserData.getName());
+        LikingPreference.setNickName(bodyUserData.getName());
         String gender = bodyUserData.getGender();
         if ("0".equals(gender)) {
             mUserGenderImageView.setImageResource(R.drawable.icon_women);
@@ -470,7 +470,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements View.OnCl
 
         String imageUrl = bodyUserData.getAvatar();
         if (!StringUtils.isEmpty(imageUrl)) {
-            Preference.setUserIconUrl(imageUrl);
+            LikingPreference.setUserIconUrl(imageUrl);
             HImageLoaderSingleton.getInstance().loadImage(mTopBackgroundHImageView, imageUrl);
             HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, imageUrl);
         }

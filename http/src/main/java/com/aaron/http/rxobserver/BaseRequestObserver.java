@@ -1,7 +1,7 @@
 package com.aaron.http.rxobserver;
 
-import com.aaron.http.code.result.Result;
 import com.aaron.common.utils.LogUtils;
+import com.aaron.http.code.result.Result;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

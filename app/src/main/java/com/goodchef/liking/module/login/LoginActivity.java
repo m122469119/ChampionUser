@@ -12,7 +12,7 @@ import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
@@ -26,7 +26,7 @@ import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.mvp.view.LoginView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.NumberConstantUtil;
 
 import butterknife.BindView;
@@ -81,7 +81,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
                 login();
                 break;
             case R.id.register_agree_on:
-                BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+                BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
                 if (baseConfigResult != null) {
                     BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                     if (baseConfigData != null) {
@@ -150,7 +150,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
         mCodeEditText.setText("");
         showToast(getString(R.string.version_code_sended));
-        if (!EnvironmentUtils.Config.isDebugMode()) {
+        if (!EnvironmentUtils.Config.isTestMode()) {
             return;
         }
         if (verificationCodeData != null && !TextUtils.isEmpty(verificationCodeData.getCaptcha())) {
@@ -176,11 +176,11 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
      * 上传设备信息
      */
     private void uploadDeviceInfo() {
-        String jPushRegisterId = Preference.getJPushRegistrationId();
+        String jPushRegisterId = LikingPreference.getJPushRegistrationId();
         if (StringUtils.isEmpty(jPushRegisterId)) {
             return;
         }
-        LiKingApi.uploadUserDevice(Preference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<LikingResult>() {
+        LiKingApi.uploadUserDevice(LikingPreference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<LikingResult>() {
             @Override
             public void onSuccess(LikingResult likingResult) {
                 LogUtils.i(TAG, "uploadDeviceInfo success!");

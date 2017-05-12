@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -39,7 +39,7 @@ import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -208,7 +208,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
             mWechatCheckBox.setChecked(true);
             payType = "0";
         } else if (v == mCouponsLayout) {//选优惠券
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(this, CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
@@ -224,7 +224,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 startActivity(intent);
             }
         } else if (v == mImmediatelyBuyBtn) {
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 if (payType.equals("-1")) {
                     showToast(getString(R.string.please_select_pay_type));
                     return;
@@ -236,7 +236,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 startActivity(intent);
             }
         } else if (v == mAgreeProtocolTextView) {
-            BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+            BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
             if (baseConfigResult != null) {
                 BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                 if (baseConfigData != null) {

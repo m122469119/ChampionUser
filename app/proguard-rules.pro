@@ -158,7 +158,7 @@
     *;
 }
 
--keep class com.aaron.android.framework.library.web.NativeMethod {
+-keep class com.aaron.android.framework.base.widget.web.NativeMethod {
 *;}
 
 -keep class com.iflytek.**{*;}

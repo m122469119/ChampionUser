@@ -4,14 +4,14 @@ import android.content.Context;
 
 import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CouponsDetailsView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * Created on 2017/3/10
@@ -28,7 +28,7 @@ public class CouponsDetailsPresenter extends BasePresenter<CouponsDetailsView> {
 
 
     public void getConponsDetail(String coupons_id) {
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData == null) {
             locationData = new LocationData();
         }

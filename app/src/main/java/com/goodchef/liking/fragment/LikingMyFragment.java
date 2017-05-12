@@ -50,7 +50,7 @@ import com.goodchef.liking.mvp.presenter.MyUserInfoOtherPresenter;
 import com.goodchef.liking.mvp.presenter.UserExercisePresenter;
 import com.goodchef.liking.mvp.view.MyUserInfoOtherView;
 import com.goodchef.liking.mvp.view.UserExerciseView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -134,7 +134,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void showUpdate(){
-        int update = Preference.getUpdateApp();
+        int update = LikingPreference.getUpdateApp();
         if (update ==0){//不更新
             mUpdateAppImageView.setVisibility(View.GONE);
         }else if (update == 1 || update ==2){//有更新
@@ -146,7 +146,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 获个人信息
      */
     private void getMyUserInfoOther() {
-        if (Preference.isLogin()) {
+        if (LikingPreference.isLogin()) {
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                 clearExerciseData();
             } else {
@@ -172,7 +172,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 获取我的锻炼数据
      */
     private void getUserExerciseData() {
-        if (Preference.isLogin()) {
+        if (LikingPreference.isLogin()) {
             if (mUserExercisePresenter == null) {
                 mUserExercisePresenter = new UserExercisePresenter(getActivity(), this);
             }
@@ -185,16 +185,16 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void updateMyUserInfoOtherView(MyUserOtherInfoResult.UserOtherInfoData userOtherInfoData) {
         mStateView.setState(StateView.State.SUCCESS);
-        Preference.setIsBind(userOtherInfoData.getIsBind());
-        Preference.setIsVip(Integer.parseInt(userOtherInfoData.getIsVip()));
+        LikingPreference.setIsBind(userOtherInfoData.getIsBind());
+        LikingPreference.setIsVip(Integer.parseInt(userOtherInfoData.getIsVip()));
         mBraceletMac = userOtherInfoData.getBraceletMac();
         UUID = userOtherInfoData.getUuid();
-        if (Preference.isVIP()) {
+        if (LikingPreference.isVIP()) {
             mIsVip.setVisibility(View.VISIBLE);
         } else {
             mIsVip.setVisibility(View.GONE);
         }
-        if (Preference.isBind()) {
+        if (LikingPreference.isBind()) {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet_my, true);
             mEveryDataSportData.setText(userOtherInfoData.getAllDistance());
         } else {
@@ -225,7 +225,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private void doExerciseData(UserExerciseResult.ExerciseData exerciseData) {
         if (exerciseData != null) {
             mTrainTimeData.setText(exerciseData.getTodayMin());
-            if (Preference.isBind()) {
+            if (LikingPreference.isBind()) {
                 mBodyScoreData.setText(exerciseData.getScore());
             }else {
                 mEveryDataSportData.setText(exerciseData.getScore());
@@ -246,17 +246,17 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
 
     private void setLogonView() {
-        if (Preference.isLogin()) {
+        if (LikingPreference.isLogin()) {
             mLoginBtn.setVisibility(View.GONE);
             mPersonNameTextView.setVisibility(View.VISIBLE);
             mPersonPhoneTextView.setVisibility(View.VISIBLE);
-            mPersonNameTextView.setText(Preference.getNickName());
-            mPersonPhoneTextView.setText(Preference.getUserPhone());
-            if (!StringUtils.isEmpty(Preference.getUserIconUrl())) {
-                HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, Preference.getUserIconUrl());
-                HImageLoaderSingleton.getInstance().loadImage(mHImageViewBackground, Preference.getUserIconUrl());
+            mPersonNameTextView.setText(LikingPreference.getNickName());
+            mPersonPhoneTextView.setText(LikingPreference.getUserPhone());
+            if (!StringUtils.isEmpty(LikingPreference.getUserIconUrl())) {
+                HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, LikingPreference.getUserIconUrl());
+                HImageLoaderSingleton.getInstance().loadImage(mHImageViewBackground, LikingPreference.getUserIconUrl());
             }
-            if (Preference.isVIP()) {
+            if (LikingPreference.isVIP()) {
                 mIsVip.setVisibility(View.VISIBLE);
             } else {
                 mIsVip.setVisibility(View.GONE);
@@ -336,7 +336,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     private void initViewIconAndText() {
         setMySettingCard(mSelfHelpGroupLayout, R.string.layout_self_help_group, true);
-        if (Preference.isBind()) {
+        if (LikingPreference.isBind()) {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet_my, true);
         } else {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
@@ -357,7 +357,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void setHeadPersonData() {
-        if (Preference.isBind()) {//已绑定
+        if (LikingPreference.isBind()) {//已绑定
             mBodyScoreLayout.setVisibility(View.VISIBLE);
             mHeadPersonDataTextView.setVisibility(View.GONE);
             setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
@@ -402,7 +402,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == mTrainLayout) {//我的训练数据
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYTRAINDATAACTIVITY);
                 Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
                 startActivity(intent);
@@ -413,7 +413,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         } else if (v == mHeadInfoLayout || v == mHeadHImageView) {
-            if (!Preference.isLogin()) {
+            if (!LikingPreference.isLogin()) {
                 startActivity(LoginActivity.class);
             } else {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
@@ -422,7 +422,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         } else if (v == mMyCourseLayout) {//我的课程
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYLESSONACTIVITY);
                 Intent intent = new Intent(getActivity(), MyLessonActivity.class);
                 startActivity(intent);
@@ -430,14 +430,14 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mMyOrderLayout) {//我的订单
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 Intent intent = new Intent(getActivity(), MyOrderActivity.class);
                 startActivity(intent);
             } else {
                 startActivity(LoginActivity.class);
             }
         } else if (v == mMemberCardLayout) {//会员卡
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYCARDACTIVITY);
                 Intent intent = new Intent(getActivity(), MyCardActivity.class);
                 startActivity(intent);
@@ -445,7 +445,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 startActivity(LoginActivity.class);
             }
         } else if (v == mCouponsLayout) {//我的优惠券
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 UMengCountUtil.UmengCount(getActivity(), UmengEventId.COUPONSACTIVITY);
                 Intent intent = new Intent(getActivity(), CouponsActivity.class);
                 intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, CouponsActivity.TYPE_MY_COUPONS);
@@ -465,7 +465,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
             startActivity(SelfHelpGroupActivity.class);
         } else if (v == mBodyScoreLayout) {//体测数据
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 jumpBodyTestActivity();
             } else {
                 startActivity(LoginActivity.class);
@@ -473,8 +473,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         } else if (v == mBindBraceletLinearLayout) {//绑定手环
             jumpBraceletActivity();
         } else if (v == mEverydaySportLayout) {//手环数据
-            if (Preference.isLogin()) {
-                if (Preference.isBind()) {
+            if (LikingPreference.isLogin()) {
+                if (LikingPreference.isBind()) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.EVERYDAYSPORTACTIVITY);
                     Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
@@ -496,11 +496,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * 跳转到我的手环
      */
     private void jumpBraceletActivity() {
-        if (Preference.isLogin()) {
+        if (LikingPreference.isLogin()) {
             if (!StringUtils.isEmpty(mBraceletMac)) {
                 LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
             }
-            if (Preference.isBind()) {//绑定过手环
+            if (LikingPreference.isBind()) {//绑定过手环
                 if (initBlueTooth()) {
                     UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYBRACELETACTIVITY);
                     Intent intent = new Intent(getActivity(), MyBraceletActivity.class);

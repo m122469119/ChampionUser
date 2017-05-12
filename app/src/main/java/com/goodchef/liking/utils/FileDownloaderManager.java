@@ -17,11 +17,10 @@ import android.widget.TextView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
-import com.aaron.android.framework.library.downloadprovider.FileDownloadService;
-import com.aaron.android.framework.library.storage.DiskStorageManager;
+import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -119,10 +118,10 @@ public class FileDownloaderManager {
 //                    ApkController.install(intent.getStringExtra(FileDownloadService.EXTRA_INSTALL_APK_PATH), mContext);
 
 //                     unregisterDownloadNewApkBroadcast();
-                    Preference.setUpdateApp(0);//将更新设置为不用更新
+                    LikingPreference.setUpdateApp(0);//将更新设置为不用更新
                     //调用系统安装
                     String dirPath = DiskStorageManager.getInstance().getApkFileStoragePath();
-                    String apkName = Preference.getNewAPkName();
+                    String apkName = LikingPreference.getNewAPkName();
                     String filePath = dirPath + apkName + ".apk"; //文件需有可读权限
                     Intent intent1 = new Intent();
                     intent1.setAction(android.content.Intent.ACTION_VIEW);

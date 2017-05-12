@@ -14,27 +14,6 @@ import retrofit2.Retrofit;
  * @author aaron.huang
  * @version 1.0.0
  */
-//public class ServiceGenerator {
-//    private final static String BASE_URL = EnvironmentUtils.Config.getHttpRequestUrlHost();
-//    private static final int CONNECT_TIMEOUT = 10; //秒
-//    private static OkHttpClient.Builder sOkHttpClientBuilder = new OkHttpClient
-//            .Builder().connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS);
-//    private static Retrofit.Builder sRetrofitBuilder = new Retrofit.Builder()
-//            .baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
-//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-//
-//    /**
-//     * @param serviceClass api class<>
-//     * @param interceptor  添加公共参数
-//     * @param <S>          api class
-//     * @return
-//     */
-//    public static <S> S createService(Class<S> serviceClass, Interceptor interceptor) {
-//        Retrofit retrofit = sRetrofitBuilder.client(
-//                sOkHttpClientBuilder.addInterceptor(interceptor).build()).build();
-//        return retrofit.create(serviceClass);
-//    }
-
 public class ServiceCreator {
     private OkHttpClient.Builder mOkHttpClientBuilder = new OkHttpClient.Builder();
     private Retrofit.Builder mRetrofitBuilder = new Retrofit.Builder();
@@ -79,9 +58,9 @@ public class ServiceCreator {
         }
         return this;
     }
+
     public <S> S build(Class<S> serviceClass) {
         Retrofit retrofit = mRetrofitBuilder.client(mOkHttpClientBuilder.build()).build();
         return retrofit.create(serviceClass);
     }
 }
-//}

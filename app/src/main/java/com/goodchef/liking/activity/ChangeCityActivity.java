@@ -195,7 +195,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
      * 跳转到系统设置界面中的Liking APP中设置定位权限
      */
     private void jumpSettingLocationActivity() {
-        String packageName = EnvironmentUtils.Config.isDebugMode() ? "com.goodchef.liking.test" : "com.goodchef.liking";
+        String packageName = EnvironmentUtils.Config.isTestMode() ? "com.goodchef.liking.test" : "com.goodchef.liking";
         Uri packageURI = Uri.parse("package:" + packageName);
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
         startActivity(intent);

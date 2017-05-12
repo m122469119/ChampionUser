@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp.model;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class ChangeGymModel {
     public List<CityData> cityDataList;//开通服务的城市列表
 
     public List<CityData> getCityListData() {
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
         if (baseConfigResult != null) {
             BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
             if (baseConfigData != null) {

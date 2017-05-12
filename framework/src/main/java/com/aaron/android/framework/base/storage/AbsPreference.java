@@ -1,4 +1,4 @@
-package com.aaron.android.framework.library.storage;
+package com.aaron.android.framework.base.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;

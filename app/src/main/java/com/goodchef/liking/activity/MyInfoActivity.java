@@ -30,7 +30,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
 import com.goodchef.liking.mvp.view.UserInfoView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
@@ -504,13 +504,13 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
             String imageUrl = userInfoData.getAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
                 HImageLoaderSingleton.getInstance().loadImage(mHeadImage, imageUrl);
-                Preference.setUserIconUrl(imageUrl);
+                LikingPreference.setUserIconUrl(imageUrl);
             }
             mUserInfoData = userInfoData;
             String name = userInfoData.getName();
             if (!StringUtils.isEmpty(name)) {
                 mUserNameEditText.setText(name);
-                Preference.setNickName(name);
+                LikingPreference.setNickName(name);
             }
             String birthday = userInfoData.getBirthday();
             if (!StringUtils.isEmpty(birthday)) {

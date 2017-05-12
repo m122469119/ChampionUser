@@ -15,7 +15,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public class BindBraceModel {
                 isSearchSuccess = true;
             }
             if (!StringUtils.isEmpty(mBluetoothDevice.getName())) {
-                Preference.setBlueToothName(mBluetoothDevice.getAddress(), mBluetoothDevice.getName());
+                LikingPreference.setBlueToothName(mBluetoothDevice.getAddress(), mBluetoothDevice.getName());
             }
             callback.callback();
         }

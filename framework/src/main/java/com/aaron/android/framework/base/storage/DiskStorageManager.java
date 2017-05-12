@@ -1,4 +1,4 @@
-package com.aaron.android.framework.library.storage;
+package com.aaron.android.framework.base.storage;
 
 import com.aaron.android.framework.utils.DiskStorageUtils;
 import com.aaron.common.utils.FileUtils;

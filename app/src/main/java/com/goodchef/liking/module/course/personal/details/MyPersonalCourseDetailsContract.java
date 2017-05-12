@@ -2,7 +2,7 @@ package com.goodchef.liking.module.course.personal.details;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;

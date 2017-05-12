@@ -16,7 +16,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 
@@ -63,11 +63,11 @@ public class LikingBaseObserver<T extends LikingResult> extends BaseRequestObser
                     if (view != null && view instanceof BaseLoginView) {
                         ((BaseLoginView) view).updateNoLoginView();
                     } else {
-                        Preference.setToken(ConstantUtils.BLANK_STRING);
-                        Preference.setNickName(ConstantUtils.BLANK_STRING);
-                        Preference.setUserPhone(ConstantUtils.BLANK_STRING);
-                        Preference.setIsNewUser(null);
-                        Preference.setUserIconUrl(ConstantUtils.BLANK_STRING);
+                        LikingPreference.setToken(ConstantUtils.BLANK_STRING);
+                        LikingPreference.setNickName(ConstantUtils.BLANK_STRING);
+                        LikingPreference.setUserPhone(ConstantUtils.BLANK_STRING);
+                        LikingPreference.setIsNewUser(null);
+                        LikingPreference.setUserIconUrl(ConstantUtils.BLANK_STRING);
                         Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
                         EventBus.getDefault().post(new LoginOutFialureMessage());

@@ -1,4 +1,4 @@
-package com.aaron.android.framework.base.adapter;
+package com.aaron.android.framework.base.widget.viewpager;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

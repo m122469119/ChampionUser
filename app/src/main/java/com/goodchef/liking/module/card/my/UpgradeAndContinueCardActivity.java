@@ -16,7 +16,7 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -62,7 +62,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
      * 从本地拿到定位的经纬度和城市等信息
      */
     private void setLocationData() {
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData != null) {
             longitude = locationData.getLongitude();
             latitude = locationData.getLatitude();

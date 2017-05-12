@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class UMengCountUtil {
      */
     public static void UmengCount(Context context, String eventId) {
         String cityName ;
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData !=null && !StringUtils.isEmpty(locationData.getCityName())){
             cityName = locationData.getCityName();
         }else {
@@ -54,7 +54,7 @@ public class UMengCountUtil {
      */
     public static  void  UmengBtnCount(Context context ,String eventId){
         String cityName ;
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData !=null && !StringUtils.isEmpty(locationData.getCityName())){
             cityName = locationData.getCityName();
         }else {

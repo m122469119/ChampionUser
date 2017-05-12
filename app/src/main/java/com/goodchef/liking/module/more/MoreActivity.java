@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.library.storage.DiskStorageManager;
+import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.module.about.AboutActivity;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.FileDownloaderManager;
 
 import butterknife.BindView;
@@ -65,7 +65,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
     private void initViewIconAndText() {
         setMySettingCard(mAboutUsLayout, R.string.layout_about_us, true);
-        if (Preference.isLogin()) {
+        if (LikingPreference.isLogin()) {
             mLoginOutBtn.setVisibility(View.VISIBLE);
         } else {
             mLoginOutBtn.setVisibility(View.GONE);
@@ -112,7 +112,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
                 }
             }
         } else if (v == mLoginOutBtn) {
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 showExitDialog();
             } else {
                 showToast(getString(R.string.not_login));

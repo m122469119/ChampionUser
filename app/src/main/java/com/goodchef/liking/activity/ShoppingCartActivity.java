@@ -22,7 +22,7 @@ import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class ShoppingCartActivity extends AppBarActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v == mImmediatelyBuyBtn) {
-            if (Preference.isLogin()) {
+            if (LikingPreference.isLogin()) {
                 Intent intent = new Intent(this, DishesConfirmActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList(INTENT_KEY_CONFIRM_BUY_LIST, buyList);

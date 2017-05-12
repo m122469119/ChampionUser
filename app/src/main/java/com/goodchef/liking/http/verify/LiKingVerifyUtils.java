@@ -11,7 +11,7 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.http.helper.VerifyResultUtils;
-import com.aaron.android.framework.library.thread.TaskScheduler;
+import com.aaron.android.framework.base.thread.TaskScheduler;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.DateUtils;
 import com.aaron.common.utils.ListUtils;
@@ -26,7 +26,7 @@ import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.utils.CityUtils;
@@ -70,11 +70,11 @@ public class LiKingVerifyUtils {
                     if (view != null && view instanceof BaseLoginView) {
                         ((BaseLoginView) view).updateNoLoginView();
                     } else {
-                        Preference.setToken(NULL_STRING);
-                        Preference.setNickName(NULL_STRING);
-                        Preference.setUserPhone(NULL_STRING);
-                        Preference.setIsNewUser(null);
-                        Preference.setUserIconUrl(NULL_STRING);
+                        LikingPreference.setToken(NULL_STRING);
+                        LikingPreference.setNickName(NULL_STRING);
+                        LikingPreference.setUserPhone(NULL_STRING);
+                        LikingPreference.setIsNewUser(null);
+                        LikingPreference.setUserIconUrl(NULL_STRING);
                         Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
                         EventBus.getDefault().post(new LoginOutFialureMessage());
@@ -178,7 +178,7 @@ public class LiKingVerifyUtils {
                     }
                     //解析已开通城市
                     loadOpenCitysInfo(context);
-                    Preference.setBaseConfig(result);
+                    LikingPreference.setBaseConfig(result);
                     EventBus.getDefault().post(new InitApiFinishedMessage(true));
                 } else {
                     sBaseConfigResult = getLocalBaseConfig(context);//Preference.getBaseConfig();
@@ -200,7 +200,7 @@ public class LiKingVerifyUtils {
 
     public static List<City.RegionsData.CitiesData> getCitiesDataList() {
         List<City.RegionsData.CitiesData> citiesDatas = new ArrayList<>();
-        BaseConfigResult baseResult = Preference.getBaseConfig();
+        BaseConfigResult baseResult = LikingPreference.getBaseConfig();
         if (baseResult == null) {
             return citiesDatas;
         }
@@ -277,7 +277,7 @@ public class LiKingVerifyUtils {
                     }
                 }
                 sBaseConfigResult.getBaseConfigData().setCityList(cityList);
-                Preference.setBaseConfig(sBaseConfigResult);
+                LikingPreference.setBaseConfig(sBaseConfigResult);
             }
         });
     }
@@ -286,7 +286,7 @@ public class LiKingVerifyUtils {
         if (context == null) {
             return false;
         }
-        if (!Preference.isLogin()) {
+        if (!LikingPreference.isLogin()) {
             context.startActivity(new Intent(context, LoginActivity.class));
             return false;
         }
@@ -294,7 +294,7 @@ public class LiKingVerifyUtils {
     }
 
     private static BaseConfigResult getLocalBaseConfig(Context context) {
-        BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+        BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
 //        if(baseConfigResult == null){
 //            baseConfigResult = getBaseConfigFromAsset(context);
 //        }

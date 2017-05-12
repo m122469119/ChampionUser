@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.library.storage.DiskStorageManager;
+import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -55,7 +55,7 @@ import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
 import com.goodchef.liking.mvp.presenter.LikingHomePresenter;
 import com.goodchef.liking.mvp.view.CheckUpdateAppView;
 import com.goodchef.liking.mvp.view.LikingHomeView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.FileDownloaderManager;
@@ -140,7 +140,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 初始化gymId
      */
     private void initGymId() {
-        String id = Preference.getLoginGymId();
+        String id = LikingPreference.getLoginGymId();
         if (!StringUtils.isEmpty(id) && !"0".equals(id)) {
             gymId = id;
         } else {
@@ -211,17 +211,17 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         int update = mUpDateAppData.getUpdate();
         if (update == 0) {//无更新
-            Preference.setUpdateApp(0);
+            LikingPreference.setUpdateApp(0);
         } else if (update == 1) {//有更新
-            Preference.setUpdateApp(1);
-            Preference.setNewApkName(mUpDateAppData.getLastestVer());
-            if (Preference.getIsUpdate()) {
-                Preference.setIsUpdateApp(false);
+            LikingPreference.setUpdateApp(1);
+            LikingPreference.setNewApkName(mUpDateAppData.getLastestVer());
+            if (LikingPreference.getIsUpdate()) {
+                LikingPreference.setIsUpdateApp(false);
                 showCheckUpdateDialog(false);
             }
         } else if (update == 2) {//强制更新
-            Preference.setUpdateApp(2);
-            Preference.setNewApkName(mUpDateAppData.getLastestVer());
+            LikingPreference.setUpdateApp(2);
+            LikingPreference.setNewApkName(mUpDateAppData.getLastestVer());
             showCheckUpdateDialog(true);
         }
     }
@@ -512,12 +512,12 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             } else {
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
-            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+            LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
             defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
-            Preference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+            LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
             mRedPoint.setVisibility(View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else {
@@ -545,7 +545,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
         LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + next.getAid());
 
-        if (!Preference.isIdenticalAnnouncement(next.getGym_id())) {
+        if (!LikingPreference.isIdenticalAnnouncement(next.getGym_id())) {
             showNoticesDialog(noticeDatas);
         }
 
@@ -560,10 +560,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             } else {
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
-            Preference.setAnnouncementId(next.getAid());
+            LikingPreference.setAnnouncementId(next.getAid());
         } else if (!StringUtils.isEmpty(next.getGymContent())) {
             defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
-            Preference.setAnnouncementId(next.getAid());
+            LikingPreference.setAnnouncementId(next.getAid());
         } else {
             defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
         }
@@ -678,7 +678,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     private void saveLocationInfo(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isLocation) {
         LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName, isLocation);
-        Preference.setLocationData(locationData);
+        LikingPreference.setLocationData(locationData);
     }
 
     @Override
@@ -745,7 +745,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private boolean showDefaultGymDialog() {
         //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
-        if (!Preference.getUserHasCard() && NumberConstantUtil.ONE == defaultGym && shoDefaultDialog) {
+        if (!LikingPreference.getUserHasCard() && NumberConstantUtil.ONE == defaultGym && shoDefaultDialog) {
             if (!isWhetherLocation) {//定位失败
                 shoDefaultDialog = false;
                 setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
@@ -811,7 +811,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         String tag = fragmentTabHost.getCurrentTabTag();
         if (tag.equals(TAG_MAIN_TAB)) {
             if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
-                if (Preference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+                if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
                     mRedPoint.setVisibility(View.VISIBLE);
                     RightMenuDialog.setRedPromptShow(true);
                     showNoticeDialog();

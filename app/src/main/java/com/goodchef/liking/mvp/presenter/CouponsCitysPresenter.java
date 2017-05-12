@@ -3,7 +3,7 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 
 import com.aaron.http.code.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -11,7 +11,7 @@ import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CouponsCitysView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * Created on 2017/3/15
@@ -30,7 +30,7 @@ public class CouponsCitysPresenter extends BasePresenter<CouponsCitysView> {
 
     public void requestCityPage(int page, String coupons_id, BasePagerLoaderFragment clazz){
 
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData == null) {
             locationData = new LocationData();
         }

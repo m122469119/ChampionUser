@@ -392,7 +392,7 @@
                 <category android:name="com.goodchef.liking" />
             </intent-filter>
         </service>
-        <service android:name="com.aaron.android.framework.library.downloadprovider.FileDownloadService" />
+        <service android:name=".utils.FileDownloadService" />
 
         <!-- Required SDK核心功能 -->
         <receiver

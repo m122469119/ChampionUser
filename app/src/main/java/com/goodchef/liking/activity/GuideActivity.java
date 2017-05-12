@@ -17,7 +17,7 @@ import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.GuideFragment;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.widgets.CustomVideoView;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -46,7 +46,7 @@ public class GuideActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        Preference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
+        LikingPreference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
         initView();
         setVideoView();
         setIconPageIndicatorView();
