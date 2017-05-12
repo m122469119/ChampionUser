@@ -20,13 +20,14 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:我的私教课详情
  * Author shaozucheng
  * Time:16/6/20 下午7:08
  */
-public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsView, View.OnClickListener {
+public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsView {
 
     private static final int COURSES_STATE_PAYED = 0;//0 已支付
     private static final int COURSES_STATE_COMPLETE = 1;//1 已完成
@@ -95,7 +96,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     }
 
     private void initView() {
-        mContactTeacherBtn.setOnClickListener(this);
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -183,14 +183,13 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         sendRequest();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mContactTeacherBtn) {
-            if (!StringUtils.isEmpty(mTeacherPhone)) {
-                LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
-            }
+    @OnClick(R.id.details_contact_teacher)
+    public void click(View view) {
+        if (!StringUtils.isEmpty(mTeacherPhone)) {
+            LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
         }
     }
+
 
     @Override
     public void handleNetworkFailure() {
