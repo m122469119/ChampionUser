@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.gym.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,10 +23,8 @@ import com.goodchef.liking.adapter.ChangeGymAdapter;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.DrawerMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
+import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
-import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.mvp.presenter.CheckGymPresenter;
-import com.goodchef.liking.mvp.view.CheckGymView;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -37,13 +35,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:切换场馆
  * Author shaozucheng
  * Time:16/9/18 下午3:30
  */
-public class ChangeGymFragment extends BaseFragment implements CheckGymView, View.OnClickListener {
+public class ChangeGymFragment extends BaseFragment implements GymListContract.CheckGymView, View.OnClickListener {
     @BindView(R.id.my_gym)
     TextView mMyTextView;
     @BindView(R.id.change_gym_RecyclerView)
@@ -51,22 +50,9 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     @BindView(R.id.change_gym_state_view)
     LikingStateView mStateView;
 
-
     private View mNoCardHeadView;
-
     private ChangeGymAdapter mChangeGymAdapter;
-    private CheckGymPresenter mCheckGymPresenter;
-
-    private String selectCityId;//选择的城市id
-    private String gymId;//场馆id
-    private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
-    private boolean islocation;
-
-    private String longitude = "0";
-    private String latitude = "0";
-
-    private List<CheckGymListResult.CheckGymData.CheckGym> allGymList;
-    private CheckGymListResult.CheckGymData.MyGymData mMyGym;
+    private GymListContract.CheckGymPresenter mCheckGymPresenter;
 
     public static ChangeGymFragment newInstance(Bundle args) {
         ChangeGymFragment fragment = new ChangeGymFragment();
@@ -95,13 +81,35 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                     mStateView.setState(StateView.State.FAILED);
                 } else {
-                    if (!StringUtils.isEmpty(selectCityId)) {
-                        sendGymRequest(Integer.parseInt(selectCityId), longitude, latitude);
+                    if (!StringUtils.isEmpty(mCheckGymPresenter.getSelectCityId())) {
+                        sendGymRequest();
                     }
                 }
             }
         });
         setInitNoCardHeadView();
+    }
+
+    private void getInitData() {
+        mChangeGymAdapter = new ChangeGymAdapter(getActivity());
+
+        if(mCheckGymPresenter == null) {
+            mCheckGymPresenter = new GymListContract.CheckGymPresenter(getActivity(), this);
+        }
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            mCheckGymPresenter.setSelectCityId(bundle.getString(LikingHomeActivity.KEY_SELECT_CITY_ID));
+            mCheckGymPresenter.setGymId(bundle.getString(LikingLessonFragment.KEY_GYM_ID));
+            mCheckGymPresenter.setTabIndex(bundle.getInt(LikingHomeActivity.KEY_TAB_INDEX, 0));
+            mCheckGymPresenter.setIslocation(bundle.getBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION));
+        }
+    }
+
+    private void setNetWorkView() {
+        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+            mStateView.setState(StateView.State.FAILED);
+        }
+        initData();
     }
 
     private void setViewOnClickListener() {
@@ -112,43 +120,28 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         mNoCardHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_change_gym_head, mRecyclerView, false);
     }
 
-    private void setNetWorkView() {
-        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            mStateView.setState(StateView.State.FAILED);
-        }
-        initData();
-    }
-
-    private void getInitData() {
-        selectCityId = getArguments().getString(LikingHomeActivity.KEY_SELECT_CITY_ID);
-        gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
-        tabIndex = getArguments().getInt(LikingHomeActivity.KEY_TAB_INDEX, 0);
-        islocation = getArguments().getBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION);
-        mChangeGymAdapter = new ChangeGymAdapter(getActivity());
-    }
-
     private void initData() {
-        LocationData locationData = LikingPreference.getLocationData();
-        sendGymRequest(Integer.parseInt(selectCityId), locationData.getLongitude(), locationData.getLatitude());
+        sendGymRequest();
     }
 
 
-    private void sendGymRequest(int cityId, String longitude, String latitude) {
+    private void sendGymRequest() {
         mStateView.setState(StateView.State.LOADING);
-        mCheckGymPresenter = new CheckGymPresenter(getActivity(), this);
-        mCheckGymPresenter.getGymList(cityId, longitude, latitude);
+        mCheckGymPresenter.getGymList();
     }
 
     @Override
     public void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData) {
         if (checkGymData != null) {
-            mMyGym = checkGymData.getMyGymData();
+            CheckGymListResult.CheckGymData.MyGymData mMyGym = checkGymData.getMyGymData();
+            mCheckGymPresenter.setMyGym(mMyGym);
             mStateView.setState(StateView.State.SUCCESS);
-            allGymList = checkGymData.getAllGymList();
+            List<CheckGymListResult.CheckGymData.CheckGym> allGymList = checkGymData.getAllGymList();
+            mCheckGymPresenter.setAllGymList(allGymList);
             if (allGymList != null && allGymList.size() > 0) {
                 mChangeGymAdapter.setData(checkGymData.getAllGymList());
                 mRecyclerView.setAdapter(mChangeGymAdapter);
-                setDefaultCheck();
+                mCheckGymPresenter.setDefaultCheck(allGymList);
                 setOnItemClickListener();
             } else {
                 setNoDataView();
@@ -177,7 +170,6 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
 
     }
 
-
     /***
      * 设置没有数据
      */
@@ -185,6 +177,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_chenge_no_data, null, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.no_buy_card_imageView);
         TextView myGymTextView = (TextView) view.findViewById(R.id.no_data_my_gym);
+        CheckGymListResult.CheckGymData.MyGymData mMyGym = mCheckGymPresenter.getMyGym();
         if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId()) && !StringUtils.isEmpty(mMyGym.getGymName())) {
             imageView.setVisibility(View.GONE);
             myGymTextView.setVisibility(View.VISIBLE);
@@ -207,28 +200,6 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         mStateView.setNodataView(view);
     }
 
-
-    /***
-     * 设置默认选中首页所在的场馆
-     */
-    private void setDefaultCheck() {
-        for (int i = 0; i < allGymList.size(); i++) {
-            if (i == 0) {
-                if (islocation) {
-                    allGymList.get(0).setIslocation(true);
-                } else {
-                    allGymList.get(0).setIslocation(false);
-                }
-                allGymList.get(0).setReCently(true);
-            }
-            if (String.valueOf(allGymList.get(i).getGymId()).equals(gymId)) {
-                allGymList.get(i).setSelect(true);
-            } else {
-                allGymList.get(i).setSelect(false);
-            }
-        }
-    }
-
     @Override
     public void handleNetworkFailure() {
         mStateView.setState(StateView.State.FAILED);
@@ -242,7 +213,7 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
                 if (textView != null) {
                     CheckGymListResult.CheckGymData.CheckGym checkGym = (CheckGymListResult.CheckGymData.CheckGym) textView.getTag();
                     if (checkGym != null) {
-                        for (CheckGymListResult.CheckGymData.CheckGym gym : allGymList) {
+                        for (CheckGymListResult.CheckGymData.CheckGym gym : mCheckGymPresenter.getAllGymList()) {
                             if (gym.getGymId() == checkGym.getGymId()) {
                                 gym.setSelect(true);
                             } else {
@@ -272,9 +243,9 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
         UMengCountUtil.UmengCount(getActivity(), UmengEventId.GYMCOURSESACTIVITY);
         LikingHomeActivity.gymId = gymId;
         LikingHomeActivity.isChangeGym = true;
-        postEvent(new ChangGymMessage(tabIndex));
+        postEvent(new ChangGymMessage(mCheckGymPresenter.getTabIndex()));
         Intent intent = new Intent(getActivity(), LikingHomeActivity.class);
-        intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, tabIndex);
+        intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, mCheckGymPresenter.getTabIndex());
         startActivity(intent);
         getActivity().finish();
     }
@@ -290,22 +261,27 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
     }
 
     public void onEvent(RefreshChangeCityMessage message) {
-        selectCityId = message.getCityId();
-        longitude = message.getLongitude();
-        latitude = message.getLatitude();
-        sendGymRequest(Integer.parseInt(selectCityId), longitude, latitude);
+        mCheckGymPresenter.setGymId(message.getCityId());
+        mCheckGymPresenter.setLongitude(message.getLongitude());
+        mCheckGymPresenter.setLatitude(message.getLatitude());
+        sendGymRequest();
     }
 
 
-    @Override
+    @OnClick(R.id.my_gym)
     public void onClick(View v) {
-        if (v == mMyTextView) {
-            jumpHomeActivity();
+        switch (v.getId()) {
+            case R.id.my_gym:
+                jumpHomeActivity();
+                break;
+            default:
+                break;
         }
     }
 
 
     private void jumpHomeActivity() {
+        CheckGymListResult.CheckGymData.MyGymData mMyGym = mCheckGymPresenter.getMyGym();
         if (mMyGym != null && !StringUtils.isEmpty(mMyGym.getGymId())) {
             UMengCountUtil.UmengCount(getActivity(), UmengEventId.MY_GYM_BTN);
             jumpLikingHomeActivity(mMyGym.getGymId());

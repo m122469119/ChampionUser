@@ -3,6 +3,7 @@ package com.goodchef.liking.module.data.remote;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.alipay.tscenter.biz.rpc.vkeydfp.result.BaseResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -197,6 +198,10 @@ public interface LikingApiService {
     Observable<UserInfoResult> getUserInfo(@Path(PATH_VERSION) String version,
                                            @Field(KEY_TOKEN) String token);
 
+    @POST(Urls.GET_GYM_LIST)
+    Observable<CheckGymListResult> getCheckGymList(@Path(PATH_VERSION) String version,
+                                                   @QueryMap Map<String, String> map);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -331,6 +336,11 @@ public interface LikingApiService {
          * 获取我的个人信息
          */
         public static final String GET_USER_INFO = sVersion + "user/info";
+
+        /**
+         * 查看场馆
+         */
+        public static final String GET_GYM_LIST = sVersion + "gym/get-all-gym";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

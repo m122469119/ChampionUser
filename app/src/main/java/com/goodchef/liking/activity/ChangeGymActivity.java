@@ -17,7 +17,7 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
-import com.goodchef.liking.fragment.ChangeGymFragment;
+import com.goodchef.liking.module.gym.list.ChangeGymFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
