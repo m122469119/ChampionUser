@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.userinfo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,25 +12,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.http.code.RequestCallback;
-import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
-import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.dialog.SelectDateDialog;
 import com.goodchef.liking.dialog.SelectSexDialog;
-import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
-import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.writeuserinfo.CompleteUserInfoContract;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
@@ -50,7 +45,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/27 下午3:11
  */
-public class MyInfoActivity extends AppBarActivity implements UserInfoView {
+public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoContract.CompleteUserInfoView {
     @BindView(R.id.my_info_state_view)
     LikingStateView mStateView;
     @BindView(R.id.my_edit_userInfo_prompt)
@@ -77,7 +72,7 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
     TextView mFinishBtn;
 
     private CameraPhotoHelper mCameraPhotoHelper;
-    private UserInfoPresenter mUserInfoPresenter;
+    private CompleteUserInfoContract.CompleteUserInfoPresenter mUserInfoPresenter;
 
     private Integer gender = null;
 
@@ -96,6 +91,7 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         ButterKnife.bind(this);
+        mUserInfoPresenter = new CompleteUserInfoContract.CompleteUserInfoPresenter(this,this);
         initView();
         initData();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
@@ -117,9 +113,6 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
     }
 
     private void setInfoRequest() {
-        if (mUserInfoPresenter == null) {
-            mUserInfoPresenter = new UserInfoPresenter(this, this);
-        }
         mUserInfoPresenter.getUserInfo();
     }
 
@@ -579,25 +572,23 @@ public class MyInfoActivity extends AppBarActivity implements UserInfoView {
         mUserInfoPresenter.getUserInfo();
     }
 
+    @Override
+    public void updateUploadImage(UserImageResult.UserImageData userImageData) {
+        headUrl = userImageData.getUrl();
+        if (!StringUtils.isEmpty(headUrl)) {
+            mUserInfoPresenter.updateUserInfo("", headUrl, null, "", "", "");
+        }
+    }
+
+    @Override
+    public void uploadImageError() {
+
+    }
+
 
     private void sendImageFile(Bitmap mBitmap) {
         String image = BitmapBase64Util.bitmapToString(mBitmap);
-        LiKingApi.uploadUserImage(image, new RequestCallback<UserImageResult>() {
-            @Override
-            public void onSuccess(UserImageResult result) {
-                if (LiKingVerifyUtils.isValid(MyInfoActivity.this, result)) {
-                    headUrl = result.getData().getUrl();
-                    if (!StringUtils.isEmpty(headUrl)) {
-                        mUserInfoPresenter.updateUserInfo("", headUrl, null, "", "", "");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-
-            }
-        });
+        mUserInfoPresenter.uploadImage(image);
     }
 
 

@@ -30,7 +30,7 @@ public class CompleteUserInfoModel extends BaseModel {
      * @param img 图片
      * @return Observable<UserImageResult>
      */
-    Observable<UserImageResult> uploadUserImage(String img) {
+    public Observable<UserImageResult> uploadUserImage(String img) {
         if (EnvironmentUtils.Config.isTestMode()) {
             return LikingNewApi.getInstance().uploadDebugUserImage(img);
         } else {
@@ -50,7 +50,7 @@ public class CompleteUserInfoModel extends BaseModel {
      * @param height   身高
      * @return Observable<LikingResult>
      */
-    Observable<LikingResult> updateUserInfo(String name, String avatar, Integer gender, String birthday, String weight, String height) {
+    public Observable<LikingResult> updateUserInfo(String name, String avatar, Integer gender, String birthday, String weight, String height) {
         Map<String, Object> map = new HashMap<>();
         map.put("token", LikingPreference.getToken());
         if (!StringUtils.isEmpty(name)) {
@@ -79,7 +79,7 @@ public class CompleteUserInfoModel extends BaseModel {
      *
      * @return Observable<UserInfoResult>
      */
-    Observable<UserInfoResult> getUserInfo() {
+    public Observable<UserInfoResult> getUserInfo() {
         return LikingNewApi.getInstance().getUserInfo(UrlList.sHostVersion, LikingPreference.getToken());
     }
 }

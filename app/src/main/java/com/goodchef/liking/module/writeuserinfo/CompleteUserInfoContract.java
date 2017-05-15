@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class CompleteUserInfoContract {
+public interface CompleteUserInfoContract {
 
     interface CompleteUserInfoView extends BaseNetworkLoadView {
         void updateUploadImage(UserImageResult.UserImageData userImageData);
@@ -32,7 +32,7 @@ public class CompleteUserInfoContract {
         void updateUserInfo();
     }
 
-    public static class CompleteUserInfoPresenter extends BasePresenter<CompleteUserInfoView> {
+    class CompleteUserInfoPresenter extends BasePresenter<CompleteUserInfoView> {
         CompleteUserInfoModel mCompleteUserInfoModel;
 
         public CompleteUserInfoPresenter(Context context, CompleteUserInfoView mainView) {
@@ -60,6 +60,28 @@ public class CompleteUserInfoContract {
                         public void onError(Throwable e) {
                             super.onError(e);
                             mView.handleNetworkFailure();
+                        }
+                    });
+        }
+
+        public void uploadMyUserInfoImage(String img){
+            mCompleteUserInfoModel.uploadUserImage(img)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new BaseRequestObserver<UserImageResult>(){
+                        @Override
+                        public void onNext(UserImageResult result) {
+                            super.onNext(result);
+                            if (LiKingVerifyUtils.isValid(mContext, result)) {
+                                mView.updateUploadImage(result.getData());
+                            }else {
+                                mView.uploadImageError();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
                         }
                     });
         }
