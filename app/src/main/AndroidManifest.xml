@@ -162,7 +162,7 @@
             android:screenOrientation="portrait" />
         <!-- 我的订单 -->
         <activity
-            android:name=".activity.MyOrderActivity"
+            android:name=".module.card.order.MyOrderActivity"
             android:screenOrientation="portrait" />
         <!-- 营养餐订单详情 -->
         <activity

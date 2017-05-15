@@ -31,7 +31,7 @@ import com.goodchef.liking.activity.EveryDaySportActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.MyBraceletActivity;
 import com.goodchef.liking.activity.MyInfoActivity;
-import com.goodchef.liking.activity.MyOrderActivity;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;

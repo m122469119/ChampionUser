@@ -16,7 +16,7 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.activity.MyOrderActivity;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.http.result.data.AnnouncementDirect;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.card.my.MyCardActivity;

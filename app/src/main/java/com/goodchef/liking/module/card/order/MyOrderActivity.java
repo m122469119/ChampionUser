@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.card.order;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +9,6 @@ import android.view.View;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
-import com.goodchef.liking.module.card.order.MyCardOrderFragment;
 
 /**
  * 说明:我的订单

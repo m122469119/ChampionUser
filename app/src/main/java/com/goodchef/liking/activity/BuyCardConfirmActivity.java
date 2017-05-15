@@ -35,6 +35,7 @@ import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.ConfirmCard;
 import com.goodchef.liking.http.result.data.PayResultData;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
