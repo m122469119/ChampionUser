@@ -9,24 +9,18 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.imageloader.code.HImageConfigBuilder;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
-import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.http.code.RequestError;
 import com.aaron.imageloader.ImageLoader;
+import com.aaron.imageloader.code.HImageConfigBuilder;
+import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
-import com.goodchef.liking.http.api.LiKingApi;
-import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.mvp.presenter.UserInfoPresenter;
-import com.goodchef.liking.mvp.view.UserInfoView;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -40,7 +34,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/8/19 下午2:35
  */
-public class CompleteUserInfoActivity extends AppBarActivity implements UserInfoView {
+public class CompleteUserInfoActivity extends AppBarActivity implements CompleteUserInfoContract.CompleteUserInfoView {
 
     @BindView(R.id.complete_userInfo_state_view)
     LikingStateView mStateView;
@@ -70,7 +64,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
     private String weight;
     private String headUrl = "";
 
-    private UserInfoPresenter mUserInfoPresenter;
+    private CompleteUserInfoContract.CompleteUserInfoPresenter mCompleteUserInfoPresenter;
     private Bitmap mBitmap;
 
     @Override
@@ -78,7 +72,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_user_info);
         ButterKnife.bind(this);
-        mUserInfoPresenter = new UserInfoPresenter(this, this);
+        mCompleteUserInfoPresenter = new CompleteUserInfoContract.CompleteUserInfoPresenter(this, this);
         setTitle(getString(R.string.activity_title_complete_userinfo));
         showHomeUpIcon(0);
         initData();
@@ -141,33 +135,26 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
      * 提交用户信息
      */
     private void sendUserInfo() {
-        if (mUserInfoPresenter == null) {
-            mUserInfoPresenter = new UserInfoPresenter(this, this);
-        }
-        mUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStrFormat, weight, height + "");
+        mCompleteUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStrFormat, weight, height + "");
     }
 
     private void sendImageFile(Bitmap mBitmap) {
         String image = BitmapBase64Util.bitmapToString(mBitmap);
-        LiKingApi.uploadUserImage(image, new RequestUiLoadingCallback<UserImageResult>(CompleteUserInfoActivity.this, R.string.loading) {
-            @Override
-            public void onSuccess(UserImageResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(CompleteUserInfoActivity.this, result)) {
-                    headUrl = result.getData().getUrl();
-                    LogUtils.i(TAG, "headUrl= " + headUrl);
-                    sendUserInfo();
-                }
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                super.onFailure(error);
-                sendUserInfo();
-            }
-        });
+        mCompleteUserInfoPresenter.uploadImage(image);
     }
 
+
+    @Override
+    public void updateUploadImage(UserImageResult.UserImageData userImageData) {
+        headUrl = userImageData.getUrl();
+        LogUtils.i(TAG, "headUrl= " + headUrl);
+        sendUserInfo();
+    }
+
+    @Override
+    public void uploadImageError() {
+        sendUserInfo();
+    }
 
     @Override
     public void updateGetUserInfoView(UserInfoResult.UserInfoData userInfoData) {
@@ -184,12 +171,7 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
 
     @Override
     public void updateUserInfo() {
-        mUserInfoPresenter.getUserInfo();
-    }
-
-    @Override
-    public void handleNetworkFailure() {
-
+        mCompleteUserInfoPresenter.getUserInfo();
     }
 
 
@@ -202,4 +184,8 @@ public class CompleteUserInfoActivity extends AppBarActivity implements UserInfo
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
+    }
 }

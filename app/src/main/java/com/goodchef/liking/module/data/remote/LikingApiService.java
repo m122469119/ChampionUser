@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.data.remote;
 
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.alipay.tscenter.biz.rpc.vkeydfp.result.BaseResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
@@ -17,6 +18,8 @@ import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
+import com.goodchef.liking.http.result.UserImageResult;
+import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 
@@ -99,15 +102,16 @@ public interface LikingApiService {
 
     @POST(Urls.COUPON_EXCHANGE_COUPON)
     Observable<LikingResult> exchangeCoupon(@Path(PATH_VERSION) String version,
-                                          @Query(KEY_TOKEN) String token,
-                                          @Query("exchange_code") String code);
+                                            @Query(KEY_TOKEN) String token,
+                                            @Query("exchange_code") String code);
 
     @POST(Urls.GET_MY_COUPON)
     Observable<CouponsPersonResult> getMyCoupons(@Path(PATH_VERSION) String version,
                                                  @Query(KEY_TOKEN) String token,
                                                  @Query("page") int page);
+
     @POST(Urls.GET_COUPON)
-    Observable<CouponsResult> getCoupons(@Path(PATH_VERSION) String version, @QueryMap Map<String,String> map);
+    Observable<CouponsResult> getCoupons(@Path(PATH_VERSION) String version, @QueryMap Map<String, String> map);
 
     @FormUrlEncoded
     @POST(Urls.MY_ORDER_COURSES_LIST)
@@ -119,13 +123,14 @@ public interface LikingApiService {
     @POST(Urls.CANCEL_GROUP_COURSES)
     Observable<LikingResult> cancelTeamCourse(@Path(PATH_VERSION) String version,
                                               @Field(KEY_TOKEN) String token,
-                                              @Field("order_id")String orderId);
+                                              @Field("order_id") String orderId);
 
     @FormUrlEncoded
     @POST(Urls.MY_ORDER_PRIVATE_LIST)
     Observable<MyPrivateCoursesResult> getPersonalCourseList(@Path(PATH_VERSION) String version,
                                                              @Field(KEY_TOKEN) String token,
-                                                             @Field("page")int page);
+                                                             @Field("page") int page);
+
     @FormUrlEncoded
     @POST(Urls.GROUP_LESSON_DETAILS)
     Observable<GroupCoursesResult> getCourseInfo(@Path(PATH_VERSION) String version,
@@ -141,28 +146,29 @@ public interface LikingApiService {
     @FormUrlEncoded
     @POST(Urls.ORDER_GET_COURSE_DETAIL)
     Observable<MyChargeGroupCoursesDetailsResult>
-                            chargeGroupCoursesDetails(@Path(PATH_VERSION) String version,
-                                                      @Field(KEY_TOKEN) String token,
-                                                      @Field("order_id")String orderId);
+    chargeGroupCoursesDetails(@Path(PATH_VERSION) String version,
+                              @Field(KEY_TOKEN) String token,
+                              @Field("order_id") String orderId);
 
     @FormUrlEncoded
     @POST(Urls.MY_ORDER_PRIVATE_DETAILS)
     Observable<MyPrivateCoursesDetailsResult>
-                            getPersonalCourseDetails(@Path(PATH_VERSION) String version,
-                                                     @Field(KEY_TOKEN) String token,
-                                                     @Field("order_id")String orderId);
+    getPersonalCourseDetails(@Path(PATH_VERSION) String version,
+                             @Field(KEY_TOKEN) String token,
+                             @Field("order_id") String orderId);
 
     @FormUrlEncoded
     @POST(Urls.COMPLETE_MY_PRIVATE_COURSES)
     Observable<LikingResult> completeTrainerCourse(@Path(PATH_VERSION) String version,
                                                    @Field(KEY_TOKEN) String token,
-                                                   @Field("order_id")String orderId);
+                                                   @Field("order_id") String orderId);
 
     @FormUrlEncoded
     @POST(Urls.COURSE_GYM_SCHEDULE_INFO)
     Observable<SelfHelpGroupCoursesResult>
-                            getSelfHelpScheduleInfo(@Path(PATH_VERSION) String version,
-                                                    @FieldMap Map<String, String> map);
+    getSelfHelpScheduleInfo(@Path(PATH_VERSION) String version,
+                            @FieldMap Map<String, String> map);
+
     @FormUrlEncoded
     @POST(Urls.COURSE_ADD_SCHEDULE)
     Observable<LikingResult> joinSelfHelpCourses(@Path(PATH_VERSION) String version,
@@ -171,7 +177,25 @@ public interface LikingApiService {
     @FormUrlEncoded
     @POST(Urls.COURSE_CAN_SCHEDULE_COURSE_LIST)
     Observable<SelfGroupCoursesListResult> getScheduleCourseList(@Path(PATH_VERSION) String version,
-                                                                 @Field("page")int page);
+                                                                 @Field("page") int page);
+
+    @FormUrlEncoded
+    @POST(Urls.TEST_UPLOAD_USER_IMAGE)
+    Observable<UserImageResult> uploadDebugUserImage(@Field("img") String img);
+
+    @FormUrlEncoded
+    @POST(Urls.UPLOAD_USER_IMAGE)
+    Observable<UserImageResult> uploadUserImage(@Field("img") String img);
+
+    @FormUrlEncoded
+    @POST(Urls.UPDATE_USER)
+    Observable<LikingResult> updateUserInfo(@Path(PATH_VERSION) String version,
+                                            @FieldMap Map<String, Object> map);
+
+    @FormUrlEncoded
+    @POST(Urls.GET_USER_INFO)
+    Observable<UserInfoResult> getUserInfo(@Path(PATH_VERSION) String version,
+                                           @Field(KEY_TOKEN) String token);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -222,7 +246,7 @@ public interface LikingApiService {
          */
         public static final String GET_USER_EXERCISE_DATA = sVersion + "user/get-sports-data";
 
-         /**
+        /**
          * 兑换优惠券
          */
         public static final String COUPON_EXCHANGE_COUPON = sVersion + "coupon/exchange-coupon";
@@ -275,7 +299,7 @@ public interface LikingApiService {
         /**
          * 私教课确认完成
          */
-        public static final String COMPLETE_MY_PRIVATE_COURSES =  sVersion + "order/complete-trainer-course";
+        public static final String COMPLETE_MY_PRIVATE_COURSES = sVersion + "order/complete-trainer-course";
 
         /**
          * 获取用户自助排课页面的时间表
@@ -285,12 +309,28 @@ public interface LikingApiService {
         /**
          * 预约团体课
          */
-        public static final String COURSE_ADD_SCHEDULE = sVersion + "course/add-schedule";
+        static final String COURSE_ADD_SCHEDULE = sVersion + "course/add-schedule";
 
         /**
          * 选择排课列表
          */
-        public static final String COURSE_CAN_SCHEDULE_COURSE_LIST = sVersion + "course/can-schedule-course-list";
+        static final String COURSE_CAN_SCHEDULE_COURSE_LIST = sVersion + "course/can-schedule-course-list";
+
+        /**
+         * 上传图片
+         */
+        static final String TEST_UPLOAD_USER_IMAGE = "http://testimg.likingfit.com/upload/image";
+        static final String UPLOAD_USER_IMAGE = "http://img.likingfit.com/upload/image";
+
+        /**
+         * 更新我的个人信息
+         */
+        static final String UPDATE_USER = sVersion + "user/update";
+
+        /**
+         * 获取我的个人信息
+         */
+        public static final String GET_USER_INFO = sVersion + "user/info";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
