@@ -198,34 +198,34 @@
             android:screenOrientation="portrait" />
         <!-- 填写名称 -->
         <activity
-            android:name=".activity.WriteNameActivity"
+            android:name=".module.writeuserinfo.WriteNameActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 上传头像 -->
         <activity
-            android:name=".activity.UserHeadImageActivity"
+            android:name=".module.writeuserinfo.UserHeadImageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 选择性别 -->
         <activity
-            android:name=".activity.SexActivity"
+            android:name=".module.writeuserinfo.SexActivity"
             android:screenOrientation="portrait" />
         <!-- 选择生日 -->
         <activity
-            android:name=".activity.SelectBirthdayActivity"
+            android:name=".module.writeuserinfo.SelectBirthdayActivity"
             android:screenOrientation="portrait" />
         <!-- 选择身高 -->
         <activity
-            android:name=".activity.SelectHeightActivity"
+            android:name=".module.writeuserinfo.SelectHeightActivity"
             android:screenOrientation="portrait" />
         <!-- 选择体重 -->
         <activity
-            android:name=".activity.SelectWeightActivity"
+            android:name=".module.writeuserinfo.SelectWeightActivity"
             android:screenOrientation="portrait" />
 
         <!-- 完成个人信息 -->
         <activity
-            android:name=".activity.CompleteUserInfoActivity"
+            android:name=".module.writeuserinfo.CompleteUserInfoActivity"
             android:screenOrientation="portrait" />
 
         <!-- 收费团体课详情界面 -->

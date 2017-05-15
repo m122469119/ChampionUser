@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.writeuserinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,10 @@ import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.ImageLoader;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
+import com.goodchef.liking.module.writeuserinfo.SelectHeightActivity;
+import com.goodchef.liking.module.writeuserinfo.SexActivity;
+import com.goodchef.liking.module.writeuserinfo.UserHeadImageActivity;
+import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.utils.VerifyDateUtils;
 import com.goodchef.liking.widgets.RulerView;
 import com.goodchef.liking.widgets.base.LikingStateView;

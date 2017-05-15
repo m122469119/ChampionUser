@@ -20,7 +20,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.activity.PrivateLessonDetailsActivity;
-import com.goodchef.liking.activity.WriteNameActivity;
+import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
 import com.goodchef.liking.eventmessages.BuyCardMessage;

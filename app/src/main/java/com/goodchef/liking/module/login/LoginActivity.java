@@ -19,7 +19,7 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.WriteNameActivity;
+import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BaseConfigResult;
