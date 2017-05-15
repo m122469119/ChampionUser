@@ -101,16 +101,13 @@ public class ChangeCityFragment extends BaseFragment {
 
         mChangeCityAdapter.setOnItemClickListener(new ChangeCityAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View v, int pos) {
-                LogUtils.e(TAG, "-----> %d" + pos);
+            public void onItemClick(View v, City.RegionsData.CitiesData citiesData) {
                 ChangeCityActivityMessage message = ChangeCityActivityMessage
                         .obtain(ChangeCityActivityMessage.CITY_ITEM_CLICK);
-                message.msg1 = mBodyDatas.get(pos).getCityName();
+                message.msg1 = citiesData.getCityName();
                 postEvent(message);
             }
         });
-
-
 
         mChangeCityRecycleView.setLayoutManager(mManager);
         mChangeCityRecycleView.setAdapter(mHeaderAdapter);

@@ -103,6 +103,7 @@
         <!--切换城市-->
         <activity
             android:name=".activity.ChangeCityActivity"
+            android:windowSoftInputMode="stateUnspecified|adjustPan"
             android:screenOrientation="portrait"/>
         <!--我的信息-->
         <activity

@@ -2,7 +2,9 @@ package com.goodchef.liking.widgets;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +38,6 @@ public class CityListWindow extends PopupWindow {
         initView(context, attrs);
     }
 
-
     private void initView(Context context, AttributeSet attrs) {
         View inflate = LayoutInflater.from(context).inflate(R.layout.window_city_list, null);
         setContentView(inflate);
@@ -69,4 +70,16 @@ public class CityListWindow extends PopupWindow {
         mNoDataView.setVisibility(View.VISIBLE);
         mListView.setVisibility(View.GONE);
     }
+
+    @Override
+    public void showAsDropDown(View anchor) {
+        if(Build.VERSION.SDK_INT >= 24){
+            Rect visibleFrame = new Rect();
+            anchor.getGlobalVisibleRect(visibleFrame);
+            int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+            setHeight(height);
+        }
+        super.showAsDropDown(anchor);
+    }
+
 }

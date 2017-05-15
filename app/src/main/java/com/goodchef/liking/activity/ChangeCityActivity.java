@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
@@ -101,6 +103,8 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
                     mDeleteSearchImageView.setVisibility(View.VISIBLE);
                 } else {
                     mDeleteSearchImageView.setVisibility(View.GONE);
+                    InputMethodManagerUtils.hideKeyboard(mSearchCityEditText);
+                    mSearchCityEditText.clearFocus();
                 }
                 LogUtils.e(TAG, "text= %s", text);
                 mPresenter.getCitySearch(text);
@@ -112,8 +116,10 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     mSearchCancelTextView.setVisibility(View.VISIBLE);
+                    showCityListWindow(null);
                 } else {
                     mSearchCancelTextView.setVisibility(View.GONE);
+                    InputMethodManagerUtils.hideKeyboard(mSearchCityEditText);
                 }
             }
         });
@@ -228,11 +234,11 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
             mCityListWindow.setAdapter(mChangeCityAdapter = new ChangeCityAdapter(this));
             mChangeCityAdapter.setOnItemClickListener(new ChangeCityAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View v, int pos) {
+                public void onItemClick(View v, City.RegionsData.CitiesData pos) {
 
                     ChangeGymActivityMessage msg = ChangeGymActivityMessage
                             .obtain(ChangeGymActivityMessage.CHANGE_LEFT_CITY_TEXT);
-                    msg.msg1 = list.get(pos).getCityName();
+                    msg.msg1 = pos.getCityName();
                     postEvent(msg);
                     finish();
                 }
@@ -250,12 +256,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         }
         mChangeCityAdapter.setData(list);
         mChangeCityAdapter.notifyDataSetChanged();
-
-        if (android.os.Build.VERSION.SDK_INT == 24) {
-            mCityListWindow.showAtLocation(mWindowView, Gravity.CENTER, 0, DisplayUtils.dp2px(160));
-        } else {
-            mCityListWindow.showAsDropDown(mCityLayout);
-        }
+        mCityListWindow.showAsDropDown(mCityLayout);
         mCityListWindow.update();
     }
 

@@ -9,7 +9,6 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 import com.goodchef.liking.R;
 
@@ -21,18 +20,12 @@ import com.goodchef.liking.R;
  * @email sanfenruxi1@163.com
  * @date 2017/2/17.
  */
-public class TimerEditView extends EditText {
-
+public class TimerEditView extends android.support.v7.widget.AppCompatEditText {
     private static final String TAG = "TimerEditView";
-
     private static final int MSG_CODE = 0x00000001;
-
     public static final int DELAYED_TIME = 2;
-
     private long mTimer;
-
     private String mText;
-
     private int mMsgCount = 0;
 
     public TimerEditView(Context context) {
@@ -101,10 +94,4 @@ public class TimerEditView extends EditText {
             }
         }
     };
-
-
-
-
-
-
 }

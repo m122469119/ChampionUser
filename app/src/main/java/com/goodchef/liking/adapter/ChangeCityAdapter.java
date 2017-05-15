@@ -50,7 +50,7 @@ public class ChangeCityAdapter extends BaseRecycleViewAdapter<ChangeCityAdapter.
     private OnDataIsNullListener mOnDataIsNullListener;
 
     public interface OnItemClickListener{
-        void onItemClick(View v, int pos);
+        void onItemClick(View v, City.RegionsData.CitiesData citiesData);
     }
 
     public interface OnDataIsNullListener{
@@ -90,7 +90,7 @@ public class ChangeCityAdapter extends BaseRecycleViewAdapter<ChangeCityAdapter.
             switch (view.getId()){
                 case R.id.city_name_TextView:
                     if (mOnItemClickListener != null){
-                        mOnItemClickListener.onItemClick(mCityNameTextView, mPosition);
+                        mOnItemClickListener.onItemClick(mCityNameTextView, getDataList().get(mPosition));
                     }
                     break;
             }
