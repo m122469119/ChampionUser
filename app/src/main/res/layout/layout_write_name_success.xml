@@ -5,6 +5,17 @@
                 android:background="@drawable/user_info_background"
                 android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:gravity="center"
+        android:minHeight="?attr/actionBarSize"
+        android:text="@string/activity_title_writename"
+        android:textColor="@color/app_bar_text_color"
+        android:textSize="@dimen/textsize_medium"/>
+
+
     <EditText
         android:id="@+id/write_name_editText"
         android:layout_width="match_parent"

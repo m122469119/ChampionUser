@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aaron.android.codelibrary.utils.StringUtils;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -21,7 +22,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * Author shaozucheng
  * Time:16/8/15 上午10:17
  */
-public class WriteNameActivity extends AppBarActivity implements View.OnClickListener {
+public class WriteNameActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String KEY_USER_NAME = "key_user_name";
     private LikingStateView mStateView;
@@ -33,8 +34,6 @@ public class WriteNameActivity extends AppBarActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_name);
         initView();
-        showHomeUpIcon(0);
-        setTitle(getString(R.string.activity_title_writename));
         initData();
         setViewOnRetryRequestListener();
     }
