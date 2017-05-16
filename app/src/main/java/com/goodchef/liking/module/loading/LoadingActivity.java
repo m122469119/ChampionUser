@@ -1,7 +1,8 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.loading;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -14,12 +15,15 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.GuideActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.NavigationBarUtil;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PatchDowner;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
@@ -33,12 +37,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 说明:
+ * 说明:启动页
  * Author shaozucheng
  * Time:16/7/8 上午10:15
  */
 public class LoadingActivity extends BaseActivity {
     private final int DURATION = 1500;
+    public static String STRING_NULL = "";
     private Handler handler = new Handler();
     private PatchData previousPatchData;
     private LinearLayout mCompleteLayout;
@@ -48,28 +53,17 @@ public class LoadingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         mCompleteLayout = (LinearLayout) findViewById(R.id.company_info);
-        //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         previousPatchData = LikingPreference.getPatchData();
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             LiKingVerifyUtils.initApi(this);
         }
         setCompleteLayoutView();
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                LogUtils.e(TAG, "subscribe thread: " + Thread.currentThread().getName());
-                e.onNext(new Object());
-            }
-        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                LogUtils.e(TAG, "accept thread: " + Thread.currentThread().getName());
-            }
-        });
     }
 
     private void setCompleteLayoutView() {
@@ -94,7 +88,7 @@ public class LoadingActivity extends BaseActivity {
             public void run() {
                 int number = clearToken();
                 if (number < 0) {
-                    LikingPreference.setToken("");
+                    LikingPreference.setToken(STRING_NULL);
                 }
                 if (LikingPreference.isNewVersion()) {
                     LikingPreference.setIsUpdateApp(true);//设置可以弹出更新对话框
@@ -120,20 +114,20 @@ public class LoadingActivity extends BaseActivity {
 
             //将数组转为list集合
             ArrayList<String> lastVersionList = new ArrayList<>();
-            for(int i=0 ;i<lastversion.length;i++){
+            for (int i = 0; i < lastversion.length; i++) {
                 lastVersionList.add(lastversion[i]);
             }
 
             ArrayList<String> currentVersionList = new ArrayList<>();
-            for(int i=0;i<currentversion.length;i++){
+            for (int i = 0; i < currentversion.length; i++) {
                 currentVersionList.add(currentversion[i]);
             }
 
             int length = currentVersionList.size() - lastVersionList.size();
             if (length > 0) {
-                lastVersionList.add("0");
+                lastVersionList.add(NumberConstantUtil.STR_ZERO);
             } else if (length < 0) {
-                currentVersionList.add("0");
+                currentVersionList.add(NumberConstantUtil.STR_ZERO);
             }
             for (int i = 0; i < currentVersionList.size(); i++) {
                 int number = Integer.parseInt(lastVersionList.get(i)) - Integer.parseInt(currentVersionList.get(i));
@@ -145,12 +139,18 @@ public class LoadingActivity extends BaseActivity {
         return 0;
     }
 
+    /**
+     * 跳转到引导页
+     */
     private void jumpToGuideActivity() {
         Intent guideIntent = new Intent(this, GuideActivity.class);
         startActivity(guideIntent);
         finish();
     }
 
+    /**
+     * 跳转到首页
+     */
     private void jumpToMainActivity() {
         Intent intent = new Intent(this, LikingHomeActivity.class);
         startActivity(intent);
@@ -160,8 +160,7 @@ public class LoadingActivity extends BaseActivity {
     private void loadPatch(PatchData patchData) {
         if (patchData != null && patchData.isPatchNeed() && !TextUtils.isEmpty(patchData.getPatchFile())) {
             LogUtils.i("Dust", "加载补丁");
-//            Nuwa.loadPatch(this, previousPatchData.getPatchFile());
-            TinkerInstaller.onReceiveUpgradePatch(this.getApplication(),previousPatchData.getPatchFile());
+            TinkerInstaller.onReceiveUpgradePatch(this.getApplication(), previousPatchData.getPatchFile());
         } else {
             LogUtils.i("Dust", "不加载补丁");
         }

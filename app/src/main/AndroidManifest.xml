@@ -52,7 +52,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/LikingTheme">
-        <activity android:name=".activity.LoadingActivity">
+        <activity android:name=".module.loading.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
