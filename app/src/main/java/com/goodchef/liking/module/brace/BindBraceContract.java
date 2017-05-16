@@ -1,22 +1,21 @@
-package com.goodchef.liking.mvp;
+package com.goodchef.liking.module.brace;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 
-import com.aaron.http.code.RequestCallback;
-import com.aaron.http.code.RequestError;
-import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.mvp.model.BindBraceModel;
 
 /**
  * Created on 2017/3/6
@@ -25,8 +24,8 @@ import com.goodchef.liking.mvp.model.BindBraceModel;
  * @version 1.0.0
  */
 
-public interface BindBraceleContract {
-    interface BindBraceleView extends BaseView {
+public interface BindBraceContract {
+    interface BindBraceView extends BaseView {
         void stopBlueToothWhewView();
 
         void setLayoutBlueOpenStateVisibility(int visibility);
@@ -58,14 +57,14 @@ public interface BindBraceleContract {
         void updateBindDevicesView();
     }
 
-    class BindBracePresenter extends BasePresenter<BindBraceleView> {
+    class BindBracePresenter extends BasePresenter<BindBraceView> {
         BindBraceModel mModel;
 
         private boolean isLoginSuccess = false;
         private boolean isSendRequest = false;//是否发送过请求
         private boolean mConnectionState = false;
 
-        public BindBracePresenter(Context context, BindBraceleView mainView) {
+        public BindBracePresenter(Context context, BindBraceView mainView) {
             super(context, mainView);
             mModel = new BindBraceModel(context, new BindBraceModel.Callback() {
                 @Override
@@ -104,7 +103,16 @@ public interface BindBraceleContract {
             mView.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (mModel.mBleManager.getBleUtils().isOpen()) {
+                    if (mModel.mBleManager == null) {
+                        return;
+                    }
+                    BleUtils bleUtils = mModel.mBleManager.getBleUtils();
+
+                    if (bleUtils == null) {
+                        return;
+                    }
+
+                    if (bleUtils.isOpen()) {
                         mView.setLayoutBlueOpenStateVisibility(View.GONE);
                     } else {
                         mView.setLayoutBlueOpenStateVisibility(View.VISIBLE);

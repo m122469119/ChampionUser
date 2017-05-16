@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.brace;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,9 +19,9 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.MyBraceletActivity;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.fragment.LikingMyFragment;
-import com.goodchef.liking.mvp.BindBraceleContract;
 import com.goodchef.liking.widgets.RoundImageView;
 import com.goodchef.liking.widgets.WhewView;
 
@@ -37,7 +37,7 @@ import cn.jpush.android.api.JPushInterface;
  * version 1.0.0
  */
 
-public class BingBraceletActivity extends AppBarActivity implements BindBraceleContract.BindBraceleView{
+public class BingBraceletActivity extends AppBarActivity implements BindBraceContract.BindBraceView {
 
     @BindView(R.id.blue_tooth_WhewView)
     WhewView mBlueToothWhewView;
@@ -73,13 +73,13 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceleC
     //private BleManager mBleManager;
     private int connectState;
 
-    BindBraceleContract.BindBracePresenter mPresenter;
+    BindBraceContract.BindBracePresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bing_bracelet);
-        mPresenter = new BindBraceleContract.BindBracePresenter(this, this);
+        mPresenter = new BindBraceContract.BindBracePresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_bing_bracelet));
 

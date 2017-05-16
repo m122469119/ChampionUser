@@ -1,4 +1,4 @@
-package com.goodchef.liking.mvp.model;
+package com.goodchef.liking.module.brace;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -8,13 +8,13 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.aaron.http.code.RequestCallback;
-import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.http.code.RequestCallback;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.module.data.local.LikingPreference;
 
 import java.util.ArrayList;

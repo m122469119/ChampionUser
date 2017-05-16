@@ -233,6 +233,14 @@
             android:name=".module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".module.brace.BingBraceletActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".module.brace.BlueToothHelpActivity"
+            android:screenOrientation="portrait"
+            />
+
         <!-- 选择课程地址 -->
         <activity
             android:name=".activity.ChangeAddressActivity"
@@ -254,9 +262,6 @@
             android:screenOrientation="portrait" />
 
         <!-- 绑定手环 -->
-        <activity
-            android:name=".activity.BingBraceletActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 自助团详情 -->
         <activity
@@ -284,9 +289,6 @@
             android:screenOrientation="portrait" />
 
         <!-- 蓝牙帮助界面 -->
-        <activity
-            android:name=".activity.BlueToothHelpActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 我的手环 -->
         <activity
