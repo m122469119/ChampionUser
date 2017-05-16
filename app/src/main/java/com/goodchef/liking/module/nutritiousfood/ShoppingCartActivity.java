@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.nutritiousfood;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -13,6 +13,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.aaron.common.utils.ListUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.ShoppingCartAdapter;
 import com.goodchef.liking.eventmessages.ClearCartMessage;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;

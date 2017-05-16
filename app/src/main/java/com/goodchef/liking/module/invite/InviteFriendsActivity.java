@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.invite;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.nutritiousfood;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +23,7 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.DishesConfirmAdapter;
 import com.goodchef.liking.adapter.MealTimeAdapter;
 import com.goodchef.liking.eventmessages.DishesAliPayMessage;

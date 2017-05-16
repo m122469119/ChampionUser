@@ -94,7 +94,7 @@
             android:screenOrientation="portrait"/>
         <!--周边-菜品详情-->
         <activity
-            android:name=".activity.DishesDetailsActivity"
+            android:name=".module.nutritiousfood.DishesDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 联系加盟 -->
         <activity
@@ -150,15 +150,15 @@
             android:screenOrientation="portrait"/>
         <!--购物车-->
         <activity
-            android:name=".activity.ShoppingCartActivity"
+            android:name=".module.nutritiousfood.ShoppingCartActivity"
             android:screenOrientation="portrait" />
         <!-- 确认订单页 -->
         <activity
-            android:name=".activity.DishesConfirmActivity"
+            android:name=".module.nutritiousfood.DishesConfirmActivity"
             android:screenOrientation="portrait" />
         <!-- 切换门店 -->
         <activity
-            android:name=".activity.ChangeShopActivity"
+            android:name=".module.nutritiousfood.ChangeShopActivity"
             android:screenOrientation="portrait" />
         <!-- 我的订单 -->
         <activity
@@ -190,11 +190,11 @@
             android:screenOrientation="portrait" />
         <!-- 邀请好友 -->
         <activity
-            android:name=".activity.InviteFriendsActivity"
+            android:name=".module.invite.InviteFriendsActivity"
             android:screenOrientation="portrait" />
         <!-- 邀请好友 -->
         <activity
-            android:name=".activity.WriteInviteCodeActivity"
+            android:name=".module.invite.WriteInviteCodeActivity"
             android:screenOrientation="portrait" />
         <!-- 填写名称 -->
         <activity

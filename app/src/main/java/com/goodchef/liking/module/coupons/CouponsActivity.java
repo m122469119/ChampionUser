@@ -13,7 +13,7 @@ import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
-import com.goodchef.liking.activity.ShoppingCartActivity;
+import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.fragment.CouponsFragment;

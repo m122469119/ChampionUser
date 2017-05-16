@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.nutritiousfood;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +21,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.data.Food;
+import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.mvp.presenter.ChangeShopPresenter;
 import com.goodchef.liking.mvp.view.ChangeShopView;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
