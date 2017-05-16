@@ -51,6 +51,7 @@ import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.result.data.NoticeData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
 import com.goodchef.liking.mvp.presenter.LikingHomePresenter;
 import com.goodchef.liking.mvp.view.CheckUpdateAppView;

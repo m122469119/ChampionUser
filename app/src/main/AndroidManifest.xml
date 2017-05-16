@@ -186,7 +186,7 @@
             android:screenOrientation="portrait" />
         <!-- 开门 -->
         <activity
-            android:name=".activity.OpenTheDoorActivity"
+            android:name=".module.opendoor.OpenTheDoorActivity"
             android:screenOrientation="portrait" />
         <!-- 邀请好友 -->
         <activity

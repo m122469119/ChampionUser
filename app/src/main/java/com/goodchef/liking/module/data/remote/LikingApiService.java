@@ -18,6 +18,7 @@ import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
@@ -198,9 +199,16 @@ public interface LikingApiService {
     Observable<UserInfoResult> getUserInfo(@Path(PATH_VERSION) String version,
                                            @Field(KEY_TOKEN) String token);
 
+    @FormUrlEncoded
     @POST(Urls.GET_GYM_LIST)
     Observable<CheckGymListResult> getCheckGymList(@Path(PATH_VERSION) String version,
                                                    @QueryMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST(Urls.GET_USER_AUTHCODE)
+    Observable<UserAuthCodeResult> getOpenPwd(@Path(PATH_VERSION) String version,
+                                              @Field(KEY_TOKEN) String token,
+                                              @Field("inout") int inout);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -341,6 +349,11 @@ public interface LikingApiService {
          * 查看场馆
          */
         public static final String GET_GYM_LIST = sVersion + "gym/get-all-gym";
+
+        /**
+         * 获取开门密码
+         */
+        public static final String GET_USER_AUTHCODE = sVersion + "user/authcode";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
