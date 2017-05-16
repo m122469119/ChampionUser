@@ -15,7 +15,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.GuideActivity;
+import com.goodchef.liking.module.guide.GuideActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
@@ -28,13 +28,6 @@ import com.goodchef.liking.utils.PatchDowner;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
 import java.util.ArrayList;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:启动页

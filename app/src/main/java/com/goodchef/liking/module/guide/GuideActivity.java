@@ -1,9 +1,10 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.guide;
 
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,9 +17,11 @@ import android.widget.MediaController;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.fragment.GuideFragment;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.NavigationBarUtil;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.widgets.CustomVideoView;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
@@ -34,7 +37,6 @@ public class GuideActivity extends BaseActivity {
     private FragmentPageAdapter mAdapter;
     private IconPageIndicator mIconPageIndicator;
     private CustomVideoView mVideoView;
-
     private MediaController mediaco;
     private Uri mUri;
 
@@ -42,19 +44,22 @@ public class GuideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-        //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         LikingPreference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
         initView();
         setVideoView();
         setIconPageIndicatorView();
         initData();
-
-
     }
 
+    /**
+     * 设置播放视频
+     */
     private void setVideoView() {
         mediaco = new MediaController(this);
         mUri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.guide_video);
@@ -111,8 +116,8 @@ public class GuideActivity extends BaseActivity {
         mIconPageIndicator.notifyDataSetChanged();
     }
 
-    public class FragmentPageAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
-        public FragmentPageAdapter(FragmentManager fm) {
+    private class FragmentPageAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
+        private FragmentPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -123,17 +128,17 @@ public class GuideActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return NumberConstantUtil.THREE;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case NumberConstantUtil.ZERO:
                     return GuideFragment.newInstance(position);
-                case 1:
+                case NumberConstantUtil.ONE:
                     return GuideFragment.newInstance(position);
-                case 2:
+                case NumberConstantUtil.TWO:
                     return GuideFragment.newInstance(position);
                 default:
                     return null;
