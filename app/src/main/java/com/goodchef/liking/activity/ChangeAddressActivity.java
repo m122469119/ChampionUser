@@ -18,6 +18,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.data.PlacesData;
+import com.goodchef.liking.module.course.personal.OrderPrivateCoursesConfirmActivity;
 
 import java.util.List;
 
