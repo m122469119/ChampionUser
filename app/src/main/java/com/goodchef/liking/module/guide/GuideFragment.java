@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.guide;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.utils.NumberConstantUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 说明:
@@ -20,16 +25,21 @@ import com.goodchef.liking.activity.LikingHomeActivity;
  */
 public class GuideFragment extends BaseFragment implements View.OnClickListener {
 
+    public static final String NUM = "num";
+    @BindView(R.id.layout_guide_intellect_exercise)
+    LinearLayout mLayoutGuideIntellect;
+    @BindView(R.id.layout_guide_private_teacher)
+    LinearLayout mLayoutGuidePrivateTeacher;
+    @BindView(R.id.jump_main_btn)
+    TextView mJumpBtn;
+    @BindView(R.id.layout_guide_data)
+    LinearLayout mLayoutGuideData;
+    Unbinder unbinder;
     private int mNum; //页号
-    private LinearLayout mLayoutGuideIntellect;
-    private LinearLayout mLayoutGuidePrivateTeacher;
-    private LinearLayout mLayoutGuideData;
-    private TextView mJumpBtn;
-
 
     public static GuideFragment newInstance(int num) {
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        args.putInt(NUM, num);
         GuideFragment fragment = new GuideFragment();
         fragment.setArguments(args);
         return fragment;
@@ -39,26 +49,23 @@ public class GuideFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frgment_guide, container, false);
-        mLayoutGuideIntellect = (LinearLayout) view.findViewById(R.id.layout_guide_intellect_exercise);
-        mLayoutGuidePrivateTeacher = (LinearLayout) view.findViewById(R.id.layout_guide_private_teacher);
-        mLayoutGuideData = (LinearLayout) view.findViewById(R.id.layout_guide_data);
-        mJumpBtn = (TextView) view.findViewById(R.id.jump_main_btn);
+        unbinder = ButterKnife.bind(this, view);
         mJumpBtn.setOnClickListener(this);
         initData();
         return view;
     }
 
     private void initData() {
-        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
-        if (mNum == 0) {
+        mNum = getArguments() != null ? getArguments().getInt(NUM) : NumberConstantUtil.ONE;
+        if (mNum == NumberConstantUtil.ZERO) {
             mLayoutGuideIntellect.setVisibility(View.VISIBLE);
             mLayoutGuidePrivateTeacher.setVisibility(View.GONE);
             mLayoutGuideData.setVisibility(View.GONE);
-        } else if (mNum == 1) {
+        } else if (mNum == NumberConstantUtil.ONE) {
             mLayoutGuideIntellect.setVisibility(View.GONE);
             mLayoutGuidePrivateTeacher.setVisibility(View.VISIBLE);
             mLayoutGuideData.setVisibility(View.GONE);
-        } else if (mNum == 2) {
+        } else if (mNum == NumberConstantUtil.TWO) {
             mLayoutGuideIntellect.setVisibility(View.GONE);
             mLayoutGuidePrivateTeacher.setVisibility(View.GONE);
             mLayoutGuideData.setVisibility(View.VISIBLE);
@@ -71,5 +78,11 @@ public class GuideFragment extends BaseFragment implements View.OnClickListener 
             startActivity(new Intent(getActivity(), LikingHomeActivity.class));
             getActivity().finish();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -18,13 +18,15 @@ import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.fragment.GuideFragment;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.widgets.CustomVideoView;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 说明:引导页
@@ -33,10 +35,14 @@ import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
  */
 public class GuideActivity extends BaseActivity {
 
-    private ViewPager mViewPager;
+    @BindView(R.id.video_view)
+    CustomVideoView mVideoView;
+    @BindView(R.id.guide_viewpager)
+    ViewPager mViewPager;
+    @BindView(R.id.guide_indicator)
+    IconPageIndicator mIconPageIndicator;
+
     private FragmentPageAdapter mAdapter;
-    private IconPageIndicator mIconPageIndicator;
-    private CustomVideoView mVideoView;
     private MediaController mediaco;
     private Uri mUri;
 
@@ -44,6 +50,7 @@ public class GuideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
+        ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -51,7 +58,6 @@ public class GuideActivity extends BaseActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         LikingPreference.setAppVersion(EnvironmentUtils.Config.getAppVersionName());
-        initView();
         setVideoView();
         setIconPageIndicatorView();
         initData();
@@ -98,11 +104,7 @@ public class GuideActivity extends BaseActivity {
         }
     }
 
-    private void initView() {
-        mViewPager = (ViewPager) findViewById(R.id.guide_viewpager);
-        mIconPageIndicator = (IconPageIndicator) findViewById(R.id.guide_indicator);
-        mVideoView = (CustomVideoView) findViewById(R.id.video_view);
-    }
+
 
     private void initData() {
         //这里因为是3.0一下版本，所以需继承FragmentActivity，通过getSupportFragmentManager()获取FragmentManager
