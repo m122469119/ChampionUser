@@ -11,7 +11,7 @@ import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/09
- * desc:
+ * desc: 我的私教列表
  *
  * @author: chenlei
  * @version:1.0

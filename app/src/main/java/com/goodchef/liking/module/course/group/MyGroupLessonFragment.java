@@ -30,16 +30,16 @@ import com.goodchef.liking.utils.UMengCountUtil;
 import java.util.List;
 
 /**
- * 说明:
+ * 说明: 我的 - 课程列表
  * Author shaozucheng
  * Time:16/5/31 下午4:42
  */
-public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements TeamcourseContract.MyGroupCourseView, ShareContract.ShareView {
+public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyTeamcourseContract.MyGroupCourseView, ShareContract.ShareView {
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupCoursesAdapter mGroupLessonAdapter;
 
-    private TeamcourseContract.MyGroupCoursesPresenter mMyGroupCoursesPresenter;
+    private MyTeamcourseContract.MyGroupCoursesPresenter mMyGroupCoursesPresenter;
     private ShareContract.SharePresenter mSharePresenter;
 
     @Override
@@ -132,7 +132,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     private void sendRequest(int page) {
         if (mMyGroupCoursesPresenter == null) {
-            mMyGroupCoursesPresenter = new TeamcourseContract.MyGroupCoursesPresenter(getActivity(), this);
+            mMyGroupCoursesPresenter = new MyTeamcourseContract.MyGroupCoursesPresenter(getActivity(), this);
         }
         mMyGroupCoursesPresenter.getMyGroupList(page);
     }

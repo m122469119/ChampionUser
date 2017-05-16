@@ -17,7 +17,7 @@ import com.goodchef.liking.module.course.CourseModel;
  * @version:1.0
  */
 
-public interface ChargeTeamCourseDetailsContract {
+public interface MyChargeTeamCourseDetailsContract {
 
     interface ChargeGroupCoursesDetailsView extends BaseNetworkLoadView {
         void updateChargeGroupCoursesDetailsView(MyChargeGroupCoursesDetailsResult.MyChargeGroupCoursesDetails groupCoursesDetails);
