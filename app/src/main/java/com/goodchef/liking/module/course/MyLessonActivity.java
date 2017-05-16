@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 说明:我的课程
+ * 说明:我的 - 课程列表
  * Author shaozucheng
  * Time:16/5/31 下午4:32
  */

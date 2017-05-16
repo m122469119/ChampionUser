@@ -24,7 +24,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.ArenaActivity;
-import com.goodchef.liking.activity.GroupCoursesChargeConfirmActivity;
+import com.goodchef.liking.module.course.group.details.charge.GroupCoursesChargeConfirmActivity;
 import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;

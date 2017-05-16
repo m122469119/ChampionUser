@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Author shaozucheng
  * Time:16/8/22 下午3:22
  */
-public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implements ChargeTeamCourseDetailsContract.ChargeGroupCoursesDetailsView {
+public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implements MyChargeTeamCourseDetailsContract.ChargeGroupCoursesDetailsView {
 
     @BindView(R.id.my_charge_group_courses_details_state_view)
     LikingStateView mStateView;
@@ -51,7 +51,7 @@ public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implemen
     @BindView(R.id.order_state)
     TextView mOrderStateTextView;//订单状态
 
-    private ChargeTeamCourseDetailsContract.MyChargeGroupCoursesDetailsPresenter mCoursesDetailsPresenter;
+    private MyChargeTeamCourseDetailsContract.MyChargeGroupCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String orderId;
 
     @Override
@@ -89,7 +89,7 @@ public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implemen
 
     private void sedCoursesDetailsRequest() {
         mStateView.setState(StateView.State.LOADING);
-        mCoursesDetailsPresenter = new ChargeTeamCourseDetailsContract.MyChargeGroupCoursesDetailsPresenter(this, this);
+        mCoursesDetailsPresenter = new MyChargeTeamCourseDetailsContract.MyChargeGroupCoursesDetailsPresenter(this, this);
         mCoursesDetailsPresenter.getChargeGroupCoursesDetails(orderId);
     }
 

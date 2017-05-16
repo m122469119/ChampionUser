@@ -3,14 +3,18 @@ package com.goodchef.liking.module.course;
 import android.text.TextUtils;
 
 import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.OrderCalculateResult;
+import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
@@ -197,6 +201,95 @@ public class CourseModel {
     public Observable<SelfGroupCoursesListResult> getSelfCoursesList(int page) {
         return LikingNewApi.getInstance()
                 .getScheduleCourseList(UrlList.sHostVersion, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 团体课支付确认
+     * @param gymId
+     * @param scheduleId
+     * @return
+     */
+    public Observable<ChargeGroupConfirmResult> chargeGroupCoursesConfirm(String gymId, String scheduleId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("schedule_id", scheduleId);
+        map.put("gym_id", gymId);
+        return LikingNewApi.getInstance()
+                .chargeGroupCoursesConfirm(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    /***
+     * 付费团体课提交订单获取支付数据
+     *
+     * @param scheduleId 排期id
+     * @param couponCode 优惠券吗
+     * @param payType    支付方式
+     */
+    public Observable<SubmitPayResult> chargeGroupCoursesImmediately(String gymId, String scheduleId, String couponCode, String payType) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("schedule_id", scheduleId);
+        map.put("gym_id", gymId);
+        map.put("coupon_code", couponCode);
+        map.put("pay_type", payType);
+        return LikingNewApi.getInstance()
+                .chargeGroupCoursesImmediately(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    /**
+     * 私教课确认预约订单
+     *
+     * @param trainerId 教练ID
+     */
+    public Observable<PrivateCoursesConfirmResult> orderPrivateCoursesConfirm(String gymId, String trainerId) {
+
+        return LikingNewApi.getInstance()
+                .orderPrivateCoursesConfirm(UrlList.sHostVersion, LikingPreference.getToken(), gymId, trainerId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     *  提交预约私教课
+     * @param courseId
+     * @param couponCode
+     * @param payType
+     * @param selectTimes
+     * @param gymId
+     */
+    public Observable<SubmitPayResult> submitPrivateCourses(String courseId, String couponCode, String payType, int selectTimes, String gymId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("gym_id", gymId);
+        map.put("course_id", courseId);
+        map.put("coupon_code", couponCode);
+        map.put("pay_type", payType);
+        map.put("select_times", String.valueOf(selectTimes));
+
+        return LikingNewApi.getInstance()
+                .submitPrivateCourses(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 计算私教课金额
+     * @param courseId
+     * @param selectTimes
+     * @return
+     */
+    public Observable<OrderCalculateResult> orderCalculate(String courseId, String selectTimes) {
+
+        return LikingNewApi.getInstance()
+                .orderCalculate(UrlList.sHostVersion, LikingPreference.getToken(), courseId, selectTimes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.opendoor;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,13 +10,13 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.OpenPassWordDoorFragment;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 /**
- * 说明:
+ * 说明:开门
  * Author shaozucheng
  * Time:16/7/6 下午3:26
  */
@@ -40,8 +40,7 @@ public class OpenTheDoorActivity extends AppBarActivity {
     private void initView() {
         mStateView = (LikingStateView) findViewById(R.id.open_the_door_state_view);
         mViewPager = (ViewPager) findViewById(R.id.open_viewpager);
-        mIconPageIndicator = (IconPageIndicator)findViewById(R.id.open_indicator);
-
+        mIconPageIndicator = (IconPageIndicator) findViewById(R.id.open_indicator);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -50,10 +49,10 @@ public class OpenTheDoorActivity extends AppBarActivity {
         });
     }
 
-    private void setView(){
-        if (EnvironmentUtils.Network.isNetWorkAvailable()){
+    private void setView() {
+        if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
-        }else {
+        } else {
             mStateView.setState(StateView.State.FAILED);
         }
     }
@@ -71,8 +70,8 @@ public class OpenTheDoorActivity extends AppBarActivity {
     }
 
 
-    public class MyFragmentPageAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
-        public MyFragmentPageAdapter(FragmentManager fm) {
+    private class MyFragmentPageAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
+        private MyFragmentPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -89,9 +88,9 @@ public class OpenTheDoorActivity extends AppBarActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case NumberConstantUtil.ZERO:
                     return OpenPassWordDoorFragment.newInstance(position);
-                case 1:
+                case NumberConstantUtil.ONE:
                     return OpenPassWordDoorFragment.newInstance(position);
                 default:
                     return null;

@@ -1,8 +1,7 @@
 package com.goodchef.liking.module.data.remote;
 
-import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.alipay.tscenter.biz.rpc.vkeydfp.result.BaseResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
@@ -15,9 +14,13 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
+import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.http.result.UserAuthCodeResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
@@ -202,6 +205,36 @@ public interface LikingApiService {
     Observable<CheckGymListResult> getCheckGymList(@Path(PATH_VERSION) String version,
                                                    @QueryMap Map<String, String> map);
 
+    @FormUrlEncoded
+    @POST(Urls.GET_USER_AUTHCODE)
+    Observable<UserAuthCodeResult> getOpenPwd(@Path(PATH_VERSION) String version,
+                                              @Field(KEY_TOKEN) String token,
+                                              @Field("inout") int inout);
+
+    @POST(Urls.ORDER_CHANGE_GROUP_CONFIRM)
+    Observable<ChargeGroupConfirmResult> chargeGroupCoursesConfirm(@Path(PATH_VERSION) String version,
+                                                                   @QueryMap Map<String, String> map);
+
+    @POST(Urls.ORDER_SUBMIT_TEAM_COURSE)
+    Observable<SubmitPayResult> chargeGroupCoursesImmediately(@Path(PATH_VERSION) String version,
+                                                              @QueryMap Map<String, String> map);
+
+    @POST(Urls.PRIVATE_ORDER_CONFIRM)
+    Observable<PrivateCoursesConfirmResult> orderPrivateCoursesConfirm(@Path(PATH_VERSION) String version,
+                                                                       @Query(KEY_TOKEN) String token,
+                                                                       @Query("gym_id") String gymId,
+                                                                       @Query("trainer_id") String trainerId);
+
+    @POST(Urls.ORDER_PRIVATE_COURSES_PAY)
+    Observable<SubmitPayResult> submitPrivateCourses(@Path(PATH_VERSION) String version,
+                                                     @QueryMap Map<String, String> map);
+
+    @POST(Urls.ORDER_CALCULATE)
+    Observable<OrderCalculateResult> orderCalculate(@Path(PATH_VERSION) String version,
+                                                    @Query(KEY_TOKEN) String token,
+                                                    @Query("course_id") String courseId,
+                                                    @Query("select_times") String selectTimes);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -341,6 +374,36 @@ public interface LikingApiService {
          * 查看场馆
          */
         public static final String GET_GYM_LIST = sVersion + "gym/get-all-gym";
+
+        /**
+         * 获取开门密码
+         */
+        public static final String GET_USER_AUTHCODE = sVersion + "user/authcode";
+
+        /**
+         * 付费团体课确认订单
+         */
+        public static final String ORDER_CHANGE_GROUP_CONFIRM = sVersion + "order/team-course-confirm";
+
+        /**
+         * 收费团体课购买
+         */
+        public static final String ORDER_SUBMIT_TEAM_COURSE = sVersion + "order/submit-team-course";
+
+        /**
+         * 私教课确认预约
+         */
+        public static final String PRIVATE_ORDER_CONFIRM = sVersion + "order/confirm";
+
+        /**
+         * 预约私教课支付
+         */
+        public static final String ORDER_PRIVATE_COURSES_PAY = sVersion + "order/trainer-reserve";
+
+        /**
+         * 计算私教课金额
+         */
+        public static final String ORDER_CALCULATE = sVersion + "order/calculate";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.course.personal;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +27,8 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.ChangeAddressActivity;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.adapter.PrivateCoursesTrainItemAdapter;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
@@ -39,8 +41,6 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.result.data.PlacesData;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
-import com.goodchef.liking.mvp.presenter.PrivateCoursesConfirmPresenter;
-import com.goodchef.liking.mvp.view.PrivateCoursesConfirmView;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
@@ -51,42 +51,68 @@ import com.goodchef.liking.wxapi.WXPayEntryActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:私教课确认购买页
  * Author shaozucheng
  * Time:16/6/15 下午6:01
  */
-public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implements PrivateCoursesConfirmView, View.OnClickListener {
+public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implements PrivateCoursesConfirmContract.PrivateCoursesConfirmView {
+
     private static final int INTENT_REQUEST_CODE_COUPON = 100;
     private static final int INTENT_REQUEST_CODE_CHANGE_PLACE = 110;
 
     private static final int PAY_TYPE = 3;//3 免金额支付
     public static final String KEY_CHANGE_ADDRESS = "key_change_address";
 
-    private RecyclerView mRecyclerView;
-    private TextView mCoursesTimesTextView;//上课次数
-    private TextView mCoursesNumberTextView;//上课人数
-    private TextView mEndTimeTextView;//截止日期
+    @BindView(R.id.confirm_recyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.courses_times)
+    TextView mCoursesTimesTextView;//上课次数
+    @BindView(R.id.courses_number)
+    TextView mCoursesNumberTextView;//上课人数
+    @BindView(R.id.end_time)
+    TextView mEndTimeTextView;//截止日期
 
-    private RelativeLayout mCouponsLayout;
-    private TextView mCouponTitleTextView;//优惠券信息
+    @BindView(R.id.layout_coupons_courses)
+    RelativeLayout mCouponsLayout;
+    @BindView(R.id.select_coupon_title)
+    TextView mCouponTitleTextView;//优惠券信息
 
-    private TextView mCoursesMoneyTextView;//课程金额
-    private TextView mImmediatelyBuyBtn;//立即购买
-    private TextView mCoursesAddressTextView;//课程地址
-    private TextView mCoursesTimeTextView;//课程时长
-    private TextView mCoursesTimesPrompt;//课程次数提示
-    private ImageView mMinusImageView;//减号
-    private ImageView mAddImageView;//加号
-    private TextView mPrivateBuyProtocolTextView;
+    @BindView(R.id.courses_money)
+    TextView mCoursesMoneyTextView;//课程金额
+    @BindView(R.id.immediately_buy_btn)
+    TextView mImmediatelyBuyBtn;//立即购买
+    @BindView(R.id.courses_address)
+    TextView mCoursesAddressTextView;//课程地址
+    @BindView(R.id.courses_time)
+    TextView mCoursesTimeTextView;//课程时长
+    @BindView(R.id.courses_times_prompt)
+    TextView mCoursesTimesPrompt;//课程次数提示
+    @BindView(R.id.courses_time_minus)
+    ImageView mMinusImageView;//减号
+    @BindView(R.id.courses_time_add)
+    ImageView mAddImageView;//加号
+    @BindView(R.id.private_buy_protocol)
+    TextView mPrivateBuyProtocolTextView;
 
-    private RelativeLayout mAlipayLayout;//支付布局
-    private RelativeLayout mWechatLayout;
-    private CheckBox mAlipayCheckBox;
-    private CheckBox mWechatCheckBox;
+    @BindView(R.id.layout_alipay)
+    RelativeLayout mAlipayLayout;//支付布局
+    @BindView(R.id.layout_wechat)
+    RelativeLayout mWechatLayout;
+    @BindView(R.id.pay_type_alipay_checkBox)
+    CheckBox mAlipayCheckBox;
+    @BindView(R.id.pay_type_wechat_checkBox)
+    CheckBox mWechatCheckBox;
+
+    @BindView(R.id.private_courses_confirm_state_view)
+    LikingStateView mStateView;
 
     private PrivateCoursesTrainItemAdapter mPrivateCoursesTrainItemAdapter;
-    private PrivateCoursesConfirmPresenter mPrivateCoursesConfirmPresenter;
+    private PrivateCoursesConfirmContract.PrivateCoursesConfirmPresenter mPrivateCoursesConfirmPresenter;
 
     private String trainerId;//训练项目id
     private String teacherName;//教练姓名
@@ -98,7 +124,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private String payType = "-1";//支付方式
     private PrivateCoursesConfirmResult.PrivateCoursesConfirmData.Courses coursesItem;//训练项目对象
 
-    private LikingStateView mStateView;
     private int mCoursesTimes = 0;//上课次数
     private int mCoursesMinTimes;//上课最小次数
     private int mCoursesMaxTimes;//上课最大次数
@@ -106,17 +131,15 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private String mAmountCount;//课程总金额
 
     private ArrayList<PlacesData> mPlacesDataList;//上课地点集合
-    //  private String gymId;//场馆id
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_private_courses_confirm);
+        ButterKnife.bind(this);
         initView();
         initData();
         initPayModule();
-        setViewOnClickListener();
         setPayDefaultType();
     }
 
@@ -126,44 +149,12 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.private_courses_confirm_state_view);
-        mRecyclerView = (RecyclerView) findViewById(R.id.confirm_recyclerView);
-        mCoursesTimesTextView = (TextView) findViewById(R.id.courses_times);
-        mCoursesTimesPrompt = (TextView) findViewById(R.id.courses_times_prompt);
-        mCoursesNumberTextView = (TextView) findViewById(R.id.courses_number);
-        mEndTimeTextView = (TextView) findViewById(R.id.end_time);
-        mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
-        mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
-        mCoursesMoneyTextView = (TextView) findViewById(R.id.courses_money);
-        mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
-        mCoursesAddressTextView = (TextView) findViewById(R.id.courses_address);
-        mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
-        mMinusImageView = (ImageView) findViewById(R.id.courses_time_minus);
-        mAddImageView = (ImageView) findViewById(R.id.courses_time_add);
-        mPrivateBuyProtocolTextView = (TextView) findViewById(R.id.private_buy_protocol);
-
-        mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
-        mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
-        mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
-        mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
                 sendRequest();
             }
         });
-    }
-
-    private void setViewOnClickListener() {
-        mCouponsLayout.setOnClickListener(this);
-        mImmediatelyBuyBtn.setOnClickListener(this);
-        mAlipayLayout.setOnClickListener(this);
-        mWechatLayout.setOnClickListener(this);
-        mMinusImageView.setOnClickListener(this);
-        mAddImageView.setOnClickListener(this);
-        mCoursesAddressTextView.setOnClickListener(this);
-        mCoursesTimesTextView.setOnClickListener(this);
-        mPrivateBuyProtocolTextView.setOnClickListener(this);
     }
 
     private void initPayModule() {
@@ -180,9 +171,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
-        //   gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+
         setTitle(teacherName);
-        mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmPresenter(this, this);
+        mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmContract.PrivateCoursesConfirmPresenter(this, this);
         mStateView.setState(StateView.State.LOADING);
         sendRequest();
     }
@@ -221,7 +212,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     mPlacesDataList.get(i).setSelect(false);
                 }
             }
-            // gymId = mPlacesDataList.get(0).getGymId();
             mCoursesAddressTextView.setText(mPlacesDataList.get(0).getAddress());
         }
     }
@@ -300,75 +290,82 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         });
     }
 
-
-    @Override
+    @OnClick({R.id.layout_coupons_courses, R.id.immediately_buy_btn, R.id.layout_alipay, R.id.layout_wechat, R.id.courses_time_minus, R.id.courses_time_add, R.id.courses_times, R.id.private_buy_protocol})
     public void onClick(View v) {
-        if (v == mCouponsLayout) {
-            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                showToast(getString(R.string.network_error));
-                return;
-            } else {
-                if (coursesId != null) {
-                    UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
-                    Intent intent = new Intent(this, CouponsActivity.class);
-                    intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
-                    intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes + "");
-                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
-                    if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
-                        intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
-                    }
-                    intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
-                    startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
-                }
-            }
-
-        } else if (v == mImmediatelyBuyBtn) {
-            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                showToast(getString(R.string.network_error));
-                return;
-            } else {
-                sendBuyCoursesRequest();
-            }
-        } else if (v == mAlipayLayout) {
-            mAlipayCheckBox.setChecked(true);
-            mWechatCheckBox.setChecked(false);
-            payType = "1";
-        } else if (v == mWechatLayout) {
-            mAlipayCheckBox.setChecked(false);
-            mWechatCheckBox.setChecked(true);
-            payType = "0";
-        } else if (v == mMinusImageView) {
-            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                showToast(getString(R.string.network_error));
-                return;
-            } else {
-                doMinusCoursesTimes();
-            }
-        } else if (v == mAddImageView) {
-            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                showToast(getString(R.string.network_error));
-                return;
-            } else {
-                doAddCoursesTimes();
-            }
-        } else if (v == mCoursesTimesTextView) {
-            if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                showToast(getString(R.string.network_error));
-                return;
-            } else {
-                showCoursesTimesDialog();
-            }
-        } else if (v == mPrivateBuyProtocolTextView) {
-            BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
-            if (baseConfigResult != null) {
-                BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-                if (baseConfigData != null) {
-                    String agreeUrl = baseConfigData.getTrainerProtocol();
-                    if (!StringUtils.isEmpty(agreeUrl)) {
-                        HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.platform_private_teacher_pro));
+        switch (v.getId()) {
+            case R.id.layout_coupons_courses:
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    showToast(getString(R.string.network_error));
+                    return;
+                } else {
+                    if (coursesId != null) {
+                        UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
+                        Intent intent = new Intent(this, CouponsActivity.class);
+                        intent.putExtra(CouponsActivity.KEY_COURSE_ID, coursesId);
+                        intent.putExtra(CouponsActivity.KEY_SELECT_TIMES, mCoursesTimes + "");
+                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
+                        if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                            intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
+                        }
+                        intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "DishesConfirmActivity");
+                        startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
                     }
                 }
-            }
+                break;
+            case R.id.immediately_buy_btn:
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    showToast(getString(R.string.network_error));
+                    return;
+                } else {
+                    sendBuyCoursesRequest();
+                }
+                break;
+            case R.id.layout_alipay:
+                mAlipayCheckBox.setChecked(true);
+                mWechatCheckBox.setChecked(false);
+                payType = "1";
+                break;
+            case R.id.layout_wechat:
+                mAlipayCheckBox.setChecked(false);
+                mWechatCheckBox.setChecked(true);
+                payType = "0";
+                break;
+            case R.id.courses_time_minus:
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    showToast(getString(R.string.network_error));
+                    return;
+                } else {
+                    doMinusCoursesTimes();
+                }
+                break;
+            case R.id.courses_time_add:
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    showToast(getString(R.string.network_error));
+                    return;
+                } else {
+                    doAddCoursesTimes();
+                }
+                break;
+            case R.id.courses_times:
+                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                    showToast(getString(R.string.network_error));
+                    return;
+                } else {
+                    showCoursesTimesDialog();
+                }
+                break;
+            case R.id.private_buy_protocol:
+                BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
+                if (baseConfigResult != null) {
+                    BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                    if (baseConfigData != null) {
+                        String agreeUrl = baseConfigData.getTrainerProtocol();
+                        if (!StringUtils.isEmpty(agreeUrl)) {
+                            HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.platform_private_teacher_pro));
+                        }
+                    }
+                }
+                break;
         }
     }
 

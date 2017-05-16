@@ -13,7 +13,7 @@ import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.course.group.TeamcourseContract;
+import com.goodchef.liking.module.course.group.MyTeamcourseContract;
 import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
@@ -21,8 +21,8 @@ import com.goodchef.liking.module.data.local.LikingPreference;
  * Author shaozucheng
  * Time:16/6/18 上午11:52
  */
-public class MyGroupCoursesPresenter extends BasePresenter<TeamcourseContract.MyGroupCourseView> {
-    public MyGroupCoursesPresenter(Context context, TeamcourseContract.MyGroupCourseView mainView) {
+public class MyGroupCoursesPresenter extends BasePresenter<MyTeamcourseContract.MyGroupCourseView> {
+    public MyGroupCoursesPresenter(Context context, MyTeamcourseContract.MyGroupCourseView mainView) {
         super(context, mainView);
     }
 

@@ -132,7 +132,7 @@
             android:screenOrientation="portrait" />
         <!-- 私教课确认订单 -->
         <activity
-            android:name=".activity.OrderPrivateCoursesConfirmActivity"
+            android:name=".module.course.personal.OrderPrivateCoursesConfirmActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateUnspecified|adjustPan" />
         <!-- 买卡确认页 -->
@@ -166,7 +166,7 @@
             android:screenOrientation="portrait" />
         <!-- 营养餐订单详情 -->
         <activity
-            android:name=".activity.MyDishesOrderDetailsActivity"
+            android:name=".module.nutritiousfood.MyDishesOrderDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 升级卡和续卡 -->
         <activity
@@ -186,7 +186,7 @@
             android:screenOrientation="portrait" />
         <!-- 开门 -->
         <activity
-            android:name=".activity.OpenTheDoorActivity"
+            android:name=".module.opendoor.OpenTheDoorActivity"
             android:screenOrientation="portrait" />
         <!-- 邀请好友 -->
         <activity
@@ -248,7 +248,7 @@
 
         <!-- 付费团体课确认订单 -->
         <activity
-            android:name=".activity.GroupCoursesChargeConfirmActivity"
+            android:name=".module.course.group.details.charge.GroupCoursesChargeConfirmActivity"
             android:screenOrientation="portrait" />
 
         <!-- 切换场馆 -->

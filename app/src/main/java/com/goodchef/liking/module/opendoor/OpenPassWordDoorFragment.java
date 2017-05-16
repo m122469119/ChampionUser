@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.opendoor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,40 +9,52 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.BaseFragment;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
-import com.goodchef.liking.mvp.presenter.UserAuthPresenter;
-import com.goodchef.liking.mvp.view.UserAuthView;
 import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/7/6 下午3:38
  */
-public class OpenPassWordDoorFragment extends BaseFragment implements View.OnClickListener, UserAuthView {
+public class OpenPassWordDoorFragment extends BaseFragment implements View.OnClickListener, OpenDoorContract.OpenDoorView {
     private static final int TYPE_NUM_PASSWORD = 0;
     private static final int TYPE_NUM_BRACELET = 1;
-    private int mNum; //页号
-    private LinearLayout mOpenDoorLayout;
-    private ImageView mBraceletImage;
-    private TextView mTitleTextView;
-    private TextView mGetIntoPasswordBtn;
-    private TextView mGetOutPasswordBtn;
-    private TextView mFailMessageTextView;
-    private LinearLayout mShowLayout;
+    public static final String NUM = "num";
+    @BindView(R.id.open_text)
+    TextView mTitleTextView;
+    @BindView(R.id.layout_show_password)
+    LinearLayout mShowLayout;
+    @BindView(R.id.get_into_door_password)
+    TextView mGetIntoPasswordBtn;
+    @BindView(R.id.get_out_door_password)
+    TextView mGetOutPasswordBtn;
+    @BindView(R.id.user_code_fail_message)
+    TextView mFailMessageTextView;
+    @BindView(R.id.layout_get_open_password)
+    LinearLayout mOpenDoorLayout;
+    @BindView(R.id.user_bracelet)
+    ImageView mBraceletImage;
 
-    private UserAuthPresenter mUserAuthPresenter;
+    Unbinder unbinder;
+    private int mNum; //页号
+    private OpenDoorContract.OpenDoorPresenter mOpenDoorPresenter;
 
     public static OpenPassWordDoorFragment newInstance(int num) {
         Bundle args = new Bundle();
         OpenPassWordDoorFragment fragment = new OpenPassWordDoorFragment();
-        args.putInt("num", num);
+        args.putInt(NUM, num);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,21 +62,15 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
-        mUserAuthPresenter = new UserAuthPresenter(getActivity(), this);
+        mNum = getArguments() != null ? getArguments().getInt(NUM) : 1;
+        mOpenDoorPresenter = new OpenDoorContract.OpenDoorPresenter(getActivity(), this);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_open_the_door, container, false);
-        mTitleTextView = (TextView) view.findViewById(R.id.open_text);
-        mOpenDoorLayout = (LinearLayout) view.findViewById(R.id.layout_get_open_password);
-        mBraceletImage = (ImageView) view.findViewById(R.id.user_bracelet);
-        mGetIntoPasswordBtn = (TextView) view.findViewById(R.id.get_into_door_password);
-        mGetOutPasswordBtn = (TextView) view.findViewById(R.id.get_out_door_password);
-        mFailMessageTextView = (TextView) view.findViewById(R.id.user_code_fail_message);
-        mShowLayout = (LinearLayout) view.findViewById(R.id.layout_show_password);
+        unbinder = ButterKnife.bind(this, view);
         initView();
         initData();
         mFailMessageTextView.setText("");
@@ -104,7 +110,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
         if (v == mGetIntoPasswordBtn) {
             UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.GET_INTO_PASSWORD_BUTTON);
             if (LikingPreference.isLogin()) {
-                mUserAuthPresenter.getUserAuthCode(1);
+                mOpenDoorPresenter.getOpenPwd(NumberConstantUtil.ONE);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
@@ -112,7 +118,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
         } else if (v == mGetOutPasswordBtn) {
             UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.GET_OUT_PASSWORD_BUTTON);
             if (LikingPreference.isLogin()) {
-                mUserAuthPresenter.getUserAuthCode(2);
+                mOpenDoorPresenter.getOpenPwd(NumberConstantUtil.TWO);
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
@@ -149,5 +155,11 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
             params.weight = 1;
             mShowLayout.addView(view, params);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -24,6 +24,7 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.ShareData;
+import com.goodchef.liking.module.course.personal.OrderPrivateCoursesConfirmActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.ShareContract;
 import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;

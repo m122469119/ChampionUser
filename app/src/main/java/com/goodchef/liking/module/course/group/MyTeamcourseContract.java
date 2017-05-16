@@ -15,13 +15,13 @@ import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/09
- * desc:
+ * desc: 我的 - 课程列表
  *
  * @author: chenlei
  * @version:1.0
  */
 
-public interface TeamcourseContract {
+public interface MyTeamcourseContract {
 
     interface MyGroupCourseView extends BaseView {
         void updateMyGroupCoursesView(MyGroupCoursesResult.MyGroupCoursesData myGroupCoursesData);
