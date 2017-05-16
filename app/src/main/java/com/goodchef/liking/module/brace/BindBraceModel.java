@@ -41,15 +41,23 @@ public class BindBraceModel {
     public String mBindDevicesName;//绑定的设备名称
     public String mBindDevicesAddress;//绑定的设备地址
 
-    public String myBraceletMac;//我的手环地址
-    public String muuId;//UUID
+    public String mMyBraceletMac;//我的手环地址
+    public String mUUID;//UUID
     public String mFirmwareInfo;//固件版本信息
 
-    public BluetoothGattCharacteristic writecharacteristic;
-    public BluetoothGattCharacteristic readcharacteristic;
+    public BluetoothGattCharacteristic mWriteCharacteristic;
+    public BluetoothGattCharacteristic mReadCharacteristic;
 
+    public int mBraceletPower;//电量
 
+    public void stopScan() {
+        if (mBleManager != null)
+            mBleManager.stopScan();
+    }
 
+    public void setBluetoothDevice() {
+        mBluetoothDevice = mBleManager.getBluetoothGatt().getDevice();
+    }
 
     public interface Callback{
         void callback();
@@ -59,11 +67,11 @@ public class BindBraceModel {
        mBleManager = new BleManager(context, new BluetoothAdapter.LeScanCallback() {
            @Override
            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-               LogUtils.i(TAG, "needName = " + myBraceletMac + "searchName = " + device.getName() + " mac = " + device.getAddress());
+               LogUtils.i(TAG, "needName = " + mMyBraceletMac + "searchName = " + device.getName() + " mac = " + device.getAddress());
                if (Math.abs(rssi) <= 150) {//过滤掉信号强度小于-150的设备
                    if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
-                       if (!StringUtils.isEmpty(myBraceletMac) && myBraceletMac.equals(device.getAddress())) {
-                           LogUtils.i(TAG, "找到匹配的手环设备: " + myBraceletMac);
+                       if (!StringUtils.isEmpty(mMyBraceletMac) && mMyBraceletMac.equals(device.getAddress())) {
+                           LogUtils.i(TAG, "找到匹配的手环设备: " + mMyBraceletMac);
                            map.clear();
                            map.put(device.getAddress(), device);
                            setBlueToothDevicesList(callback);
@@ -116,13 +124,13 @@ public class BindBraceModel {
             }
         }
         if (bleService != null) {
-            writecharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.TX_UUID);
-            readcharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.RX_UUID);
-            if (writecharacteristic != null) {
-                byte[] uuId = muuId.getBytes();
-                mBleManager.wirteCharacteristic(writecharacteristic, BlueCommandUtil.getBindBytes(uuId));
-                if (readcharacteristic != null) {
-                    mBleManager.setCharacteristicNotification(readcharacteristic, true);
+            mWriteCharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.TX_UUID);
+            mReadCharacteristic = bleService.getCharacteristic(BlueCommandUtil.Constants.RX_UUID);
+            if (mWriteCharacteristic != null) {
+                byte[] uuId = mUUID.getBytes();
+                mBleManager.wirteCharacteristic(mWriteCharacteristic, BlueCommandUtil.getBindBytes(uuId));
+                if (mReadCharacteristic != null) {
+                    mBleManager.setCharacteristicNotification(mReadCharacteristic, true);
                 }
             }
         }
@@ -154,4 +162,19 @@ public class BindBraceModel {
             LogUtils.i(TAG, "固件信息= " + mFirmwareInfo);
         }
     }
+
+
+    /**
+     * 设置蓝牙时间
+     */
+    public void setBlueToothTime() {
+        if (mWriteCharacteristic != null) {
+            mBleManager.wirteCharacteristic(mWriteCharacteristic, BlueCommandUtil.getTimeBytes());
+        }
+    }
+
+    public void connect(){
+        mBleManager.connect(mMyBraceletMac);
+    }
+
 }

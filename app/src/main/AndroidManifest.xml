@@ -292,7 +292,7 @@
 
         <!-- 我的手环 -->
         <activity
-            android:name=".activity.MyBraceletActivity"
+            android:name=".module.brace.MyBraceletActivity"
             android:screenOrientation="portrait" />
 
         <!-- 手环数据 -->

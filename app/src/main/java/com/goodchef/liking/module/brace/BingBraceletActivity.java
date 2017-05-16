@@ -19,7 +19,6 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.MyBraceletActivity;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.widgets.RoundImageView;
@@ -64,8 +63,6 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
     @BindView(R.id.no_search_devices_TextView)
     TextView mNoSearchDevicesTextView;
 
-    private int mBraceletPower;//电量
-
     private Handler mHandler = new Handler();
     private boolean connectFail = false;//是否连接失败
     private int clickSearch;
@@ -82,7 +79,6 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
         mPresenter = new BindBraceContract.BindBracePresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_bing_bracelet));
-
 
         mPresenter.setBraceletMac(getIntent().getStringExtra(LikingMyFragment.KEY_MY_BRACELET_MAC));
         mPresenter.setMuuid(getIntent().getStringExtra(LikingMyFragment.KEY_UUID));
@@ -107,14 +103,10 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
         mLayoutBlueOpenState.setVisibility(View.GONE);//您的设备界面初始化隐藏
         mLayoutBlueToothBracelet.setVisibility(View.VISIBLE);//搜索提示初始化显示
         mLayoutBlueBooth.setVisibility(View.GONE);//搜索到的设备界面初始化隐藏
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
     }
+
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -444,80 +436,13 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
                 for (int i = 0; i < data.length; i++) {
                     LogUtils.i("BleService", " 回复 data length = " + data.length + " 第" + i + "个字符 " + (data[i] & 0xff));
                 }
-                doCharacteristicOnePackageData(data);
+                mPresenter.doCharacteristicOnePackageData(data);
                 LogUtils.i("BleService", "--------onCharacteristicChanged-----");
             }
         }
     };
 
-    /**
-     * 处理单包蓝牙数据，在这个界面值涉及到单包的数据
-     *
-     * @param data
-     */
-    private void doCharacteristicOnePackageData(byte[] data) {
-        if (data.length >= 3) {
-            if ((data[1] & 0xff) == 0x33) {//绑定
-                if (data[4] == 0x00) {
-                    LogUtils.i("BleService", "绑定成功");
-                    mPresenter.sendLogin();
-                    setLoginTimeOut();
-                } else if (data[4] == 0x01) {
-                    LogUtils.i("BleService", "绑定失败");
-                }
-            } else if ((data[1] & 0xff) == 0x35) {
-                if (data[4] == 0x00) {
-                    LogUtils.i("BleService", "登录成功");
-                    mPresenter.setIsLoginSuccess(true);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mOpenBlueToothTextView.setVisibility(View.GONE);
-                            mConnectBluetoothProgressBar.setVisibility(View.GONE);
-                            mConnectBlueToothTextView.setText(R.string.connect_bluetooth_success);
-                        }
-                    });
-                    mPresenter.setBlueToothTime();
-                    mPresenter.sendBindDeviceRequest(JPushInterface.getUdid(this));
-                } else if (data[4] == 0x01) {
-                    LogUtils.i("BleService", "登录失败");
-                }
-            } else if ((data[1] & 0xff) == 0x0D) {
-                if (data[4] == 0x00) {
-                    LogUtils.i("BleService", "解绑成功");
-                } else if (data[4] == 0x01) {
-                    LogUtils.i("BleService", "解绑失败");
-                }
-            } else if ((data[1] & 0xff) == 0x09) {//电量
-                LogUtils.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
-                mBraceletPower = (data[4] & 0xff);
-            } else if ((data[1] & 0xff) == 0x27) {
-                LogUtils.i(TAG, "心率 == " + (data[4] & 0xff));
-            } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
-                LogUtils.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
-            } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
-                mPresenter.setFirmwareInfo(data);
-            }
 
-        }
-    }
-
-    private void setLoginTimeOut() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mOpenBlueToothTextView.setVisibility(View.GONE);
-                        mConnectBluetoothProgressBar.setVisibility(View.GONE);
-                        mConnectBlueToothTextView.setText(R.string.loging_out_fail);
-                        mConnectBlueToothTextView.setEnabled(true);
-                    }
-                });
-            }
-        }, 10000);
-    }
 
     @Override
     public void updateBindDevicesView() {
@@ -530,7 +455,7 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, mPresenter.getBindDevicesName());
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, mPresenter.getBindDevicesAddress());
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_FIRMWARE_INFO, mPresenter.getFirmwareInfo());
-        intent.putExtra(MyBraceletActivity.KEY_BRACELET_POWER, mBraceletPower);
+        intent.putExtra(MyBraceletActivity.KEY_BRACELET_POWER, mPresenter.getBraceletPower());
         intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "BingBraceletActivity");
         startActivity(intent);
         finish();

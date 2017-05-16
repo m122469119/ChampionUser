@@ -17,6 +17,8 @@ import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created on 2017/3/6
  * Created by sanfen
@@ -94,7 +96,6 @@ public interface BindBraceContract {
             });
         }
 
-
         /**
          * 打开蓝牙
          */
@@ -121,7 +122,6 @@ public interface BindBraceContract {
             }, 4000);
         }
 
-
         /**
          * 连接蓝牙
          */
@@ -137,24 +137,14 @@ public interface BindBraceContract {
             }
         }
 
-
         /**
          * 发送登录
          */
         public void sendLogin() {
-            if (mModel.writecharacteristic != null) {
-                byte[] uuId = mModel.muuId.getBytes();
-                LogUtils.i("BleService", "sendLogin: " + mModel.muuId);
-                mModel.mBleManager.wirteCharacteristic(mModel.writecharacteristic, BlueCommandUtil.getLoginBytes(uuId));
-            }
-        }
-
-        /**
-         * 设置蓝牙时间
-         */
-        public void setBlueToothTime() {
-            if (mModel.writecharacteristic != null) {
-                mModel.mBleManager.wirteCharacteristic(mModel.writecharacteristic, BlueCommandUtil.getTimeBytes());
+            if (mModel.mWriteCharacteristic != null) {
+                byte[] uuId = mModel.mUUID.getBytes();
+                LogUtils.i("BleService", "sendLogin: " + mModel.mUUID);
+                mModel.mBleManager.wirteCharacteristic(mModel.mWriteCharacteristic, BlueCommandUtil.getLoginBytes(uuId));
             }
         }
 
@@ -172,7 +162,7 @@ public interface BindBraceContract {
          * 发送绑定手环信息
          */
         private void sendDevicesRequest(String devicesId) {
-            mModel.bindDevices(devicesId,new RequestCallback<LikingResult>() {
+            mModel.bindDevices(devicesId, new RequestCallback<LikingResult>() {
                 @Override
                 public void onSuccess(LikingResult likingResult) {
                     if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
@@ -190,13 +180,81 @@ public interface BindBraceContract {
             });
         }
 
-
         public void pauseBle() {
             if (BleUtils.isSupportBleDevice(mContext)
                     && mModel.mBleManager.isOpen()
-                    && mConnectionState && mModel.writecharacteristic != null) {
-                mModel.mBleManager.wirteCharacteristic(mModel.writecharacteristic,
+                    && mConnectionState && mModel.mWriteCharacteristic != null) {
+                mModel.mBleManager.wirteCharacteristic(mModel.mWriteCharacteristic,
                         BlueCommandUtil.getDisconnectBlueTooth());
+            }
+        }
+
+        private void setLoginTimeOut() {
+            mView.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.setOpenBlueToothTextViewVisibility(View.GONE);
+                            mView.setConnectBluetoothProgressBarVisibility(View.GONE);
+                            mView.setConnectBlueToothTextViewText(mContext.getString(R.string.loging_out_fail));
+                            mView.setConnectBlueToothTextViewEnable(true);
+                        }
+                    });
+                }
+            }, 10000);
+        }
+
+        /**
+         * 处理单包蓝牙数据，在这个界面值涉及到单包的数据
+         *
+         * @param data
+         */
+        public void doCharacteristicOnePackageData(byte[] data) {
+            if (data.length >= 3) {
+                if ((data[1] & 0xff) == 0x33) {//绑定
+                    if (data[4] == 0x00) {
+                        LogUtils.i("BleService", "绑定成功");
+                        sendLogin();
+                        setLoginTimeOut();
+                    } else if (data[4] == 0x01) {
+                        LogUtils.i("BleService", "绑定失败");
+                    }
+                } else if ((data[1] & 0xff) == 0x35) {
+                    if (data[4] == 0x00) {
+                        LogUtils.i("BleService", "登录成功");
+                        setIsLoginSuccess(true);
+                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mView.setOpenBlueToothTextViewVisibility(View.GONE);
+                                mView.setConnectBluetoothProgressBarVisibility(View.GONE);
+                                mView.setConnectBlueToothTextViewText(mContext.getString(R.string.connect_bluetooth_success));
+                            }
+                        });
+                        mModel.setBlueToothTime();
+                        sendBindDeviceRequest(JPushInterface.getUdid(mContext));
+                    } else if (data[4] == 0x01) {
+                        LogUtils.i("BleService", "登录失败");
+                    }
+                } else if ((data[1] & 0xff) == 0x0D) {
+                    if (data[4] == 0x00) {
+                        LogUtils.i("BleService", "解绑成功");
+                    } else if (data[4] == 0x01) {
+                        LogUtils.i("BleService", "解绑失败");
+                    }
+                } else if ((data[1] & 0xff) == 0x09) {//电量
+                    LogUtils.i(TAG, "电量 == " + (data[4] & 0xff) + "状态：" + (data[5] & 0xff));
+                    mModel.mBraceletPower = (data[4] & 0xff);
+                } else if ((data[1] & 0xff) == 0x27) {
+                    LogUtils.i(TAG, "心率 == " + (data[4] & 0xff));
+                } else if ((data[1] & 0xff) == 0x21) {//运动数据返回
+                    LogUtils.i(TAG, "运动数据返回 == " + (data[4] & 0xff));
+                } else if ((data[1] & 0xff) == 0x31) {//固件版本信息
+                    setFirmwareInfo(data);
+                }
+
             }
         }
 
@@ -216,7 +274,7 @@ public interface BindBraceContract {
         }
 
         public void setBraceletMac(String stringExtra) {
-            mModel.myBraceletMac = stringExtra;
+            mModel.mMyBraceletMac = stringExtra;
         }
 
         public void getBlueToothServices() {
@@ -224,7 +282,7 @@ public interface BindBraceContract {
         }
 
         public void setMuuid(String stringExtra) {
-            mModel.muuId = stringExtra;
+            mModel.mUUID = stringExtra;
         }
 
         public void bleManagerDiscoverServices() {
@@ -267,6 +325,11 @@ public interface BindBraceContract {
             mModel.mBluetoothDeviceList.clear();
 
         }
+
+        public int getBraceletPower() {
+            return mModel.mBraceletPower;
+        }
+
     }
 
 }
