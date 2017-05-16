@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.nutritiousfood;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,7 +26,6 @@ import com.goodchef.liking.eventmessages.CancelMyDishesOrderMessage;
 import com.goodchef.liking.eventmessages.CompleteMyDishesOrderMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesOrderAlipayMessage;
-import com.goodchef.liking.fragment.MyDishesOrderFragment;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.MyDishesOrderDetailsResult;

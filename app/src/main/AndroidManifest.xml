@@ -166,7 +166,7 @@
             android:screenOrientation="portrait" />
         <!-- 营养餐订单详情 -->
         <activity
-            android:name=".activity.MyDishesOrderDetailsActivity"
+            android:name=".module.nutritiousfood.MyDishesOrderDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 升级卡和续卡 -->
         <activity

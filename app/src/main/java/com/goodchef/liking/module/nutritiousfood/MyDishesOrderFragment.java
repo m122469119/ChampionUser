@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.nutritiousfood;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +23,7 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.MyDishesOrderDetailsActivity;
+import com.goodchef.liking.module.nutritiousfood.MyDishesOrderDetailsActivity;
 import com.goodchef.liking.adapter.MyDishesOrderAdapter;
 import com.goodchef.liking.eventmessages.CancelMyDishesOrderMessage;
 import com.goodchef.liking.eventmessages.CompleteMyDishesOrderMessage;
