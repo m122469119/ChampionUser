@@ -3,6 +3,7 @@ package com.goodchef.liking.module.course;
 import android.text.TextUtils;
 
 import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
@@ -11,6 +12,7 @@ import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
@@ -199,5 +201,44 @@ public class CourseModel {
                 .getScheduleCourseList(UrlList.sHostVersion, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 团体课支付确认
+     * @param gymId
+     * @param scheduleId
+     * @return
+     */
+    public Observable<ChargeGroupConfirmResult> chargeGroupCoursesConfirm(String gymId, String scheduleId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("schedule_id", scheduleId);
+        map.put("gym_id", gymId);
+        return LikingNewApi.getInstance()
+                .chargeGroupCoursesConfirm(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    /***
+     * 付费团体课提交订单获取支付数据
+     *
+     * @param scheduleId 排期id
+     * @param couponCode 优惠券吗
+     * @param payType    支付方式
+     */
+    public Observable<SubmitPayResult> chargeGroupCoursesImmediately(String gymId, String scheduleId, String couponCode, String payType) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("schedule_id", scheduleId);
+        map.put("gym_id", gymId);
+        map.put("coupon_code", couponCode);
+        map.put("pay_type", payType);
+        return LikingNewApi.getInstance()
+                .chargeGroupCoursesImmediately(UrlList.sHostVersion, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
     }
 }

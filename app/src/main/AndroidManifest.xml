@@ -248,7 +248,7 @@
 
         <!-- 付费团体课确认订单 -->
         <activity
-            android:name=".activity.GroupCoursesChargeConfirmActivity"
+            android:name=".module.course.group.details.charge.GroupCoursesChargeConfirmActivity"
             android:screenOrientation="portrait" />
 
         <!-- 切换场馆 -->

@@ -1,8 +1,7 @@
 package com.goodchef.liking.module.data.remote;
 
-import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.alipay.tscenter.biz.rpc.vkeydfp.result.BaseResult;
 import com.goodchef.liking.http.result.CardResult;
+import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
@@ -19,6 +18,7 @@ import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
+import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
@@ -199,7 +199,6 @@ public interface LikingApiService {
     Observable<UserInfoResult> getUserInfo(@Path(PATH_VERSION) String version,
                                            @Field(KEY_TOKEN) String token);
 
-    @FormUrlEncoded
     @POST(Urls.GET_GYM_LIST)
     Observable<CheckGymListResult> getCheckGymList(@Path(PATH_VERSION) String version,
                                                    @QueryMap Map<String, String> map);
@@ -209,6 +208,13 @@ public interface LikingApiService {
     Observable<UserAuthCodeResult> getOpenPwd(@Path(PATH_VERSION) String version,
                                               @Field(KEY_TOKEN) String token,
                                               @Field("inout") int inout);
+    @POST(Urls.ORDER_CHANGE_GROUP_CONFIRM)
+    Observable<ChargeGroupConfirmResult> chargeGroupCoursesConfirm(@Path(PATH_VERSION) String version,
+                                                                   @QueryMap Map<String, String> map);
+
+    @POST(Urls.ORDER_SUBMIT_TEAM_COURSE)
+    Observable<SubmitPayResult> chargeGroupCoursesImmediately(@Path(PATH_VERSION)String version,
+                                                              @QueryMap Map<String, String> map);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -354,6 +360,17 @@ public interface LikingApiService {
          * 获取开门密码
          */
         public static final String GET_USER_AUTHCODE = sVersion + "user/authcode";
+
+        /**
+         * 付费团体课确认订单
+         */
+        public static final String ORDER_CHANGE_GROUP_CONFIRM = sVersion + "order/team-course-confirm";
+
+        /**
+         * 收费团体课购买
+         */
+        public static final String ORDER_SUBMIT_TEAM_COURSE = sVersion + "order/submit-team-course";
+
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

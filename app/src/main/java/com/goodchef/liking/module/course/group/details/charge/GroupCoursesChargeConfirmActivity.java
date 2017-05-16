@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.course.group.details.charge;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
+import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
@@ -29,50 +30,69 @@ import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
-import com.goodchef.liking.mvp.presenter.ChargeGroupCoursesConfirmPresenter;
-import com.goodchef.liking.mvp.view.ChargeGroupCoursesView;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:收费团体课确认订单页
  * Author shaozucheng
  * Time:16/8/24 下午5:14
  */
-public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements View.OnClickListener, ChargeGroupCoursesView {
+public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements GroupCoursesChargeConfirmContract.ChargeGroupCoursesView {
+
     private static final int INTENT_REQUEST_CODE_GROUP_COURSES_COUPON = 200;
     private static final int PAY_TYPE = 3;//3 免金额支付
-    private LikingStateView mStateView;
 
-    private TextView mPromptTextView;//确认够爱提示
-    private TextView mCoursesNameTextView;//课程名称
-    private TextView mCoursesTeacherTextView;//课程教练
-    private TextView mCoursesLengthTextView;//课程时长
-    private RatingBar mCoursesStrengthTextView;//课程强度
-    private TextView mCoursesTimeTextView;//课程时间
-    private TextView mCoursesAddressTextView;//课程地址
+    @BindView(R.id.charge_group_courses_state_view)
+    LikingStateView mStateView;
+    @BindView(R.id.group_courses_confirm_prompt)
+    TextView mPromptTextView;//确认够爱提示
+    @BindView(R.id.courses_name)
+    TextView mCoursesNameTextView;//课程名称
+    @BindView(R.id.courses_teacher)
+    TextView mCoursesTeacherTextView;//课程教练
+    @BindView(R.id.courses_length)
+    TextView mCoursesLengthTextView;//课程时长
+    @BindView(R.id.courses_strength)
+    RatingBar mCoursesStrengthTextView;//课程强度
+    @BindView(R.id.courses_time)
+    TextView mCoursesTimeTextView;//课程时间
+    @BindView(R.id.courses_address)
+    TextView mCoursesAddressTextView;//课程地址
 
-    private RelativeLayout mCouponsLayout;//优惠券布局
-    private TextView mCouponTitleTextView;//优惠券信息
+    @BindView(R.id.layout_coupons_courses)
+    RelativeLayout mCouponsLayout;//优惠券布局
+    @BindView(R.id.select_coupon_title)
+    TextView mCouponTitleTextView;//优惠券信息
 
-    private TextView mCoursesMoneyTextView;//课程金额
-    private TextView mImmediatelyBuyBtn;//立即购买
+    @BindView(R.id.courses_money)
+    TextView mCoursesMoneyTextView;//课程金额
+    @BindView(R.id.immediately_buy_btn)
+    TextView mImmediatelyBuyBtn;//立即购买
 
-    private RelativeLayout mAlipayLayout;//支付布局
-    private RelativeLayout mWechatLayout;
-    private CheckBox mAlipayCheckBox;
-    private CheckBox mWechatCheckBox;
+    @BindView(R.id.layout_alipay)
+    RelativeLayout mAlipayLayout;//支付布局
+    @BindView(R.id.layout_wechat)
+    RelativeLayout mWechatLayout;
+    @BindView(R.id.pay_type_alipay_checkBox)
+    CheckBox mAlipayCheckBox;
+    @BindView(R.id.pay_type_wechat_checkBox)
+    CheckBox mWechatCheckBox;
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
     private String payType = "-1";//支付方式
 
     private String scheduleId;//排期id
-    // private String gymId;
-    private ChargeGroupCoursesConfirmPresenter mChargeGroupCoursesPresenter;
+
+    private GroupCoursesChargeConfirmContract.ChargeGroupCoursesConfirmPresenter mChargeGroupCoursesPresenter;
 
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
@@ -82,36 +102,16 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_courses_charge_confrim);
+        ButterKnife.bind(this);
         setTitle(getString(R.string.activity_title_confirm_buy_group_courses));
         initView();
         getIntentData();
         initData();
-        setViewOnClickListener();
         initPayModule();
         setPayDefaultType();
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.charge_group_courses_state_view);
-        mPromptTextView = (TextView) findViewById(R.id.group_courses_confirm_prompt);
-        mCoursesNameTextView = (TextView) findViewById(R.id.courses_name);
-        mCoursesTeacherTextView = (TextView) findViewById(R.id.courses_teacher);
-        mCoursesLengthTextView = (TextView) findViewById(R.id.courses_length);
-        mCoursesStrengthTextView = (RatingBar) findViewById(R.id.courses_strength);
-        mCoursesTimeTextView = (TextView) findViewById(R.id.courses_time);
-        mCoursesAddressTextView = (TextView) findViewById(R.id.courses_address);
-
-        mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
-        mCouponTitleTextView = (TextView) findViewById(R.id.select_coupon_title);
-
-        mCoursesMoneyTextView = (TextView) findViewById(R.id.courses_money);
-        mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
-
-        mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
-        mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
-        mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
-        mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
-
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -121,20 +121,12 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         });
     }
 
-    private void setViewOnClickListener() {
-        mCouponsLayout.setOnClickListener(this);
-        mImmediatelyBuyBtn.setOnClickListener(this);
-        mAlipayLayout.setOnClickListener(this);
-        mWechatLayout.setOnClickListener(this);
-    }
-
     private void getIntentData() {
         scheduleId = getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID);
-        // gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
     }
 
     private void initData() {
-        mChargeGroupCoursesPresenter = new ChargeGroupCoursesConfirmPresenter(this, this);
+        mChargeGroupCoursesPresenter = new GroupCoursesChargeConfirmContract.ChargeGroupCoursesConfirmPresenter(this, this);
         mChargeGroupCoursesPresenter.getChargeGroupCoursesConfirmData(LikingHomeActivity.gymId, scheduleId);
     }
 
@@ -173,31 +165,37 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         mStateView.setState(StateView.State.FAILED);
     }
 
-    @Override
+    @OnClick({R.id.layout_coupons_courses, R.id.layout_alipay, R.id.layout_wechat, R.id.immediately_buy_btn})
     public void onClick(View v) {
-        if (v == mCouponsLayout) {//收费团体课没有传入gymid
-            UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
-            Intent intent = new Intent(this, CouponsActivity.class);
-            intent.putExtra(CouponsActivity.KEY_SCHEDULE_ID, scheduleId);
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
-            if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
-                intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
-            }
-            intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "GroupCoursesChargeConfirmActivity");
-            startActivityForResult(intent, INTENT_REQUEST_CODE_GROUP_COURSES_COUPON);
-        } else if (v == mAlipayLayout) {
-            mAlipayCheckBox.setChecked(true);
-            mWechatCheckBox.setChecked(false);
-            payType = "1";
-        } else if (v == mWechatLayout) {
-            mAlipayCheckBox.setChecked(false);
-            mWechatCheckBox.setChecked(true);
-            payType = "0";
-        } else if (v == mImmediatelyBuyBtn) {
-            sendBuyCoursesRequest();
+        switch (v.getId()) {
+            case R.id.layout_coupons_courses://收费团体课没有传入gymid
+                UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
+                Intent intent = new Intent(this, CouponsActivity.class);
+                intent.putExtra(CouponsActivity.KEY_SCHEDULE_ID, scheduleId);
+                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
+                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
+                }
+                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "GroupCoursesChargeConfirmActivity");
+                startActivityForResult(intent, INTENT_REQUEST_CODE_GROUP_COURSES_COUPON);
+                break;
+            case R.id.layout_alipay:
+                mAlipayCheckBox.setChecked(true);
+                mWechatCheckBox.setChecked(false);
+                payType = "1";
+                break;
+            case R.id.layout_wechat:
+                mAlipayCheckBox.setChecked(false);
+                mWechatCheckBox.setChecked(true);
+                payType = "0";
+                break;
+            case R.id.immediately_buy_btn:
+                sendBuyCoursesRequest();
+                break;
+            default:
+                break;
         }
     }
-
 
     /**
      * 发送购买私教课请求
@@ -214,7 +212,6 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
             mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, "", payType);
         }
     }
-
 
     @Override
     public void updatePaySubmitView(PayResultData payResultData) {
