@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.course.personal;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,11 +24,8 @@ import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.ShareData;
-import com.goodchef.liking.module.course.personal.OrderPrivateCoursesConfirmActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.ShareContract;
-import com.goodchef.liking.mvp.presenter.PrivateCoursesDetailsPresenter;
-import com.goodchef.liking.mvp.view.PrivateCoursesDetailsView;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
@@ -47,7 +44,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/24 下午5:55
  */
-public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsView, ShareContract.ShareView {
+public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsContract.PrivateCoursesDetailsView, ShareContract.ShareView {
     @BindView(R.id.private_courses_details_state_view)
     LikingStateView mLikingStateView;
     @BindView(R.id.private_lesson_details_teach_image)
@@ -73,12 +70,11 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     @BindView(R.id.card_rule)
     TextView mCardRuleTextView;//规则
 
-    private PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
+    private PrivateCoursesDetailsContract.PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
-    // private String gymId;
-    private ShareContract.SharePresenter mSharePresenter;
 
+    private ShareContract.SharePresenter mSharePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +98,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private void initData() {
         trainerId = getIntent().getStringExtra(LikingLessonFragment.KEY_TRAINER_ID);
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
-        //  gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+
         setTitle(teacherName);
         setRightMenu();
         sendDetailsRequest();
@@ -123,7 +119,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     private void sendDetailsRequest() {
         mLikingStateView.setState(StateView.State.LOADING);
-        mCoursesDetailsPresenter = new PrivateCoursesDetailsPresenter(this, this);
+        mCoursesDetailsPresenter = new PrivateCoursesDetailsContract.PrivateCoursesDetailsPresenter(this, this);
         mCoursesDetailsPresenter.getPrivateCoursesDetails(trainerId);
     }
 
@@ -205,7 +201,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                     Intent intent = new Intent(this, OrderPrivateCoursesConfirmActivity.class);
                     intent.putExtra(LikingLessonFragment.KEY_TRAINER_ID, trainerId);
                     intent.putExtra(LikingLessonFragment.KEY_TEACHER_NAME, teacherName);
-                    // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
+
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);

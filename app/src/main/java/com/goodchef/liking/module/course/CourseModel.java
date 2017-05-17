@@ -12,6 +12,7 @@ import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
+import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
@@ -290,6 +291,24 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .orderCalculate(UrlList.sHostVersion, LikingPreference.getToken(), courseId, selectTimes)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /***
+     * 私教课详情
+     *
+     * @param trainerId 私教id
+     */
+    public Observable<PrivateCoursesResult> getPrivateCoursesDetails(String trainerId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("trainer_id", trainerId);
+        String token = LikingPreference.getToken();
+        if (!TextUtils.isEmpty(token)) {
+            map.put("token", token);
+        }
+        return LikingNewApi.getInstance()
+                .getPrivateCoursesDetails(UrlList.sHostVersion, map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

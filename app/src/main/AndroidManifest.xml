@@ -81,7 +81,7 @@
             android:screenOrientation="portrait" />
         <!-- 私教课程详情 -->
         <activity
-            android:name=".activity.PrivateLessonDetailsActivity"
+            android:name=".module.course.personal.PrivateLessonDetailsActivity"
             android:screenOrientation="portrait" />
         <!-- 关于我们 -->
         <activity

@@ -17,6 +17,7 @@ import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
+import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
@@ -235,6 +236,10 @@ public interface LikingApiService {
                                                     @Query("course_id") String courseId,
                                                     @Query("select_times") String selectTimes);
 
+    @POST(Urls.PRIVATE_LESSON_DETAILS)
+    Observable<PrivateCoursesResult> getPrivateCoursesDetails(@Path(PATH_VERSION) String version,
+                                                              @QueryMap Map<String, String> map);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -404,6 +409,11 @@ public interface LikingApiService {
          * 计算私教课金额
          */
         public static final String ORDER_CALCULATE = sVersion + "order/calculate";
+
+        /**
+         * 私教课详情
+         */
+        public static final String PRIVATE_LESSON_DETAILS = sVersion + "trainer/info";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
