@@ -57,12 +57,11 @@ public class RequestError {
     }
 
     public enum ErrorType {
-        PARSE_ERROR, /**数据解析失败*/
-        TIMEOUT, /**请求超时*/
-        NO_CONNECTION, /**请求失败,没有任何Http返回*/
-        SERVER_ERROR, /**请求异常,有错误的Http状态码返回*/
-        NETWORK_ERROR, /**网络异常*/
-        AUTH_FAILURE_ERROR, /**授权验证失败*/
+        UNKNOWN, /*未知错误*/
+        PARSE_ERROR, /*数据解析失败*/
+        SERVER_ERROR, /*请求异常,有错误的Http状态码返回*/
+        NETWORK_ERROR, /*网络异常（如连接失败，连接超时等）*/
+        HTTP_ERROR, /*HTTP协议出错*/
     }
 
     public long getNetworkTimeMs() {

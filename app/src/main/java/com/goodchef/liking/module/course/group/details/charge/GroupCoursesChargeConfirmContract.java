@@ -11,9 +11,10 @@ import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import de.greenrobot.event.EventBus;
 
@@ -57,10 +58,9 @@ public interface GroupCoursesChargeConfirmContract {
         public void getChargeGroupCoursesConfirmData(String gymId, String scheduleId) {
 
             mCourseModel.chargeGroupCoursesConfirm(gymId, scheduleId)
-                    .subscribe(new LikingBaseObserver<ChargeGroupConfirmResult>() {
+                    .subscribe(new LikingBaseObserver<ChargeGroupConfirmResult>(mContext) {
                         @Override
                         public void onNext(ChargeGroupConfirmResult result) {
-                            super.onNext(result);
                             if (result.getCode() == 0) {
                                 mView.updateChargeGroupCoursesView(result.getData());
                             } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_ERROR) {
@@ -78,10 +78,10 @@ public interface GroupCoursesChargeConfirmContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
+
                     });
         }
 
@@ -98,7 +98,6 @@ public interface GroupCoursesChargeConfirmContract {
                     .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(SubmitPayResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updatePaySubmitView(result.getPayData());
                             } else {
@@ -107,8 +106,8 @@ public interface GroupCoursesChargeConfirmContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
                     });
         }

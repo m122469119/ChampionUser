@@ -1,11 +1,10 @@
-package com.goodchef.liking.module.base.rxobserver;
+package com.goodchef.liking.module.data.remote.rxobserver;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.aaron.http.rxobserver.BaseRequestObserver;
-import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.goodchef.liking.http.result.LikingResult;
 
 import io.reactivex.disposables.Disposable;
 
@@ -16,12 +15,13 @@ import io.reactivex.disposables.Disposable;
  * @version 1.0.0
  */
 
-public class ProgressObserver<T extends LikingResult> extends BaseRequestObserver<T> {
+public abstract class ProgressObserver<T extends LikingResult> extends LikingBaseObserver<T> {
     private static final String TAG = "ProgressObserver";
     private ProgressDialog mProgressDialog;
 
 
     public ProgressObserver(Context context, String msg) {
+        super(context);
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(msg);
     }
@@ -37,11 +37,6 @@ public class ProgressObserver<T extends LikingResult> extends BaseRequestObserve
     }
 
     @Override
-    public void onNext(T result) {
-        super.onNext(result);
-    }
-
-    @Override
     public void onError(Throwable e) {
         super.onError(e);
         dismissProgress();
@@ -49,7 +44,6 @@ public class ProgressObserver<T extends LikingResult> extends BaseRequestObserve
 
     @Override
     public void onComplete() {
-        super.onComplete();
         dismissProgress();
     }
 

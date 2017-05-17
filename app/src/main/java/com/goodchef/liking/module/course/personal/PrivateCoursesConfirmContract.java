@@ -10,9 +10,10 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 /**
  * Created on 2017/05/16
@@ -50,10 +51,9 @@ public interface PrivateCoursesConfirmContract {
         public void orderPrivateCoursesConfirm(String gymId, String trainerId) {
 
             mCourseModel.orderPrivateCoursesConfirm(gymId, trainerId)
-                    .subscribe(new LikingBaseObserver<PrivateCoursesConfirmResult>() {
+                    .subscribe(new LikingBaseObserver<PrivateCoursesConfirmResult>(mContext) {
                         @Override
                         public void onNext(PrivateCoursesConfirmResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updatePrivateCoursesConfirm(result.getData());
                             } else {
@@ -62,8 +62,7 @@ public interface PrivateCoursesConfirmContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
                     });
@@ -82,7 +81,6 @@ public interface PrivateCoursesConfirmContract {
                     .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(SubmitPayResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateSubmitOrderCourses(result.getPayData());
                             } else if (result.getCode() != 221009) {
@@ -91,8 +89,8 @@ public interface PrivateCoursesConfirmContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
                     });
         }
@@ -106,10 +104,9 @@ public interface PrivateCoursesConfirmContract {
         public void orderCalculate(String courseId, String selectTimes) {
 
             mCourseModel.orderCalculate(courseId, selectTimes)
-                    .subscribe(new LikingBaseObserver<OrderCalculateResult>() {
+                    .subscribe(new LikingBaseObserver<OrderCalculateResult>(mContext) {
                         @Override
                         public void onNext(OrderCalculateResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateOrderCalculate(true, result.getData());
                             } else {
@@ -119,8 +116,7 @@ public interface PrivateCoursesConfirmContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
                             mView.updateOrderCalculate(false, null);
                         }
                     });

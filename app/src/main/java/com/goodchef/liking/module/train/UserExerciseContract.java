@@ -5,7 +5,8 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
  * 说明:
@@ -29,10 +30,9 @@ public interface UserExerciseContract {
 
         public void getExerciseData() {
             mUserExerciseModel.getExerciseData()
-                    .subscribe(new LikingBaseObserver<UserExerciseResult>(){
+                    .subscribe(new LikingBaseObserver<UserExerciseResult>(mContext){
                         @Override
                         public void onNext(UserExerciseResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateUserExerciseView(result.getExerciseData());
                             } else {
@@ -41,10 +41,10 @@ public interface UserExerciseContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
+
                     });
         }
     }

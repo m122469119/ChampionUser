@@ -8,9 +8,10 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 /**
  * Created on 2017/05/11
@@ -48,11 +49,15 @@ public interface SelfHelpCourseContract {
          */
         public void getSelfHelpCourses(String gymId) {
             mCourseModel.getSelfHelpScheduleInfo(gymId)
-                    .subscribe(new LikingBaseObserver<SelfHelpGroupCoursesResult>() {
+                    .subscribe(new LikingBaseObserver<SelfHelpGroupCoursesResult>(mContext) {
+                                   @Override
+                                   public void onError(ResponseThrowable responseThrowable) {
+
+                                   }
+
                                    @Override
                                    public void onNext(SelfHelpGroupCoursesResult result) {
-                                       super.onNext(result);
-                                       if (LiKingVerifyUtils.isValid(mContext, result)) {
+                                       if (LiKingVerifyUtils.isValid(getContext(), result)) {
                                            mView.updateSelfHelpGroupCoursesView(result.getData());
                                        } else {
                                            mView.showToast(result.getMessage());
@@ -79,8 +84,12 @@ public interface SelfHelpCourseContract {
             mCourseModel.joinSelfHelpCourses(gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
                                    @Override
+                                   public void onError(ResponseThrowable responseThrowable) {
+
+                                   }
+
+                                   @Override
                                    public void onNext(LikingResult result) {
-                                       super.onNext(result);
                                        if (LiKingVerifyUtils.isValid(mContext, result)) {
                                            mView.updateOrderView();
                                        } else if (result.getCode() == 22013) {

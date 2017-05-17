@@ -1,6 +1,7 @@
 package com.goodchef.liking.module.login;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
+import com.goodchef.liking.module.data.remote.RxUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
@@ -24,7 +25,8 @@ class LoginModel extends BaseModel {
      * @return Observable<UserLoginResult>
      */
     Observable<UserLoginResult> getLoginResult(String phone, String captcha) {
-        return LikingNewApi.getInstance().userLogin(UrlList.sHostVersion, phone, captcha);
+        return LikingNewApi.getInstance().userLogin(UrlList.sHostVersion, phone, captcha)
+                .compose(RxUtils.<UserLoginResult>applyHttpSchedulers());
     }
 
     /**

@@ -13,23 +13,14 @@ import io.reactivex.disposables.Disposable;
  * @version 1.0.0
  */
 
-public class BaseRequestObserver<T extends Result> implements Observer<T> {
+public abstract class BaseRequestObserver<T extends Result> implements Observer<T> {
     protected final String TAG = getClass().getName();
     private Disposable mDisposable;
+
     @Override
     public void onSubscribe(Disposable d) {
         LogUtils.d(TAG, "ProgressObserver onSubscribe...");
         mDisposable = d;
-    }
-
-    @Override
-    public void onNext(T result) {
-        LogUtils.d(TAG, "ProgressObserver onNext...");
-    }
-
-    @Override
-    public void onError(Throwable e) {
-        LogUtils.d(TAG, "ProgressObserver onError...");
     }
 
     @Override
@@ -40,4 +31,5 @@ public class BaseRequestObserver<T extends Result> implements Observer<T> {
     public Disposable getDisposable() {
         return mDisposable;
     }
+
 }

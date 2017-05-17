@@ -9,8 +9,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.course.CourseModel;
 
 /**
@@ -40,7 +41,7 @@ public interface MyTeamcourseContract {
 
         public void getMyGroupList(int page) {
             mCourseModel.getMyGroupList(page)
-                    .subscribe(new PagerLoadingObserver<MyGroupCoursesResult>(mView) {
+                    .subscribe(new PagerLoadingObserver<MyGroupCoursesResult>(mContext, mView) {
                         @Override
                         public void onNext(MyGroupCoursesResult result) {
                             super.onNext(result);
@@ -52,8 +53,7 @@ public interface MyTeamcourseContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
                         }
                     });
         }
@@ -62,8 +62,12 @@ public interface MyTeamcourseContract {
             mCourseModel.sendCancelCoursesRequest(orderId)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
                         @Override
+                        public void onError(ResponseThrowable responseThrowable) {
+
+                        }
+
+                        @Override
                         public void onNext(LikingResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 PopupUtils.showToast(mContext, R.string.cancel_success);
                                 mView.updateLoadHomePage();

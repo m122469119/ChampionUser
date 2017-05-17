@@ -6,7 +6,8 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -36,7 +37,7 @@ public class CouponsGymContract {
             mCouponsGymModel.getCouponsGym(page, couponCode)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new PagerLoadingObserver<CouponsCities>(mView) {
+                    .subscribe(new PagerLoadingObserver<CouponsCities>(mContext, mView) {
                         @Override
                         public void onNext(CouponsCities result) {
                             super.onNext(result);
@@ -48,8 +49,8 @@ public class CouponsGymContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
                     });
         }

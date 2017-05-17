@@ -59,8 +59,16 @@ public class ServiceCreator {
         return this;
     }
 
+    public ServiceCreator addNetworkInterceptor(Interceptor interceptor) {
+        if (interceptor != null) {
+            mOkHttpClientBuilder.addNetworkInterceptor(interceptor);
+        }
+        return this;
+    }
+
     public <S> S build(Class<S> serviceClass) {
         Retrofit retrofit = mRetrofitBuilder.client(mOkHttpClientBuilder.build()).build();
         return retrofit.create(serviceClass);
     }
+
 }

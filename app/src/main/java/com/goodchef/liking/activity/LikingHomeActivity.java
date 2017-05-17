@@ -37,6 +37,7 @@ import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeActivityMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
+import com.goodchef.liking.eventmessages.LoginInvalidMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
@@ -52,6 +53,7 @@ import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.result.data.NoticeData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
 import com.goodchef.liking.mvp.presenter.LikingHomePresenter;
 import com.goodchef.liking.mvp.view.CheckUpdateAppView;
@@ -832,6 +834,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
 
     public void onEvent(LikingHomeNoNetWorkMessage message) {
         initTitleLocation();
+    }
+
+    public void onEvent(LoginInvalidMessage message) {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.goodchef.liking.module.card;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
+import com.goodchef.liking.module.data.remote.RxUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.MyCardResult;
@@ -10,8 +11,6 @@ import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created on 2017/04/25
@@ -34,8 +33,7 @@ public class CardModel extends BaseModel {
      */
     public Observable<CardResult> getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
         return LikingNewApi.getInstance().getCardList(UrlList.sHostVersion, LikingPreference.getToken(), longitude, latitude, cityId, districtId, gymId, type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<CardResult>applyHttpSchedulers());
     }
 
     /**
@@ -44,8 +42,7 @@ public class CardModel extends BaseModel {
      */
     public Observable<MyCardResult> getMyCard() {
         return LikingNewApi.getInstance().getMyCard(UrlList.sHostVersion, LikingPreference.getToken())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<MyCardResult>applyHttpSchedulers());
     }
 
     /**
@@ -55,8 +52,7 @@ public class CardModel extends BaseModel {
      */
     public Observable<MyOrderCardDetailsResult> getMyOrderCardDetails(String orderId) {
         return LikingNewApi.getInstance().getMyOrderCardDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<MyOrderCardDetailsResult>applyHttpSchedulers());
     }
 
     /***
@@ -67,7 +63,6 @@ public class CardModel extends BaseModel {
      */
     public Observable<OrderCardListResult> getCardOrderList(int page) {
         return LikingNewApi.getInstance().getCardOrderList(UrlList.sHostVersion, LikingPreference.getToken(), page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<OrderCardListResult>applyHttpSchedulers());
     }
 }

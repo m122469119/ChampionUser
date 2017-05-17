@@ -1,8 +1,9 @@
-package com.goodchef.liking.module.base.rxobserver;
+package com.goodchef.liking.module.data.remote.rxobserver;
+
+import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
-import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.http.result.LikingResult;
 
 /**
@@ -12,16 +13,16 @@ import com.goodchef.liking.http.result.LikingResult;
  * @version 1.0.0
  */
 
-public class PagerLoadingObserver<T extends LikingResult> extends BaseRequestObserver<T> {
+public abstract class PagerLoadingObserver<T extends LikingResult> extends LikingBaseObserver<T> {
 
-    BaseView mView;
+    private BaseView mView;
 
-    public PagerLoadingObserver(BaseView view) {
+    protected PagerLoadingObserver(Context context, BaseView view) {
+        super(context);
         mView = view;
     }
     @Override
     public void onNext(T result) {
-        super.onNext(result);
         if (mView instanceof BasePagerLoaderFragment) {
             ((BasePagerLoaderFragment) mView).requestSuccess();
         }
@@ -29,9 +30,10 @@ public class PagerLoadingObserver<T extends LikingResult> extends BaseRequestObs
 
     @Override
     public void onError(Throwable e) {
-        super.onError(e);
         if (mView instanceof BasePagerLoaderFragment) {
             ((BasePagerLoaderFragment) mView).requestFailure();
         }
+        super.onError(e);
     }
+
 }

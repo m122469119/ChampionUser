@@ -6,8 +6,9 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
  * Created on 2017/05/16
@@ -26,6 +27,7 @@ public interface PrivateCoursesDetailsContract {
     class PrivateCoursesDetailsPresenter extends BasePresenter<PrivateCoursesDetailsView> {
 
         private CourseModel mCourseModel = null;
+
         public PrivateCoursesDetailsPresenter(Context context, PrivateCoursesDetailsView mainView) {
             super(context, mainView);
             mCourseModel = new CourseModel();
@@ -38,23 +40,22 @@ public interface PrivateCoursesDetailsContract {
          */
         public void getPrivateCoursesDetails(String trainerId) {
             mCourseModel.getPrivateCoursesDetails(trainerId)
-            .subscribe(new LikingBaseObserver<PrivateCoursesResult>() {
-                @Override
-                public void onNext(PrivateCoursesResult result) {
-                    super.onNext(result);
-                    if (LiKingVerifyUtils.isValid(mContext, result)) {
-                        mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
-                    } else {
-                        mView.showToast(result.getMessage());
-                    }
-                }
+                    .subscribe(new LikingBaseObserver<PrivateCoursesResult>(mContext) {
+                        @Override
+                        public void onNext(PrivateCoursesResult result) {
+                            if (LiKingVerifyUtils.isValid(mContext, result)) {
+                                mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
+                            } else {
+                                mView.showToast(result.getMessage());
+                            }
+                        }
 
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                    mView.handleNetworkFailure();
-                }
-            });
+                        @Override
+                        public void onError(ResponseThrowable responseThrowable) {
+                            mView.handleNetworkFailure();
+                        }
+
+                    });
         }
     }
 }

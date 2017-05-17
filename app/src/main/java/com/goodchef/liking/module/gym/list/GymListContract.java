@@ -8,7 +8,8 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.gym.GymModel;
 
 import java.util.ArrayList;
@@ -57,19 +58,18 @@ public interface GymListContract {
                 return;
             }
             mGymModel.getCheckGymList(Integer.parseInt(selectCityId), longitude, latitude)
-                    .subscribe(new LikingBaseObserver<CheckGymListResult>() {
+                    .subscribe(new LikingBaseObserver<CheckGymListResult>(mContext) {
                         @Override
                         public void onNext(CheckGymListResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateCheckGymView(result.getData());
                             } else {
                                 mView.showToast(result.getMessage());
                             }
                         }
+
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
                     });

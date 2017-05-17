@@ -7,8 +7,9 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.course.CourseModel;
 
 /**
@@ -39,10 +40,9 @@ public interface MyPersonalCourseDetailsContract {
         public void getMyPrivateCoursesDetails(String orderId) {
 
             mCourseModel.getMyPrivateCoursesDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyPrivateCoursesDetailsResult>() {
+                    .subscribe(new LikingBaseObserver<MyPrivateCoursesDetailsResult>(mContext) {
                         @Override
                         public void onNext(MyPrivateCoursesDetailsResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateMyPrivateCoursesDetailsView(result.getData());
                             } else {
@@ -51,8 +51,7 @@ public interface MyPersonalCourseDetailsContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
                             mView.handleNetworkFailure();
                         }
                     });
@@ -63,8 +62,12 @@ public interface MyPersonalCourseDetailsContract {
             mCourseModel.completeMyPrivateCourses(orderId)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, orderId) {
                         @Override
+                        public void onError(ResponseThrowable responseThrowable) {
+
+                        }
+
+                        @Override
                         public void onNext(LikingResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateComplete();
                             } else {

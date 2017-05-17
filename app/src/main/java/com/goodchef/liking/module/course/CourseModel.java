@@ -18,6 +18,7 @@ import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.module.data.remote.RxUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,8 +46,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .getTeamCourseList(UrlList.sHostVersion, LikingPreference.getToken(), page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<MyGroupCoursesResult>applyHttpSchedulers());
     }
 
     /**
@@ -58,8 +58,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .cancelTeamCourse(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /**
@@ -71,8 +70,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .getPersonalCourseList(UrlList.sHostVersion, LikingPreference.getToken(), page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<MyPrivateCoursesResult>applyHttpSchedulers());
     }
 
     /**
@@ -90,8 +88,7 @@ public class CourseModel {
         }
         return LikingNewApi.getInstance()
                 .getCourseInfo(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<GroupCoursesResult>applyHttpSchedulers());
     }
 
     /**
@@ -104,8 +101,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .teamCourseReserve(UrlList.sHostVersion, LikingPreference.getToken(), gymId, scheduleId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /**
@@ -117,8 +113,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .chargeGroupCoursesDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<MyChargeGroupCoursesDetailsResult>applyHttpSchedulers());
     }
 
     /***
@@ -130,8 +125,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .getPersonalCourseDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<MyPrivateCoursesDetailsResult>applyHttpSchedulers());
     }
 
     /**
@@ -143,8 +137,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .completeTrainerCourse(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /***
@@ -161,8 +154,7 @@ public class CourseModel {
         }
         return LikingNewApi.getInstance()
                 .getSelfHelpScheduleInfo(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<SelfHelpGroupCoursesResult>applyHttpSchedulers());
     }
 
     /***
@@ -190,8 +182,7 @@ public class CourseModel {
         map.put("people_num", peopleNum);
         return LikingNewApi.getInstance()
                 .joinSelfHelpCourses(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /***
@@ -202,8 +193,7 @@ public class CourseModel {
     public Observable<SelfGroupCoursesListResult> getSelfCoursesList(int page) {
         return LikingNewApi.getInstance()
                 .getScheduleCourseList(UrlList.sHostVersion, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<SelfGroupCoursesListResult>applyHttpSchedulers());
     }
 
     /**

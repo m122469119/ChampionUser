@@ -130,13 +130,13 @@ public class VolleyResultRequest<T extends Result> extends Request<T> {
                 if (error instanceof ParseError) {
                     errorType = RequestError.ErrorType.PARSE_ERROR;
                 } else if (error instanceof TimeoutError) {
-                    errorType = RequestError.ErrorType.TIMEOUT;
+//                    errorType = RequestError.ErrorType.TIMEOUT;
                 } else if (error instanceof NoConnectionError) {
-                    errorType = RequestError.ErrorType.NO_CONNECTION;
+//                    errorType = RequestError.ErrorType.NO_CONNECTION;
                 } else if (error instanceof ServerError) {
                     errorType = RequestError.ErrorType.SERVER_ERROR;
                 } else if (error instanceof AuthFailureError) {
-                    errorType = RequestError.ErrorType.AUTH_FAILURE_ERROR;
+//                    errorType = RequestError.ErrorType.AUTH_FAILURE_ERROR;
                 } else if (error instanceof NetworkError) {
                     errorType = RequestError.ErrorType.NETWORK_ERROR;
                 }

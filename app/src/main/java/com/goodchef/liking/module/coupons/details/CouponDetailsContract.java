@@ -8,8 +8,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -46,7 +47,6 @@ public class CouponDetailsContract {
                     .subscribe(new ProgressObserver<CouponsDetailsResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(CouponsDetailsResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateCouponData(result.getData());
                             } else {
@@ -55,8 +55,8 @@ public class CouponDetailsContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
                     });
         }

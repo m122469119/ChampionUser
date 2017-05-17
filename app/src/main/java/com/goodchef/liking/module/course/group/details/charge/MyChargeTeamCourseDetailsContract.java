@@ -6,7 +6,8 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.course.CourseModel;
 
 /**
@@ -37,10 +38,9 @@ public interface MyChargeTeamCourseDetailsContract {
          */
         public void getChargeGroupCoursesDetails(String orderId) {
             mCourseModel.getChargeGroupCoursesDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyChargeGroupCoursesDetailsResult>() {
+                    .subscribe(new LikingBaseObserver<MyChargeGroupCoursesDetailsResult>(mContext) {
                         @Override
                         public void onNext(MyChargeGroupCoursesDetailsResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateChargeGroupCoursesDetailsView(result.getData());
                             } else {
@@ -49,8 +49,7 @@ public interface MyChargeTeamCourseDetailsContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
                             mView.handleNetworkFailure();
                         }
                     });

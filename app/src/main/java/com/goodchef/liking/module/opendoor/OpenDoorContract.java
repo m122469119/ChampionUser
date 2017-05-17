@@ -7,7 +7,8 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -41,7 +42,6 @@ public class OpenDoorContract {
                     .subscribe(new ProgressObserver<UserAuthCodeResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(UserAuthCodeResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateUserAuthView(result.getAuthCodeData());
                             } else {
@@ -50,8 +50,8 @@ public class OpenDoorContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
                     });
         }

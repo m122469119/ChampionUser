@@ -7,8 +7,9 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface SelfHelpCourseListContract {
 
         public void getCoursesList(int page) {
             mCourseModel.getSelfCoursesList(page)
-                    .subscribe(new PagerLoadingObserver<SelfGroupCoursesListResult>(mView) {
+                    .subscribe(new PagerLoadingObserver<SelfGroupCoursesListResult>(mContext, mView) {
                         @Override
                         public void onNext(SelfGroupCoursesListResult result) {
                             super.onNext(result);
@@ -48,6 +49,11 @@ public interface SelfHelpCourseListContract {
                             } else {
                                 mView.showToast(result.getMessage());
                             }
+                        }
+
+                        @Override
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
 
                         @Override

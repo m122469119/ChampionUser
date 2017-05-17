@@ -1,12 +1,14 @@
 package com.goodchef.liking.module.card.my;
 
 import android.content.Context;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.module.card.CardModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
  * 说明:
@@ -31,10 +33,9 @@ public interface UpgradeAndContinueCardContract {
 
         public void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
             mCardModel.getCardList(longitude, latitude, cityId, districtId, gymId, type)
-                    .subscribe(new BaseRequestObserver<CardResult>() {
+                    .subscribe(new LikingBaseObserver<CardResult>(mContext) {
                         @Override
                         public void onNext(CardResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateCardListView(result.getCardData());
                             } else {
@@ -43,8 +44,7 @@ public interface UpgradeAndContinueCardContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
                             mView.handleNetworkFailure();
                         }
                     });

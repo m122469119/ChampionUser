@@ -6,7 +6,8 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 import com.goodchef.liking.module.course.CourseModel;
 
 /**
@@ -35,7 +36,7 @@ public interface MyPersonalCourseContract {
         public void getMyPrivateCourses(int page) {
 
             mCourseModel.getMyPrivateCourses(page)
-                    .subscribe(new PagerLoadingObserver<MyPrivateCoursesResult>(mView) {
+                    .subscribe(new PagerLoadingObserver<MyPrivateCoursesResult>(mContext, mView) {
                         @Override
                         public void onNext(MyPrivateCoursesResult result) {
                             super.onNext(result);
@@ -47,9 +48,10 @@ public interface MyPersonalCourseContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
+
                     });
         }
     }

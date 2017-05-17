@@ -10,8 +10,9 @@ import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
 /**
  * 说明:
@@ -39,10 +40,9 @@ public interface CouponContract {
 
         //兑换优惠券
         public void sendExchangeCouponsRequest(String code) {
-            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>() {
+            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext) {
                 @Override
                 public void onNext(LikingResult result) {
-                    super.onNext(result);
                     if (LiKingVerifyUtils.isValid(mContext, result)) {
                         mView.updateExchangeCode();
                     } else {
@@ -51,8 +51,7 @@ public interface CouponContract {
                 }
 
                 @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
+                public void onError(ResponseThrowable e) {
                     mView.showToast(mContext.getString(R.string.exchange_fail));
                 }
             });
@@ -60,7 +59,7 @@ public interface CouponContract {
 
         //获取我的优惠券
         public void getMyCoupons(int page) {
-            mCouponModel.getMyCoupons(page).subscribe(new PagerLoadingObserver<CouponsPersonResult>(mView) {
+            mCouponModel.getMyCoupons(page).subscribe(new PagerLoadingObserver<CouponsPersonResult>(mContext,   mView) {
                 @Override
                 public void onNext(CouponsPersonResult result) {
                     super.onNext(result);
@@ -73,8 +72,8 @@ public interface CouponContract {
                 }
 
                 @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
+                public void onError(ResponseThrowable e) {
+
                 }
             });
         }
@@ -92,10 +91,9 @@ public interface CouponContract {
          * @param gymId       场馆id
          */
         public void getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, int page, String gymId) {
-            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new PagerLoadingObserver<CouponsResult>(mView) {
+            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new PagerLoadingObserver<CouponsResult>(mContext, mView) {
                 @Override
                 public void onNext(CouponsResult result) {
-                    super.onNext(result);
                     if (LiKingVerifyUtils.isValid(mContext, result)) {
                         mView.updateCouponData(result.getData());
                     } else {
@@ -105,8 +103,7 @@ public interface CouponContract {
                 }
 
                 @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
+                public void onError(ResponseThrowable e) {
                 }
             });
         }

@@ -7,9 +7,12 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -42,7 +45,6 @@ class LoginContract {
                     .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(VerificationCodeResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateVerificationCodeView(result.getVerificationCodeData());
                             } else {
@@ -51,8 +53,22 @@ class LoginContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
+                            if (e.getTrowable() instanceof ApiException) {
+                                ApiException apiException = (ApiException) e.getTrowable();
+                                switch (apiException.getErrorCode()) {
+                                    case LiKingRequestCode.GET_VERIFICATION_CODE_FAILURE:
+                                    case LiKingRequestCode.VERIFICATION_INVALID:
+                                    case LiKingRequestCode.LOGIN_FAILURE:
+                                    case LiKingRequestCode.VERIFICATION_INCORRECT:
+                                    case LiKingRequestCode.LOGOUT_FAILURE:
+                                    case LiKingRequestCode.ILLEGAL_VERIFICATION_CODE:
+                                        mView.showToast(apiException.getMessage());
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                         }
                     });
         }
@@ -69,7 +85,6 @@ class LoginContract {
                     .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data) {
                         @Override
                         public void onNext(UserLoginResult value) {
-                            super.onNext(value);
                             if (LiKingVerifyUtils.isValid(mContext, value)) {
                                 UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
                                 if (userLoginData != null) {
@@ -82,8 +97,8 @@ class LoginContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
+
                         }
                     });
         }

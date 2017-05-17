@@ -3,6 +3,7 @@ package com.goodchef.liking.module.coupons;
 import android.text.TextUtils;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
+import com.goodchef.liking.module.data.remote.RxUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -14,8 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -34,8 +33,7 @@ public class CouponModel extends BaseModel {
      */
     public Observable<LikingResult> exchangeCoupon(String code) {
         return LikingNewApi.getInstance().exchangeCoupon(UrlList.sHostVersion, LikingPreference.getToken(), code)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /**
@@ -46,8 +44,7 @@ public class CouponModel extends BaseModel {
      */
     public Observable<CouponsPersonResult> getMyCoupons(int page) {
         return LikingNewApi.getInstance().getMyCoupons(UrlList.sHostVersion, LikingPreference.getToken(), page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<CouponsPersonResult>applyHttpSchedulers());
     }
 
     /**
@@ -89,9 +86,8 @@ public class CouponModel extends BaseModel {
         if (!TextUtils.isEmpty(gymId)) {
             map.put("gym_id", gymId);
         }
-        return LikingNewApi.getInstance().getCoupons(UrlList.sHostVersion,map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return LikingNewApi.getInstance().getCoupons(UrlList.sHostVersion, map)
+                .compose(RxUtils.<CouponsResult>applyHttpSchedulers());
     }
 
 

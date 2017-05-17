@@ -6,8 +6,11 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.module.card.CardModel;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明:
@@ -32,10 +35,15 @@ public interface MyCardContract {
 
         public void sendMyCardRequest() {
             mCardModel.getMyCard()
-                    .subscribe(new BaseRequestObserver<MyCardResult>() {
+                    .doOnNext(new Consumer<MyCardResult>() {
+                        @Override
+                        public void accept(MyCardResult myCardResult) throws Exception {
+
+                        }
+                    })
+                    .subscribe(new LikingBaseObserver<MyCardResult>(mContext) {
                         @Override
                         public void onNext(MyCardResult result) {
-                            super.onNext(result);
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
                                 mView.updateMyCardView(result.getData());
                             } else {
@@ -44,8 +52,7 @@ public interface MyCardContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable e) {
                             mView.handleNetworkFailure();
                         }
                     });

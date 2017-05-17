@@ -2,15 +2,16 @@ package com.goodchef.liking.module.joinus.contractjoin;
 
 import android.content.Context;
 
-import com.goodchef.liking.http.result.LikingResult;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.joinus.JoinModel;
 
 /**
@@ -78,7 +79,6 @@ public interface ContactJoinContract {
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
                         @Override
                         public void onNext(LikingResult likingResult) {
-                            super.onNext(likingResult);
                             if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                                 mView.updateContactJoinContractView();
                             } else {
@@ -87,9 +87,10 @@ public interface ContactJoinContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onError(ResponseThrowable responseThrowable) {
+
                         }
+
                     });
         }
 

@@ -5,17 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.util.ArrayMap;
 
-import com.aaron.http.code.RequestCallback;
-import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.aaron.android.framework.base.mvp.view.BaseView;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.http.helper.VerifyResultUtils;
 import com.aaron.android.framework.base.thread.TaskScheduler;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.common.utils.DateUtils;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.http.helper.VerifyResultUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
@@ -28,7 +28,6 @@ import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.mvp.view.BaseLoginView;
 import com.goodchef.liking.utils.CityUtils;
 
 import java.io.File;
@@ -51,8 +50,8 @@ public class LiKingVerifyUtils {
     /**
      * 验证Result有效性,处理相关服务器响应的BaseResult错误码
      *
-     * @param context 上下文资源
-     * @param likingResult  需要校验的BaseResult
+     * @param context      上下文资源
+     * @param likingResult 需要校验的BaseResult
      * @return 是否为正确有效的BaseResult
      */
     public static boolean isValid(final Context context, final BaseView view, LikingResult likingResult) {
@@ -67,18 +66,14 @@ public class LiKingVerifyUtils {
             LogUtils.e(TAG, "request server error: " + errorCode);
             switch (errorCode) {
                 case LiKingRequestCode.LOGIN_TOKEN_INVALID:
-                    if (view != null && view instanceof BaseLoginView) {
-                        ((BaseLoginView) view).updateNoLoginView();
-                    } else {
-                        LikingPreference.setToken(NULL_STRING);
-                        LikingPreference.setNickName(NULL_STRING);
-                        LikingPreference.setUserPhone(NULL_STRING);
-                        LikingPreference.setIsNewUser(null);
-                        LikingPreference.setUserIconUrl(NULL_STRING);
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        context.startActivity(intent);
-                        EventBus.getDefault().post(new LoginOutFialureMessage());
-                    }
+                    LikingPreference.setToken(NULL_STRING);
+                    LikingPreference.setNickName(NULL_STRING);
+                    LikingPreference.setUserPhone(NULL_STRING);
+                    LikingPreference.setIsNewUser(null);
+                    LikingPreference.setUserIconUrl(NULL_STRING);
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                    EventBus.getDefault().post(new LoginOutFialureMessage());
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:
                     initApi(context);

@@ -9,6 +9,7 @@ import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.module.data.remote.RxUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,9 +33,9 @@ public class CompleteUserInfoModel extends BaseModel {
      */
     public Observable<UserImageResult> uploadUserImage(String img) {
         if (EnvironmentUtils.Config.isTestMode()) {
-            return LikingNewApi.getInstance().uploadDebugUserImage(img);
+            return LikingNewApi.getInstance().uploadDebugUserImage(img).compose(RxUtils.<UserImageResult>applyHttpSchedulers());
         } else {
-            return LikingNewApi.getInstance().uploadUserImage(img);
+            return LikingNewApi.getInstance().uploadUserImage(img).compose(RxUtils.<UserImageResult>applyHttpSchedulers());
         }
     }
 
@@ -71,7 +72,7 @@ public class CompleteUserInfoModel extends BaseModel {
         if (!StringUtils.isEmpty(height)) {
             map.put("height", height);
         }
-        return LikingNewApi.getInstance().updateUserInfo(UrlList.sHostVersion, map);
+        return LikingNewApi.getInstance().updateUserInfo(UrlList.sHostVersion, map).compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /**
