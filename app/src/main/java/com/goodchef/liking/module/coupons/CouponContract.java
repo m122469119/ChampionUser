@@ -11,6 +11,7 @@ import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.base.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.base.rxobserver.PagerLoadingObserver;
 
 /**
  * 说明:
@@ -26,7 +27,6 @@ public interface CouponContract {
         void updateMyCouponData(CouponsPersonResult.DataBean dataBean);
 
         void updateCouponData(CouponsResult.CouponData couponData);
-        void onPageFailureView();
     }
 
     class CouponPresenter extends BasePresenter<CouponView> {
@@ -53,14 +53,14 @@ public interface CouponContract {
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    mView.showToast(mContext.getString(R.string.network_error));
+                    mView.showToast(mContext.getString(R.string.exchange_fail));
                 }
             });
         }
 
         //获取我的优惠券
         public void getMyCoupons(int page) {
-            mCouponModel.getMyCoupons(page).subscribe(new LikingBaseObserver<CouponsPersonResult>() {
+            mCouponModel.getMyCoupons(page).subscribe(new PagerLoadingObserver<CouponsPersonResult>(mView) {
                 @Override
                 public void onNext(CouponsPersonResult result) {
                     super.onNext(result);
@@ -75,7 +75,6 @@ public interface CouponContract {
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    mView.onPageFailureView();
                 }
             });
         }
@@ -93,7 +92,7 @@ public interface CouponContract {
          * @param gymId       场馆id
          */
         public void getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, int page, String gymId) {
-            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new LikingBaseObserver<CouponsResult>() {
+            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new PagerLoadingObserver<CouponsResult>(mView) {
                 @Override
                 public void onNext(CouponsResult result) {
                     super.onNext(result);
@@ -108,7 +107,6 @@ public interface CouponContract {
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    mView.onPageFailureView();
                 }
             });
         }

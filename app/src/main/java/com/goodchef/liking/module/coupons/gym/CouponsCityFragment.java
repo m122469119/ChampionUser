@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.coupons.gym;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,11 +8,9 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.CouponsDetailsActivity;
 import com.goodchef.liking.adapter.CouponsGymAdapter;
 import com.goodchef.liking.http.result.CouponsCities;
-import com.goodchef.liking.mvp.presenter.CouponsCitysPresenter;
-import com.goodchef.liking.mvp.view.CouponsCitysView;
+import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
 import com.goodchef.liking.widgets.decoration.CouponsDecoration;
 
 /**
@@ -22,25 +20,25 @@ import com.goodchef.liking.widgets.decoration.CouponsDecoration;
  * @version 1.0.0
  */
 
-public class CouponsCitysFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponsCitysView {
+public class CouponsCityFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponsGymContract.CouponsGymView {
 
     TextView mCityCount;
     CouponsGymAdapter mAdapter;
-    CouponsCitysPresenter mPresenter;
+    CouponsGymContract.CouponsGymPresenter mPresenter;
 
     public String mCouponsCode;
 
-    public static CouponsCitysFragment newInstance(String couponsCode) {
+    public static CouponsCityFragment newInstance(String couponsCode) {
         Bundle args = new Bundle();
         args.putString(CouponsDetailsActivity.COUPONS, couponsCode);
-        CouponsCitysFragment fragment = new CouponsCitysFragment();
+        CouponsCityFragment fragment = new CouponsCityFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void requestData(int page) {
-        mPresenter.requestCityPage(page, mCouponsCode, CouponsCitysFragment.this);
+        mPresenter.getCouponsCitys(page,mCouponsCode);
     }
 
     @Override
@@ -50,7 +48,7 @@ public class CouponsCitysFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         if (arguments != null) {
             mCouponsCode = arguments.getString(CouponsDetailsActivity.COUPONS);
         }
-        mPresenter = new CouponsCitysPresenter(getContext(), this);
+        mPresenter = new CouponsGymContract.CouponsGymPresenter(getActivity(),this);
 
         mAdapter = new CouponsGymAdapter(getContext());
         View head = LayoutInflater.from(getContext()).inflate(R.layout.head_coupons_view, null);
@@ -67,7 +65,7 @@ public class CouponsCitysFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     @Override
     public void updateCouponData(CouponsCities.DataBean data) {
-        mCityCount.setText("共" + data.getTotal_gym() + "家");
-        updateListView(data.getGym_list());
+        mCityCount.setText(getString(R.string.common) + data.getTotalGym() + getString(R.string.home));
+        updateListView(data.getGymList());
     }
 }

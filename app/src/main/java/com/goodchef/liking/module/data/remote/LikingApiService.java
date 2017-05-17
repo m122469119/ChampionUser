@@ -4,6 +4,8 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.CouponsCities;
+import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
@@ -202,6 +204,7 @@ public interface LikingApiService {
     Observable<UserInfoResult> getUserInfo(@Path(PATH_VERSION) String version,
                                            @Field(KEY_TOKEN) String token);
 
+
     @POST(Urls.GET_GYM_LIST)
     Observable<CheckGymListResult> getCheckGymList(@Path(PATH_VERSION) String version,
                                                    @QueryMap Map<String, String> map);
@@ -239,6 +242,21 @@ public interface LikingApiService {
     @POST(Urls.PRIVATE_LESSON_DETAILS)
     Observable<PrivateCoursesResult> getPrivateCoursesDetails(@Path(PATH_VERSION) String version,
                                                               @QueryMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST(Urls.GET_COUPON_DETAIL)
+    Observable<CouponsDetailsResult> getCouponDetails(@Path(PATH_VERSION) String version,
+                                                      @Field(KEY_TOKEN) String token,
+                                                      @Field("coupon_code") String couponCode,
+                                                      @Field("longitude") String longitude,
+                                                      @Field("latitude") String latitude);
+
+    @FormUrlEncoded
+    @POST(Urls.GET_COUPON_GYM)
+    Observable<CouponsCities> getCouponsGym(@Path(PATH_VERSION) String version,
+                                            @Field("page") int page,
+                                            @Field("coupon_code") String couponCode,
+                                            @Field("longitude") String longitude,
+                                            @Field("latitude") String latitude);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -386,6 +404,7 @@ public interface LikingApiService {
         public static final String GET_USER_AUTHCODE = sVersion + "user/authcode";
 
         /**
+<<<<<<< Updated upstream
          * 付费团体课确认订单
          */
         public static final String ORDER_CHANGE_GROUP_CONFIRM = sVersion + "order/team-course-confirm";
@@ -414,6 +433,16 @@ public interface LikingApiService {
          * 私教课详情
          */
         public static final String PRIVATE_LESSON_DETAILS = sVersion + "trainer/info";
+
+       /**
+        * 获取优惠券详情
+         */
+        public static final String GET_COUPON_DETAIL = sVersion + "coupon/get-coupon-detail";
+
+        /**
+         * 获取场馆列表
+         */
+        public static final String GET_COUPON_GYM = sVersion + "coupon/get-coupon-gym";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

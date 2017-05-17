@@ -57,9 +57,9 @@ public class CouponsGymAdapter extends BaseRecycleViewAdapter<CouponsGymAdapter.
 
         @Override
         public void bindViews(CouponsCities.DataBean.GymListBean object) {
-            mName.setText(object.getGym_name());
+            mName.setText(object.getGymName());
             mDistance.setText(object.getDistance());
-            mAddress.setText(object.getGym_address());
+            mAddress.setText(object.getGymAddress());
 
         }
     }

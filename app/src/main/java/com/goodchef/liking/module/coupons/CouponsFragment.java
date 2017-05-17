@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.coupons;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,9 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
-import com.goodchef.liking.activity.CouponsDetailsActivity;
+import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
 import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.adapter.CouponsAdapter;
 import com.goodchef.liking.adapter.CouponsPersonAdapter;
@@ -23,8 +25,6 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.Food;
-import com.goodchef.liking.module.coupons.CouponContract;
-import com.goodchef.liking.module.coupons.CouponsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,6 @@ import java.util.List;
  */
 public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponContract.CouponView {
 
-    // private CouponPresenter mCouponPresenter;
     private CouponContract.CouponPresenter mCouponPresenter;
 
     private String intentType;
@@ -183,18 +182,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     }
 
     @Override
-    public void onPageFailureView() {
-        requestFailure();
-    }
-
-    @Override
     public void updateExchangeCode() {
 
     }
 
     @Override
     public void updateMyCouponData(CouponsPersonResult.DataBean dataBean) {
-        requestSuccess();
         updateListView(dataBean.getCouponList());
     }
 

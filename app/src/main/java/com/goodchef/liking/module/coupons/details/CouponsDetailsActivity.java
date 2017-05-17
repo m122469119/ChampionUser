@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.coupons.details;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CouponsDetailsAdapter;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
-import com.goodchef.liking.mvp.presenter.CouponsDetailsPresenter;
-import com.goodchef.liking.mvp.view.CouponsDetailsView;
+import com.goodchef.liking.module.coupons.gym.CouponsGymActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,13 +23,14 @@ import butterknife.ButterKnife;
  * @version 1.0.0
  */
 
-public class CouponsDetailsActivity extends AppBarActivity implements CouponsDetailsView{
+public class CouponsDetailsActivity extends AppBarActivity implements CouponDetailsContract.CouponDetailsView {
 
     public static final String ACTION_SHOW_DETAILS = "show_details";
     public static final String COUPONS = "coupons";
     @BindView(R.id.rv_activity_coupons_contains)
     RecyclerView mRecycleView;
-    CouponsDetailsPresenter mPresenter;
+
+    CouponDetailsContract.CouponDetailsPresenter mCouponDetailsPresenter;
     CouponsPersonResult.DataBean.CouponListBean mBean;
     public CouponsDetailsAdapter mAdapter;
 
@@ -38,11 +38,11 @@ public class CouponsDetailsActivity extends AppBarActivity implements CouponsDet
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupons_details);
-        mPresenter = new CouponsDetailsPresenter(this, this);
+        mCouponDetailsPresenter = new CouponDetailsContract.CouponDetailsPresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.coupons_details));
         Intent intent = getIntent();
-        if (intent.getAction().equals(ACTION_SHOW_DETAILS)){
+        if (intent.getAction().equals(ACTION_SHOW_DETAILS)) {
             mBean = (CouponsPersonResult.DataBean.CouponListBean) intent.getSerializableExtra(COUPONS);
             initView();
             initData(savedInstanceState);
@@ -65,7 +65,7 @@ public class CouponsDetailsActivity extends AppBarActivity implements CouponsDet
     }
 
     private void initData(Bundle savedInstanceState) {
-        mPresenter.getConponsDetail(mBean.getCoupon_code());
+        mCouponDetailsPresenter.getCouponsDetails(mBean.getCoupon_code());
     }
 
     @Override

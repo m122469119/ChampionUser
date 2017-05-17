@@ -5,10 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.fragment.BodyTestHistoryFragment;
-import com.goodchef.liking.fragment.CouponsFragment;
 
 /**
  * 说明:

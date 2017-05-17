@@ -303,7 +303,7 @@
 
         <!-- 优惠券详情 -->
         <activity
-            android:name=".activity.CouponsDetailsActivity"
+            android:name=".module.coupons.details.CouponsDetailsActivity"
             android:screenOrientation="portrait" />
         <!--更多-->
         <activity
@@ -472,7 +472,7 @@
             android:name="UMENG_CHANNEL"
             android:value="umeng"></meta-data>
 
-        <activity android:name=".activity.CouponsGymActivity"></activity>
+        <activity android:name=".module.coupons.gym.CouponsGymActivity"></activity>
     </application>
 
 </manifest>

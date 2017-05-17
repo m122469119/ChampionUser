@@ -1,11 +1,10 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.coupons.gym;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
-import com.goodchef.liking.fragment.CouponsCitysFragment;
 
 public class CouponsGymActivity extends AppBarActivity {
 
@@ -29,7 +28,7 @@ public class CouponsGymActivity extends AppBarActivity {
     private void initView(Bundle savedInstanceState) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_coupons_gym, CouponsCitysFragment.newInstance(mCouponsCode))
+                .replace(R.id.activity_coupons_gym, CouponsCityFragment.newInstance(mCouponsCode))
                 .commit();
     }
 }

@@ -16,7 +16,6 @@ import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
-import com.goodchef.liking.fragment.CouponsFragment;
 import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CouponsPersonResult;
@@ -82,7 +81,6 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
         couponId = getIntent().getStringExtra(KEY_COUPON_ID);
         scheduleId = getIntent().getStringExtra(KEY_SCHEDULE_ID);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
-
 
         mExchangeCouponsLayout.setVisibility(View.VISIBLE);
         if (intentType.equals(TYPE_MY_COUPONS)) {
@@ -151,8 +149,4 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
 
     }
 
-    @Override
-    public void onPageFailureView() {
-
-    }
 }

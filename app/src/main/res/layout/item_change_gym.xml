@@ -44,7 +44,7 @@
 
 
             <TextView
-                android:id="@+id/gym_name"
+                android:id="@+id/gymName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/lesson_details_dark_back"
@@ -52,7 +52,7 @@
                 />
 
             <TextView
-                android:id="@+id/gym_address"
+                android:id="@+id/gymAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
