@@ -21,6 +21,7 @@ android {
             keyPassword "haochushi"
         }
     }
+
     sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
@@ -72,10 +73,6 @@ android {
     lintOptions {
         abortOnError rootProject.ext.abortOnError
     }
-
-//    nuwa {
-//        excludeClass = ['com/aaron/android/framework/base/BaseApplication.class']
-//    }
 
     packagingOptions {
         exclude('META-INF/maven/com.squareup.okio/okio/pom.xml')
