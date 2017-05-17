@@ -129,13 +129,17 @@ public class ChangeGymFragment extends BaseFragment implements CheckGymView, Vie
 
     private void initData() {
         LocationData locationData = Preference.getLocationData();
+        longitude = locationData.getLongitude();
+        latitude = locationData.getLatitude();
         sendGymRequest(Integer.parseInt(selectCityId), locationData.getLongitude(), locationData.getLatitude());
     }
 
 
     private void sendGymRequest(int cityId, String longitude, String latitude) {
         mStateView.setState(StateView.State.LOADING);
-        mCheckGymPresenter = new CheckGymPresenter(getActivity(), this);
+        if (mCheckGymPresenter ==null){
+            mCheckGymPresenter = new CheckGymPresenter(getActivity(), this);
+        }
         mCheckGymPresenter.getGymList(cityId, longitude, latitude);
     }
 
