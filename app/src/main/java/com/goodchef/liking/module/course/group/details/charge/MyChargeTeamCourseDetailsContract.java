@@ -38,7 +38,7 @@ public interface MyChargeTeamCourseDetailsContract {
          */
         public void getChargeGroupCoursesDetails(String orderId) {
             mCourseModel.getChargeGroupCoursesDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyChargeGroupCoursesDetailsResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<MyChargeGroupCoursesDetailsResult>(mContext, mView) {
                         @Override
                         public void onNext(MyChargeGroupCoursesDetailsResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

@@ -40,7 +40,7 @@ public interface CouponContract {
 
         //兑换优惠券
         public void sendExchangeCouponsRequest(String code) {
-            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext) {
+            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
                 @Override
                 public void onNext(LikingResult result) {
                     if (LiKingVerifyUtils.isValid(mContext, result)) {

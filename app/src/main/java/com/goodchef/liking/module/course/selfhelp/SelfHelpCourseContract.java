@@ -49,7 +49,7 @@ public interface SelfHelpCourseContract {
          */
         public void getSelfHelpCourses(String gymId) {
             mCourseModel.getSelfHelpScheduleInfo(gymId)
-                    .subscribe(new LikingBaseObserver<SelfHelpGroupCoursesResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<SelfHelpGroupCoursesResult>(mContext, mView) {
                                    @Override
                                    public void onError(ResponseThrowable responseThrowable) {
 

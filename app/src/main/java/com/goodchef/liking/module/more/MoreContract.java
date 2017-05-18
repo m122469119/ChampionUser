@@ -41,7 +41,7 @@ class MoreContract {
          */
         void checkAppUpdate() {
             mMoreModel.getCheckUpdateAppResult()
-                    .subscribe(new LikingBaseObserver<CheckUpdateAppResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<CheckUpdateAppResult>(mContext, mView) {
                         @Override
                         public void onNext(CheckUpdateAppResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

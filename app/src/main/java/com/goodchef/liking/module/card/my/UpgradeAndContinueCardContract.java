@@ -33,7 +33,7 @@ public interface UpgradeAndContinueCardContract {
 
         public void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
             mCardModel.getCardList(longitude, latitude, cityId, districtId, gymId, type)
-                    .subscribe(new LikingBaseObserver<CardResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<CardResult>(mContext, mView) {
                         @Override
                         public void onNext(CardResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

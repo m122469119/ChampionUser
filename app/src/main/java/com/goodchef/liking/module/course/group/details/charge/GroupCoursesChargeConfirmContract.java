@@ -58,7 +58,7 @@ public interface GroupCoursesChargeConfirmContract {
         public void getChargeGroupCoursesConfirmData(String gymId, String scheduleId) {
 
             mCourseModel.chargeGroupCoursesConfirm(gymId, scheduleId)
-                    .subscribe(new LikingBaseObserver<ChargeGroupConfirmResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<ChargeGroupConfirmResult>(mContext, mView) {
                         @Override
                         public void onNext(ChargeGroupConfirmResult result) {
                             if (result.getCode() == 0) {

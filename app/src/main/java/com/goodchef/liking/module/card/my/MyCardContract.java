@@ -41,7 +41,7 @@ public interface MyCardContract {
 
                         }
                     })
-                    .subscribe(new LikingBaseObserver<MyCardResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<MyCardResult>(mContext, mView) {
                         @Override
                         public void onNext(MyCardResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

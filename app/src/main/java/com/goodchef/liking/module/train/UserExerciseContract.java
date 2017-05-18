@@ -30,7 +30,7 @@ public interface UserExerciseContract {
 
         public void getExerciseData() {
             mUserExerciseModel.getExerciseData()
-                    .subscribe(new LikingBaseObserver<UserExerciseResult>(mContext){
+                    .subscribe(new LikingBaseObserver<UserExerciseResult>(mContext, mView){
                         @Override
                         public void onNext(UserExerciseResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

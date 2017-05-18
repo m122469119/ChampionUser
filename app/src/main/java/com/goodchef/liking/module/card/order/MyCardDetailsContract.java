@@ -32,7 +32,7 @@ public interface MyCardDetailsContract {
 
         public void getMyCardDetails(String orderId) {
             mCardModel.getMyOrderCardDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyOrderCardDetailsResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<MyOrderCardDetailsResult>(mContext, mView) {
                         @Override
                         public void onNext(MyOrderCardDetailsResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

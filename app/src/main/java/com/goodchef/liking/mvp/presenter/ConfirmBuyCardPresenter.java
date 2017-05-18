@@ -19,6 +19,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.module.data.local.LikingPreference;
 
+
 /**
  * 说明:
  * Author shaozucheng
@@ -51,7 +52,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                         });
                         builder.create().setCancelable(false);
                         builder.create().show();
-                    } else if (result.getCode() == 240000 || result.getCode() == 240001) {
+                    } else if (result.getCode() == LiKingRequestCode.NO_GYM || result.getCode() == LiKingRequestCode.HAS_OTHER_GYM_CARD) {
                         mView.updateErrorView(result.getMessage());
                     } else {
                         mView.showToast(result.getMessage());

@@ -21,7 +21,7 @@ public abstract class ProgressObserver<T extends LikingResult> extends LikingBas
 
 
     public ProgressObserver(Context context, String msg) {
-        super(context);
+        super(context, null);
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(msg);
     }

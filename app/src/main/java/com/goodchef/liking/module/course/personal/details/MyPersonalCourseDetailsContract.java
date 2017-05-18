@@ -40,7 +40,7 @@ public interface MyPersonalCourseDetailsContract {
         public void getMyPrivateCoursesDetails(String orderId) {
 
             mCourseModel.getMyPrivateCoursesDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyPrivateCoursesDetailsResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<MyPrivateCoursesDetailsResult>(mContext, mView) {
                         @Override
                         public void onNext(MyPrivateCoursesDetailsResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
