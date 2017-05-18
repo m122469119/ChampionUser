@@ -8,7 +8,6 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.gym.GymModel;
 
@@ -69,7 +68,7 @@ public interface GymListContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
+                        public void onError(Throwable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
                     });

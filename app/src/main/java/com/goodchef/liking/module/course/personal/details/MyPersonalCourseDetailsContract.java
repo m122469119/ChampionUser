@@ -7,10 +7,9 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/10
@@ -51,7 +50,7 @@ public interface MyPersonalCourseDetailsContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable e) {
+                        public void onError(Throwable e) {
                             mView.handleNetworkFailure();
                         }
                     });
@@ -61,10 +60,6 @@ public interface MyPersonalCourseDetailsContract {
 
             mCourseModel.completeMyPrivateCourses(orderId)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, orderId) {
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
 
                         @Override
                         public void onNext(LikingResult result) {

@@ -34,6 +34,7 @@ class LoginContract {
 
         /**
          * 获取验证码
+         *
          * @param phone 手机号码
          */
         void getVerificationCode(String phone) {
@@ -65,7 +66,8 @@ class LoginContract {
 
         /**
          * 用户登陆
-         * @param phone 手机号码
+         *
+         * @param phone   手机号码
          * @param captcha 验证码
          */
         void userLogin(String phone, String captcha) {

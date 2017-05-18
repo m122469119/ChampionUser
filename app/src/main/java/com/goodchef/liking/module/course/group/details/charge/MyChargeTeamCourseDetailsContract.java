@@ -6,9 +6,8 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
  * Created on 2017/05/10
@@ -49,7 +48,7 @@ public interface MyChargeTeamCourseDetailsContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable e) {
+                        public void onError(Throwable e) {
                             mView.handleNetworkFailure();
                         }
                     });

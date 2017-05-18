@@ -9,7 +9,6 @@ import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -54,10 +53,6 @@ public class CouponDetailsContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
                     });
         }
     }

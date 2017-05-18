@@ -10,7 +10,6 @@ import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
@@ -51,7 +50,7 @@ public interface CouponContract {
                 }
 
                 @Override
-                public void onError(ResponseThrowable e) {
+                public void onError(Throwable e) {
                     mView.showToast(mContext.getString(R.string.exchange_fail));
                 }
             });
@@ -71,10 +70,7 @@ public interface CouponContract {
                     }
                 }
 
-                @Override
-                public void onError(ResponseThrowable e) {
 
-                }
             });
         }
 
@@ -102,9 +98,6 @@ public interface CouponContract {
                     }
                 }
 
-                @Override
-                public void onError(ResponseThrowable e) {
-                }
             });
         }
 

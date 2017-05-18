@@ -19,8 +19,8 @@ import com.goodchef.liking.fragment.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;
-import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.ListViewUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -122,8 +122,8 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
                 intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingPreference.getLoginGymId());
                 startActivity(intent);
                 break;
-            }
         }
+    }
 
 
     private boolean checkGymId() {
@@ -173,8 +173,8 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
     @Override

@@ -3,11 +3,12 @@ package com.goodchef.liking.module.card.my;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.CardModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
@@ -18,7 +19,7 @@ import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 public interface UpgradeAndContinueCardContract {
 
-    interface CardListView extends BaseNetworkLoadView {
+    interface CardListView extends BaseStateView {
         void updateCardListView(CardResult.CardData cardData);
     }
 
@@ -44,8 +45,13 @@ public interface UpgradeAndContinueCardContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable e) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            mView.changeStateView(StateView.State.FAILED);
                         }
                     });
         }

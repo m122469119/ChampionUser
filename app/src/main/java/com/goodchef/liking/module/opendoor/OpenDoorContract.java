@@ -7,7 +7,6 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,10 +48,6 @@ public class OpenDoorContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
                     });
         }
     }

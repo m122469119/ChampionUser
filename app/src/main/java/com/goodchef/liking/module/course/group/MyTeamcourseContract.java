@@ -9,10 +9,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/09
@@ -52,19 +51,12 @@ public interface MyTeamcourseContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable e) {
-                        }
                     });
         }
 
         public void sendCancelCoursesRequest(String orderId) {
             mCourseModel.sendCancelCoursesRequest(orderId)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
 
                         @Override
                         public void onNext(LikingResult result) {

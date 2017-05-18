@@ -253,7 +253,7 @@
 
         <!-- 切换场馆 -->
         <activity
-            android:name=".activity.ChangeGymActivity"
+            android:name=".module.gym.list.ChangeGymActivity"
             android:screenOrientation="portrait" />
 
         <!-- 自助团体课 -->

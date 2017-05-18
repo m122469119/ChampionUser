@@ -9,10 +9,9 @@ import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.course.CourseModel;
 
 /**
  * Created on 2017/05/10
@@ -77,7 +76,7 @@ public interface TeamCourseDetailsContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
+                        public void onError(Throwable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
                     });
@@ -103,10 +102,6 @@ public interface TeamCourseDetailsContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
 
                     });
         }
@@ -117,11 +112,6 @@ public interface TeamCourseDetailsContract {
         public void sendCancelCoursesRequest() {
             mCourseModel.sendCancelCoursesRequest(orderId)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
-
                         @Override
                         public void onNext(LikingResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

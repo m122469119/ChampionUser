@@ -6,7 +6,6 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,10 +47,6 @@ public class CouponsGymContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
                     });
         }
     }

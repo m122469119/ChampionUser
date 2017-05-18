@@ -10,7 +10,6 @@ import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -52,10 +51,6 @@ class MoreContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
                     });
         }
 
@@ -73,11 +68,6 @@ class MoreContract {
                             } else {
                                 mView.showToast(likingResult.getMessage());
                             }
-                        }
-
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
                         }
 
                     });

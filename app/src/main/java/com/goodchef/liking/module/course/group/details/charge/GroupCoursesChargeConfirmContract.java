@@ -12,7 +12,6 @@ import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -78,7 +77,7 @@ public interface GroupCoursesChargeConfirmContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
+                        public void onError(Throwable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
 
@@ -105,10 +104,6 @@ public interface GroupCoursesChargeConfirmContract {
                             }
                         }
 
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
                     });
         }
     }

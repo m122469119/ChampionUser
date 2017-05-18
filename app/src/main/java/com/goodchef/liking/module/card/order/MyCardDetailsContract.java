@@ -7,7 +7,6 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.CardModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
@@ -43,7 +42,7 @@ public interface MyCardDetailsContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
+                        public void onError(Throwable responseThrowable) {
                             mView.handleNetworkFailure();
                         }
                     });

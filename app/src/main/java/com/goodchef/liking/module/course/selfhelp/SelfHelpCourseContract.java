@@ -9,7 +9,6 @@ import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -50,10 +49,6 @@ public interface SelfHelpCourseContract {
         public void getSelfHelpCourses(String gymId) {
             mCourseModel.getSelfHelpScheduleInfo(gymId)
                     .subscribe(new LikingBaseObserver<SelfHelpGroupCoursesResult>(mContext, mView) {
-                                   @Override
-                                   public void onError(ResponseThrowable responseThrowable) {
-
-                                   }
 
                                    @Override
                                    public void onNext(SelfHelpGroupCoursesResult result) {
@@ -83,10 +78,6 @@ public interface SelfHelpCourseContract {
 
             mCourseModel.joinSelfHelpCourses(gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
-                                   @Override
-                                   public void onError(ResponseThrowable responseThrowable) {
-
-                                   }
 
                                    @Override
                                    public void onNext(LikingResult result) {
