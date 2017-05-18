@@ -271,7 +271,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             LikingHomeActivity.defaultGym = mGym.getDefaultGym();
             presale = mGym.getBizStatus();
             mNoBuinesses = mGym.getBizAlert();
-            if (1 == mGym.getCanSchedule()) {//支持自助团体课
+            if (NumberConstantUtil.ONE == mGym.getCanSchedule()) {//支持自助团体课
                 mSelfCoursesInView.setVisibility(View.VISIBLE);
             } else {
                 mSelfCoursesInView.setVisibility(View.GONE);
@@ -310,12 +310,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     /**
      * 设置是否完成注册信息
      * 如果没有完成，跳转到填写个人信息界面
+     *
      * @param userInfo
      */
     private void UserIsComplete(CoursesResult.Courses.UserInfo userInfo) {
-        if (userInfo !=null){
+        if (userInfo != null) {
             int userIsComplete = userInfo.getUser_info_complete();
-            LogUtils.i(TAG,"userIsComplete ==  "+userIsComplete+"");
+            LogUtils.i(TAG, "userIsComplete ==  " + userIsComplete + "");
             if (userIsComplete == NumberConstantUtil.ONE) {//用户注册信息没有提交完成
                 startActivity(WriteNameActivity.class);
             }

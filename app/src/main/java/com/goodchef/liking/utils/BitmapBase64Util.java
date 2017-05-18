@@ -45,7 +45,7 @@ public class BitmapBase64Util {
         //将Bitmap转换成字符串
         String string = null;
         ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bStream);
         byte[] bytes = bStream.toByteArray();
         string = Base64.encodeToString(bytes, Base64.DEFAULT);
         return string;
