@@ -75,14 +75,10 @@ public interface ContactJoinContract {
                 return;
             }
             mJoinModel.joinAppLy(UrlList.sHostVersion, name, phone, city, 0)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {
-                            if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
-                                mView.updateContactJoinContractView();
-                            } else {
-                                mView.showToast(likingResult.getMessage());
-                            }
+                            mView.updateContactJoinContractView();
                         }
 
                     });

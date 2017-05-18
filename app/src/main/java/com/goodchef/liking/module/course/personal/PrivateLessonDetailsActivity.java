@@ -242,8 +242,8 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mLikingStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mLikingStateView.setState(state);
     }
 
     @Override

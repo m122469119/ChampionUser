@@ -6,7 +6,7 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,16 +38,22 @@ public class OpenDoorContract {
             mOpenDoorModel.getOpenPwd(inout)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<UserAuthCodeResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<UserAuthCodeResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(UserAuthCodeResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateUserAuthView(result.getAuthCodeData());
-                            } else {
-                                mView.updateFailCodeView(result.getMessage());
-                            }
+                            if(result == null) return;
+                            mView.updateUserAuthView(result.getAuthCodeData());
                         }
 
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            mView.updateFailCodeView(apiException.getMessage());
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            mView.updateFailCodeView(throwable.getMessage());
+                        }
                     });
         }
     }

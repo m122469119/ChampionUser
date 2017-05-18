@@ -3,11 +3,12 @@ package com.goodchef.liking.module.course.personal.details;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -21,7 +22,7 @@ import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 public interface MyPersonalCourseDetailsContract {
 
-    interface MyPrivateCoursesDetailsView extends BaseNetworkLoadView {
+    interface MyPrivateCoursesDetailsView extends BaseStateView {
         void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData myPrivateCoursesDetailsData);
 
         void updateComplete();
@@ -42,16 +43,20 @@ public interface MyPersonalCourseDetailsContract {
                     .subscribe(new LikingBaseObserver<MyPrivateCoursesDetailsResult>(mContext, mView) {
                         @Override
                         public void onNext(MyPrivateCoursesDetailsResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateMyPrivateCoursesDetailsView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mView.updateMyPrivateCoursesDetailsView(result.getData());
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
                         }
                     });
         }
@@ -59,15 +64,11 @@ public interface MyPersonalCourseDetailsContract {
         public void completeMyPrivateCourses(String orderId) {
 
             mCourseModel.completeMyPrivateCourses(orderId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, orderId) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, orderId, mView) {
 
                         @Override
                         public void onNext(LikingResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateComplete();
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            mView.updateComplete();
                         }
                     });
         }

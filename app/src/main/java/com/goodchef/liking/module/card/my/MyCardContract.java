@@ -37,16 +37,19 @@ public interface MyCardContract {
                     .subscribe(new LikingBaseObserver<MyCardResult>(mContext, mView) {
                         @Override
                         public void onNext(MyCardResult result) {
+                            if(result == null) return;
                             mView.updateMyCardView(result.getData());
                         }
 
                         @Override
                         public void apiError(ApiException apiException) {
                             super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
                         }
 
                         @Override
                         public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
 

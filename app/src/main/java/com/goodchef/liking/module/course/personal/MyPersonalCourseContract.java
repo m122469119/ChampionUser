@@ -5,10 +5,8 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
-
+import com.goodchef.liking.module.course.CourseModel;
 /**
  * Created on 2017/05/09
  * desc: 我的私教列表
@@ -39,13 +37,9 @@ public interface MyPersonalCourseContract {
                         @Override
                         public void onNext(MyPrivateCoursesResult result) {
                             super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updatePrivateCoursesView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mView.updatePrivateCoursesView(result.getData());
                         }
-
                     });
         }
     }

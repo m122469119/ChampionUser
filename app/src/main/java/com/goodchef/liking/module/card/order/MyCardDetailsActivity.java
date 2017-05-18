@@ -151,8 +151,8 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
     public class MyCardTimeLimitAdapter extends BaseRecycleViewAdapter<MyCardTimeLimitAdapter.CardTimeLimitViewHolder, TimeLimitData> {

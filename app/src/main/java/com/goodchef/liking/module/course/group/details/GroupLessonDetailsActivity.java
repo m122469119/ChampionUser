@@ -458,8 +458,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
 

@@ -147,7 +147,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     }
 
     @Override
-    public void handleNetworkFailure() {
-        getStateView().setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        getStateView().setState(state);
     }
 }

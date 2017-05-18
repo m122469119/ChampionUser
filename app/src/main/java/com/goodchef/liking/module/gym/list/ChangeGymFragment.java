@@ -201,8 +201,8 @@ public class ChangeGymFragment extends BaseFragment implements GymListContract.C
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
     private void setOnItemClickListener() {

@@ -7,7 +7,6 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -42,15 +41,11 @@ public class CouponDetailsContract {
             }
 
             mCouponDetailsModel.getCouponDetails(couponCode, locationData.getLongitude(), locationData.getLatitude())
-                    .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<CouponsDetailsResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<CouponsDetailsResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(CouponsDetailsResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateCouponData(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mView.updateCouponData(result.getData());
                         }
 
                     });

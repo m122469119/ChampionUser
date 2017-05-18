@@ -100,8 +100,8 @@ public class MyTrainDataActivity extends AppBarActivity implements UserExerciseC
     };
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
     @Override

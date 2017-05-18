@@ -161,8 +161,8 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
     @OnClick({R.id.layout_coupons_courses, R.id.layout_alipay, R.id.layout_wechat, R.id.immediately_buy_btn})

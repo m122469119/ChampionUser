@@ -3,10 +3,11 @@ package com.goodchef.liking.module.card.order;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.CardModel;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
@@ -16,7 +17,7 @@ import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
  */
 
 public interface MyCardDetailsContract {
-    interface MyCardDetailsView extends BaseNetworkLoadView {
+    interface MyCardDetailsView extends BaseStateView {
         void updateMyCardDetailsView(MyOrderCardDetailsResult.OrderCardDetailsData orderCardDetailsData);
     }
 
@@ -34,16 +35,20 @@ public interface MyCardDetailsContract {
                     .subscribe(new LikingBaseObserver<MyOrderCardDetailsResult>(mContext, mView) {
                         @Override
                         public void onNext(MyOrderCardDetailsResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateMyCardDetailsView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (null == result) return;
+                            mView.updateMyCardDetailsView(result.getData());
                         }
 
                         @Override
-                        public void onError(Throwable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
                         }
                     });
         }

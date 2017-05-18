@@ -34,17 +34,12 @@ public class CouponsGymContract {
 
         public void getCouponsCitys(int page, String couponCode) {
             mCouponsGymModel.getCouponsGym(page, couponCode)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
                     .subscribe(new PagerLoadingObserver<CouponsCities>(mContext, mView) {
                         @Override
                         public void onNext(CouponsCities result) {
                             super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                               mView.updateCouponData(result.getData());
-                            }else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if(result == null) return;
+                            mView.updateCouponData(result.getData());
                         }
 
                     });

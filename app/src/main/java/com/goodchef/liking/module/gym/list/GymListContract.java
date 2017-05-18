@@ -3,11 +3,12 @@ package com.goodchef.liking.module.gym.list;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.gym.GymModel;
 
@@ -24,7 +25,7 @@ import java.util.List;
 
 public interface GymListContract {
 
-    interface CheckGymView extends BaseNetworkLoadView {
+    interface CheckGymView extends BaseStateView {
         void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData);
     }
 
@@ -53,23 +54,25 @@ public interface GymListContract {
          * 获取场馆列表
          */
         public void getGymList() {
-            if(StringUtils.isEmpty(selectCityId)) {
+            if (StringUtils.isEmpty(selectCityId)) {
                 return;
             }
             mGymModel.getCheckGymList(Integer.parseInt(selectCityId), longitude, latitude)
                     .subscribe(new LikingBaseObserver<CheckGymListResult>(mContext, mView) {
                         @Override
                         public void onNext(CheckGymListResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateCheckGymView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mView.updateCheckGymView(result.getData());
                         }
 
                         @Override
-                        public void onError(Throwable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            mView.changeStateView(StateView.State.FAILED);
                         }
                     });
         }
@@ -144,7 +147,7 @@ public interface GymListContract {
         }
 
         public List<CheckGymListResult.CheckGymData.CheckGym> getAllGymList() {
-            if(allGymList == null) return new ArrayList<>();
+            if (allGymList == null) return new ArrayList<>();
             return allGymList;
         }
 

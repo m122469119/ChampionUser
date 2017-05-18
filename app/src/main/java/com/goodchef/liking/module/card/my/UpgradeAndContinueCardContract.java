@@ -6,7 +6,6 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.CardResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.CardModel;
 import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
@@ -37,20 +36,19 @@ public interface UpgradeAndContinueCardContract {
                     .subscribe(new LikingBaseObserver<CardResult>(mContext, mView) {
                         @Override
                         public void onNext(CardResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateCardListView(result.getCardData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if(null == result) return;
+                            mView.updateCardListView(result.getCardData());
                         }
 
                         @Override
                         public void apiError(ApiException apiException) {
                             super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
                         }
 
                         @Override
                         public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
                     });

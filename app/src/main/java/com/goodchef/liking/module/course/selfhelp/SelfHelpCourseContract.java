@@ -3,12 +3,13 @@ package com.goodchef.liking.module.course.selfhelp;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -22,7 +23,7 @@ import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 public interface SelfHelpCourseContract {
 
-    interface SelfHelpGroupCoursesView extends BaseNetworkLoadView {
+    interface SelfHelpGroupCoursesView extends BaseStateView {
         void updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData);
 
         void updateOrderView();
@@ -52,11 +53,8 @@ public interface SelfHelpCourseContract {
 
                                    @Override
                                    public void onNext(SelfHelpGroupCoursesResult result) {
-                                       if (LiKingVerifyUtils.isValid(getContext(), result)) {
-                                           mView.updateSelfHelpGroupCoursesView(result.getData());
-                                       } else {
-                                           mView.showToast(result.getMessage());
-                                       }
+                                       if(result == null) return;
+                                       mView.updateSelfHelpGroupCoursesView(result.getData());
                                    }
                                }
                     );
@@ -77,18 +75,28 @@ public interface SelfHelpCourseContract {
         public void sendOrderRequest(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum) {
 
             mCourseModel.joinSelfHelpCourses(gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading, mView) {
 
                                    @Override
                                    public void onNext(LikingResult result) {
-                                       if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                           mView.updateOrderView();
-                                       } else if (result.getCode() == 22013) {
-                                           mView.updateNoCardView(result.getMessage());
-                                       } else {
-                                           mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)
-                                           mView.showToast(result.getMessage());
+                                       mView.updateOrderView();
+                                   }
+
+                                   @Override
+                                   public void apiError(ApiException apiException) {
+                                       switch (apiException.getErrorCode()) {
+                                           case LiKingRequestCode.BUY_COURSES_NO_CARD:
+                                               mView.updateNoCardView(apiException.getMessage());
+                                               break;
+                                           default:
+                                               mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)
+                                               super.apiError(apiException);
                                        }
+                                   }
+
+                                   @Override
+                                   public void networkError(Throwable throwable) {
+                                       super.networkError(throwable);
                                    }
                                }
                     );

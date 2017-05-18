@@ -1,6 +1,7 @@
 package com.goodchef.liking.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
@@ -65,5 +66,23 @@ public class LikingCallUtil {
         mPhoneDialog.show();
     }
 
+    /**
+     * 购买私教课 团体课，预约团体课
+     *
+     * @param context
+     * @param message
+     */
+    public static void showBuyCoursesErrorDialog(final Context context, String message) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().setCancelable(false);
+        builder.create().show();
+    }
 
 }

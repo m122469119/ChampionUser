@@ -41,24 +41,11 @@ class LoginContract {
             LikingNewApi.getInstance().getVerificationCode(phone)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(VerificationCodeResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateVerificationCodeView(result.getVerificationCodeData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
-                        }
-
-                        @Override
-                        public void networkError(Throwable throwable) {
-                            super.networkError(throwable);
-                        }
-
-                        @Override
-                        public void apiError(ApiException apiException) {
-                            super.apiError(apiException);
+                            if(result == null) return;
+                            mView.updateVerificationCodeView(result.getVerificationCodeData());
                         }
 
                     });
@@ -74,28 +61,15 @@ class LoginContract {
             mLoginModel.getLoginResult(phone, captcha)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(UserLoginResult value) {
-                            if (LiKingVerifyUtils.isValid(mContext, value)) {
-                                UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
-                                if (userLoginData != null) {
-                                    mLoginModel.saveLoginUserInfo(userLoginData);
-                                    mView.updateLoginView(value.getUserLoginData());
-                                }
-                            } else {
-                                mView.showToast(value.getMessage());
+                            if(value == null) return;
+                            UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
+                            if (userLoginData != null) {
+                                mLoginModel.saveLoginUserInfo(userLoginData);
+                                mView.updateLoginView(value.getUserLoginData());
                             }
-                        }
-
-                        @Override
-                        public void networkError(Throwable throwable) {
-                            super.networkError(throwable);
-                        }
-
-                        @Override
-                        public void apiError(ApiException apiException) {
-                            super.apiError(apiException);
                         }
                     });
         }

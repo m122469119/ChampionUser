@@ -43,12 +43,9 @@ class MoreContract {
                     .subscribe(new LikingBaseObserver<CheckUpdateAppResult>(mContext, mView) {
                         @Override
                         public void onNext(CheckUpdateAppResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mMoreModel.saveUpdateInfo(result.getData());
-                                mView.updateCheckUpdateAppView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mMoreModel.saveUpdateInfo(result.getData());
+                            mView.updateCheckUpdateAppView(result.getData());
                         }
 
                     });
@@ -59,17 +56,12 @@ class MoreContract {
          */
         void loginOut() {
             mMoreModel.userLogout(UrlList.sHostVersion, LikingPreference.getToken(), "")
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {
-                            if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
-                                mMoreModel.clearUserInfo();
-                                mView.updateLoginOut();
-                            } else {
-                                mView.showToast(likingResult.getMessage());
-                            }
+                            mMoreModel.clearUserInfo();
+                            mView.updateLoginOut();
                         }
-
                     });
         }
     }

@@ -9,13 +9,12 @@ import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.module.data.remote.RxUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -48,8 +47,7 @@ public class GymModel extends BaseModel {
         }
         return LikingNewApi.getInstance()
                 .getCheckGymList(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<CheckGymListResult>applyHttpSchedulers());
     }
 
     public LocationData getCurrLocation() {
