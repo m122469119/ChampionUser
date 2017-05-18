@@ -2,6 +2,8 @@ package com.goodchef.liking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +18,10 @@ import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * 说明:首次登陆填写姓名
@@ -45,6 +51,7 @@ public class WriteNameActivity extends BaseActivity implements View.OnClickListe
         mNextBtn.setOnClickListener(this);
     }
 
+
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
@@ -53,7 +60,7 @@ public class WriteNameActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void setViewOnRetryRequestListener(){
+    private void setViewOnRetryRequestListener() {
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -74,10 +81,29 @@ public class WriteNameActivity extends BaseActivity implements View.OnClickListe
                 PopupUtils.showToast(getString(R.string.name_limit));
                 return;
             }
+            String str = stringFilter(nameStr);
+            if (!nameStr.equals(str)) {
+                PopupUtils.showToast(getString(R.string.not_input_filter_code));
+                return;
+            }
             Intent intent = new Intent(this, UserHeadImageActivity.class);
             intent.putExtra(KEY_USER_NAME, nameStr);
             startActivity(intent);
         }
+    }
+
+    /**
+     * 过滤字符，只能输入中文英文或者数字
+     *
+     * @param str
+     * @return
+     * @throws PatternSyntaxException
+     */
+    public static String stringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[^a-zA-Z0-9\\u4E00-\\u9FA5]"; //要过滤掉的字符
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
     }
 
     @Override

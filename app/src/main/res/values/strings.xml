@@ -609,4 +609,8 @@
     <string name="again_think">再考虑下</string>
     <string name="buy_card_confirm">确认无误</string>
     <string name="confirm_contact_teacher">您确定联系教练吗？</string>
+    <string name="name_limit_prompt">昵称长度不得超过15个字符"\n"不可包含特殊字符和空格</string>
+    <string name="name_digits">！!@#$%^*()_+{}|:?/.,""^~`</string>
+    <string name="not_input_filter_code">不能输入非法字符或者空格！</string>
+
 </resources>

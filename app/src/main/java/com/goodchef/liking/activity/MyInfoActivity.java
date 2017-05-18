@@ -40,6 +40,9 @@ import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -245,9 +248,15 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
         String height = mUserHeightEditText.getText().toString().trim();
         String weight = mUserWeightEditText.getText().toString().trim();
 
-
         if (!StringUtils.isEmpty(userName) && userName.equals(mUserInfoData.getName())) {
             userName = "";
+        }
+        if (!StringUtils.isEmpty(userName)) {
+            String str = stringFilter(userName);
+            if (!userName.equals(str)) {
+                PopupUtils.showToast(getString(R.string.not_input_filter_code));
+                return;
+            }
         }
         if (birthday.equals(getString(R.string.select_birth_date))) {
             birthday = "";
@@ -283,6 +292,20 @@ public class MyInfoActivity extends AppBarActivity implements View.OnClickListen
             }
             mUserInfoPresenter.updateUserInfo(userName, headUrl, gender, birthday, weight, height);
         }
+    }
+
+
+    /**
+     * 过滤字符
+     * @param str
+     * @return
+     * @throws PatternSyntaxException
+     */
+    public static String stringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[^a-zA-Z0-9\\u4E00-\\u9FA5]"; //要过滤掉的字符
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
     }
 
     /**
