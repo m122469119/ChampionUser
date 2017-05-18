@@ -33,6 +33,7 @@ public class FileDownloadService extends Service {
     public static final String EXTRA_DOWNLOAD_PATH = "downloadPath";
     public static final String EXTRA_PROGRESS = "downloadprogress";
     public static final String EXTRA_APK_LENGTH = "apkLength";
+    public static final String ACTION_DOWNLOAD_FAIL = "action_download_fail";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -109,7 +110,7 @@ public class FileDownloadService extends Service {
                 LogUtils.i("DownloadService", "responseCode = " + responseCode);
                 long contentLength = httpURLConnection.getContentLength();
                 Intent intent = new Intent(ACTION_START_DOWNLOAD);
-                intent.putExtra(EXTRA_APK_LENGTH, (int)contentLength);
+                intent.putExtra(EXTRA_APK_LENGTH, (int) contentLength);
                 sendBroadcast(intent);
                 LogUtils.i("DownloadService", "contentLength = " + contentLength);
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -120,7 +121,7 @@ public class FileDownloadService extends Service {
                     intent = new Intent(ACTION_DOWNLOADING);
                     while ((temp = inputStream.read(buffer)) != -1) {
                         totalLength += temp;
-                        LogUtils.i("DownloadService", "download.length = " + (totalLength / (float)contentLength) * 100);
+                        LogUtils.i("DownloadService", "download.length = " + (totalLength / (float) contentLength) * 100);
                         outputStream.write(buffer, 0, temp);
                         intent.putExtra(EXTRA_PROGRESS, totalLength);
                         sendBroadcast(intent);
@@ -131,6 +132,8 @@ public class FileDownloadService extends Service {
                     sendBroadcast(intent);
                 }
             } catch (Exception e) {
+                Intent intent = new Intent(ACTION_DOWNLOAD_FAIL);
+                sendBroadcast(intent);
                 e.printStackTrace();
             } finally {
                 try {

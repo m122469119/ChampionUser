@@ -132,6 +132,9 @@ public class FileDownloaderManager {
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent1);
                     BaseApplication.getInstance().exitApp();
+                } else if (action.equals(FileDownloadService.ACTION_DOWNLOAD_FAIL)) {
+                    mDownloadApkDialog.dismiss();
+                    unregisterDownloadNewApkBroadcast();
                 }
             }
         }
