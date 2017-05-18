@@ -24,61 +24,36 @@ import java.net.ConnectException;
  */
 
 public class ExceptionHandler {
-    private static final int UNAUTHORIZED = 401;
-    private static final int FORBIDDEN = 403;
-    private static final int NOT_FOUND = 404;
-    private static final int REQUEST_TIMEOUT = 408;
-    private static final int INTERNAL_SERVER_ERROR = 500;
-    private static final int BAD_GATEWAY = 502;
-    private static final int SERVICE_UNAVAILABLE = 503;
-    private static final int GATEWAY_TIMEOUT = 504;
+//    private static final int UNAUTHORIZED = 401;
+//    private static final int FORBIDDEN = 403;
+//    private static final int NOT_FOUND = 404;
+//    private static final int REQUEST_TIMEOUT = 408;
+//    private static final int INTERNAL_SERVER_ERROR = 500;
+//    private static final int BAD_GATEWAY = 502;
+//    private static final int SERVICE_UNAVAILABLE = 503;
+//    private static final int GATEWAY_TIMEOUT = 504;
 
     public static ResponseThrowable transformResponseThrowable(Throwable throwable) {
         ResponseThrowable responseThrowable;
         if (throwable instanceof HttpException) {
             HttpException httpException = (HttpException) throwable;
             responseThrowable = new ResponseThrowable(RequestError.ErrorType.HTTP_ERROR, httpException);
-            switch (httpException.code()) {
-                case UNAUTHORIZED:
-                case FORBIDDEN:
-                case NOT_FOUND:
-                case REQUEST_TIMEOUT:
-                case GATEWAY_TIMEOUT:
-                case INTERNAL_SERVER_ERROR:
-                case BAD_GATEWAY:
-                case SERVICE_UNAVAILABLE:
-                default:
-                    break;
-            }
+//            switch (httpException.code()) {
+//                case UNAUTHORIZED:
+//                case FORBIDDEN:
+//                case NOT_FOUND:
+//                case REQUEST_TIMEOUT:
+//                case GATEWAY_TIMEOUT:
+//                case INTERNAL_SERVER_ERROR:
+//                case BAD_GATEWAY:
+//                case SERVICE_UNAVAILABLE:
+//                default:
+//                    break;
+//            }
             return responseThrowable;
         } else if (throwable instanceof ApiException) {
             ApiException apiException = (ApiException) throwable;
             responseThrowable = new ResponseThrowable(RequestError.ErrorType.SERVER_ERROR, apiException);
-            switch (apiException.getErrorCode()) {
-//                case LiKingRequestCode.LOGIN_TOKEN_INVALID:
-//                    LikingPreference.setToken(ConstantUtils.BLANK_STRING);
-//                    LikingPreference.setNickName(ConstantUtils.BLANK_STRING);
-//                    LikingPreference.setUserPhone(ConstantUtils.BLANK_STRING);
-//                    LikingPreference.setIsNewUser(null);
-//                    LikingPreference.setUserIconUrl(ConstantUtils.BLANK_STRING);
-//                    EventBus.getDefault().post(new LoginInvalidMessage());
-//                    break;
-                case LiKingRequestCode.REQEUST_TIMEOUT:
-//                    initApi(context);
-                    break;
-                case LiKingRequestCode.ILLEGAL_REQUEST:
-                case LiKingRequestCode.ILLEGAL_ARGUMENT:
-                case LiKingRequestCode.ARGUMENT_HIATUS_EXCEPTION:
-                case LiKingRequestCode.DB_CONNECTION_EXCEPTION:
-                case LiKingRequestCode.REDIS_CONNECTION_EXCEPTION:
-                case LiKingRequestCode.SERVER_EXCEPTION:
-//                    responseThrowable.setMessage("服务器异常");
-                    break;
-                default:
-                    //TODO 这里需要处理临时加的ErrorCode对应Toast弹出处理
-                    responseThrowable.setMessage(apiException.getErrorMessage());
-                    break;
-            }
             return responseThrowable;
         } else if (throwable instanceof ParseException
                 || throwable instanceof JsonParseException

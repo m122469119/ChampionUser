@@ -18,7 +18,7 @@ public abstract class PagerLoadingObserver<T extends LikingResult> extends Likin
     private BaseView mView;
 
     protected PagerLoadingObserver(Context context, BaseView view) {
-        super(context);
+        super(context, view);
         mView = view;
     }
     @Override

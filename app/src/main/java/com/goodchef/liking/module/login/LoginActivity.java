@@ -39,7 +39,7 @@ import cn.jpush.android.api.JPushInterface;
  * Author shaozucheng
  * Time:16/6/6 上午10:04
  */
-public class LoginActivity extends AppBarActivity implements LoginContract.LoginView, LoginView {
+public class LoginActivity extends AppBarActivity implements LoginContract.LoginView {
     public static final String KEY_TITLE_SET_USER_INFO = "key_title_set_user_info";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
     @BindView(R.id.et_login_phone)
@@ -53,7 +53,6 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     @BindView(R.id.login_btn)
     Button mLoginBtn;//登录按钮
 
-    private String phoneStr;
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
     private LoginContract.LoginPresenter mLoginPresenter;
 
@@ -78,7 +77,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     public void buttonClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-                login();
+                mLoginPresenter.userLogin(mLoginPhoneEditText.getText().toString(), mCodeEditText.getText().toString());
                 break;
             case R.id.register_agree_on:
                 BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
@@ -93,58 +92,15 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
                 }
                 break;
             case R.id.send_verification_code_btn:
-                getVerificationCode();
+                mLoginPresenter.getVerificationCode(mLoginPhoneEditText.getText().toString());
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * 登录
-     */
-    private void login() {
-        if (!checkPhone()) {
-            return;
-        }
-        String code = mCodeEditText.getText().toString().trim();
-        if (StringUtils.isEmpty(code)) {
-            showToast(getString(R.string.version_code_not_blank));
-            return;
-        }
-        requestLogin(phoneStr, code);
-    }
 
-    private void requestLogin(String phoneStr, String code) {
-        mLoginPresenter.userLogin(phoneStr, code);
-    }
 
-    /**
-     * 获取验证码
-     */
-    private void getVerificationCode() {
-        if (checkPhone()) {
-            //发送请求
-            mMyCountdownTime.start();
-            mLoginPresenter.getVerificationCode(phoneStr);
-        }
-    }
-
-    /**
-     * 校验手机号码
-     */
-    private boolean checkPhone() {
-        phoneStr = mLoginPhoneEditText.getText().toString().trim();
-        if (StringUtils.isEmpty(phoneStr)) {
-            showToast(getString(R.string.hint_login_phone));
-            return false;
-        }
-        if (!RegularUtils.isMobileExact(phoneStr)) {
-            showToast(getString(R.string.phone_format_error));
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
@@ -197,6 +153,11 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     @Override
     public void updateLoginOut() {
 
+    }
+
+    @Override
+    public void myCountdownTimeStart() {
+        mMyCountdownTime.start();
     }
 
 
