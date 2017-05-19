@@ -97,6 +97,7 @@ public interface CouponContract {
             mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new PagerLoadingObserver<CouponsResult>(mContext, mView) {
                 @Override
                 public void onNext(CouponsResult result) {
+                    super.onNext(result);
                     if (result == null) return;
                     mView.updateCouponData(result.getData());
                 }

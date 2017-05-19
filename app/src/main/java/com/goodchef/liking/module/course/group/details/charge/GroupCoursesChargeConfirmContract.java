@@ -14,6 +14,7 @@ import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
  * Created on 2017/05/16
@@ -101,6 +102,16 @@ public interface GroupCoursesChargeConfirmContract {
                         public void onNext(SubmitPayResult result) {
                             if (result == null) return;
                             mView.updatePaySubmitView(result.getPayData());
+                        }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.BUY_COURSES_ERROR:
+                                    LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                default:
+                                    super.apiError(apiException);
+                            }
                         }
                     });
         }

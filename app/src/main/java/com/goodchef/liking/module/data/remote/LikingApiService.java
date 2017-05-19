@@ -404,7 +404,6 @@ public interface LikingApiService {
         public static final String GET_USER_AUTHCODE = sVersion + "user/authcode";
 
         /**
-<<<<<<< Updated upstream
          * 付费团体课确认订单
          */
         public static final String ORDER_CHANGE_GROUP_CONFIRM = sVersion + "order/team-course-confirm";

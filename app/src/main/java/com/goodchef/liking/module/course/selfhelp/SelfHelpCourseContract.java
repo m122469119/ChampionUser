@@ -12,6 +12,7 @@ import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
  * Created on 2017/05/11
@@ -87,6 +88,9 @@ public interface SelfHelpCourseContract {
                                        switch (apiException.getErrorCode()) {
                                            case LiKingRequestCode.BUY_COURSES_NO_CARD:
                                                mView.updateNoCardView(apiException.getMessage());
+                                               break;
+                                           case LiKingRequestCode.BUY_COURSES_ERROR:
+                                               LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
                                                break;
                                            default:
                                                mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)

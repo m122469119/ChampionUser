@@ -94,11 +94,6 @@ public interface CompleteUserInfoContract {
                         }
 
                         @Override
-                        public void apiError(ApiException apiException) {
-                            mView.changeStateView(StateView.State.FAILED);
-                        }
-
-                        @Override
                         public void networkError(Throwable throwable) {
                             mView.changeStateView(StateView.State.FAILED);
                         }
