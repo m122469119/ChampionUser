@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.data.remote;
 
+import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
@@ -8,6 +9,7 @@ import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyCardResult;
@@ -242,6 +244,7 @@ public interface LikingApiService {
     @POST(Urls.PRIVATE_LESSON_DETAILS)
     Observable<PrivateCoursesResult> getPrivateCoursesDetails(@Path(PATH_VERSION) String version,
                                                               @QueryMap Map<String, String> map);
+
     @FormUrlEncoded
     @POST(Urls.GET_COUPON_DETAIL)
     Observable<CouponsDetailsResult> getCouponDetails(@Path(PATH_VERSION) String version,
@@ -257,6 +260,19 @@ public interface LikingApiService {
                                             @Field("coupon_code") String couponCode,
                                             @Field("longitude") String longitude,
                                             @Field("latitude") String latitude);
+
+
+    @POST(Urls.USER_CHECK_UPDATES)
+    Observable<CheckUpdateAppResult> getUpdateApp(@Path(PATH_VERSION) String version);
+
+
+    @POST(Urls.HOME_BANNER)
+    Observable<BannerResult> getBanner(@Path(PATH_VERSION) String version);
+
+
+    @POST(Urls.HOME_INDEX)
+    Observable<CoursesResult> getHomeData(@Path(PATH_VERSION) String version,
+                                          @QueryMap Map<String, Object> map);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -433,8 +449,8 @@ public interface LikingApiService {
          */
         public static final String PRIVATE_LESSON_DETAILS = sVersion + "trainer/info";
 
-       /**
-        * 获取优惠券详情
+        /**
+         * 获取优惠券详情
          */
         public static final String GET_COUPON_DETAIL = sVersion + "coupon/get-coupon-detail";
 
@@ -442,6 +458,21 @@ public interface LikingApiService {
          * 获取场馆列表
          */
         public static final String GET_COUPON_GYM = sVersion + "coupon/get-coupon-gym";
+
+        /**
+         * 检测更新APP
+         */
+        public static final String USER_CHECK_UPDATES = sVersion + "check-update/check-update";
+
+        /**
+         * 首页banner
+         */
+        public static final String HOME_BANNER = sVersion + "index/banner";
+
+        /**
+         * 首页
+         */
+        public static final String HOME_INDEX = sVersion + "index/index";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

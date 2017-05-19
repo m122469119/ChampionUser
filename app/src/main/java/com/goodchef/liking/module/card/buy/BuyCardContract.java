@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.activity.LikingHomeActivity;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.LocationData;
@@ -13,6 +12,7 @@ import com.goodchef.liking.module.card.CardModel;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 
 /**
  * Created on 2017/05/19
@@ -53,11 +53,11 @@ public interface BuyCardContract {
         }
 
         private void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
-            mCardModel.getCardList(longitude, latitude, cityId, districtId, gymId ,type)
+            mCardModel.getCardList(longitude, latitude, cityId, districtId, gymId, type)
                     .subscribe(new LikingBaseObserver<CardResult>(mContext, mView) {
                         @Override
                         public void onNext(CardResult value) {
-                            if(value == null) return;
+                            if (value == null) return;
                             mView.updateCardListView(value.getCardData());
                         }
 
@@ -86,7 +86,7 @@ public interface BuyCardContract {
         }
 
         public String getGymId() {
-            if(mGymData != null) {
+            if (mGymData != null) {
                 return mGymData.getGymId();
             }
             return "";

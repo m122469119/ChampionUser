@@ -1,12 +1,10 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.home;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatDialog;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,8 +15,6 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.ui.BaseActivity;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -28,7 +24,7 @@ import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
-import com.goodchef.liking.adapter.LikingNearbyAdapter;
+import com.goodchef.liking.activity.ArenaActivity;
 import com.goodchef.liking.dialog.CancelOnClickListener;
 import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.DefaultGymDialog;
@@ -43,36 +39,30 @@ import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
-import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.fragment.LikingLessonFragment;
-import com.goodchef.liking.fragment.LikingMyFragment;
-import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.CoursesResult;
-import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.result.data.NoticeData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.gym.list.ChangeGymActivity;
-import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
-import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.mvp.presenter.CheckUpdateAppPresenter;
-import com.goodchef.liking.mvp.presenter.LikingHomePresenter;
-import com.goodchef.liking.mvp.view.CheckUpdateAppView;
-import com.goodchef.liking.mvp.view.LikingHomeView;
 import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.gym.list.ChangeGymActivity;
+import com.goodchef.liking.module.home.buycardfragment.LikingBuyCardFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
+import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
-import com.goodchef.liking.utils.FileDownloaderManager;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.Iterator;
 import java.util.Set;
 
-public class LikingHomeActivity extends BaseActivity implements View.OnClickListener,
-        LikingNearbyAdapter.ShoppingDishChangedListener,
-        CheckUpdateAppView,
-        LikingHomeView {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class LikingHomeActivity extends BaseActivity implements LikingHomeContract.LikingHomeView {
 
     public static final String TAG_MAIN_TAB = "lesson";
     public static final String TAG_NEARBY_TAB = "nearby";
@@ -81,31 +71,34 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     public static final String INTENT_KEY_BUY_LIST = "intent_key_buy_list";
     public static final String INTENT_KEY_FOOD_OBJECT = "intent_key_food_object";
 
-    public static final int INTENT_REQUEST_CODE_SHOP_CART = 200;
-    private static final int INTENT_REQUEST_CODE_DISHES_DETIALS = 201;
-    public static final String KEY_SELECT_CITY = "key_select_city";
     public static final String KEY_SELECT_CITY_ID = "key_select_city_id";
-    public static final String KEY_START_LOCATION = "key_start_location";
     public static final String KEY_TAB_INDEX = "key_tab_index";
     public static final String KEY_INTENT_TAB = "key_intent_tab";
     public static final String KEY_WHETHER_LOCATION = "key_whether_location";
 
-    private TextView mLikingLeftTitleTextView;//左边文字
-    private TextView mLikingMiddleTitleTextView;//中间title
-    private ImageView mRightImageView;//右边图片
-    private TextView mLikingRightTitleTextView;//右边文字
-    private TextView mLikingDistanceTextView;//距离
-    private TextView mRedPoint;//红色点点
-    private RelativeLayout mMiddleLayout;//title中间布局
-
-    public TextView mShoppingCartNumTextView;//购物车数量
-    public int mCanSchedule = -1;//是否支持自助团体课
+    @BindView(R.id.liking_left_title_text)
+    TextView mLikingLeftTitleTextView;//左边文字
+    @BindView(R.id.liking_middle_title_text)
+    TextView mLikingMiddleTitleTextView;//中间title
+    @BindView(R.id.liking_distance_text)
+    TextView mLikingDistanceTextView;//距离
+    @BindView(R.id.layout_home_middle)
+    RelativeLayout mMiddleLayout;//title中间布局
+    @BindView(R.id.liking_right_imageView)
+    ImageView mRightImageView;//右边图片
+    @BindView(R.id.home_notice_prompt)
+    TextView mRedPoint;//红色点点
+    @BindView(R.id.tv_shopping_cart_num)
+    TextView mShoppingCartNumTextView;//购物车数量
+    @BindView(R.id.liking_right_title_text)
+    TextView mLikingRightTitleTextView;
 
     private FragmentTabHost fragmentTabHost;
     private TabWidget tabWidget;
     private AmapGDLocation mAmapGDLocation;//定位
-
     private String currentCityName = "";
+
+    public int mCanSchedule = -1;//是否支持自助团体课
     public boolean isWhetherLocation = false;
     public static String gymId;
     public static String gymName = "";
@@ -115,48 +108,27 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
-    private CheckUpdateAppPresenter mCheckUpdateAppPresenter;
-    private LikingHomePresenter mPresenter;
-    private CheckUpdateAppResult.UpdateAppData mUpDateAppData;
-    private FileDownloaderManager mFileDownloaderManager;
+    private LikingHomeContract.LikingHomePresenter mLikingHomePresenter;
     private String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
     public static boolean shoDefaultDialog = true;
-
+    public static final String ACTION = "action";
+    public static final int SHOW_PUSH_NOTICE = 0x00001111;
+    public static final int SHOW_PUSH_NOTICE_RECEIVED = 0x00001112;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liking_home);
-        mPresenter = new LikingHomePresenter(this, this);
-        initGymId();
+        ButterKnife.bind(this);
         setTitle(R.string.activity_liking_home);
+        mLikingHomePresenter = new LikingHomeContract.LikingHomePresenter(this, this);
+        mLikingHomePresenter.initHomeGymId();
         RightMenuDialog = new HomeRightDialog(this);
-        initViews();
+        initTabHost();
         sendUpdateAppRequest();
-        setViewOnClickListener();
         initData();
     }
-
-
-
-    /**
-     * 初始化gymId
-     */
-    private void initGymId() {
-        String id = LikingPreference.getLoginGymId();
-        if (!StringUtils.isEmpty(id) && !"0".equals(id)) {
-            gymId = id;
-        } else {
-            gymId = "0";
-        }
-    }
-
-    public static final String ACTION = "action";
-
-    public static final int SHOW_PUSH_NOTICE = 0x00001111;
-
-    public static final int SHOW_PUSH_NOTICE_RECEIVED = 0x00001112;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -164,24 +136,22 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         int intExtra = intent.getIntExtra(ACTION, 0);
         if (SHOW_PUSH_NOTICE == intExtra) {
             fragmentTabHost.setCurrentTab(0);
-            mPresenter.showPushDialog();
+            mLikingHomePresenter.showPushDialog();
         } else if (SHOW_PUSH_NOTICE_RECEIVED == intExtra) {
             if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB)) {
-                mPresenter.showPushDialog();
+                mLikingHomePresenter.showPushDialog();
             }
         } else {
             int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
             fragmentTabHost.setCurrentTab(tag);
         }
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB))
-            mPresenter.showPushDialog();
+            mLikingHomePresenter.showPushDialog();
     }
 
     private void initData() {
@@ -197,90 +167,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      * 发送请求
      */
     private void sendUpdateAppRequest() {
-        if (mCheckUpdateAppPresenter == null) {
-            mCheckUpdateAppPresenter = new CheckUpdateAppPresenter(this, this);
-        }
-        mCheckUpdateAppPresenter.getUpdateApp();
-    }
-
-    @Override
-    public void updateCheckUpdateAppView(CheckUpdateAppResult.UpdateAppData updateAppData) {
-        mUpDateAppData = updateAppData;
-        checkUpdateApp();
-    }
-
-    private void checkUpdateApp() {
-        if (mUpDateAppData == null) {
-            return;
-        }
-        int update = mUpDateAppData.getUpdate();
-        if (update == 0) {//无更新
-            LikingPreference.setUpdateApp(0);
-        } else if (update == 1) {//有更新
-            LikingPreference.setUpdateApp(1);
-            LikingPreference.setNewApkName(mUpDateAppData.getLastestVer());
-            if (LikingPreference.getIsUpdate()) {
-                LikingPreference.setIsUpdateApp(false);
-                showCheckUpdateDialog(false);
-            }
-        } else if (update == 2) {//强制更新
-            LikingPreference.setUpdateApp(2);
-            LikingPreference.setNewApkName(mUpDateAppData.getLastestVer());
-            showCheckUpdateDialog(true);
-        }
-    }
-
-
-    /**
-     * 更新app弹出框
-     *
-     * @param isForceUpdate
-     */
-    private void showCheckUpdateDialog(boolean isForceUpdate) {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
-        TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        textView.setText((mUpDateAppData.getTitle()));
-        builder.setCustomTitle(view);
-        builder.setMessage(mUpDateAppData.getContent());
-        if (!isForceUpdate) {
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        }
-        builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (!StringUtils.isEmpty(mUpDateAppData.getUrl())) {
-                    mFileDownloaderManager = new FileDownloaderManager(LikingHomeActivity.this);
-                    mFileDownloaderManager.downloadFile(mUpDateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
-                }
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void initViews() {
-        mLikingLeftTitleTextView = (TextView) findViewById(R.id.liking_left_title_text);
-        mLikingMiddleTitleTextView = (TextView) findViewById(R.id.liking_middle_title_text);
-        mLikingDistanceTextView = (TextView) findViewById(R.id.liking_distance_text);
-        mRightImageView = (ImageView) findViewById(R.id.liking_right_imageView);
-        mLikingRightTitleTextView = (TextView) findViewById(R.id.liking_right_title_text);
-        mShoppingCartNumTextView = (TextView) findViewById(R.id.tv_shopping_cart_num);
-        mRedPoint = (TextView) findViewById(R.id.home_notice_prompt);
-        mMiddleLayout = (RelativeLayout) findViewById(R.id.layout_home_middle);
-        initTabHost();
-    }
-
-    private void setViewOnClickListener() {
-        mLikingLeftTitleTextView.setOnClickListener(this);
-        mLikingRightTitleTextView.setOnClickListener(this);
-        mRightImageView.setOnClickListener(this);
-        mMiddleLayout.setOnClickListener(this);
+        mLikingHomePresenter.getAppUpdate();
     }
 
     private void initTabHost() {
@@ -306,7 +193,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void setMainTableView() {
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
         mLikingLeftTitleTextView.setText(R.string.title_change_gym);
-        //  mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mRightImageView.setVisibility(View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
     }
@@ -329,7 +215,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setTagMainTab();
                     setHomeTitle();
                     setHomeMenuReadNotice();
-                    checkUpdateApp();
+                    mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
                     postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     setTagRechargeTab();
@@ -337,10 +223,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
                     setTagNearbyTab();
                     setHomeTitle();
                     postEvent(new OnCLickBuyCardFragmentMessage());
-                    checkUpdateApp();
+                    mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     setTagMyTab();
-                    checkUpdateApp();
+                    mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
                 }
             }
         });
@@ -354,7 +240,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
             mLikingLeftTitleTextView.setText(mGym.getCityName());
         }
-        //  mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         mLikingDistanceTextView.setVisibility(View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(View.GONE);
         mRightImageView.setVisibility(View.VISIBLE);
@@ -367,7 +252,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
      */
     private void setTagNearbyTab() {
         mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
-        // mLikingLeftTitleTextView.setBackgroundResource(R.drawable.icon_chenge);
         if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
             mLikingLeftTitleTextView.setText(mGym.getCityName());
         }
@@ -384,7 +268,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void setTagRechargeTab() {
         mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
         mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
-        // mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_nearby);
         mRightImageView.setVisibility(View.GONE);
         mRedPoint.setVisibility(View.GONE);
         mLikingDistanceTextView.setVisibility(View.GONE);
@@ -404,26 +287,30 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.liking_left_title_text, R.id.liking_right_imageView, R.id.layout_home_middle})
+    public void onClick(View view) {
         String tag = fragmentTabHost.getCurrentTabTag();
-        if (v == mLikingLeftTitleTextView) {
-            if (tag.equals(TAG_MAIN_TAB)) {
-                changeGym(NumberConstantUtil.ZERO);//从首页切换过去
-            } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                changeGym(NumberConstantUtil.ONE);//从买卡界面切换过去
-            }
-        } else if (v == mRightImageView) {
-            if (tag.equals(TAG_NEARBY_TAB)) {
-            } else if (tag.equals(TAG_MAIN_TAB)) {
-                showRightMenuDialog();
-            }
-        } else if (v == mMiddleLayout) {
-            if (tag.equals(TAG_MAIN_TAB)) {
-                jumpArenaActivity();
-            } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                jumpArenaActivity();
-            }
+        switch (view.getId()) {
+            case R.id.liking_left_title_text:
+                if (tag.equals(TAG_MAIN_TAB)) {
+                    changeGym(NumberConstantUtil.ZERO);//从首页切换过去
+                } else if (tag.equals(TAG_RECHARGE_TAB)) {
+                    changeGym(NumberConstantUtil.ONE);//从买卡界面切换过去
+                }
+                break;
+            case R.id.liking_right_imageView:
+                if (tag.equals(TAG_NEARBY_TAB)) {
+                } else if (tag.equals(TAG_MAIN_TAB)) {
+                    showRightMenuDialog();
+                }
+                break;
+            case R.id.layout_home_middle:
+                if (tag.equals(TAG_MAIN_TAB)) {
+                    jumpArenaActivity();
+                } else if (tag.equals(TAG_RECHARGE_TAB)) {
+                    jumpArenaActivity();
+                }
+                break;
         }
     }
 
@@ -478,27 +365,30 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     private void showRightMenuDialog() {
         UMengCountUtil.UmengBtnCount(this, UmengEventId.ADD_BTN, currentCityName);
         RightMenuDialog.setAnchor(mRightImageView);
-        RightMenuDialog.setViewOnClickListener(new View.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(View v) {
-                                                       switch (v.getId()) {
-                                                           case R.id.layout_notice://公告
-                                                               if (mNoticeGym != null) {
-                                                                   showNoticeDialog();
-                                                                   RightMenuDialog.dismiss();
-                                                               }
-                                                               break;
-                                                           case R.id.layout_open_door://开门
-                                                               jumpOpenTheDoorActivity();
-                                                               RightMenuDialog.dismiss();
-                                                               break;
-                                                       }
-                                                   }
-                                               }
-
-        );
+        RightMenuDialog.setViewOnClickListener(rightListener);
         RightMenuDialog.show();
     }
+
+    /**
+     * 右边按钮监听
+     */
+    private View.OnClickListener rightListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.layout_notice://公告
+                    if (mNoticeGym != null) {
+                        showNoticeDialog();
+                        RightMenuDialog.dismiss();
+                    }
+                    break;
+                case R.id.layout_open_door://开门
+                    jumpOpenTheDoorActivity();
+                    RightMenuDialog.dismiss();
+                    break;
+            }
+        }
+    };
 
 
     /**
@@ -537,22 +427,19 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void showNoticesDialog(final Set<NoticeData> noticeDatas) {
-        Iterator<NoticeData> iterator = noticeDatas.iterator();
-        NoticeData next = null;
+    public void showNoticesDialog(final Set<NoticeData> noticeData) {
+        Iterator<NoticeData> iterator = noticeData.iterator();
+        NoticeData next;
         if (iterator.hasNext()) {
             next = iterator.next();
-            noticeDatas.remove(next);
+            noticeData.remove(next);
         } else {
             return;
         }
-
         LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + next.getAid());
-
         if (!LikingPreference.isIdenticalAnnouncement(next.getGym_id())) {
-            showNoticesDialog(noticeDatas);
+            showNoticesDialog(noticeData);
         }
-
         UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
         DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
         defaultGymDialog.setCancelable(true);
@@ -575,7 +462,7 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onConfirmClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
-                showNoticesDialog(noticeDatas);
+                showNoticesDialog(noticeData);
             }
         });
     }
@@ -703,14 +590,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void onShoppingDishAdded(Food foodData) {
-    }
-
-    @Override
-    public void onShoppingDishRemove(Food foodData) {
-    }
-
-    @Override
     protected boolean isEventTarget() {
         return true;
     }
@@ -763,8 +642,6 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         }
         return true;
     }
-
-
 
 
     public void onEvent(BuyCardMessage message) {
@@ -856,10 +733,10 @@ public class LikingHomeActivity extends BaseActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
-    public void onEvent(LikingHomeActivityMessage message){
+    public void onEvent(LikingHomeActivityMessage message) {
         switch (message.what) {
             case LikingHomeActivityMessage.SHOW_PUSH_DIALOG:
-                mPresenter.showPushDialog();
+                mLikingHomePresenter.showPushDialog();
                 break;
         }
     }

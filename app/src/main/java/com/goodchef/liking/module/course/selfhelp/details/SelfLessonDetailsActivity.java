@@ -28,11 +28,16 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
 
     public static final String KEY_SELF_LESSON_DETAILS = "selflessondetails";
 
-    @BindView(R.id.self_lesson_details_shop_image) HImageView mShopImageView;
-    @BindView(R.id.courses_time) TextView mCoursesTimeTextView;//时间
-    @BindView(R.id.rating_courses) RatingBar mRatingBar;//强度
-    @BindView(R.id.courses_tags) TextView mCoursesTags;//标签
-    @BindView(R.id.courses_introduce) TextView mCoursesIntroduce;//介绍
+    @BindView(R.id.self_lesson_details_shop_image)
+    HImageView mShopImageView;
+    @BindView(R.id.courses_time)
+    TextView mCoursesTimeTextView;//时间
+    @BindView(R.id.rating_courses)
+    RatingBar mRatingBar;//强度
+    @BindView(R.id.courses_tags)
+    TextView mCoursesTags;//标签
+    @BindView(R.id.courses_introduce)
+    TextView mCoursesIntroduce;//介绍
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +62,9 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
     }
 
     private void initData() {
-        if (getIntent() != null){
-            SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData)getIntent().getSerializableExtra(KEY_SELF_LESSON_DETAILS);
-            if (coursesData != null){
+        if (getIntent() != null) {
+            SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData = (SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData) getIntent().getSerializableExtra(KEY_SELF_LESSON_DETAILS);
+            if (coursesData != null) {
                 setDetailsData(coursesData);
             }
         }
@@ -75,6 +80,9 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
      * @param coursesData
      */
     private void setDetailsData(SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData coursesData) {
+        if (coursesData == null) {
+            return;
+        }
         setTitle(coursesData.getName());
         List<SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData.ImgData> coursesImageList = coursesData.getImg();
         if (coursesImageList != null && coursesImageList.size() > 0) {
@@ -86,15 +94,15 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         String duration = null;
         try {
             duration = Integer.parseInt(coursesData.getVideoDuration()) / 60 + getString(R.string.min);
-        }catch (Exception e){
+        } catch (Exception e) {
             duration = "";
         }
         mCoursesTimeTextView.setText(duration);
 //        mCoursesApplianceTextView.setText(getAppliances(coursesData.getEquipment()));
         String tags = getTags(coursesData.getTags());
-        if(TextUtils.isEmpty(tags)){
+        if (TextUtils.isEmpty(tags)) {
             mCoursesTags.setVisibility(View.GONE);
-        }else {
+        } else {
             mCoursesTags.setText(tags);
         }
         mCoursesIntroduce.setText(coursesData.getDesc());
@@ -104,18 +112,18 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         }
     }
 
-    private  String getAppliances(List<String> appliances){
+    private String getAppliances(List<String> appliances) {
         StringBuilder sb = new StringBuilder();
-        for (String equipment:appliances){
+        for (String equipment : appliances) {
             sb.append(equipment);
             sb.append(" ");
         }
         return sb.toString();
     }
 
-    private String getTags(List<String> tags){
+    private String getTags(List<String> tags) {
         StringBuilder sb = new StringBuilder();
-        for (String equipment:tags){
+        for (String equipment : tags) {
             sb.append("#");
             sb.append(equipment);
             sb.append(" ");

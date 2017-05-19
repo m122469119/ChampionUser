@@ -240,9 +240,14 @@ public class LiKingApi {
      * @param callback    RequestCallback
      */
     public static void getHomeData(String token, String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId, RequestCallback<CoursesResult> callback) {
-        RequestParams params = getCommonRequestParams().append("longitude", longitude)
-                .append("latitude", latitude).append(KEY_CITY_ID, cityId)
-                .append(KEY_DISTRICT_ID, districtId).append(KEY_PAGE, currentPage).append("gym_id", gymId);
+        RequestParams params = getCommonRequestParams()
+                .append("longitude", longitude)
+                .append("latitude", latitude)
+                .append(KEY_CITY_ID, cityId)
+                .append(KEY_DISTRICT_ID, districtId)
+                .append(KEY_PAGE, currentPage)
+                .append("gym_id", gymId);
+
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
         }

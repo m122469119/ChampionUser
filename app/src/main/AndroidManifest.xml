@@ -65,7 +65,7 @@
             android:enabled="true" />
         <!-- 首页 -->
         <activity
-            android:name=".activity.LikingHomeActivity"
+            android:name=".module.home.LikingHomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseThemeMain" />

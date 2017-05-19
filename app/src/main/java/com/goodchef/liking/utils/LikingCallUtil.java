@@ -8,7 +8,7 @@ import android.view.View;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.dialog.PhoneDialog;
 import com.goodchef.liking.module.data.local.LikingPreference;
 

@@ -14,7 +14,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ArenaTagAdapter;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.mvp.presenter.GymDetailsPresenter;

@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.home.myfragment;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -28,7 +28,7 @@ import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.activity.BodyTestDataActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.activity.EveryDaySportActivity;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.brace.MyBraceletActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.userinfo.MyInfoActivity;

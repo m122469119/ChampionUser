@@ -24,7 +24,7 @@ import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GymCoursesResult;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.mvp.presenter.GymCoursesPresenter;

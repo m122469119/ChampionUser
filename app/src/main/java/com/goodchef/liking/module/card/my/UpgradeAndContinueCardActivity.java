@@ -13,7 +13,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.module.data.local.LikingPreference;

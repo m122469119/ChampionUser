@@ -33,7 +33,7 @@ import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
 import com.goodchef.liking.dialog.HeartRateDialog;
 import com.goodchef.liking.dialog.ShakeSynchronizationDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
-import com.goodchef.liking.fragment.LikingMyFragment;
+import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.data.SportData;
 import com.goodchef.liking.mvp.presenter.SportPresenter;

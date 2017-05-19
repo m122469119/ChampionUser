@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.card.buy;
+package com.goodchef.liking.module.home.buycardfragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
@@ -37,8 +38,10 @@ import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.mvp.presenter.CardListPresenter;
+import com.goodchef.liking.mvp.view.CardListView;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -46,29 +49,31 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created on 16/5/20.
  *
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingBuyCardFragment extends BaseFragment implements BuyCardContract.CardListView {
+public class LikingBuyCardFragment extends BaseFragment implements CardListView {
     public static final String KEY_CARD_CATEGORY = "key_card_category";
     public static final String KEY_CATEGORY_ID = "key_category_id";
     public static final String KEY_BUY_TYPE = "key_buy_type";
 
     private BuyCardAdapter mBuyCardAdapter;
-    private BuyCardContract.CardListPresenter mCardListPresenter;
+    private CardListPresenter mCardListPresenter;
     private View mHeadView;
     private static final int TYPE_BUY = 1;
-
-    @BindView(R.id.card_state_view) LikingStateView mStateView;
-    @BindView(R.id.buy_card_recyclerView) PullToRefreshRecyclerView mRecyclerView;
-    private View mainView = null;
     private TextView mCityOpenTextView;//当前城市是否开通
+    private String longitude = "0";
+    private String latitude = "0";
+    private String cityId = "310100";
+    private String districtId = "310104";
+    private GymData mGymData;
+
+    private LikingStateView mStateView;
+    private PullToRefreshRecyclerView mRecyclerView;
+    private View mainView = null;
 
     @Nullable
     @Override
@@ -83,13 +88,15 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
             }
         } else {
             mainView = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
-            ButterKnife.bind(this, mainView);
-            initViews();
+            initViews(mainView);
         }
+
         return mainView;
     }
 
-    protected void initViews() {
+    protected void initViews(View view) {
+        mStateView = (LikingStateView) view.findViewById(R.id.card_state_view);
+        mRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.buy_card_recyclerView);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -103,19 +110,30 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
         sendBuyCardListRequest();
     }
 
+    private void getLocationData() {
+        LocationData locationData = LikingPreference.getLocationData();
+        if (locationData != null) {
+            longitude = locationData.getLongitude() + "";
+            latitude = locationData.getLatitude() + "";
+            cityId = locationData.getCityId();
+            districtId = locationData.getDistrictId();
+        }
+    }
+
+
     private void setItemClickListener() {
         mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
                 if (card != null) {
-                    if (!StringUtils.isEmpty(mCardListPresenter.getGymId())) {
+                    if (!StringUtils.isEmpty(mGymData.getGymId())) {
                         UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
                         Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
                         intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
                         intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
                         intent.putExtra(KEY_BUY_TYPE, 1);
-                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mCardListPresenter.getGymId());
+                        intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGymData.getGymId());
                         startActivity(intent);
                     }
                 }
@@ -165,10 +183,13 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
             if (mStateView != null) {
                 mStateView.setState(StateView.State.LOADING);
             }
-            if(mCardListPresenter == null) {
-                mCardListPresenter = new BuyCardContract.CardListPresenter(getActivity(), this);
+            getLocationData();
+            mCardListPresenter = new CardListPresenter(getActivity(), this);
+            if (longitude.equals("0.0") || latitude.equals("0.0")) {
+                mCardListPresenter.getCardList("0", "0", cityId, districtId, LikingHomeActivity.gymId, TYPE_BUY);
+            } else {
+                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, LikingHomeActivity.gymId, TYPE_BUY);
             }
-            mCardListPresenter.getCardList(TYPE_BUY);
         }
     }
 
@@ -179,8 +200,7 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
                 return;
             }
             mStateView.setState(StateView.State.SUCCESS);
-            GymData mGymData = cardData.getGymData();
-            mCardListPresenter.setGymData(mGymData);
+            mGymData = cardData.getGymData();
             if (mGymData != null) {
                 CoursesResult.Courses.Gym gym = new CoursesResult.Courses.Gym();
                 gym.setGymId(mGymData.getGymId());
@@ -221,6 +241,10 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
     }
 
     public void onEvent(MainAddressChanged mainAddressChanged) {
+        latitude = mainAddressChanged.getLatitude() + "";
+        longitude = mainAddressChanged.getLongitude() + "";
+        cityId = mainAddressChanged.getCityId();
+        districtId = mainAddressChanged.getDistrictId();
         sendBuyCardListRequest();
     }
 
@@ -304,7 +328,8 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
     }
 
     @Override
-    public void changeStateView(StateView.State state) {
-        mStateView.setState(state);
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
+
 }
