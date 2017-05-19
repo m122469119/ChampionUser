@@ -46,6 +46,7 @@ android {
         def FALSE = "false"
         def appFlag = "\"LikingFit\""
         release {
+            debuggable true
             buildConfigField BOOLEAN, TEST_MODE, FALSE
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://app.likingfit.com\""
