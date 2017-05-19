@@ -17,7 +17,7 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.BuyCardAdapter;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;

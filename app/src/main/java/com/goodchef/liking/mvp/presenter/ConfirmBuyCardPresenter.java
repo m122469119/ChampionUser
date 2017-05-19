@@ -8,7 +8,7 @@ import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;

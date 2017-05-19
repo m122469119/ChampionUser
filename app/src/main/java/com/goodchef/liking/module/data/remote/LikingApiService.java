@@ -5,6 +5,7 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
@@ -261,7 +262,6 @@ public interface LikingApiService {
                                             @Field("longitude") String longitude,
                                             @Field("latitude") String latitude);
 
-
     @POST(Urls.USER_CHECK_UPDATES)
     Observable<CheckUpdateAppResult> getUpdateApp(@Path(PATH_VERSION) String version);
 
@@ -273,6 +273,14 @@ public interface LikingApiService {
     @POST(Urls.HOME_INDEX)
     Observable<CoursesResult> getHomeData(@Path(PATH_VERSION) String version,
                                           @QueryMap Map<String, Object> map);
+
+    @POST(Urls.CARD_CONFIRM)
+    Observable<ConfirmBuyCardResult> cardConfirm(@Path(PATH_VERSION) String version,
+                                                 @QueryMap Map<String, String> map);
+
+    @POST(Urls.CARD_SUBMIT_CARD)
+    Observable<SubmitPayResult> submitBuyCardData(@Path(PATH_VERSION) String version,
+                                                  @QueryMap Map<String, String> map);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -473,6 +481,16 @@ public interface LikingApiService {
          * 首页
          */
         public static final String HOME_INDEX = sVersion + "index/index";
+
+        /**
+         * 购卡确认
+         */
+        public static final String CARD_CONFIRM = sVersion + "card/confirm";
+
+        /**
+         * 买卡提交确认
+         */
+        public static final String CARD_SUBMIT_CARD = sVersion + "order/submit-card";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

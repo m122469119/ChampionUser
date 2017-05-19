@@ -10,7 +10,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;

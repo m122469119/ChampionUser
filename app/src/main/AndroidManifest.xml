@@ -137,7 +137,7 @@
             android:windowSoftInputMode="stateUnspecified|adjustPan" />
         <!-- 买卡确认页 -->
         <activity
-            android:name=".activity.BuyCardConfirmActivity"
+            android:name=".module.card.buy.confirm.BuyCardConfirmActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 我的私教课订单详情 -->
