@@ -43,7 +43,7 @@ import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.fragment.LikingMyFragment;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;

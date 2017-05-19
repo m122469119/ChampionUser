@@ -28,7 +28,7 @@ import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;

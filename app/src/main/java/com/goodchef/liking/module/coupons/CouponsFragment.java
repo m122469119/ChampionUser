@@ -14,7 +14,7 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BuyCardConfirmActivity;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
 import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;

@@ -15,7 +15,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.data.TimeLimitData;

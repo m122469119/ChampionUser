@@ -16,7 +16,7 @@ import com.goodchef.liking.activity.BuyCardConfirmActivity;
 import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.fragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
