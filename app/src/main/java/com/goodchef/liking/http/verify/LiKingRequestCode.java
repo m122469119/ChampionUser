@@ -49,4 +49,6 @@ public interface LiKingRequestCode {
     int HAS_OTHER_GYM_CARD=240001;
     /**场馆不存在*/
     int NO_GYM=240000;
+    /**该教练下无可约的私教课*/
+    int PRIVATE_COURSES_CONFIRM = 221004;
 }

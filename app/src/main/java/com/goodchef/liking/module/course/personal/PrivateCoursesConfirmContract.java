@@ -1,11 +1,14 @@
 package com.goodchef.liking.module.course.personal;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
@@ -16,6 +19,8 @@ import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.utils.LikingCallUtil;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created on 2017/05/16
@@ -62,8 +67,22 @@ public interface PrivateCoursesConfirmContract {
 
                         @Override
                         public void apiError(ApiException apiException) {
-                            super.apiError(apiException);
-                            mView.changeStateView(StateView.State.FAILED);
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.PRIVATE_COURSES_CONFIRM:
+                                    HBaseDialog.Builder builder = new HBaseDialog.Builder(mContext);
+                                    builder.setMessage(apiException.getErrorMessage());
+                                    builder.setPositiveButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            EventBus.getDefault().post(new CoursesErrorMessage());
+                                        }
+                                    });
+                                    builder.create().setCancelable(false);
+                                    builder.create().show();
+                                    break;
+                                default:
+                                    super.apiError(apiException);
+                            }
                         }
 
                         @Override
