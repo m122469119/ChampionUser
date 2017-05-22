@@ -1112,7 +1112,7 @@ public class LiKingApi {
      * 获取城市列表
      */
     public static void getCityList(RequestCallback<CityListResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CityListResult.class, getCommonRequestParams(), callback);
+        VolleyHttpRequestClient.doPost(UrlList.CITY_LIST, CityListResult.class, getCommonRequestParams(), callback);
     }
 
     public static void getMyConpons(int page, RequestCallback<CouponsPersonResult> callback) {

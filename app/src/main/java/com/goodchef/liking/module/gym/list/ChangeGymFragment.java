@@ -3,6 +3,7 @@ package com.goodchef.liking.module.gym.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,7 @@ public class ChangeGymFragment extends BaseFragment implements GymListContract.C
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                     mStateView.setState(StateView.State.FAILED);
                 } else {
-                    if (!StringUtils.isEmpty(mCheckGymPresenter.getSelectCityId())) {
+                    if (!StringUtils.isEmpty(mCheckGymPresenter.getCityId())) {
                         sendGymRequest();
                     }
                 }
@@ -98,7 +99,7 @@ public class ChangeGymFragment extends BaseFragment implements GymListContract.C
         }
         Bundle bundle = getArguments();
         if(bundle != null) {
-            mCheckGymPresenter.setSelectCityId(bundle.getString(LikingHomeActivity.KEY_SELECT_CITY_ID));
+            mCheckGymPresenter.setCityId(bundle.getString(LikingHomeActivity.KEY_SELECT_CITY_ID));
             mCheckGymPresenter.setGymId(bundle.getString(LikingLessonFragment.KEY_GYM_ID));
             mCheckGymPresenter.setTabIndex(bundle.getInt(LikingHomeActivity.KEY_TAB_INDEX, 0));
             mCheckGymPresenter.setIslocation(bundle.getBoolean(LikingHomeActivity.KEY_WHETHER_LOCATION));
@@ -261,7 +262,9 @@ public class ChangeGymFragment extends BaseFragment implements GymListContract.C
     }
 
     public void onEvent(RefreshChangeCityMessage message) {
-        mCheckGymPresenter.setGymId(message.getCityId());
+        Log.e("infos","CityId : " + message.getCityId() + ";" + "Longitude:" + message.getLongitude()
+        + "Latitude:" + message.getLatitude());
+        mCheckGymPresenter.setCityId(message.getCityId());
         mCheckGymPresenter.setLongitude(message.getLongitude());
         mCheckGymPresenter.setLatitude(message.getLatitude());
         sendGymRequest();

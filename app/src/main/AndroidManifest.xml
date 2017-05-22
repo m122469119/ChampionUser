@@ -102,7 +102,7 @@
             android:screenOrientation="portrait"/>
         <!--切换城市-->
         <activity
-            android:name=".activity.ChangeCityActivity"
+            android:name=".module.gym.changecity.ChangeCityActivity"
             android:screenOrientation="portrait"/>
         <!--我的信息-->
         <activity

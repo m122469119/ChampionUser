@@ -6,6 +6,7 @@ import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckGymListResult;
+import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
@@ -48,6 +49,12 @@ public class GymModel extends BaseModel {
         return LikingNewApi.getInstance()
                 .getCheckGymList(UrlList.sHostVersion, map)
                 .compose(RxUtils.<CheckGymListResult>applyHttpSchedulers());
+    }
+
+    public Observable<CityListResult> getCityList(){
+        return LikingNewApi.getInstance()
+                .getCityList(UrlList.sHostVersion)
+                .compose(RxUtils.<CityListResult>applyHttpSchedulers());
     }
 
     public LocationData getCurrLocation() {

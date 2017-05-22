@@ -31,7 +31,7 @@ public interface GymListContract {
 
     class CheckGymPresenter extends BasePresenter<CheckGymView> {
 
-        private String selectCityId;//选择的城市id
+        private String cityId;//选择的城市id
         private String gymId;//场馆id
         private int tabIndex;//从哪个位置切换过来的标志位，首页或者是买卡
         private boolean islocation;
@@ -54,10 +54,10 @@ public interface GymListContract {
          * 获取场馆列表
          */
         public void getGymList() {
-            if (StringUtils.isEmpty(selectCityId)) {
+            if (StringUtils.isEmpty(cityId)) {
                 return;
             }
-            mGymModel.getCheckGymList(Integer.parseInt(selectCityId), longitude, latitude)
+            mGymModel.getCheckGymList(Integer.parseInt(cityId), longitude, latitude)
                     .subscribe(new LikingBaseObserver<CheckGymListResult>(mContext, mView) {
                         @Override
                         public void onNext(CheckGymListResult result) {
@@ -106,12 +106,12 @@ public interface GymListContract {
             setLatitude(locationData.getLatitude());
         }
 
-        public String getSelectCityId() {
-            return selectCityId;
+        public String getCityId() {
+            return cityId;
         }
 
-        public void setSelectCityId(String selectCityId) {
-            this.selectCityId = selectCityId;
+        public void setCityId(String selectCityId) {
+            this.cityId = selectCityId;
         }
 
         public String getGymId() {

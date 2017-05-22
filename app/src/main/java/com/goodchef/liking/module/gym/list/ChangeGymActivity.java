@@ -15,7 +15,7 @@ import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.ChangeCityActivity;
+import com.goodchef.liking.module.gym.changecity.ChangeCityActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;

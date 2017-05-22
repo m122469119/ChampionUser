@@ -5,6 +5,7 @@ import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
@@ -282,6 +283,9 @@ public interface LikingApiService {
     Observable<SubmitPayResult> submitBuyCardData(@Path(PATH_VERSION) String version,
                                                   @QueryMap Map<String, String> map);
 
+    @POST(Urls.CITY_LIST)
+    Observable<CityListResult> getCityList(@Path(PATH_VERSION) String version);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -491,6 +495,11 @@ public interface LikingApiService {
          * 买卡提交确认
          */
         public static final String CARD_SUBMIT_CARD = sVersion + "order/submit-card";
+
+        /**
+         * 获取城市列表
+         */
+        public static final String CITY_LIST = sVersion +  "gym/open-city";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

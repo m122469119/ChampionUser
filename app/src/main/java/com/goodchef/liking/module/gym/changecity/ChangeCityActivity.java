@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.gym.changecity;
 
 import android.Manifest;
 import android.content.Context;
@@ -27,10 +27,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
-import com.goodchef.liking.fragment.ChangeCityFragment;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.mvp.presenter.ChangeCityPresenter;
-import com.goodchef.liking.mvp.view.ChangeCityView;
 import com.goodchef.liking.widgets.CityListWindow;
 import com.goodchef.liking.widgets.TimerEditView;
 
@@ -46,7 +43,7 @@ import butterknife.OnClick;
  * Time: 下午6:07
  * version 1.0.0
  */
-public class ChangeCityActivity extends AppBarActivity implements ChangeCityView {
+public class ChangeCityActivity extends AppBarActivity implements ChangeCityContract.ChangeCityView {
     private static final String TAG = "ChangeCityActivity";
 
     public static final String CITY_NAME = "city_name";
@@ -66,7 +63,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
     @BindView(R.id.search_city_layout)
     View mCityLayout;
 
-    ChangeCityPresenter mPresenter;
+    ChangeCityContract.ChangeCityPresenter mPresenter;
 
     String defaultCityName;
 
@@ -82,7 +79,7 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityView
         defaultCityName = intent.getStringExtra(CITY_NAME);
         ButterKnife.bind(this);
         setCouponsFragment();
-        mPresenter = new ChangeCityPresenter(this, this);
+        mPresenter = new ChangeCityContract.ChangeCityPresenter(this, this);
         initView();
         loadData();
     }
