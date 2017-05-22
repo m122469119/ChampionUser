@@ -27,7 +27,6 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.ChangeAddressActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.PrivateCoursesTrainItemAdapter;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
@@ -460,19 +459,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                 mCoupon = (CouponsResult.CouponData.Coupon) data.getSerializableExtra(CouponsActivity.INTENT_KEY_COUPONS_DATA);
                 if (mCoupon != null) {
                     handleCoupons(mCoupon);
-                }
-            } else if (requestCode == INTENT_REQUEST_CODE_CHANGE_PLACE) {
-                PlacesData placesData = (PlacesData) data.getSerializableExtra(ChangeAddressActivity.KEY_ADDRESS_DATA);
-                if (placesData != null) {
-                    mCoursesAddressTextView.setText(placesData.getAddress());
-                    // gymId = placesData.getGymId();
-                    for (PlacesData place : mPlacesDataList) {
-                        if (place.getGymId().equals(placesData.getGymId())) {
-                            place.setSelect(placesData.isSelect());
-                        } else {
-                            place.setSelect(false);
-                        }
-                    }
                 }
             }
         }

@@ -31,7 +31,6 @@ import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.GymListResult;
 import com.goodchef.liking.http.result.NutritionMealConfirmResult;

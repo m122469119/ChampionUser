@@ -181,9 +181,6 @@
             android:name=".module.train.MyTrainDataActivity"
             android:screenOrientation="portrait" />
         <!-- 团体课课程时间列表 -->
-        <activity
-            android:name=".activity.GymCoursesActivity"
-            android:screenOrientation="portrait" />
         <!-- 开门 -->
         <activity
             android:name=".module.opendoor.OpenTheDoorActivity"
@@ -241,10 +238,6 @@
             android:screenOrientation="portrait"
             />
 
-        <!-- 选择课程地址 -->
-        <activity
-            android:name=".activity.ChangeAddressActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 付费团体课确认订单 -->
         <activity

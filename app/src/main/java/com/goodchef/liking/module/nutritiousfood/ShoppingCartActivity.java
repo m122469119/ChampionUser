@@ -20,7 +20,6 @@ import com.goodchef.liking.eventmessages.DishesAliPayMessage;
 import com.goodchef.liking.eventmessages.DishesPayFalse;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.FreePayMessage;
-import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.data.Food;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.data.local.LikingPreference;

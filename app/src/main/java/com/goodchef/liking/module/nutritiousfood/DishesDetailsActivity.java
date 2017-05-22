@@ -16,7 +16,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.eventmessages.ClearCartMessage;
-import com.goodchef.liking.fragment.LikingNutrimealFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.FoodDetailsResult;
 import com.goodchef.liking.http.result.data.Food;
