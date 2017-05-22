@@ -24,7 +24,7 @@ import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.ArenaActivity;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
 import com.goodchef.liking.dialog.CancelOnClickListener;
 import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.DefaultGymDialog;

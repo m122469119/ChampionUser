@@ -23,7 +23,7 @@ import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.ArenaActivity;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
 import com.goodchef.liking.module.course.group.details.charge.GroupCoursesChargeConfirmActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;

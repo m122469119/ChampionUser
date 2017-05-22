@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.gym.details;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,8 +17,6 @@ import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.GymDetailsResult;
-import com.goodchef.liking.mvp.presenter.GymDetailsPresenter;
-import com.goodchef.liking.mvp.view.GymDetailsView;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -35,7 +33,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/6/15 下午1:54
  */
-public class ArenaActivity extends AppBarActivity implements GymDetailsView {
+public class ArenaActivity extends AppBarActivity implements GymDetailsContract.GymDetailsView {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     @BindView(R.id.arena_viewpager)
     InfiniteViewPager mImageViewPager;
@@ -53,7 +51,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     RecyclerView mRecyclerView;
     private BannerPagerAdapter mBannerPagerAdapter;
     private String announcement;
-    private GymDetailsPresenter mGymDetailsPresenter;
+    private GymDetailsContract.GymDetailsPresenter mGymDetailsPresenter;
     private String gymId;//场馆id
     private ArenaTagAdapter mArenaTagAdapter;
 
@@ -96,7 +94,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsView {
     }
 
     private void sendRequest() {
-        mGymDetailsPresenter = new GymDetailsPresenter(this, this);
+        mGymDetailsPresenter = new GymDetailsContract.GymDetailsPresenter(this, this);
         mGymDetailsPresenter.getGymDetails(gymId);
     }
 

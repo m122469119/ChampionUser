@@ -7,6 +7,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CityListResult;
+import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
@@ -51,10 +52,25 @@ public class GymModel extends BaseModel {
                 .compose(RxUtils.<CheckGymListResult>applyHttpSchedulers());
     }
 
+    /**
+     * 获取城市列表
+     * @return
+     */
     public Observable<CityListResult> getCityList(){
         return LikingNewApi.getInstance()
                 .getCityList(UrlList.sHostVersion)
                 .compose(RxUtils.<CityListResult>applyHttpSchedulers());
+    }
+
+    /**
+     * 场馆详情
+     * @param gymId
+     * @return
+     */
+    public Observable<GymDetailsResult> getGymDetails(String gymId) {
+        return LikingNewApi.getInstance()
+                .getGymDetails(UrlList.sHostVersion, gymId)
+                .compose(RxUtils.<GymDetailsResult>applyHttpSchedulers());
     }
 
     public LocationData getCurrLocation() {

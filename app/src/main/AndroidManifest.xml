@@ -128,7 +128,7 @@
         <!-- 查看所有门店 -->
         <!-- 查看场馆 -->
         <activity
-            android:name=".activity.ArenaActivity"
+            android:name=".module.gym.details.ArenaActivity"
             android:screenOrientation="portrait" />
         <!-- 私教课确认订单 -->
         <activity

@@ -13,6 +13,7 @@ import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
@@ -286,6 +287,10 @@ public interface LikingApiService {
     @POST(Urls.CITY_LIST)
     Observable<CityListResult> getCityList(@Path(PATH_VERSION) String version);
 
+    @POST(Urls.GYM_INFO)
+    Observable<GymDetailsResult> getGymDetails(@Path(PATH_VERSION) String version,
+                                               @Query("gym_id") String gymId);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -500,6 +505,12 @@ public interface LikingApiService {
          * 获取城市列表
          */
         public static final String CITY_LIST = sVersion +  "gym/open-city";
+
+        /**
+         * 场馆详情
+         */
+        public static final String GYM_INFO = sVersion +  "gym/info";
+
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
