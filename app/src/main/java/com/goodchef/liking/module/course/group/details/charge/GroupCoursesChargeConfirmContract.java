@@ -3,20 +3,18 @@ package com.goodchef.liking.module.course.group.details.charge;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
-
-import de.greenrobot.event.EventBus;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
  * Created on 2017/05/16
@@ -28,7 +26,7 @@ import de.greenrobot.event.EventBus;
 
 public interface GroupCoursesChargeConfirmContract {
 
-    interface ChargeGroupCoursesView extends BaseNetworkLoadView {
+    interface ChargeGroupCoursesView extends BaseStateView {
         void updateChargeGroupCoursesView(ChargeGroupConfirmResult.ChargeGroupConfirmData chargeGroupConfirmData);
 
         void updatePaySubmitView(PayResultData payResultData);
@@ -61,27 +59,31 @@ public interface GroupCoursesChargeConfirmContract {
                     .subscribe(new LikingBaseObserver<ChargeGroupConfirmResult>(mContext, mView) {
                         @Override
                         public void onNext(ChargeGroupConfirmResult result) {
-                            if (result.getCode() == 0) {
-                                mView.updateChargeGroupCoursesView(result.getData());
-                            } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_ERROR) {
-                                mView.updateBuyCoursesNotOnGym(result.getMessage());
-                            } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
-                                mView.updateErrorNoCard(result.getMessage());
-                            } else if (result.getCode() == LiKingRequestCode.LOGIN_TOKEN_INVALID) {
-                                mView.updateBuyCoursesErrorView();
-                                mView.showToast(result.getMessage());
-                                EventBus.getDefault().post(new LoginOutFialureMessage());
-                            } else {
-                                mView.showToast(result.getMessage());
-                                mView.updateBuyCoursesErrorView();
-                            }
+                            if (null == result) return;
+                            mView.updateChargeGroupCoursesView(result.getData());
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.BUY_COURSES_ERROR:
+                                    mView.updateBuyCoursesNotOnGym(apiException.getMessage());
+                                    break;
+                                case LiKingRequestCode.BUY_COURSES_NO_CARD:
+                                    mView.updateErrorNoCard(apiException.getMessage());
+                                    break;
+                                default:
+                                    super.apiError(apiException);
+                                    mView.updateBuyCoursesErrorView();
+                            }
+
                         }
 
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
                     });
         }
 
@@ -95,19 +97,21 @@ public interface GroupCoursesChargeConfirmContract {
         public void chargeGroupCoursesImmediately(String gymId, String scheduleId, String couponCode, String payType) {
 
             mCourseModel.chargeGroupCoursesImmediately(gymId, scheduleId, couponCode, payType)
-                    .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(SubmitPayResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updatePaySubmitView(result.getPayData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mView.updatePaySubmitView(result.getPayData());
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
+                        public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.BUY_COURSES_ERROR:
+                                    LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                default:
+                                    super.apiError(apiException);
+                            }
                         }
                     });
         }

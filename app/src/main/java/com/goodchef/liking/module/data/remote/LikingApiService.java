@@ -1,14 +1,22 @@
 package com.goodchef.liking.module.data.remote;
 
+import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
+import com.goodchef.liking.http.result.BodyHistoryResult;
+import com.goodchef.liking.http.result.BodyModelNavigationResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.CityListResult;
+import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyCardResult;
 import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
@@ -16,6 +24,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
@@ -242,6 +251,7 @@ public interface LikingApiService {
     @POST(Urls.PRIVATE_LESSON_DETAILS)
     Observable<PrivateCoursesResult> getPrivateCoursesDetails(@Path(PATH_VERSION) String version,
                                                               @QueryMap Map<String, String> map);
+
     @FormUrlEncoded
     @POST(Urls.GET_COUPON_DETAIL)
     Observable<CouponsDetailsResult> getCouponDetails(@Path(PATH_VERSION) String version,
@@ -257,6 +267,51 @@ public interface LikingApiService {
                                             @Field("coupon_code") String couponCode,
                                             @Field("longitude") String longitude,
                                             @Field("latitude") String latitude);
+
+    @POST(Urls.USER_CHECK_UPDATES)
+    Observable<CheckUpdateAppResult> getUpdateApp(@Path(PATH_VERSION) String version);
+
+
+    @POST(Urls.HOME_BANNER)
+    Observable<BannerResult> getBanner(@Path(PATH_VERSION) String version);
+
+
+    @POST(Urls.HOME_INDEX)
+    Observable<CoursesResult> getHomeData(@Path(PATH_VERSION) String version,
+                                          @QueryMap Map<String, Object> map);
+
+    @POST(Urls.CARD_CONFIRM)
+    Observable<ConfirmBuyCardResult> cardConfirm(@Path(PATH_VERSION) String version,
+                                                 @QueryMap Map<String, String> map);
+
+    @POST(Urls.CARD_SUBMIT_CARD)
+    Observable<SubmitPayResult> submitBuyCardData(@Path(PATH_VERSION) String version,
+                                                  @QueryMap Map<String, String> map);
+
+    @POST(Urls.CITY_LIST)
+    Observable<CityListResult> getCityList(@Path(PATH_VERSION) String version);
+
+    @POST(Urls.GYM_INFO)
+    Observable<GymDetailsResult> getGymDetails(@Path(PATH_VERSION) String version,
+                                               @Query("gym_id") String gymId);
+
+    @POST(Urls.USER_GET_BODY_LIST)
+    Observable<BodyHistoryResult> getHistoryData(@Path(PATH_VERSION) String version,
+                                                 @Query("page") int page);
+
+    @POST(Urls.USER_BODY_MODULES_HISTORY)
+    Observable<BodyModelNavigationResult> getBodyHistoryTitleList(@Path(PATH_VERSION) String version,
+                                                                  @Query(KEY_TOKEN) String token,
+                                                                  @Query("modules") String modules);
+
+    @POST(Urls.USER_BODY_COLUMN_HISTORY)
+    Observable<BodyAnalyzeHistoryResult> getBodyHistoryList(@Path(PATH_VERSION) String version,
+                                                            @Query(KEY_TOKEN) String token,
+                                                            @Query("column") String column);
+    @FormUrlEncoded
+    @POST(Urls.USER_GET_USER_INFO)
+    Observable<MyUserOtherInfoResult> getMyUserInfoData(@Path(PATH_VERSION) String version,
+                                                        @Field(KEY_TOKEN) String token);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -404,7 +459,6 @@ public interface LikingApiService {
         public static final String GET_USER_AUTHCODE = sVersion + "user/authcode";
 
         /**
-<<<<<<< Updated upstream
          * 付费团体课确认订单
          */
         public static final String ORDER_CHANGE_GROUP_CONFIRM = sVersion + "order/team-course-confirm";
@@ -434,8 +488,8 @@ public interface LikingApiService {
          */
         public static final String PRIVATE_LESSON_DETAILS = sVersion + "trainer/info";
 
-       /**
-        * 获取优惠券详情
+        /**
+         * 获取优惠券详情
          */
         public static final String GET_COUPON_DETAIL = sVersion + "coupon/get-coupon-detail";
 
@@ -444,17 +498,61 @@ public interface LikingApiService {
          */
         public static final String GET_COUPON_GYM = sVersion + "coupon/get-coupon-gym";
 
-//        /**同步时间戳*/
-//        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
-//        /**获取首页课程列表*/
-//        public static final String GET_COURSE_CATEGORY_LIST = sVersion + "course/course";
-//        /**获取课表*/
-//        public static final String COURSE_COURSE_SCHEDULE = sVersion + "course/course-schedule";
-//        /**课程详情*/
-//        public static final String COURSE_DETAILS = sVersion +  "course/course-detail";
-//        /**检测更新*/
-//        public static final String APP_UPDATE = "config/config";
-//        /**获取用户信息*/
-//        public static final String GET_USER_INFO = sVersion +  "user/info";
+        /**
+         * 检测更新APP
+         */
+        public static final String USER_CHECK_UPDATES = sVersion + "check-update/check-update";
+
+        /**
+         * 首页banner
+         */
+        public static final String HOME_BANNER = sVersion + "index/banner";
+
+        /**
+         * 首页
+         */
+        public static final String HOME_INDEX = sVersion + "index/index";
+
+        /**
+         * 购卡确认
+         */
+        public static final String CARD_CONFIRM = sVersion + "card/confirm";
+
+        /**
+         * 买卡提交确认
+         */
+        public static final String CARD_SUBMIT_CARD = sVersion + "order/submit-card";
+
+        /**
+         * 获取城市列表
+         */
+        public static final String CITY_LIST = sVersion + "gym/open-city";
+
+        /**
+         * 我的页面获取我的个人信息其他数据
+         */
+        public static final String USER_GET_USER_INFO = sVersion + "user/get-user-info";
+
+        /**
+         * 场馆详情
+         */
+        public static final String GYM_INFO = sVersion +  "gym/info";
+
+        /**
+         * 获取体测历史
+         */
+        public static final String USER_GET_BODY_LIST = sVersion + "user/get-body-list";
+
+        /**
+         * 获取历史页面顶部导航
+         */
+        public static final String USER_BODY_MODULES_HISTORY = sVersion + "user/body-modules-history";
+
+
+        /**
+         * 获取体测数据单个字段历史值
+         */
+        public static final String USER_BODY_COLUMN_HISTORY = sVersion + "user/body-column-history";
+
     }
 }

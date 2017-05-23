@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.gym.changecity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

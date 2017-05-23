@@ -3,6 +3,7 @@ package com.goodchef.liking.module.data.remote.rxobserver;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.http.result.LikingResult;
 
@@ -20,14 +21,14 @@ public abstract class ProgressObserver<T extends LikingResult> extends LikingBas
     private ProgressDialog mProgressDialog;
 
 
-    public ProgressObserver(Context context, String msg) {
-        super(context, null);
+    public ProgressObserver(Context context, String msg, BaseView view) {
+        super(context, view);
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(msg);
     }
 
-    public ProgressObserver(Context context, int resId) {
-        this(context, ResourceUtils.getString(resId));
+    public ProgressObserver(Context context, int resId, BaseView view) {
+        this(context, ResourceUtils.getString(resId), view);
     }
 
     @Override

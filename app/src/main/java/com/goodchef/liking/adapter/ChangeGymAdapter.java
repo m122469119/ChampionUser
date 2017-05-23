@@ -8,16 +8,19 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
+import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.ArenaActivity;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CheckGymListResult;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 说明:
@@ -41,57 +44,65 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
 
     class ChangeGymViewHolder extends BaseRecycleViewHolder<CheckGymListResult.CheckGymData.CheckGym> {
 
-        HImageView mHImageView;
-        TextView mGymNameTextView;
-        TextView mOperatingTimeTextView;
-        TextView mGymAddressTextView;
-        TextView mGymDistanceTextView;
-        CheckBox mCheckBox;
+//        HImageView mHImageView;
+//        TextView mGymNameTextView;
+//        TextView mOperatingTimeTextView;
+//        TextView mGymAddressTextView;
+//        TextView mGymDistanceTextView;
+//        CheckBox mCheckBox;
+
+        @BindView(R.id.gym_image)
+        HImageView mGymImage;
+        @BindView(R.id.gym_operating_time_TextView)
+        TextView mGymOperatingTimeTextView;
+        @BindView(R.id.gym_name)
+        TextView mGymName;
+        @BindView(R.id.gym_address)
+        TextView mGymAddress;
+        @BindView(R.id.gym_distance)
+        TextView mGymDistance;
+        @BindView(R.id.change_gym_checkBox)
+        CheckBox mChangeGymCheckBox;
 
         public ChangeGymViewHolder(View itemView) {
             super(itemView);
-            mHImageView = (HImageView) itemView.findViewById(R.id.gym_image);
-            mGymNameTextView = (TextView) itemView.findViewById(R.id.gym_name);
-            mOperatingTimeTextView = (TextView) itemView.findViewById(R.id.gym_operating_time_TextView);
-            mGymAddressTextView = (TextView) itemView.findViewById(R.id.gym_address);
-            mGymDistanceTextView = (TextView) itemView.findViewById(R.id.gym_distance);
-            mCheckBox = (CheckBox) itemView.findViewById(R.id.change_gym_checkBox);
-            mHImageView.setOnClickListener(gymImagClickListener);
+            ButterKnife.bind(this, itemView);
+            mGymImage.setOnClickListener(gymImagClickListener);
         }
 
         @Override
         public void bindViews(CheckGymListResult.CheckGymData.CheckGym object) {
             String imageUrl = object.getImg();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.getInstance().loadImage(mGymImage, imageUrl);
             }
 
             if (object.isSelect()) {
-                mCheckBox.setChecked(true);
+                mChangeGymCheckBox.setChecked(true);
             } else {
-                mCheckBox.setChecked(false);
+                mChangeGymCheckBox.setChecked(false);
             }
 
             if (object.isReCently() && object.islocation() && !StringUtils.isEmpty(object.getDistance())) {
-                mGymDistanceTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-                mGymDistanceTextView.setText(mContext.getString(R.string.distance_recently) + object.getDistance());
+                mGymDistance.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+                mGymDistance.setText(mContext.getString(R.string.distance_recently) + object.getDistance());
             } else {
-                mGymDistanceTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
-                mGymDistanceTextView.setText(object.getDistance());
+                mGymDistance.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
+                mGymDistance.setText(object.getDistance());
             }
 
-            if(!StringUtils.isEmpty(object.getGymTime())) {
-                mOperatingTimeTextView.setVisibility(View.VISIBLE);
-                mOperatingTimeTextView.setText(object.getGymTime());
+            if (!StringUtils.isEmpty(object.getGymTime())) {
+                mGymOperatingTimeTextView.setVisibility(View.VISIBLE);
+                mGymOperatingTimeTextView.setText(object.getGymTime());
             } else {
-                mOperatingTimeTextView.setText("");
-                mOperatingTimeTextView.setVisibility(View.INVISIBLE);
+                mGymOperatingTimeTextView.setText("");
+                mGymOperatingTimeTextView.setVisibility(View.INVISIBLE);
             }
 
-            mGymNameTextView.setText(object.getGymName());
-            mGymAddressTextView.setText(object.getGymAddress());
-            mGymNameTextView.setTag(object);
-            mHImageView.setTag(object);
+            mGymName.setText(object.getGymName());
+            mGymAddress.setText(object.getGymAddress());
+            mGymName.setTag(object);
+            mGymImage.setTag(object);
         }
     }
 

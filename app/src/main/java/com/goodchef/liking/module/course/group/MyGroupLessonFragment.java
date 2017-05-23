@@ -18,7 +18,7 @@ import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;

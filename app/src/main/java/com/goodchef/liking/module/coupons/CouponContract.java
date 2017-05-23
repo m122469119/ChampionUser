@@ -9,7 +9,7 @@ import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
@@ -42,37 +42,41 @@ public interface CouponContract {
             mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
                 @Override
                 public void onNext(LikingResult result) {
-                    if (LiKingVerifyUtils.isValid(mContext, result)) {
-                        mView.updateExchangeCode();
-                    } else {
-                        mView.showToast(result.getMessage());
-                    }
+                    mView.updateExchangeCode();
                 }
 
                 @Override
-                public void onError(ResponseThrowable e) {
+                public void apiError(ApiException apiException) {
                     mView.showToast(mContext.getString(R.string.exchange_fail));
+                }
+
+                @Override
+                public void networkError(Throwable throwable) {
+                    super.networkError(throwable);
                 }
             });
         }
 
         //获取我的优惠券
         public void getMyCoupons(int page) {
-            mCouponModel.getMyCoupons(page).subscribe(new PagerLoadingObserver<CouponsPersonResult>(mContext,   mView) {
+            mCouponModel.getMyCoupons(page).subscribe(new PagerLoadingObserver<CouponsPersonResult>(mContext, mView) {
                 @Override
                 public void onNext(CouponsPersonResult result) {
                     super.onNext(result);
-                    if (LiKingVerifyUtils.isValid(mContext, result)) {
-                        mView.updateMyCouponData(result.getData());
-                    } else {
-                        postEvent(new CouponErrorMessage());
-                        mView.showToast(result.getMessage());
-                    }
+                    if (result == null) return;
+                    mView.updateMyCouponData(result.getData());
                 }
 
                 @Override
-                public void onError(ResponseThrowable e) {
+                public void apiError(ApiException apiException) {
+                    super.apiError(apiException);
+                    postEvent(new CouponErrorMessage());
+                }
 
+                @Override
+                public void networkError(Throwable throwable) {
+                    super.networkError(throwable);
+                    postEvent(new CouponErrorMessage());
                 }
             });
         }
@@ -93,17 +97,23 @@ public interface CouponContract {
             mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new PagerLoadingObserver<CouponsResult>(mContext, mView) {
                 @Override
                 public void onNext(CouponsResult result) {
-                    if (LiKingVerifyUtils.isValid(mContext, result)) {
-                        mView.updateCouponData(result.getData());
-                    } else {
-                        postEvent(new CouponErrorMessage());
-                        mView.showToast(result.getMessage());
-                    }
+                    super.onNext(result);
+                    if (result == null) return;
+                    mView.updateCouponData(result.getData());
                 }
 
                 @Override
-                public void onError(ResponseThrowable e) {
+                public void apiError(ApiException apiException) {
+                    super.apiError(apiException);
+                    postEvent(new CouponErrorMessage());
                 }
+
+                @Override
+                public void networkError(Throwable throwable) {
+                    super.networkError(throwable);
+                    postEvent(new CouponErrorMessage());
+                }
+
             });
         }
 

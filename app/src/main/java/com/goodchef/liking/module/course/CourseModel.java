@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created on 2017/05/09
@@ -209,8 +207,7 @@ public class CourseModel {
         map.put("gym_id", gymId);
         return LikingNewApi.getInstance()
                 .chargeGroupCoursesConfirm(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<ChargeGroupConfirmResult>applyHttpSchedulers());
 
     }
 
@@ -230,8 +227,7 @@ public class CourseModel {
         map.put("pay_type", payType);
         return LikingNewApi.getInstance()
                 .chargeGroupCoursesImmediately(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<SubmitPayResult>applyHttpSchedulers());
 
     }
 
@@ -244,8 +240,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .orderPrivateCoursesConfirm(UrlList.sHostVersion, LikingPreference.getToken(), gymId, trainerId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<PrivateCoursesConfirmResult>applyHttpSchedulers());
     }
 
     /**
@@ -267,8 +262,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .submitPrivateCourses(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<SubmitPayResult>applyHttpSchedulers());
     }
 
     /**
@@ -281,8 +275,7 @@ public class CourseModel {
 
         return LikingNewApi.getInstance()
                 .orderCalculate(UrlList.sHostVersion, LikingPreference.getToken(), courseId, selectTimes)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<OrderCalculateResult>applyHttpSchedulers());
     }
 
     /***
@@ -299,7 +292,6 @@ public class CourseModel {
         }
         return LikingNewApi.getInstance()
                 .getPrivateCoursesDetails(UrlList.sHostVersion, map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtils.<PrivateCoursesResult>applyHttpSchedulers());
     }
 }

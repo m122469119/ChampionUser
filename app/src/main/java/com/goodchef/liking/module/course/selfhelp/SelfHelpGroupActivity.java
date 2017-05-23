@@ -24,12 +24,12 @@ import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.module.course.MyLessonActivity;
@@ -601,7 +601,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
 
     @Override
-    public void handleNetworkFailure() {
-        mLikingStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mLikingStateView.setState(state);
     }
 }

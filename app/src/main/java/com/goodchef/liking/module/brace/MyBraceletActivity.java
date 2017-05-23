@@ -25,7 +25,7 @@ import com.goodchef.liking.dialog.CancelOnClickListener;
 import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.UnBindDevicesDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
-import com.goodchef.liking.fragment.LikingMyFragment;
+import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 

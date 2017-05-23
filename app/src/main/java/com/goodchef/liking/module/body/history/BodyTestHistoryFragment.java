@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.body.history;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +16,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.activity.BodyTestDataActivity;
 import com.goodchef.liking.adapter.BodyTestHistoryAdapter;
 import com.goodchef.liking.http.result.BodyHistoryResult;
-import com.goodchef.liking.mvp.presenter.BodyHistoryPresenter;
-import com.goodchef.liking.mvp.view.BodyHistoryView;
 
 /**
  * 说明:
@@ -26,11 +24,11 @@ import com.goodchef.liking.mvp.view.BodyHistoryView;
  * version 1.0.0
  */
 
-public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements BodyHistoryView {
+public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements BodyTestHistoryContract.BodyHistoryView {
 
     private BodyTestHistoryAdapter mBodyTestHistoryAdapter;
 
-    private BodyHistoryPresenter mBodyHistoryPresenter;
+    private BodyTestHistoryContract.BodyHistoryPresenter mBodyHistoryPresenter;
 
     public static BodyTestHistoryFragment newInstance() {
         Bundle args = new Bundle();
@@ -46,9 +44,9 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
 
     private void sendRequest(int page) {
         if (mBodyHistoryPresenter == null) {
-            mBodyHistoryPresenter = new BodyHistoryPresenter(getActivity(), this);
+            mBodyHistoryPresenter = new BodyTestHistoryContract.BodyHistoryPresenter(getActivity(), this);
         }
-        mBodyHistoryPresenter.getHistoryData(page, BodyTestHistoryFragment.this);
+        mBodyHistoryPresenter.getHistoryData(page, this);
     }
 
     @Override
@@ -111,7 +109,7 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
     }
 
     @Override
-    public void handleNetworkFailure() {
+    public void changeStateView(StateView.State state) {
 
     }
 }

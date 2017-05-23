@@ -3,13 +3,13 @@ package com.goodchef.liking.module.writeuserinfo;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public interface CompleteUserInfoContract {
 
-    interface CompleteUserInfoView extends BaseNetworkLoadView {
+    interface CompleteUserInfoView extends BaseStateView {
         void updateUploadImage(UserImageResult.UserImageData userImageData);
 
         void uploadImageError();
@@ -46,21 +46,22 @@ public interface CompleteUserInfoContract {
         //上传头像
         public void uploadImage(String img) {
             mCompleteUserInfoModel.uploadUserImage(img)
-                    .subscribe(new ProgressObserver<UserImageResult>(mContext, R.string.loading_upload) {
+                    .subscribe(new ProgressObserver<UserImageResult>(mContext, R.string.loading_upload, mView) {
                         @Override
                         public void onNext(UserImageResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateUploadImage(result.getData());
-                            } else {
-                                mView.uploadImageError();
-                            }
+                            if(result == null) return;
+                            mView.updateUploadImage(result.getData());
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            mView.uploadImageError();
                         }
 
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
                     });
         }
 
@@ -69,17 +70,15 @@ public interface CompleteUserInfoContract {
                     .subscribe(new LikingBaseObserver<UserImageResult>(mContext, mView) {
                         @Override
                         public void onNext(UserImageResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateUploadImage(result.getData());
-                            } else {
-                                mView.uploadImageError();
-                            }
+                            if(result == null) return;
+                            mView.updateUploadImage(result.getData());
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
+                        public void apiError(ApiException apiException) {
+                            mView.uploadImageError();
                         }
+
                     });
         }
 
@@ -88,40 +87,36 @@ public interface CompleteUserInfoContract {
             mCompleteUserInfoModel.updateUserInfo(name, avatar, gender, birthday, weight, height)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateUserInfo();
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            mView.updateUserInfo();
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void networkError(Throwable throwable) {
+                            mView.changeStateView(StateView.State.FAILED);
                         }
                     });
         }
 
         public void getUserInfo() {
             mCompleteUserInfoModel.getUserInfo()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
                     .subscribe(new LikingBaseObserver<UserInfoResult>(mContext, mView) {
                         @Override
                         public void onNext(UserInfoResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateGetUserInfoView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if(result == null) return;
+                            mView.updateGetUserInfoView(result.getData());
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            mView.changeStateView(StateView.State.FAILED);
                         }
 
                     });

@@ -19,12 +19,12 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.PayResultData;
@@ -161,8 +161,8 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
     @OnClick({R.id.layout_coupons_courses, R.id.layout_alipay, R.id.layout_wechat, R.id.immediately_buy_btn})

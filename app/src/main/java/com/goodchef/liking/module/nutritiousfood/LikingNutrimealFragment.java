@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.nutritiousfood;
 
 import android.view.LayoutInflater;
 import android.view.View;

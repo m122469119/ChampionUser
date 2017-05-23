@@ -3,16 +3,17 @@ package com.goodchef.liking.module.course.group.details;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
-import com.goodchef.liking.module.course.CourseModel;
+import com.goodchef.liking.module.data.remote.ApiException;
+import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
  * Created on 2017/05/10
@@ -24,7 +25,7 @@ import com.goodchef.liking.module.course.CourseModel;
 
 public interface TeamCourseDetailsContract {
 
-    interface GroupCourserDetailsView extends BaseNetworkLoadView {
+    interface GroupCourserDetailsView extends BaseStateView {
         void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData);
 
         void updateOrderGroupCourses();
@@ -62,23 +63,27 @@ public interface TeamCourseDetailsContract {
                     .subscribe(new LikingBaseObserver<GroupCoursesResult>(mContext, mView) {
                         @Override
                         public void onNext(GroupCoursesResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                GroupCoursesResult.GroupLessonData data = result.getGroupLessonData();
-                                if(data != null) {
-                                    setQuota(data.getQuota());
-                                    setScheduleType(data.getScheduleType());
-                                    setIsFree(data.getIsFree());
-                                    setPrice(data.getPrice());
-                                }
-                                mView.updateGroupLessonDetailsView(data);
-                            } else {
-                                mView.showToast(result.getMessage());
+                            if(null == result) return;
+                            GroupCoursesResult.GroupLessonData data = result.getGroupLessonData();
+                            if(data != null) {
+                                setQuota(data.getQuota());
+                                setScheduleType(data.getScheduleType());
+                                setIsFree(data.getIsFree());
+                                setPrice(data.getPrice());
                             }
+                            mView.updateGroupLessonDetailsView(data);
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
                         }
                     });
         }
@@ -91,21 +96,24 @@ public interface TeamCourseDetailsContract {
         public void orderGroupCourses(String gymId) {
 
             mCourseModel.orderGroupCourses(gymId, scheduleId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateOrderGroupCourses();
-                            } else if (result.getCode() == LiKingRequestCode.BUY_COURSES_NO_CARD) {
-                                mView.updateErrorNoCard(result.getMessage());
-                            } else if (result.getCode() != LiKingRequestCode.BUY_COURSES_ERROR) {
-                                mView.showToast(result.getMessage());
-                            }
+                            mView.updateOrderGroupCourses();
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
+                        public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.BUY_COURSES_NO_CARD:
+                                    mView.updateErrorNoCard(apiException.getMessage());
+                                    break;
+                                case LiKingRequestCode.BUY_COURSES_ERROR:
+                                    LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                    break;
+                                default:
+                                    super.apiError(apiException);
+                            }
                         }
 
                     });
@@ -116,19 +124,10 @@ public interface TeamCourseDetailsContract {
          */
         public void sendCancelCoursesRequest() {
             mCourseModel.sendCancelCoursesRequest(orderId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data) {
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
-                        }
-
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateCancelOrderView();
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            mView.updateCancelOrderView();
                         }
                     });
         }

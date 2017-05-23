@@ -240,9 +240,14 @@ public class LiKingApi {
      * @param callback    RequestCallback
      */
     public static void getHomeData(String token, String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId, RequestCallback<CoursesResult> callback) {
-        RequestParams params = getCommonRequestParams().append("longitude", longitude)
-                .append("latitude", latitude).append(KEY_CITY_ID, cityId)
-                .append(KEY_DISTRICT_ID, districtId).append(KEY_PAGE, currentPage).append("gym_id", gymId);
+        RequestParams params = getCommonRequestParams()
+                .append("longitude", longitude)
+                .append("latitude", latitude)
+                .append(KEY_CITY_ID, cityId)
+                .append(KEY_DISTRICT_ID, districtId)
+                .append(KEY_PAGE, currentPage)
+                .append("gym_id", gymId);
+
         if (!TextUtils.isEmpty(token)) {
             params.append(KEY_TOKEN, token);
         }
@@ -1107,7 +1112,7 @@ public class LiKingApi {
      * 获取城市列表
      */
     public static void getCityList(RequestCallback<CityListResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.CARD_LIST, CityListResult.class, getCommonRequestParams(), callback);
+        VolleyHttpRequestClient.doPost(UrlList.CITY_LIST, CityListResult.class, getCommonRequestParams(), callback);
     }
 
     public static void getMyConpons(int page, RequestCallback<CouponsPersonResult> callback) {

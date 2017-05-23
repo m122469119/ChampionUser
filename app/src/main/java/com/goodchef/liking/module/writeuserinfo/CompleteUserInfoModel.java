@@ -81,6 +81,6 @@ public class CompleteUserInfoModel extends BaseModel {
      * @return Observable<UserInfoResult>
      */
     public Observable<UserInfoResult> getUserInfo() {
-        return LikingNewApi.getInstance().getUserInfo(UrlList.sHostVersion, LikingPreference.getToken());
+        return LikingNewApi.getInstance().getUserInfo(UrlList.sHostVersion, LikingPreference.getToken()).compose(RxUtils.<UserInfoResult>applyHttpSchedulers());
     }
 }

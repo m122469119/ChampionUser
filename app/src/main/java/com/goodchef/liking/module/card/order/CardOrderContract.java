@@ -6,9 +6,9 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.data.OrderCardData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.card.CardModel;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.module.card.CardModel;
+
 
 import java.util.List;
 
@@ -39,12 +39,9 @@ public interface CardOrderContract {
                         @Override
                         public void onNext(OrderCardListResult result) {
                             super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                List<OrderCardData> listData = result.getData().getOrderCardList();
-                                mView.updateCardOrderListView(listData);
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if(null == result) return;
+                            List<OrderCardData> listData = result.getData().getOrderCardList();
+                            mView.updateCardOrderListView(listData);
                         }
                     });
         }

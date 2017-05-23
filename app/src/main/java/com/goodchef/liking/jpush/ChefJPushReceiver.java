@@ -15,7 +15,7 @@ import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.http.result.data.AnnouncementDirect;
 import com.goodchef.liking.module.data.local.LikingPreference;
@@ -299,7 +299,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     announcement.getData().getGymName(),
                     announcement.getData().getGymContent(),
                     resultPendingIntent);
-        } else if (AppStatusUtils.getTopActivityClass(context).equals("com.goodchef.liking.activity.LikingHomeActivity")) {
+        } else if (AppStatusUtils.getTopActivityClass(context).equals("com.goodchef.liking.module.home.LikingHomeActivity")) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_PUSH_NOTICE_RECEIVED);

@@ -20,7 +20,7 @@ import com.goodchef.liking.adapter.TrainItemAdapter;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.ShareData;
@@ -242,8 +242,8 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mLikingStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mLikingStateView.setState(state);
     }
 
     @Override

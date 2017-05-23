@@ -10,7 +10,6 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.joinus.JoinModel;
 
@@ -76,19 +75,10 @@ public interface ContactJoinContract {
                 return;
             }
             mJoinModel.joinAppLy(UrlList.sHostVersion, name, phone, city, 0)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {
-                            if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
-                                mView.updateContactJoinContractView();
-                            } else {
-                                mView.showToast(likingResult.getMessage());
-                            }
-                        }
-
-                        @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-
+                            mView.updateContactJoinContractView();
                         }
 
                     });

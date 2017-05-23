@@ -3,11 +3,11 @@ package com.goodchef.liking.module.course.personal;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
@@ -20,7 +20,7 @@ import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 public interface PrivateCoursesDetailsContract {
 
-    interface PrivateCoursesDetailsView extends BaseNetworkLoadView {
+    interface PrivateCoursesDetailsView extends BaseStateView {
         void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData);
     }
 
@@ -43,18 +43,19 @@ public interface PrivateCoursesDetailsContract {
                     .subscribe(new LikingBaseObserver<PrivateCoursesResult>(mContext, mView) {
                         @Override
                         public void onNext(PrivateCoursesResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mView.updatePrivateCoursesDetailsView(result.getPrivateCoursesData());
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
-                            mView.handleNetworkFailure();
+                        public void apiError(ApiException apiException) {
+                            mView.changeStateView(StateView.State.FAILED);
                         }
 
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
                     });
         }
     }

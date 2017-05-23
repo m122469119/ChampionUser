@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.gym.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,10 +15,11 @@ import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
+import com.goodchef.liking.module.gym.changecity.ChangeCityActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
-import com.goodchef.liking.module.gym.list.ChangeGymFragment;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.module.data.local.LikingPreference;

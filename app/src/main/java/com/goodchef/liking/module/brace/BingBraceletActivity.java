@@ -20,14 +20,13 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleService;
-import com.goodchef.liking.fragment.LikingMyFragment;
+import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.widgets.RoundImageView;
 import com.goodchef.liking.widgets.WhewView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * 说明:绑定手环

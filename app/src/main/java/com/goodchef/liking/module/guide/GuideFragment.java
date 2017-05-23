@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.NumberConstantUtil;
 
 import butterknife.BindView;

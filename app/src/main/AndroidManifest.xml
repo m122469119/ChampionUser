@@ -65,7 +65,7 @@
             android:enabled="true" />
         <!-- 首页 -->
         <activity
-            android:name=".activity.LikingHomeActivity"
+            android:name=".module.home.LikingHomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseThemeMain" />
@@ -102,7 +102,7 @@
             android:screenOrientation="portrait"/>
         <!--切换城市-->
         <activity
-            android:name=".activity.ChangeCityActivity"
+            android:name=".module.gym.changecity.ChangeCityActivity"
             android:screenOrientation="portrait"/>
         <!--我的信息-->
         <activity
@@ -128,7 +128,7 @@
         <!-- 查看所有门店 -->
         <!-- 查看场馆 -->
         <activity
-            android:name=".activity.ArenaActivity"
+            android:name=".module.gym.details.ArenaActivity"
             android:screenOrientation="portrait" />
         <!-- 私教课确认订单 -->
         <activity
@@ -137,7 +137,7 @@
             android:windowSoftInputMode="stateUnspecified|adjustPan" />
         <!-- 买卡确认页 -->
         <activity
-            android:name=".activity.BuyCardConfirmActivity"
+            android:name=".module.card.buy.confirm.BuyCardConfirmActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 我的私教课订单详情 -->
@@ -181,9 +181,6 @@
             android:name=".module.train.MyTrainDataActivity"
             android:screenOrientation="portrait" />
         <!-- 团体课课程时间列表 -->
-        <activity
-            android:name=".activity.GymCoursesActivity"
-            android:screenOrientation="portrait" />
         <!-- 开门 -->
         <activity
             android:name=".module.opendoor.OpenTheDoorActivity"
@@ -241,10 +238,6 @@
             android:screenOrientation="portrait"
             />
 
-        <!-- 选择课程地址 -->
-        <activity
-            android:name=".activity.ChangeAddressActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 付费团体课确认订单 -->
         <activity
@@ -253,7 +246,7 @@
 
         <!-- 切换场馆 -->
         <activity
-            android:name=".activity.ChangeGymActivity"
+            android:name=".module.gym.list.ChangeGymActivity"
             android:screenOrientation="portrait" />
 
         <!-- 自助团体课 -->
@@ -275,7 +268,7 @@
 
         <!-- 体测历史 -->
         <activity
-            android:name=".activity.BodyTestHistoryActivity"
+            android:name=".module.body.history.BodyTestHistoryActivity"
             android:screenOrientation="portrait" />
 
         <!-- 体测数据 -->
@@ -285,7 +278,7 @@
 
         <!-- 体测数据图 -->
         <activity
-            android:name=".activity.BodyAnalyzeChartActivity"
+            android:name=".module.body.analyze.BodyAnalyzeChartActivity"
             android:screenOrientation="portrait" />
 
         <!-- 蓝牙帮助界面 -->

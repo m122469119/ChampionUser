@@ -16,7 +16,7 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.guide.GuideActivity;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;

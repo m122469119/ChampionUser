@@ -5,6 +5,7 @@ import com.goodchef.liking.http.result.CouponsCities;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.module.data.remote.RxUtils;
 
 import io.reactivex.Observable;
 
@@ -29,6 +30,7 @@ public class CouponsGymModel {
         if (locationData == null) {
             locationData = new LocationData();
         }
-        return LikingNewApi.getInstance().getCouponsGym(UrlList.sHostVersion, page, couponCode, locationData.getLongitude(), locationData.getLatitude());
+        return LikingNewApi.getInstance().getCouponsGym(UrlList.sHostVersion, page, couponCode, locationData.getLongitude(), locationData.getLatitude())
+                .compose(RxUtils.<CouponsCities>applyHttpSchedulers());
     }
 }

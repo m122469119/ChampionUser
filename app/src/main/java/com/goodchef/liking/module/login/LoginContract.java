@@ -54,7 +54,7 @@ class LoginContract {
                             return mLoginModel.getVerificationCode(s);
                         }
                     })
-                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(VerificationCodeResult result) {
                             mView.updateVerificationCodeView(result.getVerificationCodeData());
@@ -134,23 +134,15 @@ class LoginContract {
                     })
 
 
-                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data) {
+                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(UserLoginResult value) {
+                            if(value == null) return;
                             UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
                             if (userLoginData != null) {
+                                mLoginModel.saveLoginUserInfo(userLoginData);
                                 mView.updateLoginView(value.getUserLoginData());
                             }
-                        }
-
-                        @Override
-                        public void networkError(Throwable throwable) {
-                            super.networkError(throwable);
-                        }
-
-                        @Override
-                        public void apiError(ApiException apiException) {
-                            super.apiError(apiException);
                         }
                     });
         }

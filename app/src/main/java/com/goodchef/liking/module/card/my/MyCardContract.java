@@ -3,14 +3,12 @@ package com.goodchef.liking.module.card.my;
 import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
-import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
+import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.MyCardResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.CardModel;
 import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * 说明:
@@ -20,8 +18,9 @@ import io.reactivex.functions.Consumer;
 
 public interface MyCardContract {
 
-    interface MyCardView extends BaseNetworkLoadView {
+    interface MyCardView extends BaseStateView {
         void updateMyCardView(MyCardResult.MyCardData myCardData);
+
     }
 
     class MyCardPresenter extends BasePresenter<MyCardView> {
@@ -35,31 +34,25 @@ public interface MyCardContract {
 
         public void sendMyCardRequest() {
             mCardModel.getMyCard()
-                    .doOnNext(new Consumer<MyCardResult>() {
-                        @Override
-                        public void accept(MyCardResult myCardResult) throws Exception {
-
-                        }
-                    })
                     .subscribe(new LikingBaseObserver<MyCardResult>(mContext, mView) {
                         @Override
                         public void onNext(MyCardResult result) {
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateMyCardView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
-                        }
-
-                        @Override
-                        public void networkError(Throwable throwable) {
-                            mView.handleNetworkFailure();
+                            if(result == null) return;
+                            mView.updateMyCardView(result.getData());
                         }
 
                         @Override
                         public void apiError(ApiException apiException) {
-                            mView.handleNetworkFailure();
+                            super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
                         }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
                     });
         }
     }

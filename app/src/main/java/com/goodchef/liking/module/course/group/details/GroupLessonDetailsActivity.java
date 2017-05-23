@@ -23,9 +23,9 @@ import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.ArenaActivity;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
 import com.goodchef.liking.module.course.group.details.charge.GroupCoursesChargeConfirmActivity;
-import com.goodchef.liking.activity.LikingHomeActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
@@ -35,7 +35,7 @@ import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.module.login.LoginActivity;
@@ -458,8 +458,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 
 

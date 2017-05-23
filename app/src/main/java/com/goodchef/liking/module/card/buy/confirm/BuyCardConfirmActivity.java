@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.card.buy.confirm;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,8 +28,8 @@ import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
@@ -37,9 +37,8 @@ import com.goodchef.liking.http.result.data.ConfirmCard;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.mvp.presenter.ConfirmBuyCardPresenter;
-import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.PayType;
@@ -49,12 +48,17 @@ import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 说明:确认购买卡
  * Author shaozucheng
  * Time:16/6/17 下午5:55
  */
-public class BuyCardConfirmActivity extends AppBarActivity implements View.OnClickListener, ConfirmBuyCardView {
+public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardConfirmContract.ConfirmBuyCardView {
+
     private static final int INTENT_REQUEST_CODE_COUPON = 101;
     private static final int BUY_TYPE_BUY = 1;//买卡
     private static final int BUY_TYPE_CONTINUE = 2;//续卡
@@ -62,30 +66,44 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     public static final String KEY_CARD_ID = "key_card_id";
 
 
-    private TextView mBuyCardNoticeTextView;//活动
-    private TextView mGymNameTextView;//场馆名称
-    private TextView mGymAddressTextView;//场馆地址
-    private TextView mPeriodOfValidityTextView;//有效期
-    private RecyclerView mCardRecyclerView;
+    @BindView(R.id.buy_card_notice)
+    TextView mBuyCardNoticeTextView;//活动
+    @BindView(R.id.gym_name)
+    TextView mGymNameTextView;//场馆名称
+    @BindView(R.id.gym_address)
+    TextView mGymAddressTextView;//场馆地址
+    @BindView(R.id.period_of_validity)
+    TextView mPeriodOfValidityTextView;//有效期
+    @BindView(R.id.card_recyclerView)
+    RecyclerView mCardRecyclerView;
 
-    private RelativeLayout mCouponsLayout;
-    private TextView mCouponsMoneyTextView;
+    @BindView(R.id.layout_coupons_courses)
+    RelativeLayout mCouponsLayout;
+    @BindView(R.id.select_coupon_title)
+    TextView mCouponsMoneyTextView;
 
     //支付相关
-    private RelativeLayout mAlipayLayout;
-    private RelativeLayout mWechatLayout;
-    private CheckBox mAlipayCheckBox;
-    private CheckBox mWechatCheckBox;
+    @BindView(R.id.layout_alipay)
+    RelativeLayout mAlipayLayout;
+    @BindView(R.id.layout_wechat)
+    RelativeLayout mWechatLayout;
+    @BindView(R.id.pay_type_alipay_checkBox)
+    CheckBox mAlipayCheckBox;
+    @BindView(R.id.pay_type_wechat_checkBox)
+    CheckBox mWechatCheckBox;
 
-    private LinearLayout mAgreeProtocolTextView;
-    private TextView mCardMoneyTextView;//
-    private TextView mImmediatelyBuyBtn;//立即支付
+    @BindView(R.id.buy_card_agree_protocol)
+    LinearLayout mAgreeProtocolTextView;
+    @BindView(R.id.card_money)
+    TextView mCardMoneyTextView;//
+    @BindView(R.id.immediately_buy_btn)
+    TextView mImmediatelyBuyBtn;//立即支付
 
     private String mCardName;
     private int mCategoryId;
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
     private String payType = "-1";//支付方式
-    private ConfirmBuyCardPresenter mConfirmBuyCardPresenter;
+    private BuyCardConfirmContract.ConfirmBuyCardPresenter mConfirmBuyCardPresenter;
 
     private CardRecyclerAdapter mCardRecyclerAdapter;
     private List<ConfirmCard> confirmCardList;
@@ -97,7 +115,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     private int buyType; //1 购卡  2 续卡  3 升级卡
     private String cardPrice;//卡的金额
 
-    private LikingStateView mStateView;
+    @BindView(R.id.buy_card_confirm_state_view)
+    LikingStateView mStateView;
     private String explain;
     private String gymId = "0";
     private String noticeActivity;//活动
@@ -110,9 +129,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_card_confirm);
+        ButterKnife.bind(this);
         initView();
-        setViewOnClickListener();
-
         setDefaultPayType();
         initData();
         initPayModule();
@@ -124,27 +142,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
     }
 
     private void initView() {
-        mStateView = (LikingStateView) findViewById(R.id.buy_card_confirm_state_view);
-        mBuyCardNoticeTextView = (TextView) findViewById(R.id.buy_card_notice);
-        mGymNameTextView = (TextView) findViewById(R.id.gym_name);
-        mGymAddressTextView = (TextView) findViewById(R.id.gym_address);
-
-        mPeriodOfValidityTextView = (TextView) findViewById(R.id.period_of_validity);
-
-        mCardRecyclerView = (RecyclerView) findViewById(R.id.card_recyclerView);
-
-        mCouponsLayout = (RelativeLayout) findViewById(R.id.layout_coupons_courses);
-        mCouponsMoneyTextView = (TextView) findViewById(R.id.select_coupon_title);
-
-        mAlipayLayout = (RelativeLayout) findViewById(R.id.layout_alipay);
-        mWechatLayout = (RelativeLayout) findViewById(R.id.layout_wechat);
-        mAlipayCheckBox = (CheckBox) findViewById(R.id.pay_type_alipay_checkBox);
-        mWechatCheckBox = (CheckBox) findViewById(R.id.pay_type_wechat_checkBox);
-
-        mAgreeProtocolTextView = (LinearLayout) findViewById(R.id.buy_card_agree_protocol);
-        mCardMoneyTextView = (TextView) findViewById(R.id.card_money);
-        mImmediatelyBuyBtn = (TextView) findViewById(R.id.immediately_buy_btn);
-
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -152,15 +149,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
                 sendConfirmCardRequest();
             }
         });
-    }
-
-    private void setViewOnClickListener() {
-        mAlipayLayout.setOnClickListener(this);
-        mWechatLayout.setOnClickListener(this);
-        mCouponsLayout.setOnClickListener(this);
-        mImmediatelyBuyBtn.setOnClickListener(this);
-        mAgreeProtocolTextView.setOnClickListener(this);
-        mBuyCardNoticeTextView.setOnClickListener(this);
     }
 
     /**
@@ -193,63 +181,71 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
 
     private void sendConfirmCardRequest() {
         if (mConfirmBuyCardPresenter == null) {
-            mConfirmBuyCardPresenter = new ConfirmBuyCardPresenter(this, this);
+            mConfirmBuyCardPresenter = new BuyCardConfirmContract.ConfirmBuyCardPresenter(this, this);
         }
         mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, gymId);
     }
 
-    @Override
+    @OnClick({R.id.layout_alipay, R.id.layout_wechat, R.id.layout_coupons_courses, R.id.immediately_buy_btn, R.id.buy_card_agree_protocol, R.id.buy_card_notice})
     public void onClick(View v) {
-        if (v == mAlipayLayout) {//选择支付宝
-            mAlipayCheckBox.setChecked(true);
-            mWechatCheckBox.setChecked(false);
-            payType = "1";
-        } else if (v == mWechatLayout) {//选择微信
-            mAlipayCheckBox.setChecked(false);
-            mWechatCheckBox.setChecked(true);
-            payType = "0";
-        } else if (v == mCouponsLayout) {//选优惠券
-            if (LikingPreference.isLogin()) {
-                UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
-                Intent intent = new Intent(this, CouponsActivity.class);
-                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
-                intent.putExtra(KEY_CARD_ID, mCardId + "");
-                intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
-                intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
-                if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
-                    intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
+        switch (v.getId()) {
+            case R.id.layout_alipay:
+                mAlipayCheckBox.setChecked(true);
+                mWechatCheckBox.setChecked(false);
+                payType = "1";
+                break;
+            case R.id.layout_wechat:
+                mAlipayCheckBox.setChecked(false);
+                mWechatCheckBox.setChecked(true);
+                payType = "0";
+                break;
+            case R.id.layout_coupons_courses:
+                if (LikingPreference.isLogin()) {
+                    UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
+                    Intent intent = new Intent(this, CouponsActivity.class);
+                    intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
+                    intent.putExtra(KEY_CARD_ID, mCardId + "");
+                    intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, buyType + "");
+                    intent.putExtra(LikingLessonFragment.KEY_GYM_ID, submitGymId);
+                    if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
+                        intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
+                    }
+                    startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
                 }
-                startActivityForResult(intent, INTENT_REQUEST_CODE_COUPON);
-            } else {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            }
-        } else if (v == mImmediatelyBuyBtn) {
-            if (LikingPreference.isLogin()) {
-                if (payType.equals("-1")) {
-                    showToast(getString(R.string.please_select_pay_type));
-                    return;
+                break;
+            case R.id.immediately_buy_btn:
+                if (LikingPreference.isLogin()) {
+                    if (payType.equals("-1")) {
+                        showToast(getString(R.string.please_select_pay_type));
+                        return;
+                    }
+                    UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
+                    showSubmitDialog();
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
                 }
-                UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
-                showSubmitDialog();
-            } else {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            }
-        } else if (v == mAgreeProtocolTextView) {
-            BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
-            if (baseConfigResult != null) {
-                BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
-                if (baseConfigData != null) {
-                    String serviceUrl = baseConfigData.getServiceUrl();
-                    if (!StringUtils.isEmpty(serviceUrl)) {
-                        HDefaultWebActivity.launch(this, serviceUrl, getString(R.string.terrace_member_agreement));
+                break;
+            case R.id.buy_card_agree_protocol:
+                BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
+                if (baseConfigResult != null) {
+                    BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                    if (baseConfigData != null) {
+                        String serviceUrl = baseConfigData.getServiceUrl();
+                        if (!StringUtils.isEmpty(serviceUrl)) {
+                            HDefaultWebActivity.launch(this, serviceUrl, getString(R.string.terrace_member_agreement));
+                        }
                     }
                 }
-            }
-        } else if (v == mBuyCardNoticeTextView) {//公告
-            final AnnouncementDialog dialog = new AnnouncementDialog(this, noticeActivity);
-            dialog.setButtonDismiss();
+                break;
+            case R.id.buy_card_notice:
+                final AnnouncementDialog dialog = new AnnouncementDialog(this, noticeActivity);
+                dialog.setButtonDismiss();
+                break;
+            default:
         }
     }
 
@@ -587,9 +583,8 @@ public class BuyCardConfirmActivity extends AppBarActivity implements View.OnCli
         sendConfirmCardRequest();
     }
 
-
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 }

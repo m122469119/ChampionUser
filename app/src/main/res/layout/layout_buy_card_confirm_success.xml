@@ -66,7 +66,7 @@
                         android:textSize="@dimen/textsize_small"/>
 
                     <TextView
-                        android:id="@+id/gymName"
+                        android:id="@+id/gym_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -104,7 +104,7 @@
                         android:textSize="@dimen/textsize_small"/>
 
                     <TextView
-                        android:id="@+id/gymAddress"
+                        android:id="@+id/gym_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
