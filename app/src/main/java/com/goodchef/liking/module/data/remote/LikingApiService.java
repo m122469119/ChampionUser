@@ -4,6 +4,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.http.result.BodyModelNavigationResult;
+import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
@@ -63,6 +64,7 @@ public interface LikingApiService {
     String KEY_TOKEN = "token";
     String KEY_DISTRICT_ID = "district_id";
     String KEY_CITY_ID = "city_id";
+    String BODY_ID = "body_id";
 
     @POST(Urls.USER_LOGIN)
     Observable<UserLoginResult> userLogin(@Path(PATH_VERSION) String version,
@@ -284,9 +286,10 @@ public interface LikingApiService {
     Observable<ConfirmBuyCardResult> cardConfirm(@Path(PATH_VERSION) String version,
                                                  @QueryMap Map<String, String> map);
 
+    @FormUrlEncoded
     @POST(Urls.CARD_SUBMIT_CARD)
     Observable<SubmitPayResult> submitBuyCardData(@Path(PATH_VERSION) String version,
-                                                  @QueryMap Map<String, String> map);
+                                                  @FieldMap Map<String, String> map);
 
     @POST(Urls.CITY_LIST)
     Observable<CityListResult> getCityList(@Path(PATH_VERSION) String version);
@@ -312,6 +315,13 @@ public interface LikingApiService {
     @POST(Urls.USER_GET_USER_INFO)
     Observable<MyUserOtherInfoResult> getMyUserInfoData(@Path(PATH_VERSION) String version,
                                                         @Field(KEY_TOKEN) String token);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_GET_USER_BODY)
+    Observable<BodyTestResult> getBodyTestData(@Path(PATH_VERSION) String version,
+                                               @Field(KEY_TOKEN) String token,
+                                               @Field(BODY_ID) String bodyid);
+
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -548,11 +558,14 @@ public interface LikingApiService {
          */
         public static final String USER_BODY_MODULES_HISTORY = sVersion + "user/body-modules-history";
 
-
         /**
          * 获取体测数据单个字段历史值
          */
         public static final String USER_BODY_COLUMN_HISTORY = sVersion + "user/body-column-history";
 
+        /**
+         * 获取体测数据
+         */
+        public static final String USER_GET_USER_BODY = sVersion + "user/get-user-body";
     }
 }

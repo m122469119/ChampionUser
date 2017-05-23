@@ -273,7 +273,7 @@
 
         <!-- 体测数据 -->
         <activity
-            android:name=".activity.BodyTestDataActivity"
+            android:name=".module.bodytest.BodyTestDataActivity"
             android:screenOrientation="portrait" />
 
         <!-- 体测数据图 -->

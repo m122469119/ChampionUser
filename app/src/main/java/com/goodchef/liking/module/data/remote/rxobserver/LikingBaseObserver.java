@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ParseException;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.ConstantUtils;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.http.code.result.Result;
 import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.R;
@@ -95,10 +96,12 @@ public abstract class LikingBaseObserver<T extends Result> extends BaseRequestOb
     }
 
     public void networkError(Throwable throwable) {
+        LogUtils.e(TAG, throwable.toString());
         mView.showToast(mContext.getString(R.string.network_error));
     }
 
     public void apiError(ApiException apiException) {
+        LogUtils.e(TAG, apiException.toString());
         mView.showToast(apiException.getErrorMessage());
     }
 }

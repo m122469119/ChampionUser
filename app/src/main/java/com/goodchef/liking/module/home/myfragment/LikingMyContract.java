@@ -9,7 +9,7 @@ import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.activity.BodyTestDataActivity;
+import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
 import com.goodchef.liking.activity.EveryDaySportActivity;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.http.result.MyUserOtherInfoResult;

@@ -23,4 +23,12 @@ public class ApiException extends RuntimeException {
     public String getErrorMessage() {
         return mErrorMessage;
     }
+
+    @Override
+    public String toString() {
+        return "[ErrorCode] = "
+                + mErrorCode
+                + " [ErrorMessage] = "
+                + mErrorMessage;
+    }
 }

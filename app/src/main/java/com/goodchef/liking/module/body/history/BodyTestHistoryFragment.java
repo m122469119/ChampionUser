@@ -13,7 +13,7 @@ import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BodyTestDataActivity;
+import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
 import com.goodchef.liking.adapter.BodyTestHistoryAdapter;
 import com.goodchef.liking.http.result.BodyHistoryResult;
 
