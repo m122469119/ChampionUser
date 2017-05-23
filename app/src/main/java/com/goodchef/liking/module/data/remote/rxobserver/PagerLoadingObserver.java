@@ -15,23 +15,21 @@ import com.goodchef.liking.http.result.LikingResult;
 
 public abstract class PagerLoadingObserver<T extends LikingResult> extends LikingBaseObserver<T> {
 
-    private BaseView mView;
-
     protected PagerLoadingObserver(Context context, BaseView view) {
         super(context, view);
-        mView = view;
     }
+
     @Override
     public void onNext(T result) {
-        if (mView instanceof BasePagerLoaderFragment) {
-            ((BasePagerLoaderFragment) mView).requestSuccess();
+        if (getView() instanceof BasePagerLoaderFragment) {
+            ((BasePagerLoaderFragment) getView()).requestSuccess();
         }
     }
 
     @Override
     public void onError(Throwable e) {
-        if (mView instanceof BasePagerLoaderFragment) {
-            ((BasePagerLoaderFragment) mView).requestFailure();
+        if (getView() instanceof BasePagerLoaderFragment) {
+            ((BasePagerLoaderFragment) getView()).requestFailure();
         }
         super.onError(e);
     }

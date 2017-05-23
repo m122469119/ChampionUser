@@ -59,7 +59,7 @@ public interface TeamCourseDetailsContract {
          */
         public void getGroupCoursesDetails(String scheduleId) {
             mCourseModel.getGroupCoursesDetails(scheduleId)
-                    .subscribe(new LikingBaseObserver<GroupCoursesResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<GroupCoursesResult>(mContext, mView) {
                         @Override
                         public void onNext(GroupCoursesResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

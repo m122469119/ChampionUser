@@ -45,4 +45,8 @@ public interface LiKingRequestCode {
     int BUY_COURSES_ERROR =221009;
     /**无可用会员卡,请购卡后重试*/
     int BUY_COURSES_NO_CARD=22013;
+    /**您已拥有其他场馆会员卡，无法进行当前操作*/
+    int HAS_OTHER_GYM_CARD=240001;
+    /**场馆不存在*/
+    int NO_GYM=240000;
 }

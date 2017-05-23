@@ -58,7 +58,7 @@ public interface GymListContract {
                 return;
             }
             mGymModel.getCheckGymList(Integer.parseInt(selectCityId), longitude, latitude)
-                    .subscribe(new LikingBaseObserver<CheckGymListResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<CheckGymListResult>(mContext, mView) {
                         @Override
                         public void onNext(CheckGymListResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

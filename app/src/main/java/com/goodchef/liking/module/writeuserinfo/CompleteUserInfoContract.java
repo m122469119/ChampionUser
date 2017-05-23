@@ -66,7 +66,7 @@ public interface CompleteUserInfoContract {
 
         public void uploadMyUserInfoImage(String img) {
             mCompleteUserInfoModel.uploadUserImage(img)
-                    .subscribe(new LikingBaseObserver<UserImageResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<UserImageResult>(mContext, mView) {
                         @Override
                         public void onNext(UserImageResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -109,7 +109,7 @@ public interface CompleteUserInfoContract {
             mCompleteUserInfoModel.getUserInfo()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new LikingBaseObserver<UserInfoResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<UserInfoResult>(mContext, mView) {
                         @Override
                         public void onNext(UserInfoResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

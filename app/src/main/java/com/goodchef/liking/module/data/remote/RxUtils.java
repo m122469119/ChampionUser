@@ -20,8 +20,7 @@ public class RxUtils {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
                 return upstream.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .onErrorResumeNext(new HttpResponseFunction<T>());
+                        .observeOn(AndroidSchedulers.mainThread());
             }
         };
     }

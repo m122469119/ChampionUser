@@ -51,7 +51,7 @@ public interface PrivateCoursesConfirmContract {
         public void orderPrivateCoursesConfirm(String gymId, String trainerId) {
 
             mCourseModel.orderPrivateCoursesConfirm(gymId, trainerId)
-                    .subscribe(new LikingBaseObserver<PrivateCoursesConfirmResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<PrivateCoursesConfirmResult>(mContext, mView) {
                         @Override
                         public void onNext(PrivateCoursesConfirmResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -104,7 +104,7 @@ public interface PrivateCoursesConfirmContract {
         public void orderCalculate(String courseId, String selectTimes) {
 
             mCourseModel.orderCalculate(courseId, selectTimes)
-                    .subscribe(new LikingBaseObserver<OrderCalculateResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<OrderCalculateResult>(mContext, mView) {
                         @Override
                         public void onNext(OrderCalculateResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {

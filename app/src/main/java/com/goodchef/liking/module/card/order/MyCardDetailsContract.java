@@ -7,7 +7,7 @@ import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.CardModel;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
+import com.goodchef.liking.module.data.remote.ApiException;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 
 /**
@@ -32,7 +32,7 @@ public interface MyCardDetailsContract {
 
         public void getMyCardDetails(String orderId) {
             mCardModel.getMyOrderCardDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyOrderCardDetailsResult>(mContext) {
+                    .subscribe(new LikingBaseObserver<MyOrderCardDetailsResult>(mContext, mView) {
                         @Override
                         public void onNext(MyOrderCardDetailsResult result) {
                             if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -43,7 +43,12 @@ public interface MyCardDetailsContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable responseThrowable) {
+                        public void networkError(Throwable throwable) {
+                            mView.handleNetworkFailure();
+                        }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
                             mView.handleNetworkFailure();
                         }
                     });

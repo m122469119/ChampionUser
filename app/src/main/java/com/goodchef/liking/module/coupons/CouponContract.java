@@ -10,7 +10,6 @@ import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
 
@@ -40,7 +39,7 @@ public interface CouponContract {
 
         //兑换优惠券
         public void sendExchangeCouponsRequest(String code) {
-            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext) {
+            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
                 @Override
                 public void onNext(LikingResult result) {
                     if (LiKingVerifyUtils.isValid(mContext, result)) {

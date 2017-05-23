@@ -9,9 +9,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.module.data.remote.ApiException;
-import com.goodchef.liking.module.data.remote.ResponseThrowable;
 import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.Observable;
@@ -64,9 +62,15 @@ class LoginContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable e) {
-                            super.onError(e);
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
                         }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                        }
+
                     });
         }
 
@@ -140,8 +144,13 @@ class LoginContract {
                         }
 
                         @Override
-                        public void onError(ResponseThrowable e) {
-//                            super.onError();
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                        }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
                         }
                     });
         }
