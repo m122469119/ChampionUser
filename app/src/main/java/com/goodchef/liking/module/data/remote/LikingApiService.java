@@ -1,6 +1,7 @@
 package com.goodchef.liking.module.data.remote;
 
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
@@ -291,6 +292,10 @@ public interface LikingApiService {
     Observable<GymDetailsResult> getGymDetails(@Path(PATH_VERSION) String version,
                                                @Query("gym_id") String gymId);
 
+    @POST(Urls.USER_GET_BODY_LIST)
+    Observable<BodyHistoryResult> getHistoryData(@Path(PATH_VERSION) String version,
+                                                 @Query("page") int page);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -511,6 +516,10 @@ public interface LikingApiService {
          */
         public static final String GYM_INFO = sVersion +  "gym/info";
 
+        /**
+         * 获取体测历史
+         */
+        public static final String USER_GET_BODY_LIST = sVersion + "user/get-body-list";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
