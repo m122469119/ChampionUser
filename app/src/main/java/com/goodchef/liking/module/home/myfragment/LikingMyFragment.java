@@ -14,25 +14,12 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.BaseFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
-import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
-import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.brace.BingBraceletActivity;
-import com.goodchef.liking.module.card.my.MyCardActivity;
-import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
-import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
-import com.goodchef.liking.activity.BodyTestDataActivity;
-import com.goodchef.liking.module.coupons.CouponsActivity;
-import com.goodchef.liking.activity.EveryDaySportActivity;
-import com.goodchef.liking.module.home.LikingHomeActivity;
-import com.goodchef.liking.module.brace.MyBraceletActivity;
-import com.goodchef.liking.module.card.order.MyOrderActivity;
-import com.goodchef.liking.module.userinfo.MyInfoActivity;
-import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
@@ -41,20 +28,28 @@ import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.card.my.MyCardActivity;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
+import com.goodchef.liking.module.coupons.CouponsActivity;
+import com.goodchef.liking.module.course.MyLessonActivity;
+import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
+import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.more.MoreActivity;
-import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.train.MyTrainDataActivity;
-import com.goodchef.liking.mvp.presenter.MyUserInfoOtherPresenter;
-import com.goodchef.liking.mvp.presenter.UserExercisePresenter;
-import com.goodchef.liking.mvp.view.MyUserInfoOtherView;
-import com.goodchef.liking.mvp.view.UserExerciseView;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.userinfo.MyInfoActivity;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created on 16/5/20.
@@ -63,59 +58,68 @@ import com.goodchef.liking.widgets.base.LikingStateView;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingMyFragment extends BaseFragment implements View.OnClickListener, MyUserInfoOtherView, UserExerciseView {
+public class LikingMyFragment extends BaseFragment implements View.OnClickListener, LikingMyContract.LikingMyView {
     public static final String KEY_MY_BRACELET_MAC = "key_my_bracelet_mac";
     public static final String KEY_UUID = "key_UUID";
+    @BindView(R.id.my_state_view)
+    LikingStateView mStateView;
+    Unbinder unbinder;
+    @BindView(R.id.head_image_background)
+    HImageView mHImageViewBackground;//头像背景;
+    @BindView(R.id.head_image)
+    HImageView mHeadHImageView;//头像
+    @BindView(R.id.person_name)
+    TextView mPersonNameTextView;//用户名称;
+    @BindView(R.id.is_vip)
+    TextView mIsVip;
+    @BindView(R.id.layout_head_info)
+    RelativeLayout mHeadInfoLayout;//头像布局;
+    @BindView(R.id.person_phone)
+    TextView mPersonPhoneTextView;//用户手机;
+    @BindView(R.id.login_text)
+    TextView mLoginBtn;//登录按钮;
+    @BindView(R.id.my_head_person_data_TextView)
+    TextView mHeadPersonDataTextView;
+    @BindView(R.id.layout_my_course)
+    LinearLayout mMyCourseLayout;//我的课程;
+    @BindView(R.id.layout_my_order)
+    LinearLayout mMyOrderLayout;//我的订单;
+    @BindView(R.id.layout_member_card)
+    LinearLayout mMemberCardLayout;//会员卡;
+    @BindView(R.id.layout_coupons)
+    LinearLayout mCouponsLayout;//我的优惠券;
+    @BindView(R.id.layout_more)
+    RelativeLayout mMoreLayout;//更多
+    @BindView(R.id.more_ImageView)
+    ImageView mUpdateAppImageView;//更新小红点
+
     private LinearLayout mContactJoinLayout;//联系加盟
     private LinearLayout mBecomeTeacherLayout;//称为教练
-    private RelativeLayout mMoreLayout;//更多
-    private ImageView mUpdateAppImageView;
-
-    private RelativeLayout mHeadInfoLayout;//头像布局
-    private HImageView mHImageViewBackground;//头像背景
-    private HImageView mHeadHImageView;//头像
-    private TextView mPersonNameTextView;//用户名称
-    private TextView mPersonPhoneTextView;//用户手机
-
-    private TextView mLoginBtn;//登录按钮
-    private TextView mIsVip;//是否是VIP
-
     private LinearLayout mSelfHelpGroupLayout;//自助团体课
     private LinearLayout mBindBraceletLinearLayout;//绑定手环
-    private LinearLayout mMyCourseLayout;//我的课程
-    private LinearLayout mMyOrderLayout;//我的订单
-    private LinearLayout mMemberCardLayout;//会员卡
-    private LinearLayout mCouponsLayout;//我的优惠券
-
-    private LinearLayout mBodyScoreLayout;
-    private LinearLayout mEverydaySportLayout;
-    private LinearLayout mTrainLayout;
+    private LinearLayout mBodyScoreLayout;//体测评分
+    private LinearLayout mEverydaySportLayout;//每日运动
+    private LinearLayout mTrainLayout;//今日训练
     private TextView mBodyScoreData;//个人训练数据
     private TextView mEveryDataSportData;//每日运动
     private TextView mTrainTimeData;//训练时间
-    private TextView mHeadPersonDataTextView;
 
-
-
-    private LikingStateView mStateView;
     private boolean isRetryRequest = true;
     private Typeface mTypeface;//字体
     private String mBraceletMac;//手环mac地址
     private String UUID;//蓝牙UUID
-    private BleUtils mBleUtils;//蓝牙Util
-    private MyUserInfoOtherPresenter mMyUserInfoOtherPresenter;
-    private UserExercisePresenter mUserExercisePresenter;
+    private LikingMyContract.LikingMyPresenter mLikingMyPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
+        unbinder = ButterKnife.bind(this, view);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
+        mLikingMyPresenter = new LikingMyContract.LikingMyPresenter(getActivity(), this);
         initView(view);
-        mBleUtils = new BleUtils();
         initViewIconAndText();
         setHeadPersonData();
-        setViewOnClickListener();
         return view;
     }
 
@@ -133,11 +137,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void showUpdate(){
+    private void showUpdate() {
         int update = LikingPreference.getUpdateApp();
-        if (update ==0){//不更新
+        if (update == 0) {//不更新
             mUpdateAppImageView.setVisibility(View.GONE);
-        }else if (update == 1 || update ==2){//有更新
+        } else if (update == 1 || update == 2) {//有更新
             mUpdateAppImageView.setVisibility(View.VISIBLE);
         }
     }
@@ -150,14 +154,11 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                 clearExerciseData();
             } else {
-                if (mMyUserInfoOtherPresenter == null) {
-                    mMyUserInfoOtherPresenter = new MyUserInfoOtherPresenter(getActivity(), this);
-                }
                 if (isRetryRequest) {
                     mStateView.setState(StateView.State.LOADING);
                     isRetryRequest = false;
                 }
-                mMyUserInfoOtherPresenter.getMyserInfoOther();
+                mLikingMyPresenter.getUserData();
             }
         } else {
             if (EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -173,17 +174,21 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      */
     private void getUserExerciseData() {
         if (LikingPreference.isLogin()) {
-            if (mUserExercisePresenter == null) {
-                mUserExercisePresenter = new UserExercisePresenter(getActivity(), this);
-            }
-            mUserExercisePresenter.getExerciseData();
+            mLikingMyPresenter.getUserExerciseData();
         } else {
             clearExerciseData();
         }
     }
 
     @Override
-    public void updateMyUserInfoOtherView(MyUserOtherInfoResult.UserOtherInfoData userOtherInfoData) {
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(StateView.State.FAILED);
+        isRetryRequest = true;
+        clearExerciseData();
+    }
+
+    @Override
+    public void updateInfoData(MyUserOtherInfoResult.UserOtherInfoData userOtherInfoData) {
         mStateView.setState(StateView.State.SUCCESS);
         LikingPreference.setIsBind(userOtherInfoData.getIsBind());
         LikingPreference.setIsVip(Integer.parseInt(userOtherInfoData.getIsVip()));
@@ -204,16 +209,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void updateUserExerciseView(UserExerciseResult.ExerciseData exerciseData) {
+    public void updateExerciseData(UserExerciseResult.ExerciseData exerciseData) {
         mStateView.setState(StateView.State.SUCCESS);
         doExerciseData(exerciseData);
-    }
-
-    @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
-        isRetryRequest = true;
-        clearExerciseData();
     }
 
 
@@ -227,7 +225,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mTrainTimeData.setText(exerciseData.getTodayMin());
             if (LikingPreference.isBind()) {
                 mBodyScoreData.setText(exerciseData.getScore());
-            }else {
+            } else {
                 mEveryDataSportData.setText(exerciseData.getScore());
             }
         }
@@ -272,33 +270,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initView(View view) {
-        mStateView = (LikingStateView) view.findViewById(R.id.my_state_view);
-        mHeadInfoLayout = (RelativeLayout) view.findViewById(R.id.layout_head_info);
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
-        mMoreLayout = (RelativeLayout) view.findViewById(R.id.layout_more);
-        mUpdateAppImageView = (ImageView) view.findViewById(R.id.more_ImageView);
-
-        mHImageViewBackground = (HImageView) view.findViewById(R.id.head_image_background);
-        mHeadHImageView = (HImageView) view.findViewById(R.id.head_image);
-        mLoginBtn = (TextView) view.findViewById(R.id.login_text);
-        mIsVip = (TextView) view.findViewById(R.id.is_vip);
-
         mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
         mBindBraceletLinearLayout = (LinearLayout) view.findViewById(R.id.layout_bind_bracelet);
-        mMyCourseLayout = (LinearLayout) view.findViewById(R.id.layout_my_course);
-        mMyOrderLayout = (LinearLayout) view.findViewById(R.id.layout_my_order);
-        mMemberCardLayout = (LinearLayout) view.findViewById(R.id.layout_member_card);
-        mCouponsLayout = (LinearLayout) view.findViewById(R.id.layout_coupons);
-
         mBodyScoreLayout = (LinearLayout) view.findViewById(R.id.layout_body_score);
         mEverydaySportLayout = (LinearLayout) view.findViewById(R.id.layout_everyday_sport);
         mTrainLayout = (LinearLayout) view.findViewById(R.id.layout_today_data);
-        mHeadPersonDataTextView = (TextView) view.findViewById(R.id.my_head_person_data_TextView);
-
-        mPersonNameTextView = (TextView) view.findViewById(R.id.person_name);
-        mPersonPhoneTextView = (TextView) view.findViewById(R.id.person_phone);
-
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
@@ -310,27 +288,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             }
         });
         showSelfHelpGroupLayout(((LikingHomeActivity) getActivity()).mCanSchedule);
-    }
-
-    private void setViewOnClickListener() {
-        mContactJoinLayout.setOnClickListener(this);
-        mBecomeTeacherLayout.setOnClickListener(this);
-        mMoreLayout.setOnClickListener(this);
-        mHeadInfoLayout.setOnClickListener(this);
-        mHeadHImageView.setOnClickListener(this);
-        mLoginBtn.setOnClickListener(this);
-
-        mSelfHelpGroupLayout.setOnClickListener(this);
-        mBindBraceletLinearLayout.setOnClickListener(this);
-        mMyCourseLayout.setOnClickListener(this);
-        mMyOrderLayout.setOnClickListener(this);
-        mMemberCardLayout.setOnClickListener(this);
-        mCouponsLayout.setOnClickListener(this);
-
-        mBodyScoreLayout.setOnClickListener(this);
-        mTrainLayout.setOnClickListener(this);
-        mEverydaySportLayout.setOnClickListener(this);
-
     }
 
 
@@ -399,164 +356,106 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mTrainLayout) {//我的训练数据
-            if (LikingPreference.isLogin()) {
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYTRAINDATAACTIVITY);
-                Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
-                startActivity(intent);
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        } else if (v == mLoginBtn) {//登录
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            startActivity(intent);
-        } else if (v == mHeadInfoLayout || v == mHeadHImageView) {
-            if (!LikingPreference.isLogin()) {
-                startActivity(LoginActivity.class);
-            } else {
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
-                Intent intent = new Intent(getActivity(), MyInfoActivity.class);
-                intent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, getString(R.string.change_person_info));
-                startActivity(intent);
-            }
-        } else if (v == mMyCourseLayout) {//我的课程
-            if (LikingPreference.isLogin()) {
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYLESSONACTIVITY);
-                Intent intent = new Intent(getActivity(), MyLessonActivity.class);
-                startActivity(intent);
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        } else if (v == mMyOrderLayout) {//我的订单
-            if (LikingPreference.isLogin()) {
-                Intent intent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(intent);
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        } else if (v == mMemberCardLayout) {//会员卡
-            if (LikingPreference.isLogin()) {
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYCARDACTIVITY);
-                Intent intent = new Intent(getActivity(), MyCardActivity.class);
-                startActivity(intent);
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        } else if (v == mCouponsLayout) {//我的优惠券
-            if (LikingPreference.isLogin()) {
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.COUPONSACTIVITY);
-                Intent intent = new Intent(getActivity(), CouponsActivity.class);
-                intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, CouponsActivity.TYPE_MY_COUPONS);
-                startActivity(intent);
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        } else if (v == mContactJoinLayout) {//联系加盟
-            UMengCountUtil.UmengCount(getActivity(), UmengEventId.CONTACTJONINACTIVITY);
-            startActivity(ContactJonInActivity.class);
-        } else if (v == mBecomeTeacherLayout) {//成为教练
-            UMengCountUtil.UmengCount(getActivity(), UmengEventId.BECOMETEACHERACTIVITY);
-            startActivity(BecomeTeacherActivity.class);
-        } else if (v == mMoreLayout) {//更多
-            startActivity(MoreActivity.class);
-        }  else if (v == mSelfHelpGroupLayout) {//自助团体课
-            UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
-            startActivity(SelfHelpGroupActivity.class);
-        } else if (v == mBodyScoreLayout) {//体测数据
-            if (LikingPreference.isLogin()) {
-                jumpBodyTestActivity();
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        } else if (v == mBindBraceletLinearLayout) {//绑定手环
-            jumpBraceletActivity();
-        } else if (v == mEverydaySportLayout) {//手环数据
-            if (LikingPreference.isLogin()) {
-                if (LikingPreference.isBind()) {
-                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.EVERYDAYSPORTACTIVITY);
-                    Intent intent = new Intent(getActivity(), EveryDaySportActivity.class);
-                    if (!StringUtils.isEmpty(mBraceletMac)) {
-                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                        LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
-                    }
-                    intent.putExtra(KEY_UUID, UUID);
+    @OnClick({R.id.layout_today_data, R.id.login_text,
+            R.id.layout_head_info, R.id.head_image,
+            R.id.layout_my_course, R.id.layout_my_order,
+            R.id.layout_member_card, R.id.layout_coupons,
+            R.id.layout_contact_join, R.id.layout_become_teacher,
+            R.id.layout_more, R.id.layout_self_help_group_gym,
+            R.id.layout_body_score, R.id.layout_bind_bracelet,
+            R.id.layout_everyday_sport})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_today_data://我的训练数据
+                if (LikingPreference.isLogin()) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYTRAINDATAACTIVITY);
+                    Intent intent = new Intent(getActivity(), MyTrainDataActivity.class);
                     startActivity(intent);
                 } else {
-                    jumpBodyTestActivity();
+                    startActivity(LoginActivity.class);
                 }
-            } else {
-                startActivity(LoginActivity.class);
-            }
-        }
-    }
-
-    /**
-     * 跳转到我的手环
-     */
-    private void jumpBraceletActivity() {
-        if (LikingPreference.isLogin()) {
-            if (!StringUtils.isEmpty(mBraceletMac)) {
-                LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
-            }
-            if (LikingPreference.isBind()) {//绑定过手环
-                if (initBlueTooth()) {
-                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYBRACELETACTIVITY);
-                    Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
-                    if (!StringUtils.isEmpty(mBraceletMac)) {
-                        intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                    }
-                    intent.putExtra(KEY_UUID, UUID);
-                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
-                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
-                    intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
-                    startActivity(intent);
-                }
-            } else {//没有绑过
-                UMengCountUtil.UmengCount(getActivity(), UmengEventId.BINGBRACELETACTIVITY);
-                Intent intent = new Intent(getActivity(), BingBraceletActivity.class);
-                if (!StringUtils.isEmpty(mBraceletMac)) {
-                    intent.putExtra(KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                }
-                intent.putExtra(KEY_UUID, UUID);
+                break;
+            case R.id.login_text://登录
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
-            }
-        } else {
-            startActivity(LoginActivity.class);
+                break;
+            case R.id.layout_head_info://个人信息
+            case R.id.head_image:
+                if (!LikingPreference.isLogin()) {
+                    startActivity(LoginActivity.class);
+                } else {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYINFOACTIVITY);
+                    Intent myInfoIntent = new Intent(getActivity(), MyInfoActivity.class);
+                    myInfoIntent.putExtra(LoginActivity.KEY_TITLE_SET_USER_INFO, getString(R.string.change_person_info));
+                    startActivity(myInfoIntent);
+                }
+                break;
+            case R.id.layout_my_course://我的课程
+                if (LikingPreference.isLogin()) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYLESSONACTIVITY);
+                    Intent myCourseIntent = new Intent(getActivity(), MyLessonActivity.class);
+                    startActivity(myCourseIntent);
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+                break;
+            case R.id.layout_my_order://我的订单
+                if (LikingPreference.isLogin()) {
+                    Intent myOrderIntent = new Intent(getActivity(), MyOrderActivity.class);
+                    startActivity(myOrderIntent);
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+                break;
+            case R.id.layout_member_card://会员卡
+                if (LikingPreference.isLogin()) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYCARDACTIVITY);
+                    Intent memberCardIntent = new Intent(getActivity(), MyCardActivity.class);
+                    startActivity(memberCardIntent);
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+                break;
+            case R.id.layout_coupons://我的优惠券
+                if (LikingPreference.isLogin()) {
+                    UMengCountUtil.UmengCount(getActivity(), UmengEventId.COUPONSACTIVITY);
+                    Intent couponsIntent = new Intent(getActivity(), CouponsActivity.class);
+                    couponsIntent.putExtra(CouponsActivity.TYPE_MY_COUPONS, CouponsActivity.TYPE_MY_COUPONS);
+                    startActivity(couponsIntent);
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+                break;
+            case R.id.layout_contact_join://联系加盟
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.CONTACTJONINACTIVITY);
+                startActivity(ContactJonInActivity.class);
+                break;
+            case R.id.layout_become_teacher://成为教练
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.BECOMETEACHERACTIVITY);
+                startActivity(BecomeTeacherActivity.class);
+                break;
+            case R.id.layout_more://更多
+                startActivity(MoreActivity.class);
+                break;
+            case R.id.layout_self_help_group_gym://自助团体课
+                UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
+                startActivity(SelfHelpGroupActivity.class);
+                break;
+            case R.id.layout_body_score:
+                if (LikingPreference.isLogin()) {
+                    mLikingMyPresenter.jumpBodyTestActivity();
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+                break;
+            case R.id.layout_bind_bracelet://绑定手环
+                mLikingMyPresenter.jumpBraceletActivity(mBraceletMac, UUID);
+                break;
+            case R.id.layout_everyday_sport://手环数据
+                mLikingMyPresenter.jumpBracelet(mBraceletMac, UUID);
+                break;
         }
     }
-
-    /**
-     * 初始化蓝牙
-     */
-    public boolean initBlueTooth() {
-        if (!mBleUtils.isOpen()) {
-            openBluetooth();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * 打开蓝牙
-     */
-    public void openBluetooth() {
-        mBleUtils.openBlueTooth(getActivity());
-    }
-
-    /**
-     * 跳转到体测评分界面
-     */
-    private void jumpBodyTestActivity() {
-        UMengCountUtil.UmengCount(getActivity(), UmengEventId.BODYTESTDATAACTIVITY);
-        Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
-        intent.putExtra(BodyTestDataActivity.BODY_ID, "");
-        intent.putExtra(BodyTestDataActivity.SOURCE, "other");
-        startActivity(intent);
-    }
-
 
     @Override
     protected boolean isEventTarget() {
@@ -583,10 +482,12 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
     public void onEvent(LoginOutMessage loginOutMessage) {
-        setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
-        setHeadPersonData();
-        setLogonView();
-        clearExerciseData();
+        if (loginOutMessage != null) {
+            setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
+            setHeadPersonData();
+            setLogonView();
+            clearExerciseData();
+        }
     }
 
     /**
@@ -603,4 +504,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

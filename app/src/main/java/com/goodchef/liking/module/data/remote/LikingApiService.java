@@ -24,6 +24,7 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.OrderCalculateResult;
 import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
@@ -307,6 +308,10 @@ public interface LikingApiService {
     Observable<BodyAnalyzeHistoryResult> getBodyHistoryList(@Path(PATH_VERSION) String version,
                                                             @Query(KEY_TOKEN) String token,
                                                             @Query("column") String column);
+    @FormUrlEncoded
+    @POST(Urls.USER_GET_USER_INFO)
+    Observable<MyUserOtherInfoResult> getMyUserInfoData(@Path(PATH_VERSION) String version,
+                                                        @Field(KEY_TOKEN) String token);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -521,7 +526,12 @@ public interface LikingApiService {
         /**
          * 获取城市列表
          */
-        public static final String CITY_LIST = sVersion +  "gym/open-city";
+        public static final String CITY_LIST = sVersion + "gym/open-city";
+
+        /**
+         * 我的页面获取我的个人信息其他数据
+         */
+        public static final String USER_GET_USER_INFO = sVersion + "user/get-user-info";
 
         /**
          * 场馆详情
@@ -544,17 +554,5 @@ public interface LikingApiService {
          */
         public static final String USER_BODY_COLUMN_HISTORY = sVersion + "user/body-column-history";
 
-//        /**同步时间戳*/
-//        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";
-//        /**获取首页课程列表*/
-//        public static final String GET_COURSE_CATEGORY_LIST = sVersion + "course/course";
-//        /**获取课表*/
-//        public static final String COURSE_COURSE_SCHEDULE = sVersion + "course/course-schedule";
-//        /**课程详情*/
-//        public static final String COURSE_DETAILS = sVersion +  "course/course-detail";
-//        /**检测更新*/
-//        public static final String APP_UPDATE = "config/config";
-//        /**获取用户信息*/
-//        public static final String GET_USER_INFO = sVersion +  "user/info";
     }
 }
