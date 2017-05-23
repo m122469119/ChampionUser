@@ -278,7 +278,7 @@
 
         <!-- 体测数据图 -->
         <activity
-            android:name=".activity.BodyAnalyzeChartActivity"
+            android:name=".module.body.analyze.BodyAnalyzeChartActivity"
             android:screenOrientation="portrait" />
 
         <!-- 蓝牙帮助界面 -->

@@ -28,6 +28,7 @@ import com.goodchef.liking.adapter.BodyAnalyzeAdapter;
 import com.goodchef.liking.adapter.FatAnalyzeAdapter;
 import com.goodchef.liking.http.result.BodyTestResult;
 import com.goodchef.liking.http.result.data.BodyData;
+import com.goodchef.liking.module.body.analyze.BodyAnalyzeChartActivity;
 import com.goodchef.liking.module.body.history.BodyTestHistoryActivity;
 import com.goodchef.liking.mvp.presenter.BodyTestPresenter;
 import com.goodchef.liking.mvp.view.BodyTestView;

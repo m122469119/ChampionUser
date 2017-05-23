@@ -1,7 +1,9 @@
 package com.goodchef.liking.module.data.remote;
 
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.http.result.BodyHistoryResult;
+import com.goodchef.liking.http.result.BodyModelNavigationResult;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.http.result.CheckGymListResult;
@@ -296,6 +298,16 @@ public interface LikingApiService {
     Observable<BodyHistoryResult> getHistoryData(@Path(PATH_VERSION) String version,
                                                  @Query("page") int page);
 
+    @POST(Urls.USER_BODY_MODULES_HISTORY)
+    Observable<BodyModelNavigationResult> getBodyHistoryTitleList(@Path(PATH_VERSION) String version,
+                                                                  @Query(KEY_TOKEN) String token,
+                                                                  @Query("modules") String modules);
+
+    @POST(Urls.USER_BODY_COLUMN_HISTORY)
+    Observable<BodyAnalyzeHistoryResult> getBodyHistoryList(@Path(PATH_VERSION) String version,
+                                                            @Query(KEY_TOKEN) String token,
+                                                            @Query("column") String column);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -520,6 +532,17 @@ public interface LikingApiService {
          * 获取体测历史
          */
         public static final String USER_GET_BODY_LIST = sVersion + "user/get-body-list";
+
+        /**
+         * 获取历史页面顶部导航
+         */
+        public static final String USER_BODY_MODULES_HISTORY = sVersion + "user/body-modules-history";
+
+
+        /**
+         * 获取体测数据单个字段历史值
+         */
+        public static final String USER_BODY_COLUMN_HISTORY = sVersion + "user/body-column-history";
 
 //        /**同步时间戳*/
 //        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp";

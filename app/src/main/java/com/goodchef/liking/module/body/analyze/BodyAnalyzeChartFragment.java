@@ -1,4 +1,4 @@
-package com.goodchef.liking.fragment;
+package com.goodchef.liking.module.body.analyze;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,8 +26,6 @@ import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
 import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.http.result.data.BodyChartValueFormatter;
 import com.goodchef.liking.http.result.data.BodyHistoryData;
-import com.goodchef.liking.mvp.presenter.BodyAnalyzeHistoryPresenter;
-import com.goodchef.liking.mvp.view.BodyAnalyzeHistoryView;
 import com.goodchef.liking.utils.ChartColorUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -42,7 +40,7 @@ import java.util.List;
  * version 1.0.0
  */
 
-public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyzeHistoryView {
+public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyzeHistoryContract.BodyAnalyzeHistoryView {
 
     private LineChart mLineChart;
     private List<String> totalList = new ArrayList<>();
@@ -50,7 +48,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     private List<BodyHistoryData> historyDataList;
     private String unit = "";
     private String modules;
-    private BodyAnalyzeHistoryPresenter mBodyAnalyzeHistoryPresenter;
+    private BodyAnalyzeHistoryContract.BodyAnalyzeHistoryPresenter mBodyAnalyzeHistoryPresenter;
     public static String KEY_HISTORY_LIST = "key_history_list";
     public static String KEY_HISTORY_UNIT = "key_history_unit";
     public static String KEY_HISTORY_MODULES = "key_history_modules";
@@ -96,7 +94,7 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
      */
     private void sendRequest(String column) {
         if (mBodyAnalyzeHistoryPresenter == null) {
-            mBodyAnalyzeHistoryPresenter = new BodyAnalyzeHistoryPresenter(getActivity(), this);
+            mBodyAnalyzeHistoryPresenter = new BodyAnalyzeHistoryContract.BodyAnalyzeHistoryPresenter(getActivity(), this);
         }
         mLikingStateView.setState(StateView.State.LOADING);
         mBodyAnalyzeHistoryPresenter.getBodyAnalyzeHistory(column);
@@ -243,7 +241,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mLikingStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mLikingStateView.setState(state);
     }
+
 }
