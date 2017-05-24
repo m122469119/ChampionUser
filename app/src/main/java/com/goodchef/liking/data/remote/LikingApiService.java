@@ -1,6 +1,7 @@
 package com.goodchef.liking.data.remote;
 
 import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.http.result.BodyModelNavigationResult;
@@ -33,6 +34,7 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.SportDataResult;
+import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
@@ -339,9 +341,24 @@ public interface LikingApiService {
     @POST(Urls.USER_DEVICE)
     Observable<LikingResult> uploadUserDevice(@Path(PATH_VERSION) String version,
                                               @FieldMap Map<String, String> map);
+    @POST(Urls.SYNC_SERVER_TIMESTAMP)
+    Observable<SyncTimestampResult> syncServerTimestamp();
+
+    @POST(Urls.BASE_CONFIG)
+    Observable<BaseConfigResult> baseConfig();
 
     class Urls {
         private static final String sVersion = "{version}/";
+
+        /**
+         * 基础配置
+         */
+        static final String BASE_CONFIG = "config/config";
+        /**
+         * 同步时间戳
+         */
+        public static final String SYNC_SERVER_TIMESTAMP = "time/timestamp/";
+
         /**
          * 获取验证码
          */

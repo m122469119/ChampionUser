@@ -277,43 +277,12 @@ public class LiKingVerifyUtils {
         });
     }
 
-    public static boolean checkLogin(Context context) {
-        if (context == null) {
-            return false;
-        }
-        if (!LikingPreference.isLogin()) {
-            context.startActivity(new Intent(context, LoginActivity.class));
-            return false;
-        }
-        return true;
-    }
 
     private static BaseConfigResult getLocalBaseConfig(Context context) {
         BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
-//        if(baseConfigResult == null){
-//            baseConfigResult = getBaseConfigFromAsset(context);
-//        }
         return baseConfigResult;
     }
 
-//    private static BaseConfigResult getBaseConfigFromAsset(Context context){
-//        try
-//        {
-//            InputStream inputStream = context.getAssets().open("BaseConfig.json");
-//            InputStreamReader inputReader = new InputStreamReader(inputStream);
-//            BufferedReader bufReader = new BufferedReader(inputReader);
-//            String line = "";
-//            String result = "";
-//            while ((line = bufReader.readLine())!=null){
-//                result += line;
-//            }
-//            return new Gson().fromJson(result,BaseConfigResult.class);
-//        } catch (IOException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
     /**
      * 购买私教课 团体课，预约团体课
@@ -327,9 +296,6 @@ public class LiKingVerifyUtils {
         builder.setPositiveButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Intent intent = new Intent(context, LikingHomeActivity.class);
-//                context.startActivity(intent);
-//                EventBus.getDefault().post(new CoursesErrorMessage());
                 dialog.dismiss();
             }
         });
