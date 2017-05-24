@@ -13,12 +13,11 @@ import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
 import com.aaron.http.statistics.NetworkStatistics;
 import com.aaron.http.volley.VolleyHttpRequestClient;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.http.result.InviteFriendResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
-import com.goodchef.liking.data.local.LikingPreference;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -152,28 +151,6 @@ public class LiKingApi {
         VolleyHttpRequestClient.doPost(UrlList.USER_DEVICE, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
                 .append("device_id", device_id).append("device_token", device_token).append("registration_id", registration_id).append("os_version", Build.VERSION.RELEASE)
                 .append("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL), callback);
-    }
-
-    /***
-     * 获取我的邀请码
-     *
-     * @param token    token
-     * @param callback RequestCallback
-     */
-    public static void getInviteCode(String token, RequestCallback<InviteFriendResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.GET_INVITE_CODE, InviteFriendResult.class, getCommonRequestParams().append(KEY_TOKEN, token), callback);
-    }
-
-    /**
-     * 提交邀请码
-     *
-     * @param token    token
-     * @param code     邀请码
-     * @param callback RequestCallback
-     */
-    public static void exchangeInviteCode(String token, String code, RequestCallback<LikingResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.EXCHANGE_INVITE_CODE, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
-                .append("code", code), callback);
     }
 
     /**
