@@ -363,6 +363,17 @@ public interface LikingApiService {
     Observable<ShareResult> getUserShare(@Path(PATH_VERSION) String version,
                                          @Field(KEY_TOKEN) String token);
 
+    @FormUrlEncoded
+    @POST(Urls.USER_BIND_DEVICE)
+    Observable<LikingResult> bindDevices(@Path(PATH_VERSION) String version,
+                                         @FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_UNBIND)
+    Observable<LikingResult> unBindDevices(@Path(PATH_VERSION) String version,
+                                           @Field(KEY_TOKEN) String token,
+                                           @Field("device_id") String devicesId);
+
     class Urls {
         private static final String sVersion = "{version}/";
 
@@ -648,5 +659,14 @@ public interface LikingApiService {
          */
         public static final String USER_EXERCISE_SHARE = sVersion + "user/exercise-share";
 
+        /**
+         * 绑定手环
+         */
+        public static final String USER_BIND_DEVICE = sVersion + "user/bind-device";
+
+        /**
+         * 解绑手环
+         */
+        public static final String USER_UNBIND = sVersion + "user/unbind";
     }
 }

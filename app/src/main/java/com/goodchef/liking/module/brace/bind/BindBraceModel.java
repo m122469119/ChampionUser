@@ -10,10 +10,11 @@ import android.text.TextUtils;
 
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.http.code.RequestCallback;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
-import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.data.local.LikingPreference;
 
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Observable;
 
 /**
  * Created on 2017/3/6
@@ -139,12 +142,31 @@ public class BindBraceModel {
     /**
      * 发送绑定手环信息
      */
-    public void bindDevices(String devicesId,RequestCallback<LikingResult> requestCallback) {
+    public Observable<LikingResult> bindDevices(String devicesId) {
         String osName = Build.MODEL;
         String osVersion = Build.VERSION.RELEASE;
-        LiKingApi.bindDevices(mBindDevicesName, mFirmwareInfo, devicesId, "android" , osName, osVersion, requestCallback);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("bracelet_name", mBindDevicesName);
+        map.put("bracelet_version", mFirmwareInfo);
+        map.put("device_id", devicesId);
+        map.put("platform", "android");
+        map.put("device_name", osName);
+        map.put("os_version", osVersion);
+        return LikingNewApi.getInstance().bindDevices(UrlList.sHostVersion, map)
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
+    /**
+     * 解绑手环
+     *
+     * @param devicesId 设备id
+     */
+    public Observable<LikingResult> unBindDevices(String devicesId) {
+        return LikingNewApi.getInstance().unBindDevices(UrlList.sHostVersion, LikingPreference.getToken(), devicesId)
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
+    }
 
     /**
      * 获取固件信息
