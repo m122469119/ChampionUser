@@ -32,6 +32,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
@@ -311,6 +312,7 @@ public interface LikingApiService {
     Observable<BodyAnalyzeHistoryResult> getBodyHistoryList(@Path(PATH_VERSION) String version,
                                                             @Query(KEY_TOKEN) String token,
                                                             @Query("column") String column);
+
     @FormUrlEncoded
     @POST(Urls.USER_GET_USER_INFO)
     Observable<MyUserOtherInfoResult> getMyUserInfoData(@Path(PATH_VERSION) String version,
@@ -322,6 +324,16 @@ public interface LikingApiService {
                                                @Field(KEY_TOKEN) String token,
                                                @Field(BODY_ID) String bodyid);
 
+    @FormUrlEncoded
+    @POST(Urls.USER_SAVE_SPORT_DATA)
+    Observable<LikingResult> sendSportData(@Path(PATH_VERSION) String version,
+                                           @Field("sport_data") String sportData,
+                                           @Field("device_id") String deviceId);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_SPORT_LIST)
+    Observable<SportDataResult> getSportData(@Path(PATH_VERSION) String version,
+                                             @Field(KEY_TOKEN) String token);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -546,7 +558,7 @@ public interface LikingApiService {
         /**
          * 场馆详情
          */
-        public static final String GYM_INFO = sVersion +  "gym/info";
+        public static final String GYM_INFO = sVersion + "gym/info";
 
         /**
          * 获取体测历史
@@ -567,5 +579,17 @@ public interface LikingApiService {
          * 获取体测数据
          */
         public static final String USER_GET_USER_BODY = sVersion + "user/get-user-body";
+
+        /**
+         * 上报运动数据
+         */
+        public static final String USER_SAVE_SPORT_DATA = sVersion + "user/save-sport-data";
+
+
+        /**
+         * 获取运动数据
+         */
+        public static final String USER_SPORT_LIST = sVersion + "user/sport-list";
+
     }
 }

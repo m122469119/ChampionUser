@@ -230,7 +230,7 @@
             android:name=".module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".module.brace.BingBraceletActivity"
+        <activity android:name=".module.brace.bind.BingBraceletActivity"
             android:screenOrientation="portrait"
             />
 
@@ -285,13 +285,13 @@
 
         <!-- 我的手环 -->
         <activity
-            android:name=".module.brace.MyBraceletActivity"
+            android:name=".module.brace.mybracelet.MyBraceletActivity"
             android:screenOrientation="portrait" />
 
         <!-- 手环数据 -->
         <!--每日运动-->
         <activity
-            android:name=".activity.EveryDaySportActivity"
+            android:name=".module.brace.braceletdata.BraceletDataActivity"
             android:screenOrientation="portrait" />
 
         <!-- 优惠券详情 -->

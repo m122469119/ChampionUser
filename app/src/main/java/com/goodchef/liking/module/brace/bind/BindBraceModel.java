@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.brace;
+package com.goodchef.liking.module.brace.bind;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

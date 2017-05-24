@@ -1,4 +1,4 @@
-package com.goodchef.liking.activity;
+package com.goodchef.liking.module.brace.braceletdata;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -33,11 +33,9 @@ import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
 import com.goodchef.liking.dialog.HeartRateDialog;
 import com.goodchef.liking.dialog.ShakeSynchronizationDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
-import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.data.SportData;
-import com.goodchef.liking.mvp.presenter.SportPresenter;
-import com.goodchef.liking.mvp.view.SportDataView;
+import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ import cn.jpush.android.api.JPushInterface;
  * version 1.0.0
  */
 
-public class EveryDaySportActivity extends AppBarActivity implements View.OnClickListener, SportDataView {
+public class BraceletDataActivity extends AppBarActivity implements View.OnClickListener, BraceletDataContract.BraceletDataView {
 
     @BindView(R.id.layout_today_step)
     RelativeLayout mTodayStepLayout;
@@ -94,9 +92,8 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     private TextView mTotalDistanceTextView;
     private TextView mTotalKcalTextView;
     private TextView mTotalAverageHeartRateTextView;
-    private ImageView mClikHeartRateImageView;
 
-    private SportPresenter mSportPresenter;
+    private BraceletDataContract.BraceletDataPresenter mBraceletDataPresenter;
     private String myBraceletMac;//我的手环Mac地址
     private String muuId;
     private Handler mHandler = new Handler();
@@ -132,6 +129,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_every_day_sport);
         ButterKnife.bind(this);
+        mBraceletDataPresenter = new BraceletDataContract.BraceletDataPresenter(this,this);
         getIntentData();
         mBleManager = new BleManager(this, mLeScanCallback);
         mBleManager.bind();
@@ -235,7 +233,6 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
             case R.id.layout_average_heart_rate:
                 mTodayAverageHeartRateTextView = contentTextView;
                 mTodayAverageHeartRateUnitTextView = unitTextView;
-                mClikHeartRateImageView = imageView;
                 mTodayHeartRateProgressBar = mProgressBar;
                 break;
         }
@@ -266,10 +263,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
     }
 
     private void sendRequest() {
-        if (mSportPresenter == null) {
-            mSportPresenter = new SportPresenter(this, this);
-        }
-        mSportPresenter.getSortData();
+        mBraceletDataPresenter.getSportData();
     }
 
     /**
@@ -839,7 +833,7 @@ public class EveryDaySportActivity extends AppBarActivity implements View.OnClic
         sportDataList.add(sportData);
         Gson gson = new Gson();
         String sportDataStr = gson.toJson(sportDataList);
-        mSportPresenter.sendSportData(sportDataStr, JPushInterface.getUdid(EveryDaySportActivity.this));
+        mBraceletDataPresenter.sendSportData(sportDataStr, JPushInterface.getUdid(BraceletDataActivity.this));
     }
 
 

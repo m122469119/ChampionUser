@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.brace;
+package com.goodchef.liking.module.brace.bind;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +20,8 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleService;
+import com.goodchef.liking.module.brace.BlueToothHelpActivity;
+import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.widgets.RoundImageView;
 import com.goodchef.liking.widgets.WhewView;

@@ -1,7 +1,6 @@
-package com.goodchef.liking.module.brace;
+package com.goodchef.liking.module.brace.mybracelet;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.brace.bind.BindBraceModel;
 import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**

@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.brace;
+package com.goodchef.liking.module.brace.mybracelet;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

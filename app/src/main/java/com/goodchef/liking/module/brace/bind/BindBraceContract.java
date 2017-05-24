@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.brace;
+package com.goodchef.liking.module.brace.bind;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,7 @@ import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.module.brace.bind.BindBraceModel;
 
 import cn.jpush.android.api.JPushInterface;
 

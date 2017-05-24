@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class BlueToothBytesToStringUtil {
-    public static final String TAG = "EveryDaySportActivity";
+    public static final String TAG = "BraceletDataActivity";
 
 
     /**

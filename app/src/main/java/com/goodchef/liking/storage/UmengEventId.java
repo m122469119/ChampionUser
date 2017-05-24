@@ -169,7 +169,7 @@ public class UmengEventId {
     /**
      * 查看手环数据界面
      */
-    public static final String EVERYDAYSPORTACTIVITY = "EveryDaySportActivity";
+    public static final String EVERYDAYSPORTACTIVITY = "BraceletDataActivity";
 
 
 }

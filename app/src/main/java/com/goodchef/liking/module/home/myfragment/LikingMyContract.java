@@ -10,12 +10,12 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
-import com.goodchef.liking.activity.EveryDaySportActivity;
+import com.goodchef.liking.module.brace.braceletdata.BraceletDataActivity;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
-import com.goodchef.liking.module.brace.BingBraceletActivity;
-import com.goodchef.liking.module.brace.MyBraceletActivity;
+import com.goodchef.liking.module.brace.bind.BingBraceletActivity;
+import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
 import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.login.LoginActivity;
@@ -126,7 +126,7 @@ public class LikingMyContract {
             if (LikingPreference.isLogin()) {
                 if (LikingPreference.isBind()) {
                     UMengCountUtil.UmengCount(mContext, UmengEventId.EVERYDAYSPORTACTIVITY);
-                    Intent everydaySportIntent = new Intent(mContext, EveryDaySportActivity.class);
+                    Intent everydaySportIntent = new Intent(mContext, BraceletDataActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         everydaySportIntent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
                         LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
