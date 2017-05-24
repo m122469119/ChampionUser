@@ -27,7 +27,7 @@
             android:layout_marginTop="60dp"
             android:orientation="vertical">
 
-            <com.aaron.android.framework.library.imageloader.HImageView
+            <com.aaron.imageloader.code.HImageView
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/complete_user_head_image"
                 android:layout_width="80dp"

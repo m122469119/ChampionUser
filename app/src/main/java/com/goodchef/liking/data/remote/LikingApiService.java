@@ -335,6 +335,11 @@ public interface LikingApiService {
     Observable<SportDataResult> getSportData(@Path(PATH_VERSION) String version,
                                              @Field(KEY_TOKEN) String token);
 
+    @FormUrlEncoded
+    @POST(Urls.USER_DEVICE)
+    Observable<LikingResult> uploadUserDevice(@Path(PATH_VERSION) String version,
+                                              @FieldMap Map<String, String> map);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -585,11 +590,15 @@ public interface LikingApiService {
          */
         public static final String USER_SAVE_SPORT_DATA = sVersion + "user/save-sport-data";
 
-
         /**
          * 获取运动数据
          */
         public static final String USER_SPORT_LIST = sVersion + "user/sport-list";
+
+        /**
+         * 上报手机信息
+         */
+        public static final String USER_DEVICE = sVersion + "user/device";
 
     }
 }
