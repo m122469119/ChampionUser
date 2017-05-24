@@ -19,14 +19,12 @@ import com.goodchef.liking.R;
  */
 public class CameraCustomDialog {
 
-    private Context mContext;
     private AppCompatDialog mDialog;
     private TextView mCancelButton;//取消按钮
     private TextView mPhotographTextView;//拍照
     private TextView mAlbumTextView;//从相册中选择
 
     public CameraCustomDialog(Context context) {
-        this.mContext = context;
         mDialog = new AppCompatDialog(context, R.style.camera_dialog_no_screen);
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.BOTTOM, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);

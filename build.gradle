@@ -20,29 +20,14 @@ allprojects {
     }
 }
 
-def String getManifestVersionName() {
-    def manifestFile = file(project.projectDir.absolutePath + '/app/src/main/AndroidManifest.xml')
-    def ns = new groovy.xml.Namespace("http://schemas.android.com/apk/res/android", "android")
-    def xml = new XmlParser().parse(manifestFile)
-    return xml.attributes()[ns.versionName].toString()
-}
-
-def String getManifestVersionCode() {
-    def manifestFile = file(project.projectDir.absolutePath + '/app/src/main/AndroidManifest.xml')
-    def ns = new groovy.xml.Namespace("http://schemas.android.com/apk/res/android", "android")
-    def xml = new XmlParser().parse(manifestFile)
-    return xml.attributes()[ns.versionCode]
-}
-
-
 project.ext {
 //    build config
     compileSdkVersion = 25
     buildToolsVersion = "25.0.2"
     minSdkVersion = 18
     targetSdkVersion = 22
-    versionCode = getManifestVersionCode().toInteger()
-    versionName = getManifestVersionName()
+    versionCode = 145
+    versionName = "1.4.5"
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
     abortOnError = false
