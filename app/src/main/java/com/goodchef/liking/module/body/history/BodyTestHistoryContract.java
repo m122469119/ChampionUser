@@ -8,8 +8,8 @@ import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.BodyHistoryResult;
 import com.goodchef.liking.module.body.BodyModel;
-import com.goodchef.liking.module.data.remote.ApiException;
-import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
 
 /**
  * Created on 2017/05/23

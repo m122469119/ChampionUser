@@ -20,7 +20,7 @@ import com.aaron.android.framework.base.BaseApplication;
 import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -129,6 +129,9 @@ public class FileDownloaderManager {
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent1);
                     BaseApplication.exitApp();
+                } else if (action.equals(FileDownloadService.ACTION_DOWNLOAD_FAIL)) {
+                    mDownloadApkDialog.dismiss();
+                    unregisterDownloadNewApkBroadcast();
                 }
             }
         }

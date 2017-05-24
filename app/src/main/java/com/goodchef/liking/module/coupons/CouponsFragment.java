@@ -13,20 +13,17 @@ import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
-import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
-import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.adapter.CouponsAdapter;
 import com.goodchef.liking.adapter.CouponsPersonAdapter;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.http.result.CouponsPersonResult;
 import com.goodchef.liking.http.result.CouponsResult;
-import com.goodchef.liking.http.result.data.Food;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
+import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +38,6 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     private String intentType;
     private String courseId = "";
     private String selectTimes;
-    private ArrayList<Food> confirmBuyList = new ArrayList<>();
     private String cardId;
     private String type;
     private String couponId;
@@ -92,7 +88,6 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         courseId = getArguments().getString(CouponsActivity.KEY_COURSE_ID);
         selectTimes = getArguments().getString(CouponsActivity.KEY_SELECT_TIMES);
         intentType = getArguments().getString(CouponsActivity.TYPE_MY_COUPONS);
-        confirmBuyList = getArguments().getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
         cardId = getArguments().getString(BuyCardConfirmActivity.KEY_CARD_ID);
         type = getArguments().getString(LikingBuyCardFragment.KEY_BUY_TYPE);
         couponId = getArguments().getString(CouponsActivity.KEY_COUPON_ID);
@@ -100,20 +95,20 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         gymId = getArguments().getString(LikingLessonFragment.KEY_GYM_ID);
         setPullMode(PullMode.PULL_BOTH);
     }
-
-    private String createDishesJson() {
-        if (confirmBuyList != null && confirmBuyList.size() > 0) {
-            StringBuilder builder = new StringBuilder("{");
-            for (Food food : confirmBuyList) {
-                builder.append("\"").append(food.getGoodsId()).append("\":");
-                builder.append(food.getSelectedOrderNum()).append(",");
-            }
-            builder.replace(builder.length() - 1, builder.length(), "}");
-            return builder.toString();
-        } else {
-            return null;
-        }
-    }
+//
+//    private String createDishesJson() {
+//        if (confirmBuyList != null && confirmBuyList.size() > 0) {
+//            StringBuilder builder = new StringBuilder("{");
+//            for (Food food : confirmBuyList) {
+//                builder.append("\"").append(food.getGoodsId()).append("\":");
+//                builder.append(food.getSelectedOrderNum()).append(",");
+//            }
+//            builder.replace(builder.length() - 1, builder.length(), "}");
+//            return builder.toString();
+//        } else {
+//            return null;
+//        }
+//    }
 
 
     private void initRecycleView() {
@@ -157,7 +152,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
             mCouponPresenter.getMyCoupons(page);
         } else {
-            mCouponPresenter.getCoupons(courseId, selectTimes, createDishesJson(), cardId, type, scheduleId, page, gymId);
+            mCouponPresenter.getCoupons(courseId, selectTimes, null, cardId, type, scheduleId, page, gymId);
         }
     }
 

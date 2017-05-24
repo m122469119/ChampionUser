@@ -18,7 +18,7 @@ import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.home.LikingHomeActivity;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.widgets.CustomVideoView;

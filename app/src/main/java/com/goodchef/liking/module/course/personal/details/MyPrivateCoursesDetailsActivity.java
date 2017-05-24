@@ -93,6 +93,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
         setTitle(getString(R.string.title_courses_details));
         initView();
         initData();
+        setRightMenu();
     }
 
     private void initView() {
@@ -101,6 +102,15 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             @Override
             public void onRetryRequested() {
                 sendRequest();
+            }
+        });
+    }
+
+    private void setRightMenu() {
+        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
             }
         });
     }
@@ -186,10 +196,9 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     @OnClick(R.id.details_contact_teacher)
     public void click(View view) {
         if (!StringUtils.isEmpty(mTeacherPhone)) {
-            LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
+            LikingCallUtil.showCallDialog(this,getString(R.string.confirm_call),mTeacherPhone);
         }
     }
-
 
     @Override
     public void changeStateView(StateView.State state) {

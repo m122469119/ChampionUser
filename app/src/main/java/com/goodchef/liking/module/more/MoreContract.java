@@ -8,10 +8,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 /**
  * Created on 17/3/15.

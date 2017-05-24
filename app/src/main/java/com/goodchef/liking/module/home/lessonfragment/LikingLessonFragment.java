@@ -36,10 +36,10 @@ import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.personal.PrivateLessonDetailsActivity;
 import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
-import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
@@ -257,7 +257,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     @Override
     public void updateCourseView(final CoursesResult.Courses courses) {
         if (courses.getGym() != null) {
-            UserIsComplete(courses.getUserInfo());
+            CoursesResult.Courses.UserInfo userInfo = courses.getUserInfo();
+            UserIsComplete(userInfo);
             doLessonGym(courses);
         }
         list = courses.getCoursesDataList();

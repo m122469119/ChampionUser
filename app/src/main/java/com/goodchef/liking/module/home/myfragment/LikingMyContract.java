@@ -16,11 +16,11 @@ import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.module.brace.bind.BingBraceletActivity;
 import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.train.UserExerciseModel;
-import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

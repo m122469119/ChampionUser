@@ -15,7 +15,7 @@ import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 
 import java.util.ArrayList;
 import java.util.HashMap;

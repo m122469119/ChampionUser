@@ -26,7 +26,7 @@ import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.SyncTimestampResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.CityData;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.utils.CityUtils;
 

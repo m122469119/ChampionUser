@@ -9,7 +9,6 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.storage.ReadProvincesCitiesJson;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

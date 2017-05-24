@@ -396,7 +396,7 @@
     <string name="order_success">预约成功</string>
     <string name="no_card_or_vip">无卡用户或会员卡剩余有效期太短，请购卡后重试</string>
     <string name="courses_strength">课程强度:</string>
-    <string name="no_card_upgrade">暂无可升级的卡</string>
+    <string name="no_card_upgrade">暂无可续的卡</string>
     <string name="refresh_look">刷新看看</string>
     <string name="select_head">请选择头像</string>
     <string name="repeat_select_picture">请重新选图片</string>
@@ -606,4 +606,11 @@
     <string name="exchange_fail">兑换失败</string>
     <string name="common">共</string>
     <string name="home">家</string>
+    <string name="not_buy_card_prompt">温馨提示</string>
+    <string name="again_think">再考虑下</string>
+    <string name="buy_card_confirm">确认无误</string>
+    <string name="confirm_contact_teacher">您确定联系教练吗？</string>
+    <string name="name_limit_prompt">昵称长度不得超过15个字符"\n"不可包含特殊字符和空格</string>
+    <string name="name_digits">！!@#$%^*()_+{}|:?/.,""^~`</string>
+    <string name="not_input_filter_code">不能输入非法字符或者空格！</string>
 </resources>

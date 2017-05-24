@@ -19,8 +19,8 @@ import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.gym.GymModel;
 import com.goodchef.liking.utils.CityUtils;
 

@@ -10,7 +10,7 @@ import com.aaron.android.framework.utils.PhoneUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.dialog.PhoneDialog;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 
 /**
  * 说明:

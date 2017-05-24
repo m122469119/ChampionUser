@@ -1,9 +1,9 @@
 package com.goodchef.liking.module.joinus;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.module.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.LikingNewApi;
 
 import io.reactivex.Observable;
 

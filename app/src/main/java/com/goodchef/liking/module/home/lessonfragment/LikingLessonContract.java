@@ -6,9 +6,9 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

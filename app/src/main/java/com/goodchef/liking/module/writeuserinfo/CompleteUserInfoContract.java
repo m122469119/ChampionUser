@@ -9,9 +9,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.UserImageResult;
 import com.goodchef.liking.http.result.UserInfoResult;
-import com.goodchef.liking.module.data.remote.ApiException;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

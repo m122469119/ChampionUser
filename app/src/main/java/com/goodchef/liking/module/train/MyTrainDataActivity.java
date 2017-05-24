@@ -10,7 +10,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.http.result.data.ShareData;
-import com.goodchef.liking.mvp.ShareContract;
+import com.goodchef.liking.module.course.ShareContract;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 

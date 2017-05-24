@@ -13,7 +13,6 @@ import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
@@ -24,7 +23,7 @@ import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.utils.NumberConstantUtil;
 

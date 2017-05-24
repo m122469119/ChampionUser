@@ -21,10 +21,10 @@ public class RequestParamsHelper {
     //1.4.0 appkey :Hb6uTQW9umy5T6mAzhGF //1.4.1 appkey:auW9w9kkD6GnFUnh4KEb
     //1.4.2 appkey :KMlaAYc2rl1NeXBglRRAAPr3GJfnIhIF
     //1.4.3 appkey :XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F
-
-
+    //1.4.5 appkey:7jPGh33yq1gtzcSqbiaQOGAnswiJ4ksR
 
     public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isTestMode() ? "testCcmsIam500QiangA" : "XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F"; //app签名key
+
 
     //正式环境的支付公钥为(yGcNQznPTvusj7Y6rMI5)
     public static final String SET_PASSWORD_KEY = EnvironmentUtils.Config.isTestMode() ? "vZr8m0erpGqLbLThv4ov" : "yGcNQznPTvusj7Y6rMI5";//测试环境支付公钥

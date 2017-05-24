@@ -15,8 +15,8 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
 import com.goodchef.liking.http.result.data.HomeAnnouncement;
 import com.goodchef.liking.http.result.data.NoticeData;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.utils.FileDownloaderManager;
 import com.goodchef.liking.utils.NumberConstantUtil;
 

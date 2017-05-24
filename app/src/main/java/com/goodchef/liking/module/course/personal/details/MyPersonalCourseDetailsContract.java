@@ -8,9 +8,9 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.module.data.remote.ApiException;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 /**
  * Created on 2017/05/10

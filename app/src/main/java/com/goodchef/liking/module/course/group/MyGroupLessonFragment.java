@@ -23,8 +23,8 @@ import com.goodchef.liking.http.result.MyGroupCoursesResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity;
-import com.goodchef.liking.mvp.ShareContract;
-import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.module.course.ShareContract;
+import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;

@@ -13,7 +13,6 @@ import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
-import com.goodchef.liking.module.nutritiousfood.ShoppingCartActivity;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
@@ -75,7 +74,6 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
         selectTimes = getIntent().getStringExtra(KEY_SELECT_TIMES);
         intentType = getIntent().getStringExtra(TYPE_MY_COUPONS);
         Bundle bundle = getIntent().getExtras();
-        confirmBuyList = bundle.getParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST);
         cardId = getIntent().getStringExtra(BuyCardConfirmActivity.KEY_CARD_ID);
         type = getIntent().getStringExtra(LikingBuyCardFragment.KEY_BUY_TYPE);
         couponId = getIntent().getStringExtra(KEY_COUPON_ID);
@@ -97,7 +95,6 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
         Bundle bundle = new Bundle();
         bundle.putString(KEY_COURSE_ID, coursesId);
         bundle.putString(KEY_SELECT_TIMES, selectTimes);
-        bundle.putParcelableArrayList(ShoppingCartActivity.INTENT_KEY_CONFIRM_BUY_LIST, confirmBuyList);
         bundle.putString(TYPE_MY_COUPONS, intentType);
         bundle.putString(BuyCardConfirmActivity.KEY_CARD_ID, cardId);
         bundle.putString(LikingBuyCardFragment.KEY_BUY_TYPE, type);

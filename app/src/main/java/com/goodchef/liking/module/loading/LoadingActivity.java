@@ -15,13 +15,13 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.guide.GuideActivity;
-import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.module.guide.GuideActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PatchDowner;
@@ -99,7 +99,7 @@ public class LoadingActivity extends BaseActivity {
      */
     private int clearToken() {
         String appVersion = LikingPreference.getAppVersion();
-        String currentVersion = "1.4.2";
+        String currentVersion = "1.4.5";
         LogUtils.i(TAG, "lastappVersion== " + appVersion + "currentVersion == " + currentVersion);
         if (!StringUtils.isEmpty(appVersion)) {
             String lastversion[] = appVersion.split("\\.");

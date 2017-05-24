@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;

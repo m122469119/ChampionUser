@@ -30,7 +30,7 @@ import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
-import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;

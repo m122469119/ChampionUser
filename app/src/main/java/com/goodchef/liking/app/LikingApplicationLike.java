@@ -19,7 +19,7 @@ import com.aaron.imageloader.code.HImageLoaderSingleton;
 import com.aaron.jpush.JPush;
 import com.facebook.common.util.ByteConstants;
 import com.goodchef.liking.BuildConfig;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.tinker.MyLogImp;
 import com.tencent.tinker.anno.DefaultLifeCycle;
 import com.tencent.tinker.lib.tinker.Tinker;

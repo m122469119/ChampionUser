@@ -9,8 +9,8 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.module.data.remote.ApiException;
-import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;

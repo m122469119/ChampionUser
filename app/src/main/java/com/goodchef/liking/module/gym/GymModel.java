@@ -9,9 +9,9 @@ import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.GymDetailsResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
-import com.goodchef.liking.module.data.remote.RxUtils;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
 
 import java.util.HashMap;
 import java.util.Map;

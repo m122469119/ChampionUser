@@ -2,13 +2,12 @@ package com.goodchef.liking.module.login;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.module.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.UserLoginResult;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.local.LikingPreference;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 

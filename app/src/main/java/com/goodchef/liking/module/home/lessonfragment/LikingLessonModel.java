@@ -2,11 +2,10 @@ package com.goodchef.liking.module.home.lessonfragment;
 
 import android.text.TextUtils;
 
-import com.aaron.http.RequestParams;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.LikingNewApi;
 
 import java.util.HashMap;
 import java.util.Map;

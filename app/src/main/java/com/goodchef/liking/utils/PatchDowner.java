@@ -8,7 +8,7 @@ import com.aaron.common.utils.FileUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.goodchef.liking.http.result.data.PatchData;
-import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.data.local.LikingPreference;
 
 import java.io.File;
 import java.io.FileOutputStream;

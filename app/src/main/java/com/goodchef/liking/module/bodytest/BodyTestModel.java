@@ -2,9 +2,9 @@ package com.goodchef.liking.module.bodytest;
 
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.BodyTestResult;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
-import com.goodchef.liking.module.data.remote.RxUtils;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
 
 import io.reactivex.Observable;
 

@@ -6,7 +6,7 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.BodyTestResult;
-import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 /**
  * Created on 2017/5/23

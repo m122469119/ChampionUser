@@ -15,9 +15,9 @@ import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.module.data.remote.ApiException;
-import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.utils.LikingCallUtil;
 
 import de.greenrobot.event.EventBus;

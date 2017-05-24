@@ -14,10 +14,11 @@ import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -140,5 +141,16 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    public void onEvent(BuyCardSuccessMessage message) {
+        if (message != null) {
+            finish();
+        }
     }
 }

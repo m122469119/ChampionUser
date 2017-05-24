@@ -6,46 +6,24 @@
                 android:background="@color/app_content_background"
                 android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/layout_my_card_bottom"
+
+    <TextView
+        android:id="@+id/my_card_flow_card"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_alignParentBottom="true"
         android:background="@color/liking_green_btn_back"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/my_promotion_card"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/promotion_card"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_15"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/my_card_bottom_line"/>
-
-        <TextView
-            android:id="@+id/my_card_flow_card"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/flow_card"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_15"/>
-    </LinearLayout>
+        android:gravity="center"
+        android:text="@string/flow_card"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_15"
+        android:visibility="gone"/>
 
     <ScrollView
         android:id="@+id/layout_my_card_root_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layout_my_card_bottom"
+        android:layout_above="@+id/my_card_flow_card"
         android:visibility="invisible">
 
         <LinearLayout
@@ -246,8 +224,9 @@
                 android:id="@+id/upgrade_card_prompt_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:lineSpacingExtra="3dp"
                 android:layout_marginTop="@dimen/spacing_12dp"
+                android:gravity="center"
                 android:padding="@dimen/spacing_12dp"
                 android:textColor="@color/lesson_details_gray_back"/>
 

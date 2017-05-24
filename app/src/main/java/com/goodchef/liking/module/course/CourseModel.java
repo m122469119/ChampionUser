@@ -16,9 +16,9 @@ import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
-import com.goodchef.liking.module.data.remote.RxUtils;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
 
 import java.util.HashMap;
 import java.util.Map;

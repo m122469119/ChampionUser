@@ -7,13 +7,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
 import com.goodchef.liking.widgets.base.LikingStateView;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +28,8 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/8/15 上午10:17
  */
-public class WriteNameActivity extends AppBarActivity {
+
+public class WriteNameActivity extends BaseActivity {
 
     public static final String KEY_USER_NAME = "key_user_name";
     @BindView(R.id.write_name_state_view)
@@ -41,8 +46,6 @@ public class WriteNameActivity extends AppBarActivity {
         setContentView(R.layout.activity_write_name);
         ButterKnife.bind(this);
         initView();
-        showHomeUpIcon(0);
-        setTitle(getString(R.string.activity_title_writename));
         initData();
         setViewOnRetryRequestListener();
     }
@@ -51,6 +54,7 @@ public class WriteNameActivity extends AppBarActivity {
         mWriteNameNextBtn = (TextView) findViewById(R.id.write_name_next_btn);
 
     }
+
 
     private void initData() {
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -62,6 +66,7 @@ public class WriteNameActivity extends AppBarActivity {
 
     private void setViewOnRetryRequestListener() {
         mWriteNameStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+
             @Override
             public void onRetryRequested() {
                 initData();
@@ -87,6 +92,20 @@ public class WriteNameActivity extends AppBarActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    /**
+     * 过滤字符，只能输入中文英文或者数字
+     *
+     * @param str
+     * @return
+     * @throws PatternSyntaxException
+     */
+    public static String stringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[^a-zA-Z0-9\\u4E00-\\u9FA5]"; //要过滤掉的字符
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
     }
 
     @Override

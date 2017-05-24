@@ -13,10 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
@@ -26,21 +27,23 @@ import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
 import com.goodchef.liking.dialog.AnnouncementDialog;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
 import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
-import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.ConfirmBuyCardResult;
 import com.goodchef.liking.http.result.CouponsResult;
 import com.goodchef.liking.http.result.data.ConfirmCard;
 import com.goodchef.liking.http.result.data.PayResultData;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.data.local.LikingPreference;
-import com.goodchef.liking.storage.UmengEventId;
+import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -264,13 +267,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
         mMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
 
         builder.setCustomView(view);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.again_think, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.buy_card_confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 senSubmitRequest();
@@ -320,12 +323,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
      * 处理优惠券
      */
     private void handleCoupons(CouponsResult.CouponData.Coupon mCoupon) {
-
         String couponAmountStr = mCoupon.getAmount();//优惠券的面额
         double couponAmount = Double.parseDouble(couponAmountStr);
-
         double price = Double.parseDouble(cardPrice);
-
         mCouponsMoneyTextView.setText(mCoupon.getAmount() + getString(R.string.yuan));
         if (price >= couponAmount) {
             //订单的价格大于优惠券的面额
@@ -364,9 +364,21 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
                 mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
             }
             confirmCardList = confirmBuyCardData.getCardList();
-            setCardView(confirmCardList);
-            mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
-            mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
+            int showLimit = confirmBuyCardData.getShowTimeLimit();
+            if (showLimit == NumberConstantUtil.ZERO) {//如果是0不显示选择错峰和全通卡的选项
+                mCardRecyclerView.setVisibility(View.GONE);
+                if (!ListUtils.isEmpty(confirmCardList)) {//不显示选择卡类型是，从卡列表中选出默认选中的那个卡种
+                    setCardOnlyView();
+                }
+            } else if (showLimit == NumberConstantUtil.ONE) {//如果是1显示
+                mCardRecyclerView.setVisibility(View.VISIBLE);
+                if (!ListUtils.isEmpty(confirmCardList)) {//设置卡的类型
+                    setCardView(confirmCardList);
+                    mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
+                    mCardRecyclerAdapter.setExplainClickListener(mExplainClickListener);
+                }
+            }
+
             mCardGymName = confirmBuyCardData.getGymName();
             mGymNameTextView.setText(mCardGymName);
             mGymAddressTextView.setText(confirmBuyCardData.getGymAddress());
@@ -376,6 +388,26 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
             mStateView.setState(StateView.State.NO_DATA);
         }
 
+    }
+
+    /**
+     * 不显示选择卡类型是，从卡列表中选出默认选中的那个卡种,并且显示价格
+     */
+    private void setCardOnlyView() {
+        for (ConfirmCard card : confirmCardList) {
+            if (card.getQulification() == NumberConstantUtil.ONE) {
+                mCardMoneyTextView.setVisibility(View.VISIBLE);
+                mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
+                mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
+                mCardId = card.getCardId();
+                mCardType = card.getName();
+                if (buyType != BUY_TYPE_UPGRADE) {
+                    cardPrice = card.getPrice();
+                    mCardTotalMoney = cardPrice;
+                    mCardMoneyTextView.setText(getString(R.string.money_symbol) + cardPrice);
+                }
+            }
+        }
     }
 
     @Override
@@ -442,9 +474,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
                 if (object != null) {
                     for (ConfirmCard data : confirmCardList) {
                         if (data.getType() == object.getType()) {
-                            data.setQulification(1);
+                            data.setQulification(NumberConstantUtil.ONE);
                         } else {
-                            data.setQulification(0);
+                            data.setQulification(NumberConstantUtil.ZERO);
                         }
                     }
                     mCardRecyclerAdapter.notifyDataSetChanged();
@@ -465,7 +497,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
      */
     private void setCardView(List<ConfirmCard> confirmCardList) {
         for (ConfirmCard card : confirmCardList) {
-            if (card.getQulification() == 1) {
+            if (card.getQulification() == NumberConstantUtil.ONE) {
                 mCardMoneyTextView.setVisibility(View.VISIBLE);
                 mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                 mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
@@ -517,7 +549,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
         @Override
         public void onSuccess() {
             LogUtils.i(TAG, "alipay sucess");
-
             jumpOrderActivity();
         }
 
@@ -573,8 +604,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     }
 
     private void jumpOrderActivity() {
+        postEvent(new BuyCardSuccessMessage());
+        LikingPreference.setLoginGymId(submitGymId);
         Intent intent = new Intent(this, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, 1);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, NumberConstantUtil.ONE);
         startActivity(intent);
         finish();
     }
