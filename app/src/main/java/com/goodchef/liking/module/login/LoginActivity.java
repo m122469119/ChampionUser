@@ -8,25 +8,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.WriteNameActivity;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.mvp.view.LoginView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.utils.NumberConstantUtil;
 
 import butterknife.BindView;
@@ -39,7 +38,7 @@ import cn.jpush.android.api.JPushInterface;
  * Author shaozucheng
  * Time:16/6/6 上午10:04
  */
-public class LoginActivity extends AppBarActivity implements LoginContract.LoginView, LoginView {
+public class LoginActivity extends AppBarActivity implements LoginContract.LoginView {
     public static final String KEY_TITLE_SET_USER_INFO = "key_title_set_user_info";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
     @BindView(R.id.et_login_phone)
@@ -53,7 +52,6 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     @BindView(R.id.login_btn)
     Button mLoginBtn;//登录按钮
 
-    private String phoneStr;
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
     private LoginContract.LoginPresenter mLoginPresenter;
 
@@ -78,12 +76,12 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     public void buttonClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-                login();
+                mLoginPresenter.userLogin(mLoginPhoneEditText.getText().toString(), mCodeEditText.getText().toString());
                 break;
             case R.id.register_agree_on:
-                BaseConfigResult baseConfigResult = Preference.getBaseConfig();
+                BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
                 if (baseConfigResult != null) {
-                    BaseConfigResult.BaseConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                    BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                     if (baseConfigData != null) {
                         String agreeUrl = baseConfigData.getAgreeUrl();
                         if (!StringUtils.isEmpty(agreeUrl)) {
@@ -93,64 +91,21 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
                 }
                 break;
             case R.id.send_verification_code_btn:
-                getVerificationCode();
+                mLoginPresenter.getVerificationCode(mLoginPhoneEditText.getText().toString());
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * 登录
-     */
-    private void login() {
-        if (!checkPhone()) {
-            return;
-        }
-        String code = mCodeEditText.getText().toString().trim();
-        if (StringUtils.isEmpty(code)) {
-            showToast(getString(R.string.version_code_not_blank));
-            return;
-        }
-        requestLogin(phoneStr, code);
-    }
 
-    private void requestLogin(String phoneStr, String code) {
-        mLoginPresenter.userLogin(phoneStr, code);
-    }
 
-    /**
-     * 获取验证码
-     */
-    private void getVerificationCode() {
-        if (checkPhone()) {
-            //发送请求
-            mMyCountdownTime.start();
-            mLoginPresenter.getVerificationCode(phoneStr);
-        }
-    }
-
-    /**
-     * 校验手机号码
-     */
-    private boolean checkPhone() {
-        phoneStr = mLoginPhoneEditText.getText().toString().trim();
-        if (StringUtils.isEmpty(phoneStr)) {
-            showToast(getString(R.string.hint_login_phone));
-            return false;
-        }
-        if (!RegularUtils.isMobileExact(phoneStr)) {
-            showToast(getString(R.string.phone_format_error));
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData) {
         mCodeEditText.setText("");
         showToast(getString(R.string.version_code_sended));
-        if (!EnvironmentUtils.Config.isDebugMode()) {
+        if (!EnvironmentUtils.Config.isTestMode()) {
             return;
         }
         if (verificationCodeData != null && !TextUtils.isEmpty(verificationCodeData.getCaptcha())) {
@@ -176,13 +131,13 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
      * 上传设备信息
      */
     private void uploadDeviceInfo() {
-        String jPushRegisterId = Preference.getJPushRegistrationId();
+        String jPushRegisterId = LikingPreference.getJPushRegistrationId();
         if (StringUtils.isEmpty(jPushRegisterId)) {
             return;
         }
-        LiKingApi.uploadUserDevice(Preference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<BaseResult>() {
+        LiKingApi.uploadUserDevice(LikingPreference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<LikingResult>() {
             @Override
-            public void onSuccess(BaseResult result) {
+            public void onSuccess(LikingResult likingResult) {
                 LogUtils.i(TAG, "uploadDeviceInfo success!");
             }
 
@@ -197,6 +152,11 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     @Override
     public void updateLoginOut() {
 
+    }
+
+    @Override
+    public void myCountdownTimeStart() {
+        mMyCountdownTime.start();
     }
 
 

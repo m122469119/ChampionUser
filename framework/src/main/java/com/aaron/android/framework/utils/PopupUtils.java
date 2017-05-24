@@ -3,6 +3,8 @@ package com.aaron.android.framework.utils;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.aaron.common.utils.StringUtils;
+
 /**
  * Created on 2014/12/16 11:18.
  *
@@ -17,7 +19,9 @@ public class PopupUtils {
      * @param msg 内容
      */
     public static void showToast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        if (!StringUtils.isEmpty(msg)) {
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -26,6 +30,6 @@ public class PopupUtils {
      * @param resId 资源ID
      */
     public static void showToast(Context context, int resId) {
-        Toast.makeText(context, ResourceUtils.getString(resId), Toast.LENGTH_LONG).show();
+        showToast(context, context.getString(resId));
     }
 }

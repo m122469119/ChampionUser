@@ -2,14 +2,14 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CardListView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -22,7 +22,7 @@ public class CardListPresenter extends BasePresenter<CardListView> {
     }
 
     public void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
-        LiKingApi.getCardList(Preference.getToken(), longitude, latitude, cityId, districtId, gymId, type, new RequestCallback<CardResult>() {
+        LiKingApi.getCardList(LikingPreference.getToken(), longitude, latitude, cityId, districtId, gymId, type, new RequestCallback<CardResult>() {
             @Override
             public void onSuccess(CardResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

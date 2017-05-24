@@ -1,7 +1,6 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
-import android.test.suitebuilder.TestMethod;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,8 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
-import com.aaron.android.framework.library.imageloader.HImageLoaderSingleton;
-import com.aaron.android.framework.library.imageloader.HImageView;
+import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.GroupCoursesResult;
 

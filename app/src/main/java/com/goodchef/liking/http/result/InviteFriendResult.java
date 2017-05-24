@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/7/7 上午9:48
  */
-public class InviteFriendResult extends BaseResult {
+public class InviteFriendResult extends LikingResult {
     @SerializedName("data")
     private InviteFriendData data;
 
@@ -21,7 +20,7 @@ public class InviteFriendResult extends BaseResult {
         this.data = data;
     }
 
-    public static class InviteFriendData extends BaseData {
+    public static class InviteFriendData extends Data {
 
         @SerializedName("code")
         private String code;

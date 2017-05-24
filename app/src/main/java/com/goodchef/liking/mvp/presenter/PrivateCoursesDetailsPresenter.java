@@ -2,9 +2,9 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;

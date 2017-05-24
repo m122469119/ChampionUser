@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/8/25 上午10:01
  */
-public class ChargeGroupConfirmResult extends BaseResult {
+public class ChargeGroupConfirmResult extends LikingResult {
 
     @SerializedName("data")
     private ChargeGroupConfirmData data;
@@ -22,7 +21,7 @@ public class ChargeGroupConfirmResult extends BaseResult {
         this.data = data;
     }
 
-    public static class ChargeGroupConfirmData extends BaseData {
+    public static class ChargeGroupConfirmData extends Data {
 
         /**
          * prompt : 课程购买后,课程开始前4小时不能取消,请谨慎购买

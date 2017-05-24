@@ -2,11 +2,11 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.BindDevicesView;
 
@@ -23,14 +23,14 @@ public class BindDevicesPresenter extends BasePresenter<BindDevicesView> {
     }
 
     public void bindDevices(String braceletName, String braceletVersion, String deviceId, String platform, String deviceName, String osVersion) {
-        LiKingApi.bindDevices(braceletName, braceletVersion, deviceId, platform, deviceName, osVersion, new RequestCallback<BaseResult>() {
+        LiKingApi.bindDevices(braceletName, braceletVersion, deviceId, platform, deviceName, osVersion, new RequestCallback<LikingResult>() {
             @Override
-            public void onSuccess(BaseResult result) {
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateBindDevicesView();
                 } else {
                     mView.updateBindDevicesView();
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

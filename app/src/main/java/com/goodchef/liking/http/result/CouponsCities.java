@@ -1,7 +1,7 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ import java.util.List;
  * @version 1.0.0
  */
 
-public class CouponsCities extends BaseResult {
+public class CouponsCities extends LikingResult {
 
 
     /**
-     * data : {"has_more":1,"gym_list":[{"gym_name":"新尚广场健身房","distance":"42km"},{"gym_name":"佘山健身房","distance":"96.8km"},{"gym_name":"青浦健身房","distance":"98.9km"},{"gym_name":"LikingFit凌空店","distance":"106.6km"}]}
+     * data : {"hasMore":1,"gymList":[{"gymName":"新尚广场健身房","distance":"42km"},{"gymName":"佘山健身房","distance":"96.8km"},{"gymName":"青浦健身房","distance":"98.9km"},{"gymName":"LikingFit凌空店","distance":"106.6km"}]}
      */
 
     private DataBean data;
@@ -29,64 +29,68 @@ public class CouponsCities extends BaseResult {
         this.data = data;
     }
 
-    public static class DataBean extends BaseData{
+    public static class DataBean extends Data {
         /**
-         * has_more : 1
-         * gym_list : [{"gym_name":"新尚广场健身房","distance":"42km"},{"gym_name":"佘山健身房","distance":"96.8km"},{"gym_name":"青浦健身房","distance":"98.9km"},{"gym_name":"LikingFit凌空店","distance":"106.6km"}]
+         * hasMore : 1
+         * gymList : [{"gymName":"新尚广场健身房","distance":"42km"},{"gymName":"佘山健身房","distance":"96.8km"},{"gymName":"青浦健身房","distance":"98.9km"},{"gymName":"LikingFit凌空店","distance":"106.6km"}]
          */
+        @SerializedName("has_more")
+        private int hasMore;
+        @SerializedName("total_gym")
+        private int totalGym;
+        @SerializedName("gym_list")
+        private List<GymListBean> gymList;
 
-        private int has_more;
-        private int total_gym;
-        private List<GymListBean> gym_list;
-
-        public int getTotal_gym() {
-            return total_gym;
+        public int getTotalGym() {
+            return totalGym;
         }
 
-        public void setTotal_gym(int total_gym) {
-            this.total_gym = total_gym;
+        public void setTotalGym(int totalGym) {
+            this.totalGym = totalGym;
         }
 
-        public int getHas_more() {
-            return has_more;
+        public int getHasMore() {
+            return hasMore;
         }
 
-        public void setHas_more(int has_more) {
-            this.has_more = has_more;
+        public void setHasMore(int hasMore) {
+            this.hasMore = hasMore;
         }
 
-        public List<GymListBean> getGym_list() {
-            return gym_list;
+        public List<GymListBean> getGymList() {
+            return gymList;
         }
 
-        public void setGym_list(List<GymListBean> gym_list) {
-            this.gym_list = gym_list;
+        public void setGymList(List<GymListBean> gymList) {
+            this.gymList = gymList;
         }
 
-        public static class GymListBean extends BaseData{
+        public static class GymListBean extends Data {
             /**
-             * gym_name : 新尚广场健身房
+             * gymName : 新尚广场健身房
              * distance : 42km
              */
-
-            private String gym_name;
+            @SerializedName("gym_name")
+            private String gymName;
+            @SerializedName("distance")
             private String distance;
-            private String gym_address;
+            @SerializedName("gym_address")
+            private String gymAddress;
 
-            public String getGym_address() {
-                return gym_address;
+            public String getGymAddress() {
+                return gymAddress;
             }
 
-            public void setGym_address(String gym_address) {
-                this.gym_address = gym_address;
+            public void setGymAddress(String gymAddress) {
+                this.gymAddress = gymAddress;
             }
 
-            public String getGym_name() {
-                return gym_name;
+            public String getGymName() {
+                return gymName;
             }
 
-            public void setGym_name(String gym_name) {
-                this.gym_name = gym_name;
+            public void setGymName(String gymName) {
+                this.gymName = gymName;
             }
 
             public String getDistance() {

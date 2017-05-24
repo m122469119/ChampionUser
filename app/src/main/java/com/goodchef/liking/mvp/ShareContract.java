@@ -3,9 +3,9 @@ package com.goodchef.liking.mvp;
 import android.content.Context;
 import android.view.View;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.share.weixin.WeixinShare;
 import com.aaron.share.weixin.WeixinShareData;
@@ -15,7 +15,7 @@ import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:分享
@@ -75,7 +75,7 @@ public interface ShareContract {
 
          //我的运动数据分享
          public void getUserShareData() {
-             LiKingApi.getUserShare(Preference.getToken(), new RequestCallback<ShareResult>() {
+             LiKingApi.getUserShare(LikingPreference.getToken(), new RequestCallback<ShareResult>() {
                  @Override
                  public void onSuccess(ShareResult result) {
                      if (LiKingVerifyUtils.isValid(mContext, result)) {

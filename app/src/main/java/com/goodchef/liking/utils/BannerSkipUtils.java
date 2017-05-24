@@ -3,10 +3,10 @@ package com.goodchef.liking.utils;
 import android.content.Context;
 
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.umeng.analytics.MobclickAgent;
 
@@ -35,7 +35,7 @@ public class BannerSkipUtils {
         }
         switch (type) {
             case SKIP_TYPE_H5: //跳转H5
-                LocationData locationData = Preference.getLocationData();
+                LocationData locationData = LikingPreference.getLocationData();
                 if (locationData != null && !StringUtils.isEmpty(locationData.getCityName())) {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("banner", locationData.getCityName() + "_" + banner.getLoadUrl());

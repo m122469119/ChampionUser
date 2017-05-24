@@ -1,7 +1,5 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
-
 import com.goodchef.liking.http.result.data.PayResultData;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/6/16 下午4:14
  */
-public class SubmitPayResult extends BaseResult {
+public class SubmitPayResult extends LikingResult {
     @SerializedName("data")
     private PayResultData mPayData;
 

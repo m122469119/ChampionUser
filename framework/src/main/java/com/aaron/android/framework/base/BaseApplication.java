@@ -2,18 +2,24 @@ package com.aaron.android.framework.base;
 
 import android.app.Application;
 
-import com.aaron.common.utils.LogUtils;
-import com.aaron.android.framework.library.thread.TaskScheduler;
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.common.utils.LogUtils;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created on 15/6/2.
  *
  * @author ran.huang
  * @version 3.0.1
- *
- *
- * 基类，处理完全退出，系统全局异常等
+ *          <p>
+ *          <p>
+ *          基类，处理完全退出，系统全局异常等
  */
 public abstract class BaseApplication extends Application {
 
@@ -44,22 +50,26 @@ public abstract class BaseApplication extends Application {
         sApplication = this;
         mMainProcessInit = new MainProcessInit(this, buildConfigData());
         mMainProcessInit.init();
-        doBackgroundInit();
-        initialize();
-    }
-
-    private void doBackgroundInit() {
-        TaskScheduler.execute(new Runnable() {
+        Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
-            public void run() {
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                LogUtils.e(TAG, "subscribe thread: " + Thread.currentThread().getName());
                 backgroundInitialize();
-
+                e.onNext(new Object());
             }
-        });
+        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        initialize();
+                        LogUtils.e(TAG, "accept thread: " + Thread.currentThread().getName());
+                    }
+                });
     }
 
     /**
      * 获取Application实例
+     *
      * @return BaseApplication
      */
     public static Application getInstance() {

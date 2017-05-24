@@ -1,10 +1,8 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +11,7 @@ import java.util.List;
  * Time: 下午2:34
  */
 
-public class SelfGroupCoursesListResult extends BaseResult{
+public class SelfGroupCoursesListResult extends LikingResult {
 
 
     @SerializedName("data")
@@ -53,7 +51,7 @@ public class SelfGroupCoursesListResult extends BaseResult{
             mList = list;
         }
 
-        public static class CoursesData extends BaseData{
+        public static class CoursesData extends Data {
             @SerializedName("course_id")
             private String mCourseId;
             @SerializedName("category")
@@ -190,7 +188,7 @@ public class SelfGroupCoursesListResult extends BaseResult{
                 mVideoDuration = videoDuration;
             }
 
-            public static class ImgData extends BaseData {
+            public static class ImgData extends Data {
                 @SerializedName("url")
                 private String mUrl;
 

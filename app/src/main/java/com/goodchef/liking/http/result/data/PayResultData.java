@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/6/17 上午11:26
  */
-public class PayResultData extends BaseData{
+public class PayResultData extends Data {
 
     @SerializedName("order_id")
     private String orderId;

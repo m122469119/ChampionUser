@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <com.aaron.android.framework.library.imageloader.HImageView
+    <com.aaron.imageloader.code.HImageView
         android:id="@+id/image_tag"
         android:layout_width="35dp"
         android:layout_height="32dp"

@@ -5,7 +5,7 @@
              android:layout_height="wrap_content"
              android:orientation="vertical">
 
-    <com.aaron.android.framework.library.imageloader.HImageView
+    <com.aaron.imageloader.code.HImageView
         android:id="@+id/self_help_gym_image"
         android:layout_width="match_parent"
         android:layout_height="130dp"

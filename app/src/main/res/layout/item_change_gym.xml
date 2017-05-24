@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
-        <com.aaron.android.framework.library.imageloader.HImageView
+        <com.aaron.imageloader.code.HImageView
             android:id="@+id/gym_image"
             android:layout_width="100dp"
             android:layout_height="90dp"

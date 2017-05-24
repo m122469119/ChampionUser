@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="320dp">
 
-                <com.aaron.android.framework.library.imageloader.HImageView
+                <com.aaron.imageloader.code.HImageView
                     android:id="@+id/private_lesson_details_teach_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

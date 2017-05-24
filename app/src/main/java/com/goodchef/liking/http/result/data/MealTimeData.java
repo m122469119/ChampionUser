@@ -1,13 +1,13 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 
 /**
  * 说明:
  * Author shaozucheng
  * Time:16/6/27 下午4:47
  */
-public class MealTimeData extends BaseData{
+public class MealTimeData extends Data {
     private String mealTime;
     private boolean isSelect;
 

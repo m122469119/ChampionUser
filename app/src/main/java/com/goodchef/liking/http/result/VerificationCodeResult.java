@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/6/7 上午10:40
  */
-public class VerificationCodeResult extends BaseResult {
+public class VerificationCodeResult extends LikingResult {
     @SerializedName("data")
     private VerificationCodeData mVerificationCodeData;
 
@@ -20,7 +19,7 @@ public class VerificationCodeResult extends BaseResult {
         mVerificationCodeData = verificationCodeData;
     }
 
-    public static class VerificationCodeData extends BaseData {
+    public static class VerificationCodeData extends Data {
         @SerializedName("captcha")
         private String captcha;
 

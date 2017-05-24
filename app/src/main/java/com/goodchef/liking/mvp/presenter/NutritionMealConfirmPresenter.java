@@ -2,8 +2,8 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -11,7 +11,7 @@ import com.goodchef.liking.http.result.NutritionMealConfirmResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.NutritionMealConfirmView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -24,7 +24,7 @@ public class NutritionMealConfirmPresenter extends BasePresenter<NutritionMealCo
     }
 
     public void confirmFood(String userCityId, String goodInfo) {
-        LiKingApi.confirmFood(Preference.getToken(), userCityId, goodInfo, new RequestUiLoadingCallback<NutritionMealConfirmResult>(mContext, R.string.loading_data) {
+        LiKingApi.confirmFood(LikingPreference.getToken(), userCityId, goodInfo, new RequestUiLoadingCallback<NutritionMealConfirmResult>(mContext, R.string.loading_data) {
             @Override
             public void onSuccess(NutritionMealConfirmResult result) {
                 super.onSuccess(result);
@@ -43,7 +43,7 @@ public class NutritionMealConfirmPresenter extends BasePresenter<NutritionMealCo
     }
 
     public void submitFoodOrder(String gymId, String takeTime, String couponCode, String goodInfo, String payType) {
-        LiKingApi.submitDishesOrder(Preference.getToken(), gymId, takeTime, couponCode, goodInfo, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
+        LiKingApi.submitDishesOrder(LikingPreference.getToken(), gymId, takeTime, couponCode, goodInfo, payType, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);

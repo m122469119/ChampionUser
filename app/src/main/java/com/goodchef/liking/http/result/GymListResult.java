@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/26 下午9:20
  */
-public class GymListResult extends BaseResult {
+public class GymListResult extends LikingResult {
     @SerializedName("data")
     private GymData mGymData;
 
@@ -23,7 +22,7 @@ public class GymListResult extends BaseResult {
         mGymData = gymData;
     }
 
-    public static class GymData extends BaseData{
+    public static class GymData extends Data {
         @SerializedName("gym_list")
         private List<Shop> gymList;
 
@@ -35,7 +34,7 @@ public class GymListResult extends BaseResult {
             this.gymList = gymList;
         }
 
-        public static class Shop extends BaseData{
+        public static class Shop extends Data {
             @SerializedName("gym_id")
             private String gymId;
             @SerializedName("name")

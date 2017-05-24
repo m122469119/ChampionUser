@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/8/22 下午3:49
  */
-public class MyChargeGroupCoursesDetailsResult extends BaseResult {
+public class MyChargeGroupCoursesDetailsResult extends LikingResult {
     @SerializedName("data")
     private MyChargeGroupCoursesDetails data;
 
@@ -21,7 +20,7 @@ public class MyChargeGroupCoursesDetailsResult extends BaseResult {
         this.data = data;
     }
 
-    public static class MyChargeGroupCoursesDetails extends BaseData{
+    public static class MyChargeGroupCoursesDetails extends Data {
         /**
          * order_id : 4639552308779182689
          * course_name : 跑步机HIIT变速跑

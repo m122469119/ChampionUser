@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class BannerResult extends BaseResult {
+public class BannerResult extends LikingResult {
 
     @SerializedName("data")
     private BannerData mBannerData;
@@ -43,7 +42,7 @@ public class BannerResult extends BaseResult {
             return mBannerList;
         }
 
-        public static class Banner extends BaseData {
+        public static class Banner extends Data {
             @SerializedName("img_url")
             private String mImgUrl;
             @SerializedName("load_url")

@@ -3,12 +3,12 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -17,7 +17,8 @@ import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.ConfirmBuyCardView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
+
 
 /**
  * 说明:
@@ -30,7 +31,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
     }
 
     public void confirmBuyCard(int type, int categoryId, String gymId) {
-        LiKingApi.confirmCard(Preference.getToken(), type, categoryId, gymId, new RequestCallback<ConfirmBuyCardResult>() {
+        LiKingApi.confirmCard(LikingPreference.getToken(), type, categoryId, gymId, new RequestCallback<ConfirmBuyCardResult>() {
             @Override
             public void onSuccess(ConfirmBuyCardResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -51,7 +52,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
                         });
                         builder.create().setCancelable(false);
                         builder.create().show();
-                    } else if (result.getCode() == 240000 || result.getCode() == 240001) {
+                    } else if (result.getCode() == LiKingRequestCode.NO_GYM || result.getCode() == LiKingRequestCode.HAS_OTHER_GYM_CARD) {
                         mView.updateErrorView(result.getMessage());
                     } else {
                         mView.showToast(result.getMessage());
@@ -67,7 +68,7 @@ public class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
     }
 
     public void submitBuyCardData(int cardId, int type, String couponCode, String payType, String gymId) {
-        LiKingApi.submitBuyCardData(Preference.getToken(), cardId, type, couponCode, payType, gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
+        LiKingApi.submitBuyCardData(LikingPreference.getToken(), cardId, type, couponCode, payType, gymId, new RequestUiLoadingCallback<SubmitPayResult>(mContext, R.string.loading) {
             @Override
             public void onSuccess(SubmitPayResult result) {
                 super.onSuccess(result);

@@ -3,7 +3,7 @@ package com.goodchef.liking.http.result.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/8/23 上午10:55
  */
-public class PlacesData extends BaseData implements Parcelable {
+public class PlacesData extends Data implements Parcelable {
 
     /**
      * gym_id : 1

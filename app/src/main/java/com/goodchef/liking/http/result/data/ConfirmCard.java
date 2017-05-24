@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/29 下午4:21
  */
-public class ConfirmCard extends BaseData {
+public class ConfirmCard extends Data {
 
     @SerializedName("card_id")
     private int cardId;

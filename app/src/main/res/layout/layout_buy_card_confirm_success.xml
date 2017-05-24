@@ -61,7 +61,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="@string/gym_name"
+                        android:text="@string/gymName"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_small"/>
 
@@ -99,7 +99,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="2.2"
                         android:gravity="left"
-                        android:text="@string/gym_address"
+                        android:text="@string/gymAddress"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_small"/>
 

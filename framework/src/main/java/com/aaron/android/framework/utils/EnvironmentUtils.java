@@ -184,15 +184,6 @@ public class EnvironmentUtils {
             return sTestMode;
         }
 
-        /**
-         * 是否处于测试模式，由于gradle的BuildConfig.DEBUG无法正确获取，使用这个函数代替，当解决了这个问题之后则改回BuildConfig.DEBUG
-         *
-         * @return true/false
-         */
-        public static boolean isDebugMode() {
-            return sTestMode;
-        }
-
         public static String getAppFlag() {
             return sAppFlag;
         }

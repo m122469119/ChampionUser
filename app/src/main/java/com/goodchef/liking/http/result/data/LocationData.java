@@ -1,11 +1,11 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 
 /**
  * Created by Lennon on 16/3/2.
  */
-public class LocationData extends BaseData{
+public class LocationData extends Data {
     private String cityId;
     private String districtId;
     private String longitude;

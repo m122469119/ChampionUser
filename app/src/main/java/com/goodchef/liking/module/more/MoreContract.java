@@ -2,16 +2,16 @@ package com.goodchef.liking.module.more;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.CheckUpdateAppResult;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.LikingBaseRequestObserver;
-import com.goodchef.liking.module.base.ProgressObserver;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
+import com.goodchef.liking.module.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
 /**
  * Created on 17/3/15.
@@ -40,22 +40,14 @@ class MoreContract {
          */
         void checkAppUpdate() {
             mMoreModel.getCheckUpdateAppResult()
-                    .subscribe(new LikingBaseRequestObserver<CheckUpdateAppResult>() {
+                    .subscribe(new LikingBaseObserver<CheckUpdateAppResult>(mContext, mView) {
                         @Override
                         public void onNext(CheckUpdateAppResult result) {
-                            super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mMoreModel.saveUpdateInfo(result.getData());
-                                mView.updateCheckUpdateAppView(result.getData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            if (result == null) return;
+                            mMoreModel.saveUpdateInfo(result.getData());
+                            mView.updateCheckUpdateAppView(result.getData());
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                        }
                     });
         }
 
@@ -63,22 +55,12 @@ class MoreContract {
          * 用户登出
          */
         void loginOut() {
-            mMoreModel.userLogout(UrlList.sHostVersion, Preference.getToken(), "")
-                    .subscribe(new ProgressObserver<BaseResult>(mContext, R.string.loading_data) {
+            mMoreModel.userLogout(UrlList.sHostVersion, LikingPreference.getToken(), "")
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
-                        public void onNext(BaseResult result) {
-                            super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mMoreModel.clearUserInfo();
-                                mView.updateLoginOut();
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void onNext(LikingResult likingResult) {
+                            mMoreModel.clearUserInfo();
+                            mView.updateLoginOut();
                         }
                     });
         }

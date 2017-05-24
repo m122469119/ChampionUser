@@ -3,7 +3,6 @@ package com.goodchef.liking.widgets.stickyheaderrecyclerview;
 import android.support.v7.widget.RecyclerView;
 
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
-import com.umeng.message.proguard.T;
 
 import java.util.ArrayList;
 import java.util.Arrays;

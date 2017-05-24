@@ -21,7 +21,7 @@ import de.greenrobot.event.EventBus;
  *          基类，
  */
 public class BaseActivity extends AppCompatActivity {
-    public final String TAG = getClass().getName();
+    protected final String TAG = getClass().getName();
     public static boolean isPause = false;
 
     @Override

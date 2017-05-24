@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ import java.util.Set;
  * @version 1.0.0
  */
 
-public class HomeAnnouncement extends BaseData {
+public class HomeAnnouncement extends Data {
     Set<NoticeData> mNoticeDatas;
 
 

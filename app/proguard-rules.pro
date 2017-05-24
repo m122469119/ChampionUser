@@ -158,7 +158,7 @@
     *;
 }
 
--keep class com.aaron.android.framework.library.web.NativeMethod {
+-keep class com.aaron.android.framework.base.widget.web.NativeMethod {
 *;}
 
 -keep class com.iflytek.**{*;}
@@ -198,7 +198,7 @@
 -keep class com.github.mikephil.charting.** { *; }
 
 ####### 支付宝 start ########
--libraryjars ../thirdparty/libs/alipaySingle-20160825.jar
+-libraryjars ../pay/libs/alipaySingle-20160825.jar
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}
 -keep class com.alipay.android.app.IRemoteServiceCallback{*;}
@@ -227,6 +227,9 @@
 -dontwarn com.android.volley.**
 -dontwarn org.android.agoo.**
 -dontwarn okio.**
+-dontnote android.net.http.*
+-dontnote org.apache.**
+-dontnote org.apache.http.**
 -dontwarn retrofit2.**
 -dontwarn com.amap.api.**
 -keep class okio.** { *; }

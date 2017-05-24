@@ -7,7 +7,7 @@
                  android:label="@string/app_name"
         >
         <activity
-            android:name=".base.web.HDefaultWebActivity"
+            android:name=".base.widget.web.HDefaultWebActivity"
             android:screenOrientation="portrait"
             >
         </activity>

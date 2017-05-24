@@ -2,17 +2,17 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.goodchef.liking.http.result.LikingResult;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.SelfHelpGroupCoursesView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -27,7 +27,7 @@ public class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCo
     }
 
     public void getSelfHelpCourses(String gymId) {
-        LiKingApi.getSelfCorsesTimeList(Preference.getToken(), gymId, new RequestCallback<SelfHelpGroupCoursesResult>() {
+        LiKingApi.getSelfCorsesTimeList(LikingPreference.getToken(), gymId, new RequestCallback<SelfHelpGroupCoursesResult>() {
             @Override
             public void onSuccess(SelfHelpGroupCoursesResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
@@ -45,17 +45,17 @@ public class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCo
     }
 
     public void sendOrderRequest(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum) {
-        LiKingApi.orderCourses(Preference.getToken(), gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum, new RequestUiLoadingCallback<BaseResult>(mContext, R.string.loading) {
+        LiKingApi.orderCourses(LikingPreference.getToken(), gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum, new RequestUiLoadingCallback<LikingResult>(mContext, R.string.loading) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext, result)) {
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
                     mView.updateOrderView();
-                } else if (result.getCode() == 22013) {
-                   mView.updateNoCardView(result.getMessage());
+                } else if (likingResult.getCode() == 22013) {
+                   mView.updateNoCardView(likingResult.getMessage());
                 } else {
                     mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 

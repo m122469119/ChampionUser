@@ -10,13 +10,13 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.BuyCardConfirmActivity;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
-import com.goodchef.liking.fragment.LikingBuyCardFragment;
-import com.goodchef.liking.fragment.LikingLessonFragment;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.storage.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -62,7 +62,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
      * 从本地拿到定位的经纬度和城市等信息
      */
     private void setLocationData() {
-        LocationData locationData = Preference.getLocationData();
+        LocationData locationData = LikingPreference.getLocationData();
         if (locationData != null) {
             longitude = locationData.getLongitude();
             latitude = locationData.getLatitude();
@@ -138,7 +138,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
     }
 
     @Override
-    public void handleNetworkFailure() {
-        mStateView.setState(StateView.State.FAILED);
+    public void changeStateView(StateView.State state) {
+        mStateView.setState(state);
     }
 }

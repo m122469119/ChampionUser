@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 
 /**
  * Created on 2017/3/10
@@ -9,5 +9,5 @@ import com.aaron.android.codelibrary.http.result.BaseData;
  * @version 1.0.0
  */
 
-public class Venue extends BaseData {
+public class Venue extends Data {
 }

@@ -1,1 +1,1 @@
-include ':app', ':framework', ':camera', ':pay', ':share', ':common', ':map', ':jpush', ':codelibrary'
+include ':app', ':framework', ':camera', ':pay', ':share', ':common', ':map', ':jpush', ':http', ':imageloader'

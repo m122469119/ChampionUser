@@ -24,10 +24,10 @@ public class RequestParamsHelper {
 
 
 
-    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isDebugMode() ? "testCcmsIam500QiangA" : "XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F"; //app签名key
+    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isTestMode() ? "testCcmsIam500QiangA" : "XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F"; //app签名key
 
     //正式环境的支付公钥为(yGcNQznPTvusj7Y6rMI5)
-    public static final String SET_PASSWORD_KEY = EnvironmentUtils.Config.isDebugMode() ? "vZr8m0erpGqLbLThv4ov" : "yGcNQznPTvusj7Y6rMI5";//测试环境支付公钥
+    public static final String SET_PASSWORD_KEY = EnvironmentUtils.Config.isTestMode() ? "vZr8m0erpGqLbLThv4ov" : "yGcNQznPTvusj7Y6rMI5";//测试环境支付公钥
 
     public static String getSignature(String timeStamp, String requestId) {
         StringBuffer stringBuffer = new StringBuffer();

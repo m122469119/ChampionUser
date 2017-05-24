@@ -2,17 +2,20 @@ package com.goodchef.liking.module.login;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
+import com.aaron.common.utils.RegularUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.ProgressObserver;
-import com.goodchef.liking.module.data.remote.LikingNewApi;
+import com.goodchef.liking.module.data.remote.ApiException;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 /**
  * Created on 17/3/13.
@@ -33,57 +36,113 @@ class LoginContract {
 
         /**
          * 获取验证码
+         *
          * @param phone 手机号码
          */
         void getVerificationCode(String phone) {
-            LikingNewApi.getInstance().getVerificationCode(phone)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data) {
+            Observable
+                    .just(phone)
+                    .filter(new Predicate<String>() {
+                        @Override
+                        public boolean test(String s) throws Exception {
+                            return checkPhone(s);
+                        }
+                    })
+                    .flatMap(new Function<String, ObservableSource<VerificationCodeResult>>() {
+                        @Override
+                        public ObservableSource<VerificationCodeResult> apply(String s) throws Exception {
+                            return mLoginModel.getVerificationCode(s);
+                        }
+                    })
+                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(VerificationCodeResult result) {
-                            super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateVerificationCodeView(result.getVerificationCodeData());
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                            mView.updateVerificationCodeView(result.getVerificationCodeData());
+                            mView.myCountdownTimeStart();
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
                         }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                        }
+
                     });
         }
 
+
+        /**
+         * 校验手机号码
+         */
+        private boolean checkPhone(String phone) {
+            if (StringUtils.isEmpty(phone)) {
+                mView.showToast(mContext.getString(R.string.hint_login_phone));
+                return false;
+            }
+            if (!RegularUtils.isMobileExact(phone)) {
+                mView.showToast(mContext.getString(R.string.phone_format_error));
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * 检验验证码
+         *
+         * @param captcha
+         * @return
+         */
+        private boolean checkCaptcha(String captcha) {
+            if (StringUtils.isEmpty(captcha)) {
+                mView.showToast(mContext.getString(R.string.version_code_not_blank));
+                return false;
+            }
+            return true;
+        }
+
+
         /**
          * 用户登陆
-         * @param phone 手机号码
+         *
+         * @param phone   手机号码
          * @param captcha 验证码
          */
-        void userLogin(String phone, String captcha) {
-            mLoginModel.getLoginResult(phone, captcha)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data) {
+        void userLogin(final String phone, final String captcha) {
+            Observable
+                    .just(1)
+                    .filter(new Predicate<Object>() {
+                        @Override
+                        public boolean test(Object o) throws Exception {
+                            return checkPhone(phone);
+                        }
+                    })
+                    .filter(new Predicate<Object>() {
+                        @Override
+                        public boolean test(Object o) throws Exception {
+                            return checkCaptcha(captcha);
+                        }
+                    })
+                    .flatMap(new Function<Object, ObservableSource<UserLoginResult>>() {
+                        @Override
+                        public ObservableSource<UserLoginResult> apply(Object o) throws Exception {
+                            return mLoginModel.getLoginResult(phone, captcha);
+                        }
+                    })
+
+
+                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(UserLoginResult value) {
-                            super.onNext(value);
-                            if (LiKingVerifyUtils.isValid(mContext, value)) {
-                                UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
-                                if (userLoginData != null) {
-                                    mLoginModel.saveLoginUserInfo(userLoginData);
-                                    mView.updateLoginView(value.getUserLoginData());
-                                }
-                            } else {
-                                mView.showToast(value.getMessage());
+                            if(value == null) return;
+                            UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
+                            if (userLoginData != null) {
+                                mLoginModel.saveLoginUserInfo(userLoginData);
+                                mView.updateLoginView(value.getUserLoginData());
                             }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
                         }
                     });
         }
@@ -96,5 +155,6 @@ class LoginContract {
 
         void updateLoginOut();
 
+        void myCountdownTimeStart();
     }
 }

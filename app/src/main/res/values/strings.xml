@@ -32,6 +32,7 @@
     <string name="hint_verification_code">请输入验证码</string>
     <string name="login_btn_text">登录</string>
 
+    <string name="loading_upload">正在上传</string>
     <string name="loading_data">数据正在加载…</string>
     <string name="login_exit_message">您确定要退出吗?</string>
 
@@ -189,8 +190,8 @@
     <string name="home_left_menu">[切换]</string>
     <string name="not_free_group_courses">付费团体课</string>
     <string name="share">分享</string>
-    <string name="gym_address">场馆地址</string>
-    <string name="gym_name">场馆名称</string>
+    <string name="gymAddress">场馆地址</string>
+    <string name="gymName">场馆名称</string>
     <string name="buy_card_agree">购卡即同意</string>
     <string name="notice">公告</string>
     <string name="open_the_door">开门</string>
@@ -602,4 +603,7 @@
     <string name="coupons_details">优惠券详情</string>
     <string name="single_people">人</string>
     <string name="confirm_call">您确定拨打电话吗？</string>
+    <string name="exchange_fail">兑换失败</string>
+    <string name="common">共</string>
+    <string name="home">家</string>
 </resources>

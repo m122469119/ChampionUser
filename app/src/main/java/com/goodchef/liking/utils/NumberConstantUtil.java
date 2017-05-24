@@ -32,6 +32,8 @@ public class NumberConstantUtil {
 
     public static final String STR_ZERO = "0";
     public static final String STR_ONE = "1";
+    public static final String STR_TWO = "2";
+    public static final String STR_THREE = "3";
 
 
 

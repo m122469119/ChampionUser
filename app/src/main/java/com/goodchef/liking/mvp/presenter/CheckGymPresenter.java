@@ -2,14 +2,14 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.CheckGymListResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.CheckGymView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -23,7 +23,7 @@ public class CheckGymPresenter extends BasePresenter<CheckGymView> {
     }
 
     public void getGymList(int cityId, String longitude, String latitude) {
-        LiKingApi.getCheckGymList(Preference.getToken(), cityId, longitude, latitude, new RequestCallback<CheckGymListResult>() {
+        LiKingApi.getCheckGymList(LikingPreference.getToken(), cityId, longitude, latitude, new RequestCallback<CheckGymListResult>() {
             @Override
             public void onSuccess(CheckGymListResult result) {
                 if (LiKingVerifyUtils.isValid(mContext, result)) {

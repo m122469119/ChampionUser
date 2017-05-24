@@ -6,7 +6,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.aaron.android.framework.library.imageloader.HImageView
+    <com.aaron.imageloader.code.HImageView
         android:id="@+id/group_lesson_gym_image"
         android:layout_width="match_parent"
         android:layout_height="100dp"

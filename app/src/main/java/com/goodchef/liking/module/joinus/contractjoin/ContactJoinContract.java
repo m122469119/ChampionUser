@@ -2,15 +2,15 @@ package com.goodchef.liking.module.joinus.contractjoin;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.UrlList;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.module.base.ProgressObserver;
+import com.goodchef.liking.module.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.joinus.JoinModel;
 
 /**
@@ -75,21 +75,12 @@ public interface ContactJoinContract {
                 return;
             }
             mJoinModel.joinAppLy(UrlList.sHostVersion, name, phone, city, 0)
-                    .subscribe(new ProgressObserver<BaseResult>(mContext, R.string.loading) {
+                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading, mView) {
                         @Override
-                        public void onNext(BaseResult result) {
-                            super.onNext(result);
-                            if (LiKingVerifyUtils.isValid(mContext, result)) {
-                                mView.updateContactJoinContractView();
-                            } else {
-                                mView.showToast(result.getMessage());
-                            }
+                        public void onNext(LikingResult likingResult) {
+                            mView.updateContactJoinContractView();
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                        }
                     });
         }
 

@@ -1,48 +1,54 @@
 package com.goodchef.liking.http.verify;
 
-import com.aaron.android.codelibrary.http.result.ServerRequestCode;
-
 /**
  * Created on 16/1/27.
  *
  * @author aaron.huang
  * @version 1.0.0
  */
-public interface LiKingRequestCode extends ServerRequestCode {
+public interface LiKingRequestCode {
+    /**请求成功*/
+    int SUCCESS = 0;
     /**非法请求*/
-    public static final int ILLEGAL_REQUEST = 10000;
+    int ILLEGAL_REQUEST = 10000;
     /**非法参数*/
-    public static final int ILLEGAL_ARGUMENT = 10001;
+    int ILLEGAL_ARGUMENT = 10001;
     /**参数缺失异常*/
-    public static final int ARGUMENT_HIATUS_EXCEPTION = 10002;
+    int ARGUMENT_HIATUS_EXCEPTION = 10002;
     /**DB连接异常*/
-    public static final int DB_CONNECTION_EXCEPTION = 10003;
+    int DB_CONNECTION_EXCEPTION = 10003;
     /**redis连接异常*/
-    public static final int REDIS_CONNECTION_EXCEPTION = 10004;
+    int REDIS_CONNECTION_EXCEPTION = 10004;
     /**系统异常,请稍后重试*/
-    public static final int SERVER_EXCEPTION = 10005;
+    int SERVER_EXCEPTION = 10005;
     /**请求超时*/
-    public static final int REQEUST_TIMEOUT = 10006;
+    int REQEUST_TIMEOUT = 10006;
     /**无效手机号*/
-    public static final int INVALID_MOBOLE_NUMBER = 10007;
+    int INVALID_MOBOLE_NUMBER = 10007;
     /**获取验证码失败*/
-    public static final int GET_VERIFICATION_CODE_FAILURE = 10008;
+    int GET_VERIFICATION_CODE_FAILURE = 10008;
     /**非法验证码*/
-    public static final int ILLEGAL_VERIFICATION_CODE = 10009;
+    int ILLEGAL_VERIFICATION_CODE = 10009;
     /**验证码已过期*/
-    public static final int VERIFICATION_INVALID = 10010;
+    int VERIFICATION_INVALID = 10010;
     /**验证码错误，请重试*/
-    public static final int VERIFICATION_INCORRECT = 10011;
+    int VERIFICATION_INCORRECT = 10011;
     /**登录失败*/
-    public static final int LOGIN_FAILURE = 10012;
+    int LOGIN_FAILURE = 10012;
     /**登录态失效，请重新登录*/
-    public static final int LOGIN_TOKEN_INVALID = 10013;
+    int LOGIN_TOKEN_INVALID = 10013;
     /**退出登录失败，请重试*/
-    public static final int LOGOUT_FAILURE = 10014;
+    int LOGOUT_FAILURE = 10014;
     /**购买卡*/
-    public static final int BUY_CARD_CONFIRM = 23009;
+    int BUY_CARD_CONFIRM = 23009;
     /**购买私教课团体课*/
-    public static final int BUY_COURSES_ERROR =221009;
+    int BUY_COURSES_ERROR =221009;
     /**无可用会员卡,请购卡后重试*/
-    public static final int BUY_COURSES_NO_CARD=22013;
+    int BUY_COURSES_NO_CARD=22013;
+    /**您已拥有其他场馆会员卡，无法进行当前操作*/
+    int HAS_OTHER_GYM_CARD=240001;
+    /**场馆不存在*/
+    int NO_GYM=240000;
+    /**该教练下无可约的私教课*/
+    int PRIVATE_COURSES_CONFIRM = 221004;
 }

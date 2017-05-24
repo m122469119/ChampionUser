@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/7/7 下午4:32
  */
-public class GymDetailsResult extends BaseResult {
+public class GymDetailsResult extends LikingResult {
     @SerializedName("data")
     private GymDetailsData data;
 
@@ -23,7 +22,7 @@ public class GymDetailsResult extends BaseResult {
         this.data = data;
     }
 
-    public static class GymDetailsData extends BaseData {
+    public static class GymDetailsData extends Data {
         @SerializedName("name")
         private String name;
         @SerializedName("announcement")
@@ -74,7 +73,7 @@ public class GymDetailsResult extends BaseResult {
             this.imgs = imgs;
         }
 
-        public static class ImgsData extends BaseData{
+        public static class ImgsData extends Data {
             @SerializedName("title")
             private String title;
             @SerializedName("url")
@@ -97,7 +96,7 @@ public class GymDetailsResult extends BaseResult {
             }
         }
 
-        public static class TagData extends BaseData{
+        public static class TagData extends Data {
             /**
              * name : 24小时
              * img_url : http://testapp.likingfit.com/images/appicon/icon_24.png

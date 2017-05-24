@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * version 1.0.0
  */
 
-public class MyUserOtherInfoResult extends BaseResult {
+public class MyUserOtherInfoResult extends LikingResult {
 
 
     /**
@@ -29,7 +28,7 @@ public class MyUserOtherInfoResult extends BaseResult {
         this.data = data;
     }
 
-    public static class UserOtherInfoData extends BaseData{
+    public static class UserOtherInfoData extends Data {
         /**
          * is_vip : 0
          * card : {}

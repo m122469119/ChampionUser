@@ -2,9 +2,9 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PagerRequestCallback;
 import com.goodchef.liking.http.api.LiKingApi;
@@ -12,7 +12,7 @@ import com.goodchef.liking.http.result.BannerResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.HomeCourseView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -43,7 +43,7 @@ public class HomeCoursesPresenter extends BasePresenter<HomeCourseView> {
     }
 
     public void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId, BasePagerLoaderFragment fragment) {
-        LiKingApi.getHomeData(Preference.getToken(), longitude, latitude, cityId, districtId, currentPage, gymId, new PagerRequestCallback<CoursesResult>(fragment) {
+        LiKingApi.getHomeData(LikingPreference.getToken(), longitude, latitude, cityId, districtId, currentPage, gymId, new PagerRequestCallback<CoursesResult>(fragment) {
             @Override
             public void onSuccess(CoursesResult result) {
                 super.onSuccess(result);

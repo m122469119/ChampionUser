@@ -3,9 +3,9 @@ package com.goodchef.liking.mvp.presenter;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.aaron.android.codelibrary.http.RequestCallback;
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.map.LocationListener;
@@ -22,7 +22,7 @@ import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.model.ChangeCityModel;
 import com.goodchef.liking.mvp.model.IChangeCityModel;
 import com.goodchef.liking.mvp.view.ChangeCityView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.utils.CityUtils;
 
 import java.util.ArrayList;
@@ -179,7 +179,7 @@ public class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
 
     private void saveLocationInfo(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isLocation) {
         LocationData locationData = new LocationData(cityId, districtId, longitude, latitude, cityName, isLocation);
-        Preference.setLocationData(locationData);
+        LikingPreference.setLocationData(locationData);
     }
 
     public void stopLocation() {

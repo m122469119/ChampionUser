@@ -25,7 +25,7 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
 
-        <com.aaron.android.framework.library.imageloader.HImageView
+        <com.aaron.imageloader.code.HImageView
             android:id="@+id/head_image"
             android:layout_width="65dp"
             android:layout_height="65dp"

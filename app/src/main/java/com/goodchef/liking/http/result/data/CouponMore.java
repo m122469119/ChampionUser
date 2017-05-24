@@ -1,6 +1,6 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 
 /**
  * Created on 2017/3/11
@@ -9,7 +9,7 @@ import com.aaron.android.codelibrary.http.result.BaseData;
  * @version 1.0.0
  */
 
-public class CouponMore extends BaseData {
+public class CouponMore extends Data {
     String title;
     String content;
 

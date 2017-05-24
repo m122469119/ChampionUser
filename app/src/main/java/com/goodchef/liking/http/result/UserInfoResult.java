@@ -1,7 +1,6 @@
 package com.goodchef.liking.http.result;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
-import com.aaron.android.codelibrary.http.result.BaseResult;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Author shaozucheng
  * Time:16/7/4 下午10:52
  */
-public class UserInfoResult extends BaseResult {
+public class UserInfoResult extends LikingResult {
 
     @SerializedName("data")
     private UserInfoData data;
@@ -22,7 +21,7 @@ public class UserInfoResult extends BaseResult {
         this.data = data;
     }
 
-    public class UserInfoData extends BaseData {
+    public class UserInfoData extends Data {
 
         @SerializedName("avatar")
         private String avatar;

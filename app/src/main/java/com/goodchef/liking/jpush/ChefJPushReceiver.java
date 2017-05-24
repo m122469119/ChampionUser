@@ -11,16 +11,16 @@ import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
 import com.aaron.android.framework.base.ui.BaseActivity;
-import com.aaron.android.framework.base.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.activity.LikingHomeActivity;
-import com.goodchef.liking.activity.MyLessonActivity;
-import com.goodchef.liking.activity.MyOrderActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.http.result.data.AnnouncementDirect;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 import com.goodchef.liking.module.card.my.MyCardActivity;
+import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
 
@@ -64,7 +64,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-            Preference.setJPushRegistrationId(regId);
+            LikingPreference.setJPushRegistrationId(regId);
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             LogUtils.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
             processCustomMessage(context, bundle);
@@ -205,7 +205,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         if (announcement == null || announcement.getData() == null) {
             return;
         }
-        Preference.setHomeAnnouncementId(announcement.getData());
+        LikingPreference.setHomeAnnouncementId(announcement.getData());
 
         Intent intent = new Intent(context, LikingHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -282,7 +282,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
             return;
         }
 
-        Preference.setHomeAnnouncementId(announcement.getData());
+        LikingPreference.setHomeAnnouncementId(announcement.getData());
 
         if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context)) || BaseActivity.isPause){
             Intent resultIntent = new Intent(context, LikingHomeActivity.class);
@@ -299,7 +299,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     announcement.getData().getGymName(),
                     announcement.getData().getGymContent(),
                     resultPendingIntent);
-        } else if (AppStatusUtils.getTopActivityClass(context).equals("com.goodchef.liking.activity.LikingHomeActivity")) {
+        } else if (AppStatusUtils.getTopActivityClass(context).equals("com.goodchef.liking.module.home.LikingHomeActivity")) {
             Intent intent = new Intent(context, LikingHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(LikingHomeActivity.ACTION, LikingHomeActivity.SHOW_PUSH_NOTICE_RECEIVED);

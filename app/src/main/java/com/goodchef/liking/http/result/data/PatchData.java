@@ -1,12 +1,12 @@
 package com.goodchef.liking.http.result.data;
 
-import com.aaron.android.codelibrary.http.result.BaseData;
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Lennon on 16/3/12.
  */
-public class PatchData extends BaseData
+public class PatchData extends Data
 {
     @SerializedName("patch")
     private String patchUrl;

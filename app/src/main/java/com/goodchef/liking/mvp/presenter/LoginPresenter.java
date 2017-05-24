@@ -2,9 +2,9 @@ package com.goodchef.liking.mvp.presenter;
 
 import android.content.Context;
 
-import com.aaron.android.codelibrary.http.RequestError;
-import com.aaron.android.codelibrary.http.result.BaseResult;
-import com.aaron.android.framework.base.mvp.BasePresenter;
+import com.aaron.http.code.RequestError;
+import com.goodchef.liking.http.result.LikingResult;
+import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.callback.RequestUiLoadingCallback;
@@ -12,7 +12,7 @@ import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.mvp.view.LoginView;
-import com.goodchef.liking.module.data.local.Preference;
+import com.goodchef.liking.module.data.local.LikingPreference;
 
 /**
  * 说明:
@@ -51,8 +51,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 super.onSuccess(result);
                 if (LiKingVerifyUtils.isValid(mContext, result)) {
                     mView.updateLoginView(result.getUserLoginData());
-                    Preference.clearAnnouncementId();
-                    Preference.clearHomeAnnouncement();
+                    LikingPreference.clearAnnouncementId();
+                    LikingPreference.clearHomeAnnouncement();
                 }else {
                     mView.showToast(result.getMessage());
                 }
@@ -67,15 +67,15 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     public  void userLoginOut(){
         //极光推送的id,有就传，没有可以不传或者传0
-        String jPushRegisterId = Preference.getJPushRegistrationId();
-        LiKingApi.userLoginOut(Preference.getToken(), jPushRegisterId, new RequestUiLoadingCallback<BaseResult>(mContext,R.string.loading_data) {
+        String jPushRegisterId = LikingPreference.getJPushRegistrationId();
+        LiKingApi.userLoginOut(LikingPreference.getToken(), jPushRegisterId, new RequestUiLoadingCallback<LikingResult>(mContext,R.string.loading_data) {
             @Override
-            public void onSuccess(BaseResult result) {
-                super.onSuccess(result);
-                if (LiKingVerifyUtils.isValid(mContext,result)){
+            public void onSuccess(LikingResult likingResult) {
+                super.onSuccess(likingResult);
+                if (LiKingVerifyUtils.isValid(mContext, likingResult)){
                     mView.updateLoginOut();
                 }else {
-                    mView.showToast(result.getMessage());
+                    mView.showToast(likingResult.getMessage());
                 }
             }
 
