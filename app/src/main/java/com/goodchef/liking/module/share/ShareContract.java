@@ -1,4 +1,4 @@
-package com.goodchef.liking.module.course;
+package com.goodchef.liking.module.share;
 
 import android.content.Context;
 import android.view.View;
@@ -10,6 +10,7 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.share.weixin.WeixinShare;
 import com.aaron.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.ShareResult;
@@ -31,63 +32,44 @@ public interface ShareContract {
 
      class SharePresenter  extends BasePresenter<ShareView>{
 
+         private ShareModel mShareModel;
          public SharePresenter(Context context, ShareView mainView) {
              super(context, mainView);
+             mShareModel = new ShareModel();
          }
 
          //私教课分享
          public void getPrivateShareData(String trainId) {
-             LiKingApi.getPrivateCoursesShare(trainId, new RequestCallback<ShareResult>() {
+             mShareModel.getPrivateCoursesShare(trainId)
+             .subscribe(new LikingBaseObserver<ShareResult>(mContext, mView) {
                  @Override
-                 public void onSuccess(ShareResult result) {
-                     if (LiKingVerifyUtils.isValid(mContext, result)) {
-                         mView.updateShareView(result.getShareData());
-                     } else {
-                         mView.showToast(result.getMessage());
-                     }
-                 }
-
-                 @Override
-                 public void onFailure(RequestError error) {
-
+                 public void onNext(ShareResult value) {
+                     if(value == null) return;
+                     mView.updateShareView(value.getShareData());
                  }
              });
          }
 
          //团体课分享
          public void getGroupShareData(String scheduleId) {
-             LiKingApi.getGroupCoursesShare(scheduleId, new RequestCallback<ShareResult>() {
+             mShareModel.getGroupCoursesShare(scheduleId)
+             .subscribe(new LikingBaseObserver<ShareResult>(mContext, mView) {
                  @Override
-                 public void onSuccess(ShareResult result) {
-                     if (LiKingVerifyUtils.isValid(mContext, result)) {
-                         mView.updateShareView(result.getShareData());
-                     } else {
-                         mView.showToast(result.getMessage());
-                     }
-                 }
-
-                 @Override
-                 public void onFailure(RequestError error) {
-
+                 public void onNext(ShareResult value) {
+                     if(value == null) return;
+                     mView.updateShareView(value.getShareData());
                  }
              });
          }
 
          //我的运动数据分享
          public void getUserShareData() {
-             LiKingApi.getUserShare(LikingPreference.getToken(), new RequestCallback<ShareResult>() {
+             mShareModel.getUserShare()
+             .subscribe(new LikingBaseObserver<ShareResult>(mContext, mView) {
                  @Override
-                 public void onSuccess(ShareResult result) {
-                     if (LiKingVerifyUtils.isValid(mContext, result)) {
-                         mView.updateShareView(result.getShareData());
-                     } else {
-                         mView.showToast(result.getMessage());
-                     }
-                 }
-
-                 @Override
-                 public void onFailure(RequestError error) {
-
+                 public void onNext(ShareResult value) {
+                     if(value == null) return;
+                     mView.updateShareView(value.getShareData());
                  }
              });
          }

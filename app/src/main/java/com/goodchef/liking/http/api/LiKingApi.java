@@ -137,22 +137,6 @@ public class LiKingApi {
                 , callback);
     }
 
-
-    /***
-     * 上传设备信息
-     *
-     * @param token           token
-     * @param device_id       设备id
-     * @param device_token    设备token
-     * @param registration_id 极光推送id
-     * @param callback        RequestCallback
-     */
-    public static void uploadUserDevice(String token, String device_id, String device_token, String registration_id, RequestCallback<LikingResult> callback) {
-        VolleyHttpRequestClient.doPost(UrlList.USER_DEVICE, LikingResult.class, getCommonRequestParams().append(KEY_TOKEN, token)
-                .append("device_id", device_id).append("device_token", device_token).append("registration_id", registration_id).append("os_version", Build.VERSION.RELEASE)
-                .append("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL), callback);
-    }
-
     /**
      * 上报错误接口
      *

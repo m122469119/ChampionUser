@@ -32,6 +32,7 @@ import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.http.result.PrivateCoursesResult;
 import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.http.result.SubmitPayResult;
@@ -340,6 +341,21 @@ public interface LikingApiService {
     Observable<LikingResult> uploadUserDevice(@Path(PATH_VERSION) String version,
                                               @FieldMap Map<String, String> map);
 
+    @FormUrlEncoded
+    @POST(Urls.TRAINER_SHARE)
+    Observable<ShareResult> getPrivateCoursesShare(@Path(PATH_VERSION) String version,
+                                                   @Field("trainer_id") String trainerId);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_TEAM_SHARE)
+    Observable<ShareResult> getGroupCoursesShare(@Path(PATH_VERSION) String version,
+                                                 @Field("schedule_id") String scheduleId);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_EXERCISE_SHARE)
+    Observable<ShareResult> getUserShare(@Path(PATH_VERSION) String version,
+                                         @Field(KEY_TOKEN) String token);
+
     class Urls {
         private static final String sVersion = "{version}/";
         /**
@@ -599,6 +615,21 @@ public interface LikingApiService {
          * 上报手机信息
          */
         public static final String USER_DEVICE = sVersion + "user/device";
+
+        /**
+         * 私教课分享
+         */
+        public static final String TRAINER_SHARE = sVersion + "user/trainer-share";
+
+        /**
+         * 团体课分享
+         */
+        public static final String USER_TEAM_SHARE = sVersion + "user/team-share";
+
+        /**
+         * 运动数据分享
+         */
+        public static final String USER_EXERCISE_SHARE = sVersion + "user/exercise-share";
 
     }
 }
