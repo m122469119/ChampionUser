@@ -32,36 +32,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class EnvironmentUtils {
     private static final String TAG = "EnvironmentUtils";
-
     private static String mPackageName;
-    private static String mSDCardPath;
-    private static String mSecondSDCardPath;
-    private static String mSecondSDCardValidFolder;
-    private static final String HIDE_PATH_KEY_WORD = File.separator + ".";
-
-    static {
-        String path = "sdcard";
-        File pathFile = new File(path);
-        if (!pathFile.exists() || !pathFile.canWrite()) {
-            pathFile = android.os.Environment.getExternalStorageDirectory();
-            if (!pathFile.canWrite()) {
-                File parentFile = pathFile.getParentFile();
-                File[] listFiles = parentFile.listFiles();
-                for (int i = 0; i < listFiles.length; i++) {
-                    if (listFiles[i].isDirectory() && listFiles[i].canWrite()) {
-                        pathFile = listFiles[i];
-                        break;
-                    }
-                }
-            }
-        }
-        try {
-            path = pathFile.getCanonicalPath();
-        } catch (Exception ignored) {
-            path = pathFile.getAbsolutePath();
-        }
-        mSDCardPath = path;
-    }
 
     /**
      * 初始化系统环境
@@ -73,9 +44,7 @@ public class EnvironmentUtils {
             Config.init(configData);
         }
         Network.init(context);
-//        GeneralParameters.init(context);
         mPackageName = context.getPackageName();
-//        resetAsyncTaskDefaultExecutor();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
