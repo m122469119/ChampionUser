@@ -73,10 +73,11 @@ public class CameraPhotoHelper {
      * 拍照
      */
     public void takePhotoFromCamera() {
-        new RxPermissions(mContext).request(Manifest.permission.CAMERA)
+        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) return;
                         String status = Environment.getExternalStorageState();
                         if (status.equals(Environment.MEDIA_MOUNTED)) {
                             try {
@@ -87,13 +88,14 @@ public class CameraPhotoHelper {
                                 }
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 File f = new File(filePicScreenshot, localTempImageFileName);
-
-                                Uri photoURI = FileProvider.getUriForFile(mContext,
-                                        mContext.getApplicationContext().getPackageName() + ".provider", f);
-
-                               // Uri u = Uri.fromFile(f);
+                                Uri u;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.fileprovider", f);
+                                } else {
+                                    u = Uri.fromFile(f);
+                                }
                                 intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
                                 mContext.startActivityForResult(intent, REQUEST_CODE_CAMERA);
                                 String imagePath = f.getAbsolutePath();
                                 setCameraPicturePath(imagePath);
@@ -123,6 +125,7 @@ public class CameraPhotoHelper {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) return;
                         Intent intent = new Intent(mContext, AlbumActivity.class);
                         intent.putExtra(INTENT_KEY_NEED_SELECT_AMOUNT, needSelectAmount);
                         mContext.startActivityForResult(intent, REQUEST_CODE_ALBUM);

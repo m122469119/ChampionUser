@@ -107,8 +107,7 @@ public class LikingHomeContract {
                     .subscribe(new Consumer<Boolean>() {
                         @Override
                         public void accept(Boolean aBoolean) throws Exception {
-                            if (!aBoolean)
-                                return;
+                            if (!aBoolean) return;
                             HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
                             View view = LayoutInflater.from(context).inflate(R.layout.item_textview, null, false);
                             TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
