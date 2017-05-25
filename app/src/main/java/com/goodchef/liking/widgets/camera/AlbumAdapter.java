@@ -1,5 +1,6 @@
 package com.goodchef.liking.widgets.camera;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -65,9 +66,9 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
 
         @Override
         public void bindViews(final String dirPath) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mImageView, mImageDirPath+"/"+dirPath)
+            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mImageView, mImageDirPath+"/"+dirPath)
                     .resize(100,100)
-                    .setLoadType(ImageLoader.LoaderType.FILE).build());
+                    .setLoadType(ImageLoader.LoaderType.FILE).build(), (Activity) mContext);
             mImageButton.setImageResource(R.drawable.pay_radio_gray_uncheck);
             mImageView.setColorFilter(null);
             mImageView.setOnClickListener(new View.OnClickListener() {

@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
     @Override
     protected ShopPingCartViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_shopping_cart, parent, false);
-        return new ShopPingCartViewHolder(view);
+        return new ShopPingCartViewHolder(view, mContext);
     }
 
       class ShopPingCartViewHolder extends BaseRecycleViewHolder<Food> {
@@ -56,8 +57,8 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
         ImageView mReduceImageView;//减按钮
         ImageView mAddImageView;//加按钮
 
-        public ShopPingCartViewHolder(View itemView) {
-            super(itemView);
+        public ShopPingCartViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mFoodHImageView = (HImageView) itemView.findViewById(R.id.food_image);
             mDishesNameTextView = (TextView) itemView.findViewById(R.id.dishes_name);
             mSurplusNumberTextView = (TextView) itemView.findViewById(R.id.surplus_number);
@@ -75,7 +76,7 @@ public class ShoppingCartAdapter extends BaseRecycleViewAdapter<ShoppingCartAdap
             mSurplusNumberTextView.setText("还剩" + object.getLeftNum() + "份");
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mFoodHImageView, imgUrl);
+                HImageLoaderSingleton.loadImage(mFoodHImageView, imgUrl, (Activity) mContext);
             }
             int restStock = object.getRestStock();
             int selectNum = object.getSelectedOrderNum();

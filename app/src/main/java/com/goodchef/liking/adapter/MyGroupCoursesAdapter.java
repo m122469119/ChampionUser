@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         if(mShareListener != null) {
             mSelfShareBtn.setOnClickListener(mShareListener);
         }
-        return new GroupLessonViewHolder(mRootView);
+        return new GroupLessonViewHolder(mRootView, mContext);
     }
 
     class GroupLessonViewHolder extends BaseRecycleViewHolder<MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses> {
@@ -75,8 +76,8 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
         RelativeLayout mMyGroupCoursesLayout;
 
 
-        public GroupLessonViewHolder(View itemView) {
-            super(itemView);
+        public GroupLessonViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mHImageView = (HImageView) itemView.findViewById(R.id.group_lesson_image);
             mPeriodOfValidityTextView = (TextView) itemView.findViewById(R.id.group_lesson_period_of_validity);
             mGroupCoursesNameTextView = (TextView) itemView.findViewById(R.id.group_courses_name);
@@ -102,7 +103,7 @@ public class MyGroupCoursesAdapter extends BaseRecycleViewAdapter<MyGroupCourses
             mSelfShareBtn.setTag(object);
             String imageUrl = object.getCourseUrl();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.loadImage(mHImageView, imageUrl, (Activity) mContext);
             }
             int scheduleType = object.getScheduleType();
             int isFree = object.getIsFee();

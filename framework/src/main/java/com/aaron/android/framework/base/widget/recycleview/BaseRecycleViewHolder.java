@@ -1,5 +1,6 @@
 package com.aaron.android.framework.base.widget.recycleview;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -13,12 +14,24 @@ import android.view.View;
 public abstract class BaseRecycleViewHolder<T> extends RecyclerView.ViewHolder {
 
     protected int mPosition;
+    protected Context mContext;
+
     /**
      * Constructor
      * @param itemView Item Root View
      */
     public BaseRecycleViewHolder(View itemView) {
         super(itemView);
+    }
+
+
+    /**
+     * Constructor
+     * @param itemView Item Root View
+     */
+    public BaseRecycleViewHolder(View itemView, Context context) {
+        super(itemView);
+        this.mContext = context;
     }
 
     /**

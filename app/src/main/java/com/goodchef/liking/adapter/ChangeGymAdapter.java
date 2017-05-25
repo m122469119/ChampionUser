@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
     @Override
     protected ChangeGymViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_change_gym, parent, false);
-        return new ChangeGymViewHolder(view);
+        return new ChangeGymViewHolder(view, mContext);
     }
 
     class ChangeGymViewHolder extends BaseRecycleViewHolder<CheckGymListResult.CheckGymData.CheckGym> {
@@ -64,8 +65,8 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
         @BindView(R.id.change_gym_checkBox)
         CheckBox mChangeGymCheckBox;
 
-        public ChangeGymViewHolder(View itemView) {
-            super(itemView);
+        public ChangeGymViewHolder(View itemView, Context context) {
+            super(itemView, context);
             ButterKnife.bind(this, itemView);
             mGymImage.setOnClickListener(gymImagClickListener);
         }
@@ -74,7 +75,7 @@ public class ChangeGymAdapter extends BaseRecycleViewAdapter<ChangeGymAdapter.Ch
         public void bindViews(CheckGymListResult.CheckGymData.CheckGym object) {
             String imageUrl = object.getImg();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mGymImage, imageUrl);
+                HImageLoaderSingleton.loadImage(mGymImage, imageUrl, (Activity) mContext);
             }
 
             if (object.isSelect()) {

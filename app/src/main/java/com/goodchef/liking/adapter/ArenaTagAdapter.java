@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,15 +32,15 @@ public class ArenaTagAdapter extends BaseRecycleViewAdapter<ArenaTagAdapter.Aren
     @Override
     protected ArenaTagViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_arena_tag, parent, false);
-        return new ArenaTagViewHolder(view);
+        return new ArenaTagViewHolder(view, mContext);
     }
 
     public class ArenaTagViewHolder extends BaseRecycleViewHolder<GymDetailsResult.GymDetailsData.TagData> {
         HImageView mHImageView;
         TextView mTextView;
 
-        public ArenaTagViewHolder(View itemView) {
-            super(itemView);
+        public ArenaTagViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mHImageView = (HImageView) itemView.findViewById(R.id.image_tag);
             mTextView = (TextView) itemView.findViewById(R.id.text_tag);
         }
@@ -48,7 +49,7 @@ public class ArenaTagAdapter extends BaseRecycleViewAdapter<ArenaTagAdapter.Aren
         public void bindViews(GymDetailsResult.GymDetailsData.TagData object) {
             String imageUrl = object.getImgUrl();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.loadImage(mHImageView, imageUrl, (Activity) mContext);
             }
             mTextView.setText(object.getName());
         }

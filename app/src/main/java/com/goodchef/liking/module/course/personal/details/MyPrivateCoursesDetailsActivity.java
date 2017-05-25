@@ -177,7 +177,7 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             mTeacherPhone = data.getTrainerPhone();
             String imageUrl = data.getTrainerAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.loadImage(mHImageView, imageUrl, this);
             }
 
             mTimesTextView.setText(data.getDuration());

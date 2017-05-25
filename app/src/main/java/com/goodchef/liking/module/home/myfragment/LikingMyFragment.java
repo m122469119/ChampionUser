@@ -251,8 +251,8 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mPersonNameTextView.setText(LikingPreference.getNickName());
             mPersonPhoneTextView.setText(LikingPreference.getUserPhone());
             if (!StringUtils.isEmpty(LikingPreference.getUserIconUrl())) {
-                HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, LikingPreference.getUserIconUrl());
-                HImageLoaderSingleton.getInstance().loadImage(mHImageViewBackground, LikingPreference.getUserIconUrl());
+                HImageLoaderSingleton.loadImage(mHeadHImageView, LikingPreference.getUserIconUrl(), getActivity());
+                HImageLoaderSingleton.loadImage(mHImageViewBackground, LikingPreference.getUserIconUrl(), getActivity());
             }
             if (LikingPreference.isVIP()) {
                 mIsVip.setVisibility(View.VISIBLE);
@@ -265,7 +265,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             mPersonPhoneTextView.setVisibility(View.GONE);
             mIsVip.setVisibility(View.GONE);
             mHeadHImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_head_default_image));
-            HImageLoaderSingleton.getInstance().loadImage(mHImageViewBackground, "");
+            HImageLoaderSingleton.loadImage(mHImageViewBackground, "", getActivity());
         }
     }
 

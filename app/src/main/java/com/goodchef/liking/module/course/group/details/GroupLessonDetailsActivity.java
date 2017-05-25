@@ -317,7 +317,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
         if (coursesImageList != null && coursesImageList.size() > 0) {
             String coursesImageUrl = coursesImageList.get(0);
             if (!StringUtils.isEmpty(coursesImageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mShopImageView, coursesImageUrl);
+                HImageLoaderSingleton.loadImage(mShopImageView, coursesImageUrl, this);
             }
         }
 

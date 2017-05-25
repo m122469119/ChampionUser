@@ -177,7 +177,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
                 mOrderMoneyTextView.setText(getString(R.string.money_symbol) + object.getOrderAmount());
                 String imageUrl = object.getCardImg();
                 if (!StringUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().loadImage(mCardHImageView, imageUrl);
+                    HImageLoaderSingleton.loadImage(mCardHImageView, imageUrl, MyCardOrderFragment.this.getActivity());
                 }
             }
         }

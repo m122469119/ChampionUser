@@ -86,10 +86,10 @@ public class SexActivity extends AppBarActivity {
 
         mUserNameTextView.setText(userName);
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
+            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
-                    .build());
+                    .build(), this);
         }
 
     }

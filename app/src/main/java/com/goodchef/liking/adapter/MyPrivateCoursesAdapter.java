@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
     @Override
     protected PrivateLessonViewHolder createViewHolder(ViewGroup parent) {
         View mRootView = LayoutInflater.from(mContext).inflate(R.layout.item_private_my_lesson, parent, false);
-        return new PrivateLessonViewHolder(mRootView);
+        return new PrivateLessonViewHolder(mRootView, mContext);
     }
 
     class PrivateLessonViewHolder extends BaseRecycleViewHolder<MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses> {
@@ -45,8 +46,8 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
         TextView mCoursesStateTextView;//状态
         TextView mCompleteCoursesBtn;//完成课程
 
-        public PrivateLessonViewHolder(View itemView) {
-            super(itemView);
+        public PrivateLessonViewHolder(View itemView, Context context) {
+            super(itemView,context);
             mHImageView = (HImageView) itemView.findViewById(R.id.private_lesson_image);
             mTeacherNameTextView = (TextView) itemView.findViewById(R.id.private_teacher_name);
             mCoursesTagsTextView = (TextView) itemView.findViewById(R.id.courses_tags);
@@ -62,7 +63,7 @@ public class MyPrivateCoursesAdapter extends BaseRecycleViewAdapter<MyPrivateCou
             mPeriodOfValidityTextView.setText(object.getStartTime() + " ~ " + object.getEndTime());
             String imageUrl = object.getTrainerAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
+                HImageLoaderSingleton.loadImage(mHImageView, imageUrl, (Activity) mContext);
             }
             int state = object.getStatus();
             setCoursesState(state);

@@ -28,7 +28,7 @@ public class DishesConfirmAdapter extends BaseRecycleViewAdapter<DishesConfirmAd
     @Override
     protected DishesConfirmViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_confirm_dishes, parent, false);
-        return new DishesConfirmViewHolder(view);
+        return new DishesConfirmViewHolder(view, mContext);
     }
 
     public class DishesConfirmViewHolder extends BaseRecycleViewHolder<Food> {
@@ -36,8 +36,8 @@ public class DishesConfirmAdapter extends BaseRecycleViewAdapter<DishesConfirmAd
         TextView mDishesNumberTextView;
         TextView mDishesMoneyTextView;
 
-        public DishesConfirmViewHolder(View itemView) {
-            super(itemView);
+        public DishesConfirmViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mDishesNameTextView = (TextView) itemView.findViewById(R.id.confirm_dishes_name);
             mDishesNumberTextView = (TextView) itemView.findViewById(R.id.confirm_dishes_number);
             mDishesMoneyTextView = (TextView) itemView.findViewById(R.id.confirm_dishes_money);

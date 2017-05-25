@@ -36,7 +36,7 @@ public class BlueToothAdapter extends BaseRecycleViewAdapter<BlueToothAdapter.Bl
     @Override
     protected BlueToothViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.viewholder_blue_tooth, parent, false);
-        return new BlueToothViewHolder(view);
+        return new BlueToothViewHolder(view, getContext());
     }
 
     class BlueToothViewHolder extends BaseRecycleViewHolder<BluetoothDevice> {
@@ -45,8 +45,8 @@ public class BlueToothAdapter extends BaseRecycleViewAdapter<BlueToothAdapter.Bl
         @BindView(R.id.connect_blue_tooth_TextView)
         TextView mConnectBlueToothTextView;
 
-        public BlueToothViewHolder(View itemView) {
-            super(itemView);
+        public BlueToothViewHolder(View itemView, Context context) {
+            super(itemView, context);
             ButterKnife.bind(this, itemView);
         }
 

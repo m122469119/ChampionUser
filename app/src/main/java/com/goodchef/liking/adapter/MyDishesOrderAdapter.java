@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
     @Override
     protected MyDishesOrderViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_dishes_order_list, parent, false);
-        return new MyDishesOrderViewHolder(view);
+        return new MyDishesOrderViewHolder(view, mContext);
     }
 
     class MyDishesOrderViewHolder extends BaseRecycleViewHolder<DishesOrderListResult.DishesOrderData.DishesOrder> {
@@ -62,8 +63,8 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
         RelativeLayout mPayLayout;
         HImageView mDishesHImageView;
 
-        public MyDishesOrderViewHolder(View itemView) {
-            super(itemView);
+        public MyDishesOrderViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mSerialNumberTextView = (TextView) itemView.findViewById(R.id.serial_number);
             mOrderNumberTextView = (TextView) itemView.findViewById(R.id.order_number);
             mOrderStateTextView = (TextView) itemView.findViewById(R.id.order_state);
@@ -92,7 +93,7 @@ public class MyDishesOrderAdapter extends BaseRecycleViewAdapter<MyDishesOrderAd
             setOrderState(state, orderSurplusTime);
             String imageUrl = object.getGymImg();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mDishesHImageView, imageUrl);
+                HImageLoaderSingleton.loadImage(mDishesHImageView, imageUrl, (Activity) mContext);
             }
             mGoPayBtn.setOnClickListener(mClickListener);
             mCancelOrderBtn.setOnClickListener(mClickListener);

@@ -97,10 +97,10 @@ public class SelectHeightActivity extends AppBarActivity{
 
         if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
             LogUtils.i(TAG, mLocalHeadImageUrl);
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
+            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
-                    .build());
+                    .build(), this);
         }
         if (sex == 1) {
             mSexManImage.setVisibility(View.VISIBLE);

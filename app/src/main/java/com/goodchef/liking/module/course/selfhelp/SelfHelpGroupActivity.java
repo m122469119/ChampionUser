@@ -590,9 +590,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         if (imageUrlList != null && imageUrlList.size() > 0) {
             String imageUrl = imageUrlList.get(0).getUrl();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, imageUrl);
+                HImageLoaderSingleton.loadImage(mSelfGymHImageView, imageUrl, this);
             } else {
-                HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, "");
+                HImageLoaderSingleton.loadImage(mSelfGymHImageView, "", this);
             }
         }
         coursesId = mCoursesData.getCourseId();

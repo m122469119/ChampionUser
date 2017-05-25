@@ -88,7 +88,7 @@ public class SelfLessonDetailsActivity extends AppBarActivity implements View.On
         if (coursesImageList != null && coursesImageList.size() > 0) {
             String coursesImageUrl = coursesImageList.get(0).getUrl();
             if (!StringUtils.isEmpty(coursesImageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mShopImageView, coursesImageUrl);
+                HImageLoaderSingleton.loadImage(mShopImageView, coursesImageUrl, this);
             }
         }
         String duration = null;

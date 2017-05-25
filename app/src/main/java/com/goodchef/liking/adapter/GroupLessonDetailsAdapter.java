@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,14 +31,14 @@ public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLesso
     @Override
     protected GroupLessonDetailsViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_group_lesson_details, parent, false);
-        return new GroupLessonDetailsViewHolder(view);
+        return new GroupLessonDetailsViewHolder(view, mContext);
     }
 
     public static class GroupLessonDetailsViewHolder extends BaseRecycleViewHolder<GroupCoursesResult.GroupLessonData.GymImgsData> {
         HImageView mHImageView;
 
-        public GroupLessonDetailsViewHolder(View itemView) {
-            super(itemView);
+        public GroupLessonDetailsViewHolder(View view, Context context) {
+            super(view, context);
             mHImageView = (HImageView) itemView.findViewById(R.id.group_lesson_gym_image);
         }
 
@@ -45,7 +46,7 @@ public class GroupLessonDetailsAdapter extends BaseRecycleViewAdapter<GroupLesso
         public void bindViews(GroupCoursesResult.GroupLessonData.GymImgsData object) {
             String url = object.getUrl();
             if (!TextUtils.isEmpty(url)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, url);
+                HImageLoaderSingleton.loadImage(mHImageView, url, (Activity) mContext);
             }
         }
     }

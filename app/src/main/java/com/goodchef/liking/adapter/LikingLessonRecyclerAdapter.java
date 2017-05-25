@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -56,8 +57,8 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
         private RelativeLayout mGroupLessonLayout;
         private CardView mCardView;
 
-        public LessonViewHolder(View itemView) {
-            super(itemView);
+        public LessonViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mHImageView = (HImageView) itemView.findViewById(R.id.lesson_image);
             mLessonNameTextView = (TextView) itemView.findViewById(R.id.lesson_name);
             mLessonUseTextView = (TextView) itemView.findViewById(R.id.lesson_use);
@@ -97,7 +98,7 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
             if (imageList != null && imageList.size() > 0) {
                 String imageUrl = imageList.get(0);
                 if (!StringUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().loadImage(mHImageView, imageUrl);
+                    HImageLoaderSingleton.loadImage(mHImageView, imageUrl, (Activity) mContext);
                 }
             }
             int type = object.getType();
@@ -155,6 +156,6 @@ public class LikingLessonRecyclerAdapter extends BaseRecycleViewAdapter<LikingLe
     @Override
     protected LessonViewHolder createViewHolder(ViewGroup parent) {
         View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_liking_lesson, parent, false);
-        return new LessonViewHolder(itemView);
+        return new LessonViewHolder(itemView, mContext);
     }
 }

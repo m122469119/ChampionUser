@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class SelectCoursesListAdapter extends BaseRecycleViewAdapter<SelectCours
     @Override
     protected SelectCoursesListViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.viewholder_select_courses_list, parent, false);
-        return new SelectCoursesListViewHolder(view);
+        return new SelectCoursesListViewHolder(view, mContext);
     }
 
     class SelectCoursesListViewHolder extends BaseRecycleViewHolder<SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData> {
@@ -53,8 +54,8 @@ public class SelectCoursesListAdapter extends BaseRecycleViewAdapter<SelectCours
         private CheckBox mCoursesCheckBox;
         private LinearLayout mSelectLayout;
 
-        public SelectCoursesListViewHolder(View itemView) {
-            super(itemView);
+        public SelectCoursesListViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mSelfGymHImageView = (HImageView) itemView.findViewById(R.id.self_help_gym_image);
             mCoursesTrainTextView = (TextView) itemView.findViewById(R.id.group_courses_train_object);
             mGroupCoursesDurationTextView = (TextView) itemView.findViewById(R.id.group_courses_duration);
@@ -70,9 +71,9 @@ public class SelectCoursesListAdapter extends BaseRecycleViewAdapter<SelectCours
             if (imageUrlList != null && imageUrlList.size() > 0) {
                 String imageUrl = imageUrlList.get(0).getUrl();
                 if (!StringUtils.isEmpty(imageUrl)) {
-                    HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, imageUrl);
+                    HImageLoaderSingleton.loadImage(mSelfGymHImageView, imageUrl, (Activity) mContext);
                 } else {
-                    HImageLoaderSingleton.getInstance().loadImage(mSelfGymHImageView, "");
+                    HImageLoaderSingleton.loadImage(mSelfGymHImageView, "", (Activity) mContext);
                 }
             }
             String duration = "";

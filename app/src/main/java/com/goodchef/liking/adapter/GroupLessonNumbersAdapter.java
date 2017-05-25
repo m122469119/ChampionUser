@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -35,7 +36,7 @@ public class GroupLessonNumbersAdapter extends BaseRecycleViewAdapter<GroupLesso
     @Override
     protected GroupLessonNumbersViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_group_lesson_numbers, parent, false);
-        return new GroupLessonNumbersViewHolder(view);
+        return new GroupLessonNumbersViewHolder(view, mContext);
     }
 
     public static class GroupLessonNumbersViewHolder extends BaseRecycleViewHolder<GroupCoursesResult.GroupLessonData.GymNumbersData> {
@@ -44,8 +45,8 @@ public class GroupLessonNumbersAdapter extends BaseRecycleViewAdapter<GroupLesso
         TextView mUserPhone;
         TextView mJoinTime;
 
-        public GroupLessonNumbersViewHolder(View itemView) {
-            super(itemView);
+        public GroupLessonNumbersViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mHImageView = (HImageView) itemView.findViewById(R.id.group_lesson_gym_head_image);
             mUserName = (TextView) itemView.findViewById(R.id.group_lesson_gym_person_name);
             mUserPhone = (TextView) itemView.findViewById(R.id.group_lesson_gym_person_phone);
@@ -57,7 +58,7 @@ public class GroupLessonNumbersAdapter extends BaseRecycleViewAdapter<GroupLesso
         public void bindViews(GroupCoursesResult.GroupLessonData.GymNumbersData object) {
             String url = object.getAvatar();
             if (!TextUtils.isEmpty(url)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHImageView, url);
+                HImageLoaderSingleton.loadImage(mHImageView, url, (Activity) mContext);
             }
             mUserName.setText(object.getName());
             mJoinTime.setText(object.getTime());

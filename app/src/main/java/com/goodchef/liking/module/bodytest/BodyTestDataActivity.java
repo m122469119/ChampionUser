@@ -484,8 +484,8 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
         String imageUrl = bodyUserData.getAvatar();
         if (!StringUtils.isEmpty(imageUrl)) {
             LikingPreference.setUserIconUrl(imageUrl);
-            HImageLoaderSingleton.getInstance().loadImage(mTopBackgroundHImageView, imageUrl);
-            HImageLoaderSingleton.getInstance().loadImage(mHeadHImageView, imageUrl);
+            HImageLoaderSingleton.loadImage(mTopBackgroundHImageView, imageUrl, this);
+            HImageLoaderSingleton.loadImage(mHeadHImageView, imageUrl, this);
         }
     }
 

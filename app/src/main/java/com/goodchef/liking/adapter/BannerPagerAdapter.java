@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +91,7 @@ public class BannerPagerAdapter extends InfinitePagerAdapter implements IconPage
                 return;
             }
             mBanner = banner;
-            HImageLoaderSingleton.getInstance().loadImage(mBannerImageView, banner.getImgUrl());
+            HImageLoaderSingleton.loadImage(mBannerImageView, banner.getImgUrl(), (Activity) mContext);
         }
 
         public BannerResult.BannerData.Banner getBanner() {

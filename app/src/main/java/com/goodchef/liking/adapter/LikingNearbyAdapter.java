@@ -1,5 +1,6 @@
 package com.goodchef.liking.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -49,7 +50,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
     @Override
     protected LikingNearbyViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_liking_nearby, parent, false);
-        return new LikingNearbyViewHolder(view);
+        return new LikingNearbyViewHolder(view, mContext);
     }
 
 
@@ -65,8 +66,8 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
         ImageView mAddImageView;//加按钮
         CardView mCardView;
 
-        public LikingNearbyViewHolder(View itemView) {
-            super(itemView);
+        public LikingNearbyViewHolder(View itemView, Context context) {
+            super(itemView, context);
             mFoodHImageView = (HImageView) itemView.findViewById(R.id.food_image);
             mDishesNameTextView = (TextView) itemView.findViewById(R.id.dishes_name);
             mSurplusNumberTextView = (TextView) itemView.findViewById(R.id.surplus_number);
@@ -112,7 +113,7 @@ public class LikingNearbyAdapter extends BaseRecycleViewAdapter<LikingNearbyAdap
             }
             String imgUrl = object.getCoverImg();
             if (!StringUtils.isEmpty(imgUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mFoodHImageView, imgUrl);
+                HImageLoaderSingleton.loadImage(mFoodHImageView, imgUrl, (Activity) mContext);
             }
             mDishesNameTextView.setTag(object);
             int restStock = object.getRestStock();
