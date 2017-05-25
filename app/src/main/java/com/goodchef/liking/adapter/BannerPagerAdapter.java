@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aaron.common.utils.ListUtils;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.BannerResult;

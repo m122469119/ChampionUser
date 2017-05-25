@@ -13,7 +13,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;

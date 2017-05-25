@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.more;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import com.goodchef.liking.utils.FileDownloaderManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明:更多
@@ -122,31 +125,37 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
 
     private void showCheckUpdateDialog() {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.item_textview, null, false);
-        TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-        textView.setText((mUpdateAppData.getTitle()));
-        builder.setCustomTitle(view);
-        builder.setMessage(mUpdateAppData.getContent());
-
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(R.string.dialog_app_update,
-                new DialogInterface.OnClickListener() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
-                            mFileDownloaderManager = new FileDownloaderManager(MoreActivity.this);
-                            mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
-                        }
-                        dialog.dismiss();
+                    public void accept(Boolean aBoolean) throws Exception {
+                        HBaseDialog.Builder builder = new HBaseDialog.Builder(MoreActivity.this);
+                        View view = LayoutInflater.from(MoreActivity.this).inflate(R.layout.item_textview, null, false);
+                        TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
+                        textView.setText((mUpdateAppData.getTitle()));
+                        builder.setCustomTitle(view);
+                        builder.setMessage(mUpdateAppData.getContent());
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setPositiveButton(R.string.dialog_app_update,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
+                                            mFileDownloaderManager = new FileDownloaderManager(MoreActivity.this);
+                                            mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                });
+                        builder.create().show();
                     }
                 });
-        builder.create().show();
     }
 
     /**

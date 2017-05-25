@@ -1,6 +1,7 @@
 package com.aaron.android.framework.base.storage;
 
 import com.aaron.android.framework.utils.DiskStorageUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.FileUtils;
 import com.aaron.common.utils.LogUtils;
 
@@ -27,6 +28,10 @@ public class DiskStorageManager {
      */
     private static class DemoDiskStorageManagerHolder {
         private static DiskStorageManager sDiskStorageManager = new DiskStorageManager();
+    }
+
+    public DiskStorageManager() {
+        init(EnvironmentUtils.Config.getAppFlag());
     }
 
     /**

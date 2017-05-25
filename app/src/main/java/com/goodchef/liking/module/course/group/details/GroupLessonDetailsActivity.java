@@ -18,7 +18,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.recycleview.RecyclerItemDecoration;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;

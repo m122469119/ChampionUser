@@ -14,7 +14,7 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.ImageLoader;
 import com.aaron.imageloader.code.HImageConfigBuilder;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;

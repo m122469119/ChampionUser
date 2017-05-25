@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class ImageEnviromentUtil {
 
+    private static final String TAG = "ImageEnviromentUtil";
+
     public static File getScreenshot() {
         return new File(DiskStorageManager.getInstance().getImagePath());
     }
@@ -63,8 +65,8 @@ public class ImageEnviromentUtil {
                     options.inSampleSize = (int) Math.pow(2.0D, i);
                     options.inJustDecodeBounds = false;
                     bitmap = BitmapFactory.decodeStream(in, null, options);
-                    Log.e("TTTT", options.outWidth + "");
-                    Log.e("TTTT", options.outHeight + "");
+                    Log.e(TAG, options.outWidth + "");
+                    Log.e(TAG, options.outHeight + "");
                     break;
                 }
                 i += 1;

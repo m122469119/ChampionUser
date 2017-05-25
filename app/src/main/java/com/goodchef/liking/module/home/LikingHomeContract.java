@@ -1,5 +1,7 @@
 package com.goodchef.liking.module.home;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -22,7 +24,9 @@ import com.goodchef.liking.utils.NumberConstantUtil;
 
 import java.util.Set;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -97,31 +101,38 @@ public class LikingHomeContract {
          *
          * @param isForceUpdate
          */
-        private void showCheckUpdateDialog(final Context context, boolean isForceUpdate) {
-            HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
-            View view = LayoutInflater.from(context).inflate(R.layout.item_textview, null, false);
-            TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
-            textView.setText((mUpdateAppData.getTitle()));
-            builder.setCustomTitle(view);
-            builder.setMessage(mUpdateAppData.getContent());
-            if (!isForceUpdate) {
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-            }
-            builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
-                        mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
-                    }
-                    dialog.dismiss();
-                }
-            });
-            builder.create().show();
+        private void showCheckUpdateDialog(final Context context, final boolean isForceUpdate) {
+            new RxPermissions((Activity) context)
+                    .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                            HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
+                            View view = LayoutInflater.from(context).inflate(R.layout.item_textview, null, false);
+                            TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
+                            textView.setText((mUpdateAppData.getTitle()));
+                            builder.setCustomTitle(view);
+                            builder.setMessage(mUpdateAppData.getContent());
+                            if (!isForceUpdate) {
+                                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+                            builder.setPositiveButton(R.string.dialog_app_update, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (!StringUtils.isEmpty(mUpdateAppData.getUrl())) {
+                                        mFileDownloaderManager.downloadFile(mUpdateAppData.getUrl(), DiskStorageManager.getInstance().getApkFileStoragePath());
+                                    }
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.create().show();
+                        }
+                    });
         }
 
         /**

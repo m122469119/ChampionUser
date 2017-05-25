@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.aaron.imageloader.ImageLoader;
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
 import com.aaron.imageloader.code.HImageConfigBuilder;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.aaron.camera.SelectImageFromAlbum;

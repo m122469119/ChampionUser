@@ -1,5 +1,6 @@
 package com.goodchef.liking.widgets.camera;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 
 import com.goodchef.liking.utils.ImageEnviromentUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import io.reactivex.functions.Consumer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,28 +70,34 @@ public class CameraPhotoHelper {
     /**
      * 拍照
      */
-    public void takePhotoFromCamera() {
-        String status = Environment.getExternalStorageState();
-        if (status.equals(Environment.MEDIA_MOUNTED)) {
-            try {
-                File filePicScreenshot = ImageEnviromentUtil.getScreenshot();
-                String localTempImageFileName = ImageEnviromentUtil.getFileName();
-                if (!filePicScreenshot.exists()) {
-                    filePicScreenshot.mkdirs();
-                }
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File f = new File(filePicScreenshot, localTempImageFileName);
-                Uri u = Uri.fromFile(f);
-                intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
-                mContext.startActivityForResult(intent, REQUEST_CODE_CAMERA);
-                String imagePath = f.getAbsolutePath();
-                setCameraPicturePath(imagePath);
-            } catch (ActivityNotFoundException ignored) {
-            }
-        } else {
-            Toast.makeText(mContext, "请插入SD后，再试一下", Toast.LENGTH_LONG).show();
-        }
+    public void takePhotoFromCamera(Activity c) {
+        new RxPermissions(c).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        String status = Environment.getExternalStorageState();
+                        if (status.equals(Environment.MEDIA_MOUNTED)) {
+                            try {
+                                File filePicScreenshot = ImageEnviromentUtil.getScreenshot();
+                                String localTempImageFileName = ImageEnviromentUtil.getFileName();
+                                if (!filePicScreenshot.exists()) {
+                                    filePicScreenshot.mkdirs();
+                                }
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                File f = new File(filePicScreenshot, localTempImageFileName);
+                                Uri u = Uri.fromFile(f);
+                                intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
+                                mContext.startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                                String imagePath = f.getAbsolutePath();
+                                setCameraPicturePath(imagePath);
+                            } catch (ActivityNotFoundException ignored) {
+                            }
+                        } else {
+                            Toast.makeText(mContext, "请插入SD后，再试一下", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     /**

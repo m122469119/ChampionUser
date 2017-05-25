@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;

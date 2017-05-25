@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CameraCustomDialog;
@@ -471,7 +471,7 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.dialog_photograph://拍照
-                        mCameraPhotoHelper.takePhotoFromCamera();
+                        mCameraPhotoHelper.takePhotoFromCamera(MyInfoActivity.this);
                         cameraDialog.dismiss();
                         break;
                     case R.id.dialog_album://从相册中选择
@@ -519,7 +519,7 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
             mStateView.setState(StateView.State.SUCCESS);
             String imageUrl = userInfoData.getAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {
-                HImageLoaderSingleton.getInstance().loadImage(mHeadImage, imageUrl);
+                HImageLoaderSingleton.loadImage(mHeadImage, imageUrl, this);
                 LikingPreference.setUserIconUrl(imageUrl);
             }
             mUserInfoData = userInfoData;

@@ -12,7 +12,7 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.http.result.DishesOrderListResult;

@@ -5,29 +5,27 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
-import com.aaron.imageloader.ImageLoader;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.imageloader.code.HImageConfigBuilder;
-import com.aaron.imageloader.code.HImageLoaderSingleton;
-import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.imageloader.ImageLoader;
+import com.aaron.imageloader.code.HImageConfigBuilder;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 说明:首次登陆添加头像
@@ -65,10 +63,10 @@ public class UserHeadImageActivity extends AppBarActivity  {
     protected void onResume() {
         super.onResume();
         if (!StringUtils.isEmpty(mLoaclHeadUrl)) {
-            HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
+            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
-                    .build());
+                    .build(), UserHeadImageActivity.this);
         }
     }
 
@@ -118,7 +116,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.dialog_photograph://拍照
-                        mCameraPhotoHelper.takePhotoFromCamera();
+                        mCameraPhotoHelper.takePhotoFromCamera(UserHeadImageActivity.this);
                         cameraDialog.dismiss();
                         break;
                     case R.id.dialog_album://从相册中选择
@@ -143,10 +141,10 @@ public class UserHeadImageActivity extends AppBarActivity  {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
                 if (mBitmap != null) {
                     mLoaclHeadUrl = imagePath;
-                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
+                    HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
                             .resize(100, 100)
                             .setLoadType(ImageLoader.LoaderType.FILE)
-                            .build());
+                            .build(), UserHeadImageActivity.this);
                 } else {
                     showToast(getString(R.string.repeat_select_picture));
                 }
@@ -159,10 +157,10 @@ public class UserHeadImageActivity extends AppBarActivity  {
                 if (mBitmap != null) {
                     LogUtils.i("imagepath =", imagePathList.get(0));
                     mLoaclHeadUrl = imagePathList.get(0);
-                    HImageLoaderSingleton.getInstance().loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
+                    HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
                             .resize(100, 100)
                             .setLoadType(ImageLoader.LoaderType.FILE)
-                            .build());
+                            .build(), UserHeadImageActivity.this);
                 } else {
                     showToast(getString(R.string.repeat_select_picture));
                 }

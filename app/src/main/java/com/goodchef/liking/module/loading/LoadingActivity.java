@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.loading;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,23 +10,24 @@ import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.guide.GuideActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.NavigationBarUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PatchDowner;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
+import io.reactivex.functions.Consumer;
 
 import java.util.ArrayList;
 
@@ -40,11 +42,13 @@ public class LoadingActivity extends BaseActivity {
     private Handler handler = new Handler();
     private PatchData previousPatchData;
     private LinearLayout mCompleteLayout;
+    private RxPermissions mRxPermissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        mRxPermissions = new RxPermissions(this);
         mCompleteLayout = (LinearLayout) findViewById(R.id.company_info);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
@@ -57,25 +61,6 @@ public class LoadingActivity extends BaseActivity {
             LiKingVerifyUtils.initApi(this);
         }
         setCompleteLayoutView();
-    }
-
-    private void setCompleteLayoutView() {
-        WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
-        if (hasSoft) {
-            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(this);//获取虚拟键盘的高度
-            //这一行很重要，将dialog对话框设置在虚拟键盘上面
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCompleteLayout.getLayoutParams();
-            layoutParams.setMargins(0, 0, 0, (navigationBarHeight + 30));
-        } else {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCompleteLayout.getLayoutParams();
-            layoutParams.setMargins(0, 0, 0, 30);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -91,6 +76,21 @@ public class LoadingActivity extends BaseActivity {
                 }
             }
         }, DURATION);
+    }
+
+
+    private void setCompleteLayoutView() {
+        WindowManager wmManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        boolean hasSoft = NavigationBarUtil.hasSoftKeys(wmManager);//判断是否有虚拟键盘
+        if (hasSoft) {
+            int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(this);//获取虚拟键盘的高度
+            //这一行很重要，将dialog对话框设置在虚拟键盘上面
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCompleteLayout.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, (navigationBarHeight + 30));
+        } else {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCompleteLayout.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, 30);
+        }
     }
 
     /**
@@ -164,9 +164,15 @@ public class LoadingActivity extends BaseActivity {
      *
      * @param patchData
      */
-    private void downPatch(PatchData patchData) {
-        PatchDowner patchDowner = new PatchDowner(this);
-        patchDowner.execute(patchData);
+    private void downPatch(final PatchData patchData) {
+        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        PatchDowner patchDowner = new PatchDowner(getApplicationContext());
+                        patchDowner.execute(patchData);
+                    }
+                });
     }
 
     @Override

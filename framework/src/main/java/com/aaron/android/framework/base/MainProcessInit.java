@@ -29,8 +29,6 @@ public class MainProcessInit implements ProcessInit {
     public void init() {
         /*环境配置信息初始化*/
         EnvironmentUtils.init(mContext, mConfitData);
-        /*本地存储初始化*/
-        DiskStorageManager.getInstance().init(EnvironmentUtils.Config.getAppFlag());
         /*资源Utils初始化*/
         ResourceUtils.init(mContext);
         /*设备信息初始化*/
