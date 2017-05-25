@@ -73,7 +73,7 @@ public class CameraPhotoHelper {
      * 拍照
      */
     public void takePhotoFromCamera() {
-        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        new RxPermissions(mContext).request(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
