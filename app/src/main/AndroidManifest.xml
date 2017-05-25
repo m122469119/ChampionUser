@@ -60,7 +60,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="cn.lovexiaoai.myapp.fileprovider"
+            android:authorities="com.goodchef.liking.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

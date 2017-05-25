@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 
@@ -72,10 +73,11 @@ public class CameraPhotoHelper {
      * 拍照
      */
     public void takePhotoFromCamera() {
-        new RxPermissions(mContext).request(Manifest.permission.CAMERA)
+        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) return;
                         String status = Environment.getExternalStorageState();
                         if (status.equals(Environment.MEDIA_MOUNTED)) {
                             try {
@@ -86,7 +88,12 @@ public class CameraPhotoHelper {
                                 }
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 File f = new File(filePicScreenshot, localTempImageFileName);
-                                Uri u = Uri.fromFile(f);
+                                Uri u;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.fileprovider", f);
+                                } else {
+                                    u = Uri.fromFile(f);
+                                }
                                 intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
                                 mContext.startActivityForResult(intent, REQUEST_CODE_CAMERA);
@@ -118,6 +125,7 @@ public class CameraPhotoHelper {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) return;
                         Intent intent = new Intent(mContext, AlbumActivity.class);
                         intent.putExtra(INTENT_KEY_NEED_SELECT_AMOUNT, needSelectAmount);
                         mContext.startActivityForResult(intent, REQUEST_CODE_ALBUM);

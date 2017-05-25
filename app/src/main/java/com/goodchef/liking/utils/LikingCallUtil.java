@@ -28,6 +28,7 @@ public class LikingCallUtil {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) return;
                         show(context, message, phone);
                     }
                 });
@@ -55,13 +56,14 @@ public class LikingCallUtil {
 
 
     public static void showPhoneDialog(final Activity context) {
-       new RxPermissions(context).request(Manifest.permission.CALL_PHONE)
-               .subscribe(new Consumer<Boolean>() {
-                   @Override
-                   public void accept(Boolean aBoolean) throws Exception {
-                       showDialog(context);
-                   }
-               });
+        new RxPermissions(context).request(Manifest.permission.CALL_PHONE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) return;
+                        showDialog(context);
+                    }
+                });
     }
 
     private static void showDialog(final Activity context) {
