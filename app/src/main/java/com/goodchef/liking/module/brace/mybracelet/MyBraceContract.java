@@ -13,11 +13,15 @@ import com.aaron.http.code.RequestCallback;
 import com.aaron.http.code.RequestError;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
+import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.brace.bind.BindBraceModel;
 import com.goodchef.liking.data.local.LikingPreference;
+
+import io.reactivex.Observable;
 
 /**
  * Created on 2017/5/16
@@ -304,24 +308,15 @@ public interface MyBraceContract {
         }
 
         public void unBindDevices(String devicesId) {
-            LiKingApi.unBindDevices(devicesId, new RequestCallback<LikingResult>() {
+            mModel.unBindDevices(devicesId)
+            .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
                 @Override
-                public void onSuccess(LikingResult likingResult) {
-                    if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
-                        mView.updateUnBindDevicesView();
-                    } else {
-                        mView.showToast(likingResult.getMessage());
-                    }
-                }
-
-                @Override
-                public void onFailure(RequestError error) {
-
+                public void onNext(LikingResult value) {
+                    if(value == null) return;
+                    mView.updateUnBindDevicesView();
                 }
             });
         }
-
-
 
         public void pauseBlue(){
             isPause = true;

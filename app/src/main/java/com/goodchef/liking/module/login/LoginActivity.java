@@ -134,17 +134,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
         if (StringUtils.isEmpty(jPushRegisterId)) {
             return;
         }
-        LiKingApi.uploadUserDevice(LikingPreference.getToken(), JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId, new RequestCallback<LikingResult>() {
-            @Override
-            public void onSuccess(LikingResult likingResult) {
-                LogUtils.i(TAG, "uploadDeviceInfo success!");
-            }
-
-            @Override
-            public void onFailure(RequestError error) {
-                LogUtils.i(TAG, "uploadDeviceInfo fail!");
-            }
-        });
+        mLoginPresenter.uploadUserDevice(JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId);
     }
 
 

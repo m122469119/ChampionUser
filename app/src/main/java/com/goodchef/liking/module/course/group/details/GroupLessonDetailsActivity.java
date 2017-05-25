@@ -41,7 +41,7 @@ import com.goodchef.liking.http.result.data.ShareData;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
-import com.goodchef.liking.module.course.ShareContract;
+import com.goodchef.liking.module.share.ShareContract;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;

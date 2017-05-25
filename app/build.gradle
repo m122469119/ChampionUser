@@ -53,7 +53,6 @@ android {
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.myConfig
-          // proguardFiles 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -61,7 +60,6 @@ android {
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://testapp.likingfit.com\""
             applicationIdSuffix ".test"
-//            versionNameSuffix ""
             signingConfig signingConfigs.myConfig
             proguardFiles 'proguard-rules.pro'
         }
@@ -85,7 +83,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':framework')
-//    compile 'cn.jiajixin.nuwa:nuwa:1.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
     compile 'com.jakewharton:butterknife:8.4.0'

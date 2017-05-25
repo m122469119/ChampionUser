@@ -4,14 +4,22 @@ import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
+import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.http.code.RequestCallback;
+import com.aaron.http.code.RequestError;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.http.api.LiKingApi;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.data.remote.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
@@ -132,8 +140,6 @@ class LoginContract {
                             return mLoginModel.getLoginResult(phone, captcha);
                         }
                     })
-
-
                     .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(UserLoginResult value) {
@@ -145,6 +151,29 @@ class LoginContract {
                             }
                         }
                     });
+        }
+
+        /***
+         * 上传设备信息
+         *
+         * @param device_id       设备id
+         * @param device_token    设备token
+         * @param registration_id 极光推送id
+         */
+        public void uploadUserDevice(String device_id, String device_token, String registration_id) {
+            mLoginModel.uploadUserDevice(device_id, device_token, registration_id)
+            .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
+                @Override
+                public void onNext(LikingResult value) {
+                    LogUtils.i(TAG, "uploadDeviceInfo success!");
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                    LogUtils.i(TAG, "uploadDeviceInfo fail!");
+                }
+            });
         }
     }
 

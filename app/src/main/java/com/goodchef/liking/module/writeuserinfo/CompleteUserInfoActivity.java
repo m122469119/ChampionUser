@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/8/19 下午2:35
  */
-public class CompleteUserInfoActivity extends AppBarActivity implements CompleteUserInfoContract.CompleteUserInfoView {
+public class CompleteUserInfoActivity extends BaseActivity implements CompleteUserInfoContract.CompleteUserInfoView {
 
     @BindView(R.id.complete_userInfo_state_view)
     LikingStateView mStateView;
@@ -74,7 +75,6 @@ public class CompleteUserInfoActivity extends AppBarActivity implements Complete
         ButterKnife.bind(this);
         mCompleteUserInfoPresenter = new CompleteUserInfoContract.CompleteUserInfoPresenter(this, this);
         setTitle(getString(R.string.activity_title_complete_userinfo));
-        showHomeUpIcon(0);
         initData();
         getIntentData();
     }

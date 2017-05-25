@@ -14,6 +14,8 @@ import com.aaron.http.code.RequestError;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
+import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.brace.bind.BindBraceModel;
@@ -163,20 +165,25 @@ public interface BindBraceContract {
          * 发送绑定手环信息
          */
         private void sendDevicesRequest(String devicesId) {
-            mModel.bindDevices(devicesId, new RequestCallback<LikingResult>() {
+
+            mModel.bindDevices(devicesId)
+            .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
                 @Override
-                public void onSuccess(LikingResult likingResult) {
-                    if (LiKingVerifyUtils.isValid(mContext, likingResult)) {
-                        mView.updateBindDevicesView();
-                    } else {
-                        mView.updateBindDevicesView();
-                        mView.showToast(likingResult.getMessage());
-                    }
+                public void onNext(LikingResult value) {
+                    if(value == null) return;
+                    mView.updateBindDevicesView();
                 }
 
                 @Override
-                public void onFailure(RequestError error) {
+                public void apiError(ApiException apiException) {
+                    super.apiError(apiException);
+                    mView.updateBindDevicesView();
+                }
 
+                @Override
+                public void networkError(Throwable throwable) {
+                    super.networkError(throwable);
+                    mView.updateBindDevicesView();
                 }
             });
         }

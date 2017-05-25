@@ -1,12 +1,18 @@
 package com.goodchef.liking.module.login;
 
+import android.os.Build;
+
 import com.aaron.android.framework.base.mvp.model.BaseModel;
+import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.local.LikingPreference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -26,12 +32,10 @@ class LoginModel extends BaseModel {
                 .compose(RxUtils.<VerificationCodeResult>applyHttpSchedulers());
     }
 
-
-
-
     /**
      * 获取登录数据，存有用户相关信息
-     * @param phone 手机号码
+     *
+     * @param phone   手机号码
      * @param captcha 验证码
      * @return Observable<UserLoginResult>
      */
@@ -46,14 +50,28 @@ class LoginModel extends BaseModel {
                 });
     }
 
-
-
-
-
-
+    /***
+     * 上传设备信息
+     *
+     * @param device_id       设备id
+     * @param device_token    设备token
+     * @param registration_id 极光推送id
+     */
+    Observable<LikingResult> uploadUserDevice(String device_id, String device_token, String registration_id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", LikingPreference.getToken());
+        map.put("device_id", device_id);
+        map.put("device_token", device_token);
+        map.put("registration_id", registration_id);
+        map.put("os_version", Build.VERSION.RELEASE);
+        map.put("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL);
+        return LikingNewApi.getInstance().uploadUserDevice(UrlList.sHostVersion, map)
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
+    }
 
     /**
      * 登陆完成后保存相关用户信息
+     *
      * @param userLoginData 用户登陆
      */
     void saveLoginUserInfo(UserLoginResult.UserLoginData userLoginData) {
@@ -67,4 +85,5 @@ class LoginModel extends BaseModel {
         LikingPreference.setIsNewUser(userLoginData.getNewUser());
         LikingPreference.setIsVip(userLoginData.getIsVip());
     }
+
 }
