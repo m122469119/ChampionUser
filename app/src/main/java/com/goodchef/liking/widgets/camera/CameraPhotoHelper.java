@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import io.reactivex.functions.Consumer;
 
 import java.io.File;
@@ -47,7 +48,7 @@ public class CameraPhotoHelper {
     public void onConfigurationChanged(Configuration newConfig) {
         newConfig.hardKeyboardHidden = Configuration.HARDKEYBOARDHIDDEN_YES;
         newConfig.orientation = Configuration.ORIENTATION_PORTRAIT;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             newConfig.setLayoutDirection(Locale.CHINA);
         }
     }
@@ -70,8 +71,8 @@ public class CameraPhotoHelper {
     /**
      * 拍照
      */
-    public void takePhotoFromCamera(Activity c) {
-        new RxPermissions(c).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void takePhotoFromCamera() {
+        new RxPermissions(mContext).request(Manifest.permission.CAMERA)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
@@ -112,10 +113,16 @@ public class CameraPhotoHelper {
      *
      * @param needSelectAmount 需要选择的图片张数
      */
-    public void selectMoreFormAlbum(int needSelectAmount) {
-        Intent intent = new Intent(mContext, AlbumActivity.class);
-        intent.putExtra(INTENT_KEY_NEED_SELECT_AMOUNT, needSelectAmount);
-        mContext.startActivityForResult(intent, REQUEST_CODE_ALBUM);
+    public void selectMoreFormAlbum(final int needSelectAmount) {
+        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        Intent intent = new Intent(mContext, AlbumActivity.class);
+                        intent.putExtra(INTENT_KEY_NEED_SELECT_AMOUNT, needSelectAmount);
+                        mContext.startActivityForResult(intent, REQUEST_CODE_ALBUM);
+                    }
+                });
     }
 
 

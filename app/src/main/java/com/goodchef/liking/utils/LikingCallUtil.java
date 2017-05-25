@@ -1,5 +1,6 @@
 package com.goodchef.liking.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,9 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.dialog.PhoneDialog;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明:
@@ -19,7 +23,18 @@ import com.goodchef.liking.data.local.LikingPreference;
  */
 public class LikingCallUtil {
 
-    public static void showCallDialog(final Activity context, String message, final String phone) {
+    public static void showCallDialog(final Activity context, final String message, final String phone) {
+        new RxPermissions(context).request(Manifest.permission.CALL_PHONE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        show(context, message, phone);
+                    }
+                });
+
+    }
+
+    private static void show(final Activity context, String message, final String phone) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
         builder.setMessage(message);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -39,30 +54,40 @@ public class LikingCallUtil {
     }
 
 
-    public static void showPhoneDialog(final Activity context){
+    public static void showPhoneDialog(final Activity context) {
+       new RxPermissions(context).request(Manifest.permission.CALL_PHONE)
+               .subscribe(new Consumer<Boolean>() {
+                   @Override
+                   public void accept(Boolean aBoolean) throws Exception {
+                       showDialog(context);
+                   }
+               });
+    }
+
+    private static void showDialog(final Activity context) {
         final PhoneDialog mPhoneDialog = new PhoneDialog(context, R.style.phone_style);
         mPhoneDialog.setGymPhoneText(LikingHomeActivity.gymTel)
-                    .setLikingPhoneText(LikingPreference.getCustomerServicePhone())
-                    .setOnCancelListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mPhoneDialog.dismiss();
-                        }
-                    })
-                    .setOnGymPhoneListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            PhoneUtils.phoneCall(context, mPhoneDialog.getGymPhoneText());
-                            mPhoneDialog.dismiss();
-                        }
-                    })
-                    .setOnLikingPhoneListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            PhoneUtils.phoneCall(context, mPhoneDialog.getLikingPhoneText());
-                            mPhoneDialog.dismiss();
-                        }
-                    });
+                .setLikingPhoneText(LikingPreference.getCustomerServicePhone())
+                .setOnCancelListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPhoneDialog.dismiss();
+                    }
+                })
+                .setOnGymPhoneListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PhoneUtils.phoneCall(context, mPhoneDialog.getGymPhoneText());
+                        mPhoneDialog.dismiss();
+                    }
+                })
+                .setOnLikingPhoneListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PhoneUtils.phoneCall(context, mPhoneDialog.getLikingPhoneText());
+                        mPhoneDialog.dismiss();
+                    }
+                });
         mPhoneDialog.show();
     }
 

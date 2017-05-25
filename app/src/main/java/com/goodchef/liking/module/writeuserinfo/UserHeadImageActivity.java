@@ -116,7 +116,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.dialog_photograph://拍照
-                        mCameraPhotoHelper.takePhotoFromCamera(UserHeadImageActivity.this);
+                        mCameraPhotoHelper.takePhotoFromCamera();
                         cameraDialog.dismiss();
                         break;
                     case R.id.dialog_album://从相册中选择
