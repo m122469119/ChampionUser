@@ -70,10 +70,11 @@ public interface LikingApiService {
     String KEY_CITY_ID = "city_id";
     String BODY_ID = "body_id";
 
+    @FormUrlEncoded
     @POST(Urls.USER_LOGIN)
     Observable<UserLoginResult> userLogin(@Path(PATH_VERSION) String version,
-                                          @Query("phone") String phone,
-                                          @Query("captcha") String captcha);
+                                          @Field("phone") String phone,
+                                          @Field("captcha") String captcha);
 
     @POST(Urls.GET_VERIFICATION_CODE)
     Observable<VerificationCodeResult> getVerificationCode(@Query(KEY_PHONE) String phone);
@@ -342,6 +343,7 @@ public interface LikingApiService {
     @POST(Urls.USER_DEVICE)
     Observable<LikingResult> uploadUserDevice(@Path(PATH_VERSION) String version,
                                               @FieldMap Map<String, String> map);
+
     @POST(Urls.SYNC_SERVER_TIMESTAMP)
     Observable<SyncTimestampResult> syncServerTimestamp();
 
@@ -373,6 +375,13 @@ public interface LikingApiService {
     Observable<LikingResult> unBindDevices(@Path(PATH_VERSION) String version,
                                            @Field(KEY_TOKEN) String token,
                                            @Field("device_id") String devicesId);
+
+
+    @FormUrlEncoded
+    @POST(Urls.UPLOAD_ERROR)
+    Observable<LikingResult> uploadNetworkError(@Path(PATH_VERSION) String version,
+                                                @Field("url") String url,
+                                                @Field("error_msg") String errorMsg);
 
     class Urls {
         private static final String sVersion = "{version}/";
@@ -668,5 +677,10 @@ public interface LikingApiService {
          * 解绑手环
          */
         public static final String USER_UNBIND = sVersion + "user/unbind";
+
+        /**
+         * 上报接口错误信息
+         */
+        public static final String UPLOAD_ERROR = sVersion + "/index/err-log";
     }
 }

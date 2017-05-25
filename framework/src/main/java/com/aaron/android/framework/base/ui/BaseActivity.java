@@ -1,5 +1,6 @@
 package com.aaron.android.framework.base.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,6 @@ import de.greenrobot.event.EventBus;
 public class BaseActivity extends AppCompatActivity {
     protected final String TAG = getClass().getName();
     public static boolean isPause = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,8 @@ public class BaseActivity extends AppCompatActivity {
             EventBus.getDefault().register(this);
         }
         isPause = false;
+        MobclickAgent.openActivityDurationTrack(false);
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
     }
 
     @Override

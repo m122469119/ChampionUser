@@ -31,9 +31,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    /** 响应式开发-EventBus  */
+    /** 响应式开发-EventBus    */
     compile 'de.greenrobot:eventbus:2.4.0'
-    /** android support  */
+    /** android support    */
     compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
     compile "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
