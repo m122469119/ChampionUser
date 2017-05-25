@@ -88,7 +88,8 @@ public class HImageLoaderSingleton {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        getInstance().loadImage(imageConfig);
+                        if (aBoolean)
+                            getInstance().loadImage(imageConfig);
                     }
                 });
     }
@@ -105,7 +106,8 @@ public class HImageLoaderSingleton {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        getInstance().loadImage(view, url, imageLoaderCallback);
+                        if (aBoolean)
+                            getInstance().loadImage(view, url, imageLoaderCallback);
                     }
                 });
     }
@@ -122,7 +124,8 @@ public class HImageLoaderSingleton {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        getInstance().loadImage(view, res);
+                        if (aBoolean)
+                            getInstance().loadImage(view, res);
                     }
                 });
 
@@ -139,7 +142,8 @@ public class HImageLoaderSingleton {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        getInstance().loadImage(view, url);
+                        if (aBoolean)
+                            getInstance().loadImage(view, url);
                     }
                 });
     }
@@ -156,7 +160,8 @@ public class HImageLoaderSingleton {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        getInstance().loadImage(view, loaderType, path);
+                        if (aBoolean)
+                            getInstance().loadImage(view, loaderType, path);
                     }
                 });
     }
@@ -174,7 +179,8 @@ public class HImageLoaderSingleton {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        getInstance().loadImage(view, loaderType, path, imageLoaderCallback);
+                        if (aBoolean)
+                            getInstance().loadImage(view, loaderType, path, imageLoaderCallback);
                     }
                 });
     }

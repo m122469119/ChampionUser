@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 
@@ -86,9 +87,13 @@ public class CameraPhotoHelper {
                                 }
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 File f = new File(filePicScreenshot, localTempImageFileName);
-                                Uri u = Uri.fromFile(f);
+
+                                Uri photoURI = FileProvider.getUriForFile(mContext,
+                                        mContext.getApplicationContext().getPackageName() + ".provider", f);
+
+                               // Uri u = Uri.fromFile(f);
                                 intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                                 mContext.startActivityForResult(intent, REQUEST_CODE_CAMERA);
                                 String imagePath = f.getAbsolutePath();
                                 setCameraPicturePath(imagePath);
@@ -164,7 +169,6 @@ public class CameraPhotoHelper {
 
     public interface CameraPhotoCallBack {
         void takePictureFromCamera(String imagePath);
-
         void takePictureFromGallery(ArrayList<String> imagePathList);
     }
 

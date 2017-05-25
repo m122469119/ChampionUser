@@ -169,6 +169,8 @@ public class LoadingActivity extends BaseActivity {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean)
+                            return;
                         PatchDowner patchDowner = new PatchDowner(getApplicationContext());
                         patchDowner.execute(patchData);
                     }

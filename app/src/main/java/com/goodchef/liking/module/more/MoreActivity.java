@@ -130,6 +130,8 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean)
+                            return;
                         HBaseDialog.Builder builder = new HBaseDialog.Builder(MoreActivity.this);
                         View view = LayoutInflater.from(MoreActivity.this).inflate(R.layout.item_textview, null, false);
                         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
