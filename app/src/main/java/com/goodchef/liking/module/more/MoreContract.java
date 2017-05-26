@@ -6,6 +6,8 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
 import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
@@ -60,6 +62,16 @@ class MoreContract {
                         public void onNext(LikingResult likingResult) {
                             mMoreModel.clearUserInfo();
                             mView.updateLoginOut();
+                        }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.LOGOUT_FAILURE:
+                                    break;
+                                default:
+                            }
+                            super.apiError(apiException);
                         }
                     });
         }

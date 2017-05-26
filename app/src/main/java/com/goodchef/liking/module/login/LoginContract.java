@@ -20,6 +20,8 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+
 /**
  * Created on 17/3/13.
  *
@@ -71,6 +73,11 @@ class LoginContract {
 
                         @Override
                         public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.GET_VERIFICATION_CODE_FAILURE:/**获取验证码失败*/
+                                    break;
+                                default:
+                            }
                             super.apiError(apiException);
                         }
 
@@ -144,6 +151,24 @@ class LoginContract {
                                 mLoginModel.saveLoginUserInfo(userLoginData);
                                 mView.updateLoginView(value.getUserLoginData());
                             }
+                        }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            switch (apiException.getErrorCode()) {
+                                case LiKingRequestCode.INVALID_MOBOLE_NUMBER:/**无效手机号*/
+                                    break;
+                                case LiKingRequestCode.ILLEGAL_VERIFICATION_CODE:/**非法验证码*/
+                                    break;
+                                case LiKingRequestCode.VERIFICATION_INVALID:/**验证码已过期*/
+                                    break;
+                                case LiKingRequestCode.VERIFICATION_INCORRECT:/**验证码错误，请重试*/
+                                    break;
+                                case LiKingRequestCode.LOGIN_FAILURE:/**登录失败*/
+                                    break;
+                                default:
+                            }
+                            super.apiError(apiException);
                         }
                     });
         }
