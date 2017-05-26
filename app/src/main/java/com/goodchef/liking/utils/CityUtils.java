@@ -6,9 +6,9 @@ import android.support.v4.util.ArrayMap;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -150,11 +150,11 @@ public class CityUtils {
      */
     public static boolean isDredge(String cityCode){
         boolean cityIsDredge = false;
-        BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
+        BaseConfigResult baseConfigResult = LikingBaseRequestHelper.sBaseConfigResult;
         if (baseConfigResult ==null){
             return false;
         }
-        BaseConfigResult.ConfigData configData = LiKingVerifyUtils.sBaseConfigResult.getBaseConfigData();
+        BaseConfigResult.ConfigData configData = LikingBaseRequestHelper.sBaseConfigResult.getBaseConfigData();
         if (configData ==null){
             return false;
         }

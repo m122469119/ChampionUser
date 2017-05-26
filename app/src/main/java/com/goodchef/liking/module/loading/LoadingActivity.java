@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.aaron.android.framework.base.ui.BaseActivity;
-import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
@@ -19,7 +18,7 @@ import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.http.result.BaseConfigResult;
 import com.goodchef.liking.http.result.data.PatchData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
 import com.goodchef.liking.module.guide.GuideActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.NavigationBarUtil;
@@ -57,9 +56,6 @@ public class LoadingActivity extends BaseActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         previousPatchData = LikingPreference.getPatchData();
-        if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-            LiKingVerifyUtils.initApi(this);
-        }
         setCompleteLayoutView();
         handler.postDelayed(new Runnable() {
             @Override
@@ -183,7 +179,7 @@ public class LoadingActivity extends BaseActivity {
 
     public void onEvent(InitApiFinishedMessage initApiFinishedMessage) {
         if (initApiFinishedMessage.isSuccess()) {
-            BaseConfigResult baseConfigResult = LiKingVerifyUtils.sBaseConfigResult;
+            BaseConfigResult baseConfigResult = LikingBaseRequestHelper.sBaseConfigResult;
             if (baseConfigResult != null) {
                 BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
                 if (baseConfigData != null) {

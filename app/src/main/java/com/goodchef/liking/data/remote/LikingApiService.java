@@ -44,6 +44,7 @@ import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.http.result.UserLoginResult;
 import com.goodchef.liking.http.result.VerificationCodeResult;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -105,13 +106,7 @@ public interface LikingApiService {
 
     @POST(Urls.CARD_LIST)
     Observable<CardResult> getCardList(@Path(PATH_VERSION) String version,
-                                       @Query(KEY_TOKEN) String token,
-                                       @Query("longitude") String longitude,
-                                       @Query("latitude") String latitude,
-                                       @Query(KEY_CITY_ID) String cityId,
-                                       @Query(KEY_DISTRICT_ID) String districtId,
-                                       @Query("gym_id") String gymId,
-                                       @Query("type") int type);
+                                       @QueryMap Map<String, String> map);
 
     @POST(Urls.GET_CARD_ORDER_LIST)
     Observable<OrderCardListResult> getCardOrderList(@Path(PATH_VERSION) String version,

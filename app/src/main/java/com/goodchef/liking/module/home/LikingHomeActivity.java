@@ -35,14 +35,12 @@ import com.goodchef.liking.eventmessages.LikingHomeActivityMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
 import com.goodchef.liking.eventmessages.LoginInvalidMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
-import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.http.result.data.NoticeData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.gym.list.ChangeGymActivity;
@@ -222,7 +220,6 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
                     setTagNearbyTab();
                     setHomeTitle();
-                    postEvent(new OnCLickBuyCardFragmentMessage());
                     mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     setTagMyTab();
@@ -515,7 +512,6 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
         mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
             @Override
             public void receive(AMapLocation object) {
-                LiKingVerifyUtils.initApi(LikingHomeActivity.this);
                 if (object != null && object.getErrorCode() == 0) {//定位成功
                     isWhetherLocation = true;
                     LogUtils.i("dust", "city: " + object.getCity() + "; city code: " + object.getCityCode()

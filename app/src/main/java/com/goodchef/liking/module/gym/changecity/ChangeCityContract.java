@@ -13,12 +13,12 @@ import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
 import com.goodchef.liking.eventmessages.ChangeCityFragmentMessage;
 import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
 import com.goodchef.liking.http.result.CityListResult;
 import com.goodchef.liking.http.result.data.City;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.gym.GymModel;
@@ -92,7 +92,7 @@ public interface ChangeCityContract {
                         else if (Pinyin.isChinese(chars[i]) != chinese)
                             return null;
                     }
-                    List<City.RegionsData.CitiesData> citiesDataList = LiKingVerifyUtils.getCitiesDataList();
+                    List<City.RegionsData.CitiesData> citiesDataList = LikingBaseRequestHelper.getCitiesDataList();
                     List<City.RegionsData.CitiesData> result = new ArrayList<>();
 
                     for (City.RegionsData.CitiesData citiesData : citiesDataList) {
@@ -242,7 +242,7 @@ public interface ChangeCityContract {
                         @Override
                         public void onNext(CityListResult value) {
                             if (value == null) return;
-                            LiKingVerifyUtils.loadOpenCitysInfo(mContext, value.getData().getOpen_city());
+                            LikingBaseRequestHelper.loadOpenCitysInfo(mContext, value.getData().getOpen_city());
                             ChangeCityFragmentMessage message = ChangeCityFragmentMessage
                                     .obtain(ChangeCityFragmentMessage.REFRESH_LIST_DATA);
                             mView.postEvent(message);

@@ -25,13 +25,11 @@ import java.util.List;
  */
 public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdapter.CardRecyclerViewHolder, ConfirmCard> {
 
-    private Context mContext;
     private View.OnClickListener mClickListener;
     private View.OnClickListener mExplainClickListener;
 
     public CardRecyclerAdapter(Context context) {
         super(context);
-        this.mContext = context;
     }
 
     public void setLayoutOnClickListener(View.OnClickListener listener) {
@@ -44,7 +42,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
 
     @Override
     protected CardRecyclerViewHolder createViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_card, parent, false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_card, parent, false);
         return new CardRecyclerViewHolder(view);
     }
 
@@ -87,7 +85,7 @@ public class CardRecyclerAdapter extends BaseRecycleViewAdapter<CardRecyclerAdap
 
             List<TimeLimitData> limitDataList = object.getTimeLimit();
             if (limitDataList != null && limitDataList.size() > 0) {
-                CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(mContext);
+                CardTimeLimitAdapter adapter = new CardTimeLimitAdapter(getContext());
                 adapter.setData(limitDataList);
                 mListView.setAdapter(adapter);
                 ListViewUtil.setListViewHeightBasedOnChildren(mListView);

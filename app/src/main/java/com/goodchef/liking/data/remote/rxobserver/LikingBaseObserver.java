@@ -2,18 +2,16 @@ package com.goodchef.liking.data.remote.rxobserver;
 
 import android.content.Context;
 import android.net.ParseException;
-import android.util.Base64;
 
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
-import com.aaron.http.code.NetworkErrorResponse;
 import com.aaron.http.code.result.Result;
 import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
 import com.goodchef.liking.eventmessages.LoginInvalidMessage;
 import com.goodchef.liking.http.api.UrlList;
 import com.goodchef.liking.http.result.LikingResult;
@@ -23,14 +21,9 @@ import com.goodchef.liking.data.remote.ApiException;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
-import java.net.URLEncoder;
-import java.util.Iterator;
-import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import io.reactivex.disposables.Disposable;
@@ -78,6 +71,8 @@ public abstract class LikingBaseObserver<T extends Result> extends BaseRequestOb
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:
 //                    initApi(context);
+                    LikingBaseRequestHelper.isTimestampInit = false;
+                    LikingBaseRequestHelper.isBaseConfigInit = false;
                     break;
                 case LiKingRequestCode.ILLEGAL_REQUEST:
                 case LiKingRequestCode.ILLEGAL_ARGUMENT:

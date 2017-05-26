@@ -511,7 +511,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
             }
         }
         if (mCardRecyclerAdapter == null) {
-            mCardRecyclerAdapter = new CardRecyclerAdapter(this);
+            mCardRecyclerAdapter = new CardRecyclerAdapter(BuyCardConfirmActivity.this);
         }
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCardRecyclerView.setLayoutManager(mLayoutManager);

@@ -17,11 +17,11 @@ import com.github.promeg.pinyinhelper.Pinyin;
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ChangeCityAdapter;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
 import com.goodchef.liking.eventmessages.ChangeCityActivityMessage;
 import com.goodchef.liking.eventmessages.ChangeCityFragmentMessage;
 import com.goodchef.liking.http.result.data.ChangeCityHeaderData;
 import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.widgets.indexBar.IndexBar;
 import com.goodchef.liking.widgets.indexBar.bean.BaseIndexPinyinBean;
 import com.goodchef.liking.widgets.indexBar.decoration.DividerItemDecoration;
@@ -133,7 +133,7 @@ public class ChangeCityFragment extends BaseFragment {
 
     private void initData() {
         LogUtils.i(TAG,"initData");
-        mBodyDatas = LiKingVerifyUtils.getCitiesDataList();
+        mBodyDatas = LikingBaseRequestHelper.getCitiesDataList();
         LogUtils.i(TAG,""+mBodyDatas+"");
         //先排序
         mChangeCityIndexBar.getDataHelper().sortSourceDatas(mBodyDatas);

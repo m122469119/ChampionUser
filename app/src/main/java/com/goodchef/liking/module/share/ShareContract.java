@@ -3,8 +3,6 @@ package com.goodchef.liking.module.share;
 import android.content.Context;
 import android.view.View;
 
-import com.aaron.http.code.RequestCallback;
-import com.aaron.http.code.RequestError;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.share.weixin.WeixinShare;
@@ -12,11 +10,8 @@ import com.aaron.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.dialog.ShareCustomDialog;
-import com.goodchef.liking.http.api.LiKingApi;
 import com.goodchef.liking.http.result.ShareResult;
 import com.goodchef.liking.http.result.data.ShareData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
-import com.goodchef.liking.data.local.LikingPreference;
 
 /**
  * 说明:分享

@@ -40,7 +40,18 @@ public class CardModel extends BaseModel {
      * @param type
      */
     public Observable<CardResult> getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
-        return LikingNewApi.getInstance().getCardList(UrlList.sHostVersion, LikingPreference.getToken(), longitude, latitude, cityId, districtId, gymId, type)
+        Map<String, String> map = new HashMap<>();
+        String token = LikingPreference.getToken();
+        if (!TextUtils.isEmpty(token)) {
+            map.put("token", token);
+        }
+        map.put("longitude", longitude);
+        map.put("latitude", latitude);
+        map.put("city_id", cityId);
+        map.put("district_id", districtId);
+        map.put("gym_id", gymId);
+        map.put("type", String.valueOf(type));
+        return LikingNewApi.getInstance().getCardList(UrlList.sHostVersion, map)
                 .compose(RxUtils.<CardResult>applyHttpSchedulers());
     }
 

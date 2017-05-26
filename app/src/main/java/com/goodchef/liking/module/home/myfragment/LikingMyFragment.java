@@ -27,7 +27,6 @@ import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.MyUserOtherInfoResult;
 import com.goodchef.liking.http.result.UserExerciseResult;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.module.card.my.MyCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
@@ -280,7 +279,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
-                LiKingVerifyUtils.initApi(getActivity());
                 setLogonView();
                 isRetryRequest = true;
                 getMyUserInfoOther();

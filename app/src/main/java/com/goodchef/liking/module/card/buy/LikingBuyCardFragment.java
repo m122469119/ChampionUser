@@ -29,15 +29,14 @@ import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
-import com.goodchef.liking.eventmessages.OnCLickBuyCardFragmentMessage;
 import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.http.result.CardResult;
 import com.goodchef.liking.http.result.CoursesResult;
 import com.goodchef.liking.http.result.data.GymData;
 import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.http.verify.LiKingVerifyUtils;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.module.card.my.UpgradeAndContinueCardContract;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.NumberConstantUtil;
@@ -94,7 +93,6 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
-                LiKingVerifyUtils.initApi(getActivity());
                 sendBuyCardListRequest();
             }
         });
@@ -269,10 +267,6 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
         if (message.isSuccess()) {
             sendBuyCardListRequest();
         }
-    }
-
-    public void onEvent(OnCLickBuyCardFragmentMessage message) {
-        sendBuyCardListRequest();
     }
 
     public void onEvent(BuyCardListMessage message) {
