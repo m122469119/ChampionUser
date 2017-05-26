@@ -12,7 +12,6 @@ import com.aaron.android.framework.base.ProcessInit;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.http.volley.VolleyRequestSingleton;
 import com.aaron.jpush.JPush;
-import com.facebook.common.util.ByteConstants;
 import com.goodchef.liking.BuildConfig;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.tinker.MyLogImp;
