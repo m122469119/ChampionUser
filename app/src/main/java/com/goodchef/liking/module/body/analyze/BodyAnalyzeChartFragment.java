@@ -23,9 +23,9 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
-import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
-import com.goodchef.liking.http.result.data.BodyChartValueFormatter;
-import com.goodchef.liking.http.result.data.BodyHistoryData;
+import com.goodchef.liking.data.remote.retrofit.result.BodyAnalyzeHistoryResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.BodyChartValueFormatter;
+import com.goodchef.liking.data.remote.retrofit.result.data.BodyHistoryData;
 import com.goodchef.liking.utils.ChartColorUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 

@@ -19,7 +19,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
-import com.goodchef.liking.http.result.data.OrderCardData;
+import com.goodchef.liking.data.remote.retrofit.result.data.OrderCardData;
 
 import java.util.List;
 

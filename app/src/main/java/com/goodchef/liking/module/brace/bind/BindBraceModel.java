@@ -12,11 +12,10 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
-import com.goodchef.liking.data.remote.LikingNewApi;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,7 +153,7 @@ public class BindBraceModel {
         map.put("platform", "android");
         map.put("device_name", osName);
         map.put("os_version", osVersion);
-        return LikingNewApi.getInstance().bindDevices(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().bindDevices(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
@@ -164,7 +163,7 @@ public class BindBraceModel {
      * @param devicesId 设备id
      */
     public Observable<LikingResult> unBindDevices(String devicesId) {
-        return LikingNewApi.getInstance().unBindDevices(UrlList.sHostVersion, LikingPreference.getToken(), devicesId)
+        return LikingNewApi.getInstance().unBindDevices(LikingNewApi.sHostVersion, LikingPreference.getToken(), devicesId)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 

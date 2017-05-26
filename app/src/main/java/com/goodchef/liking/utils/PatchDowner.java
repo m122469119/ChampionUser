@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.aaron.common.utils.FileUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.android.framework.base.storage.DiskStorageManager;
-import com.goodchef.liking.http.result.data.PatchData;
+import com.goodchef.liking.data.remote.retrofit.result.data.PatchData;
 import com.goodchef.liking.data.local.LikingPreference;
 
 import java.io.File;

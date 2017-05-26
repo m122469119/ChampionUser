@@ -15,7 +15,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
 import com.goodchef.liking.adapter.BodyTestHistoryAdapter;
-import com.goodchef.liking.http.result.BodyHistoryResult;
+import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
 
 /**
  * 说明:

@@ -1,13 +1,12 @@
 package com.goodchef.liking.module.body;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.BodyAnalyzeHistoryResult;
-import com.goodchef.liking.http.result.BodyHistoryResult;
-import com.goodchef.liking.http.result.BodyModelNavigationResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.BodyAnalyzeHistoryResult;
+import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
+import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
 
 import io.reactivex.Observable;
 
@@ -28,7 +27,7 @@ public class BodyModel extends BaseModel {
      */
     public Observable<BodyHistoryResult> getHistoryData(int page) {
 
-        return LikingNewApi.getInstance().getHistoryData(UrlList.sHostVersion, page)
+        return LikingNewApi.getInstance().getHistoryData(LikingNewApi.sHostVersion, page)
                 .compose(RxUtils.<BodyHistoryResult>applyHttpSchedulers());
     }
 
@@ -39,7 +38,7 @@ public class BodyModel extends BaseModel {
      */
     public Observable<BodyModelNavigationResult> getBodyHistoryTitleList(String modules) {
 
-        return LikingNewApi.getInstance().getBodyHistoryTitleList(UrlList.sHostVersion, LikingPreference.getToken(),modules)
+        return LikingNewApi.getInstance().getBodyHistoryTitleList(LikingNewApi.sHostVersion, LikingPreference.getToken(),modules)
                 .compose(RxUtils.<BodyModelNavigationResult>applyHttpSchedulers());
     }
 
@@ -50,7 +49,7 @@ public class BodyModel extends BaseModel {
      */
     public Observable<BodyAnalyzeHistoryResult> getBodyHistoryList(String column) {
 
-        return LikingNewApi.getInstance().getBodyHistoryList(UrlList.sHostVersion, LikingPreference.getToken(),column)
+        return LikingNewApi.getInstance().getBodyHistoryList(LikingNewApi.sHostVersion, LikingPreference.getToken(),column)
                 .compose(RxUtils.<BodyAnalyzeHistoryResult>applyHttpSchedulers());
     }
 }

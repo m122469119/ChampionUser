@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.CouponsDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsDetailsResult;
 
 import java.util.ArrayList;
 import java.util.List;

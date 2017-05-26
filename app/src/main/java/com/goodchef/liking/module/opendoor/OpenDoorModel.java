@@ -1,10 +1,9 @@
 package com.goodchef.liking.module.opendoor;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.UserAuthCodeResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.UserAuthCodeResult;
 
 import io.reactivex.Observable;
 
@@ -18,6 +17,6 @@ import io.reactivex.Observable;
 public class OpenDoorModel extends BaseModel {
 
     public Observable<UserAuthCodeResult> getOpenPwd(int inout) {
-        return LikingNewApi.getInstance().getOpenPwd(UrlList.sHostVersion, LikingPreference.getToken(), inout);
+        return LikingNewApi.getInstance().getOpenPwd(LikingNewApi.sHostVersion, LikingPreference.getToken(), inout);
     }
 }

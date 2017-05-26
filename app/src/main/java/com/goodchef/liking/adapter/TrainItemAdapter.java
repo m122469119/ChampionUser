@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.PrivateCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesResult;
 
 /**
  * 说明:

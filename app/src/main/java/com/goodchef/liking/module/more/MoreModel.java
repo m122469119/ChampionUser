@@ -1,13 +1,12 @@
 package com.goodchef.liking.module.more;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.data.remote.RxUtils;
 import com.aaron.common.utils.ConstantUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CheckUpdateAppResult;
-import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 import io.reactivex.Observable;
 
@@ -22,7 +21,7 @@ class MoreModel extends BaseModel {
     public static final int NO_UPDATE = 0;
 
     final Observable<CheckUpdateAppResult> getCheckUpdateAppResult() {
-        return LikingNewApi.getInstance().getCheckUpdateAppResult(UrlList.sHostVersion)
+        return LikingNewApi.getInstance().getCheckUpdateAppResult(LikingNewApi.sHostVersion)
                 .compose(RxUtils.<CheckUpdateAppResult>applyHttpSchedulers());
     }
 

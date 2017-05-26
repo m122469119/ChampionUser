@@ -16,7 +16,7 @@ import com.goodchef.liking.adapter.MyPrivateCoursesAdapter;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
-import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyPrivateCoursesResult;
 import com.goodchef.liking.module.course.personal.details.MyPrivateCoursesDetailsActivity;
 
 import java.util.List;

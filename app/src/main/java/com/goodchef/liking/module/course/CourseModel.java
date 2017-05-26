@@ -2,23 +2,22 @@ package com.goodchef.liking.module.course;
 
 import android.text.TextUtils;
 
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.ChargeGroupConfirmResult;
-import com.goodchef.liking.http.result.GroupCoursesResult;
-import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
-import com.goodchef.liking.http.result.MyGroupCoursesResult;
-import com.goodchef.liking.http.result.MyPrivateCoursesDetailsResult;
-import com.goodchef.liking.http.result.MyPrivateCoursesResult;
-import com.goodchef.liking.http.result.OrderCalculateResult;
-import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
-import com.goodchef.liking.http.result.PrivateCoursesResult;
-import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
-import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
-import com.goodchef.liking.http.result.SubmitPayResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.ChargeGroupConfirmResult;
+import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyChargeGroupCoursesDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyGroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyPrivateCoursesDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyPrivateCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.OrderCalculateResult;
+import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesConfirmResult;
+import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class CourseModel {
     public Observable<MyGroupCoursesResult> getMyGroupList(int page) {
 
         return LikingNewApi.getInstance()
-                .getTeamCourseList(UrlList.sHostVersion, LikingPreference.getToken(), page)
+                .getTeamCourseList(LikingNewApi.sHostVersion, LikingPreference.getToken(), page)
                 .compose(RxUtils.<MyGroupCoursesResult>applyHttpSchedulers());
     }
 
@@ -55,7 +54,7 @@ public class CourseModel {
     public Observable<LikingResult> sendCancelCoursesRequest(String orderId) {
 
         return LikingNewApi.getInstance()
-                .cancelTeamCourse(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
+                .cancelTeamCourse(LikingNewApi.sHostVersion, LikingPreference.getToken(), orderId)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
@@ -67,7 +66,7 @@ public class CourseModel {
     public Observable<MyPrivateCoursesResult> getMyPrivateCourses(int page) {
 
         return LikingNewApi.getInstance()
-                .getPersonalCourseList(UrlList.sHostVersion, LikingPreference.getToken(), page)
+                .getPersonalCourseList(LikingNewApi.sHostVersion, LikingPreference.getToken(), page)
                 .compose(RxUtils.<MyPrivateCoursesResult>applyHttpSchedulers());
     }
 
@@ -85,7 +84,7 @@ public class CourseModel {
             map.put("token", token);
         }
         return LikingNewApi.getInstance()
-                .getCourseInfo(UrlList.sHostVersion, map)
+                .getCourseInfo(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<GroupCoursesResult>applyHttpSchedulers());
     }
 
@@ -98,7 +97,7 @@ public class CourseModel {
     public Observable<LikingResult> orderGroupCourses(String gymId, String scheduleId) {
 
         return LikingNewApi.getInstance()
-                .teamCourseReserve(UrlList.sHostVersion, LikingPreference.getToken(), gymId, scheduleId)
+                .teamCourseReserve(LikingNewApi.sHostVersion, LikingPreference.getToken(), gymId, scheduleId)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
@@ -110,7 +109,7 @@ public class CourseModel {
     public Observable<MyChargeGroupCoursesDetailsResult> getChargeGroupCoursesDetails(String orderId) {
 
         return LikingNewApi.getInstance()
-                .chargeGroupCoursesDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
+                .chargeGroupCoursesDetails(LikingNewApi.sHostVersion, LikingPreference.getToken(), orderId)
                 .compose(RxUtils.<MyChargeGroupCoursesDetailsResult>applyHttpSchedulers());
     }
 
@@ -122,7 +121,7 @@ public class CourseModel {
     public Observable<MyPrivateCoursesDetailsResult> getMyPrivateCoursesDetails(String orderId) {
 
         return LikingNewApi.getInstance()
-                .getPersonalCourseDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
+                .getPersonalCourseDetails(LikingNewApi.sHostVersion, LikingPreference.getToken(), orderId)
                 .compose(RxUtils.<MyPrivateCoursesDetailsResult>applyHttpSchedulers());
     }
 
@@ -134,7 +133,7 @@ public class CourseModel {
     public Observable<LikingResult> completeMyPrivateCourses(String orderId) {
 
         return LikingNewApi.getInstance()
-                .completeTrainerCourse(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
+                .completeTrainerCourse(LikingNewApi.sHostVersion, LikingPreference.getToken(), orderId)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
@@ -151,7 +150,7 @@ public class CourseModel {
             map.put("token", token);
         }
         return LikingNewApi.getInstance()
-                .getSelfHelpScheduleInfo(UrlList.sHostVersion, map)
+                .getSelfHelpScheduleInfo(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<SelfHelpGroupCoursesResult>applyHttpSchedulers());
     }
 
@@ -179,7 +178,7 @@ public class CourseModel {
         map.put("price", price);
         map.put("people_num", peopleNum);
         return LikingNewApi.getInstance()
-                .joinSelfHelpCourses(UrlList.sHostVersion, map)
+                .joinSelfHelpCourses(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
@@ -190,7 +189,7 @@ public class CourseModel {
      */
     public Observable<SelfGroupCoursesListResult> getSelfCoursesList(int page) {
         return LikingNewApi.getInstance()
-                .getScheduleCourseList(UrlList.sHostVersion, page)
+                .getScheduleCourseList(LikingNewApi.sHostVersion, page)
                 .compose(RxUtils.<SelfGroupCoursesListResult>applyHttpSchedulers());
     }
 
@@ -206,7 +205,7 @@ public class CourseModel {
         map.put("schedule_id", scheduleId);
         map.put("gym_id", gymId);
         return LikingNewApi.getInstance()
-                .chargeGroupCoursesConfirm(UrlList.sHostVersion, map)
+                .chargeGroupCoursesConfirm(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<ChargeGroupConfirmResult>applyHttpSchedulers());
 
     }
@@ -226,7 +225,7 @@ public class CourseModel {
         map.put("coupon_code", couponCode);
         map.put("pay_type", payType);
         return LikingNewApi.getInstance()
-                .chargeGroupCoursesImmediately(UrlList.sHostVersion, map)
+                .chargeGroupCoursesImmediately(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<SubmitPayResult>applyHttpSchedulers());
 
     }
@@ -239,7 +238,7 @@ public class CourseModel {
     public Observable<PrivateCoursesConfirmResult> orderPrivateCoursesConfirm(String gymId, String trainerId) {
 
         return LikingNewApi.getInstance()
-                .orderPrivateCoursesConfirm(UrlList.sHostVersion, LikingPreference.getToken(), gymId, trainerId)
+                .orderPrivateCoursesConfirm(LikingNewApi.sHostVersion, LikingPreference.getToken(), gymId, trainerId)
                 .compose(RxUtils.<PrivateCoursesConfirmResult>applyHttpSchedulers());
     }
 
@@ -261,7 +260,7 @@ public class CourseModel {
         map.put("select_times", String.valueOf(selectTimes));
 
         return LikingNewApi.getInstance()
-                .submitPrivateCourses(UrlList.sHostVersion, map)
+                .submitPrivateCourses(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<SubmitPayResult>applyHttpSchedulers());
     }
 
@@ -274,7 +273,7 @@ public class CourseModel {
     public Observable<OrderCalculateResult> orderCalculate(String courseId, String selectTimes) {
 
         return LikingNewApi.getInstance()
-                .orderCalculate(UrlList.sHostVersion, LikingPreference.getToken(), courseId, selectTimes)
+                .orderCalculate(LikingNewApi.sHostVersion, LikingPreference.getToken(), courseId, selectTimes)
                 .compose(RxUtils.<OrderCalculateResult>applyHttpSchedulers());
     }
 
@@ -291,7 +290,7 @@ public class CourseModel {
             map.put("token", token);
         }
         return LikingNewApi.getInstance()
-                .getPrivateCoursesDetails(UrlList.sHostVersion, map)
+                .getPrivateCoursesDetails(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<PrivateCoursesResult>applyHttpSchedulers());
     }
 }

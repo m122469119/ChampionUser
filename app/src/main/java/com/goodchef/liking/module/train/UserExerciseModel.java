@@ -1,11 +1,10 @@
 package com.goodchef.liking.module.train;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.UserExerciseResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
 
 import io.reactivex.Observable;
 
@@ -18,7 +17,7 @@ import io.reactivex.Observable;
 public class UserExerciseModel extends BaseModel {
 
     public Observable<UserExerciseResult> getExerciseData() {
-        return LikingNewApi.getInstance().getUserExerciseData(UrlList.sHostVersion, LikingPreference.getToken())
+        return LikingNewApi.getInstance().getUserExerciseData(LikingNewApi.sHostVersion, LikingPreference.getToken())
                 .compose(RxUtils.<UserExerciseResult>applyHttpSchedulers());
     }
 

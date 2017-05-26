@@ -1,10 +1,9 @@
 package com.goodchef.liking.module.coupons.details;
 
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CouponsDetailsResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsDetailsResult;
 
 import io.reactivex.Observable;
 
@@ -27,7 +26,7 @@ public class CouponDetailsModel {
      */
     public Observable<CouponsDetailsResult> getCouponDetails(String couponCode, String longitude, String latitude) {
         return LikingNewApi.getInstance()
-                .getCouponDetails(UrlList.sHostVersion, LikingPreference.getToken(),
+                .getCouponDetails(LikingNewApi.sHostVersion, LikingPreference.getToken(),
                 couponCode, longitude, latitude)
                 .compose(RxUtils.<CouponsDetailsResult>applyHttpSchedulers());
     }

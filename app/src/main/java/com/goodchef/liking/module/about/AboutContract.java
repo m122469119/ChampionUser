@@ -8,7 +8,7 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.BaseConfigResult;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.local.LikingPreference;
 
 /**

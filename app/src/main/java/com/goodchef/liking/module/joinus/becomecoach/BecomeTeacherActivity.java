@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.dialog.SelectCityDialog;
-import com.goodchef.liking.http.result.data.City;
+import com.goodchef.liking.data.remote.retrofit.result.data.City;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -5,19 +5,18 @@ import android.support.v4.util.ArrayMap;
 
 import com.aaron.android.framework.base.thread.TaskScheduler;
 import com.aaron.common.utils.DateUtils;
+import com.aaron.common.utils.ListUtils;
 import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.app.LikingApplicationLike;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
+import com.goodchef.liking.data.remote.retrofit.result.SyncTimestampResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.City;
+import com.goodchef.liking.data.remote.retrofit.result.data.CityData;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.http.result.SyncTimestampResult;
-import com.goodchef.liking.http.result.data.City;
-import com.goodchef.liking.http.result.data.CityData;
 import com.goodchef.liking.utils.CityUtils;
-import com.aaron.common.utils.ListUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,10 +77,6 @@ public class LikingBaseRequestHelper {
                 if (value == null) return;
                 isBaseConfigInit = true;
                 sBaseConfigResult = value;
-                BaseConfigResult.ConfigData baseConfigData = sBaseConfigResult.getBaseConfigData();
-                if (baseConfigData != null) {
-                    UrlList.sHostVersion = File.separator + baseConfigData.getApiVersion();
-                }
                 //解析已开通城市
                 loadOpenCitysInfo(LikingApplicationLike.getApp().getApplicationContext());
                 LikingPreference.setBaseConfig(value);

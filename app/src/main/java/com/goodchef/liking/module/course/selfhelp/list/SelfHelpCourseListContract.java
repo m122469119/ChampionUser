@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
 
 import java.util.List;

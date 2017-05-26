@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
-import com.goodchef.liking.http.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 /**
  * Created on 17/5/8.

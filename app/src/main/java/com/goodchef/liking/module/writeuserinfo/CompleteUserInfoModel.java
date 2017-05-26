@@ -3,13 +3,12 @@ package com.goodchef.liking.module.writeuserinfo;
 import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.result.UserImageResult;
-import com.goodchef.liking.http.result.UserInfoResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +71,7 @@ public class CompleteUserInfoModel extends BaseModel {
         if (!StringUtils.isEmpty(height)) {
             map.put("height", height);
         }
-        return LikingNewApi.getInstance().updateUserInfo(UrlList.sHostVersion, map).compose(RxUtils.<LikingResult>applyHttpSchedulers());
+        return LikingNewApi.getInstance().updateUserInfo(LikingNewApi.sHostVersion, map).compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
     /**
@@ -81,6 +80,6 @@ public class CompleteUserInfoModel extends BaseModel {
      * @return Observable<UserInfoResult>
      */
     public Observable<UserInfoResult> getUserInfo() {
-        return LikingNewApi.getInstance().getUserInfo(UrlList.sHostVersion, LikingPreference.getToken()).compose(RxUtils.<UserInfoResult>applyHttpSchedulers());
+        return LikingNewApi.getInstance().getUserInfo(LikingNewApi.sHostVersion, LikingPreference.getToken()).compose(RxUtils.<UserInfoResult>applyHttpSchedulers());
     }
 }

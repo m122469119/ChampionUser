@@ -9,15 +9,14 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.http.code.result.Result;
 import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.R;
-import com.goodchef.liking.data.remote.LikingNewApi;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
-import com.goodchef.liking.eventmessages.LoginInvalidMessage;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.verify.LiKingRequestCode;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
+import com.goodchef.liking.eventmessages.LoginInvalidMessage;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
@@ -70,7 +69,6 @@ public abstract class LikingBaseObserver<T extends Result> extends BaseRequestOb
                     EventBus.getDefault().post(new LoginInvalidMessage());
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:
-//                    initApi(context);
                     LikingBaseRequestHelper.isTimestampInit = false;
                     LikingBaseRequestHelper.isBaseConfigInit = false;
                     break;
@@ -124,7 +122,7 @@ public abstract class LikingBaseObserver<T extends Result> extends BaseRequestOb
             String errorStr = httpException.response().errorBody().toString();
             String head = httpException.response().headers().toString();
             LogUtils.i(TAG, "errorBody =  " + errorStr + " headers= " + head);
-            LikingNewApi.getInstance().uploadNetworkError(UrlList.sHostVersion, head, errorStr).compose(RxUtils.<LikingResult>applyHttpSchedulers())
+            LikingNewApi.getInstance().uploadNetworkError(LikingNewApi.sHostVersion, head, errorStr).compose(RxUtils.<LikingResult>applyHttpSchedulers())
                     .subscribe(new BaseRequestObserver<LikingResult>() {
                         @Override
                         public void onNext(LikingResult value) {

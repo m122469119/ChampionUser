@@ -14,7 +14,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SelectCoursesListAdapter;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
-import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.module.course.selfhelp.details.SelfLessonDetailsActivity;
 
 import java.util.List;

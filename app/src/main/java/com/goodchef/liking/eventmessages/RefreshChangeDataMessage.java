@@ -1,7 +1,7 @@
 package com.goodchef.liking.eventmessages;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
-import com.goodchef.liking.http.result.data.Food;
+import com.goodchef.liking.data.remote.retrofit.result.data.Food;
 
 import java.util.ArrayList;
 

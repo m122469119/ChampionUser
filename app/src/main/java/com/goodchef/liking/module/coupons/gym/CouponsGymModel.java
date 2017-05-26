@@ -1,11 +1,10 @@
 package com.goodchef.liking.module.coupons.gym;
 
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CouponsCities;
-import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsCities;
+import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
 
 import io.reactivex.Observable;
 
@@ -30,7 +29,7 @@ public class CouponsGymModel {
         if (locationData == null) {
             locationData = new LocationData();
         }
-        return LikingNewApi.getInstance().getCouponsGym(UrlList.sHostVersion, page, couponCode, locationData.getLongitude(), locationData.getLatitude())
+        return LikingNewApi.getInstance().getCouponsGym(LikingNewApi.sHostVersion, page, couponCode, locationData.getLongitude(), locationData.getLatitude())
                 .compose(RxUtils.<CouponsCities>applyHttpSchedulers());
     }
 }

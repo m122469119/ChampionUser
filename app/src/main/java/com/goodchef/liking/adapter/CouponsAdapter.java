@@ -11,7 +11,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.CouponsResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

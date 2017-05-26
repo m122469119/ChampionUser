@@ -3,13 +3,12 @@ package com.goodchef.liking.module.login;
 import android.os.Build;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.result.VerificationCodeResult;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.UserLoginResult;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
+import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,7 @@ class LoginModel extends BaseModel {
      * @return Observable<UserLoginResult>
      */
     Observable<UserLoginResult> getLoginResult(String phone, String captcha) {
-        return LikingNewApi.getInstance().userLogin(UrlList.sHostVersion, phone, captcha)
+        return LikingNewApi.getInstance().userLogin(LikingNewApi.sHostVersion, phone, captcha)
                 .compose(RxUtils.<UserLoginResult>applyHttpSchedulers())
                 .doOnNext(new Consumer<UserLoginResult>() {
                     @Override
@@ -65,7 +64,7 @@ class LoginModel extends BaseModel {
         map.put("registration_id", registration_id);
         map.put("os_version", Build.VERSION.RELEASE);
         map.put("phone_type", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL);
-        return LikingNewApi.getInstance().uploadUserDevice(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().uploadUserDevice(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 

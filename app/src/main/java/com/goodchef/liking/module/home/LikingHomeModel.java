@@ -2,9 +2,8 @@ package com.goodchef.liking.module.home;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CheckUpdateAppResult;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
 
 import io.reactivex.Observable;
 
@@ -23,7 +22,7 @@ public class LikingHomeModel extends BaseModel {
      * @return Observable<CheckUpdateAppResult>
      */
     Observable<CheckUpdateAppResult> getUpdateApp() {
-        return LikingNewApi.getInstance().getUpdateApp(UrlList.sHostVersion)
+        return LikingNewApi.getInstance().getUpdateApp(LikingNewApi.sHostVersion)
                 .compose(RxUtils.<CheckUpdateAppResult>applyHttpSchedulers());
     }
 }

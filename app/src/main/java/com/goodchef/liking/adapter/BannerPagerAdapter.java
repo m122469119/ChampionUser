@@ -10,7 +10,7 @@ import com.aaron.common.utils.ListUtils;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.BannerResult;
+import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.utils.BannerSkipUtils;
 import com.goodchef.liking.widgets.autoviewpager.InfinitePagerAdapter;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPagerAdapter;

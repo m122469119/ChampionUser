@@ -13,8 +13,8 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyAnalyzeTitleAdapter;
 import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
-import com.goodchef.liking.http.result.BodyModelNavigationResult;
-import com.goodchef.liking.http.result.data.BodyHistoryData;
+import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.BodyHistoryData;
 
 import java.util.ArrayList;
 import java.util.List;

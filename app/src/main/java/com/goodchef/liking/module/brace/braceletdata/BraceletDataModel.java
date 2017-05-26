@@ -1,11 +1,10 @@
 package com.goodchef.liking.module.brace.braceletdata;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.http.result.SportDataResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
 
 import io.reactivex.Observable;
 
@@ -27,7 +26,7 @@ public class BraceletDataModel extends BaseModel {
      * @return
      */
     Observable<LikingResult> sendSportData(String sportData, String deviceId) {
-        return LikingNewApi.getInstance().sendSportData(UrlList.sHostVersion, sportData, deviceId);
+        return LikingNewApi.getInstance().sendSportData(LikingNewApi.sHostVersion, sportData, deviceId);
     }
 
 
@@ -37,7 +36,7 @@ public class BraceletDataModel extends BaseModel {
      * @return
      */
     Observable<SportDataResult> getSportData() {
-        return LikingNewApi.getInstance().getSportData(UrlList.sHostVersion, LikingPreference.getToken());
+        return LikingNewApi.getInstance().getSportData(LikingNewApi.sHostVersion, LikingPreference.getToken());
     }
 
 }

@@ -3,13 +3,12 @@ package com.goodchef.liking.module.coupons;
 import android.text.TextUtils;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CouponsPersonResult;
-import com.goodchef.liking.http.result.CouponsResult;
-import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class CouponModel extends BaseModel {
      * @return
      */
     public Observable<LikingResult> exchangeCoupon(String code) {
-        return LikingNewApi.getInstance().exchangeCoupon(UrlList.sHostVersion, LikingPreference.getToken(), code)
+        return LikingNewApi.getInstance().exchangeCoupon(LikingNewApi.sHostVersion, LikingPreference.getToken(), code)
                 .compose(RxUtils.<LikingResult>applyHttpSchedulers());
     }
 
@@ -43,7 +42,7 @@ public class CouponModel extends BaseModel {
      * @return
      */
     public Observable<CouponsPersonResult> getMyCoupons(int page) {
-        return LikingNewApi.getInstance().getMyCoupons(UrlList.sHostVersion, LikingPreference.getToken(), page)
+        return LikingNewApi.getInstance().getMyCoupons(LikingNewApi.sHostVersion, LikingPreference.getToken(), page)
                 .compose(RxUtils.<CouponsPersonResult>applyHttpSchedulers());
     }
 
@@ -62,7 +61,7 @@ public class CouponModel extends BaseModel {
      */
     public Observable<CouponsResult> getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, int page, String gymId) {
         Map<String, String> map = new HashMap<>();
-        map.put("version", UrlList.sHostVersion);
+        map.put("version", LikingNewApi.sHostVersion);
         map.put("page", page + "");
         map.put("token", LikingPreference.getToken());
         if (!TextUtils.isEmpty(courseId)) {
@@ -86,7 +85,7 @@ public class CouponModel extends BaseModel {
         if (!TextUtils.isEmpty(gymId)) {
             map.put("gym_id", gymId);
         }
-        return LikingNewApi.getInstance().getCoupons(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().getCoupons(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<CouponsResult>applyHttpSchedulers());
     }
 

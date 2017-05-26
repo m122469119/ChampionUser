@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.ResourceUtils;
-import com.goodchef.liking.http.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 import io.reactivex.disposables.Disposable;
 

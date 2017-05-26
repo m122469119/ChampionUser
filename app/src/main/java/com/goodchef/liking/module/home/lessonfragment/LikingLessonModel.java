@@ -3,10 +3,9 @@ package com.goodchef.liking.module.home.lessonfragment;
 import android.text.TextUtils;
 
 import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.BannerResult;
-import com.goodchef.liking.http.result.CoursesResult;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class LikingLessonModel {
      * @return Observable<BannerResult>
      */
     Observable<BannerResult> getBanner() {
-        return LikingNewApi.getInstance().getBanner(UrlList.sHostVersion)
+        return LikingNewApi.getInstance().getBanner(LikingNewApi.sHostVersion)
                 .compose(RxUtils.<BannerResult>applyHttpSchedulers());
     }
 
@@ -56,7 +55,7 @@ public class LikingLessonModel {
         if (!TextUtils.isEmpty(token)) {
             map.put("token", token);
         }
-        return LikingNewApi.getInstance().getHomeData(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().getHomeData(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<CoursesResult>applyHttpSchedulers());
     }
 

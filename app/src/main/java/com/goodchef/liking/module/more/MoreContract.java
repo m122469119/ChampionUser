@@ -5,10 +5,10 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CheckUpdateAppResult;
-import com.goodchef.liking.http.result.LikingResult;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
@@ -54,7 +54,7 @@ class MoreContract {
          * 用户登出
          */
         void loginOut() {
-            mMoreModel.userLogout(UrlList.sHostVersion, LikingPreference.getToken(), "")
+            mMoreModel.userLogout(LikingNewApi.sHostVersion, LikingPreference.getToken(), "")
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {

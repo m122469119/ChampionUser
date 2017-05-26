@@ -2,7 +2,7 @@ package com.goodchef.liking.widgets.stickyheaderrecyclerview;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;

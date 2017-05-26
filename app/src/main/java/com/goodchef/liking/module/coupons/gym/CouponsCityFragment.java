@@ -9,7 +9,7 @@ import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefre
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CouponsGymAdapter;
-import com.goodchef.liking.http.result.CouponsCities;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsCities;
 import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
 import com.goodchef.liking.widgets.decoration.CouponsDecoration;
 

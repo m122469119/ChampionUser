@@ -9,8 +9,8 @@ import android.view.View;
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CouponsDetailsAdapter;
-import com.goodchef.liking.http.result.CouponsDetailsResult;
-import com.goodchef.liking.http.result.CouponsPersonResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
 import com.goodchef.liking.module.coupons.gym.CouponsGymActivity;
 
 import butterknife.BindView;

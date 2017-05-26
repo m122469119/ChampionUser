@@ -7,8 +7,8 @@ import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
-import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.http.result.data.City;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.City;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

@@ -13,7 +13,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.GroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
 
 /**
  * 说明:

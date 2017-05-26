@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.data.TimeLimitData;
+import com.goodchef.liking.data.remote.retrofit.result.data.TimeLimitData;
 
 /**
  * 说明:购卡时间限制适配器

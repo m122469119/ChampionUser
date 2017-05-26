@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.CouponsPersonResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

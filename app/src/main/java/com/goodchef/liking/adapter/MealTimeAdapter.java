@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.listview.HBaseAdapter;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.data.MealTimeData;
+import com.goodchef.liking.data.remote.retrofit.result.data.MealTimeData;
 
 /**
  * 说明:

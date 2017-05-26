@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.data.ConfirmCard;
-import com.goodchef.liking.http.result.data.TimeLimitData;
+import com.goodchef.liking.data.remote.retrofit.result.data.ConfirmCard;
+import com.goodchef.liking.data.remote.retrofit.result.data.TimeLimitData;
 import com.goodchef.liking.utils.ListViewUtil;
 
 import java.util.List;

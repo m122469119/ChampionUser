@@ -5,8 +5,8 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.UserAuthCodeResult;
-import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.UserAuthCodeResult;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

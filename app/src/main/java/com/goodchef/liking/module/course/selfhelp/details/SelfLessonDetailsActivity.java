@@ -11,7 +11,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.utils.LikingCallUtil;
 
 import java.util.List;

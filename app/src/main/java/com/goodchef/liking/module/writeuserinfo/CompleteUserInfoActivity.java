@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.BaseActivity;
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
@@ -19,8 +18,8 @@ import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
-import com.goodchef.liking.http.result.UserImageResult;
-import com.goodchef.liking.http.result.UserInfoResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.ImageEnviromentUtil;

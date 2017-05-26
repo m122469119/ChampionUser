@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
-import com.goodchef.liking.http.result.BannerResult;
-import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.umeng.analytics.MobclickAgent;

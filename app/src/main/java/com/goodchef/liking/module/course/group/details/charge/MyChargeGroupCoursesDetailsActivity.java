@@ -8,7 +8,7 @@ import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.MyChargeGroupCoursesDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
 import com.goodchef.liking.widgets.base.LikingStateView;
 

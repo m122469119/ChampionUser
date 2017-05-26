@@ -4,14 +4,13 @@ import android.text.TextUtils;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CheckGymListResult;
-import com.goodchef.liking.http.result.CityListResult;
-import com.goodchef.liking.http.result.GymDetailsResult;
-import com.goodchef.liking.http.result.data.LocationData;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
 import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CheckGymListResult;
+import com.goodchef.liking.data.remote.retrofit.result.CityListResult;
+import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class GymModel extends BaseModel {
             map.put("token", token);
         }
         return LikingNewApi.getInstance()
-                .getCheckGymList(UrlList.sHostVersion, map)
+                .getCheckGymList(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<CheckGymListResult>applyHttpSchedulers());
     }
 
@@ -58,7 +57,7 @@ public class GymModel extends BaseModel {
      */
     public Observable<CityListResult> getCityList(){
         return LikingNewApi.getInstance()
-                .getCityList(UrlList.sHostVersion)
+                .getCityList(LikingNewApi.sHostVersion)
                 .compose(RxUtils.<CityListResult>applyHttpSchedulers());
     }
 
@@ -69,7 +68,7 @@ public class GymModel extends BaseModel {
      */
     public Observable<GymDetailsResult> getGymDetails(String gymId) {
         return LikingNewApi.getInstance()
-                .getGymDetails(UrlList.sHostVersion, gymId)
+                .getGymDetails(LikingNewApi.sHostVersion, gymId)
                 .compose(RxUtils.<GymDetailsResult>applyHttpSchedulers());
     }
 

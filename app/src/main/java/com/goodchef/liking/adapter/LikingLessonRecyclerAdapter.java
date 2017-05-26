@@ -19,7 +19,7 @@ import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 
 import java.util.List;
 

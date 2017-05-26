@@ -10,7 +10,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.PrivateCoursesConfirmResult;
+import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesConfirmResult;
 
 /**
  * 说明:

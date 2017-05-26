@@ -25,7 +25,7 @@ import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.DrawerMessage;
 import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.http.result.CheckGymListResult;
+import com.goodchef.liking.data.remote.retrofit.result.CheckGymListResult;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;

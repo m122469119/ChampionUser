@@ -1,7 +1,7 @@
 package com.goodchef.liking.utils;
 
 
-import com.goodchef.liking.http.result.data.PayTypeData;
+import com.goodchef.liking.data.remote.retrofit.result.data.PayTypeData;
 
 /**
  * Created by Lennon on 16/2/22.

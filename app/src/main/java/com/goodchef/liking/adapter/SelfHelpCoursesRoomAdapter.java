@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.SelfHelpGroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
 
 /**
  * 说明:

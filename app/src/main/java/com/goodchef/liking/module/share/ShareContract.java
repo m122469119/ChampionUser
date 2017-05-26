@@ -10,8 +10,8 @@ import com.aaron.share.weixin.WeixinShareData;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.dialog.ShareCustomDialog;
-import com.goodchef.liking.http.result.ShareResult;
-import com.goodchef.liking.http.result.data.ShareData;
+import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 
 /**
  * 说明:分享

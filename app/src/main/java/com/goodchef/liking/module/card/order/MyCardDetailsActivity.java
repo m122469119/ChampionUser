@@ -17,8 +17,8 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
-import com.goodchef.liking.http.result.data.TimeLimitData;
+import com.goodchef.liking.data.remote.retrofit.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.TimeLimitData;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;

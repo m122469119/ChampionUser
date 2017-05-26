@@ -3,16 +3,15 @@ package com.goodchef.liking.module.card;
 import android.text.TextUtils;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.http.result.ConfirmBuyCardResult;
-import com.goodchef.liking.http.result.SubmitPayResult;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.CardResult;
-import com.goodchef.liking.http.result.MyCardResult;
-import com.goodchef.liking.http.result.MyOrderCardDetailsResult;
-import com.goodchef.liking.http.result.OrderCardListResult;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.LikingNewApi;
+import com.goodchef.liking.data.remote.RxUtils;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.CardResult;
+import com.goodchef.liking.data.remote.retrofit.result.ConfirmBuyCardResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyCardResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.OrderCardListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class CardModel extends BaseModel {
         map.put("district_id", districtId);
         map.put("gym_id", gymId);
         map.put("type", String.valueOf(type));
-        return LikingNewApi.getInstance().getCardList(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().getCardList(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<CardResult>applyHttpSchedulers());
     }
 
@@ -61,7 +60,7 @@ public class CardModel extends BaseModel {
      * @return
      */
     public Observable<MyCardResult> getMyCard() {
-        return LikingNewApi.getInstance().getMyCard(UrlList.sHostVersion, LikingPreference.getToken())
+        return LikingNewApi.getInstance().getMyCard(LikingNewApi.sHostVersion, LikingPreference.getToken())
                 .compose(RxUtils.<MyCardResult>applyHttpSchedulers());
     }
 
@@ -72,7 +71,7 @@ public class CardModel extends BaseModel {
      * @return
      */
     public Observable<MyOrderCardDetailsResult> getMyOrderCardDetails(String orderId) {
-        return LikingNewApi.getInstance().getMyOrderCardDetails(UrlList.sHostVersion, LikingPreference.getToken(), orderId)
+        return LikingNewApi.getInstance().getMyOrderCardDetails(LikingNewApi.sHostVersion, LikingPreference.getToken(), orderId)
                 .compose(RxUtils.<MyOrderCardDetailsResult>applyHttpSchedulers());
     }
 
@@ -83,7 +82,7 @@ public class CardModel extends BaseModel {
      * @return
      */
     public Observable<OrderCardListResult> getCardOrderList(int page) {
-        return LikingNewApi.getInstance().getCardOrderList(UrlList.sHostVersion, LikingPreference.getToken(), page)
+        return LikingNewApi.getInstance().getCardOrderList(LikingNewApi.sHostVersion, LikingPreference.getToken(), page)
                 .compose(RxUtils.<OrderCardListResult>applyHttpSchedulers());
     }
 
@@ -102,7 +101,7 @@ public class CardModel extends BaseModel {
         if (!TextUtils.isEmpty(token)) {
             map.put("token", token);
         }
-        return LikingNewApi.getInstance().cardConfirm(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().cardConfirm(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<ConfirmBuyCardResult>applyHttpSchedulers());
     }
 
@@ -122,7 +121,7 @@ public class CardModel extends BaseModel {
         map.put("coupon_code", couponCode);
         map.put("pay_type", payType);
         map.put("gym_id", gymId);
-        return LikingNewApi.getInstance().submitBuyCardData(UrlList.sHostVersion, map)
+        return LikingNewApi.getInstance().submitBuyCardData(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<SubmitPayResult>applyHttpSchedulers());
     }
 }

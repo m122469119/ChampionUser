@@ -3,7 +3,7 @@ package com.goodchef.liking.utils;
 import android.content.Context;
 
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.http.result.data.LocationData;
+import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.umeng.analytics.MobclickAgent;
 

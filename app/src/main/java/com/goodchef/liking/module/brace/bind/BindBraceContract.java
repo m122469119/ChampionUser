@@ -9,15 +9,12 @@ import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.http.code.RequestCallback;
-import com.aaron.http.code.RequestError;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
-import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.http.result.LikingResult;
-import com.goodchef.liking.module.brace.bind.BindBraceModel;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 import cn.jpush.android.api.JPushInterface;
 

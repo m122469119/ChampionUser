@@ -5,9 +5,9 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.http.result.BodyModelNavigationResult;
+import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
 import com.goodchef.liking.module.body.BodyModel;
-import com.goodchef.liking.data.remote.ApiException;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 
 /**

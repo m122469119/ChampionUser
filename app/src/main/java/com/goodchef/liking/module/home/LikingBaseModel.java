@@ -1,9 +1,9 @@
 package com.goodchef.liking.module.home;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
-import com.goodchef.liking.data.remote.LikingNewApi;
-import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.http.result.SyncTimestampResult;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
+import com.goodchef.liking.data.remote.retrofit.result.SyncTimestampResult;
 
 import io.reactivex.Observable;
 

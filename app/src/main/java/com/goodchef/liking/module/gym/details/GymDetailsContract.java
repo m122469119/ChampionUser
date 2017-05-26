@@ -5,7 +5,7 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.GymDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.gym.GymModel;
 

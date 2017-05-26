@@ -1,7 +1,7 @@
 package com.goodchef.liking.eventmessages;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
-import com.goodchef.liking.http.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
 
 /**
  * 说明:

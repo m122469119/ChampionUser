@@ -7,8 +7,8 @@ import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.joinus.JoinModel;
 
@@ -74,7 +74,7 @@ public interface BecomeTeacherContract {
                 return;
             }
 
-            mJoinModel.joinAppLy(UrlList.sHostVersion, name, phone, city, 1)
+            mJoinModel.joinAppLy(LikingNewApi.sHostVersion, name, phone, city, 1)
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {

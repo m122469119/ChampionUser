@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.data.City;
+import com.goodchef.liking.data.remote.retrofit.result.data.City;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.widgets.wheel.OnWheelChangedListener;
 import com.goodchef.liking.widgets.wheel.WheelView;

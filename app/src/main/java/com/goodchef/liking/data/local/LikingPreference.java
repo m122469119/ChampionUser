@@ -5,13 +5,13 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.http.api.UrlList;
-import com.goodchef.liking.http.result.BaseConfigResult;
-import com.goodchef.liking.http.result.data.Announcement;
-import com.goodchef.liking.http.result.data.HomeAnnouncement;
-import com.goodchef.liking.http.result.data.LocationData;
-import com.goodchef.liking.http.result.data.NoticeData;
-import com.goodchef.liking.http.result.data.PatchData;
+import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.Announcement;
+import com.goodchef.liking.data.remote.retrofit.result.data.HomeAnnouncement;
+import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
+import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
+import com.goodchef.liking.data.remote.retrofit.result.data.PatchData;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -558,7 +558,7 @@ public class LikingPreference extends AbsPreference {
             }
             String apiVersion = baseConfigResult.getBaseConfigData().getApiVersion();
             if (!StringUtils.isEmpty(apiVersion)) {
-                UrlList.sHostVersion = File.separator + apiVersion;
+                LikingNewApi.sHostVersion = File.separator + apiVersion;
             }
         }
         String baseConfig = new Gson().toJson(baseConfigResult);

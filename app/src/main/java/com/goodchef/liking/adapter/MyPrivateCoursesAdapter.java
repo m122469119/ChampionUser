@@ -14,7 +14,7 @@ import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.http.result.MyPrivateCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyPrivateCoursesResult;
 
 /**
  * 说明:
