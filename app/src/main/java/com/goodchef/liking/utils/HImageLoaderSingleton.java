@@ -16,7 +16,6 @@ import com.aaron.imageloader.ImageLoader;
 import com.aaron.imageloader.ImageLoaderCallback;
 import com.aaron.imageloader.code.HImageLoader;
 import com.facebook.common.util.ByteConstants;
-import com.goodchef.liking.app.LikingApplication;
 import com.goodchef.liking.app.LikingApplicationLike;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import io.reactivex.functions.Consumer;

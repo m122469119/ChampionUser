@@ -1,1 +1,4 @@
-include ':app', ':framework', ':camera', ':pay', ':share', ':common', ':map', ':jpush', ':http', ':imageloader'
+include ':SoybeanFramework'
+project (':SoybeanFramework').projectDir = new File('../SoybeanFramework/')
+include ':app',':SoybeanFramework:framework', ':SoybeanFramework:camera', ':SoybeanFramework:pay', ':SoybeanFramework:share', ':SoybeanFramework:common', ':SoybeanFramework:map', ':SoybeanFramework:jpush',
+        ':SoybeanFramework:http',':SoybeanFramework:imageloader'
