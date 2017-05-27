@@ -235,17 +235,6 @@ public class LikingBuyCardFragment extends BaseFragment implements BuyCardContra
                     mBuyCardAdapter.setData(list);
                     mRecyclerView.setAdapter(mBuyCardAdapter);
                     setItemClickListener();
-//                    String cityName = locationData.getCityName();
-
-//                    boolean isLocation = locationData.isPositionSuccess();
-//                    if (!isLocation) {
-//                        SetHeadView();
-//                        mCityOpenTextView.setText(R.string.location_fails_confirm);
-//                    } else if (!StringUtils.isEmpty(cityName)) {
-//                        setHeadNoLocationView(cityName);
-//                    } else {
-//                        removeHeadView();
-//                    }
                 }
             } else if (list == null || list.size() == 0) {
                 setNoDataView();

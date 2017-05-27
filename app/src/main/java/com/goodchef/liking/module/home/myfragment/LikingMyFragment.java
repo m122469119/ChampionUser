@@ -62,7 +62,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     public static final String KEY_UUID = "key_UUID";
     @BindView(R.id.my_state_view)
     LikingStateView mStateView;
-    Unbinder unbinder;
     @BindView(R.id.head_image_background)
     HImageView mHImageViewBackground;//头像背景;
     @BindView(R.id.head_image)
@@ -113,7 +112,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         mLikingMyPresenter = new LikingMyContract.LikingMyPresenter(getActivity(), this);
         initView(view);
@@ -505,6 +504,5 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 }

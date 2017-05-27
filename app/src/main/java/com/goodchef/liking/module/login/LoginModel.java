@@ -3,12 +3,15 @@ package com.goodchef.liking.module.login;
 import android.os.Build;
 
 import com.aaron.android.framework.base.mvp.model.BaseModel;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
 import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.utils.NumberConstantUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +86,10 @@ class LoginModel extends BaseModel {
         LikingPreference.setUserPhone(userLoginData.getPhone());
         LikingPreference.setIsNewUser(userLoginData.getNewUser());
         LikingPreference.setIsVip(userLoginData.getIsVip());
+        LikingPreference.setLoginGymId(userLoginData.getGymId());
+        if (!StringUtils.isEmpty(userLoginData.getGymId()) && !userLoginData.getGymId().equals(NumberConstantUtil.STR_ZERO)) {
+            LikingHomeActivity.gymId = userLoginData.getGymId();
+        }
     }
 
 }
