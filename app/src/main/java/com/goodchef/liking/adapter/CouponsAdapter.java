@@ -28,12 +28,12 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
     private static final String COUPON_NOT_CAN_USE = "0";//不能使用
     private static final String COUPON_CAN_USE = "1";//能使用
 
-    private Context mContext;
+    private Context context;
     private OnItemClickListener mClickListener;
 
     public CouponsAdapter(Context context) {
         super(context);
-        this.mContext = context;
+        this.context = context;
     }
 
     public interface OnItemClickListener{
@@ -46,7 +46,7 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
 
     @Override
     protected CouponsViewHolder createViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_coupons, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_coupons, parent, false);
         return new CouponsViewHolder(view);
     }
 
@@ -142,7 +142,7 @@ public class CouponsAdapter extends BaseRecycleViewAdapter {
          * @param object : CouponsResult.CouponData.Coupon
          */
         private void setContentBottom(CouponsResult.CouponData.Coupon object) {
-            mContentBottom.setText(mContext.getString(R.string.the_period_of_validity)
+            mContentBottom.setText(context.getString(R.string.the_period_of_validity)
                     + object.getValid_date());
         }
 

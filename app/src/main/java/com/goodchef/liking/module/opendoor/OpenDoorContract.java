@@ -47,7 +47,7 @@ public class OpenDoorContract {
 
                         @Override
                         public void apiError(ApiException apiException) {
-                            mView.updateFailCodeView(apiException.getMessage());
+                            mView.updateFailCodeView(apiException.getErrorMessage());
                         }
 
                         @Override
