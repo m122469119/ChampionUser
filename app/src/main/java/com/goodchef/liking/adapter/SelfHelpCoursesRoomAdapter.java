@@ -23,14 +23,14 @@ import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResul
 public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpCoursesRoomAdapter.SelfHelpCoursesRoomViewHolder, SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> {
 
 
-    private Context mContext;
+    private Context context;
     private View.OnClickListener mSelectRoomOnClickListener;
 
     private View.OnClickListener mSelectRoomJoinClickListener;
 
     public SelfHelpCoursesRoomAdapter(Context context) {
         super(context);
-        this.mContext = context;
+        this.context = context;
     }
 
     public void setSelectRoomOnClickListener(View.OnClickListener roomOnClickListener) {
@@ -42,7 +42,7 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
     }
     @Override
     protected SelfHelpCoursesRoomViewHolder createViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.viewholder_self_help_room, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_self_help_room, parent, false);
         return new SelfHelpCoursesRoomViewHolder(view);
     }
 
@@ -74,10 +74,10 @@ public class SelfHelpCoursesRoomAdapter extends BaseRecycleViewAdapter<SelfHelpC
             if (ismScheduled) {//已有排课
                 mGymCheckBox.setVisibility(View.GONE);
                 mSurplusNumberTextView.setVisibility(View.VISIBLE);
-                mSurplusNumberTextView.setText(mContext.getString(R.string.remain) + object.getQuota() + mContext.getString(R.string.number_people));
+                mSurplusNumberTextView.setText(context.getString(R.string.remain) + object.getQuota() + context.getString(R.string.number_people));
                 mJoinCoursesTextView.setVisibility(View.VISIBLE);
                 mGymRoomOrderPromptTextView.setVisibility(View.VISIBLE);
-                mGymRoomOrderPromptTextView.setText(mContext.getString(R.string.hased) + object.getScheduleName() + ")");
+                mGymRoomOrderPromptTextView.setText(context.getString(R.string.hased) + object.getScheduleName() + ")");
                 mImageView.setVisibility(View.GONE);
                 mLineImageView.setVisibility(View.VISIBLE);
                 if(mSelectRoomJoinClickListener != null){
