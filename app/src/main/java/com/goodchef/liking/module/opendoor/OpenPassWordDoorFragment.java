@@ -47,7 +47,6 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     @BindView(R.id.user_bracelet)
     ImageView mBraceletImage;
 
-    Unbinder unbinder;
     private int mNum; //页号
     private OpenDoorContract.OpenDoorPresenter mOpenDoorPresenter;
 
@@ -70,7 +69,7 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_open_the_door, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         initView();
         initData();
         mFailMessageTextView.setText("");
@@ -160,6 +159,5 @@ public class OpenPassWordDoorFragment extends BaseFragment implements View.OnCli
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 }

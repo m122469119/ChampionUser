@@ -49,7 +49,7 @@ public class GuideFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frgment_guide, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         mJumpBtn.setOnClickListener(this);
         initData();
         return view;
@@ -83,6 +83,5 @@ public class GuideFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 }
