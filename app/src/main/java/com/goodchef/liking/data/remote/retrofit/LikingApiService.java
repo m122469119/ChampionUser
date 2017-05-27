@@ -299,6 +299,7 @@ public interface LikingApiService {
 
     @POST(Urls.USER_GET_BODY_LIST)
     Observable<BodyHistoryResult> getHistoryData(@Path(PATH_VERSION) String version,
+                                                 @Query(KEY_TOKEN) String token,
                                                  @Query("page") int page);
 
     @POST(Urls.USER_BODY_MODULES_HISTORY)

@@ -23,16 +23,16 @@ import com.goodchef.liking.utils.TypefaseUtil;
 
 public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHistoryAdapter.BodyTestHistoryViewHolder, BodyHistoryResult.BodyHistoryData.ListData> {
 
-    private Context mContext;
+    private Context context;
 
     public BodyTestHistoryAdapter(Context context) {
         super(context);
-        this.mContext = context;
+        this.context = context;
     }
 
     @Override
     protected BodyTestHistoryViewHolder createViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.viewholder_bodytest_history, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_bodytest_history, parent, false);
         return new BodyTestHistoryViewHolder(view);
     }
 
@@ -105,11 +105,11 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
                 mBodyWhrTextView.setText(waistHipData.getEnglishName());
                 mWhrChineseNameTextView.setText(waistHipData.getChineseName());
             }
-            mBodyMeasureTimeTextView.setText(mContext.getString(R.string.body_measure_time) + object.getBodyTime());
+            mBodyMeasureTimeTextView.setText(context.getString(R.string.body_measure_time) + object.getBodyTime());
         }
 
         private void setTextViewType() {
-            Typeface typeface = TypefaseUtil.getImpactTypeface(mContext);
+            Typeface typeface = TypefaseUtil.getImpactTypeface(context);
             mBodyHistoryGradeTextView.setTypeface(typeface);
             mBodyIndexNumberTextView.setTypeface(typeface);
             mBodyIndexNumberUnitTextView.setTypeface(typeface);

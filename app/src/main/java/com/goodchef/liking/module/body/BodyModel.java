@@ -27,7 +27,7 @@ public class BodyModel extends BaseModel {
      */
     public Observable<BodyHistoryResult> getHistoryData(int page) {
 
-        return LikingNewApi.getInstance().getHistoryData(LikingNewApi.sHostVersion, page)
+        return LikingNewApi.getInstance().getHistoryData(LikingNewApi.sHostVersion, LikingPreference.getToken(),page)
                 .compose(RxUtils.<BodyHistoryResult>applyHttpSchedulers());
     }
 
