@@ -23,18 +23,18 @@ import com.goodchef.liking.utils.TypefaseUtil;
 
 public class FatAnalyzeAdapter extends BaseRecycleViewAdapter<FatAnalyzeAdapter.FatAnalyzeViewHolder, BodyTestResult.BodyTestData.FatAnalysisData.BodyDataData> {
 
-    private Context mContext;
+    private Context context;
     private Typeface mTypeface;
 
     public FatAnalyzeAdapter(Context context) {
         super(context);
-        this.mContext = context;
-        mTypeface = TypefaseUtil.getImpactTypeface(mContext);
+        this.context = context;
+        mTypeface = TypefaseUtil.getImpactTypeface(context);
     }
 
     @Override
     protected FatAnalyzeViewHolder createViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_item_body_ingredient, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_item_body_ingredient, parent, false);
         return new FatAnalyzeViewHolder(view);
     }
 
@@ -87,11 +87,11 @@ public class FatAnalyzeAdapter extends BaseRecycleViewAdapter<FatAnalyzeAdapter.
                 return "";
             }
             if (Float.parseFloat(value) > Float.parseFloat(max)) {
-                result = mContext.getString(R.string.on_the_high_side);
+                result = context.getString(R.string.on_the_high_side);
             } else if (Float.parseFloat(value) < Float.parseFloat(min)) {
-                result = mContext.getString(R.string.flat);
+                result = context.getString(R.string.flat);
             } else {
-                result = mContext.getString(R.string.normal);
+                result = context.getString(R.string.normal);
             }
             return result;
         }
