@@ -28,12 +28,12 @@ public class CouponsPersonAdapter extends BaseRecycleViewAdapter<CouponsPersonAd
     private static final String COUPON_STATUS_USED = "1";//1已使用
     private static final String COUPON_STATUS_OVERDUE = "2";// 2已过期
 
-    private Context mContext;
+    private Context context;
     private OnItemClickListener mClickListener;
 
     public CouponsPersonAdapter(Context context) {
         super(context);
-        this.mContext = context;
+        this.context = context;
     }
 
     public interface OnItemClickListener{
@@ -47,7 +47,7 @@ public class CouponsPersonAdapter extends BaseRecycleViewAdapter<CouponsPersonAd
 
     @Override
     protected ViewHolder createViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_coupons, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_coupons, parent, false);
         return new ViewHolder(view);
     }
 
@@ -72,7 +72,7 @@ public class CouponsPersonAdapter extends BaseRecycleViewAdapter<CouponsPersonAd
         TextView mHideText;
 
         public ViewHolder(View itemView) {
-            super(itemView);
+            super(itemView, context);
             ButterKnife.bind(this, itemView);
         }
 
@@ -97,12 +97,12 @@ public class CouponsPersonAdapter extends BaseRecycleViewAdapter<CouponsPersonAd
 
                 mHideView.setVisibility(View.VISIBLE);
                 mItemView.setEnabled(false);
-                mHideText.setText(mContext.getString(R.string.already_used));
+                mHideText.setText(context.getString(R.string.already_used));
             } else if (couponsStatus.equals(COUPON_STATUS_OVERDUE)) {//过期
                 mHideView.setVisibility(View.VISIBLE);
 
                 mItemView.setEnabled(false);
-                mHideText.setText(mContext.getString(R.string.already_past));
+                mHideText.setText(context.getString(R.string.already_past));
 
             }
             mDraw.setVisibility(View.GONE);
@@ -138,7 +138,7 @@ public class CouponsPersonAdapter extends BaseRecycleViewAdapter<CouponsPersonAd
          * @param object : CouponsResult.CouponData.Coupon
          */
         private void setContentBottom(CouponsPersonResult.DataBean.CouponListBean object) {
-            mContentBottom.setText(mContext.getString(R.string.the_period_of_validity) + object.getValid_date());
+            mContentBottom.setText(context.getString(R.string.the_period_of_validity) + object.getValid_date());
         }
     }
 }
