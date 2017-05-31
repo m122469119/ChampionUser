@@ -22,6 +22,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created on 2017/05/25
@@ -46,7 +48,9 @@ public class LikingBaseRequestHelper {
         if(isTimestampInit) return null;
         sRequestSyncTimestamp = DateUtils.currentDataSeconds();
         Observable observable = LikingNewApi.getInstance().syncServerTimestamp();
-        observable.subscribe(new BaseRequestObserver<SyncTimestampResult>() {
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseRequestObserver<SyncTimestampResult>() {
             @Override
             public void onNext(SyncTimestampResult value) {
                 if (value != null && value.isSuccess()) {
@@ -71,7 +75,9 @@ public class LikingBaseRequestHelper {
     public static Observable initBaseConfig() {
         if(isBaseConfigInit) return null;
         Observable observable = LikingNewApi.getInstance().baseConfig();
-        observable.subscribe(new BaseRequestObserver<BaseConfigResult>() {
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseRequestObserver<BaseConfigResult>() {
             @Override
             public void onNext(BaseConfigResult value) {
                 if (value == null) return;

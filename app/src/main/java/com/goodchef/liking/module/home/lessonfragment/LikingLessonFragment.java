@@ -504,7 +504,11 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(OnClickLessonFragmentMessage message) {
-        loadHomePage();
+        if(!isFirstMessage) {
+            postEvent(new LikingHomeNoNetWorkMessage());
+        } else {
+            loadHomePage();
+        }
     }
 
 }
