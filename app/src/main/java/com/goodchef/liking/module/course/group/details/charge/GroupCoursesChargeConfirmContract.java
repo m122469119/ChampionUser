@@ -67,7 +67,7 @@ public interface GroupCoursesChargeConfirmContract {
                         public void apiError(ApiException apiException) {
                             switch (apiException.getErrorCode()) {
                                 case LiKingRequestCode.BUY_COURSES_ERROR:
-                                    mView.updateBuyCoursesNotOnGym(apiException.getMessage());
+                                    mView.updateBuyCoursesNotOnGym(apiException.getErrorMessage());
                                     break;
                                 case LiKingRequestCode.BUY_COURSES_NO_CARD:
                                     mView.updateErrorNoCard(apiException.getMessage());
