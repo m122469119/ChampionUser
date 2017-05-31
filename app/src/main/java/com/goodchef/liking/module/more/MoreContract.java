@@ -60,7 +60,6 @@ class MoreContract {
                     .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {
-                            mMoreModel.clearUserInfo();
                             mView.updateLoginOut();
                         }
 

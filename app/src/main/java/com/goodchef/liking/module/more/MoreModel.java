@@ -9,6 +9,7 @@ import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created on 17/3/15.
@@ -27,7 +28,13 @@ class MoreModel extends BaseModel {
 
     final Observable<LikingResult> userLogout(String version, String token, String registerId) {
         return LikingNewApi.getInstance().userLogout(version, token, registerId)
-                .compose(RxUtils.<LikingResult>applyHttpSchedulers());
+                .compose(RxUtils.<LikingResult>applyHttpSchedulers())
+                .doOnNext(new Consumer<LikingResult>() {
+                    @Override
+                    public void accept(LikingResult likingResult) throws Exception {
+                        clearUserInfo();
+                    }
+                });
     }
 
     final void clearUserInfo() {
@@ -37,6 +44,8 @@ class MoreModel extends BaseModel {
         LikingPreference.setIsNewUser(null);
         LikingPreference.setUserIconUrl(ConstantUtils.BLANK_STRING);
         LikingPreference.setIsBind("0");
+        LikingPreference.clearHomeAnnouncement();
+        LikingPreference.clearAnnouncementId();
     }
 
     public void saveUpdateInfo(CheckUpdateAppResult.UpdateAppData updateAppData) {

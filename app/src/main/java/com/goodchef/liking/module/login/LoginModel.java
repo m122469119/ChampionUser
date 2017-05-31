@@ -87,6 +87,8 @@ class LoginModel extends BaseModel {
         LikingPreference.setIsNewUser(userLoginData.getNewUser());
         LikingPreference.setIsVip(userLoginData.getIsVip());
         LikingPreference.setLoginGymId(userLoginData.getGymId());
+        LikingPreference.clearAnnouncementId();
+        LikingPreference.clearHomeAnnouncement();
         if (!StringUtils.isEmpty(userLoginData.getGymId()) && !userLoginData.getGymId().equals(NumberConstantUtil.STR_ZERO)) {
             LikingHomeActivity.gymId = userLoginData.getGymId();
         }

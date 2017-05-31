@@ -35,6 +35,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明:切换城市
@@ -68,11 +70,15 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityCont
 
     private CityListWindow mCityListWindow;
     private ChangeCityAdapter mChangeCityAdapter;
+    private RxPermissions mRxPermissions;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_city);
+        mRxPermissions = new RxPermissions(this);
         showHomeUpIcon(R.drawable.app_bar_left_quit);
         Intent intent = getIntent();
         defaultCityName = intent.getStringExtra(CITY_NAME);
@@ -85,7 +91,16 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityCont
 
     private void loadData() {
         LogUtils.i(TAG,"=-------loadData--------");
-        mPresenter.startLocation();
+
+        mRxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean)
+                            mPresenter.startLocation();
+                    }
+                });
         mPresenter.getCityList();
     }
 
@@ -144,7 +159,15 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityCont
                 hideInput();
                 break;
             case R.id.location_cityName_TextView:
-                mPresenter.onLocationTextClick();
+                mRxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean)
+                                    mPresenter.onLocationTextClick();
+                            }
+                        });
                 break;
         }
     }
@@ -250,7 +273,9 @@ public class ChangeCityActivity extends AppBarActivity implements ChangeCityCont
         }
         mChangeCityAdapter.setData(list);
         mChangeCityAdapter.notifyDataSetChanged();
+
         mCityListWindow.showAsDropDown(mCityLayout);
+
         mCityListWindow.update();
     }
 
