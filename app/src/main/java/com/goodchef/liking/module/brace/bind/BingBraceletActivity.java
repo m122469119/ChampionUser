@@ -159,6 +159,7 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.releaseBleConnect();
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
 
@@ -466,6 +467,6 @@ public class BingBraceletActivity extends AppBarActivity implements BindBraceCon
     protected void onPause() {
         super.onPause();
         mPresenter.pauseBle();
-        unregisterReceiver(mGattUpdateReceiver);
     }
+
 }
