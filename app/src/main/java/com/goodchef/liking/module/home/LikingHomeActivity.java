@@ -23,6 +23,7 @@ import com.aaron.common.utils.StringUtils;
 import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
+import com.goodchef.liking.Manifest;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.gym.details.ArenaActivity;
 import com.goodchef.liking.dialog.CancelOnClickListener;
@@ -52,6 +53,7 @@ import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -59,6 +61,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 public class LikingHomeActivity extends BaseActivity implements LikingHomeContract.LikingHomeView {
 
@@ -508,6 +511,18 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
      * 初始化定位
      */
     private void initTitleLocation() {
+        new RxPermissions(this).request(android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        initAmapGDLocation();
+                    }
+                });
+
+    }
+
+    public void initAmapGDLocation() {
         mAmapGDLocation = new AmapGDLocation(this);
         mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
             @Override
@@ -557,7 +572,6 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
         });
         mAmapGDLocation.start();
     }
-
 
     private void updateLocationPoint(String cityId, String districtId, String longitude, String latitude, String cityName, boolean isLocation) {
         saveLocationInfo(cityId, districtId, longitude, latitude, cityName, isLocation);
