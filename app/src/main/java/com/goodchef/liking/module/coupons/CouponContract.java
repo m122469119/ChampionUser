@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.CouponErrorMessage;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
@@ -47,7 +48,11 @@ public interface CouponContract {
 
                 @Override
                 public void apiError(ApiException apiException) {
-                    mView.showToast(mContext.getString(R.string.exchange_fail));
+                    String eMsg = mContext.getString(R.string.exchange_fail);
+                    if(apiException != null && !StringUtils.isEmpty(apiException.getErrorMessage())) {
+                        eMsg = apiException.getErrorMessage();
+                    }
+                    mView.showToast(eMsg);
                 }
 
                 @Override
