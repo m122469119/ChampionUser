@@ -44,6 +44,7 @@ class MoreModel extends BaseModel {
         LikingPreference.setIsNewUser(null);
         LikingPreference.setUserIconUrl(ConstantUtils.BLANK_STRING);
         LikingPreference.setIsBind("0");
+        LikingPreference.setLoginGymId("");
         LikingPreference.clearHomeAnnouncement();
         LikingPreference.clearAnnouncementId();
     }
