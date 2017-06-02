@@ -36,8 +36,6 @@ public class BraceletDataContract {
 
         public void sendSportData(String sportData, String deviceId) {
             mBraceletDataModel.sendSportData(sportData, deviceId)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
                     .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
                         @Override
                         public void onNext(LikingResult value) {
@@ -61,8 +59,6 @@ public class BraceletDataContract {
                 }
             });
         }
-
-
     }
 
 }

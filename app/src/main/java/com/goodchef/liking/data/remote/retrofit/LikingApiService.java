@@ -326,6 +326,7 @@ public interface LikingApiService {
     @FormUrlEncoded
     @POST(Urls.USER_SAVE_SPORT_DATA)
     Observable<LikingResult> sendSportData(@Path(PATH_VERSION) String version,
+                                           @Field(KEY_TOKEN) String token,
                                            @Field("sport_data") String sportData,
                                            @Field("device_id") String deviceId);
 

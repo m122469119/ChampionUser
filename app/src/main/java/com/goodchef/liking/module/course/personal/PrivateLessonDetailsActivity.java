@@ -25,10 +25,10 @@ import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.GymData;
 import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.share.ShareContract;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.utils.ShareUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
@@ -44,7 +44,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/24 下午5:55
  */
-public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsContract.PrivateCoursesDetailsView, ShareContract.ShareView {
+public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsContract.PrivateCoursesDetailsView{
     @BindView(R.id.private_courses_details_state_view)
     LikingStateView mLikingStateView;
     @BindView(R.id.private_lesson_details_teach_image)
@@ -74,14 +74,12 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     private String trainerId;
     private String teacherName;
 
-    private ShareContract.SharePresenter mSharePresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_lesson_details);
+        mCoursesDetailsPresenter = new PrivateCoursesDetailsContract.PrivateCoursesDetailsPresenter(this, this);
         ButterKnife.bind(this);
-        mSharePresenter = new ShareContract.SharePresenter(this, this);
         initView();
         initData();
     }
@@ -119,7 +117,6 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     private void sendDetailsRequest() {
         mLikingStateView.setState(StateView.State.LOADING);
-        mCoursesDetailsPresenter = new PrivateCoursesDetailsContract.PrivateCoursesDetailsPresenter(this, this);
         mCoursesDetailsPresenter.getPrivateCoursesDetails(trainerId);
     }
 
@@ -209,10 +206,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 }
                 break;
             case R.id.layout_private_courses_share://分享
-                if (mSharePresenter == null) {
-                    mSharePresenter = new ShareContract.SharePresenter(this, this);
-                }
-                mSharePresenter.getPrivateShareData(trainerId);
+                mCoursesDetailsPresenter.getPrivateShareData(trainerId);
                 mShareLayout.setEnabled(false);
                 break;
         }
@@ -249,6 +243,6 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     @Override
     public void updateShareView(ShareData shareData) {
         mShareLayout.setEnabled(true);
-        mSharePresenter.showShareDialog(this, shareData);
+        ShareUtils.showShareDialog(this, shareData);
     }
 }

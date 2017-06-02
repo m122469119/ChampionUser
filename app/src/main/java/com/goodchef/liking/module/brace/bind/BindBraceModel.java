@@ -49,14 +49,11 @@ public class BindBraceModel {
 
     public BluetoothGattCharacteristic mWriteCharacteristic;
     public BluetoothGattCharacteristic mReadCharacteristic;
-
     public int mBraceletPower;//电量
-
     public void stopScan() {
         if (mBleManager != null)
             mBleManager.stopScan();
     }
-
     public void setBluetoothDevice() {
         mBluetoothDevice = mBleManager.getBluetoothGatt().getDevice();
     }

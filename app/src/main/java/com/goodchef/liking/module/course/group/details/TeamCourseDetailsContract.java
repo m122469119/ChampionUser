@@ -9,10 +9,13 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.module.share.ShareModel;
 import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
@@ -33,10 +36,13 @@ public interface TeamCourseDetailsContract {
         void updateErrorNoCard(String errorMessage);
 
         void updateCancelOrderView();
+
+        void updateShareView(ShareData shareData);
     }
 
     class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDetailsView> {
 
+        private ShareModel mShareModel;
         private CourseModel mCourseModel;
 
         public String scheduleId;//排期id
@@ -51,6 +57,7 @@ public interface TeamCourseDetailsContract {
         public GroupCoursesDetailsPresenter(Context context, GroupCourserDetailsView mainView) {
             super(context, mainView);
             mCourseModel = new CourseModel();
+            mShareModel = new ShareModel();
         }
 
         /**
@@ -118,6 +125,19 @@ public interface TeamCourseDetailsContract {
 
                     });
         }
+
+        //团体课分享
+        public void getGroupShareData(String scheduleId) {
+            mShareModel.getGroupCoursesShare(scheduleId)
+                    .subscribe(new LikingBaseObserver<ShareResult>(mContext, mView) {
+                        @Override
+                        public void onNext(ShareResult value) {
+                            if(value == null) return;
+                            mView.updateShareView(value.getShareData());
+                        }
+                    });
+        }
+
 
         /**
          * 取消团体课

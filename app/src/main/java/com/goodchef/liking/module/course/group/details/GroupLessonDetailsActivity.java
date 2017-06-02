@@ -41,10 +41,10 @@ import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
-import com.goodchef.liking.module.share.ShareContract;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.LikingCallUtil;
+import com.goodchef.liking.utils.ShareUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -59,7 +59,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/24 下午3:21
  */
-public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCourseDetailsContract.GroupCourserDetailsView, ShareContract.ShareView {
+public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCourseDetailsContract.GroupCourserDetailsView {
 
     private static final int COURSES_STATE_NOT_START = 0;// 未开始
     private static final int COURSES_STATE_PROCESS = 1;//进行中
@@ -113,7 +113,6 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     TextView mTeacherNameTextView;
 
     private TeamCourseDetailsContract.GroupCoursesDetailsPresenter mDetailsPresenter;
-    private ShareContract.SharePresenter mSharePresenter;
 
     private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
     private GroupLessonNumbersAdapter mGroupLessonNumbersAdapter;
@@ -123,8 +122,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lesson_details);
         ButterKnife.bind(this);
-        mSharePresenter = new ShareContract.SharePresenter(this, this);
-        mDetailsPresenter = new TeamCourseDetailsContract.GroupCoursesDetailsPresenter(this,this);
+        mDetailsPresenter = new TeamCourseDetailsContract.GroupCoursesDetailsPresenter(this, this);
         setTitle(getString(R.string.title_gruop_detials));
         initData();
         setViewOnClickListener();
@@ -179,6 +177,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
 
     /**
      * 设置底部相同情况的view
+     *
      * @param start_process
      */
     private void setBottomCoursesStateSameView(int start_process) {
@@ -311,7 +310,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
      * @param groupLessonData
      */
     private void setDetailsData(GroupCoursesResult.GroupLessonData groupLessonData) {
-      //  gymId = groupLessonData.getGymId();
+        //  gymId = groupLessonData.getGymId();
         setTitle(groupLessonData.getCourseName());
         List<String> coursesImageList = groupLessonData.getCourseImgs();
         if (coursesImageList != null && coursesImageList.size() > 0) {
@@ -425,10 +424,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
 
                 break;
             case R.id.layout_group_courses_share://分享
-                if (mSharePresenter == null) {
-                    mSharePresenter = new ShareContract.SharePresenter(this, this);
-                }
-                mSharePresenter.getGroupShareData(mDetailsPresenter.scheduleId);
+                mDetailsPresenter.getGroupShareData(mDetailsPresenter.scheduleId);
                 mShareLayout.setEnabled(false);
 
                 break;
@@ -492,7 +488,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
 
     @Override
     public void updateShareView(ShareData shareData) {
-        mSharePresenter.showShareDialog(this, shareData);
+        ShareUtils.showShareDialog(this, shareData);
         mShareLayout.setEnabled(true);
     }
 

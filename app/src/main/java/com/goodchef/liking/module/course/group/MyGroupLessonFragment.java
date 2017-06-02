@@ -23,8 +23,8 @@ import com.goodchef.liking.data.remote.retrofit.result.MyGroupCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity;
-import com.goodchef.liking.module.share.ShareContract;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.ShareUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
 
 import java.util.List;
@@ -34,13 +34,12 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:42
  */
-public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyTeamcourseContract.MyGroupCourseView, ShareContract.ShareView {
+public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyTeamcourseContract.MyGroupCourseView{
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupCoursesAdapter mGroupLessonAdapter;
 
     private MyTeamcourseContract.MyGroupCoursesPresenter mMyGroupCoursesPresenter;
-    private ShareContract.SharePresenter mSharePresenter;
 
     @Override
     protected void requestData(int page) {
@@ -49,7 +48,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     @Override
     protected void initViews() {
-        mSharePresenter = new ShareContract.SharePresenter(getActivity(), this);
+        mMyGroupCoursesPresenter = new MyTeamcourseContract.MyGroupCoursesPresenter(getActivity(), this);
         setNoDataView();
         setPullMode(PullMode.PULL_BOTH);
         getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
@@ -131,9 +130,6 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     };
 
     private void sendRequest(int page) {
-        if (mMyGroupCoursesPresenter == null) {
-            mMyGroupCoursesPresenter = new MyTeamcourseContract.MyGroupCoursesPresenter(getActivity(), this);
-        }
         mMyGroupCoursesPresenter.getMyGroupList(page);
     }
 
@@ -177,7 +173,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             if (textView != null) {
                 MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                 if (data != null) {
-                    mSharePresenter.getGroupShareData(data.getScheduleId());
+                    mMyGroupCoursesPresenter.getGroupShareData(data.getScheduleId());
                 }
             }
         }
@@ -227,6 +223,6 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     @Override
     public void updateShareView(ShareData shareData) {
-        mSharePresenter.showShareDialog(getActivity(), shareData);
+        ShareUtils.showShareDialog(getActivity(), shareData);
     }
 }

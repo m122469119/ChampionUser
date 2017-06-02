@@ -52,7 +52,7 @@ import cn.jpush.android.api.JPushInterface;
  * version 1.0.0
  */
 
-public class BraceletDataActivity extends AppBarActivity implements View.OnClickListener, BraceletDataContract.BraceletDataView {
+public class BraceletDataActivity extends AppBarActivity implements BraceletDataContract.BraceletDataView {
 
     @BindView(R.id.layout_today_step)
     RelativeLayout mTodayStepLayout;
@@ -129,7 +129,7 @@ public class BraceletDataActivity extends AppBarActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_every_day_sport);
         ButterKnife.bind(this);
-        mBraceletDataPresenter = new BraceletDataContract.BraceletDataPresenter(this,this);
+        mBraceletDataPresenter = new BraceletDataContract.BraceletDataPresenter(this, this);
         getIntentData();
         mBleManager = new BleManager(this, mLeScanCallback);
         mBleManager.bind();
@@ -146,7 +146,6 @@ public class BraceletDataActivity extends AppBarActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-
     }
 
     @Override
@@ -184,7 +183,13 @@ public class BraceletDataActivity extends AppBarActivity implements View.OnClick
     }
 
     private void setViewOnClickListener() {
-        mTodayHeartRateLayout.setOnClickListener(this);
+        mTodayHeartRateLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPromptHeartRateDialog();
+                sendHeartRateSynchronization();
+            }
+        });
     }
 
     private void setTodayDataView() {
@@ -920,14 +925,6 @@ public class BraceletDataActivity extends AppBarActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mTodayHeartRateLayout) {
-            showPromptHeartRateDialog();
-            sendHeartRateSynchronization();
-        }
-    }
-
     /**
      * 展示获取心率dialog
      */
@@ -986,6 +983,7 @@ public class BraceletDataActivity extends AppBarActivity implements View.OnClick
         if (mBleManager != null) {
             mBleManager.release();
         }
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
@@ -993,11 +991,11 @@ public class BraceletDataActivity extends AppBarActivity implements View.OnClick
         super.onPause();
         isConnect = false;
         if (!StringUtils.isEmpty(sportDate)) {
-            sendSportDataRequest(currentSportStep + "", currentSportKcal, currentSportDistance, mHeartRate + "", sportDate);
+            sendSportDataRequest(currentSportStep + "", currentSportKcal, currentSportDistance,
+                    mHeartRate + "", sportDate);
         }
         sendCloseSynchronization();
         sendDisconnectBlueTooth();
-        unregisterReceiver(mGattUpdateReceiver);
     }
 
     /**

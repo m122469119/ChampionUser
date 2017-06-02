@@ -24,31 +24,31 @@ import java.util.Set;
  * Time:16/6/7 上午11:49
  */
 public class LikingPreference extends AbsPreference {
-    public static final String TOKEN = "token";
-    public static final String NICKNAME = "nickname";
-    public static final String USER_ICON_URL = "headimgurl";
-    public static final String SHOW_PHONE = "showPhone";
-    public static final String IS_NEW_USER = "isNewUser";
-    public static final String APP_VERSION = "app_version";
-    public static final String IS_GET_API_MESSAGE = "isGetApiFinishedMessage";
-    public static final String REGISTRATION_ID = "registration_id";
-    public static final String CUSTOMER_PHONE = "customer_phone";//客服电话
-    public static final String BUSINESS_PHONE = "business_phone";//商务合作电话
-    public static final String BASE_CONFIG = "base_config";
+    private static final String TOKEN = "token";
+    private static final String NICKNAME = "nickname";
+    private static final String USER_ICON_URL = "headimgurl";
+    private static final String SHOW_PHONE = "showPhone";
+    private static final String IS_NEW_USER = "isNewUser";
+    private static final String APP_VERSION = "app_version";
+    private static final String IS_GET_API_MESSAGE = "isGetApiFinishedMessage";
+    private static final String REGISTRATION_ID = "registration_id";
+    private static final String CUSTOMER_PHONE = "customer_phone";//客服电话
+    private static final String BUSINESS_PHONE = "business_phone";//商务合作电话
+    private static final String BASE_CONFIG = "base_config";
     private static final String TAG = "Preference";
-    public static final String PATCH_DATA = "patchData";
-    public static final String NULL_STRING = "";
-    public static final String APP_UPDATE = "appUpdate";
-    public static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
-    public static final String IS_VIP = "is_vip";//是否
-    public static final String IS_BIND = "is_bind";
-    public static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
-    public static final String SHOW_DEFAULT_GYM_DIALOG = "SHOW_DEFAULT_GYM_DIALOG";
-    public static Set<String> announcementList = new HashSet<>();
-    public static final String NEW_APK_NAME = "new_apk_name";
-    public static final String UPDATE_APP = "update_app";
-    public static final String LOGIN_GYM_ID = "login_gym_id";//登录后返回的gymId
-    public static final String ANNOUNCEMENT_HOME_ID = "announcement_home_id";
+    private static final String PATCH_DATA = "patchData";
+    private static final String NULL_STRING = "";
+    private static final String APP_UPDATE = "appUpdate";
+    private static final String ANNOUNCEMENT_ID = "announcement_id";//首页公告id
+    private static final String IS_VIP = "is_vip";//是否
+    private static final String IS_BIND = "is_bind";
+    private static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
+    private static final String SHOW_DEFAULT_GYM_DIALOG = "SHOW_DEFAULT_GYM_DIALOG";
+    private static Set<String> announcementList = new HashSet<>();
+    private static final String NEW_APK_NAME = "new_apk_name";
+    private static final String UPDATE_APP = "update_app";
+    private static final String LOGIN_GYM_ID = "login_gym_id";//登录后返回的gymId
+    private static final String ANNOUNCEMENT_HOME_ID = "announcement_home_id";
 
 
     /**
