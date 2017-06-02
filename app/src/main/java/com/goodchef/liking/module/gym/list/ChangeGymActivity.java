@@ -8,21 +8,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.gym.changecity.ChangeCityActivity;
-import com.goodchef.liking.module.home.LikingHomeActivity;
-import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
-import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.CityData;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.eventmessages.ChangeGymActivityMessage;
+import com.goodchef.liking.eventmessages.RefreshChangeCityMessage;
+import com.goodchef.liking.module.gym.changecity.ChangeCityActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 
@@ -33,7 +33,7 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/9/14 下午3:24
  */
-public class ChangeGymActivity extends SwipeBackActivity implements View.OnClickListener {
+public class ChangeGymActivity extends BaseActivity implements View.OnClickListener {
     private TextView mRightTitleTextView;
     private ImageView mRightIconArrow;
     private TextView mTitleTextView;

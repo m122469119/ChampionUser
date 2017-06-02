@@ -7,27 +7,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.recycleview.RecyclerItemDecoration;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
-import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.gym.details.ArenaActivity;
-import com.goodchef.liking.module.course.group.details.charge.GroupCoursesChargeConfirmActivity;
-import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.GroupLessonDetailsAdapter;
 import com.goodchef.liking.adapter.GroupLessonNumbersAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
@@ -35,14 +33,15 @@ import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
-import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.module.course.group.details.charge.GroupCoursesChargeConfirmActivity;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.ShareUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -59,7 +58,8 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/24 下午3:21
  */
-public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCourseDetailsContract.GroupCourserDetailsView {
+
+public class GroupLessonDetailsActivity extends AppBarMVPSwipeBackActivity<TeamCourseDetailsContract.Presenter> implements TeamCourseDetailsContract.View {
 
     private static final int COURSES_STATE_NOT_START = 0;// 未开始
     private static final int COURSES_STATE_PROCESS = 1;//进行中
@@ -112,26 +112,21 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     @BindView(R.id.group_teacher_name)
     TextView mTeacherNameTextView;
 
-    private TeamCourseDetailsContract.GroupCoursesDetailsPresenter mDetailsPresenter;
-
-    private GroupLessonDetailsAdapter mGroupLessonDetailsAdapter;
-    private GroupLessonNumbersAdapter mGroupLessonNumbersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lesson_details);
         ButterKnife.bind(this);
-        mDetailsPresenter = new TeamCourseDetailsContract.GroupCoursesDetailsPresenter(this, this);
         setTitle(getString(R.string.title_gruop_detials));
         initData();
         setViewOnClickListener();
     }
 
     private void initData() {
-        mDetailsPresenter.setScheduleId(getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID));
-        mDetailsPresenter.setCoursesState(getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1));
-        mDetailsPresenter.setOrderId(getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID));
+        mPresenter.setScheduleId(getIntent().getStringExtra(LikingLessonFragment.KEY_SCHEDULE_ID));
+        mPresenter.setCoursesState(getIntent().getIntExtra(MyGroupLessonFragment.INTENT_KEY_STATE, -1));
+        mPresenter.setOrderId(getIntent().getStringExtra(MyGroupLessonFragment.INTENT_KEY_ORDER_ID));
         requestData();
         setRightMenu();
     }
@@ -140,9 +135,9 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
      *
      */
     private void setRightMenu() {
-        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+        setRightIcon(R.drawable.icon_phone, new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 LikingCallUtil.showPhoneDialog(GroupLessonDetailsActivity.this);
             }
         });
@@ -162,15 +157,15 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
      * 设置底部view的状态
      */
     private void setBottomCoursesState() {
-        if (mDetailsPresenter.mCoursesState == -1) {
+        if (mPresenter.mCoursesState == -1) {
             setBottomCoursesStateFreeView();
-        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_NOT_START) {//未开始
+        } else if (mPresenter.mCoursesState == COURSES_STATE_NOT_START) {//未开始
             setBottomCoursesStateNoStartView();
-        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_PROCESS) {//进行中
+        } else if (mPresenter.mCoursesState == COURSES_STATE_PROCESS) {//进行中
             setBottomCoursesStateSameView(R.string.start_process);
-        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_OVER) {//已结束
+        } else if (mPresenter.mCoursesState == COURSES_STATE_OVER) {//已结束
             setBottomCoursesStateSameView(R.string.courses_complete);
-        } else if (mDetailsPresenter.mCoursesState == COURSES_STATE_CANCEL) {//已取消
+        } else if (mPresenter.mCoursesState == COURSES_STATE_CANCEL) {//已取消
             setBottomCoursesStateSameView(R.string.courses_cancel);
         }
     }
@@ -181,12 +176,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
      * @param start_process
      */
     private void setBottomCoursesStateSameView(int start_process) {
-        mCoursesStateLayout.setVisibility(View.VISIBLE);
-        mImmediatelySubmitBtn.setVisibility(View.GONE);
+        mCoursesStateLayout.setVisibility(android.view.View.VISIBLE);
+        mImmediatelySubmitBtn.setVisibility(android.view.View.GONE);
         mStatePromptTextView.setText(start_process);
         mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
         mStatePromptTextView.setBackgroundColor(0);
-        mCancelOrderBtn.setVisibility(View.GONE);
+        mCancelOrderBtn.setVisibility(android.view.View.GONE);
         mCancelOrderBtn.setEnabled(false);
         mStatePromptTextView.setGravity(Gravity.CENTER);
     }
@@ -195,13 +190,13 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
      * 设置底部未开始view
      */
     private void setBottomCoursesStateNoStartView() {
-        mCoursesStateLayout.setVisibility(View.VISIBLE);
-        mImmediatelySubmitBtn.setVisibility(View.GONE);
+        mCoursesStateLayout.setVisibility(android.view.View.VISIBLE);
+        mImmediatelySubmitBtn.setVisibility(android.view.View.GONE);
         mStatePromptTextView.setText(R.string.not_start_courses);
         mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.white));
         mStatePromptTextView.setBackgroundColor(ResourceUtils.getColor(R.color.state_prompt_none));
         mCancelOrderBtn.setText(R.string.cancel_appointment);
-        mCancelOrderBtn.setVisibility(View.VISIBLE);
+        mCancelOrderBtn.setVisibility(android.view.View.VISIBLE);
         mCancelOrderBtn.setEnabled(true);
         mStatePromptTextView.setGravity(Gravity.CENTER);
     }
@@ -210,11 +205,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
      * 设置底部团体课免费
      */
     private void setBottomCoursesStateFreeView() {
-        if (mDetailsPresenter.isFree == COURSES_IS_FREE) {//免费
-            mCoursesStateLayout.setVisibility(View.GONE);
-            mImmediatelySubmitBtn.setVisibility(View.VISIBLE);
-            if (!StringUtils.isEmpty(mDetailsPresenter.quota)) {
-                if (Integer.parseInt(mDetailsPresenter.quota) == 0) {
+        if (mPresenter.isFree == COURSES_IS_FREE) {//免费
+            mCoursesStateLayout.setVisibility(android.view.View.GONE);
+            mImmediatelySubmitBtn.setVisibility(android.view.View.VISIBLE);
+            if (!StringUtils.isEmpty(mPresenter.quota)) {
+                if (Integer.parseInt(mPresenter.quota) == 0) {
                     mImmediatelySubmitBtn.setText(R.string.appointment_fill);
                     mImmediatelySubmitBtn.setBackgroundColor(ResourceUtils.getColor(R.color.split_line_color));
                     mImmediatelySubmitBtn.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
@@ -225,11 +220,11 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
             } else {
                 setImmediatelySubmitBtnView();
             }
-        } else if (mDetailsPresenter.isFree == COURSES_NOT_FREE) {//收费
-            mImmediatelySubmitBtn.setVisibility(View.GONE);
-            mCoursesStateLayout.setVisibility(View.VISIBLE);
+        } else if (mPresenter.isFree == COURSES_NOT_FREE) {//收费
+            mImmediatelySubmitBtn.setVisibility(android.view.View.GONE);
+            mCoursesStateLayout.setVisibility(android.view.View.VISIBLE);
             mStatePromptTextView.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
-            mStatePromptTextView.setText(getString(R.string.money_symbol) + mDetailsPresenter.price);
+            mStatePromptTextView.setText(getString(R.string.money_symbol) + mPresenter.price);
             mStatePromptTextView.setGravity(Gravity.CENTER | Gravity.LEFT);
             mStatePromptTextView.setBackgroundColor(0);
             mCancelOrderBtn.setText(R.string.immediately_buy_btn);
@@ -249,9 +244,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
 
     private void requestData() {
         mStateView.setState(StateView.State.LOADING);
-        mDetailsPresenter.getGroupCoursesDetails(mDetailsPresenter.scheduleId);
+        mPresenter.getGroupCoursesDetails(mPresenter.scheduleId);
     }
-
 
     @Override
     public void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData) {
@@ -299,7 +293,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     public void updateCancelOrderView() {
         showToast(getString(R.string.cancel_success));
         postEvent(new CancelGroupCoursesMessage());
-        mDetailsPresenter.mCoursesState = 3;
+        mPresenter.mCoursesState = 3;
         setBottomCoursesState();
         requestData();
     }
@@ -326,10 +320,10 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
             mShopAddressTextView.setText(groupLessonData.getGymAddress().trim());
         }
         mShopPlaceTextView.setText(groupLessonData.getPlaceInfo());
-        if (COURSES_SELF == mDetailsPresenter.scheduleType) {//如果是自助课程隐藏教练显示
-            mTeacherNamelayout.setVisibility(View.GONE);
+        if (COURSES_SELF == mPresenter.scheduleType) {//如果是自助课程隐藏教练显示
+            mTeacherNamelayout.setVisibility(android.view.View.GONE);
         } else {
-            mTeacherNamelayout.setVisibility(View.VISIBLE);
+            mTeacherNamelayout.setVisibility(android.view.View.VISIBLE);
             mTeacherNameTextView.setText(groupLessonData.getTrainerName());
         }
 
@@ -353,22 +347,22 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     private void setGroupLessonNumbers(List<GroupCoursesResult.GroupLessonData.GymNumbersData> gymNumbersDatas) {
         mJoinUserNumbers.setText(gymNumbersDatas.size() + getString(R.string.people));
         mUserListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mGroupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
+        GroupLessonNumbersAdapter groupLessonNumbersAdapter = new GroupLessonNumbersAdapter(this);
         mUserListRecyclerView.addItemDecoration(new RecyclerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
-        mGroupLessonNumbersAdapter.setData(gymNumbersDatas);
-        mUserListRecyclerView.setAdapter(mGroupLessonNumbersAdapter);
+        groupLessonNumbersAdapter.setData(gymNumbersDatas);
+        mUserListRecyclerView.setAdapter(groupLessonNumbersAdapter);
     }
 
     private void setStadiumImage(List<GroupCoursesResult.GroupLessonData.GymImgsData> stadiumImageList) {
         if (stadiumImageList != null) {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mGroupLessonDetailsAdapter = new GroupLessonDetailsAdapter(this);
-            mGroupLessonDetailsAdapter.setData(stadiumImageList);
-            mRecyclerView.setAdapter(mGroupLessonDetailsAdapter);
-            mGroupLessonDetailsAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            GroupLessonDetailsAdapter groupLessonDetailsAdapter = new GroupLessonDetailsAdapter(this);
+            groupLessonDetailsAdapter.setData(stadiumImageList);
+            mRecyclerView.setAdapter(groupLessonDetailsAdapter);
+            groupLessonDetailsAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
                 @Override
-                public void onItemClick(View view, int position) {
+                public void onItemClick(android.view.View view, int position) {
                     UMengCountUtil.UmengCount(GroupLessonDetailsActivity.this, UmengEventId.ARENAACTIVITY);
                     Intent intent = new Intent(GroupLessonDetailsActivity.this, ArenaActivity.class);
                     intent.putExtra(LikingLessonFragment.KEY_GYM_ID, LikingHomeActivity.gymId);
@@ -377,7 +371,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
                 }
 
                 @Override
-                public boolean onItemLongClick(View view, int position) {
+                public boolean onItemLongClick(android.view.View view, int position) {
                     return false;
                 }
             });
@@ -385,12 +379,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
     }
 
     @OnClick({R.id.group_immediately_submit_btn, R.id.cancel_order_btn, R.id.layout_gym_introduce, R.id.layout_group_details, R.id.layout_group_courses_share})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.group_immediately_submit_btn://立即购买
                 UMengCountUtil.UmengBtnCount(this, UmengEventId.GROUP_IMMEDIATELY_SUBMIT_BUTTON);
                 if (LikingPreference.isLogin()) {
-                    mDetailsPresenter.orderGroupCourses(LikingHomeActivity.gymId);
+                    mPresenter.orderGroupCourses(this, LikingHomeActivity.gymId);
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
@@ -398,12 +392,12 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
 
                 break;
             case R.id.cancel_order_btn://取消预定
-                if (mDetailsPresenter.isFree == COURSES_IS_FREE) {//免费
+                if (mPresenter.isFree == COURSES_IS_FREE) {//免费
                     showCancelCoursesDialog();
-                } else if (mDetailsPresenter.isFree == COURSES_NOT_FREE) {//收费
+                } else if (mPresenter.isFree == COURSES_NOT_FREE) {//收费
                     if (LikingPreference.isLogin()) {
                         Intent intent = new Intent(this, GroupCoursesChargeConfirmActivity.class);
-                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, mDetailsPresenter.scheduleId);
+                        intent.putExtra(LikingLessonFragment.KEY_SCHEDULE_ID, mPresenter.scheduleId);
                         // intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                         startActivity(intent);
                     } else {
@@ -424,7 +418,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
 
                 break;
             case R.id.layout_group_courses_share://分享
-                mDetailsPresenter.getGroupShareData(mDetailsPresenter.scheduleId);
+                mPresenter.getGroupShareData();
                 mShareLayout.setEnabled(false);
 
                 break;
@@ -446,7 +440,7 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mDetailsPresenter.sendCancelCoursesRequest();
+                mPresenter.sendCancelCoursesRequest(GroupLessonDetailsActivity.this);
                 dialog.dismiss();
             }
         });
@@ -492,4 +486,8 @@ public class GroupLessonDetailsActivity extends AppBarActivity implements TeamCo
         mShareLayout.setEnabled(true);
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new TeamCourseDetailsContract.Presenter();
+    }
 }

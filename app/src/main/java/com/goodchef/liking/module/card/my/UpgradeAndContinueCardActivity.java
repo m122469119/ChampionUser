@@ -2,22 +2,21 @@ package com.goodchef.liking.module.card.my;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
+import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.adapter.UpgradeContinueCardAdapter;
-import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
@@ -33,15 +32,15 @@ import butterknife.ButterKnife;
  * Author shaozucheng
  * Time:16/6/30 上午10:02
  */
-public class UpgradeAndContinueCardActivity extends AppBarActivity implements UpgradeAndContinueCardContract.CardListView {
+public class UpgradeAndContinueCardActivity extends AppBarMVPSwipeBackActivity<UpgradeAndContinueCardContract.Presenter> implements UpgradeAndContinueCardContract.View {
 
-    @BindView(R.id.upgrade_and_continue_recycleView) PullToRefreshRecyclerView mRecyclerView;
+    @BindView(R.id.upgrade_and_continue_recycleView)
+    PullToRefreshRecyclerView mRecyclerView;
     private int buyType;
-    private String title;
 
     private UpgradeContinueCardAdapter mUpgradeContinueCardAdapter;
-    private UpgradeAndContinueCardContract.CardListPresenter mCardListPresenter;
-    @BindView(R.id.upgrade_continue_state_view) LikingStateView mStateView;
+    @BindView(R.id.upgrade_continue_state_view)
+    LikingStateView mStateView;
     private String mGymId;
 
     private String longitude = "0";
@@ -79,18 +78,17 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
             public void onRetryRequested() {
-                mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, mGymId, buyType);
+                mPresenter.getCardList(longitude, latitude, cityId, districtId, mGymId, buyType);
             }
         });
     }
 
     private void initData() {
         buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
-        title = getIntent().getStringExtra(MyCardActivity.KEY_INTENT_TITLE);
+        String title = getIntent().getStringExtra(MyCardActivity.KEY_INTENT_TITLE);
         mGymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         setTitle(title);
-        mCardListPresenter = new UpgradeAndContinueCardContract.CardListPresenter(this, this);
-        mCardListPresenter.getCardList(longitude, latitude, cityId, districtId, mGymId, buyType);
+        mPresenter.getCardList(longitude, latitude, cityId, districtId, mGymId, buyType);
     }
 
     @Override
@@ -118,7 +116,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
     private void setOnItemClickListener() {
         mUpgradeContinueCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 CardResult.CardData.Card card = mUpgradeContinueCardAdapter.getDataList().get(position);
                 if (card != null) {
                     UMengCountUtil.UmengCount(UpgradeAndContinueCardActivity.this, UmengEventId.BUYCARDCONFIRMACTIVITY);
@@ -132,7 +130,7 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
@@ -152,5 +150,10 @@ public class UpgradeAndContinueCardActivity extends AppBarActivity implements Up
         if (message != null) {
             finish();
         }
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new UpgradeAndContinueCardContract.Presenter();
     }
 }

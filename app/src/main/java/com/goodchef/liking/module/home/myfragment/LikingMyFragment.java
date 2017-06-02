@@ -12,27 +12,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.BaseFragment;
+import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.MyUserOtherInfoResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
-import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
-import com.goodchef.liking.data.remote.retrofit.result.MyUserOtherInfoResult;
-import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
 import com.goodchef.liking.module.card.my.MyCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
@@ -41,6 +40,7 @@ import com.goodchef.liking.module.more.MoreActivity;
 import com.goodchef.liking.module.train.MyTrainDataActivity;
 import com.goodchef.liking.module.userinfo.MyInfoActivity;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -48,7 +48,6 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created on 16/5/20.
@@ -57,7 +56,7 @@ import butterknife.Unbinder;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingMyFragment extends BaseFragment implements View.OnClickListener, LikingMyContract.LikingMyView {
+public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter> implements android.view.View.OnClickListener, LikingMyContract.View {
     public static final String KEY_MY_BRACELET_MAC = "key_my_bracelet_mac";
     public static final String KEY_UUID = "key_UUID";
     @BindView(R.id.my_state_view)
@@ -106,7 +105,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private Typeface mTypeface;//字体
     private String mBraceletMac;//手环mac地址
     private String UUID;//蓝牙UUID
-    private LikingMyContract.LikingMyPresenter mLikingMyPresenter;
 
     @Nullable
     @Override
@@ -114,7 +112,6 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
         ButterKnife.bind(this, view);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
-        mLikingMyPresenter = new LikingMyContract.LikingMyPresenter(getActivity(), this);
         initView(view);
         initViewIconAndText();
         setHeadPersonData();
@@ -138,9 +135,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
     private void showUpdate() {
         int update = LikingPreference.getUpdateApp();
         if (update == 0) {//不更新
-            mUpdateAppImageView.setVisibility(View.GONE);
+            mUpdateAppImageView.setVisibility(android.view.View.GONE);
         } else if (update == 1 || update == 2) {//有更新
-            mUpdateAppImageView.setVisibility(View.VISIBLE);
+            mUpdateAppImageView.setVisibility(android.view.View.VISIBLE);
         }
     }
 
@@ -156,7 +153,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                     mStateView.setState(StateView.State.LOADING);
                     isRetryRequest = false;
                 }
-                mLikingMyPresenter.getUserData();
+                mPresenter.getUserData();
             }
         } else {
             if (EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -172,7 +169,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      */
     private void getUserExerciseData() {
         if (LikingPreference.isLogin()) {
-            mLikingMyPresenter.getUserExerciseData();
+            mPresenter.getUserExerciseData();
         } else {
             clearExerciseData();
         }
@@ -193,9 +190,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         mBraceletMac = userOtherInfoData.getBraceletMac();
         UUID = userOtherInfoData.getUuid();
         if (LikingPreference.isVIP()) {
-            mIsVip.setVisibility(View.VISIBLE);
+            mIsVip.setVisibility(android.view.View.VISIBLE);
         } else {
-            mIsVip.setVisibility(View.GONE);
+            mIsVip.setVisibility(android.view.View.GONE);
         }
         if (LikingPreference.isBind()) {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet_my, true);
@@ -243,9 +240,9 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
 
     private void setLogonView() {
         if (LikingPreference.isLogin()) {
-            mLoginBtn.setVisibility(View.GONE);
-            mPersonNameTextView.setVisibility(View.VISIBLE);
-            mPersonPhoneTextView.setVisibility(View.VISIBLE);
+            mLoginBtn.setVisibility(android.view.View.GONE);
+            mPersonNameTextView.setVisibility(android.view.View.VISIBLE);
+            mPersonPhoneTextView.setVisibility(android.view.View.VISIBLE);
             mPersonNameTextView.setText(LikingPreference.getNickName());
             mPersonPhoneTextView.setText(LikingPreference.getUserPhone());
             if (!StringUtils.isEmpty(LikingPreference.getUserIconUrl())) {
@@ -253,21 +250,21 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 HImageLoaderSingleton.loadImage(mHImageViewBackground, LikingPreference.getUserIconUrl(), getActivity());
             }
             if (LikingPreference.isVIP()) {
-                mIsVip.setVisibility(View.VISIBLE);
+                mIsVip.setVisibility(android.view.View.VISIBLE);
             } else {
-                mIsVip.setVisibility(View.GONE);
+                mIsVip.setVisibility(android.view.View.GONE);
             }
         } else {
-            mLoginBtn.setVisibility(View.VISIBLE);
-            mPersonNameTextView.setVisibility(View.GONE);
-            mPersonPhoneTextView.setVisibility(View.GONE);
-            mIsVip.setVisibility(View.GONE);
+            mLoginBtn.setVisibility(android.view.View.VISIBLE);
+            mPersonNameTextView.setVisibility(android.view.View.GONE);
+            mPersonPhoneTextView.setVisibility(android.view.View.GONE);
+            mIsVip.setVisibility(android.view.View.GONE);
             mHeadHImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_head_default_image));
             HImageLoaderSingleton.loadImage(mHImageViewBackground, "", getActivity());
         }
     }
 
-    private void initView(View view) {
+    private void initView(android.view.View view) {
         mContactJoinLayout = (LinearLayout) view.findViewById(R.id.layout_contact_join);
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
         mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
@@ -299,27 +296,27 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, false);
     }
 
-    private void setMySettingCard(View view, int text, boolean isShowLine) {
+    private void setMySettingCard(android.view.View view, int text, boolean isShowLine) {
         TextView textView = (TextView) view.findViewById(R.id.standard_my_text);
-        View line = view.findViewById(R.id.standard_view_line);
+        android.view.View line = view.findViewById(R.id.standard_view_line);
         textView.setText(text);
         if (isShowLine) {
-            line.setVisibility(View.VISIBLE);
+            line.setVisibility(android.view.View.VISIBLE);
         } else {
-            line.setVisibility(View.GONE);
+            line.setVisibility(android.view.View.GONE);
         }
     }
 
     private void setHeadPersonData() {
         if (LikingPreference.isBind()) {//已绑定
-            mBodyScoreLayout.setVisibility(View.VISIBLE);
-            mHeadPersonDataTextView.setVisibility(View.GONE);
+            mBodyScoreLayout.setVisibility(android.view.View.VISIBLE);
+            mHeadPersonDataTextView.setVisibility(android.view.View.GONE);
             setHeadPersonDataView(mBodyScoreLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
             setHeadPersonDataView(mEverydaySportLayout, R.string.everyday_sport_title, R.string.everyday_sport_unit);
             setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
         } else {//没有绑定
-            mBodyScoreLayout.setVisibility(View.GONE);
-            mHeadPersonDataTextView.setVisibility(View.VISIBLE);
+            mBodyScoreLayout.setVisibility(android.view.View.GONE);
+            mHeadPersonDataTextView.setVisibility(android.view.View.VISIBLE);
             setHeadPersonDataView(mEverydaySportLayout, R.string.body_test_grade, R.string.body_test_grade_unit);
             setHeadPersonDataView(mTrainLayout, R.string.today_train_data, R.string.today_train_data_unit);
         }
@@ -332,7 +329,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      * @param title
      * @param unitText
      */
-    private void setHeadPersonDataView(View view, int title, int unitText) {
+    private void setHeadPersonDataView(android.view.View view, int title, int unitText) {
         TextView titleTextView = (TextView) view.findViewById(R.id.person_body_title);
         TextView contentTextView = (TextView) view.findViewById(R.id.person_content_data);
         TextView unitTextView = (TextView) view.findViewById(R.id.person_content_data_unit);
@@ -361,7 +358,7 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
             R.id.layout_more, R.id.layout_self_help_group_gym,
             R.id.layout_body_score, R.id.layout_bind_bracelet,
             R.id.layout_everyday_sport})
-    public void onClick(View view) {
+    public void onClick(android.view.View view) {
         switch (view.getId()) {
             case R.id.layout_today_data://我的训练数据
                 if (LikingPreference.isLogin()) {
@@ -440,16 +437,16 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.layout_body_score:
                 if (LikingPreference.isLogin()) {
-                    mLikingMyPresenter.jumpBodyTestActivity();
+                    mPresenter.jumpBodyTestActivity(getActivity());
                 } else {
                     startActivity(LoginActivity.class);
                 }
                 break;
             case R.id.layout_bind_bracelet://绑定手环
-                mLikingMyPresenter.jumpBraceletActivity(mBraceletMac, UUID);
+                mPresenter.jumpBraceletActivity(getActivity(), UUID, mBraceletMac);
                 break;
             case R.id.layout_everyday_sport://手环数据
-                mLikingMyPresenter.jumpBracelet(mBraceletMac, UUID);
+                mPresenter.jumpBracelet(getActivity(), UUID, mBraceletMac);
                 break;
         }
     }
@@ -494,15 +491,13 @@ public class LikingMyFragment extends BaseFragment implements View.OnClickListen
      */
     private void showSelfHelpGroupLayout(int canschedule) {
         if (1 == canschedule) {
-            mSelfHelpGroupLayout.setVisibility(View.VISIBLE);
+            mSelfHelpGroupLayout.setVisibility(android.view.View.VISIBLE);
         } else {
-            mSelfHelpGroupLayout.setVisibility(View.GONE);
+            mSelfHelpGroupLayout.setVisibility(android.view.View.GONE);
         }
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void setPresenter() {
+        mPresenter = new LikingMyContract.Presenter();
     }
 }

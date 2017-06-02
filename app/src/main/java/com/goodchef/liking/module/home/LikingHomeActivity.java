@@ -14,7 +14,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.BaseApplication;
-import com.aaron.android.framework.base.ui.BaseActivity;
+import com.aaron.android.framework.base.mvp.BaseMVPActivity;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
@@ -23,9 +23,11 @@ import com.aaron.common.utils.StringUtils;
 import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
-import com.goodchef.liking.Manifest;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.gym.details.ArenaActivity;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
+import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
 import com.goodchef.liking.dialog.CancelOnClickListener;
 import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.DefaultGymDialog;
@@ -39,11 +41,8 @@ import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
 import com.goodchef.liking.eventmessages.UserCityIdMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
-import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
-import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
 import com.goodchef.liking.module.gym.list.ChangeGymActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
@@ -63,7 +62,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
-public class LikingHomeActivity extends BaseActivity implements LikingHomeContract.LikingHomeView {
+public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Presenter> implements LikingHomeContract.View {
 
     public static final String TAG_MAIN_TAB = "lesson";
     public static final String TAG_NEARBY_TAB = "nearby";
@@ -109,7 +108,6 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
     private HomeRightDialog RightMenuDialog;//右边加好
-    private LikingHomeContract.LikingHomePresenter mLikingHomePresenter;
     private String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
     public static boolean shoDefaultDialog = true;
@@ -123,8 +121,7 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
         setContentView(R.layout.activity_liking_home);
         ButterKnife.bind(this);
         setTitle(R.string.activity_liking_home);
-        mLikingHomePresenter = new LikingHomeContract.LikingHomePresenter(this, this);
-        mLikingHomePresenter.initHomeGymId();
+        mPresenter.initHomeGymId();
         RightMenuDialog = new HomeRightDialog(this);
         initTabHost();
         sendUpdateAppRequest();
@@ -137,10 +134,10 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
         int intExtra = intent.getIntExtra(ACTION, 0);
         if (SHOW_PUSH_NOTICE == intExtra) {
             fragmentTabHost.setCurrentTab(0);
-            mLikingHomePresenter.showPushDialog();
+            mPresenter.showPushDialog();
         } else if (SHOW_PUSH_NOTICE_RECEIVED == intExtra) {
             if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB)) {
-                mLikingHomePresenter.showPushDialog();
+                mPresenter.showPushDialog();
             }
         } else {
             int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
@@ -152,7 +149,7 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
     protected void onResume() {
         super.onResume();
         if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB))
-            mLikingHomePresenter.showPushDialog();
+            mPresenter.showPushDialog();
     }
 
     private void initData() {
@@ -168,7 +165,7 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
      * 发送请求
      */
     private void sendUpdateAppRequest() {
-        mLikingHomePresenter.getAppUpdate();
+        mPresenter.getAppUpdate(this);
     }
 
     private void initTabHost() {
@@ -192,14 +189,14 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
      * 设置初始标题view
      */
     private void setMainTableView() {
-        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
         mLikingLeftTitleTextView.setText(R.string.title_change_gym);
-        mRightImageView.setVisibility(View.VISIBLE);
+        mRightImageView.setVisibility(android.view.View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
     }
 
-    private View buildTabIndicatorCustomView(String tabTitle, int drawableResId) {
-        View tabView = getLayoutInflater().inflate(R.layout.layout_liking_home_tab_custom_view, null, false);
+    private android.view.View buildTabIndicatorCustomView(String tabTitle, int drawableResId) {
+        android.view.View tabView = getLayoutInflater().inflate(R.layout.layout_liking_home_tab_custom_view, null, false);
         ((ImageView) tabView.findViewById(R.id.imageview_chef_stove_tab)).setImageResource(drawableResId);
         ((TextView) tabView.findViewById(R.id.textview_chef_stove_tab)).setText(tabTitle);
         return tabView;
@@ -216,17 +213,17 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
                     setTagMainTab();
                     setHomeTitle();
                     setHomeMenuReadNotice();
-                    mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
+                    mPresenter.checkUpdateApp(LikingHomeActivity.this);
                     postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
                     setTagRechargeTab();
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
                     setTagNearbyTab();
                     setHomeTitle();
-                    mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
+                    mPresenter.checkUpdateApp(LikingHomeActivity.this);
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
                     setTagMyTab();
-                    mLikingHomePresenter.checkUpdateApp(LikingHomeActivity.this);
+                    mPresenter.checkUpdateApp(LikingHomeActivity.this);
                 }
             }
         });
@@ -236,54 +233,54 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
      * 设置首页界面tab
      */
     private void setTagMainTab() {
-        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
         if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
             mLikingLeftTitleTextView.setText(mGym.getCityName());
         }
-        mLikingDistanceTextView.setVisibility(View.VISIBLE);
-        mLikingRightTitleTextView.setVisibility(View.GONE);
-        mRightImageView.setVisibility(View.VISIBLE);
+        mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
+        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
+        mRightImageView.setVisibility(android.view.View.VISIBLE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
-        mShoppingCartNumTextView.setVisibility(View.GONE);
+        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
     }
 
     /**
      * 设置买卡界面tab
      */
     private void setTagNearbyTab() {
-        mLikingLeftTitleTextView.setVisibility(View.VISIBLE);
+        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
         if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
             mLikingLeftTitleTextView.setText(mGym.getCityName());
         }
-        mLikingDistanceTextView.setVisibility(View.VISIBLE);
-        mLikingRightTitleTextView.setVisibility(View.GONE);
-        mRightImageView.setVisibility(View.GONE);
-        mShoppingCartNumTextView.setVisibility(View.GONE);
-        mRedPoint.setVisibility(View.GONE);
+        mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
+        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
+        mRightImageView.setVisibility(android.view.View.GONE);
+        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
+        mRedPoint.setVisibility(android.view.View.GONE);
     }
 
     /**
      * 设置营养餐tab
      */
     private void setTagRechargeTab() {
-        mLikingLeftTitleTextView.setVisibility(View.INVISIBLE);
-        mLikingRightTitleTextView.setVisibility(View.INVISIBLE);
-        mRightImageView.setVisibility(View.GONE);
-        mRedPoint.setVisibility(View.GONE);
-        mLikingDistanceTextView.setVisibility(View.GONE);
+        mLikingLeftTitleTextView.setVisibility(android.view.View.INVISIBLE);
+        mLikingRightTitleTextView.setVisibility(android.view.View.INVISIBLE);
+        mRightImageView.setVisibility(android.view.View.GONE);
+        mRedPoint.setVisibility(android.view.View.GONE);
+        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
     }
 
     /**
      * 设置我的界面Tab
      */
     private void setTagMyTab() {
-        mLikingLeftTitleTextView.setVisibility(View.GONE);
-        mLikingDistanceTextView.setVisibility(View.GONE);
-        mLikingRightTitleTextView.setVisibility(View.GONE);
+        mLikingLeftTitleTextView.setVisibility(android.view.View.GONE);
+        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
+        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
         mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
-        mRightImageView.setVisibility(View.GONE);
-        mRedPoint.setVisibility(View.GONE);
-        mShoppingCartNumTextView.setVisibility(View.GONE);
+        mRightImageView.setVisibility(android.view.View.GONE);
+        mRedPoint.setVisibility(android.view.View.GONE);
+        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
     }
 
 
@@ -372,9 +369,9 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
     /**
      * 右边按钮监听
      */
-    private View.OnClickListener rightListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener rightListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             switch (v.getId()) {
                 case R.id.layout_notice://公告
                     if (mNoticeGym != null) {
@@ -407,12 +404,12 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
             LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-            mRedPoint.setVisibility(View.GONE);
+            mRedPoint.setVisibility(android.view.View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
             defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
             LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-            mRedPoint.setVisibility(View.GONE);
+            mRedPoint.setVisibility(android.view.View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         } else {
             defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
@@ -671,12 +668,12 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
         if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
             if (EnvironmentUtils.Network.isNetWorkAvailable()) {
                 if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
-                    mLikingDistanceTextView.setVisibility(View.VISIBLE);
+                    mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
                     mLikingDistanceTextView.setText(mGym.getDistance());
                     mLikingMiddleTitleTextView.setText(mGym.getName());
                 } else {//当一个（上海）地区所有的店铺关闭时，而它定位在某个地区（上海），后台返回的场馆数据为空
                     mLikingMiddleTitleTextView.setText("");
-                    mLikingDistanceTextView.setVisibility(View.GONE);
+                    mLikingDistanceTextView.setVisibility(android.view.View.GONE);
                 }
             } else {
                 setNotNetWorkMiddleView();
@@ -692,7 +689,7 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
     private void setNotNetWorkMiddleView() {
         isWhetherLocation = false;
         mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
-        mLikingDistanceTextView.setVisibility(View.GONE);
+        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
     }
 
     /**
@@ -703,19 +700,19 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
         if (tag.equals(TAG_MAIN_TAB)) {
             if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
                 if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
-                    mRedPoint.setVisibility(View.VISIBLE);
+                    mRedPoint.setVisibility(android.view.View.VISIBLE);
                     RightMenuDialog.setRedPromptShow(true);
                     showNoticeDialog();
                 } else {
-                    mRedPoint.setVisibility(View.GONE);
+                    mRedPoint.setVisibility(android.view.View.GONE);
                     RightMenuDialog.setRedPromptShow(false);
                 }
             } else {
-                mRedPoint.setVisibility(View.GONE);
+                mRedPoint.setVisibility(android.view.View.GONE);
                 RightMenuDialog.setRedPromptShow(false);
             }
         } else {
-            mRedPoint.setVisibility(View.GONE);
+            mRedPoint.setVisibility(android.view.View.GONE);
             RightMenuDialog.setRedPromptShow(false);
         }
     }
@@ -746,10 +743,14 @@ public class LikingHomeActivity extends BaseActivity implements LikingHomeContra
     public void onEvent(LikingHomeActivityMessage message) {
         switch (message.what) {
             case LikingHomeActivityMessage.SHOW_PUSH_DIALOG:
-                mLikingHomePresenter.showPushDialog();
+                mPresenter.showPushDialog();
                 break;
         }
     }
 
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new LikingHomeContract.Presenter(this);
+    }
 }

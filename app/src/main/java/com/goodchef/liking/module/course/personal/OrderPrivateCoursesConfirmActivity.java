@@ -6,41 +6,40 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.LogUtils;
-import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.common.utils.LogUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
 import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.PrivateCoursesTrainItemAdapter;
-import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
-import com.goodchef.liking.eventmessages.CoursesErrorMessage;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 import com.goodchef.liking.data.remote.retrofit.result.OrderCalculateResult;
 import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.data.remote.retrofit.result.data.PlacesData;
+import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -59,13 +58,11 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/6/15 下午6:01
  */
-public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implements PrivateCoursesConfirmContract.PrivateCoursesConfirmView {
+public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivity<PrivateCoursesConfirmContract.Presenter> implements PrivateCoursesConfirmContract.View {
 
     private static final int INTENT_REQUEST_CODE_COUPON = 100;
-    private static final int INTENT_REQUEST_CODE_CHANGE_PLACE = 110;
 
     private static final int PAY_TYPE = 3;//3 免金额支付
-    public static final String KEY_CHANGE_ADDRESS = "key_change_address";
 
     @BindView(R.id.confirm_recyclerView)
     RecyclerView mRecyclerView;
@@ -111,7 +108,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     LikingStateView mStateView;
 
     private PrivateCoursesTrainItemAdapter mPrivateCoursesTrainItemAdapter;
-    private PrivateCoursesConfirmContract.PrivateCoursesConfirmPresenter mPrivateCoursesConfirmPresenter;
 
     private String trainerId;//训练项目id
     private String teacherName;//教练姓名
@@ -172,13 +168,12 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         teacherName = getIntent().getStringExtra(LikingLessonFragment.KEY_TEACHER_NAME);
 
         setTitle(teacherName);
-        mPrivateCoursesConfirmPresenter = new PrivateCoursesConfirmContract.PrivateCoursesConfirmPresenter(this, this);
         mStateView.setState(StateView.State.LOADING);
         sendRequest();
     }
 
     private void sendRequest() {
-        mPrivateCoursesConfirmPresenter.orderPrivateCoursesConfirm(LikingHomeActivity.gymId, trainerId);
+        mPresenter.orderPrivateCoursesConfirm(this, trainerId, LikingHomeActivity.gymId);
     }
 
     @Override
@@ -251,7 +246,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     private void setTrainItemListener() {
         mPrivateCoursesTrainItemAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
                     showToast(getString(R.string.network_error));
                     return;
@@ -276,21 +271,21 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                             }
                         }
                     }
-                    mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                    mPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
                     mPrivateCoursesTrainItemAdapter.notifyDataSetChanged();
                     mCoupon = null;//置空优惠券
                 }
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
     }
 
     @OnClick({R.id.layout_coupons_courses, R.id.immediately_buy_btn, R.id.layout_alipay, R.id.layout_wechat, R.id.courses_time_minus, R.id.courses_time_add, R.id.courses_times, R.id.private_buy_protocol})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_coupons_courses:
                 if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
@@ -370,7 +365,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
 
     private void showCoursesTimesDialog() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_courses_time, null, false);
+        android.view.View view = LayoutInflater.from(this).inflate(R.layout.layout_courses_time, null, false);
         final EditText mEditView = (EditText) view.findViewById(R.id.courses_times_editText);
         builder.setCustomView(view);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -390,7 +385,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
                     showToast(getString(R.string.courses_macnum_buy) + mCoursesMaxTimes + getString(R.string.times_courses));
                 } else {
                     mCoursesTimesTextView.setText(mCoursesTimes + "");
-                    mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                    mPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
                     mCouponTitleTextView.setText("");//清空优惠券需要重新选择
                     mCoupon = null;
                 }
@@ -411,9 +406,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
         }
         UMengCountUtil.UmengBtnCount(OrderPrivateCoursesConfirmActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_BUY_BUTTON);
         if (mCoupon != null) {
-            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, mCoupon.getCoupon_code(), payType, mCoursesTimes, LikingHomeActivity.gymId);
+            mPresenter.submitPrivateCourses(this, mCoupon.getCoupon_code(), payType, mCoursesTimes, LikingHomeActivity.gymId, coursesId);
         } else {
-            mPrivateCoursesConfirmPresenter.submitPrivateCourses(coursesId, "", payType, mCoursesTimes, LikingHomeActivity.gymId);
+            mPresenter.submitPrivateCourses(this, "", payType, mCoursesTimes, LikingHomeActivity.gymId, coursesId);
         }
     }
 
@@ -425,7 +420,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             if (mCoursesTimes > mCoursesMinTimes) {
                 mCoursesTimes--;
                 mCoursesTimesTextView.setText(mCoursesTimes + "");
-                mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                mPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
                 mCouponTitleTextView.setText("");//清空优惠券需要重新选择
                 mCoupon = null;
             } else {
@@ -442,7 +437,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
             if (mCoursesTimes < mCoursesMaxTimes) {
                 mCoursesTimes++;
                 mCoursesTimesTextView.setText(mCoursesTimes + "");
-                mPrivateCoursesConfirmPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
+                mPresenter.orderCalculate(coursesId, String.valueOf(mCoursesTimes));
                 mCouponTitleTextView.setText("");//清空优惠券需要重新选择
                 mCoupon = null;
             } else {
@@ -605,5 +600,10 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarActivity implement
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new PrivateCoursesConfirmContract.Presenter();
     }
 }

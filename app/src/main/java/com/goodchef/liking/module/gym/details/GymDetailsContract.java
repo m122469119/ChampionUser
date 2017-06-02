@@ -2,7 +2,7 @@ package com.goodchef.liking.module.gym.details;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
@@ -17,30 +17,29 @@ import com.goodchef.liking.module.gym.GymModel;
  * @version:1.0
  */
 
-public interface GymDetailsContract {
+interface GymDetailsContract {
 
-    interface GymDetailsView extends BaseView {
+    interface View extends BaseView {
         void updateGymDetailsView(GymDetailsResult.GymDetailsData gymDetailsData);
     }
 
-    class GymDetailsPresenter extends BasePresenter<GymDetailsView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private GymModel mGymModel = null;
 
-        public GymDetailsPresenter(Context context, GymDetailsView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mGymModel = new GymModel();
         }
 
-        public void getGymDetails(String gymId) {
+        void getGymDetails(Context context, String gymId) {
             mGymModel.getGymDetails(gymId)
-                    .subscribe(new ProgressObserver<GymDetailsResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<GymDetailsResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(GymDetailsResult value) {
                             if (value == null) return;
                             mView.updateGymDetailsView(value.getData());
                         }
-                    });
+                    }));
         }
     }
 }

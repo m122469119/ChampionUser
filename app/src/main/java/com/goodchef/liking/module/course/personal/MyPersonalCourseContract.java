@@ -1,8 +1,6 @@
 package com.goodchef.liking.module.course.personal;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.data.remote.retrofit.result.MyPrivateCoursesResult;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
@@ -15,32 +13,32 @@ import com.goodchef.liking.module.course.CourseModel;
  * @version:1.0
  */
 
-public interface MyPersonalCourseContract {
+interface MyPersonalCourseContract {
 
-    interface MyPrivateCoursesView extends BaseView {
+    interface View extends BaseView {
         void updatePrivateCoursesView(MyPrivateCoursesResult.PrivateCoursesData privateCoursesData);
     }
 
-    class MyPrivateCoursesPresenter extends BasePresenter<MyPrivateCoursesView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CourseModel mCourseModel = null;
 
-        public MyPrivateCoursesPresenter(Context context, MyPrivateCoursesView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
-        public void getMyPrivateCourses(int page) {
+        void getMyPrivateCourses(int page) {
 
             mCourseModel.getMyPrivateCourses(page)
-                    .subscribe(new PagerLoadingObserver<MyPrivateCoursesResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<MyPrivateCoursesResult>(mView) {
+
                         @Override
                         public void onNext(MyPrivateCoursesResult result) {
                             super.onNext(result);
                             if (result == null) return;
                             mView.updatePrivateCoursesView(result.getData());
                         }
-                    });
+                    }));
         }
     }
 

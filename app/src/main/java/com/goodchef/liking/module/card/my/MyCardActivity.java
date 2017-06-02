@@ -2,21 +2,20 @@ package com.goodchef.liking.module.card.my;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardTimeLimitAdapter;
-import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
-import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.data.remote.retrofit.result.MyCardResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.TimeLimitData;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.login.LoginActivity;
@@ -37,7 +36,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/6/21 下午3:54
  */
-public class MyCardActivity extends AppBarActivity implements MyCardContract.MyCardView {
+public class MyCardActivity extends AppBarMVPSwipeBackActivity<MyCardContract.Presenter> implements MyCardContract.View {
     public static final String KEY_INTENT_TITLE = "key_intent_title";
     @BindView(R.id.my_card_flow_card)
     TextView mFlowCardBtn;//续卡
@@ -65,8 +64,6 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
     private int hasCard;
     private String gymId;//场馆id
 
-    private MyCardContract.MyCardPresenter mMyCardPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +71,6 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_card));
         initView();
-        mMyCardPresenter = new MyCardContract.MyCardPresenter(this, this);
         initData();
     }
 
@@ -89,11 +85,11 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
 
     private void initData() {
         mStateView.setState(StateView.State.LOADING);
-        mMyCardPresenter.sendMyCardRequest();
+        mPresenter.sendMyCardRequest();
     }
 
     @OnClick(R.id.my_card_flow_card)
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         UMengCountUtil.UmengCount(this, UmengEventId.UPGRADEANDCONTINUECARDACTIVITY);
         //续卡
         if (!checkGymId()) {
@@ -123,17 +119,17 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
             hasCard = myCardData.getHasCard();
             showRenewCard(myCardData);
             if (hasCard == NumberConstantUtil.ONE) {//有卡
-                mNoCardLayout.setVisibility(View.GONE);
-                mRootScrollView.setVisibility(View.VISIBLE);
+                mNoCardLayout.setVisibility(android.view.View.GONE);
+                mRootScrollView.setVisibility(android.view.View.VISIBLE);
                 String title = myCardData.getShowDesc();
                 if (!StringUtils.isEmpty(title)) {
                     mUpgradeCardPromptTextView.setText(title.replace("\\n", "\n"));
                 }
                 showMyCardInfo(myCardData);
             } else {//没卡
-                mNoCardLayout.setVisibility(View.VISIBLE);
-                mFlowCardBtn.setVisibility(View.GONE);
-                mRootScrollView.setVisibility(View.GONE);
+                mNoCardLayout.setVisibility(android.view.View.VISIBLE);
+                mFlowCardBtn.setVisibility(android.view.View.GONE);
+                mRootScrollView.setVisibility(android.view.View.GONE);
             }
         }
 
@@ -173,10 +169,10 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
         String showRenewCard = myCardData.getShowRenewCard() + "";
         if (!StringUtils.isEmpty(showRenewCard)) {
             if (showRenewCard.equals(NumberConstantUtil.STR_ZERO)) {//不展示续卡按钮
-                mFlowCardBtn.setVisibility(View.GONE);
+                mFlowCardBtn.setVisibility(android.view.View.GONE);
                 mFlowCardBtn.setEnabled(false);
             } else if (showRenewCard.equals(NumberConstantUtil.STR_ONE)) {//展示续卡按钮
-                mFlowCardBtn.setVisibility(View.VISIBLE);
+                mFlowCardBtn.setVisibility(android.view.View.VISIBLE);
                 mFlowCardBtn.setEnabled(true);
             }
         }
@@ -202,4 +198,8 @@ public class MyCardActivity extends AppBarActivity implements MyCardContract.MyC
         }
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyCardContract.Presenter();
+    }
 }

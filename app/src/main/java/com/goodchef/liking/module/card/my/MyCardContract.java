@@ -1,8 +1,6 @@
 package com.goodchef.liking.module.card.my;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.data.remote.retrofit.result.MyCardResult;
@@ -18,23 +16,23 @@ import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 
 public interface MyCardContract {
 
-    interface MyCardView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateMyCardView(MyCardResult.MyCardData myCardData);
 
     }
 
-    class MyCardPresenter extends BasePresenter<MyCardView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CardModel mCardModel = null;
 
-        public MyCardPresenter(Context context, MyCardView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCardModel = new CardModel();
         }
 
         public void sendMyCardRequest() {
             mCardModel.getMyCard()
-                    .subscribe(new LikingBaseObserver<MyCardResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<MyCardResult>(mView) {
+
                         @Override
                         public void onNext(MyCardResult result) {
                             if(result == null) return;
@@ -53,7 +51,7 @@ public interface MyCardContract {
                             mView.changeStateView(StateView.State.FAILED);
                         }
 
-                    });
+                    }));
         }
     }
 }

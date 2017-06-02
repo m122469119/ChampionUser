@@ -3,23 +3,22 @@ package com.goodchef.liking.module.coupons;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.utils.InputMethodManagerUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
-import com.goodchef.liking.eventmessages.CouponErrorMessage;
-import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
-import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.Food;
+import com.goodchef.liking.eventmessages.CouponErrorMessage;
+import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
+import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 
 import java.util.ArrayList;
 
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  * Author shaozucheng
  * Time:16/6/16 下午2:17
  */
-public class CouponsActivity extends AppBarActivity  implements CouponContract.CouponView{
+public class CouponsActivity extends AppBarMVPSwipeBackActivity<CouponContract.Presenter> implements CouponContract.View {
     public static final String KEY_COURSE_ID = "key_course_id";
     public static final String TYPE_MY_COUPONS = "MyCoupons";
     public static final String INTENT_KEY_COUPONS_DATA = "intent_key_coupons_data";
@@ -56,15 +55,12 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
     private String scheduleId;//排期id
     private String gymId;//场馆id
 
-    private CouponContract.CouponPresenter mCouponPresenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupons);
         ButterKnife.bind(this);
-        mCouponPresenter = new CouponContract.CouponPresenter(this,this);
         initData();
         doExchangeCoupons();
     }
@@ -80,7 +76,7 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
         scheduleId = getIntent().getStringExtra(KEY_SCHEDULE_ID);
         gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
 
-        mExchangeCouponsLayout.setVisibility(View.VISIBLE);
+        mExchangeCouponsLayout.setVisibility(android.view.View.VISIBLE);
         if (intentType.equals(TYPE_MY_COUPONS)) {
             setTitle(getString(R.string.title_activity_my_coupons));
         } else {
@@ -106,15 +102,15 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
     }
 
     private void doExchangeCoupons() {
-        mExchangeButton.setOnClickListener(new View.OnClickListener() {
+        mExchangeButton.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 InputMethodManagerUtils.hideKeyboard(mEditCoupons);
                 String couponsNumber = mEditCoupons.getText().toString().trim();
                 if (StringUtils.isEmpty(couponsNumber)) {
                     showToast(getString(R.string.input_coupon_code));
                 } else {
-                    mCouponPresenter.sendExchangeCouponsRequest(couponsNumber);
+                    mPresenter.sendExchangeCouponsRequest(couponsNumber);
                 }
             }
         });
@@ -146,4 +142,8 @@ public class CouponsActivity extends AppBarActivity  implements CouponContract.C
 
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new CouponContract.Presenter();
+    }
 }

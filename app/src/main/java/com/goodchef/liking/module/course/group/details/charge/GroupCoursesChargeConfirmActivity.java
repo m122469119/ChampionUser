@@ -3,13 +3,12 @@ package com.goodchef.liking.module.course.group.details.charge;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.LogUtils;
@@ -19,17 +18,17 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.data.remote.retrofit.result.ChargeGroupConfirmResult;
+import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesAliPayMessage;
 import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.data.remote.retrofit.result.ChargeGroupConfirmResult;
-import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -45,7 +44,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/8/24 下午5:14
  */
-public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements GroupCoursesChargeConfirmContract.ChargeGroupCoursesView {
+public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivity<GroupCoursesChargeConfirmContract.Presenter> implements GroupCoursesChargeConfirmContract.View {
 
     private static final int INTENT_REQUEST_CODE_GROUP_COURSES_COUPON = 200;
     private static final int PAY_TYPE = 3;//3 免金额支付
@@ -92,7 +91,6 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
 
     private String scheduleId;//排期id
 
-    private GroupCoursesChargeConfirmContract.ChargeGroupCoursesConfirmPresenter mChargeGroupCoursesPresenter;
 
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
 
@@ -126,8 +124,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     }
 
     private void initData() {
-        mChargeGroupCoursesPresenter = new GroupCoursesChargeConfirmContract.ChargeGroupCoursesConfirmPresenter(this, this);
-        mChargeGroupCoursesPresenter.getChargeGroupCoursesConfirmData(LikingHomeActivity.gymId, scheduleId);
+        mPresenter.getChargeGroupCoursesConfirmData(LikingHomeActivity.gymId, scheduleId);
     }
 
     private void initPayModule() {
@@ -166,7 +163,7 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
     }
 
     @OnClick({R.id.layout_coupons_courses, R.id.layout_alipay, R.id.layout_wechat, R.id.immediately_buy_btn})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_coupons_courses://收费团体课没有传入gymid
                 UMengCountUtil.UmengCount(this, UmengEventId.COUPONSACTIVITY);
@@ -207,9 +204,9 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         }
         UMengCountUtil.UmengBtnCount(GroupCoursesChargeConfirmActivity.this, UmengEventId.GROUPCOURSESCHARGECONFIRMBTN);
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, mCoupon.getCoupon_code(), payType);
+            mPresenter.chargeGroupCoursesImmediately(this, LikingHomeActivity.gymId, scheduleId, mCoupon.getCoupon_code(), payType);
         } else {
-            mChargeGroupCoursesPresenter.chargeGroupCoursesImmediately(LikingHomeActivity.gymId, scheduleId, "", payType);
+            mPresenter.chargeGroupCoursesImmediately(this, LikingHomeActivity.gymId, scheduleId, "", payType);
         }
     }
 
@@ -399,5 +396,10 @@ public class GroupCoursesChargeConfirmActivity extends AppBarActivity implements
         intent.putExtra(MyLessonActivity.KEY_CURRENT_ITEM, 0);
         startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new GroupCoursesChargeConfirmContract.Presenter();
     }
 }

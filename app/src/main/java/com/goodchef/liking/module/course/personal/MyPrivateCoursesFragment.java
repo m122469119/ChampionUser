@@ -2,7 +2,6 @@ package com.goodchef.liking.module.course.personal;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,11 +25,9 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:43
  */
-public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyPersonalCourseContract.MyPrivateCoursesView {
+public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<MyPersonalCourseContract.Presenter> implements MyPersonalCourseContract.View {
 
     public static final String KEY_ORDER_ID = "key_order_id";
-    private MyPrivateCoursesAdapter mPrivateLessonAdapter;
-    private MyPersonalCourseContract.MyPrivateCoursesPresenter mMyPrivateCoursesPresenter;
 
     @Override
     protected void requestData(int page) {
@@ -38,12 +35,8 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
     }
 
     private void sendRequest(int page) {
-        if (mMyPrivateCoursesPresenter == null) {
-            mMyPrivateCoursesPresenter = new MyPersonalCourseContract.MyPrivateCoursesPresenter(getActivity(), this);
-        }
-        mMyPrivateCoursesPresenter.getMyPrivateCourses(page);
+        mPresenter.getMyPrivateCourses(page);
     }
-
 
     @Override
     protected void initViews() {
@@ -51,11 +44,11 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
         setNoDataView();
         getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
         setRecyclerViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
-        mPrivateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
-        setRecyclerAdapter(mPrivateLessonAdapter);
-        mPrivateLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+        MyPrivateCoursesAdapter privateLessonAdapter = new MyPrivateCoursesAdapter(getActivity());
+        setRecyclerAdapter(privateLessonAdapter);
+        privateLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 TextView textView = (TextView) view.findViewById(R.id.private_teacher_name);
                 if (textView != null) {
                     MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses privateCourses = (MyPrivateCoursesResult.PrivateCoursesData.PrivateCourses) textView.getTag();
@@ -68,14 +61,14 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
     }
 
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
@@ -89,9 +82,9 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
     /***
      * 刷新事件
      */
-    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             loadHomePage();
         }
     };
@@ -119,5 +112,10 @@ public class MyPrivateCoursesFragment extends NetworkSwipeRecyclerRefreshPagerLo
 
     public void onEvent(LoginFinishMessage message){
         loadHomePage();
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyPersonalCourseContract.Presenter();
     }
 }

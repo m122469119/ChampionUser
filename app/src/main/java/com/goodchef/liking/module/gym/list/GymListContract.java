@@ -1,14 +1,12 @@
 package com.goodchef.liking.module.gym.list;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.CheckGymListResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.gym.GymModel;
 
@@ -23,13 +21,13 @@ import java.util.List;
  * @version:1.0
  */
 
-public interface GymListContract {
+interface GymListContract {
 
-    interface CheckGymView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateCheckGymView(CheckGymListResult.CheckGymData checkGymData);
     }
 
-    class CheckGymPresenter extends BasePresenter<CheckGymView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private String cityId;//选择的城市id
         private String gymId;//场馆id
@@ -44,8 +42,7 @@ public interface GymListContract {
 
         private GymModel mGymModel = null;
 
-        public CheckGymPresenter(Context context, CheckGymView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mGymModel = new GymModel();
             setLocationData(mGymModel.getCurrLocation());
         }
@@ -53,12 +50,13 @@ public interface GymListContract {
         /**
          * 获取场馆列表
          */
-        public void getGymList() {
+        void getGymList() {
             if (StringUtils.isEmpty(cityId)) {
                 return;
             }
             mGymModel.getCheckGymList(Integer.parseInt(cityId), longitude, latitude)
-                    .subscribe(new LikingBaseObserver<CheckGymListResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<CheckGymListResult>(mView) {
+
                         @Override
                         public void onNext(CheckGymListResult result) {
                             if (result == null) return;
@@ -74,13 +72,13 @@ public interface GymListContract {
                         public void networkError(Throwable throwable) {
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
         /***
          * 设置默认选中首页所在的场馆
          */
-        public void setDefaultCheck(List<CheckGymListResult.CheckGymData.CheckGym> allGymList) {
+        void setDefaultCheck(List<CheckGymListResult.CheckGymData.CheckGym> allGymList) {
             for (int i = 0; i < allGymList.size(); i++) {
                 if (i == 0) {
                     if (islocation) {
@@ -122,11 +120,11 @@ public interface GymListContract {
             this.gymId = gymId;
         }
 
-        public int getTabIndex() {
+        int getTabIndex() {
             return tabIndex;
         }
 
-        public void setTabIndex(int tabIndex) {
+        void setTabIndex(int tabIndex) {
             this.tabIndex = tabIndex;
         }
 
@@ -134,7 +132,7 @@ public interface GymListContract {
             return islocation;
         }
 
-        public void setIslocation(boolean islocation) {
+        void setIslocation(boolean islocation) {
             this.islocation = islocation;
         }
 
@@ -146,20 +144,20 @@ public interface GymListContract {
             this.latitude = latitude;
         }
 
-        public List<CheckGymListResult.CheckGymData.CheckGym> getAllGymList() {
+        List<CheckGymListResult.CheckGymData.CheckGym> getAllGymList() {
             if (allGymList == null) return new ArrayList<>();
             return allGymList;
         }
 
-        public void setAllGymList(List<CheckGymListResult.CheckGymData.CheckGym> allGymList) {
+        void setAllGymList(List<CheckGymListResult.CheckGymData.CheckGym> allGymList) {
             this.allGymList = allGymList;
         }
 
-        public CheckGymListResult.CheckGymData.MyGymData getMyGym() {
+        CheckGymListResult.CheckGymData.MyGymData getMyGym() {
             return mMyGym;
         }
 
-        public void setMyGym(CheckGymListResult.CheckGymData.MyGymData myGym) {
+        void setMyGym(CheckGymListResult.CheckGymData.MyGymData myGym) {
             mMyGym = myGym;
         }
 

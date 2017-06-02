@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,10 +14,10 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CouponsAdapter;
 import com.goodchef.liking.adapter.CouponsPersonAdapter;
-import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
-import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
+import com.goodchef.liking.eventmessages.ExchangeCouponsMessage;
+import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.module.coupons.details.CouponsDetailsActivity;
@@ -31,9 +30,8 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/16 下午2:28
  */
-public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponContract.CouponView {
+public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<CouponContract.Presenter> implements CouponContract.View {
 
-    private CouponContract.CouponPresenter mCouponPresenter;
 
     private String intentType;
     private String courseId = "";
@@ -71,13 +69,13 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
      * 设置没有优惠券数据
      */
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
         noDataImageView.setImageResource(R.drawable.icon_no_coupon);
         noDataText.setText(R.string.no_coupons_data);
-        refreshView.setVisibility(View.INVISIBLE);
+        refreshView.setVisibility(android.view.View.INVISIBLE);
         getStateView().setNodataView(noDataView);
     }
 
@@ -118,7 +116,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
             setRecyclerAdapter(couponsPersonAdapter);
             couponsPersonAdapter.setOnItemClickListener(new CouponsPersonAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View v, CouponsPersonResult.DataBean.CouponListBean coupon) {
+                public void onItemClick(android.view.View v, CouponsPersonResult.DataBean.CouponListBean coupon) {
                     //在购票界面跳转
                     Intent intent = new Intent(getActivity(), CouponsDetailsActivity.class);
                     intent.setAction(CouponsDetailsActivity.ACTION_SHOW_DETAILS);
@@ -131,7 +129,7 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
             setRecyclerAdapter(mCouponsAdapter);
             mCouponsAdapter.setOnItemClickListener(new CouponsAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View v, CouponsResult.CouponData.Coupon coupon) {
+                public void onItemClick(android.view.View v, CouponsResult.CouponData.Coupon coupon) {
                     //在购票界面跳转
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
@@ -146,16 +144,12 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
 
     private void sendRequest(int page) {
-        if (mCouponPresenter == null) {
-            mCouponPresenter = new CouponContract.CouponPresenter(getActivity(), this);
-        }
         if (intentType.equals(CouponsActivity.TYPE_MY_COUPONS)) {
-            mCouponPresenter.getMyCoupons(page);
+            mPresenter.getMyCoupons(page);
         } else {
-            mCouponPresenter.getCoupons(courseId, selectTimes, null, cardId, type, scheduleId, page, gymId);
+            mPresenter.getCoupons(courseId, selectTimes, null, cardId, type, scheduleId, page, gymId);
         }
     }
-
 
     @Override
     public void updateCouponData(CouponsResult.CouponData couponData) {
@@ -200,4 +194,8 @@ public class CouponsFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     }
 
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new CouponContract.Presenter();
+    }
 }

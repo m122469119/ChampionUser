@@ -1,18 +1,16 @@
 package com.goodchef.liking.module.coupons;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.CouponErrorMessage;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.eventmessages.CouponErrorMessage;
 
 /**
  * 说明:
@@ -21,8 +19,8 @@ import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
  * version 1.0.0
  */
 
-public interface CouponContract {
-    interface CouponView extends BaseView {
+interface CouponContract {
+    interface View extends BaseView {
         void updateExchangeCode();
 
         void updateMyCouponData(CouponsPersonResult.DataBean dataBean);
@@ -30,17 +28,17 @@ public interface CouponContract {
         void updateCouponData(CouponsResult.CouponData couponData);
     }
 
-    class CouponPresenter extends BasePresenter<CouponView> {
+    class Presenter extends RxBasePresenter<View> {
         CouponModel mCouponModel = null;
 
-        public CouponPresenter(Context context, CouponView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCouponModel = new CouponModel();
         }
 
         //兑换优惠券
-        public void sendExchangeCouponsRequest(String code) {
-            mCouponModel.exchangeCoupon(code).subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
+        void sendExchangeCouponsRequest(String code) {
+            mCouponModel.exchangeCoupon(code).subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<LikingResult>(mView) {
+
                 @Override
                 public void onNext(LikingResult result) {
                     mView.updateExchangeCode();
@@ -48,23 +46,28 @@ public interface CouponContract {
 
                 @Override
                 public void apiError(ApiException apiException) {
-                    String eMsg = mContext.getString(R.string.exchange_fail);
-                    if(apiException != null && !StringUtils.isEmpty(apiException.getErrorMessage())) {
+                    String eMsg = null;
+                    if (apiException != null && !StringUtils.isEmpty(apiException.getErrorMessage())) {
                         eMsg = apiException.getErrorMessage();
                     }
-                    mView.showToast(eMsg);
+                    if (!StringUtils.isEmpty(eMsg)) {
+                        mView.showToast(eMsg);
+                    } else {
+                        mView.showToast(R.string.exchange_fail);
+                    }
+
                 }
 
                 @Override
                 public void networkError(Throwable throwable) {
                     super.networkError(throwable);
                 }
-            });
+            }));
         }
 
         //获取我的优惠券
-        public void getMyCoupons(int page) {
-            mCouponModel.getMyCoupons(page).subscribe(new PagerLoadingObserver<CouponsPersonResult>(mContext, mView) {
+        void getMyCoupons(int page) {
+            mCouponModel.getMyCoupons(page).subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<CouponsPersonResult>(mView) {
                 @Override
                 public void onNext(CouponsPersonResult result) {
                     super.onNext(result);
@@ -83,7 +86,7 @@ public interface CouponContract {
                     super.networkError(throwable);
                     postEvent(new CouponErrorMessage());
                 }
-            });
+            }));
         }
 
         /**
@@ -98,8 +101,9 @@ public interface CouponContract {
          * @param page        页码
          * @param gymId       场馆id
          */
-        public void getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, int page, String gymId) {
-            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(new PagerLoadingObserver<CouponsResult>(mContext, mView) {
+        void getCoupons(String courseId, String selectTimes, String goodInfo, String cardId, String type, String scheduleId, int page, String gymId) {
+            mCouponModel.getCoupons(courseId, selectTimes, goodInfo, cardId, type, scheduleId, page, gymId).subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<CouponsResult>(mView) {
+
                 @Override
                 public void onNext(CouponsResult result) {
                     super.onNext(result);
@@ -119,7 +123,7 @@ public interface CouponContract {
                     postEvent(new CouponErrorMessage());
                 }
 
-            });
+            }));
         }
 
 

@@ -1,12 +1,10 @@
 package com.goodchef.liking.module.course.group.details.charge;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.data.remote.retrofit.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.course.CourseModel;
 
@@ -18,27 +16,26 @@ import com.goodchef.liking.module.course.CourseModel;
  * @version:1.0
  */
 
-public interface MyChargeTeamCourseDetailsContract {
+interface MyChargeTeamCourseDetailsContract {
 
-    interface ChargeGroupCoursesDetailsView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateChargeGroupCoursesDetailsView(MyChargeGroupCoursesDetailsResult.MyChargeGroupCoursesDetails groupCoursesDetails);
     }
 
-    class MyChargeGroupCoursesDetailsPresenter extends BasePresenter<ChargeGroupCoursesDetailsView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CourseModel mCourseModel = null;
 
-        public MyChargeGroupCoursesDetailsPresenter(Context context, ChargeGroupCoursesDetailsView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
         /**
          * 获取我的付费团体课详情
          */
-        public void getChargeGroupCoursesDetails(String orderId) {
+        void getChargeGroupCoursesDetails(String orderId) {
             mCourseModel.getChargeGroupCoursesDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyChargeGroupCoursesDetailsResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<MyChargeGroupCoursesDetailsResult>(mView) {
                         @Override
                         public void onNext(MyChargeGroupCoursesDetailsResult result) {
                             if(null == result) return;
@@ -56,7 +53,7 @@ public interface MyChargeTeamCourseDetailsContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
     }

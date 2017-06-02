@@ -3,20 +3,19 @@ package com.goodchef.liking.module.gym.details;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.ArenaTagAdapter;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
-import com.goodchef.liking.dialog.AnnouncementDialog;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
+import com.goodchef.liking.dialog.AnnouncementDialog;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -33,7 +32,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/6/15 下午1:54
  */
-public class ArenaActivity extends AppBarActivity implements GymDetailsContract.GymDetailsView {
+public class ArenaActivity extends AppBarMVPSwipeBackActivity<GymDetailsContract.Presenter> implements GymDetailsContract.View {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     @BindView(R.id.arena_viewpager)
     InfiniteViewPager mImageViewPager;
@@ -51,7 +50,6 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsContract.
     RecyclerView mRecyclerView;
     private BannerPagerAdapter mBannerPagerAdapter;
     private String announcement;
-    private GymDetailsContract.GymDetailsPresenter mGymDetailsPresenter;
     private String gymId;//场馆id
     private ArenaTagAdapter mArenaTagAdapter;
 
@@ -67,9 +65,9 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsContract.
     }
 
     private void setRightMenu() {
-        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+        setRightIcon(R.drawable.icon_phone, new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 LikingCallUtil.showPhoneDialog(ArenaActivity.this);
             }
         });
@@ -94,16 +92,15 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsContract.
     }
 
     private void sendRequest() {
-        mGymDetailsPresenter = new GymDetailsContract.GymDetailsPresenter(this, this);
-        mGymDetailsPresenter.getGymDetails(gymId);
+        mPresenter.getGymDetails(this, gymId);
     }
 
     @OnClick(R.id.layout_area_announcement)
     public void onClick() {
         final AnnouncementDialog dialog = new AnnouncementDialog(this, announcement);
-        dialog.setViewOnClickListener(new View.OnClickListener() {
+        dialog.setViewOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 switch (v.getId()) {
                     case R.id.announcement_cancel_image_button:
                         dialog.dismiss();
@@ -134,7 +131,7 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsContract.
         setTitle(gymDetailsData.getName());
         mAddressTextView.setText(getString(R.string.area_address_left) + gymDetailsData.getAddress());
         announcement = gymDetailsData.getAnnouncement().trim();
-        mAnnouncementLayout.setVisibility(View.GONE);
+        mAnnouncementLayout.setVisibility(android.view.View.GONE);
 
         List<GymDetailsResult.GymDetailsData.ImgsData> imgDataList = gymDetailsData.getImgs();
         if (imgDataList != null && imgDataList.size() > 0) {
@@ -178,4 +175,8 @@ public class ArenaActivity extends AppBarActivity implements GymDetailsContract.
         mImageViewPager.startAutoScroll();
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new GymDetailsContract.Presenter();
+    }
 }

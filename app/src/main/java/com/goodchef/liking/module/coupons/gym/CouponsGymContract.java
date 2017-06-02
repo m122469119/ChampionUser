@@ -1,8 +1,6 @@
 package com.goodchef.liking.module.coupons.gym;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsCities;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
@@ -14,23 +12,22 @@ import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
  * version 1.0.0
  */
 
-public class CouponsGymContract {
+class CouponsGymContract {
 
-    interface CouponsGymView extends BaseView {
+    interface View extends BaseView {
         void updateCouponData(CouponsCities.DataBean data);
     }
 
-    public static class CouponsGymPresenter extends BasePresenter<CouponsGymView> {
+    public static class Presenter extends RxBasePresenter<View> {
         CouponsGymModel mCouponsGymModel;
 
-        public CouponsGymPresenter(Context context, CouponsGymView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCouponsGymModel = new CouponsGymModel();
         }
 
-        public void getCouponsCitys(int page, String couponCode) {
+        void getCouponsCitys(int page, String couponCode) {
             mCouponsGymModel.getCouponsGym(page, couponCode)
-                    .subscribe(new PagerLoadingObserver<CouponsCities>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<CouponsCities>(mView) {
                         @Override
                         public void onNext(CouponsCities result) {
                             super.onNext(result);
@@ -38,7 +35,7 @@ public class CouponsGymContract {
                             mView.updateCouponData(result.getData());
                         }
 
-                    });
+                    }));
         }
     }
 }

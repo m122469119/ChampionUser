@@ -2,7 +2,6 @@ package com.goodchef.liking.module.home.lessonfragment;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,6 +19,9 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BannerPagerAdapter;
 import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
@@ -31,12 +33,9 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
-import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
-import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.personal.PrivateLessonDetailsActivity;
 import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.umeng.UmengEventId;
@@ -54,19 +53,18 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements LikingLessonContract.LikingLessonView {
+public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<LikingLessonContract.Presenter> implements LikingLessonContract.View {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     public static final String KEY_GYM_ID = "key_gym_id";
     public static final String KEY_GYM_NAME = "key_gym_name";
     public static final String KEY_DISTANCE = "key_distance";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
-    private View mHeadView;
+    private android.view.View mHeadView;
     private RelativeLayout mHeadInfiteLayout;
     private InfiniteViewPager mImageViewPager;
     private IconPageIndicator mIconPageIndicator;
     private BannerPagerAdapter mBannerPagerAdapter;
     private LikingLessonRecyclerAdapter mLikingLessonRecyclerAdapter;
-    private LikingLessonContract.LikingLessonPresenter mLikingLessonPresenter;
 
     private String mLongitude = "0";
     private String mLatitude = "0";
@@ -80,7 +78,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private static final int TYPE_PRIVATE_LESSON = 2;//私教课
     private boolean isFirstMessage = false;
     private List<BannerResult.BannerData.Banner> bannerDataList = new ArrayList<>();
-    private View mFooterView;
+    private android.view.View mFooterView;
     private LinearLayout mPreSaleView;//有banner 没有课程数据
     private LinearLayout mNoContentData;
     private ImageView mHeadNoDataImageView;//没有数据图片
@@ -112,14 +110,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     private void initData() {
-        mLikingLessonPresenter = new LikingLessonContract.LikingLessonPresenter(getActivity(), this);
         initRecycleView();
         initBlankView();
         initRecycleHeadView();
         setNoDataView();
-        getStateView().findViewById(R.id.text_view_fail_refresh).setOnClickListener(new View.OnClickListener() {
+        getStateView().findViewById(R.id.text_view_fail_refresh).setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 postEvent(new LikingHomeNoNetWorkMessage());
             }
         });
@@ -133,7 +130,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
         mLikingLessonRecyclerAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 List<CoursesResult.Courses.CoursesData> coursesDatas = mLikingLessonRecyclerAdapter.getDataList();
                 CoursesResult.Courses.CoursesData coursesData = coursesDatas.get(position);
                 int type = coursesData.getType();
@@ -153,7 +150,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
@@ -190,7 +187,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
@@ -204,9 +201,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     /***
      * 刷新事件
      */
-    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             loadHomePage();
         }
     };
@@ -214,17 +211,17 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     /**
      * 跳转到自助团体课
      */
-    private View.OnClickListener goToSelfCoursesListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener goToSelfCoursesListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             UMengCountUtil.UmengCount(getActivity(), UmengEventId.SELFHELPGROUPACTIVITY);
             startActivity(SelfHelpGroupActivity.class);
         }
     };
 
-    private View.OnClickListener buyCardOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener buyCardOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             postEvent(new BuyCardMessage());
         }
     };
@@ -238,15 +235,15 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     //发送banner请求
     private void requestBanner() {
-        mLikingLessonPresenter.getBanner();
+        mPresenter.getBanner();
     }
 
     //发送首页数据
     private void getCoursesRequest(int page) {
         if (!NumberConstantUtil.STR_ZERO.equals(mLongitude) && !NumberConstantUtil.STR_ZERO.equals(mLatitude)) {
-            mLikingLessonPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingHomeActivity.gymId);
+            mPresenter.getHomeData(mLongitude, mLatitude, mCityId, mDistrictId, page, LikingHomeActivity.gymId);
         } else {
-            mLikingLessonPresenter.getHomeData(NumberConstantUtil.STR_ZERO, NumberConstantUtil.STR_ZERO, mCityId, mDistrictId, page, LikingHomeActivity.gymId);
+            mPresenter.getHomeData(NumberConstantUtil.STR_ZERO, NumberConstantUtil.STR_ZERO, mCityId, mDistrictId, page, LikingHomeActivity.gymId);
         }
     }
 
@@ -304,9 +301,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         presale = mGym.getBizStatus();
         mNoBuinesses = mGym.getBizAlert();
         if (NumberConstantUtil.ONE == mGym.getCanSchedule()) {//支持自助团体课
-            mSelfCoursesInView.setVisibility(View.VISIBLE);
+            mSelfCoursesInView.setVisibility(android.view.View.VISIBLE);
         } else {
-            mSelfCoursesInView.setVisibility(View.GONE);
+            mSelfCoursesInView.setVisibility(android.view.View.GONE);
         }
         postEvent(new GymNoticeMessage(courses.getGym()));
     }
@@ -338,44 +335,44 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             if (!StringUtils.isEmpty(presale) && NumberConstantUtil.STR_ONE.equals(presale)) {//预售中
                 if (mPreSaleView != null && mNoContentData != null) {
                     if (isRequestHomePage()) {
-                        mPreSaleView.setVisibility(View.VISIBLE);
+                        mPreSaleView.setVisibility(android.view.View.VISIBLE);
                     } else {
-                        mPreSaleView.setVisibility(View.GONE);
+                        mPreSaleView.setVisibility(android.view.View.GONE);
                     }
-                    mNoContentData.setVisibility(View.GONE);
+                    mNoContentData.setVisibility(android.view.View.GONE);
                 }
             } else if (!StringUtils.isEmpty(presale) && NumberConstantUtil.STR_TWO.equals(presale)) {//营业中
                 if (mPreSaleView != null && mNoContentData != null) {
-                    mPreSaleView.setVisibility(View.GONE);
+                    mPreSaleView.setVisibility(android.view.View.GONE);
                     if (isRequestHomePage()) {
-                        mNoContentData.setVisibility(View.VISIBLE);
+                        mNoContentData.setVisibility(android.view.View.VISIBLE);
                         mHeadNoDataImageView.setImageResource(R.drawable.icon_no_coureses_data);
                         mHeadNoDataTextViewPrompt.setText(R.string.no_data);
-                        mHeadTelTextView.setVisibility(View.GONE);
+                        mHeadTelTextView.setVisibility(android.view.View.GONE);
                     } else {
-                        mNoContentData.setVisibility(View.GONE);
+                        mNoContentData.setVisibility(android.view.View.GONE);
                     }
                 }
             } else if (!StringUtils.isEmpty(presale) && NumberConstantUtil.STR_THREE.equals(presale)) {//休业中
                 if (mPreSaleView != null && mNoContentData != null) {
-                    mPreSaleView.setVisibility(View.GONE);
+                    mPreSaleView.setVisibility(android.view.View.GONE);
                     if (isRequestHomePage()) {
-                        mNoContentData.setVisibility(View.VISIBLE);
+                        mNoContentData.setVisibility(android.view.View.VISIBLE);
                         //这个图片要换掉
                         mHeadNoDataImageView.setImageResource(R.drawable.icon_close);
                         mHeadNoDataTextViewPrompt.setText(mNoBuinesses);
-                        mHeadTelTextView.setVisibility(View.VISIBLE);
+                        mHeadTelTextView.setVisibility(android.view.View.VISIBLE);
                         mHeadTelTextView.setText(LikingHomeActivity.gymTel);
                         mHeadTelTextView.setOnClickListener(callListener);
                     } else {
-                        mNoContentData.setVisibility(View.GONE);
+                        mNoContentData.setVisibility(android.view.View.GONE);
                     }
                 }
             }
         } else {
             if (mPreSaleView != null && mNoContentData != null) {
-                mPreSaleView.setVisibility(View.GONE);
-                mNoContentData.setVisibility(View.GONE);
+                mPreSaleView.setVisibility(android.view.View.GONE);
+                mNoContentData.setVisibility(android.view.View.GONE);
             }
         }
 
@@ -385,9 +382,9 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     /**
      * 拨打健身房场馆电话
      */
-    private View.OnClickListener callListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener callListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             if (!StringUtils.isEmpty(LikingHomeActivity.gymTel)) {
                 PhoneUtils.phoneCall(getActivity(), LikingHomeActivity.gymTel);
             }
@@ -411,7 +408,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
 
     private void setBannerData() {
         if (bannerDataList != null && bannerDataList.size() > 0) {
-            mHeadInfiteLayout.setVisibility(View.VISIBLE);
+            mHeadInfiteLayout.setVisibility(android.view.View.VISIBLE);
             if (mBannerPagerAdapter != null) {
                 mBannerPagerAdapter.setData(bannerDataList);
                 mBannerPagerAdapter.notifyDataSetChanged();
@@ -427,7 +424,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
                 }
             }
         } else {
-            mHeadInfiteLayout.setVisibility(View.GONE);
+            mHeadInfiteLayout.setVisibility(android.view.View.GONE);
         }
     }
 
@@ -511,4 +508,8 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         }
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new LikingLessonContract.Presenter();
+    }
 }

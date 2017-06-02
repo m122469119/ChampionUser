@@ -15,12 +15,12 @@ import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.home.LikingHomeActivity;
-import com.goodchef.liking.module.card.order.MyOrderActivity;
-import com.goodchef.liking.data.remote.retrofit.result.data.AnnouncementDirect;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.data.AnnouncementDirect;
 import com.goodchef.liking.module.card.my.MyCardActivity;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
 
@@ -284,7 +284,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
 
         LikingPreference.setHomeAnnouncementId(announcement.getData());
 
-        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context)) || BaseActivity.isPause){
+        if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))
+                || BaseActivity.isAppToBackground()) {
             Intent resultIntent = new Intent(context, LikingHomeActivity.class);
             resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -313,8 +314,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setWhen(System.currentTimeMillis())
-                .setContentIntent(intent)
-                ;
+                .setContentIntent(intent);
         Notification build = builder.build();
         build.flags = Notification.FLAG_AUTO_CANCEL;
         NotificationManager manager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);

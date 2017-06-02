@@ -11,26 +11,25 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
+import com.aaron.android.framework.base.mvp.BaseMVPActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
-import com.aaron.imageloader.code.HImageView;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyAnalyzeAdapter;
 import com.goodchef.liking.adapter.FatAnalyzeAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BodyTestResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.BodyData;
 import com.goodchef.liking.module.body.analyze.BodyAnalyzeChartActivity;
 import com.goodchef.liking.module.body.history.BodyTestHistoryActivity;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.AppBarStateChangeListener;
@@ -51,7 +50,7 @@ import butterknife.OnClick;
  * version 1.0.0
  */
 
-public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestDataContract.BodyTestView {
+public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.Presenter> implements BodyTestDataContract.View {
 
     public static final String BODY_ID = "bodyId";
     public static final String SOURCE = "source";
@@ -209,7 +208,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
     @BindView(R.id.toolbar_title)
     TextView mTooBarTitle;
 
-    private BodyTestDataContract.BodyTestPresenter mBodyTestPresenter;
     private Typeface mTypeface;
 
     private BodyTestResult.BodyTestData.TopDataData gradeData;//评分数据
@@ -227,7 +225,6 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_body_test_data);
         ButterKnife.bind(this);
-        mBodyTestPresenter = new BodyTestDataContract.BodyTestPresenter(this, this);
         bodyId = getIntent().getStringExtra(BODY_ID);
         sourse = getIntent().getStringExtra(SOURCE);
         setSourceView();
@@ -241,9 +238,9 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
 
     private void setSourceView() {
         if (sourse.equals("history")) {
-            mBodyTestHistoryTextView.setVisibility(View.GONE);
+            mBodyTestHistoryTextView.setVisibility(android.view.View.GONE);
         } else {
-            mBodyTestHistoryTextView.setVisibility(View.VISIBLE);
+            mBodyTestHistoryTextView.setVisibility(android.view.View.VISIBLE);
         }
     }
 
@@ -282,16 +279,16 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
                 }
             }
         });
-        mNoDataAppBackImageView.setOnClickListener(new View.OnClickListener() {
+        mNoDataAppBackImageView.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 finish();
             }
         });
     }
 
     private void sendRequest() {
-        mBodyTestPresenter.getBodyData(bodyId);
+        mPresenter.getBodyData(this, bodyId);
     }
 
 
@@ -304,7 +301,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
             R.id.fat_analyze_help_ImageView,
             R.id.body_test_history_TextView
     })
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         if (v == mBodyGradeHistoryTextView) {//体侧评分历史记录
             startBodyAnalyzeChartActivity(gradeData.getTitle() + getString(R.string.history), gradeData.getType());
         } else if (v == mBodyElementHistoryTextView) {//身体成分历史记录
@@ -327,7 +324,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
      */
     private void showFatAnalyzeDialog() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_body_ingredient_view, null, false);
+        android.view.View view = LayoutInflater.from(this).inflate(R.layout.dialog_body_ingredient_view, null, false);
         setFatAnalyzeDialogView(view);
         builder.setCustomView(view);
         builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
@@ -344,7 +341,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
      */
     private void showBodyIngredientDialog() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_body_ingredient_view, null, false);
+        android.view.View view = LayoutInflater.from(this).inflate(R.layout.dialog_body_ingredient_view, null, false);
         setBodyAnalyzeView(view);
         builder.setCustomView(view);
         builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
@@ -361,7 +358,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
      *
      * @param view
      */
-    private void setFatAnalyzeDialogView(View view) {
+    private void setFatAnalyzeDialogView(android.view.View view) {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dialog_analyze_RecyclerView);
         TextView titleTextView = (TextView) view.findViewById(R.id.dialog_body_ingredient_title);
         List<BodyTestResult.BodyTestData.FatAnalysisData.BodyDataData> bodyDataList = fatAnalysisData.getBodyData();
@@ -378,7 +375,7 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
      *
      * @param view
      */
-    private void setBodyAnalyzeView(View view) {
+    private void setBodyAnalyzeView(android.view.View view) {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dialog_analyze_RecyclerView);
         TextView titleTextView = (TextView) view.findViewById(R.id.dialog_body_ingredient_title);
         List<BodyTestResult.BodyTestData.BodyAnalysisData.BodyDataData> bodyDataList = bodyAnalysisData.getBodyData();
@@ -423,17 +420,17 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
         if (bodyUserData == null && gradeData == null && bodyAnalysisData == null
                 && fatAnalysisData == null && muscleData == null
                 && bodyFatData == null && adviceData == null) {
-            mNoDataLayout.setVisibility(View.VISIBLE);
-            mHeadCardView.setVisibility(View.GONE);
+            mNoDataLayout.setVisibility(android.view.View.VISIBLE);
+            mHeadCardView.setVisibility(android.view.View.GONE);
             mNoDataImageView.setImageResource(R.drawable.icon_no_data);
-            mNoDataTextView.setVisibility(View.GONE);
-            mNoDataPromptTextView.setVisibility(View.VISIBLE);
+            mNoDataTextView.setVisibility(android.view.View.GONE);
+            mNoDataPromptTextView.setVisibility(android.view.View.VISIBLE);
             mNoDataPromptTextView.setText(R.string.no_data);
-            mAppBarLayout.setVisibility(View.GONE);
+            mAppBarLayout.setVisibility(android.view.View.GONE);
         } else {
-            mHeadCardView.setVisibility(View.VISIBLE);
-            mNoDataLayout.setVisibility(View.GONE);
-            mAppBarLayout.setVisibility(View.VISIBLE);
+            mHeadCardView.setVisibility(android.view.View.VISIBLE);
+            mNoDataLayout.setVisibility(android.view.View.GONE);
+            mAppBarLayout.setVisibility(android.view.View.VISIBLE);
         }
 
         if (bodyUserData != null) {
@@ -633,19 +630,19 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
         mLeftDownMuscleEvaluateTextView.setText(bodyListData.get(3).getEvaluate());
 
         mMuscleAnalyzeResultTextView.setText(muscleData.getAdvise());
-        mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
+        mMuscleResultHistoryTextView.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 startBodyAnalyzeChartActivity(muscleData.getTitle() + getString(R.string.history), muscleData.getType());
             }
         });
-        mLeftMusclePercentageTextView.setVisibility(View.GONE);
-        mRightMusclePercentageTextView.setVisibility(View.GONE);
-        mRightDownMusclePercentageTextView.setVisibility(View.GONE);
-        mLeftDownMusclePercentageTextView.setVisibility(View.GONE);
+        mLeftMusclePercentageTextView.setVisibility(android.view.View.GONE);
+        mRightMusclePercentageTextView.setVisibility(android.view.View.GONE);
+        mRightDownMusclePercentageTextView.setVisibility(android.view.View.GONE);
+        mLeftDownMusclePercentageTextView.setVisibility(android.view.View.GONE);
     }
 
-    private void setMuscleView(View view) {
+    private void setMuscleView(android.view.View view) {
         setBodyFatTypeface();
     }
 
@@ -679,10 +676,10 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
 
         List<BodyData> bodyListData = bodyFatData.getBodyData();
 
-        mLeftMusclePercentageTextView.setVisibility(View.VISIBLE);
-        mRightMusclePercentageTextView.setVisibility(View.VISIBLE);
-        mRightDownMusclePercentageTextView.setVisibility(View.VISIBLE);
-        mLeftDownMusclePercentageTextView.setVisibility(View.VISIBLE);
+        mLeftMusclePercentageTextView.setVisibility(android.view.View.VISIBLE);
+        mRightMusclePercentageTextView.setVisibility(android.view.View.VISIBLE);
+        mRightDownMusclePercentageTextView.setVisibility(android.view.View.VISIBLE);
+        mLeftDownMusclePercentageTextView.setVisibility(android.view.View.VISIBLE);
 
         mLeftMusclePercentageTextView.setText(bodyListData.get(0).getContent());
         mLeftMuscleTextView.setText(bodyListData.get(0).getValue() + " ");
@@ -705,9 +702,9 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
         mLeftDownMuscleEvaluateTextView.setText(bodyListData.get(3).getEvaluate());
 
         mMuscleAnalyzeResultTextView.setText(bodyFatData.getAdvise());
-        mMuscleResultHistoryTextView.setOnClickListener(new View.OnClickListener() {
+        mMuscleResultHistoryTextView.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 startBodyAnalyzeChartActivity(bodyFatData.getTitle() + getString(R.string.history), bodyFatData.getType());
             }
         });
@@ -757,17 +754,22 @@ public class BodyTestDataActivity extends SwipeBackActivity implements BodyTestD
 
     @Override
     public void handleNetworkFailure() {
-        mNoDataLayout.setVisibility(View.VISIBLE);
-        mHeadCardView.setVisibility(View.GONE);
-        mAppBarLayout.setVisibility(View.GONE);
-        mNoDataPromptTextView.setVisibility(View.GONE);
+        mNoDataLayout.setVisibility(android.view.View.VISIBLE);
+        mHeadCardView.setVisibility(android.view.View.GONE);
+        mAppBarLayout.setVisibility(android.view.View.GONE);
+        mNoDataPromptTextView.setVisibility(android.view.View.GONE);
         mNoDataImageView.setImageResource(R.drawable.network_anomaly);
         mNoDataTextView.setText(R.string.refresh_btn_text);
-        mNoDataTextView.setOnClickListener(new View.OnClickListener() {
+        mNoDataTextView.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 sendRequest();
             }
         });
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new BodyTestDataContract.Presenter();
     }
 }

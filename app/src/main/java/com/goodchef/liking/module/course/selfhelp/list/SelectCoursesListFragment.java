@@ -3,7 +3,6 @@ package com.goodchef.liking.module.course.selfhelp.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,8 +12,8 @@ import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SelectCoursesListAdapter;
-import com.goodchef.liking.eventmessages.SelectCoursesMessage;
 import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.eventmessages.SelectCoursesMessage;
 import com.goodchef.liking.module.course.selfhelp.details.SelfLessonDetailsActivity;
 
 import java.util.List;
@@ -25,10 +24,7 @@ import java.util.List;
  * Time: 下午2:13
  */
 
-public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements SelfHelpCourseListContract.SelectCoursesListView {
-
-
-    private SelfHelpCourseListContract.SelectCoursesListPresenter mSelectCoursesListPresenter;
+public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<SelfHelpCourseListContract.Presenter> implements SelfHelpCourseListContract.View {
 
     private SelectCoursesListAdapter mSelectCoursesListAdapter;
 
@@ -47,11 +43,8 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     }
 
     private void sendRequest(int page) {
-        if (mSelectCoursesListPresenter == null) {
-            mSelectCoursesListPresenter = new SelfHelpCourseListContract.SelectCoursesListPresenter(getActivity(), this);
-        }
-        mSelectCoursesListPresenter.getCoursesList(page);
-        mSelectCoursesListPresenter.setSelectCoursesId(mCurrCourseId);
+        mPresenter.getCoursesList(page);
+        mPresenter.setSelectCoursesId(mCurrCourseId);
     }
 
     @Override
@@ -61,9 +54,9 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     }
 
     private void initData() {
-        getStateView().findViewById(R.id.text_view_fail_refresh).setOnClickListener(new View.OnClickListener() {
+        getStateView().findViewById(R.id.text_view_fail_refresh).setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 loadHomePage();
             }
         });
@@ -84,7 +77,7 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     }
 
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
@@ -98,9 +91,9 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     /***
      * 刷新事件
      */
-    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             loadHomePage();
         }
     };
@@ -109,9 +102,9 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     /**
      * 设置选择事件
      */
-    private View.OnClickListener mViewListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener mViewListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
 
             switch (v.getId()) {
                 case R.id.layout_select_courses:
@@ -149,5 +142,10 @@ public class SelectCoursesListFragment extends NetworkSwipeRecyclerRefreshPagerL
     @Override
     public void changeStateView(StateView.State state) {
         getStateView().setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new SelfHelpCourseListContract.Presenter();
     }
 }

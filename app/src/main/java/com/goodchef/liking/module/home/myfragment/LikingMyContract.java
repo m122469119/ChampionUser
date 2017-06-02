@@ -4,27 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
-import com.goodchef.liking.module.brace.braceletdata.BraceletDataActivity;
 import com.goodchef.liking.bluetooth.BleUtils;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.MyUserOtherInfoResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
-import com.goodchef.liking.module.brace.bind.BingBraceletActivity;
-import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
+import com.goodchef.liking.module.brace.bind.BingBraceletActivity;
+import com.goodchef.liking.module.brace.braceletdata.BraceletDataActivity;
+import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.train.UserExerciseModel;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.UMengCountUtil;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -33,42 +30,44 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class LikingMyContract {
+class LikingMyContract {
 
-    interface LikingMyView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateInfoData(MyUserOtherInfoResult.UserOtherInfoData userOtherInfoData);
 
         void updateExerciseData(UserExerciseResult.ExerciseData exerciseData);
     }
 
-    public static class LikingMyPresenter extends BasePresenter<LikingMyView> {
+    public static class Presenter extends RxBasePresenter<View> {
+        private static final String TAG = "LikingMyContractPresenter";
         LikingMyModel mLikingMyModel;
         UserExerciseModel mUserExerciseModel;
         private BleUtils mBleUtils;//蓝牙Util
 
-        public LikingMyPresenter(Context context, LikingMyView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mLikingMyModel = new LikingMyModel();
             mUserExerciseModel = new UserExerciseModel();
             mBleUtils = new BleUtils();
         }
 
-        public void getUserData() {
-            mLikingMyModel.getMyUserInfoData().observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io()).subscribe(new LikingBaseObserver<MyUserOtherInfoResult>(mContext, mView) {
-                @Override
+        void getUserData() {
+            mLikingMyModel.getMyUserInfoData()
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<MyUserOtherInfoResult>(mView) {
+
+                        @Override
                 public void onNext(MyUserOtherInfoResult value) {
                     if (value == null) return;
                     if (value.getData() != null) {
                         mView.updateInfoData(value.getData());
                     }
                 }
-            });
+            }));
         }
 
 
-        public void getUserExerciseData() {
-            mUserExerciseModel.getExerciseData().subscribe(new LikingBaseObserver<UserExerciseResult>(mContext, mView) {
+        void getUserExerciseData() {
+            mUserExerciseModel.getExerciseData().subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<UserExerciseResult>(mView) {
+
                 @Override
                 public void onNext(UserExerciseResult value) {
                     if (value == null) return;
@@ -82,21 +81,21 @@ public class LikingMyContract {
                     super.networkError(throwable);
                     mView.changeStateView(StateView.State.FAILED);
                 }
-            });
+            }));
         }
 
         /**
          * 跳转到我的手环
          */
-        public void jumpBraceletActivity(String mBraceletMac, String UUID) {
+        void jumpBraceletActivity(Context context, String UUID, String mBraceletMac) {
             if (LikingPreference.isLogin()) {
                 if (!StringUtils.isEmpty(mBraceletMac)) {
                     LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
                 }
                 if (LikingPreference.isBind()) {//绑定过手环
-                    if (initBlueTooth()) {
-                        UMengCountUtil.UmengCount(mContext, UmengEventId.MYBRACELETACTIVITY);
-                        Intent intent = new Intent(mContext, MyBraceletActivity.class);
+                    if (initBlueTooth(context)) {
+                        UMengCountUtil.UmengCount(context, UmengEventId.MYBRACELETACTIVITY);
+                        Intent intent = new Intent(context, MyBraceletActivity.class);
                         if (!StringUtils.isEmpty(mBraceletMac)) {
                             intent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
                         }
@@ -104,62 +103,64 @@ public class LikingMyContract {
                         intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
                         intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
                         intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
-                        mContext.startActivity(intent);
+                        context.startActivity(intent);
                     }
                 } else {//没有绑过
-                    UMengCountUtil.UmengCount(mContext, UmengEventId.BINGBRACELETACTIVITY);
-                    Intent intent = new Intent(mContext, BingBraceletActivity.class);
+                    UMengCountUtil.UmengCount(context, UmengEventId.BINGBRACELETACTIVITY);
+                    Intent intent = new Intent(context, BingBraceletActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         intent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
                     }
                     intent.putExtra(LikingMyFragment.KEY_UUID, UUID);
-                    mContext.startActivity(intent);
+                    context.startActivity(intent);
                 }
             } else {
-                Intent intent = new Intent(mContext, LoginActivity.class);
-                mContext.startActivity(intent);
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
             }
         }
 
 
-        public void jumpBracelet(String mBraceletMac,String UUID) {
+        void jumpBracelet(Context context, String UUID, String mBraceletMac) {
             if (LikingPreference.isLogin()) {
                 if (LikingPreference.isBind()) {
-                    UMengCountUtil.UmengCount(mContext, UmengEventId.EVERYDAYSPORTACTIVITY);
-                    Intent everydaySportIntent = new Intent(mContext, BraceletDataActivity.class);
+                    UMengCountUtil.UmengCount(context, UmengEventId.EVERYDAYSPORTACTIVITY);
+                    Intent everydaySportIntent = new Intent(context, BraceletDataActivity.class);
                     if (!StringUtils.isEmpty(mBraceletMac)) {
                         everydaySportIntent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
                         LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
                     }
                     everydaySportIntent.putExtra(LikingMyFragment.KEY_UUID, UUID);
-                    mContext.startActivity(everydaySportIntent);
+                    context.startActivity(everydaySportIntent);
                 } else {
-                    jumpBodyTestActivity();
+                    jumpBodyTestActivity(context);
                 }
             } else {
-                Intent intent = new Intent(mContext,LoginActivity.class);
-                mContext.startActivity(intent);
+                Intent intent = new Intent(context,LoginActivity.class);
+                context.startActivity(intent);
             }
         }
 
         /**
          * 跳转到体测评分界面
+         * @param context
          */
-        public void jumpBodyTestActivity() {
-            UMengCountUtil.UmengCount(mContext, UmengEventId.BODYTESTDATAACTIVITY);
-            Intent intent = new Intent(mContext, BodyTestDataActivity.class);
+        void jumpBodyTestActivity(Context context) {
+            UMengCountUtil.UmengCount(context, UmengEventId.BODYTESTDATAACTIVITY);
+            Intent intent = new Intent(context, BodyTestDataActivity.class);
             intent.putExtra(BodyTestDataActivity.BODY_ID, "");
             intent.putExtra(BodyTestDataActivity.SOURCE, "other");
-            mContext.startActivity(intent);
+            context.startActivity(intent);
         }
 
 
         /**
          * 初始化蓝牙
+         * @param context
          */
-        public boolean initBlueTooth() {
+        boolean initBlueTooth(Context context) {
             if (!mBleUtils.isOpen()) {
-                openBluetooth();
+                openBluetooth(context);
                 return false;
             } else {
                 return true;
@@ -169,8 +170,8 @@ public class LikingMyContract {
         /**
          * 打开蓝牙
          */
-        public void openBluetooth() {
-            mBleUtils.openBlueTooth((Activity) mContext);
+        void openBluetooth(Context context) {
+            mBleUtils.openBlueTooth((Activity) context);
         }
 
 

@@ -1,17 +1,13 @@
 package com.goodchef.liking.module.home.lessonfragment;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
+import com.aaron.common.utils.LogUtils;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -20,48 +16,45 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class LikingLessonContract {
+interface LikingLessonContract {
 
-    interface LikingLessonView extends BaseView {
+    interface View extends BaseView {
         void updateCourseView(CoursesResult.Courses courses);
 
         void updateBanner(BannerResult.BannerData bannerData);
     }
 
-    public static class LikingLessonPresenter extends BasePresenter<LikingLessonView> {
+    class Presenter extends RxBasePresenter<View> {
         LikingLessonModel mLikingLessonModel;
 
-        public LikingLessonPresenter(Context context, LikingLessonView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mLikingLessonModel = new LikingLessonModel();
         }
 
         /**
          * 获取banner
          */
-        public void getBanner() {
+        void getBanner() {
             mLikingLessonModel.getBanner()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new LikingBaseObserver<BannerResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<BannerResult>(mView) {
+
                         @Override
                         public void onNext(BannerResult value) {
                             if (value == null) return;
+                            LogUtils.d("aaron", "mLikingLessonModel.onNext: View = " + mView);
                             if (value.getBannerData() != null) {
                                 mView.updateBanner(value.getBannerData());
                             }
                         }
-                    });
+                    }));
         }
 
         /**
          * 获取首页数据
          */
-        public void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId) {
+        void getHomeData(String longitude, String latitude, String cityId, String districtId, int currentPage, String gymId) {
             mLikingLessonModel.getHomeData(LikingPreference.getToken(), longitude, latitude, cityId, districtId, currentPage, gymId)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new PagerLoadingObserver<CoursesResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<CoursesResult>(mView) {
                         @Override
                         public void onNext(CoursesResult result) {
                             super.onNext(result);
@@ -70,7 +63,7 @@ public class LikingLessonContract {
                                 mView.updateCourseView(result.getCourses());
                             }
                         }
-                    });
+                    }));
         }
     }
 }

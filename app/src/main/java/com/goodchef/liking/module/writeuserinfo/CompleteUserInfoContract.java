@@ -2,19 +2,16 @@ package com.goodchef.liking.module.writeuserinfo;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -25,7 +22,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public interface CompleteUserInfoContract {
 
-    interface CompleteUserInfoView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateUploadImage(UserImageResult.UserImageData userImageData);
 
         void uploadImageError();
@@ -35,21 +32,20 @@ public interface CompleteUserInfoContract {
         void updateUserInfo();
     }
 
-    class CompleteUserInfoPresenter extends BasePresenter<CompleteUserInfoView> {
+    class Presenter extends RxBasePresenter<View> {
         CompleteUserInfoModel mCompleteUserInfoModel;
 
-        public CompleteUserInfoPresenter(Context context, CompleteUserInfoView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCompleteUserInfoModel = new CompleteUserInfoModel();
         }
 
         //上传头像
-        public void uploadImage(String img) {
+        public void uploadImage(Context context, String img) {
             mCompleteUserInfoModel.uploadUserImage(img)
-                    .subscribe(new ProgressObserver<UserImageResult>(mContext, R.string.loading_upload, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<UserImageResult>(context, R.string.loading_upload, mView) {
                         @Override
                         public void onNext(UserImageResult result) {
-                            if(result == null) return;
+                            if (result == null) return;
                             mView.updateUploadImage(result.getData());
                         }
 
@@ -62,32 +58,13 @@ public interface CompleteUserInfoContract {
                         public void networkError(Throwable throwable) {
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
-        }
-
-        public void uploadMyUserInfoImage(String img) {
-            mCompleteUserInfoModel.uploadUserImage(img)
-                    .subscribe(new LikingBaseObserver<UserImageResult>(mContext, mView) {
-                        @Override
-                        public void onNext(UserImageResult result) {
-                            if(result == null) return;
-                            mView.updateUploadImage(result.getData());
-                        }
-
-                        @Override
-                        public void apiError(ApiException apiException) {
-                            mView.uploadImageError();
-                        }
-
-                    });
+                    }));
         }
 
         //更新用户信息
-        public void updateUserInfo(String name, String avatar, Integer gender, String birthday, String weight, String height) {
+        public void updateUserInfo(Context context, String avatar, Integer gender, String birthday, String weight, String height, String name) {
             mCompleteUserInfoModel.updateUserInfo(name, avatar, gender, birthday, weight, height)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult result) {
                             mView.updateUserInfo();
@@ -97,15 +74,16 @@ public interface CompleteUserInfoContract {
                         public void networkError(Throwable throwable) {
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
         public void getUserInfo() {
             mCompleteUserInfoModel.getUserInfo()
-                    .subscribe(new LikingBaseObserver<UserInfoResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<UserInfoResult>(mView) {
+
                         @Override
                         public void onNext(UserInfoResult result) {
-                            if(result == null) return;
+                            if (result == null) return;
                             mView.updateGetUserInfoView(result.getData());
                         }
 
@@ -119,7 +97,7 @@ public interface CompleteUserInfoContract {
                             mView.changeStateView(StateView.State.FAILED);
                         }
 
-                    });
+                    }));
         }
 
     }

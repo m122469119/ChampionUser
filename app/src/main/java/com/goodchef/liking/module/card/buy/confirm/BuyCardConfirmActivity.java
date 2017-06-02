@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
@@ -26,19 +25,19 @@ import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CardRecyclerAdapter;
-import com.goodchef.liking.dialog.AnnouncementDialog;
-import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
-import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
-import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.ConfirmBuyCardResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.ConfirmCard;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
+import com.goodchef.liking.dialog.AnnouncementDialog;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
+import com.goodchef.liking.eventmessages.BuyCardWeChatMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.login.LoginActivity;
@@ -60,7 +59,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/6/17 下午5:55
  */
-public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardConfirmContract.ConfirmBuyCardView {
+public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardConfirmContract.Presenter> implements BuyCardConfirmContract.View {
 
     private static final int INTENT_REQUEST_CODE_COUPON = 101;
     private static final int BUY_TYPE_BUY = 1;//买卡
@@ -106,7 +105,6 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     private int mCategoryId;
     private CouponsResult.CouponData.Coupon mCoupon;//优惠券对象
     private String payType = "-1";//支付方式
-    private BuyCardConfirmContract.ConfirmBuyCardPresenter mConfirmBuyCardPresenter;
 
     private CardRecyclerAdapter mCardRecyclerAdapter;
     private List<ConfirmCard> confirmCardList;
@@ -183,14 +181,13 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     }
 
     private void sendConfirmCardRequest() {
-        if (mConfirmBuyCardPresenter == null) {
-            mConfirmBuyCardPresenter = new BuyCardConfirmContract.ConfirmBuyCardPresenter(this, this);
+        if (mPresenter != null) {
+            mPresenter.confirmBuyCard(this, buyType, mCategoryId, gymId);
         }
-        mConfirmBuyCardPresenter.confirmBuyCard(buyType, mCategoryId, gymId);
     }
 
     @OnClick({R.id.layout_alipay, R.id.layout_wechat, R.id.layout_coupons_courses, R.id.immediately_buy_btn, R.id.buy_card_agree_protocol, R.id.buy_card_notice})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_alipay:
                 mAlipayCheckBox.setChecked(true);
@@ -257,7 +254,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
      */
     private void showSubmitDialog() {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_view_buy_card_submit, null, false);
+        android.view.View view = LayoutInflater.from(this).inflate(R.layout.dialog_view_buy_card_submit, null, false);
         TextView mGymTextView = (TextView) view.findViewById(R.id.buy_card_gym_TextView);
         TextView mCardTypeTextView = (TextView) view.findViewById(R.id.buy_card_type_TextView);
         TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
@@ -289,9 +286,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
      */
     private void senSubmitRequest() {
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, mCoupon.getCoupon_code(), payType, submitGymId);
+            mPresenter.submitBuyCardData(this, mCardId, buyType, mCoupon.getCoupon_code(), payType, submitGymId);
         } else {
-            mConfirmBuyCardPresenter.submitBuyCardData(mCardId, buyType, "", payType, submitGymId);
+            mPresenter.submitBuyCardData(this, mCardId, buyType, "", payType, submitGymId);
         }
     }
 
@@ -366,12 +363,12 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
             confirmCardList = confirmBuyCardData.getCardList();
             int showLimit = confirmBuyCardData.getShowTimeLimit();
             if (showLimit == NumberConstantUtil.ZERO) {//如果是0不显示选择错峰和全通卡的选项
-                mCardRecyclerView.setVisibility(View.GONE);
+                mCardRecyclerView.setVisibility(android.view.View.GONE);
                 if (!ListUtils.isEmpty(confirmCardList)) {//不显示选择卡类型是，从卡列表中选出默认选中的那个卡种
                     setCardOnlyView();
                 }
             } else if (showLimit == NumberConstantUtil.ONE) {//如果是1显示
-                mCardRecyclerView.setVisibility(View.VISIBLE);
+                mCardRecyclerView.setVisibility(android.view.View.VISIBLE);
                 if (!ListUtils.isEmpty(confirmCardList)) {//设置卡的类型
                     setCardView(confirmCardList);
                     mCardRecyclerAdapter.setLayoutOnClickListener(mClickListener);
@@ -396,7 +393,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     private void setCardOnlyView() {
         for (ConfirmCard card : confirmCardList) {
             if (card.getQulification() == NumberConstantUtil.ONE) {
-                mCardMoneyTextView.setVisibility(View.VISIBLE);
+                mCardMoneyTextView.setVisibility(android.view.View.VISIBLE);
                 mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                 mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
                 mCardId = card.getCardId();
@@ -440,9 +437,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     /**
      * 设置不能点击 说明 文字事件
      */
-    private View.OnClickListener mExplainClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener mExplainClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             ConfirmCard confirmCard = (ConfirmCard) v.getTag();
             if (confirmCard != null) {
                 showExplainDialog(explain);
@@ -465,9 +462,9 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     /**
      * 设置闲时或者全天选择状态
      */
-    private View.OnClickListener mClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener mClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             LinearLayout mLayout = (LinearLayout) v.findViewById(R.id.layout_confirm_card);
             if (mLayout != null) {
                 ConfirmCard object = (ConfirmCard) mLayout.getTag();
@@ -498,7 +495,7 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     private void setCardView(List<ConfirmCard> confirmCardList) {
         for (ConfirmCard card : confirmCardList) {
             if (card.getQulification() == NumberConstantUtil.ONE) {
-                mCardMoneyTextView.setVisibility(View.VISIBLE);
+                mCardMoneyTextView.setVisibility(android.view.View.VISIBLE);
                 mImmediatelyBuyBtn.setBackgroundColor(ResourceUtils.getColor(R.color.liking_green_btn_back));
                 mImmediatelyBuyBtn.setTextColor(ResourceUtils.getColor(R.color.white));
                 mCardId = card.getCardId();
@@ -619,5 +616,10 @@ public class BuyCardConfirmActivity extends AppBarActivity implements BuyCardCon
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new BuyCardConfirmContract.Presenter();
     }
 }

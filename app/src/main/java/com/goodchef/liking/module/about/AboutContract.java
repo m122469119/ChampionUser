@@ -1,15 +1,13 @@
 package com.goodchef.liking.module.about;
 
-import android.content.Context;
-
-import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 
 /**
  * Created on 17/2/28.
@@ -19,7 +17,7 @@ import com.goodchef.liking.data.local.LikingPreference;
  */
 
 public interface AboutContract {
-    interface AboutView extends BaseView {
+    interface View extends BaseView {
         void updateVersionText(String version);
 
         void updateCooperatePhoneText(String cooperatePhone);
@@ -27,12 +25,8 @@ public interface AboutContract {
         void updateWeChatPublicAccountText(String weChatPublicAccount);
     }
 
-    class AboutPresenter extends BasePresenter<AboutView> {
-        public AboutPresenter(Context context, AboutView mainView) {
-            super(context, mainView);
-        }
+    class AboutPresenter extends RxBasePresenter<View> {
 
-        @Override
         public void init() {
             String version = ResourceUtils.getString(R.string.about_version) + EnvironmentUtils.Config.getAppVersionName();
             mView.updateVersionText(StringUtils.checkNotNull(version));

@@ -10,15 +10,16 @@ import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
+import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PatchData;
-import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
+import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.module.guide.GuideActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.NavigationBarUtil;
@@ -26,9 +27,10 @@ import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PatchDowner;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
-import io.reactivex.functions.Consumer;
 
 import java.util.ArrayList;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明:启动页

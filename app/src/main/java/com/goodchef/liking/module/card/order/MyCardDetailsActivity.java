@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  * Author shaozucheng
  * Time:16/7/1 下午2:23
  */
-public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetailsContract.MyCardDetailsView {
+public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDetailsContract.Presenter> implements MyCardDetailsContract.View {
     private static final int BUY_TYPE_BUY = 1;//买卡
     private static final int BUY_TYPE_CONTINUE = 2;//续卡
     private static final int BUY_TYPE_UPGRADE = 3;//升级卡
@@ -40,24 +39,36 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
     private static final int PAY_TYPE_FREE = 3;//免金额
 
 
-    @BindView(R.id.card_order_number) TextView mOrderNumberTextView;
-    @BindView(R.id.card_buy_time) TextView mBuyTimeTextView;
-    @BindView(R.id.card_buy_state) TextView mBuyStateTextView;
-    @BindView(R.id.card_buy_way) TextView mBuyWayTextView;
-    @BindView(R.id.card_period_of_validity) TextView mPeriodOfValidityTextView;
-    @BindView(R.id.card_buy_type) TextView mBuyTypeTextView;
-    @BindView(R.id.card_price) TextView mCardPriceTextView;
-    @BindView(R.id.card_limint_recyclerView) RecyclerView mTimeLimitRecyclerView;
-    @BindView(R.id.layout_favourable) LinearLayout mFavourableLayout;
-    @BindView(R.id.favourable_number) TextView mFavourableNumberTextView;
-    @BindView(R.id.favourable_line) ImageView mImageViewLine;
-    @BindView(R.id.gym_name) TextView mGymNameTextView;
-    @BindView(R.id.gym_address) TextView mGymAddressTextView;
-    @BindView(R.id.my_card_details_state_view) LikingStateView mStateView;
+    @BindView(R.id.card_order_number)
+    TextView mOrderNumberTextView;
+    @BindView(R.id.card_buy_time)
+    TextView mBuyTimeTextView;
+    @BindView(R.id.card_buy_state)
+    TextView mBuyStateTextView;
+    @BindView(R.id.card_buy_way)
+    TextView mBuyWayTextView;
+    @BindView(R.id.card_period_of_validity)
+    TextView mPeriodOfValidityTextView;
+    @BindView(R.id.card_buy_type)
+    TextView mBuyTypeTextView;
+    @BindView(R.id.card_price)
+    TextView mCardPriceTextView;
+    @BindView(R.id.card_limint_recyclerView)
+    RecyclerView mTimeLimitRecyclerView;
+    @BindView(R.id.layout_favourable)
+    LinearLayout mFavourableLayout;
+    @BindView(R.id.favourable_number)
+    TextView mFavourableNumberTextView;
+    @BindView(R.id.favourable_line)
+    ImageView mImageViewLine;
+    @BindView(R.id.gym_name)
+    TextView mGymNameTextView;
+    @BindView(R.id.gym_address)
+    TextView mGymAddressTextView;
+    @BindView(R.id.my_card_details_state_view)
+    LikingStateView mStateView;
 
     private String orderId;//订单id
-
-    private MyCardDetailsContract.MyCardDetailsPresenter mMyCardDetailsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +93,11 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
 
     private void iniData() {
         orderId = getIntent().getStringExtra(MyCardOrderFragment.KEY_ORDER_ID);
-        mMyCardDetailsPresenter = new MyCardDetailsContract.MyCardDetailsPresenter(this, this);
         sendCardDetailsRequest();
     }
 
     private void sendCardDetailsRequest() {
-        mMyCardDetailsPresenter.getMyCardDetails(orderId);
+        mPresenter.getMyCardDetails(orderId);
     }
 
     @Override
@@ -133,16 +143,16 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
             String couponAmount = data.getCouponAmount();
             if (!StringUtils.isEmpty(couponAmount)) {
                 if (couponAmount.equals("0")) {
-                    mFavourableLayout.setVisibility(View.GONE);
-                    mImageViewLine.setVisibility(View.GONE);
+                    mFavourableLayout.setVisibility(android.view.View.GONE);
+                    mImageViewLine.setVisibility(android.view.View.GONE);
                 } else {
-                    mFavourableLayout.setVisibility(View.VISIBLE);
-                    mImageViewLine.setVisibility(View.VISIBLE);
+                    mFavourableLayout.setVisibility(android.view.View.VISIBLE);
+                    mImageViewLine.setVisibility(android.view.View.VISIBLE);
                     mFavourableNumberTextView.setText(getString(R.string.money_symbol) + couponAmount);
                 }
             } else {
-                mFavourableLayout.setVisibility(View.GONE);
-                mImageViewLine.setVisibility(View.GONE);
+                mFavourableLayout.setVisibility(android.view.View.GONE);
+                mImageViewLine.setVisibility(android.view.View.GONE);
             }
 
         } else {
@@ -155,6 +165,11 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
         mStateView.setState(state);
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyCardDetailsContract.Presenter();
+    }
+
     public class MyCardTimeLimitAdapter extends BaseRecycleViewAdapter<MyCardTimeLimitAdapter.CardTimeLimitViewHolder, TimeLimitData> {
         private Context mContext;
 
@@ -165,7 +180,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
 
         @Override
         protected CardTimeLimitViewHolder createViewHolder(ViewGroup parent) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_card_time_limit, parent, false);
+            android.view.View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_card_time_limit, parent, false);
             return new CardTimeLimitViewHolder(view);
         }
 
@@ -173,7 +188,7 @@ public class MyCardDetailsActivity extends AppBarActivity implements MyCardDetai
             TextView mLimitTitleTextView;
             TextView mCardPeriodTextView;
 
-            public CardTimeLimitViewHolder(View itemView) {
+            public CardTimeLimitViewHolder(android.view.View itemView) {
                 super(itemView);
                 mLimitTitleTextView = (TextView) itemView.findViewById(R.id.my_card_limit_title);
                 mCardPeriodTextView = (TextView) itemView.findViewById(R.id.my_card_period);

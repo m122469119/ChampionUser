@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.goodchef.liking.R;
-import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.data.remote.retrofit.result.data.City;
+import com.goodchef.liking.dialog.SelectCityDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +21,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/27 下午2:14
  */
-public class ContactJonInActivity extends AppBarActivity implements ContactJoinContract.ContactJoinContractView {
+public class ContactJonInActivity extends AppBarMVPSwipeBackActivity<ContactJoinContract.Presenter> implements ContactJoinContract.View {
     @BindView(R.id.name_editText)
     EditText mNameEditText;
     @BindView(R.id.phone_editText)
@@ -32,13 +31,10 @@ public class ContactJonInActivity extends AppBarActivity implements ContactJoinC
     @BindView(R.id.immediately_submit)
     TextView mImmediatelySubmit;
 
-    private ContactJoinContract.ContactJoinContractPresenter mContactJoinContractPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_join);
-        mContactJoinContractPresenter = new ContactJoinContract.ContactJoinContractPresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_activity_contact_join));
         initView();
@@ -85,10 +81,10 @@ public class ContactJonInActivity extends AppBarActivity implements ContactJoinC
     }
 
     @OnClick({R.id.immediately_submit, R.id.city_TextView})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.immediately_submit:
-                mContactJoinContractPresenter.sendConfirmRequest();
+                mPresenter.sendConfirmRequest(this);
                 break;
             case R.id.city_TextView:
                 showSelectCityDialog();
@@ -146,5 +142,10 @@ public class ContactJonInActivity extends AppBarActivity implements ContactJoinC
         mPhoneEditText.setText("");
         mCityTextView.setText("");
         finish();
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new ContactJoinContract.Presenter();
     }
 }

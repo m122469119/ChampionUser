@@ -6,27 +6,26 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
+import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.dialog.SelectDateDialog;
 import com.goodchef.liking.dialog.SelectSexDialog;
-import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
-import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.writeuserinfo.CompleteUserInfoContract;
 import com.goodchef.liking.utils.BitmapBase64Util;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.VerifyDateUtils;
@@ -48,7 +47,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/27 下午3:11
  */
-public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoContract.CompleteUserInfoView {
+public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoContract.Presenter> implements CompleteUserInfoContract.View {
     @BindView(R.id.my_info_state_view)
     LikingStateView mStateView;
     @BindView(R.id.my_edit_userInfo_prompt)
@@ -75,7 +74,6 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
     TextView mFinishBtn;
 
     private CameraPhotoHelper mCameraPhotoHelper;
-    private CompleteUserInfoContract.CompleteUserInfoPresenter mUserInfoPresenter;
 
     private Integer gender = null;
 
@@ -94,7 +92,6 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         ButterKnife.bind(this);
-        mUserInfoPresenter = new CompleteUserInfoContract.CompleteUserInfoPresenter(this,this);
         initView();
         initData();
         showHomeUpIcon(R.drawable.app_bar_left_quit);
@@ -116,7 +113,7 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
     }
 
     private void setInfoRequest() {
-        mUserInfoPresenter.getUserInfo();
+        mPresenter.getUserInfo();
     }
 
     private void initView() {
@@ -208,7 +205,7 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
     }
 
     @OnClick({R.id.layout_head_image,R.id.select_sex,R.id.select_birthday,R.id.finish_btn})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         if (v == mHeadImageLayout) {//选择头像
             showCameraDialog();
         } else if (v == mSelectSexTextView) {//选择性别
@@ -276,7 +273,7 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
                     && StringUtils.isEmpty(weight) && StringUtils.isEmpty(height) && gender == null) {
                 return;
             }
-            mUserInfoPresenter.updateUserInfo(userName, headUrl, gender, birthday, weight, height);
+            mPresenter.updateUserInfo(this, headUrl, gender, birthday, weight, height, userName);
         }
     }
 
@@ -380,9 +377,9 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
      */
     private void showSelectDateDialog() {
         final SelectDateDialog dateDialog = new SelectDateDialog(this, yearStr, monthStr, dayStr);
-        dateDialog.setTextViewOnClickListener(new View.OnClickListener() {
+        dateDialog.setTextViewOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 switch (v.getId()) {
                     case R.id.dialog_date_cancel:
                         dateDialog.dismiss();
@@ -422,9 +419,9 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
      */
     private void showSelectSexDialog() {
         final SelectSexDialog dialog = new SelectSexDialog(this);
-        dialog.setTextViewOnClickListener(new View.OnClickListener() {
+        dialog.setTextViewOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 switch (v.getId()) {
                     case R.id.dialog_text_one:
                         mSelectSexTextView.setText(R.string.sex_man);
@@ -443,9 +440,9 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
                 }
             }
         });
-        dialog.setNegativeClickListener(new View.OnClickListener() {
+        dialog.setNegativeClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 isChange = false;
                 dialog.dismiss();
             }
@@ -466,9 +463,9 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
      */
     public void showCameraDialog() {
         final CameraCustomDialog cameraDialog = new CameraCustomDialog(this);
-        cameraDialog.setTextViewOnClickListener(new View.OnClickListener() {
+        cameraDialog.setTextViewOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 switch (v.getId()) {
                     case R.id.dialog_photograph://拍照
                         mCameraPhotoHelper.takePhotoFromCamera();
@@ -558,15 +555,15 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
             isUpdateBirthday = userInfoData.getIsUpdateBirthday();
             isUpdateGender = userInfoData.getIsUpdateGender();
             if (isUpdateGender == NumberConstantUtil.ZERO) {//没有机会修改性别
-                mSelectSexArrow.setVisibility(View.GONE);
+                mSelectSexArrow.setVisibility(android.view.View.GONE);
             } else if (isUpdateGender == NumberConstantUtil.ONE) {
-                mSelectSexArrow.setVisibility(View.VISIBLE);
+                mSelectSexArrow.setVisibility(android.view.View.VISIBLE);
             }
 
             if (isUpdateBirthday == NumberConstantUtil.ZERO) {//没有修改的机会生日
-                mSelectBirthdayArrow.setVisibility(View.GONE);
+                mSelectBirthdayArrow.setVisibility(android.view.View.GONE);
             } else if (isUpdateBirthday == NumberConstantUtil.ONE) {
-                mSelectBirthdayArrow.setVisibility(View.VISIBLE);
+                mSelectBirthdayArrow.setVisibility(android.view.View.VISIBLE);
             }
             UserChangeInfoPromptTextView();
         } else {
@@ -576,30 +573,30 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
 
     private void UserChangeInfoPromptTextView() {
         if (isUpdateGender == NumberConstantUtil.ONE && isUpdateBirthday == NumberConstantUtil.ONE) {//性别和生日都能改
-            mUserInfoPromptTextView.setVisibility(View.VISIBLE);
+            mUserInfoPromptTextView.setVisibility(android.view.View.VISIBLE);
             mUserInfoPromptTextView.setText(getString(R.string.sex) + "、" + getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
         } else if (isUpdateGender == NumberConstantUtil.ZERO && isUpdateBirthday == NumberConstantUtil.ONE) {//性别不能改，生日可以改
-            mUserInfoPromptTextView.setVisibility(View.VISIBLE);
+            mUserInfoPromptTextView.setVisibility(android.view.View.VISIBLE);
             mUserInfoPromptTextView.setText(getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
         } else if (isUpdateGender == NumberConstantUtil.ONE && isUpdateBirthday == NumberConstantUtil.ZERO) {//性别可以改，生日不能改
-            mUserInfoPromptTextView.setVisibility(View.VISIBLE);
+            mUserInfoPromptTextView.setVisibility(android.view.View.VISIBLE);
             mUserInfoPromptTextView.setText(getString(R.string.sex) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
         } else if (isUpdateGender == NumberConstantUtil.ZERO && isUpdateBirthday == NumberConstantUtil.ZERO) {//性别不能改，生日也不能改
-            mUserInfoPromptTextView.setVisibility(View.GONE);
+            mUserInfoPromptTextView.setVisibility(android.view.View.GONE);
         }
     }
 
     @Override
     public void updateUserInfo() {
         showToast(getString(R.string.update_success));
-        mUserInfoPresenter.getUserInfo();
+        mPresenter.getUserInfo();
     }
 
     @Override
     public void updateUploadImage(UserImageResult.UserImageData userImageData) {
         headUrl = userImageData.getUrl();
         if (!StringUtils.isEmpty(headUrl)) {
-            mUserInfoPresenter.updateUserInfo("", headUrl, null, "", "", "");
+            mPresenter.updateUserInfo(this, headUrl, null, "", "", "", "");
         }
     }
 
@@ -611,12 +608,17 @@ public class MyInfoActivity extends AppBarActivity implements CompleteUserInfoCo
 
     private void sendImageFile(Bitmap mBitmap) {
         String image = BitmapBase64Util.bitmapToString(mBitmap);
-        mUserInfoPresenter.uploadImage(image);
+        mPresenter.uploadImage(this, image);
     }
 
 
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new CompleteUserInfoContract.Presenter();
     }
 }

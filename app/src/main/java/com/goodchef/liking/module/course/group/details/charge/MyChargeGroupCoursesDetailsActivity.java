@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.R;
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Author shaozucheng
  * Time:16/8/22 下午3:22
  */
-public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implements MyChargeTeamCourseDetailsContract.ChargeGroupCoursesDetailsView {
+public class MyChargeGroupCoursesDetailsActivity extends AppBarMVPSwipeBackActivity<MyChargeTeamCourseDetailsContract.Presenter> implements MyChargeTeamCourseDetailsContract.View {
 
     @BindView(R.id.my_charge_group_courses_details_state_view)
     LikingStateView mStateView;
@@ -51,7 +51,6 @@ public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implemen
     @BindView(R.id.order_state)
     TextView mOrderStateTextView;//订单状态
 
-    private MyChargeTeamCourseDetailsContract.MyChargeGroupCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String orderId;
 
     @Override
@@ -89,9 +88,9 @@ public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implemen
 
     private void sedCoursesDetailsRequest() {
         mStateView.setState(StateView.State.LOADING);
-        mCoursesDetailsPresenter = new MyChargeTeamCourseDetailsContract.MyChargeGroupCoursesDetailsPresenter(this, this);
-        mCoursesDetailsPresenter.getChargeGroupCoursesDetails(orderId);
+        mPresenter.getChargeGroupCoursesDetails(orderId);
     }
+
 
     @Override
     public void updateChargeGroupCoursesDetailsView(MyChargeGroupCoursesDetailsResult.MyChargeGroupCoursesDetails groupCoursesDetails) {
@@ -134,5 +133,10 @@ public class MyChargeGroupCoursesDetailsActivity extends AppBarActivity implemen
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyChargeTeamCourseDetailsContract.Presenter();
     }
 }

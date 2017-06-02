@@ -9,24 +9,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatDialog;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleService;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.dialog.CancelOnClickListener;
 import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.UnBindDevicesDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.widgets.MyCustomCircleView;
 
 import butterknife.BindView;
@@ -41,7 +40,7 @@ import cn.jpush.android.api.JPushInterface;
  * version 1.0.0
  */
 
-public class MyBraceletActivity extends AppBarActivity implements MyBraceContract.MyBraceView {
+public class MyBraceletActivity extends AppBarMVPSwipeBackActivity<MyBraceContract.Presenter> implements MyBraceContract.View {
     public static final String KEY_BRACELET_NAME = "key_bracelet_name";
     public static final String KEY_BRACELET_ADDRESS = "key_bracelet_address";
     public static final String KEY_BRACELET_FIRMWARE_INFO = "key_bracelet_firmware_info";
@@ -71,7 +70,6 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
     @BindView(R.id.layout_bluetooth_connect_fail)
     RelativeLayout mLayoutBluetoothConnectFail;
 
-    private MyBraceContract.MyBracePresenter mPresenter;
     private Handler mHandler = new Handler();
 
 
@@ -81,17 +79,16 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
         setContentView(R.layout.activity_my_bracelet);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_bracelet));
-        mPresenter = new MyBraceContract.MyBracePresenter(this, this);
         getInitData();
         mPresenter.initBlueTooth(this);
         if (mPresenter.getSource().equals("BingBraceletActivity")) {
             mMyBraceletTextView.setText(R.string.binding_finish);
             synchronizationInfo();
             initData();
-            mUnbindTextView.setVisibility(View.VISIBLE);
+            mUnbindTextView.setVisibility(android.view.View.VISIBLE);
         } else {
             mPresenter.searchBlueTooth(this);
-            mUnbindTextView.setVisibility(View.GONE);
+            mUnbindTextView.setVisibility(android.view.View.GONE);
             mMyBraceletImageView.setBackgroundResource(R.drawable.icon_my_blue_tooth);
         }
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
@@ -172,10 +169,10 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mMyBraceletImageView.setVisibility(View.GONE);
-                mMyBraceletTextView.setVisibility(View.GONE);
-                mBraceletPowerMyCustomCircleView.setVisibility(View.VISIBLE);
-                mMyPowerTextView.setVisibility(View.VISIBLE);
+                mMyBraceletImageView.setVisibility(android.view.View.GONE);
+                mMyBraceletTextView.setVisibility(android.view.View.GONE);
+                mBraceletPowerMyCustomCircleView.setVisibility(android.view.View.VISIBLE);
+                mMyPowerTextView.setVisibility(android.view.View.VISIBLE);
                 mBraceletPowerMyCustomCircleView.setCurrentCount(100, mPresenter.getBraceletPower());
             }
         }, time);
@@ -184,10 +181,10 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
 
 
     private void setBraceletView() {
-        mMyBraceletImageView.setVisibility(View.VISIBLE);
-        mMyBraceletTextView.setVisibility(View.VISIBLE);
-        mBraceletPowerMyCustomCircleView.setVisibility(View.GONE);
-        mMyPowerTextView.setVisibility(View.GONE);
+        mMyBraceletImageView.setVisibility(android.view.View.VISIBLE);
+        mMyBraceletTextView.setVisibility(android.view.View.VISIBLE);
+        mBraceletPowerMyCustomCircleView.setVisibility(android.view.View.GONE);
+        mMyPowerTextView.setVisibility(android.view.View.GONE);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyBraceletImageView.getLayoutParams();
         layoutParams.width = DisplayUtils.dp2px(128);
         layoutParams.height = DisplayUtils.dp2px(104);
@@ -205,14 +202,14 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mBraceletPowerMyCustomCircleView.setVisibility(View.GONE);
-                mMyPowerTextView.setVisibility(View.GONE);
-                mMyBraceletImageView.setVisibility(View.VISIBLE);
+                mBraceletPowerMyCustomCircleView.setVisibility(android.view.View.GONE);
+                mMyPowerTextView.setVisibility(android.view.View.GONE);
+                mMyBraceletImageView.setVisibility(android.view.View.VISIBLE);
                 mMyBraceletImageView.setBackgroundResource(R.drawable.icon_my_blue_tooth);
-                mLayoutBluetoothConnectFail.setVisibility(View.VISIBLE);
+                mLayoutBluetoothConnectFail.setVisibility(android.view.View.VISIBLE);
                 mBluetoothScanFailTextView.setText(string);
                 mBluetoothScanFailRetryTextView.setText(R.string.retry);
-                mUnbindTextView.setVisibility(View.GONE);
+                mUnbindTextView.setVisibility(android.view.View.GONE);
             }
         });
         setConnectView(getString(R.string.connect_fial));
@@ -226,7 +223,7 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mMyBraceletTextView.setVisibility(View.VISIBLE);
+                mMyBraceletTextView.setVisibility(android.view.View.VISIBLE);
                 mMyBraceletTextView.setText(connectStr);
                 mCurrentDevicesNameTextView.setText("--");
                 mDevicesAddressTextView.setText("--");
@@ -271,7 +268,7 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
 
     @OnClick({R.id.unbind_TextView,
             R.id.bluetooth_scan_fail_retry_TextView})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.unbind_TextView:
                 showUnbindDialog();
@@ -284,7 +281,7 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mLayoutBluetoothConnectFail.setVisibility(View.GONE);
+                            mLayoutBluetoothConnectFail.setVisibility(android.view.View.GONE);
                             mPresenter.setIsConnect(false);
                             mPresenter.connect(MyBraceletActivity.this);
                         }
@@ -423,4 +420,8 @@ public class MyBraceletActivity extends AppBarActivity implements MyBraceContrac
     }
 
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyBraceContract.Presenter(this);
+    }
 }

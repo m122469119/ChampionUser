@@ -2,15 +2,12 @@ package com.goodchef.liking.module.opendoor;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.data.remote.retrofit.result.UserAuthCodeResult;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.UserAuthCodeResult;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -19,26 +16,24 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class OpenDoorContract {
-    interface OpenDoorView extends BaseView {
+interface OpenDoorContract {
+    interface View extends BaseView {
         void updateUserAuthView(UserAuthCodeResult.UserAuthCodeData userAuthCodeData);
 
         void updateFailCodeView(String message);
     }
 
-    public static class OpenDoorPresenter extends BasePresenter<OpenDoorView> {
+    class Presenter extends RxBasePresenter<View> {
         OpenDoorModel mOpenDoorModel;
 
-        public OpenDoorPresenter(Context context, OpenDoorView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mOpenDoorModel = new OpenDoorModel();
         }
 
-        public void getOpenPwd(int inout) {
+        public void getOpenPwd(Context context, int inout) {
             mOpenDoorModel.getOpenPwd(inout)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new ProgressObserver<UserAuthCodeResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<UserAuthCodeResult>(context, R.string.loading_data, mView) {
+
                         @Override
                         public void onNext(UserAuthCodeResult result) {
                             if(result == null) return;
@@ -54,7 +49,7 @@ public class OpenDoorContract {
                         public void networkError(Throwable throwable) {
                             mView.updateFailCodeView(throwable.getMessage());
                         }
-                    });
+                    }));
         }
     }
 }

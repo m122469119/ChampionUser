@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
-import com.aaron.android.framework.base.ui.swipeback.app.SwipeBackActivity;
+import com.aaron.android.framework.base.ui.swipeback.BaseSwipeBackActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.course.personal.MyPrivateCoursesFragment;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Author shaozucheng
  * Time:16/5/31 下午4:32
  */
-public class MyLessonActivity extends SwipeBackActivity {
+public class MyLessonActivity extends BaseSwipeBackActivity {
     private static final int INDEX_GROUP_LESSON = 0;//团体课
     private static final int INDEX_PRIVATE_LESSON = 1;//私教课
     public static final String KEY_CURRENT_ITEM = "key_current_item";

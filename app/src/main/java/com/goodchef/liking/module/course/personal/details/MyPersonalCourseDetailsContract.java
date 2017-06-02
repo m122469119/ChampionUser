@@ -2,7 +2,7 @@ package com.goodchef.liking.module.course.personal.details;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
@@ -20,27 +20,27 @@ import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
  * @version:1.0
  */
 
-public interface MyPersonalCourseDetailsContract {
+interface MyPersonalCourseDetailsContract {
 
-    interface MyPrivateCoursesDetailsView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData myPrivateCoursesDetailsData);
 
         void updateComplete();
     }
 
-    class MyPrivateCoursesDetailsPresenter extends BasePresenter<MyPrivateCoursesDetailsView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CourseModel mCourseModel;
 
-        public MyPrivateCoursesDetailsPresenter(Context context, MyPrivateCoursesDetailsView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
-        public void getMyPrivateCoursesDetails(String orderId) {
+        void getMyPrivateCoursesDetails(String orderId) {
 
             mCourseModel.getMyPrivateCoursesDetails(orderId)
-                    .subscribe(new LikingBaseObserver<MyPrivateCoursesDetailsResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<MyPrivateCoursesDetailsResult>(mView) {
+
                         @Override
                         public void onNext(MyPrivateCoursesDetailsResult result) {
                             if (result == null) return;
@@ -58,19 +58,19 @@ public interface MyPersonalCourseDetailsContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
-        public void completeMyPrivateCourses(String orderId) {
+        public void completeMyPrivateCourses(Context context, String orderId) {
 
             mCourseModel.completeMyPrivateCourses(orderId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, orderId, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, orderId, mView) {
 
                         @Override
                         public void onNext(LikingResult result) {
                             mView.updateComplete();
                         }
-                    });
+                    }));
         }
     }
 }

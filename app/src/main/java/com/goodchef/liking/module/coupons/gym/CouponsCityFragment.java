@@ -2,7 +2,6 @@ package com.goodchef.liking.module.coupons.gym;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
@@ -20,11 +19,11 @@ import com.goodchef.liking.widgets.decoration.CouponsDecoration;
  * @version 1.0.0
  */
 
-public class CouponsCityFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CouponsGymContract.CouponsGymView {
+public class CouponsCityFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<CouponsGymContract.Presenter> implements CouponsGymContract.View {
 
     TextView mCityCount;
     CouponsGymAdapter mAdapter;
-    CouponsGymContract.CouponsGymPresenter mPresenter;
+    CouponsGymContract.Presenter mPresenter;
 
     public String mCouponsCode;
 
@@ -38,7 +37,7 @@ public class CouponsCityFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
 
     @Override
     protected void requestData(int page) {
-        mPresenter.getCouponsCitys(page,mCouponsCode);
+        mPresenter.getCouponsCitys(page, mCouponsCode);
     }
 
     @Override
@@ -48,10 +47,8 @@ public class CouponsCityFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         if (arguments != null) {
             mCouponsCode = arguments.getString(CouponsDetailsActivity.COUPONS);
         }
-        mPresenter = new CouponsGymContract.CouponsGymPresenter(getActivity(),this);
-
         mAdapter = new CouponsGymAdapter(getContext());
-        View head = LayoutInflater.from(getContext()).inflate(R.layout.head_coupons_view, null);
+        android.view.View head = LayoutInflater.from(getContext()).inflate(R.layout.head_coupons_view, null);
         mCityCount = (TextView) head.findViewById(R.id.txt_head_coupons_count);
         mAdapter.addHeaderView(head);
         CouponsDecoration decoration = new CouponsDecoration(getContext(),
@@ -67,5 +64,10 @@ public class CouponsCityFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
     public void updateCouponData(CouponsCities.DataBean data) {
         mCityCount.setText(getString(R.string.common) + data.getTotalGym() + getString(R.string.home));
         updateListView(data.getGymList());
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new CouponsGymContract.Presenter();
     }
 }

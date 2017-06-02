@@ -22,7 +22,7 @@ public abstract class ProgressObserver<T extends LikingResult> extends LikingBas
 
 
     public ProgressObserver(Context context, String msg, BaseView view) {
-        super(context, view);
+        super(view);
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(msg);
     }

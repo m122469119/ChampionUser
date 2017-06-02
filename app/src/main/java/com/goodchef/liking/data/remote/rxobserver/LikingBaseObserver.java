@@ -1,12 +1,10 @@
 package com.goodchef.liking.data.remote.rxobserver;
 
-import android.content.Context;
 import android.net.ParseException;
 
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
-import com.aaron.http.code.result.Result;
 import com.aaron.http.rxobserver.BaseRequestObserver;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
@@ -34,12 +32,10 @@ import io.reactivex.disposables.Disposable;
  * @version 1.0.0
  */
 
-public abstract class LikingBaseObserver<T extends Result> extends BaseRequestObserver<T> {
-    private Context mContext;
+public abstract class LikingBaseObserver<T extends LikingResult> extends BaseRequestObserver<T> {
     private BaseView mView;
 
-    public LikingBaseObserver(Context context, BaseView view) {
-        mContext = context;
+    public LikingBaseObserver(BaseView view) {
         mView = view;
     }
 
@@ -97,17 +93,13 @@ public abstract class LikingBaseObserver<T extends Result> extends BaseRequestOb
         }
     }
 
-    public Context getContext() {
-        return mContext;
-    }
-
     public BaseView getView() {
         return mView;
     }
 
     public void networkError(Throwable throwable) {
         LogUtils.e(TAG, throwable.toString());
-        mView.showToast(mContext.getString(R.string.network_error));
+        mView.showToast(R.string.network_error);
         if (throwable instanceof HttpException) {
             HttpException httpException = (HttpException) throwable;
             doHttpException(httpException);

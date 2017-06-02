@@ -3,23 +3,22 @@ package com.goodchef.liking.module.login;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
 import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
-import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.utils.NumberConstantUtil;
 
@@ -33,7 +32,7 @@ import cn.jpush.android.api.JPushInterface;
  * Author shaozucheng
  * Time:16/6/6 上午10:04
  */
-public class LoginActivity extends AppBarActivity implements LoginContract.LoginView {
+public class LoginActivity extends AppBarMVPSwipeBackActivity<LoginContract.Presenter> implements LoginContract.View {
     public static final String KEY_TITLE_SET_USER_INFO = "key_title_set_user_info";
     public static final String KEY_INTENT_TYPE = "key_intent_type";
     @BindView(R.id.et_login_phone)
@@ -48,8 +47,6 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
     Button mLoginBtn;//登录按钮
 
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
-    private LoginContract.LoginPresenter mLoginPresenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +59,15 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
 
     private void initData() {
         mMyCountdownTime = new MyCountdownTime(60000, 1000);
-        mLoginPresenter = new LoginContract.LoginPresenter(this, this);
         mSendCodeBtn.setText(getString(R.string.get_version_code));
         showHomeUpIcon(R.drawable.app_bar_left_quit);
     }
 
     @OnClick({R.id.send_verification_code_btn, R.id.register_agree_on, R.id.login_btn})
-    public void buttonClick(View view) {
+    public void buttonClick(android.view.View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-                mLoginPresenter.userLogin(mLoginPhoneEditText.getText().toString(), mCodeEditText.getText().toString());
+                mPresenter.userLogin(this, mLoginPhoneEditText.getText().toString(), mCodeEditText.getText().toString());
                 break;
             case R.id.register_agree_on:
                 BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
@@ -86,14 +82,12 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
                 }
                 break;
             case R.id.send_verification_code_btn:
-                mLoginPresenter.getVerificationCode(mLoginPhoneEditText.getText().toString());
+                mPresenter.getVerificationCode(this, mLoginPhoneEditText.getText().toString());
                 break;
             default:
                 break;
         }
     }
-
-
 
 
     @Override
@@ -130,7 +124,7 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
         if (StringUtils.isEmpty(jPushRegisterId)) {
             return;
         }
-        mLoginPresenter.uploadUserDevice(JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId);
+        mPresenter.uploadUserDevice(JPushInterface.getUdid(LoginActivity.this), "", jPushRegisterId);
     }
 
 
@@ -151,6 +145,11 @@ public class LoginActivity extends AppBarActivity implements LoginContract.Login
         if (mMyCountdownTime != null) {
             mMyCountdownTime.cancel();
         }
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new LoginContract.Presenter();
     }
 
 

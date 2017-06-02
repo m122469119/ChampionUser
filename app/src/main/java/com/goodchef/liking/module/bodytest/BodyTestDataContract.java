@@ -2,7 +2,7 @@ package com.goodchef.liking.module.bodytest;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseNetworkLoadView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.BodyTestResult;
@@ -15,23 +15,22 @@ import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
  * @version 1.0.0
  */
 
-public interface BodyTestDataContract {
-    interface BodyTestView extends BaseNetworkLoadView {
+interface BodyTestDataContract {
+    interface View extends BaseNetworkLoadView {
         void updateBodyTestView(BodyTestResult.BodyTestData bodyTestData);
     }
 
-    class BodyTestPresenter extends BasePresenter<BodyTestView> {
-        public BodyTestModel mBodyTestModel;
+    class Presenter extends RxBasePresenter<View> {
+        BodyTestModel mBodyTestModel;
 
 
-        public BodyTestPresenter(Context context, BodyTestView mainView) {
-            super(context, mainView);
+        Presenter() {
             mBodyTestModel = new BodyTestModel();
         }
 
-        public void getBodyData(String bodyId) {
+        void getBodyData(Context context, String bodyId) {
             mBodyTestModel.getBodyData(bodyId)
-                    .subscribe(new ProgressObserver<BodyTestResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<BodyTestResult>(context, R.string.loading_data, mView) {
 
                         @Override
                         public void onNext(BodyTestResult value) {
@@ -43,7 +42,7 @@ public interface BodyTestDataContract {
                             mView.handleNetworkFailure();
                         }
 
-                    });
+                    }));
         }
 
     }

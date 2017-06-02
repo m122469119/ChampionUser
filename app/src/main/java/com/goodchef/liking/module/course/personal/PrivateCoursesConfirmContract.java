@@ -3,21 +3,21 @@ package com.goodchef.liking.module.course.personal;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.OrderCalculateResult;
 import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesConfirmResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
-import com.goodchef.liking.data.remote.LiKingRequestCode;
-import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.utils.LikingCallUtil;
 
 import de.greenrobot.event.EventBus;
@@ -30,9 +30,9 @@ import de.greenrobot.event.EventBus;
  * @version:1.0
  */
 
-public interface PrivateCoursesConfirmContract {
+interface PrivateCoursesConfirmContract {
 
-    interface PrivateCoursesConfirmView extends BaseStateView {
+    interface View extends BaseStateView {
         void updatePrivateCoursesConfirm(PrivateCoursesConfirmResult.PrivateCoursesConfirmData coursesConfirmData);
 
         void updateSubmitOrderCourses(PayResultData payData);
@@ -40,25 +40,26 @@ public interface PrivateCoursesConfirmContract {
         void updateOrderCalculate(boolean isSuccess, OrderCalculateResult.OrderCalculateData orderCalculateData);
     }
 
-    class PrivateCoursesConfirmPresenter extends BasePresenter<PrivateCoursesConfirmView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CourseModel mCourseModel = null;
 
-        public PrivateCoursesConfirmPresenter(Context context, PrivateCoursesConfirmView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
         /**
          * 私教课确认预约订单
          *
-         * @param gymId
+         * @param context
          * @param trainerId 教练ID
+         * @param gymId
          */
-        public void orderPrivateCoursesConfirm(String gymId, String trainerId) {
+        void orderPrivateCoursesConfirm(final Context context, String trainerId, String gymId) {
 
             mCourseModel.orderPrivateCoursesConfirm(gymId, trainerId)
-                    .subscribe(new LikingBaseObserver<PrivateCoursesConfirmResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<PrivateCoursesConfirmResult>(mView) {
+
                         @Override
                         public void onNext(PrivateCoursesConfirmResult result) {
                             if (result == null) return;
@@ -69,7 +70,7 @@ public interface PrivateCoursesConfirmContract {
                         public void apiError(ApiException apiException) {
                             switch (apiException.getErrorCode()) {
                                 case LiKingRequestCode.PRIVATE_COURSES_CONFIRM:
-                                    HBaseDialog.Builder builder = new HBaseDialog.Builder(mContext);
+                                    HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
                                     builder.setMessage(apiException.getErrorMessage());
                                     builder.setPositiveButton(R.string.diaog_got_it, new DialogInterface.OnClickListener() {
                                         @Override
@@ -90,20 +91,22 @@ public interface PrivateCoursesConfirmContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
         /**
          * 提交预约私教课
          *
-         * @param courseId   课程id
+         * @param context
          * @param couponCode 优惠券
          * @param payType    支付方式
+         * @param courseId   课程id
          */
-        public void submitPrivateCourses(String courseId, String couponCode, String payType, int selectTimes, String gymId) {
+        void submitPrivateCourses(final Context context, String couponCode, String payType, int selectTimes, String gymId, String courseId) {
 
             mCourseModel.submitPrivateCourses(courseId, couponCode, payType, selectTimes, gymId)
-                    .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<SubmitPayResult>(context, R.string.loading_data, mView) {
+
                         @Override
                         public void onNext(SubmitPayResult result) {
                             if (result == null) return;
@@ -114,13 +117,13 @@ public interface PrivateCoursesConfirmContract {
                         public void apiError(ApiException apiException) {
                             switch (apiException.getErrorCode()) {
                                 case LiKingRequestCode.BUY_COURSES_ERROR:
-                                    LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                    LikingCallUtil.showBuyCoursesErrorDialog(context, apiException.getErrorMessage());
                                     break;
                                 default:
                                     super.apiError(apiException);
                             }
                         }
-                    });
+                    }));
         }
 
         /***
@@ -132,14 +135,15 @@ public interface PrivateCoursesConfirmContract {
         public void orderCalculate(String courseId, String selectTimes) {
 
             mCourseModel.orderCalculate(courseId, selectTimes)
-                    .subscribe(new LikingBaseObserver<OrderCalculateResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<OrderCalculateResult>(mView) {
+
                         @Override
                         public void onNext(OrderCalculateResult result) {
                             if (result == null) return;
                             mView.updateOrderCalculate(true, result.getData());
                         }
 
-                    });
+                    }));
         }
     }
 }

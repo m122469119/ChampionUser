@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.CouponsDetailsAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsDetailsResult;
@@ -23,14 +22,13 @@ import butterknife.ButterKnife;
  * @version 1.0.0
  */
 
-public class CouponsDetailsActivity extends AppBarActivity implements CouponDetailsContract.CouponDetailsView {
+public class CouponsDetailsActivity extends AppBarMVPSwipeBackActivity<CouponDetailsContract.Presenter> implements CouponDetailsContract.View {
 
     public static final String ACTION_SHOW_DETAILS = "show_details";
     public static final String COUPONS = "coupons";
     @BindView(R.id.rv_activity_coupons_contains)
     RecyclerView mRecycleView;
 
-    CouponDetailsContract.CouponDetailsPresenter mCouponDetailsPresenter;
     CouponsPersonResult.DataBean.CouponListBean mBean;
     public CouponsDetailsAdapter mAdapter;
 
@@ -38,7 +36,6 @@ public class CouponsDetailsActivity extends AppBarActivity implements CouponDeta
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupons_details);
-        mCouponDetailsPresenter = new CouponDetailsContract.CouponDetailsPresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.coupons_details));
         Intent intent = getIntent();
@@ -52,9 +49,9 @@ public class CouponsDetailsActivity extends AppBarActivity implements CouponDeta
     private void initView() {
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new CouponsDetailsAdapter(this);
-        mAdapter.setOnReadAllClickListenter(new View.OnClickListener() {
+        mAdapter.setOnReadAllClickListenter(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 Intent intent = new Intent(CouponsDetailsActivity.this, CouponsGymActivity.class);
                 intent.setAction(CouponsGymActivity.ACTION_SHOW_GYM);
                 intent.putExtra(CouponsGymActivity.COUPONS_CODE, mBean.getCoupon_code());
@@ -65,12 +62,17 @@ public class CouponsDetailsActivity extends AppBarActivity implements CouponDeta
     }
 
     private void initData(Bundle savedInstanceState) {
-        mCouponDetailsPresenter.getCouponsDetails(mBean.getCoupon_code());
+        mPresenter.getCouponsDetails(this, mBean.getCoupon_code());
     }
 
     @Override
     public void updateCouponData(CouponsDetailsResult.DataBean couponData) {
         mAdapter.setCouponData(couponData);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new CouponDetailsContract.Presenter();
     }
 }

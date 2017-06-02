@@ -1,15 +1,14 @@
 package com.goodchef.liking.module.course.selfhelp.list;
 
-import android.content.Context;
 import android.text.TextUtils;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
-import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.module.course.CourseModel;
 
 import java.util.List;
 
@@ -21,25 +20,24 @@ import java.util.List;
  * @version:1.0
  */
 
-public interface SelfHelpCourseListContract {
+interface SelfHelpCourseListContract {
 
-    interface SelectCoursesListView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateSelectCoursesListView(SelfGroupCoursesListResult.SelfGroupCoursesData data);
     }
 
-    class SelectCoursesListPresenter extends BasePresenter<SelectCoursesListView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private String mSelectCoursesId = null;
         private CourseModel mCourseModel = null;
 
-        public SelectCoursesListPresenter(Context context, SelectCoursesListView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
-        public void getCoursesList(int page) {
+        void getCoursesList(int page) {
             mCourseModel.getSelfCoursesList(page)
-                    .subscribe(new PagerLoadingObserver<SelfGroupCoursesListResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<SelfGroupCoursesListResult>(mView) {
                         @Override
                         public void onNext(SelfGroupCoursesListResult result) {
                             super.onNext(result);
@@ -59,14 +57,14 @@ public interface SelfHelpCourseListContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
-        public String getSelectCoursesId() {
+        String getSelectCoursesId() {
             return mSelectCoursesId;
         }
 
-        public void setSelectCoursesId(String selectCoursesId) {
+        void setSelectCoursesId(String selectCoursesId) {
             mSelectCoursesId = selectCoursesId;
         }
 

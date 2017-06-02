@@ -20,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
@@ -30,11 +30,11 @@ import com.goodchef.liking.bluetooth.BleManager;
 import com.goodchef.liking.bluetooth.BleService;
 import com.goodchef.liking.bluetooth.BlueCommandUtil;
 import com.goodchef.liking.bluetooth.BlueToothBytesToStringUtil;
+import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.SportData;
 import com.goodchef.liking.dialog.HeartRateDialog;
 import com.goodchef.liking.dialog.ShakeSynchronizationDialog;
 import com.goodchef.liking.eventmessages.ServiceConnectionMessage;
-import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.SportData;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.google.gson.Gson;
 
@@ -52,7 +52,7 @@ import cn.jpush.android.api.JPushInterface;
  * version 1.0.0
  */
 
-public class BraceletDataActivity extends AppBarActivity implements BraceletDataContract.BraceletDataView {
+public class BraceletDataActivity extends AppBarMVPSwipeBackActivity<BraceletDataContract.Presenter> implements BraceletDataContract.BraceletDataView {
 
     @BindView(R.id.layout_today_step)
     RelativeLayout mTodayStepLayout;
@@ -93,7 +93,6 @@ public class BraceletDataActivity extends AppBarActivity implements BraceletData
     private TextView mTotalKcalTextView;
     private TextView mTotalAverageHeartRateTextView;
 
-    private BraceletDataContract.BraceletDataPresenter mBraceletDataPresenter;
     private String myBraceletMac;//我的手环Mac地址
     private String muuId;
     private Handler mHandler = new Handler();
@@ -129,7 +128,6 @@ public class BraceletDataActivity extends AppBarActivity implements BraceletData
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_every_day_sport);
         ButterKnife.bind(this);
-        mBraceletDataPresenter = new BraceletDataContract.BraceletDataPresenter(this, this);
         getIntentData();
         mBleManager = new BleManager(this, mLeScanCallback);
         mBleManager.bind();
@@ -268,7 +266,7 @@ public class BraceletDataActivity extends AppBarActivity implements BraceletData
     }
 
     private void sendRequest() {
-        mBraceletDataPresenter.getSportData();
+        mPresenter.getSportData();
     }
 
     /**
@@ -838,7 +836,7 @@ public class BraceletDataActivity extends AppBarActivity implements BraceletData
         sportDataList.add(sportData);
         Gson gson = new Gson();
         String sportDataStr = gson.toJson(sportDataList);
-        mBraceletDataPresenter.sendSportData(sportDataStr, JPushInterface.getUdid(BraceletDataActivity.this));
+        mPresenter.sendSportData(sportDataStr, JPushInterface.getUdid(BraceletDataActivity.this));
     }
 
 
@@ -1065,4 +1063,8 @@ public class BraceletDataActivity extends AppBarActivity implements BraceletData
         return intentFilter;
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new BraceletDataContract.Presenter();
+    }
 }

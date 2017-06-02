@@ -1,14 +1,11 @@
 package com.goodchef.liking.module.card.order;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.data.remote.retrofit.result.OrderCardListResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.OrderCardData;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
 import com.goodchef.liking.module.card.CardModel;
-
 
 import java.util.List;
 
@@ -18,24 +15,24 @@ import java.util.List;
  * Time: 上午11:18
  */
 
-public interface CardOrderContract {
+interface CardOrderContract {
 
-    interface CardOrderView extends BaseView {
+    interface View extends BaseView {
         void updateCardOrderListView(List<OrderCardData> listData);
     }
 
-    class CardOrderPresenter extends BasePresenter<CardOrderView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CardModel mCardModel;
 
-        public CardOrderPresenter(Context context, CardOrderView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCardModel = new CardModel();
         }
 
-        public void getCardOrderList(int page) {
+        void getCardOrderList(int page) {
             mCardModel.getCardOrderList(page)
-                    .subscribe(new PagerLoadingObserver<OrderCardListResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<OrderCardListResult>(mView) {
+
                         @Override
                         public void onNext(OrderCardListResult result) {
                             super.onNext(result);
@@ -43,7 +40,7 @@ public interface CardOrderContract {
                             List<OrderCardData> listData = result.getData().getOrderCardList();
                             mView.updateCardOrderListView(listData);
                         }
-                    });
+                    }));
         }
     }
 }

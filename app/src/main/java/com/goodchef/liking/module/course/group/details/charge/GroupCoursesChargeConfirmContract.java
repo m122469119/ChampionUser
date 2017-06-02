@@ -2,18 +2,18 @@ package com.goodchef.liking.module.course.group.details.charge;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
-import com.goodchef.liking.data.remote.LiKingRequestCode;
-import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
@@ -24,9 +24,9 @@ import com.goodchef.liking.utils.LikingCallUtil;
  * @version:1.0
  */
 
-public interface GroupCoursesChargeConfirmContract {
+interface GroupCoursesChargeConfirmContract {
 
-    interface ChargeGroupCoursesView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateChargeGroupCoursesView(ChargeGroupConfirmResult.ChargeGroupConfirmData chargeGroupConfirmData);
 
         void updatePaySubmitView(PayResultData payResultData);
@@ -38,12 +38,11 @@ public interface GroupCoursesChargeConfirmContract {
         void updateBuyCoursesNotOnGym(String errorMessage);
     }
 
-    class ChargeGroupCoursesConfirmPresenter extends BasePresenter<ChargeGroupCoursesView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CourseModel mCourseModel = null;
 
-        public ChargeGroupCoursesConfirmPresenter(Context context, ChargeGroupCoursesView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
@@ -53,10 +52,11 @@ public interface GroupCoursesChargeConfirmContract {
          * @param gymId
          * @param scheduleId
          */
-        public void getChargeGroupCoursesConfirmData(String gymId, String scheduleId) {
+        void getChargeGroupCoursesConfirmData(String gymId, String scheduleId) {
 
             mCourseModel.chargeGroupCoursesConfirm(gymId, scheduleId)
-                    .subscribe(new LikingBaseObserver<ChargeGroupConfirmResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ChargeGroupConfirmResult>(mView) {
+
                         @Override
                         public void onNext(ChargeGroupConfirmResult result) {
                             if (null == result) return;
@@ -84,7 +84,7 @@ public interface GroupCoursesChargeConfirmContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
         /***
@@ -94,10 +94,10 @@ public interface GroupCoursesChargeConfirmContract {
          * @param couponCode 优惠券吗
          * @param payType    支付方式
          */
-        public void chargeGroupCoursesImmediately(String gymId, String scheduleId, String couponCode, String payType) {
+        void chargeGroupCoursesImmediately(final Context context, String gymId, String scheduleId, String couponCode, String payType) {
 
             mCourseModel.chargeGroupCoursesImmediately(gymId, scheduleId, couponCode, payType)
-                    .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<SubmitPayResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(SubmitPayResult result) {
                             if (result == null) return;
@@ -108,12 +108,12 @@ public interface GroupCoursesChargeConfirmContract {
                         public void apiError(ApiException apiException) {
                             switch (apiException.getErrorCode()) {
                                 case LiKingRequestCode.BUY_COURSES_ERROR:
-                                    LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                    LikingCallUtil.showBuyCoursesErrorDialog(context, apiException.getErrorMessage());
                                 default:
                                     super.apiError(apiException);
                             }
                         }
-                    });
+                    }));
         }
     }
 

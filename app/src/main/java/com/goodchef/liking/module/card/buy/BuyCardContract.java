@@ -1,17 +1,15 @@
 package com.goodchef.liking.module.card.buy;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.GymData;
 import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
-import com.goodchef.liking.module.card.CardModel;
-import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.card.CardModel;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 
 /**
@@ -22,13 +20,13 @@ import com.goodchef.liking.module.home.LikingHomeActivity;
  * @version:1.0
  */
 
-public interface BuyCardContract {
+interface BuyCardContract {
 
-    interface CardListView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateCardListView(CardResult.CardData cardData);
     }
 
-    class CardListPresenter extends BasePresenter<CardListView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CardModel mCardModel = null;
         private String longitude = "0";
@@ -38,12 +36,11 @@ public interface BuyCardContract {
 
         private GymData mGymData;
 
-        public CardListPresenter(Context context, CardListView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCardModel = new CardModel();
         }
 
-        public void getCardList(int buyType) {
+        void getCardList(int buyType) {
             getLocationData();
             if (longitude.equals("0.0") || latitude.equals("0.0")) {
                 getCardList("0", "0", cityId, districtId, LikingHomeActivity.gymId, buyType);
@@ -54,7 +51,8 @@ public interface BuyCardContract {
 
         private void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
             mCardModel.getCardList(longitude, latitude, cityId, districtId, gymId, type)
-                    .subscribe(new LikingBaseObserver<CardResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<CardResult>(mView) {
+
                         @Override
                         public void onNext(CardResult value) {
                             if (value == null) return;
@@ -72,10 +70,10 @@ public interface BuyCardContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
-        public void getLocationData() {
+        void getLocationData() {
             LocationData locationData = LikingPreference.getLocationData();
             if (locationData != null) {
                 longitude = locationData.getLongitude() + "";
@@ -96,7 +94,7 @@ public interface BuyCardContract {
             return mGymData;
         }
 
-        public void setGymData(GymData gymData) {
+        void setGymData(GymData gymData) {
             mGymData = gymData;
         }
 

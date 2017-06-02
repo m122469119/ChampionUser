@@ -1,7 +1,5 @@
 package com.goodchef.liking.data.remote.rxobserver;
 
-import android.content.Context;
-
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.refresh.BasePagerLoaderFragment;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
@@ -15,8 +13,8 @@ import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 public abstract class PagerLoadingObserver<T extends LikingResult> extends LikingBaseObserver<T> {
 
-    protected PagerLoadingObserver(Context context, BaseView view) {
-        super(context, view);
+    protected PagerLoadingObserver(BaseView view) {
+        super(view);
     }
 
     @Override

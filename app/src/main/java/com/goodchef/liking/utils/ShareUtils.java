@@ -9,6 +9,7 @@ import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.dialog.ShareCustomDialog;
 
 /**
+<<<<<<< 1176522f632dfe18b760e1da07754ca924fa5450
  * Created by fensan on 2017/6/1.
  */
 public class ShareUtils {

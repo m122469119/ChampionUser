@@ -2,19 +2,19 @@ package com.goodchef.liking.module.course.group.details;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
-import com.goodchef.liking.data.remote.LiKingRequestCode;
 import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
-import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.module.share.ShareModel;
 import com.goodchef.liking.utils.LikingCallUtil;
 
@@ -26,9 +26,9 @@ import com.goodchef.liking.utils.LikingCallUtil;
  * @version:1.0
  */
 
-public interface TeamCourseDetailsContract {
+interface TeamCourseDetailsContract {
 
-    interface GroupCourserDetailsView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateGroupLessonDetailsView(GroupCoursesResult.GroupLessonData groupLessonData);
 
         void updateOrderGroupCourses();
@@ -40,22 +40,21 @@ public interface TeamCourseDetailsContract {
         void updateShareView(ShareData shareData);
     }
 
-    class GroupCoursesDetailsPresenter extends BasePresenter<GroupCourserDetailsView> {
+    class Presenter extends RxBasePresenter<View> {
 
-        private ShareModel mShareModel;
         private CourseModel mCourseModel;
+        private ShareModel mShareModel;
 
         public String scheduleId;//排期id
-        public int mCoursesState = -1;//课程状态
+        int mCoursesState = -1;//课程状态
         public String orderId;//订单id
 
-        public String quota;//预约人数
-        public int isFree;//是否免费
-        public int scheduleType = -1;
+        String quota;//预约人数
+        int isFree;//是否免费
+        int scheduleType = -1;
         public String price;//价格
 
-        public GroupCoursesDetailsPresenter(Context context, GroupCourserDetailsView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
             mShareModel = new ShareModel();
         }
@@ -65,14 +64,15 @@ public interface TeamCourseDetailsContract {
          *
          * @param scheduleId
          */
-        public void getGroupCoursesDetails(String scheduleId) {
+        void getGroupCoursesDetails(String scheduleId) {
             mCourseModel.getGroupCoursesDetails(scheduleId)
-                    .subscribe(new LikingBaseObserver<GroupCoursesResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<GroupCoursesResult>(mView) {
+
                         @Override
                         public void onNext(GroupCoursesResult result) {
-                            if(null == result) return;
+                            if (null == result) return;
                             GroupCoursesResult.GroupLessonData data = result.getGroupLessonData();
-                            if(data != null) {
+                            if (data != null) {
                                 setQuota(data.getQuota());
                                 setScheduleType(data.getScheduleType());
                                 setIsFree(data.getIsFree());
@@ -92,7 +92,7 @@ public interface TeamCourseDetailsContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
         /**
@@ -100,10 +100,11 @@ public interface TeamCourseDetailsContract {
          *
          * @param gymId
          */
-        public void orderGroupCourses(String gymId) {
+        void orderGroupCourses(final Context context, String gymId) {
 
             mCourseModel.orderGroupCourses(gymId, scheduleId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, R.string.loading_data, mView) {
+
                         @Override
                         public void onNext(LikingResult result) {
                             mView.updateOrderGroupCourses();
@@ -116,20 +117,20 @@ public interface TeamCourseDetailsContract {
                                     mView.updateErrorNoCard(apiException.getMessage());
                                     break;
                                 case LiKingRequestCode.BUY_COURSES_ERROR:
-                                    LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                    LikingCallUtil.showBuyCoursesErrorDialog(context, apiException.getErrorMessage());
                                     break;
                                 default:
                                     super.apiError(apiException);
                             }
                         }
 
-                    });
+                    }));
         }
 
         //团体课分享
         public void getGroupShareData(String scheduleId) {
             mShareModel.getGroupCoursesShare(scheduleId)
-                    .subscribe(new LikingBaseObserver<ShareResult>(mContext, mView) {
+                    .subscribe(new LikingBaseObserver<ShareResult>(mView) {
                         @Override
                         public void onNext(ShareResult value) {
                             if(value == null) return;
@@ -142,21 +143,34 @@ public interface TeamCourseDetailsContract {
         /**
          * 取消团体课
          */
-        public void sendCancelCoursesRequest() {
+        void sendCancelCoursesRequest(Context context) {
             mCourseModel.sendCancelCoursesRequest(orderId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult result) {
                             mView.updateCancelOrderView();
                         }
-                    });
+                    }));
+        }
+
+        //团体课分享
+        public void getGroupShareData() {
+            mShareModel.getGroupCoursesShare(scheduleId)
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ShareResult>(mView) {
+
+                        @Override
+                        public void onNext(ShareResult value) {
+                            if (value == null) return;
+                            mView.updateShareView(value.getShareData());
+                        }
+                    }));
         }
 
         public void setScheduleId(String scheduleId) {
             this.scheduleId = scheduleId;
         }
 
-        public void setCoursesState(int coursesState) {
+        void setCoursesState(int coursesState) {
             mCoursesState = coursesState;
         }
 
@@ -164,11 +178,11 @@ public interface TeamCourseDetailsContract {
             this.orderId = orderId;
         }
 
-        public void setIsFree(int isFree) {
+        void setIsFree(int isFree) {
             this.isFree = isFree;
         }
 
-        public void setScheduleType(int scheduleType) {
+        void setScheduleType(int scheduleType) {
             this.scheduleType = scheduleType;
         }
 
@@ -176,7 +190,7 @@ public interface TeamCourseDetailsContract {
             this.price = price;
         }
 
-        public void setQuota(String quota) {
+        void setQuota(String quota) {
             this.quota = quota;
         }
     }

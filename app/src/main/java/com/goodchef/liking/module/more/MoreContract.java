@@ -2,7 +2,7 @@ package com.goodchef.liking.module.more;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
@@ -21,18 +21,17 @@ import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
  * @version 1.0.0
  */
 
-class MoreContract {
-    interface MoreView extends BaseView {
+interface MoreContract {
+    interface View extends BaseView {
         void updateCheckUpdateAppView(CheckUpdateAppResult.UpdateAppData updateAppData);
 
         void updateLoginOut();
     }
 
-    static class MorePresenter extends BasePresenter<MoreView> {
+    class Presenter extends RxBasePresenter<View> {
         private MoreModel mMoreModel;
 
-        MorePresenter(Context context, MoreView mainView) {
-            super(context, mainView);
+        Presenter() {
             mMoreModel = new MoreModel();
         }
 
@@ -41,7 +40,8 @@ class MoreContract {
          */
         void checkAppUpdate() {
             mMoreModel.getCheckUpdateAppResult()
-                    .subscribe(new LikingBaseObserver<CheckUpdateAppResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<CheckUpdateAppResult>(mView) {
+
                         @Override
                         public void onNext(CheckUpdateAppResult result) {
                             if (result == null) return;
@@ -49,15 +49,16 @@ class MoreContract {
                             mView.updateCheckUpdateAppView(result.getData());
                         }
 
-                    });
+                    }));
         }
 
         /**
          * 用户登出
+         * @param context
          */
-        void loginOut() {
+        void loginOut(Context context) {
             mMoreModel.userLogout(LikingNewApi.sHostVersion, LikingPreference.getToken(), "")
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult likingResult) {
                             mView.updateLoginOut();
@@ -72,7 +73,7 @@ class MoreContract {
                             }
                             super.apiError(apiException);
                         }
-                    });
+                    }));
         }
     }
 }

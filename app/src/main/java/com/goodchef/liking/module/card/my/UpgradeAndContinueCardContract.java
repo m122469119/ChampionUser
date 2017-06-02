@@ -1,14 +1,12 @@
 package com.goodchef.liking.module.card.my;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.data.remote.retrofit.result.CardResult;
-import com.goodchef.liking.module.card.CardModel;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.CardResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.card.CardModel;
 
 /**
  * 说明:
@@ -16,24 +14,24 @@ import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
  * Time: 上午10:21
  */
 
-public interface UpgradeAndContinueCardContract {
+interface UpgradeAndContinueCardContract {
 
-    interface CardListView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateCardListView(CardResult.CardData cardData);
     }
 
-    class CardListPresenter extends BasePresenter<CardListView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CardModel mCardModel;
 
-        public CardListPresenter(Context context, CardListView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCardModel = new CardModel();
         }
 
-        public void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
+        void getCardList(String longitude, String latitude, String cityId, String districtId, String gymId, int type) {
             mCardModel.getCardList(longitude, latitude, cityId, districtId, gymId, type)
-                    .subscribe(new LikingBaseObserver<CardResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<CardResult>(mView) {
+
                         @Override
                         public void onNext(CardResult result) {
                             if(null == result) return;
@@ -51,7 +49,7 @@ public interface UpgradeAndContinueCardContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
     }
 

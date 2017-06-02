@@ -27,7 +27,7 @@ public class RxUtils {
         };
     }
 
-    public static <T> ObservableTransformer<T, T> applyInitSchedulers() {
+    private static <T> ObservableTransformer<T, T> applyInitSchedulers() {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(final Observable<T> upstream) {

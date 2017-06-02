@@ -2,7 +2,7 @@ package com.goodchef.liking.module.course.group;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
@@ -24,9 +24,9 @@ import com.goodchef.liking.module.share.ShareModel;
  * @version:1.0
  */
 
-public interface MyTeamcourseContract {
+interface MyTeamcourseContract {
 
-    interface MyGroupCourseView extends BaseView {
+    interface View extends BaseView {
         void updateMyGroupCoursesView(MyGroupCoursesResult.MyGroupCoursesData myGroupCoursesData);
 
         void updateLoadHomePage();
@@ -34,50 +34,50 @@ public interface MyTeamcourseContract {
         void updateShareView(ShareData shareData);
     }
 
-    class MyGroupCoursesPresenter extends BasePresenter<MyGroupCourseView> {
+    class Presenter extends RxBasePresenter<View> {
 
+        private CourseModel mCourseModel;
         private ShareModel mShareModel;
-        private CourseModel mCourseModel = null;
 
-        public MyGroupCoursesPresenter(Context context, MyGroupCourseView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
             mShareModel = new ShareModel();
         }
 
-        public void getMyGroupList(int page) {
+        void getMyGroupList(int page) {
             mCourseModel.getMyGroupList(page)
-                    .subscribe(new PagerLoadingObserver<MyGroupCoursesResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<MyGroupCoursesResult>(mView) {
                         @Override
                         public void onNext(MyGroupCoursesResult result) {
                             super.onNext(result);
                             if (result == null) return;
                             mView.updateMyGroupCoursesView(result.getData());
                         }
-                    });
+                    }));
         }
 
-        public void sendCancelCoursesRequest(String orderId) {
+        void sendCancelCoursesRequest(final Context context, String orderId) {
             mCourseModel.sendCancelCoursesRequest(orderId)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(LikingResult result) {
-                            PopupUtils.showToast(mContext, R.string.cancel_success);
+                            PopupUtils.showToast(context, R.string.cancel_success);
                             mView.updateLoadHomePage();
                         }
-                    });
+                    }));
         }
 
         //团体课分享
-        public void getGroupShareData(String scheduleId) {
+        void getGroupShareData(String scheduleId) {
             mShareModel.getGroupCoursesShare(scheduleId)
-                    .subscribe(new LikingBaseObserver<ShareResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ShareResult>(mView) {
+
                         @Override
                         public void onNext(ShareResult value) {
-                            if(value == null) return;
+                            if (value == null) return;
                             mView.updateShareView(value.getShareData());
                         }
-                    });
+                    }));
         }
     }
 }

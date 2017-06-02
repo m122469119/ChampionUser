@@ -1,14 +1,12 @@
 package com.goodchef.liking.module.body.analyze;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
-import com.goodchef.liking.module.body.BodyModel;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.body.BodyModel;
 
 /**
  * Created on 2017/05/23
@@ -18,17 +16,16 @@ import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
  * @version:1.0
  */
 
-public interface BodyAnalyzeChartContract {
+interface BodyAnalyzeChartContract {
 
-    interface BodyModelNavigationView extends BaseStateView {
+    interface View extends BaseStateView {
         void  updateBodyModelNavigationView(BodyModelNavigationResult.HistoryTitleData data);
     }
 
-    class BodyModeNavigationPresenter extends BasePresenter<BodyModelNavigationView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private BodyModel mBodyModel;
-        public BodyModeNavigationPresenter(Context context, BodyModelNavigationView mainView) {
-            super(context, mainView);
+        Presenter() {
             mBodyModel = new BodyModel();
         }
 
@@ -39,7 +36,8 @@ public interface BodyAnalyzeChartContract {
          */
         public void getBodyModeNavigation(String modules) {
             mBodyModel.getBodyHistoryTitleList(modules)
-            .subscribe(new LikingBaseObserver<BodyModelNavigationResult>(mContext, mView) {
+            .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<BodyModelNavigationResult>(mView) {
+
                 @Override
                 public void onNext(BodyModelNavigationResult value) {
                     if(value == null) return;
@@ -57,7 +55,7 @@ public interface BodyAnalyzeChartContract {
                     super.networkError(throwable);
                     mView.changeStateView(StateView.State.FAILED);
                 }
-            });
+            }));
         }
     }
 

@@ -3,7 +3,6 @@ package com.goodchef.liking.module.course.group;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,14 +14,14 @@ import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.MyGroupCoursesAdapter;
+import com.goodchef.liking.data.remote.retrofit.result.MyGroupCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.eventmessages.CancelGroupCoursesMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.data.remote.retrofit.result.MyGroupCoursesResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.ShareUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -34,12 +33,11 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/5/31 下午4:42
  */
-public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements MyTeamcourseContract.MyGroupCourseView{
+
+public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<MyTeamcourseContract.Presenter> implements MyTeamcourseContract.View {
     public static final String INTENT_KEY_STATE = "intent_key_state";
     public static final String INTENT_KEY_ORDER_ID = "intent_key_order_id";
     private MyGroupCoursesAdapter mGroupLessonAdapter;
-
-    private MyTeamcourseContract.MyGroupCoursesPresenter mMyGroupCoursesPresenter;
 
     @Override
     protected void requestData(int page) {
@@ -48,7 +46,6 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
 
     @Override
     protected void initViews() {
-        mMyGroupCoursesPresenter = new MyTeamcourseContract.MyGroupCoursesPresenter(getActivity(), this);
         setNoDataView();
         setPullMode(PullMode.PULL_BOTH);
         getRecyclerView().setBackgroundColor(ResourceUtils.getColor(R.color.app_content_background));
@@ -59,7 +56,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         mGroupLessonAdapter.setShareListener(shareListener);
         mGroupLessonAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 TextView textView = (TextView) view.findViewById(R.id.group_lesson_period_of_validity);
                 if (textView != null) {
                     MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
@@ -75,7 +72,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
@@ -108,7 +105,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     }
 
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
@@ -122,15 +119,15 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     /***
      * 刷新事件
      */
-    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             loadHomePage();
         }
     };
 
     private void sendRequest(int page) {
-        mMyGroupCoursesPresenter.getMyGroupList(page);
+        mPresenter.getMyGroupList(page);
     }
 
 
@@ -150,9 +147,9 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     /**
      * 取消预约事件
      */
-    private View.OnClickListener cancelListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener cancelListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             TextView textView = (TextView) v.findViewById(R.id.cancel_order_btn);
             if (textView != null) {
                 MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
@@ -166,19 +163,18 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
     /**
      * 分享事件
      */
-    private View.OnClickListener shareListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener shareListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             TextView textView = (TextView) v.findViewById(R.id.self_share_btn);
             if (textView != null) {
                 MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses data = (MyGroupCoursesResult.MyGroupCoursesData.MyGroupCourses) textView.getTag();
                 if (data != null) {
-                    mMyGroupCoursesPresenter.getGroupShareData(data.getScheduleId());
+                    mPresenter.getGroupShareData(data.getScheduleId());
                 }
             }
         }
     };
-
 
     /**
      * 取消预约团体课
@@ -195,7 +191,7 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mMyGroupCoursesPresenter.sendCancelCoursesRequest(orderId);
+                mPresenter.sendCancelCoursesRequest(getActivity(), orderId);
                 dialog.dismiss();
             }
         });
@@ -217,12 +213,17 @@ public class MyGroupLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoade
         getActivity().finish();
     }
 
-    public void onEvent(LoginFinishMessage message){
+    public void onEvent(LoginFinishMessage message) {
         loadHomePage();
     }
 
     @Override
     public void updateShareView(ShareData shareData) {
         ShareUtils.showShareDialog(getActivity(), shareData);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyTeamcourseContract.Presenter();
     }
 }

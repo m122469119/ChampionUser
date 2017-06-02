@@ -3,7 +3,6 @@ package com.goodchef.liking.module.body.history;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,9 +12,9 @@ import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
 import com.goodchef.liking.adapter.BodyTestHistoryAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
+import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
 
 /**
  * 说明:
@@ -24,17 +23,15 @@ import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
  * version 1.0.0
  */
 
-public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements BodyTestHistoryContract.BodyHistoryView {
+public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<BodyTestHistoryContract.Presenter> implements BodyTestHistoryContract.View {
 
     private BodyTestHistoryAdapter mBodyTestHistoryAdapter;
 
-    private BodyTestHistoryContract.BodyHistoryPresenter mBodyHistoryPresenter;
-
     public static BodyTestHistoryFragment newInstance() {
         Bundle args = new Bundle();
-        BodyTestHistoryFragment fragment = new BodyTestHistoryFragment();
-        fragment.setArguments(args);
-        return fragment;
+        BodyTestHistoryFragment bodyTestHistoryFragment = new BodyTestHistoryFragment();
+        bodyTestHistoryFragment.setArguments(args);
+        return bodyTestHistoryFragment;
     }
 
     @Override
@@ -43,10 +40,7 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
     }
 
     private void sendRequest(int page) {
-        if (mBodyHistoryPresenter == null) {
-            mBodyHistoryPresenter = new BodyTestHistoryContract.BodyHistoryPresenter(getActivity(), this);
-        }
-        mBodyHistoryPresenter.getHistoryData(page, this);
+        mPresenter.getHistoryData(page);
     }
 
     @Override
@@ -60,7 +54,7 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
         setRecyclerAdapter(mBodyTestHistoryAdapter);
         mBodyTestHistoryAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 BodyHistoryResult.BodyHistoryData.ListData object = mBodyTestHistoryAdapter.getDataList().get(position);
                 if (object != null) {
                     String bodyId = object.getBodyId();
@@ -72,14 +66,14 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
     }
 
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
@@ -93,9 +87,9 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
     /***
      * 刷新事件
      */
-    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             loadHomePage();
         }
     };
@@ -111,5 +105,10 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
     @Override
     public void changeStateView(StateView.State state) {
 
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new BodyTestHistoryContract.Presenter();
     }
 }

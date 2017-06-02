@@ -3,20 +3,20 @@ package com.goodchef.liking.module.card.buy.confirm;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.BuyCardListMessage;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.ConfirmBuyCardResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
-import com.goodchef.liking.data.remote.LiKingRequestCode;
-import com.goodchef.liking.module.card.CardModel;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.eventmessages.BuyCardListMessage;
+import com.goodchef.liking.module.card.CardModel;
 
 /**
  * Created on 2017/05/19
@@ -26,9 +26,9 @@ import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
  * @version:1.0
  */
 
-public interface BuyCardConfirmContract {
+interface BuyCardConfirmContract {
 
-    interface ConfirmBuyCardView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData);
 
         void updateSubmitPayView(PayResultData payResultData);
@@ -36,12 +36,11 @@ public interface BuyCardConfirmContract {
         void updateErrorView(String errorMessage);
     }
 
-    class ConfirmBuyCardPresenter extends BasePresenter<ConfirmBuyCardView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CardModel mCardModel = null;
 
-        public ConfirmBuyCardPresenter(Context context, ConfirmBuyCardView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCardModel = new CardModel();
         }
 
@@ -52,10 +51,11 @@ public interface BuyCardConfirmContract {
          * @param categoryId
          * @param gymId
          */
-        public void confirmBuyCard(int type, int categoryId, String gymId) {
+        public void confirmBuyCard(final Context context, int type, int categoryId, String gymId) {
 
             mCardModel.confirmCard(type, categoryId, gymId)
-                    .subscribe(new LikingBaseObserver<ConfirmBuyCardResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ConfirmBuyCardResult>(mView) {
+
                         @Override
                         public void onNext(ConfirmBuyCardResult value) {
                             if (value == null) return;
@@ -66,15 +66,15 @@ public interface BuyCardConfirmContract {
                         public void apiError(ApiException apiException) {
                             switch (apiException.getErrorCode()) {
                                 case LiKingRequestCode.BUY_CARD_CONFIRM:
-                                    HBaseDialog.Builder builder = new HBaseDialog.Builder(mContext);
+                                    HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
                                     builder.setMessage(apiException.getErrorMessage());
                                     builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if (mContext != null && mContext instanceof BuyCardConfirmActivity) {
+                                            if (context != null && context instanceof BuyCardConfirmActivity) {
                                                 dialog.dismiss();
                                                 postEvent(new BuyCardListMessage());
-                                                ((BuyCardConfirmActivity) mContext).finish();
+                                                ((BuyCardConfirmActivity) context).finish();
                                             }
                                         }
                                     });
@@ -96,7 +96,7 @@ public interface BuyCardConfirmContract {
                             super.networkError(throwable);
                             mView.changeStateView(StateView.State.FAILED);
                         }
-                    });
+                    }));
         }
 
         /***
@@ -107,15 +107,15 @@ public interface BuyCardConfirmContract {
          * @param couponCode 优惠券code
          * @param payType    支付方式
          */
-        public void submitBuyCardData(int cardId, int type, String couponCode, String payType, String gymId) {
+        public void submitBuyCardData(Context context, int cardId, int type, String couponCode, String payType, String gymId) {
             mCardModel.submitBuyCardData(cardId, type, couponCode, payType, gymId)
-                    .subscribe(new ProgressObserver<SubmitPayResult>(mContext, R.string.loading, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<SubmitPayResult>(context, R.string.loading, mView) {
                         @Override
                         public void onNext(SubmitPayResult value) {
                             if (value == null) return;
                             mView.updateSubmitPayView(value.getPayData());
                         }
-                    });
+                    }));
         }
     }
 

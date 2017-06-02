@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.goodchef.liking.R;
-import com.goodchef.liking.dialog.SelectCityDialog;
 import com.goodchef.liking.data.remote.retrofit.result.data.City;
+import com.goodchef.liking.dialog.SelectCityDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +21,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/26 下午2:28
  */
-public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeacherContract.BecomeTeacherView {
+public class BecomeTeacherActivity extends AppBarMVPSwipeBackActivity<BecomeTeacherContract.Presenter> implements BecomeTeacherContract.View {
     @BindView(R.id.become_teacher_name_editText)
     EditText mBecomeTeacherNameEditText;
     @BindView(R.id.become_teacher_phone_editText)
@@ -33,13 +32,10 @@ public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeach
     TextView mBecomeTeacherImmediatelySubmit;
 
 
-    private BecomeTeacherContract.BecomeTeacherPresenter mBecomeTeacherPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_become_teacher);
-        mBecomeTeacherPresenter = new BecomeTeacherContract.BecomeTeacherPresenter(this, this);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_become_private_teacher));
         initView();
@@ -86,10 +82,10 @@ public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeach
 
 
     @OnClick({R.id.become_teacher_immediately_submit, R.id.become_teacher_city_TextView})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.become_teacher_immediately_submit://立即提交
-                mBecomeTeacherPresenter.sendConfirmRequest();
+                mPresenter.sendConfirmRequest(this);
                 break;
             case R.id.become_teacher_city_TextView://选择城市
                 showSelectCityDialog();
@@ -149,4 +145,8 @@ public class BecomeTeacherActivity extends AppBarActivity implements BecomeTeach
         finish();
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new BecomeTeacherContract.Presenter();
+    }
 }

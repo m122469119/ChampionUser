@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.aaron.android.framework.base.eventbus.BaseMessage;
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
@@ -35,11 +35,10 @@ import java.util.Locale;
  * @version 1.0.0
  */
 
-public interface ChangeCityContract {
+interface ChangeCityContract {
 
-    interface ChangeCityView extends BaseView{
+    interface View extends BaseView{
 
-        boolean showContacts();
 
         void showCityListWindow(List<City.RegionsData.CitiesData> list);
 
@@ -58,23 +57,23 @@ public interface ChangeCityContract {
         String getDefaultCityName();
     }
 
-    class ChangeCityPresenter extends BasePresenter<ChangeCityView> {
+    class Presenter extends RxBasePresenter<View> {
 
+        private static final String TAG = "ChangeCityContractPresenter";
         private AmapGDLocation mAmapGDLocation = null;
         private GymModel mModel;
 
-        public String currentCityName;
+        String currentCityName;
         public String longitude;
         public String latitude;
         private boolean isLocation = false;
 
 
-        public ChangeCityPresenter(Context context, ChangeCityView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mModel = new GymModel();
         }
 
-        public void getCitySearch(final String search) {
+        void getCitySearch(final String search) {
             if (search == null || "".equals(search)) {
                 mView.dismissWindow();
                 return;
@@ -117,7 +116,7 @@ public interface ChangeCityContract {
             }.execute();
         }
 
-        public boolean compareStrings(String A, String B) {
+        boolean compareStrings(String A, String B) {
             // write your code here
             if (null == A || null == B || A.length() < B.length()) {
                 return false;
@@ -133,11 +132,11 @@ public interface ChangeCityContract {
                 return false;
             }
 
-            for (int i = 0; i < charsB.length; i++) {
+            for (char aCharsB : charsB) {
                 if (A.length() == 0) {
                     return false;
                 }
-                String s = String.valueOf(charsB[i]);
+                String s = String.valueOf(aCharsB);
                 if (!A.contains(s)) {
                     return false;
                 }
@@ -150,11 +149,11 @@ public interface ChangeCityContract {
         /***
          * 初始化定位
          */
-        public void startLocation() {
+        void startLocation(final Context context) {
             if (mAmapGDLocation != null && mAmapGDLocation.isStart())
                 return;
             if (mAmapGDLocation == null) {
-                mAmapGDLocation = new AmapGDLocation(mContext);
+                mAmapGDLocation = new AmapGDLocation(context);
                 LogUtils.i("cdust", "...new AmapGDLocation(mContext)....");
                 mAmapGDLocation.setLocationListener(new LocationListener<AMapLocation>() {
                     @Override
@@ -162,9 +161,9 @@ public interface ChangeCityContract {
                         if (object != null && object.getErrorCode() == 0) {//定位成功
                             isLocation = true;
                             currentCityName = StringUtils.isEmpty(object.getCity()) ? null : object.getProvince();
-                            longitude = CityUtils.getLongitude(mContext, object.getCityCode(), object.getLongitude());
-                            latitude = CityUtils.getLatitude(mContext, object.getCityCode(), object.getLatitude());
-                            String cityId = CityUtils.getCityId(mContext, object.getCityCode());
+                            longitude = CityUtils.getLongitude(context, object.getCityCode(), object.getLongitude());
+                            latitude = CityUtils.getLatitude(context, object.getCityCode(), object.getLatitude());
+                            String cityId = CityUtils.getCityId(context, object.getCityCode());
                             String districtId = object.getAdCode();
 
                             mView.setLocationCityNameTextViewText(currentCityName);
@@ -173,11 +172,11 @@ public interface ChangeCityContract {
                             LogUtils.i("cdust", "....定位成功..." + currentCityName + cityId + districtId);
                         } else {//定位失败
                             isLocation = false;
-                            mView.setLocationCityNameTextViewText(mContext.getString(R.string.re_location));
+                            mView.setLocationCityNameTextViewText(context.getString(R.string.re_location));
                             mView.setTitle(mView.getDefaultCityName());
 
-                            String cityId = CityUtils.getCityId(mContext, object.getCityCode());
-                            String districtId = CityUtils.getDistrictId(mContext, object.getCityCode(), object.getDistrict());
+                            String cityId = CityUtils.getCityId(context, object.getCityCode());
+                            String districtId = CityUtils.getDistrictId(context, object.getCityCode(), object.getDistrict());
                             saveLocationInfo(cityId, districtId, "0", "0", currentCityName, false);
                         }
                     }
@@ -202,21 +201,21 @@ public interface ChangeCityContract {
             LikingPreference.setLocationData(locationData);
         }
 
-        public void stopLocation() {
+        void stopLocation() {
             if (mAmapGDLocation != null) {
                 mAmapGDLocation.destroy();
             }
         }
 
-        public void destroyLocation() {
+        void destroyLocation() {
             if (mAmapGDLocation != null)
                 mAmapGDLocation.destroy();
             mAmapGDLocation =null;
         }
 
-        public void onLocationTextClick() {
+        void onLocationTextClick(Context context) {
             String locationText = mView.getLocationCityNameTextViewText().toString();
-            if (locationText.equals(mContext.getString(R.string.re_location))) {
+            if (locationText.equals(context.getString(R.string.re_location))) {
                 if (mAmapGDLocation != null){
                     mAmapGDLocation.destroy();
                     mAmapGDLocation = null;
@@ -224,7 +223,7 @@ public interface ChangeCityContract {
 
                 if (!isLocation) {
                     LogUtils.i(TAG,"=----------startLocation-----");
-                    startLocation();
+                    startLocation(context);
                 }
 
             } else {
@@ -236,18 +235,19 @@ public interface ChangeCityContract {
             }
         }
 
-        public void getCityList() {
+        void getCityList(final Context context) {
             mModel.getCityList()
-                    .subscribe(new LikingBaseObserver<CityListResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<CityListResult>(mView) {
+
                         @Override
                         public void onNext(CityListResult value) {
                             if (value == null) return;
-                            LikingBaseRequestHelper.loadOpenCitysInfo(mContext, value.getData().getOpen_city());
+                            LikingBaseRequestHelper.loadOpenCitysInfo(context, value.getData().getOpen_city());
                             ChangeCityFragmentMessage message = ChangeCityFragmentMessage
                                     .obtain(ChangeCityFragmentMessage.REFRESH_LIST_DATA);
                             mView.postEvent(message);
                         }
-                    });
+                    }));
         }
 
     }

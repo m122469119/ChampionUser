@@ -3,11 +3,10 @@ package com.goodchef.liking.module.writeuserinfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.BaseActivity;
+import com.aaron.android.framework.base.mvp.BaseMVPActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
@@ -34,7 +33,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/8/19 下午2:35
  */
-public class CompleteUserInfoActivity extends BaseActivity implements CompleteUserInfoContract.CompleteUserInfoView {
+public class CompleteUserInfoActivity extends BaseMVPActivity<CompleteUserInfoContract.Presenter> implements CompleteUserInfoContract.View {
 
     @BindView(R.id.complete_userInfo_state_view)
     LikingStateView mStateView;
@@ -56,15 +55,12 @@ public class CompleteUserInfoActivity extends BaseActivity implements CompleteUs
     TextView mCompleteBtn;
 
     private String userName;
-    private String mLocalHeadImageUrl;
     private int sex = -1;
-    private String mBirthdayStr;
     private String mBirthdayStrFormat;
     private int height;
     private String weight;
     private String headUrl = "";
 
-    private CompleteUserInfoContract.CompleteUserInfoPresenter mCompleteUserInfoPresenter;
     private Bitmap mBitmap;
 
     @Override
@@ -72,7 +68,6 @@ public class CompleteUserInfoActivity extends BaseActivity implements CompleteUs
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_user_info);
         ButterKnife.bind(this);
-        mCompleteUserInfoPresenter = new CompleteUserInfoContract.CompleteUserInfoPresenter(this, this);
         setTitle(getString(R.string.activity_title_complete_userinfo));
         initData();
         getIntentData();
@@ -95,36 +90,36 @@ public class CompleteUserInfoActivity extends BaseActivity implements CompleteUs
 
     private void getIntentData() {
         userName = getIntent().getStringExtra(WriteNameActivity.KEY_USER_NAME);
-        mLocalHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
+        String localHeadImageUrl = getIntent().getStringExtra(UserHeadImageActivity.KEY_HEAD_IMAGE);
         sex = getIntent().getIntExtra(SexActivity.KEY_SEX, 0);
-        mBirthdayStr = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY);
+        String birthdayStr = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY);
         mBirthdayStrFormat = getIntent().getStringExtra(SelectBirthdayActivity.KEY_BIRTHDAY_FORMAT);
         height = getIntent().getIntExtra(SelectHeightActivity.KEY_HEIGHT, 0);
         weight = getIntent().getStringExtra(SelectWeightActivity.KEY_WEIGHT);
 
         mUserNameTextView.setText(userName);
-        if (!StringUtils.isEmpty(mLocalHeadImageUrl)) {
-            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLocalHeadImageUrl)
+        if (!StringUtils.isEmpty(localHeadImageUrl)) {
+            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, localHeadImageUrl)
                     .resize(100, 100)
                     .setLoadType(ImageLoader.LoaderType.FILE)
                     .build(), this);
         }
         if (sex == 1) {
-            mSexManImage.setVisibility(View.VISIBLE);
-            mSexWomenImage.setVisibility(View.GONE);
+            mSexManImage.setVisibility(android.view.View.VISIBLE);
+            mSexWomenImage.setVisibility(android.view.View.GONE);
         } else if (sex == 0) {
-            mSexManImage.setVisibility(View.GONE);
-            mSexWomenImage.setVisibility(View.VISIBLE);
+            mSexManImage.setVisibility(android.view.View.GONE);
+            mSexWomenImage.setVisibility(android.view.View.VISIBLE);
         }
-        mBirthdayTextView.setText(mBirthdayStr);
+        mBirthdayTextView.setText(birthdayStr);
         mHeightTextView.setText(height + getString(R.string.cm));
         mWeightTextView.setText(weight + getString(R.string.kg));
 
-        mBitmap = ImageEnviromentUtil.compressImageSize(mLocalHeadImageUrl);
+        mBitmap = ImageEnviromentUtil.compressImageSize(localHeadImageUrl);
     }
 
     @OnClick({R.id.complete_userInfo_btn})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         if (v == mCompleteBtn) {
             sendImageFile(mBitmap);
         }
@@ -134,12 +129,12 @@ public class CompleteUserInfoActivity extends BaseActivity implements CompleteUs
      * 提交用户信息
      */
     private void sendUserInfo() {
-        mCompleteUserInfoPresenter.updateUserInfo(userName, headUrl, sex, mBirthdayStrFormat, weight, height + "");
+        mPresenter.updateUserInfo(this, headUrl, sex, mBirthdayStrFormat, weight, height + "", userName);
     }
 
     private void sendImageFile(Bitmap mBitmap) {
         String image = BitmapBase64Util.bitmapToString(mBitmap);
-        mCompleteUserInfoPresenter.uploadImage(image);
+        mPresenter.uploadImage(this, image);
     }
 
 
@@ -170,9 +165,8 @@ public class CompleteUserInfoActivity extends BaseActivity implements CompleteUs
 
     @Override
     public void updateUserInfo() {
-        mCompleteUserInfoPresenter.getUserInfo();
+        mPresenter.getUserInfo();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -186,5 +180,10 @@ public class CompleteUserInfoActivity extends BaseActivity implements CompleteUs
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new CompleteUserInfoContract.Presenter();
     }
 }

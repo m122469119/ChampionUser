@@ -6,27 +6,26 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.GymAdapter;
 import com.goodchef.liking.adapter.TrainItemAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.GymData;
+import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.data.remote.retrofit.result.PrivateCoursesResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.GymData;
-import com.goodchef.liking.data.remote.retrofit.result.data.ShareData;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.ShareUtils;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -44,7 +43,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/24 下午5:55
  */
-public class PrivateLessonDetailsActivity extends AppBarActivity implements PrivateCoursesDetailsContract.PrivateCoursesDetailsView{
+public class PrivateLessonDetailsActivity extends AppBarMVPSwipeBackActivity<PrivateCoursesDetailsContract.Presenter> implements PrivateCoursesDetailsContract.View {
     @BindView(R.id.private_courses_details_state_view)
     LikingStateView mLikingStateView;
     @BindView(R.id.private_lesson_details_teach_image)
@@ -70,7 +69,6 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     @BindView(R.id.card_rule)
     TextView mCardRuleTextView;//规则
 
-    private PrivateCoursesDetailsContract.PrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String trainerId;
     private String teacherName;
 
@@ -78,7 +76,6 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_lesson_details);
-        mCoursesDetailsPresenter = new PrivateCoursesDetailsContract.PrivateCoursesDetailsPresenter(this, this);
         ButterKnife.bind(this);
         initView();
         initData();
@@ -106,9 +103,9 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
      *
      */
     private void setRightMenu() {
-        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+        setRightIcon(R.drawable.icon_phone, new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 LikingCallUtil.showPhoneDialog(PrivateLessonDetailsActivity.this);
             }
         });
@@ -117,9 +114,8 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
     private void sendDetailsRequest() {
         mLikingStateView.setState(StateView.State.LOADING);
-        mCoursesDetailsPresenter.getPrivateCoursesDetails(trainerId);
+        mPresenter.getPrivateCoursesDetails(trainerId);
     }
-
 
     @Override
     public void updatePrivateCoursesDetailsView(PrivateCoursesResult.PrivateCoursesData privateCoursesData) {
@@ -140,10 +136,10 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 for (int i = 0; i < tags.size(); i++) {
                     stringBuffer.append("#" + tags.get(i) + "  ");
                 }
-                mTeacherTagsTextView.setVisibility(View.VISIBLE);
+                mTeacherTagsTextView.setVisibility(android.view.View.VISIBLE);
                 mTeacherTagsTextView.setText(stringBuffer.toString());
             } else {
-                mTeacherTagsTextView.setVisibility(View.GONE);
+                mTeacherTagsTextView.setVisibility(android.view.View.GONE);
             }
             mTeacherIntroduceTextView.setText(privateCoursesData.getDesc());
             mTeacherNameTextView.setText(privateCoursesData.getTrainerName());
@@ -190,7 +186,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
 
 
     @OnClick({R.id.private_lesson_immediately_submit, R.id.layout_private_courses_share})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.private_lesson_immediately_submit://立即预约
                 UMengCountUtil.UmengBtnCount(PrivateLessonDetailsActivity.this, UmengEventId.PRIVATE_IMMEDIATELY_SUBMIT_BUTTON);
@@ -206,7 +202,7 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
                 }
                 break;
             case R.id.layout_private_courses_share://分享
-                mCoursesDetailsPresenter.getPrivateShareData(trainerId);
+                mPresenter.getPrivateShareData(trainerId);
                 mShareLayout.setEnabled(false);
                 break;
         }
@@ -244,5 +240,10 @@ public class PrivateLessonDetailsActivity extends AppBarActivity implements Priv
     public void updateShareView(ShareData shareData) {
         mShareLayout.setEnabled(true);
         ShareUtils.showShareDialog(this, shareData);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new PrivateCoursesDetailsContract.Presenter();
     }
 }

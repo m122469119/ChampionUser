@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,12 +27,11 @@ import java.util.List;
  * Author shaozucheng
  * Time:16/6/28 下午2:54
  */
-public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment implements CardOrderContract.CardOrderView {
+public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<CardOrderContract.Presenter> implements CardOrderContract.View {
 
     public static final String KEY_ORDER_ID = "key_order_id";
     private MyCardOrderAdapter mMyCardOrderAdapter;
 
-    private CardOrderContract.CardOrderPresenter mOrderPresenter;
 
     public static MyCardOrderFragment newInstance() {
         Bundle args = new Bundle();
@@ -53,13 +51,10 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         mMyCardOrderAdapter = new MyCardOrderAdapter(getActivity());
         setRecyclerAdapter(mMyCardOrderAdapter);
         onItemClick();
-        if(mOrderPresenter == null) {
-            mOrderPresenter = new CardOrderContract.CardOrderPresenter(this.getContext(), this);
-        }
     }
 
     private void setNoDataView() {
-        View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
+        android.view.View noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.view_common_no_data, null, false);
         ImageView noDataImageView = (ImageView) noDataView.findViewById(R.id.imageview_no_data);
         TextView noDataText = (TextView) noDataView.findViewById(R.id.textview_no_data);
         TextView refreshView = (TextView) noDataView.findViewById(R.id.textview_refresh);
@@ -73,9 +68,9 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
     /***
      * 刷新事件
      */
-    private View.OnClickListener refreshOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             loadHomePage();
         }
     };
@@ -84,7 +79,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
     private void onItemClick() {
         mMyCardOrderAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(android.view.View view, int position) {
                 OrderCardData data = mMyCardOrderAdapter.getDataList().get(position);
                 if (data != null) {
                     Intent intent = new Intent(getActivity(), MyCardDetailsActivity.class);
@@ -94,7 +89,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
             }
 
             @Override
-            public boolean onItemLongClick(View view, int position) {
+            public boolean onItemLongClick(android.view.View view, int position) {
                 return false;
             }
         });
@@ -102,7 +97,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
 
 
     private void sendGetListRequest(int page) {
-        mOrderPresenter.getCardOrderList(page);
+        mPresenter.getCardOrderList(page);
     }
 
     @Override
@@ -125,6 +120,11 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
         loadHomePage();
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new CardOrderContract.Presenter();
+    }
+
     public class MyCardOrderAdapter extends BaseRecycleViewAdapter<MyCardOrderAdapter.MyCardOrderViewHolder, OrderCardData> {
 
         private Context mContext;
@@ -136,7 +136,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
 
         @Override
         protected MyCardOrderViewHolder createViewHolder(ViewGroup parent) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_order_card, parent, false);
+            android.view.View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_order_card, parent, false);
             return new MyCardOrderViewHolder(view);
         }
 
@@ -148,7 +148,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
             TextView mOrderMoneyTextView;
             HImageView mCardHImageView;
 
-            public MyCardOrderViewHolder(View itemView) {
+            public MyCardOrderViewHolder(android.view.View itemView) {
                 super(itemView);
                 mOrderNumberTextView = (TextView) itemView.findViewById(R.id.card_order_number);
                 mOrderStateTextView = (TextView) itemView.findViewById(R.id.card_order_state);

@@ -2,16 +2,16 @@ package com.goodchef.liking.module.course.selfhelp;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
-import com.goodchef.liking.data.remote.LiKingRequestCode;
-import com.goodchef.liking.module.course.CourseModel;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.module.course.CourseModel;
 import com.goodchef.liking.utils.LikingCallUtil;
 
 /**
@@ -22,9 +22,9 @@ import com.goodchef.liking.utils.LikingCallUtil;
  * @version:1.0
  */
 
-public interface SelfHelpCourseContract {
+interface SelfHelpCourseContract {
 
-    interface SelfHelpGroupCoursesView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateSelfHelpGroupCoursesView(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData selfHelpGroupCoursesData);
 
         void updateOrderView();
@@ -34,12 +34,11 @@ public interface SelfHelpCourseContract {
         void updateSelectCourserView();
     }
 
-    class SelfHelpGroupCoursesPresenter extends BasePresenter<SelfHelpGroupCoursesView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private CourseModel mCourseModel = null;
 
-        public SelfHelpGroupCoursesPresenter(Context context, SelfHelpGroupCoursesView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mCourseModel = new CourseModel();
         }
 
@@ -48,23 +47,23 @@ public interface SelfHelpCourseContract {
          *
          * @param gymId 场馆ID
          */
-        public void getSelfHelpCourses(String gymId) {
+        void getSelfHelpCourses(String gymId) {
             mCourseModel.getSelfHelpScheduleInfo(gymId)
-                    .subscribe(new LikingBaseObserver<SelfHelpGroupCoursesResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<SelfHelpGroupCoursesResult>(mView) {
 
                                    @Override
                                    public void onNext(SelfHelpGroupCoursesResult result) {
-                                       if(result == null) return;
+                                       if (result == null) return;
                                        mView.updateSelfHelpGroupCoursesView(result.getData());
                                    }
-                               }
+                               })
                     );
         }
 
         /***
          * 自助团体课 - 预约
          *
-         * @param gymId       场馆id
+         * @param context
          * @param roomId      操房id
          * @param coursesId   课程id
          * @param coursesDate 日期
@@ -72,11 +71,12 @@ public interface SelfHelpCourseContract {
          * @param endTime     结束时间
          * @param price       价格
          * @param peopleNum   人数
+         * @param gymId       场馆id
          */
-        public void sendOrderRequest(String gymId, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum) {
+        void sendOrderRequest(final Context context, String roomId, String coursesId, String coursesDate, String startTime, String endTime, String price, String peopleNum, String gymId) {
 
             mCourseModel.joinSelfHelpCourses(gymId, roomId, coursesId, coursesDate, startTime, endTime, price, peopleNum)
-                    .subscribe(new ProgressObserver<LikingResult>(mContext, R.string.loading, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<LikingResult>(context, R.string.loading, mView) {
 
                                    @Override
                                    public void onNext(LikingResult result) {
@@ -90,7 +90,7 @@ public interface SelfHelpCourseContract {
                                                mView.updateNoCardView(apiException.getMessage());
                                                break;
                                            case LiKingRequestCode.BUY_COURSES_ERROR:
-                                               LikingCallUtil.showBuyCoursesErrorDialog(mContext, apiException.getErrorMessage());
+                                               LikingCallUtil.showBuyCoursesErrorDialog(context, apiException.getErrorMessage());
                                                break;
                                            default:
                                                mView.updateSelectCourserView();//刷新选中的View(当前时刻-房间被其他人预约,后台返回码不唯一,刷新接口后刷新选中view)
@@ -103,7 +103,7 @@ public interface SelfHelpCourseContract {
                                        super.networkError(throwable);
                                    }
                                }
-                    );
+                    ));
         }
     }
 

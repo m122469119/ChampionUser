@@ -2,25 +2,24 @@ package com.goodchef.liking.module.login;
 
 import android.content.Context;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.RegularUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.data.remote.LiKingRequestCode;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
 import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-
-import com.goodchef.liking.data.remote.LiKingRequestCode;
 
 /**
  * Created on 17/3/13.
@@ -31,20 +30,30 @@ import com.goodchef.liking.data.remote.LiKingRequestCode;
 
 class LoginContract {
 
-    static class LoginPresenter extends BasePresenter<LoginView> {
+    interface View extends BaseView {
+        void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData);
+
+        void updateLoginView(UserLoginResult.UserLoginData userLoginData);
+
+        void updateLoginOut();
+
+        void myCountdownTimeStart();
+    }
+
+    static class Presenter extends RxBasePresenter<View> {
         private LoginModel mLoginModel;
 
-        LoginPresenter(Context context, LoginView mainView) {
-            super(context, mainView);
+        Presenter() {
             mLoginModel = new LoginModel();
         }
 
         /**
          * 获取验证码
          *
-         * @param phone 手机号码
+         * @param phone   手机号码
+         * @param context
          */
-        void getVerificationCode(String phone) {
+        void getVerificationCode(Context context, String phone) {
             Observable
                     .just(phone)
                     .filter(new Predicate<String>() {
@@ -59,7 +68,7 @@ class LoginContract {
                             return mLoginModel.getVerificationCode(s);
                         }
                     })
-                    .subscribe(new ProgressObserver<VerificationCodeResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<VerificationCodeResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(VerificationCodeResult result) {
                             mView.updateVerificationCodeView(result.getVerificationCodeData());
@@ -81,7 +90,7 @@ class LoginContract {
                             super.apiError(apiException);
                         }
 
-                    });
+                    }));
         }
 
 
@@ -90,11 +99,11 @@ class LoginContract {
          */
         private boolean checkPhone(String phone) {
             if (StringUtils.isEmpty(phone)) {
-                mView.showToast(mContext.getString(R.string.hint_login_phone));
+                mView.showToast(R.string.hint_login_phone);
                 return false;
             }
             if (!RegularUtils.isMobileExact(phone)) {
-                mView.showToast(mContext.getString(R.string.phone_format_error));
+                mView.showToast(R.string.phone_format_error);
                 return false;
             }
             return true;
@@ -108,7 +117,7 @@ class LoginContract {
          */
         private boolean checkCaptcha(String captcha) {
             if (StringUtils.isEmpty(captcha)) {
-                mView.showToast(mContext.getString(R.string.version_code_not_blank));
+                mView.showToast(R.string.version_code_not_blank);
                 return false;
             }
             return true;
@@ -120,8 +129,9 @@ class LoginContract {
          *
          * @param phone   手机号码
          * @param captcha 验证码
+         * @param context
          */
-        void userLogin(final String phone, final String captcha) {
+        void userLogin(Context context, final String phone, final String captcha) {
             Observable
                     .just(1)
                     .filter(new Predicate<Object>() {
@@ -142,10 +152,10 @@ class LoginContract {
                             return mLoginModel.getLoginResult(phone, captcha);
                         }
                     })
-                    .subscribe(new ProgressObserver<UserLoginResult>(mContext, R.string.loading_data, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new ProgressObserver<UserLoginResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(UserLoginResult value) {
-                            if(value == null) return;
+                            if (value == null) return;
                             UserLoginResult.UserLoginData userLoginData = value.getUserLoginData();
                             if (userLoginData != null) {
                                 mLoginModel.saveLoginUserInfo(userLoginData);
@@ -170,7 +180,7 @@ class LoginContract {
                             }
                             super.apiError(apiException);
                         }
-                    });
+                    }));
         }
 
         /***
@@ -182,28 +192,21 @@ class LoginContract {
          */
         public void uploadUserDevice(String device_id, String device_token, String registration_id) {
             mLoginModel.uploadUserDevice(device_id, device_token, registration_id)
-            .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
-                @Override
-                public void onNext(LikingResult value) {
-                    LogUtils.i(TAG, "uploadDeviceInfo success!");
-                }
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<LikingResult>(mView) {
 
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                    LogUtils.i(TAG, "uploadDeviceInfo fail!");
-                }
-            });
+                        @Override
+                        public void onNext(LikingResult value) {
+                            LogUtils.i(TAG, "uploadDeviceInfo success!");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            LogUtils.i(TAG, "uploadDeviceInfo fail!");
+                        }
+                    }));
         }
     }
 
-    interface LoginView extends BaseView {
-        void updateVerificationCodeView(VerificationCodeResult.VerificationCodeData verificationCodeData);
 
-        void updateLoginView(UserLoginResult.UserLoginData userLoginData);
-
-        void updateLoginOut();
-
-        void myCountdownTimeStart();
-    }
 }

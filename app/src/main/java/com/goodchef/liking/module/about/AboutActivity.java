@@ -3,8 +3,8 @@ package com.goodchef.liking.module.about;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.utils.LikingCallUtil;
 
@@ -17,7 +17,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/26 下午2:02
  */
-public class AboutActivity extends AppBarActivity implements AboutContract.AboutView {
+public class AboutActivity extends AppBarMVPSwipeBackActivity<AboutContract.AboutPresenter> implements AboutContract.View {
     @BindView(R.id.version_number)
     TextView mVersionNumberTextView;
     @BindView(R.id.WeChat_public_account)
@@ -25,15 +25,13 @@ public class AboutActivity extends AppBarActivity implements AboutContract.About
     @BindView(R.id.cooperate_phone)
     TextView mCooperatePhoneTextView;
 
-    private AboutContract.AboutPresenter mPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.title_activity_about));
-        mPresenter = new AboutContract.AboutPresenter(this, this);
         mPresenter.init();
+        setTitle(getString(R.string.title_activity_about));
     }
 
     @Override
@@ -59,5 +57,9 @@ public class AboutActivity extends AppBarActivity implements AboutContract.About
         }
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new AboutContract.AboutPresenter();
 
+    }
 }

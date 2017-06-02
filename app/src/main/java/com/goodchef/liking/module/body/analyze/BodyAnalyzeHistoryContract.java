@@ -1,14 +1,12 @@
 package com.goodchef.liking.module.body.analyze;
 
-import android.content.Context;
-
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.goodchef.liking.data.remote.retrofit.result.BodyAnalyzeHistoryResult;
-import com.goodchef.liking.module.body.BodyModel;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
+import com.goodchef.liking.data.remote.retrofit.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
+import com.goodchef.liking.module.body.BodyModel;
 
 /**
  * Created on 2017/05/23
@@ -18,23 +16,23 @@ import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
  * @version:1.0
  */
 
-public interface BodyAnalyzeHistoryContract {
+interface BodyAnalyzeHistoryContract {
 
-    interface BodyAnalyzeHistoryView extends BaseStateView {
+    interface View extends BaseStateView {
         void updateBodyAnalyzeHistoryView(BodyAnalyzeHistoryResult.BodyHistory data);
     }
 
-    class BodyAnalyzeHistoryPresenter extends BasePresenter<BodyAnalyzeHistoryView> {
+    class Presenter extends RxBasePresenter<View> {
 
         private BodyModel mBodyModel;
-        public BodyAnalyzeHistoryPresenter(Context context, BodyAnalyzeHistoryView mainView) {
-            super(context, mainView);
+        public Presenter() {
             mBodyModel = new BodyModel();
         }
 
-        public void getBodyAnalyzeHistory(String column) {
+        void getBodyAnalyzeHistory(String column) {
             mBodyModel.getBodyHistoryList(column)
-            .subscribe(new LikingBaseObserver<BodyAnalyzeHistoryResult>(mContext, mView) {
+            .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<BodyAnalyzeHistoryResult>(mView) {
+
                 @Override
                 public void onNext(BodyAnalyzeHistoryResult value) {
                     if(value == null) return;
@@ -52,7 +50,7 @@ public interface BodyAnalyzeHistoryContract {
                     super.networkError(throwable);
                     mView.changeStateView(StateView.State.FAILED);
                 }
-            });
+            }));
         }
     }
 

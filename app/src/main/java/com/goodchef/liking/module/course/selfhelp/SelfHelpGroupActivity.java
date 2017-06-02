@@ -8,36 +8,35 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.adapter.SelfHelpCoursesRoomAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.eventmessages.OrderGroupMessageSuccess;
 import com.goodchef.liking.eventmessages.SelectCoursesMessage;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResult;
-import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.selfhelp.list.SelectCoursesListActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.stickyheaderrecyclerview.AnimalsAdapter;
@@ -59,7 +58,7 @@ import butterknife.OnClick;
  * Time: 下午4:05
  */
 
-public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClickListener, SelfHelpCourseContract.SelfHelpGroupCoursesView {
+public class SelfHelpGroupActivity extends AppBarMVPSwipeBackActivity<SelfHelpCourseContract.Presenter> implements android.view.View.OnClickListener, SelfHelpCourseContract.View {
 
     @BindView(R.id.self_help_immediately_appointment_TextView)
     TextView mImmediatelyTextView;
@@ -89,7 +88,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     LikingStateView mLikingStateView;
 
     @BindView(R.id.layout_self_right)
-    View selfCoursesView;
+    android.view.View selfCoursesView;
     @BindView(R.id.layout_self_right_overlap)
     LinearLayout otherCoursesView;
     @BindView(R.id.imageview_no_data)
@@ -99,7 +98,6 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     @BindView(R.id.textview_refresh)
     TextView refreshView;
 
-    private SelfHelpCourseContract.SelfHelpGroupCoursesPresenter mSelfHelpGroupCoursesPresenter;
     private SelfHelpCoursesRoomAdapter helpCoursesRoomAdapter;
     private AnimalsHeadersAdapter mAnimalsHeadersAdapter;
 
@@ -144,9 +142,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     /***
      * 没哟课程跳转事件
      */
-    private View.OnClickListener skipOnClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener skipOnClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             Intent intent = new Intent(SelfHelpGroupActivity.this, LikingHomeActivity.class);
             intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, 0);
             startActivity(intent);
@@ -160,15 +158,12 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     }
 
     private void sendRequest() {
-        if (mSelfHelpGroupCoursesPresenter == null) {
-            mSelfHelpGroupCoursesPresenter = new SelfHelpCourseContract.SelfHelpGroupCoursesPresenter(this, this);
-        }
         mLikingStateView.setState(StateView.State.LOADING);
-        mSelfHelpGroupCoursesPresenter.getSelfHelpCourses(LikingHomeActivity.gymId);
+        mPresenter.getSelfHelpCourses(LikingHomeActivity.gymId);
     }
 
     @OnClick({R.id.layout_select_group_courses, R.id.self_help_immediately_appointment_TextView})
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_select_group_courses:
                 Intent intent = new Intent(this, SelectCoursesListActivity.class);
@@ -197,7 +192,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     }
 
     private void sendOrderRequest() {
-        mSelfHelpGroupCoursesPresenter.sendOrderRequest(LikingHomeActivity.gymId, roomId, coursesId, courseDate, startTime, endTime, price, peopleNum);
+        mPresenter.sendOrderRequest(this, roomId, coursesId, courseDate, startTime, endTime, price, peopleNum, LikingHomeActivity.gymId);
     }
 
 
@@ -230,8 +225,8 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         if (coursesData != null && !TextUtils.isEmpty(coursesData.getCourseId())) {
             setSelectCoursesInfo(coursesData);
         } else {
-            mNoneCoursesLayout.setVisibility(View.VISIBLE);
-            mCoursesIntroduceTextView.setVisibility(View.GONE);
+            mNoneCoursesLayout.setVisibility(android.view.View.VISIBLE);
+            mCoursesIntroduceTextView.setVisibility(android.view.View.GONE);
         }
     }
 
@@ -326,7 +321,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                 mCoursesTimeRecyclerView.addItemDecoration(new DividerDecoration(this));
                 mCoursesTimeRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
+                    public void onItemClick(android.view.View view, int position) {
                         TextView textView = (TextView) view.findViewById(R.id.self_help_courses_time);
                         if (textView != null) {
                             SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData = (SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData) textView.getTag();
@@ -397,14 +392,14 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     private void setClickTimeRightData(SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData hourData) {
         if (hourData.isAvailable()) {//操房是否可用
             selectUserTime(hourData);
-            selfCoursesView.setVisibility(View.VISIBLE);
-            otherCoursesView.setVisibility(View.GONE);
+            selfCoursesView.setVisibility(android.view.View.VISIBLE);
+            otherCoursesView.setVisibility(android.view.View.GONE);
             if (hourData.isFilled()) {//是否所有操房均排课
-                mSelectCoursesLayout.setVisibility(View.GONE);
-                mImmediatelyTextView.setVisibility(View.GONE);
+                mSelectCoursesLayout.setVisibility(android.view.View.GONE);
+                mImmediatelyTextView.setVisibility(android.view.View.GONE);
             } else {
-                mSelectCoursesLayout.setVisibility(View.VISIBLE);
-                mImmediatelyTextView.setVisibility(View.VISIBLE);
+                mSelectCoursesLayout.setVisibility(android.view.View.VISIBLE);
+                mImmediatelyTextView.setVisibility(android.view.View.VISIBLE);
             }
             setLastCourseInfo(mSelectLastCoursesData);
             List<SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData> roomList = new ArrayList<>();
@@ -444,9 +439,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
                 helpCoursesRoomAdapter.setSelectRoomJoinClickListener(joinRoomClickListener);
             }
         } else {
-            mImmediatelyTextView.setVisibility(View.GONE);
-            selfCoursesView.setVisibility(View.GONE);
-            otherCoursesView.setVisibility(View.VISIBLE);
+            mImmediatelyTextView.setVisibility(android.view.View.GONE);
+            selfCoursesView.setVisibility(android.view.View.GONE);
+            otherCoursesView.setVisibility(android.view.View.VISIBLE);
         }
 
 
@@ -456,9 +451,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     /**
      * 点击操房选择事件
      */
-    private View.OnClickListener SelectRoomClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener SelectRoomClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             RelativeLayout mLayout = (RelativeLayout) v.findViewById(R.id.layout_self_help_select_room);
             if (mLayout != null) {
                 SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData roomData = (SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData) mLayout.getTag();
@@ -485,9 +480,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
     /**
      * 点击加入课程选择事件
      */
-    private View.OnClickListener joinRoomClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener joinRoomClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             TextView mJoinCoursesTextView = (TextView) v.findViewById(R.id.join_courses_TextView);
             if (mJoinCoursesTextView != null) {
                 SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData roomData = (SelfHelpGroupCoursesResult.SelfHelpGroupCoursesData.TimeData.HourData.RoomData) v.getTag();
@@ -510,11 +505,16 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
         startActivity(intent);
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new SelfHelpCourseContract.Presenter();
+    }
+
     private class AnimalsHeadersAdapter extends AnimalsAdapter<RecyclerView.ViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_self_help_group_time, parent, false);
+            android.view.View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_self_help_group_time, parent, false);
             return new RecyclerView.ViewHolder(view) {
             };
         }
@@ -541,7 +541,7 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
 
         @Override
         public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_self_help_group_date, parent, false);
+            android.view.View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_self_help_group_date, parent, false);
             return new RecyclerView.ViewHolder(view) {
             };
         }
@@ -575,9 +575,9 @@ public class SelfHelpGroupActivity extends AppBarActivity implements View.OnClic
      */
     public void setSelectCoursesInfo(SelfGroupCoursesListResult.SelfGroupCoursesData.CoursesData mCoursesData) {
         mSelectLastCoursesData = mCoursesData;
-        mNoneCoursesLayout.setVisibility(View.GONE);
+        mNoneCoursesLayout.setVisibility(android.view.View.GONE);
         mCoursesTrainTextView.setText(mCoursesData.getName());
-        mCoursesIntroduceTextView.setVisibility(View.VISIBLE);
+        mCoursesIntroduceTextView.setVisibility(android.view.View.VISIBLE);
         mCoursesIntroduceTextView.setText(mCoursesData.getDesc());
         String duration = "";
         try {

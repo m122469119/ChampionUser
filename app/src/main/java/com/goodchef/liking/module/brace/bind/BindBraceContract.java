@@ -3,9 +3,8 @@ package com.goodchef.liking.module.brace.bind;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
@@ -26,7 +25,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 
 public interface BindBraceContract {
-    interface BindBraceView extends BaseView {
+    interface View extends BaseView {
         void stopBlueToothWhewView();
 
         void setLayoutBlueOpenStateVisibility(int visibility);
@@ -58,15 +57,15 @@ public interface BindBraceContract {
         void updateBindDevicesView();
     }
 
-    class BindBracePresenter extends BasePresenter<BindBraceView> {
+    class Presenter extends RxBasePresenter<View> {
+        private static final String TAG = "BindBraceContractPresenter";
         BindBraceModel mModel;
 
         private boolean isLoginSuccess = false;
         private boolean isSendRequest = false;//是否发送过请求
         private boolean mConnectionState = false;
 
-        public BindBracePresenter(Context context, BindBraceView mainView) {
-            super(context, mainView);
+        public Presenter(final Context context) {
             mModel = new BindBraceModel(context, new BindBraceModel.Callback() {
                 @Override
                 public void callback() {
@@ -76,18 +75,18 @@ public interface BindBraceContract {
                             mView.stopBlueToothWhewView();
                         }
                     }, 1500);
-                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                    ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mView.setLayoutBlueOpenStateVisibility(View.VISIBLE);//展示会员的设备
-                            mView.setLayoutBlueToothBraceletVisibility(View.GONE);//隐藏搜索提示
-                            mView.setLayoutBlueBoothVisibility(View.VISIBLE);
-                            mView.setClickSearchTextViewText(mContext.getString(R.string.click_search));//显示点击搜索
-                            mView.setBluetoothStateTextViewText(mContext.getString(R.string.member_bluetooth_devices));
-                            mView.setOpenBlueToothTextViewVisibility(View.GONE);
+                            mView.setLayoutBlueOpenStateVisibility(android.view.View.VISIBLE);//展示会员的设备
+                            mView.setLayoutBlueToothBraceletVisibility(android.view.View.GONE);//隐藏搜索提示
+                            mView.setLayoutBlueBoothVisibility(android.view.View.VISIBLE);
+                            mView.setClickSearchTextViewText(context.getString(R.string.click_search));//显示点击搜索
+                            mView.setBluetoothStateTextViewText(context.getString(R.string.member_bluetooth_devices));
+                            mView.setOpenBlueToothTextViewVisibility(android.view.View.GONE);
                             mView.setBlueToothNameTextViewText(mModel.mBluetoothDevice.getName());//展示蓝牙名称
-                            mView.setConnectBluetoothProgressBarVisibility(View.GONE);//连接的动画关闭
-                            mView.setConnectBlueToothTextViewText(mContext.getString(R.string.connect_blue_tooth));//展示连接文案
+                            mView.setConnectBluetoothProgressBarVisibility(android.view.View.GONE);//连接的动画关闭
+                            mView.setConnectBlueToothTextViewText(context.getString(R.string.connect_blue_tooth));//展示连接文案
                             mView.setConnectBlueToothTextViewEnable(true);
                         }
                     });
@@ -113,9 +112,9 @@ public interface BindBraceContract {
                     }
 
                     if (bleUtils.isOpen()) {
-                        mView.setLayoutBlueOpenStateVisibility(View.GONE);
+                        mView.setLayoutBlueOpenStateVisibility(android.view.View.GONE);
                     } else {
-                        mView.setLayoutBlueOpenStateVisibility(View.VISIBLE);
+                        mView.setLayoutBlueOpenStateVisibility(android.view.View.VISIBLE);
                     }
                 }
             }, 4000);
@@ -163,7 +162,7 @@ public interface BindBraceContract {
         private void sendDevicesRequest(String devicesId) {
 
             mModel.bindDevices(devicesId)
-            .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
+            .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<LikingResult>(mView) {
                 @Override
                 public void onNext(LikingResult value) {
                     if(value == null) return;
@@ -181,11 +180,11 @@ public interface BindBraceContract {
                     super.networkError(throwable);
                     mView.updateBindDevicesView();
                 }
-            });
+            }));
         }
 
-        public void pauseBle() {
-            if (BleUtils.isSupportBleDevice(mContext)
+        public void pauseBle(Context context) {
+            if (BleUtils.isSupportBleDevice(context)
                     && mModel.mBleManager.isOpen()
                     && mConnectionState && mModel.mWriteCharacteristic != null) {
                 mModel.mBleManager.wirteCharacteristic(mModel.mWriteCharacteristic,
@@ -193,16 +192,16 @@ public interface BindBraceContract {
             }
         }
 
-        private void setLoginTimeOut() {
+        private void setLoginTimeOut(final Context context) {
             mView.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                    ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mView.setOpenBlueToothTextViewVisibility(View.GONE);
-                            mView.setConnectBluetoothProgressBarVisibility(View.GONE);
-                            mView.setConnectBlueToothTextViewText(mContext.getString(R.string.loging_out_fail));
+                            mView.setOpenBlueToothTextViewVisibility(android.view.View.GONE);
+                            mView.setConnectBluetoothProgressBarVisibility(android.view.View.GONE);
+                            mView.setConnectBlueToothTextViewText(context.getString(R.string.loging_out_fail));
                             mView.setConnectBlueToothTextViewEnable(true);
                         }
                     });
@@ -215,13 +214,13 @@ public interface BindBraceContract {
          *
          * @param data
          */
-        public void doCharacteristicOnePackageData(byte[] data) {
+        public void doCharacteristicOnePackageData(final Context context, byte[] data) {
             if (data.length >= 3) {
                 if ((data[1] & 0xff) == 0x33) {//绑定
                     if (data[4] == 0x00) {
                         LogUtils.i("BleService", "绑定成功");
                         sendLogin();
-                        setLoginTimeOut();
+                        setLoginTimeOut(context);
                     } else if (data[4] == 0x01) {
                         LogUtils.i("BleService", "绑定失败");
                     }
@@ -229,16 +228,16 @@ public interface BindBraceContract {
                     if (data[4] == 0x00) {
                         LogUtils.i("BleService", "登录成功");
                         setIsLoginSuccess(true);
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                        ((Activity) context).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mView.setOpenBlueToothTextViewVisibility(View.GONE);
-                                mView.setConnectBluetoothProgressBarVisibility(View.GONE);
-                                mView.setConnectBlueToothTextViewText(mContext.getString(R.string.connect_bluetooth_success));
+                                mView.setOpenBlueToothTextViewVisibility(android.view.View.GONE);
+                                mView.setConnectBluetoothProgressBarVisibility(android.view.View.GONE);
+                                mView.setConnectBlueToothTextViewText(context.getString(R.string.connect_bluetooth_success));
                             }
                         });
                         mModel.setBlueToothTime();
-                        sendBindDeviceRequest(JPushInterface.getUdid(mContext));
+                        sendBindDeviceRequest(JPushInterface.getUdid(context));
                     } else if (data[4] == 0x01) {
                         LogUtils.i("BleService", "登录失败");
                     }

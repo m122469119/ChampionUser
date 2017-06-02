@@ -5,16 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyAnalyzeTitleAdapter;
-import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
 import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.BodyHistoryData;
+import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ import butterknife.ButterKnife;
  * version 1.0.0
  */
 
-public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyAnalyzeChartContract.BodyModelNavigationView {
+public class BodyAnalyzeChartActivity extends AppBarMVPSwipeBackActivity<BodyAnalyzeChartContract.Presenter> implements BodyAnalyzeChartContract.View {
 
     public static final String KEY_HISTORY_MODULES = "key_history_modules";
     public static final String KEY_HISTORY_TITLE = "key_history_title";
@@ -37,7 +36,6 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyAnal
     @BindView(R.id.analyze_title_RecyclerView)
     RecyclerView mTitleRecyclerView;
 
-    private BodyAnalyzeChartContract.BodyModeNavigationPresenter mBodyModeNavigationPresenter;
     private String modules;
     private String title;
     private BodyAnalyzeTitleAdapter mBodyAnalyzeTitleAdapter;
@@ -59,10 +57,7 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyAnal
     }
 
     private void sendRequest(String modules) {
-        if (mBodyModeNavigationPresenter == null) {
-            mBodyModeNavigationPresenter = new BodyAnalyzeChartContract.BodyModeNavigationPresenter(this, this);
-        }
-        mBodyModeNavigationPresenter.getBodyModeNavigation(modules);
+        mPresenter.getBodyModeNavigation(modules);
     }
 
     private void setAnalyzeFragment(ArrayList<BodyHistoryData> firstList, String unit) {
@@ -90,7 +85,7 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyAnal
 
     private void setTopTitleRecycleView() {
         if (navDataList != null && navDataList.size() > 0) {
-            mTitleRecyclerView.setVisibility(View.VISIBLE);
+            mTitleRecyclerView.setVisibility(android.view.View.VISIBLE);
             for (int i = 0; i < navDataList.size(); i++) {
                 if (i == 0) {
                     navDataList.get(i).setSelect(true);
@@ -107,13 +102,13 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyAnal
             mTitleRecyclerView.setAdapter(mBodyAnalyzeTitleAdapter);
             mBodyAnalyzeTitleAdapter.setClickListener(mItemClickListener);
         } else {
-            mTitleRecyclerView.setVisibility(View.GONE);
+            mTitleRecyclerView.setVisibility(android.view.View.GONE);
         }
     }
 
-    private View.OnClickListener mItemClickListener = new View.OnClickListener() {
+    private android.view.View.OnClickListener mItemClickListener = new android.view.View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(android.view.View v) {
             TextView mBodyAnalyzeTextView = (TextView) v.findViewById(R.id.body_analyze_title_TextView);
             if (mBodyAnalyzeTextView != null) {
                 BodyModelNavigationResult.HistoryTitleData.NavData object = (BodyModelNavigationResult.HistoryTitleData.NavData) mBodyAnalyzeTextView.getTag();
@@ -135,5 +130,10 @@ public class BodyAnalyzeChartActivity extends AppBarActivity implements BodyAnal
     @Override
     public void changeStateView(StateView.State state) {
 
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new BodyAnalyzeChartContract.Presenter();
     }
 }

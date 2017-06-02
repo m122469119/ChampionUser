@@ -5,29 +5,26 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.HomeAnnouncement;
 import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.utils.FileDownloaderManager;
 import com.goodchef.liking.utils.NumberConstantUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.Set;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 说明:
@@ -36,38 +33,36 @@ import io.reactivex.schedulers.Schedulers;
  * version 1.0.0
  */
 
-public class LikingHomeContract {
+class LikingHomeContract {
 
-    interface LikingHomeView extends BaseView {
+    interface View extends BaseView {
         void showNoticesDialog(Set<NoticeData> noticeData);
     }
 
-    public static class LikingHomePresenter extends BasePresenter<LikingHomeView> {
+    public static class Presenter extends RxBasePresenter<View> {
         LikingHomeModel mLikingHomeModel;
         FileDownloaderManager mFileDownloaderManager;
         CheckUpdateAppResult.UpdateAppData mUpdateAppData;
 
-        public LikingHomePresenter(Context context, LikingHomeView mainView) {
-            super(context, mainView);
+        public Presenter(Context context) {
             mLikingHomeModel = new LikingHomeModel();
             mFileDownloaderManager = new FileDownloaderManager(context);
         }
 
         //检测更新app
-        void getAppUpdate() {
+        void getAppUpdate(final Context context) {
             mLikingHomeModel.getUpdateApp()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new LikingBaseObserver<CheckUpdateAppResult>(mContext, mView) {
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<CheckUpdateAppResult>(mView) {
+
                         @Override
                         public void onNext(CheckUpdateAppResult value) {
                             if (value == null) return;
                             if (value.getData() != null) {
                                 mUpdateAppData = value.getData();
-                                checkUpdateApp(mContext);
+                                checkUpdateApp(context);
                             }
                         }
-                    });
+                    }));
         }
 
         /**
@@ -75,7 +70,7 @@ public class LikingHomeContract {
          *
          * @param context
          */
-        public void checkUpdateApp(Context context) {
+        void checkUpdateApp(Context context) {
             if (mUpdateAppData == null) {
                 return;
             }
@@ -109,7 +104,7 @@ public class LikingHomeContract {
                         public void accept(Boolean aBoolean) throws Exception {
                             if (!aBoolean) return;
                             HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
-                            View view = LayoutInflater.from(context).inflate(R.layout.item_textview, null, false);
+                            android.view.View view = LayoutInflater.from(context).inflate(R.layout.item_textview, null, false);
                             TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
                             textView.setText((mUpdateAppData.getTitle()));
                             builder.setCustomTitle(view);
@@ -139,7 +134,7 @@ public class LikingHomeContract {
         /**
          * 处理push对话框
          */
-        public void showPushDialog() {
+        void showPushDialog() {
             if (LikingPreference.isHomeAnnouncement()) {
                 HomeAnnouncement homeAnnouncement = LikingPreference.getHomeAnnouncement();
                 mView.showNoticesDialog(homeAnnouncement.getNoticeDatas());
@@ -151,7 +146,7 @@ public class LikingHomeContract {
         /**
          * 初始化gymId
          */
-        public void initHomeGymId() {
+        void initHomeGymId() {
             String id = LikingPreference.getLoginGymId();
             if (!StringUtils.isEmpty(id) && !NumberConstantUtil.STR_ZERO.equals(id)) {
                 LikingHomeActivity.gymId = id;

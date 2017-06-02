@@ -3,9 +3,8 @@ package com.goodchef.liking.module.brace.mybracelet;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
 
-import com.aaron.android.framework.base.mvp.presenter.BasePresenter;
+import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
@@ -23,9 +22,9 @@ import com.goodchef.liking.data.local.LikingPreference;
  * @version 1.0.0
  */
 
-public interface MyBraceContract {
+interface MyBraceContract {
 
-    interface MyBraceView extends BaseView {
+    interface View extends BaseView {
         void updateUnBindDevicesView();
 
         void beforeConnectBlueToothView(String s);
@@ -54,7 +53,8 @@ public interface MyBraceContract {
     }
 
 
-    class MyBracePresenter extends BasePresenter<MyBraceView> {
+    class Presenter extends RxBasePresenter<View> {
+        private static final String TAG = "MyBracePresenter";
         BindBraceModel mModel;
         MyBraceModel mMyBraceModel;
 
@@ -67,15 +67,16 @@ public interface MyBraceContract {
         private boolean isSendRequest = false;//是否发送过请求
         private boolean isPause = false;
         private boolean isScanDevices = false;
+        private Context mContext;
 
-        public MyBracePresenter(Context context, MyBraceView mainView) {
-            super(context, mainView);
+        public Presenter(final Context context) {
+            mContext = context;
             mModel = new BindBraceModel(context, new BindBraceModel.Callback() {
                 @Override
                 public void callback() {
                     if (!isScanDevices) {
                         isScanDevices = true;
-                        connect((Activity) mContext);
+                        connect((Activity) context);
                     }
                 }
             });
@@ -96,7 +97,7 @@ public interface MyBraceContract {
             if (!isConnect) {
                 isConnect = true;
                 mModel.mBleManager.stopScan();
-                mView.setLayoutBluetoothConnectFailVisibility(View.GONE);
+                mView.setLayoutBluetoothConnectFailVisibility(android.view.View.GONE);
                 mView.setConnectView(mContext.getString(R.string.connect_bluetooth_ing));
                 mModel.connect();
                 connectState = 1;
@@ -130,7 +131,7 @@ public interface MyBraceContract {
             }
             if (!connectFail) {
                 mModel.stopScan();
-                mView.setLayoutBluetoothConnectFailVisibility(View.GONE);
+                mView.setLayoutBluetoothConnectFailVisibility(android.view.View.GONE);
                 connectFail = true;
                 mModel.connect();
                 connectState = 1;
@@ -187,7 +188,7 @@ public interface MyBraceContract {
                     @Override
                     public void run() {
                         if (!StringUtils.isEmpty(mModel.mFirmwareInfo)) {
-                            mView.setLayoutBluetoothConnectFailVisibility(View.GONE);
+                            mView.setLayoutBluetoothConnectFailVisibility(android.view.View.GONE);
                             mView.setDevicesVersionTextViewText(mModel.mFirmwareInfo);
                             if (StringUtils.isEmpty(mModel.mBindDevicesName)) {
                                 mView.setCurrentDevicesNameTextViewText(mModel.mBindDevicesAddress);
@@ -226,7 +227,7 @@ public interface MyBraceContract {
                 @Override
                 public void run() {
                     isGetAllData = true;
-                    mView.setUnbindTextViewVisibility(View.VISIBLE);
+                    mView.setUnbindTextViewVisibility(android.view.View.VISIBLE);
                     mView.setSynchronizationPowerView(500);
                     if (LikingPreference.getFirstBindBracelet()) {
                         mView.showFirstCheckPromptDialog();
@@ -302,13 +303,14 @@ public interface MyBraceContract {
 
         public void unBindDevices(String devicesId) {
             mModel.unBindDevices(devicesId)
-            .subscribe(new LikingBaseObserver<LikingResult>(mContext, mView) {
+            .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<LikingResult>(mView) {
+
                 @Override
                 public void onNext(LikingResult value) {
                     if(value == null) return;
                     mView.updateUnBindDevicesView();
                 }
-            });
+            }));
         }
 
         public void pauseBlue(){

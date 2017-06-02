@@ -4,26 +4,25 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.storage.DiskStorageManager;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.LoginOutMessage;
-import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
-import com.goodchef.liking.module.about.AboutActivity;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
+import com.goodchef.liking.eventmessages.LoginOutMessage;
+import com.goodchef.liking.module.about.AboutActivity;
 import com.goodchef.liking.utils.FileDownloaderManager;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -33,7 +32,7 @@ import io.reactivex.functions.Consumer;
  * version 1.0.0
  */
 
-public class MoreActivity extends AppBarActivity implements View.OnClickListener, MoreContract.MoreView {
+public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presenter> implements android.view.View.OnClickListener, MoreContract.View {
 
     @BindView(R.id.login_out_btn)
     TextView mLoginOutBtn;
@@ -46,7 +45,6 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
 
     private LinearLayout mAboutUsLayout;//关于我们
 
-    private MoreContract.MorePresenter mPresenter;
     private CheckUpdateAppResult.UpdateAppData mUpdateAppData;
     private FileDownloaderManager mFileDownloaderManager;
 
@@ -69,21 +67,21 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
     private void initViewIconAndText() {
         setMySettingCard(mAboutUsLayout, R.string.layout_about_us, true);
         if (LikingPreference.isLogin()) {
-            mLoginOutBtn.setVisibility(View.VISIBLE);
+            mLoginOutBtn.setVisibility(android.view.View.VISIBLE);
         } else {
-            mLoginOutBtn.setVisibility(View.GONE);
+            mLoginOutBtn.setVisibility(android.view.View.GONE);
         }
     }
 
 
-    private void setMySettingCard(View view, int text, boolean isShowLine) {
+    private void setMySettingCard(android.view.View view, int text, boolean isShowLine) {
         TextView textView = (TextView) view.findViewById(R.id.standard_my_text);
-        View line = view.findViewById(R.id.standard_view_line);
+        android.view.View line = view.findViewById(R.id.standard_view_line);
         textView.setText(text);
         if (isShowLine) {
-            line.setVisibility(View.VISIBLE);
+            line.setVisibility(android.view.View.VISIBLE);
         } else {
-            line.setVisibility(View.GONE);
+            line.setVisibility(android.view.View.GONE);
         }
     }
 
@@ -91,9 +89,6 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
      * 发送请求
      */
     private void sendUpdateAppRequest() {
-        if (mPresenter == null) {
-            mPresenter = new MoreContract.MorePresenter(this, this);
-        }
         mPresenter.checkAppUpdate();
     }
 
@@ -104,7 +99,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         if (v == mAboutUsLayout) {//关于我们
             startActivity(AboutActivity.class);
         } else if (v == mLayoutCheckUpdate) {//检测更新
@@ -132,7 +127,7 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
                     public void accept(Boolean aBoolean) throws Exception {
                         if (!aBoolean) return;
                         HBaseDialog.Builder builder = new HBaseDialog.Builder(MoreActivity.this);
-                        View view = LayoutInflater.from(MoreActivity.this).inflate(R.layout.item_textview, null, false);
+                        android.view.View view = LayoutInflater.from(MoreActivity.this).inflate(R.layout.item_textview, null, false);
                         TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
                         textView.setText((mUpdateAppData.getTitle()));
                         builder.setCustomTitle(view);
@@ -186,17 +181,14 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
      * 退出登录发送请求
      */
     private void exitLoginRequest() {
-        if (mPresenter == null) {
-            mPresenter = new MoreContract.MorePresenter(this, this);
-        }
-        mPresenter.loginOut();
+        mPresenter.loginOut(this);
     }
 
     @Override
     public void updateLoginOut() {
         showToast(getString(R.string.exit_login_success));
         postEvent(new LoginOutMessage());
-        mLoginOutBtn.setVisibility(View.GONE);
+        mLoginOutBtn.setVisibility(android.view.View.GONE);
         finish();
     }
 
@@ -205,11 +197,16 @@ public class MoreActivity extends AppBarActivity implements View.OnClickListener
         mUpdateAppData = updateAppData;
         int update = mUpdateAppData.getUpdate();
         if (update == 0) {//无更新
-            mCheckUpdatePromptTextView.setVisibility(View.VISIBLE);
-            mCheckUpdateImageView.setVisibility(View.GONE);
+            mCheckUpdatePromptTextView.setVisibility(android.view.View.VISIBLE);
+            mCheckUpdateImageView.setVisibility(android.view.View.GONE);
         } else if (update == 1 || update == 2) {//有更新
-            mCheckUpdatePromptTextView.setVisibility(View.GONE);
-            mCheckUpdateImageView.setVisibility(View.VISIBLE);
+            mCheckUpdatePromptTextView.setVisibility(android.view.View.GONE);
+            mCheckUpdateImageView.setVisibility(android.view.View.VISIBLE);
         }
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new MoreContract.Presenter();
     }
 }

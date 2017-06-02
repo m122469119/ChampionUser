@@ -2,19 +2,18 @@ package com.goodchef.liking.module.course.personal.details;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.data.remote.retrofit.result.MyPrivateCoursesDetailsResult;
+import com.goodchef.liking.eventmessages.MyPrivateCoursesCompleteMessage;
 import com.goodchef.liking.module.course.personal.MyPrivateCoursesFragment;
+import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -27,7 +26,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/6/20 下午7:08
  */
-public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsView {
+public class MyPrivateCoursesDetailsActivity extends AppBarMVPSwipeBackActivity<MyPersonalCourseDetailsContract.Presenter> implements MyPersonalCourseDetailsContract.View {
 
     private static final int COURSES_STATE_PAYED = 0;//0 已支付
     private static final int COURSES_STATE_COMPLETE = 1;//1 已完成
@@ -81,7 +80,6 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     @BindView(R.id.break_a_promise_times)
     TextView mBreakPromiseTimesTextView;//失约次数
 
-    private MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsPresenter mCoursesDetailsPresenter;
     private String orderId;
     private String mTeacherPhone;
 
@@ -107,9 +105,9 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     }
 
     private void setRightMenu() {
-        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
+        setRightIcon(R.drawable.icon_phone, new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 LikingCallUtil.showPhoneDialog(MyPrivateCoursesDetailsActivity.this);
             }
         });
@@ -117,14 +115,12 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
 
     private void initData() {
         orderId = getIntent().getStringExtra(MyPrivateCoursesFragment.KEY_ORDER_ID);
-        mCoursesDetailsPresenter = new MyPersonalCourseDetailsContract.MyPrivateCoursesDetailsPresenter(this, this);
         sendRequest();
     }
 
     private void sendRequest() {
-        mCoursesDetailsPresenter.getMyPrivateCoursesDetails(orderId);
+        mPresenter.getMyPrivateCoursesDetails(orderId);
     }
-
 
     @Override
     public void updateMyPrivateCoursesDetailsView(MyPrivateCoursesDetailsResult.MyPrivateCoursesDetailsData data) {
@@ -148,13 +144,13 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
             int state = data.getStatus();
             if (state == COURSES_STATE_PAYED) {
                 mCoursesStateTextView.setText(R.string.courses_state_payed);
-                mBottomLayout.setVisibility(View.VISIBLE);
+                mBottomLayout.setVisibility(android.view.View.VISIBLE);
             } else if (state == COURSES_STATE_COMPLETE) {
                 mCoursesStateTextView.setText(R.string.courses_state_complete);
-                mBottomLayout.setVisibility(View.GONE);
+                mBottomLayout.setVisibility(android.view.View.GONE);
             } else if (state == COURSES_STATE_CANCEL) {
                 mCoursesStateTextView.setText(R.string.courses_state_cancel);
-                mBottomLayout.setVisibility(View.GONE);
+                mBottomLayout.setVisibility(android.view.View.GONE);
             }
             mPrivateTeacherNameTextView.setText(data.getTrainerName());
 
@@ -194,14 +190,19 @@ public class MyPrivateCoursesDetailsActivity extends AppBarActivity implements M
     }
 
     @OnClick(R.id.details_contact_teacher)
-    public void click(View view) {
+    public void click(android.view.View view) {
         if (!StringUtils.isEmpty(mTeacherPhone)) {
-            LikingCallUtil.showCallDialog(this,getString(R.string.confirm_call),mTeacherPhone);
+            LikingCallUtil.showCallDialog(this, getString(R.string.confirm_call), mTeacherPhone);
         }
     }
 
     @Override
     public void changeStateView(StateView.State state) {
         mStateView.setState(state);
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new MyPersonalCourseDetailsContract.Presenter();
     }
 }

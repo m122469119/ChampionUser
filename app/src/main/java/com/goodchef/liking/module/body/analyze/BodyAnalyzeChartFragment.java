@@ -3,13 +3,12 @@ package com.goodchef.liking.module.body.analyze;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import com.aaron.android.framework.base.mvp.BaseMVPFragment;
+import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.android.framework.base.ui.BaseFragment;
-import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -22,10 +21,10 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.goodchef.liking.R;
-import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
 import com.goodchef.liking.data.remote.retrofit.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.BodyChartValueFormatter;
 import com.goodchef.liking.data.remote.retrofit.result.data.BodyHistoryData;
+import com.goodchef.liking.eventmessages.BodyAnalyzeHistoryMessage;
 import com.goodchef.liking.utils.ChartColorUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -40,15 +39,14 @@ import java.util.List;
  * version 1.0.0
  */
 
-public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyzeHistoryContract.BodyAnalyzeHistoryView {
+public class BodyAnalyzeChartFragment extends BaseMVPFragment<BodyAnalyzeHistoryContract.Presenter>
+        implements BodyAnalyzeHistoryContract.View {
 
     private LineChart mLineChart;
     private List<String> totalList = new ArrayList<>();
     private List<String> dateList = new ArrayList<>();
-    private List<BodyHistoryData> historyDataList;
     private String unit = "";
     private String modules;
-    private BodyAnalyzeHistoryContract.BodyAnalyzeHistoryPresenter mBodyAnalyzeHistoryPresenter;
     public static String KEY_HISTORY_LIST = "key_history_list";
     public static String KEY_HISTORY_UNIT = "key_history_unit";
     public static String KEY_HISTORY_MODULES = "key_history_modules";
@@ -63,11 +61,11 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_analyze_state_view, container, false);
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View view = inflater.inflate(R.layout.fragment_analyze_state_view, container, false);
         mLikingStateView = (LikingStateView) view.findViewById(R.id.analyze_chart_stateView);
         mLineChart = (LineChart) view.findViewById(R.id.analyze_LineChart);
-        historyDataList = getArguments().getParcelableArrayList(KEY_HISTORY_LIST);
+        List<BodyHistoryData> historyDataList = getArguments().getParcelableArrayList(KEY_HISTORY_LIST);
         unit = getArguments().getString(KEY_HISTORY_UNIT);
         modules = getArguments().getString(KEY_HISTORY_MODULES);
         initChartData(historyDataList, unit);
@@ -93,11 +91,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
      * @param column
      */
     private void sendRequest(String column) {
-        if (mBodyAnalyzeHistoryPresenter == null) {
-            mBodyAnalyzeHistoryPresenter = new BodyAnalyzeHistoryContract.BodyAnalyzeHistoryPresenter(getActivity(), this);
-        }
         mLikingStateView.setState(StateView.State.LOADING);
-        mBodyAnalyzeHistoryPresenter.getBodyAnalyzeHistory(column);
+        mPresenter.getBodyAnalyzeHistory(column);
     }
 
     private void initChartData(List<BodyHistoryData> historyDataList, String unit) {
@@ -245,4 +240,8 @@ public class BodyAnalyzeChartFragment extends BaseFragment implements BodyAnalyz
         mLikingStateView.setState(state);
     }
 
+    @Override
+    public void setPresenter() {
+        mPresenter = new BodyAnalyzeHistoryContract.Presenter();
+    }
 }
