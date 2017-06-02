@@ -33,6 +33,10 @@
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
 
+#tinker混淆配置
+-keep public class * implements com.tencent.tinker.loader.app.ApplicationLiefCycle{
+    *;
+}
 
 # For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
 -keepclasseswithmembernames class * {
@@ -198,7 +202,7 @@
 -keep class com.github.mikephil.charting.** { *; }
 
 ####### 支付宝 start ########
--libraryjars ../pay/libs/alipaySingle-20160825.jar
+-libraryjars ../../SoybeanFramework/pay/libs/alipaySingle-20160825.jar
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}
 -keep class com.alipay.android.app.IRemoteServiceCallback{*;}

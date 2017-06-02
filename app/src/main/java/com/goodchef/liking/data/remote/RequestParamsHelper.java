@@ -23,7 +23,7 @@ public class RequestParamsHelper {
     //1.4.3 appkey :XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F
     //1.4.5 appkey:7jPGh33yq1gtzcSqbiaQOGAnswiJ4ksR
 
-    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isTestMode() ? "testCcmsIam500QiangA" : "XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F"; //app签名key
+    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isTestMode() ? "testCcmsIam500QiangA" : "7jPGh33yq1gtzcSqbiaQOGAnswiJ4ksR"; //app签名key
 
 
     //正式环境的支付公钥为(yGcNQznPTvusj7Y6rMI5)
