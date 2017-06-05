@@ -25,7 +25,7 @@ public interface AboutContract {
         void updateWeChatPublicAccountText(String weChatPublicAccount);
     }
 
-    class AboutPresenter extends RxBasePresenter<View> {
+    class Presenter extends RxBasePresenter<View> {
 
         public void init() {
             String version = ResourceUtils.getString(R.string.about_version) + EnvironmentUtils.Config.getAppVersionName();

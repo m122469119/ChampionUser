@@ -17,7 +17,7 @@ import butterknife.OnClick;
  * Author shaozucheng
  * Time:16/5/26 下午2:02
  */
-public class AboutActivity extends AppBarMVPSwipeBackActivity<AboutContract.AboutPresenter> implements AboutContract.View {
+public class AboutActivity extends AppBarMVPSwipeBackActivity<AboutContract.Presenter> implements AboutContract.View {
     @BindView(R.id.version_number)
     TextView mVersionNumberTextView;
     @BindView(R.id.WeChat_public_account)
@@ -59,7 +59,7 @@ public class AboutActivity extends AppBarMVPSwipeBackActivity<AboutContract.Abou
 
     @Override
     public void setPresenter() {
-        mPresenter = new AboutContract.AboutPresenter();
+        mPresenter = new AboutContract.Presenter();
 
     }
 }

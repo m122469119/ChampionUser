@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
-import com.aaron.android.framework.base.ui.swipeback.BaseSwipeBackActivity;
+import com.aaron.android.framework.base.ui.BaseSwipeBackActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.course.personal.MyPrivateCoursesFragment;
 import com.goodchef.liking.module.course.group.MyGroupLessonFragment;
