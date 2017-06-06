@@ -80,7 +80,6 @@ public class MyBraceletActivity extends AppBarMVPSwipeBackActivity<MyBraceContra
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_my_bracelet));
         getInitData();
-        mPresenter.initBlueTooth(this);
         if (mPresenter.getSource().equals("BingBraceletActivity")) {
             mMyBraceletTextView.setText(R.string.binding_finish);
             synchronizationInfo();
@@ -333,7 +332,8 @@ public class MyBraceletActivity extends AppBarMVPSwipeBackActivity<MyBraceContra
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
+        if (mHandler != null)
+            mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         mPresenter.releaseBlue();
         unregisterReceiver(mGattUpdateReceiver);
@@ -345,11 +345,13 @@ public class MyBraceletActivity extends AppBarMVPSwipeBackActivity<MyBraceContra
             final String action = intent.getAction();
             if (BleService.ACTION_GATT_CONNECTED.equals(action)) {
                 Log.i(TAG, "连接成功");
+                initData();
                 mPresenter.setConnectionState(true);
                 mPresenter.setConnectState(2);
                 mPresenter.setBluetoothDevice();
                 mPresenter.setConnectSuccessView();
                 mPresenter.discoverServicesBlue();
+                mPresenter.isBleManagerDoScan(false);
             } else if (BleService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mPresenter.setConnectionState(false);
                 mPresenter.setIsScanDevices(false);
@@ -423,5 +425,23 @@ public class MyBraceletActivity extends AppBarMVPSwipeBackActivity<MyBraceContra
     @Override
     public void setPresenter() {
         mPresenter = new MyBraceContract.Presenter(this);
+    }
+
+    /**
+     * 打开蓝牙的回调
+     * @param requestCode 1
+     * @param resultCode 0 为失败  -1 为成功
+     * @param data null
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            switch (resultCode) {
+                case 0:
+                    break;
+                case -1:
+                    break;
+            }
+        }
     }
 }

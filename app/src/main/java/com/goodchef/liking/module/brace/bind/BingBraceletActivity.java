@@ -19,6 +19,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleService;
+import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.module.brace.BlueToothHelpActivity;
 import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
@@ -154,7 +155,10 @@ public class BingBraceletActivity extends AppBarMVPSwipeBackActivity<BindBraceCo
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.releaseBleConnect();
+        if (mHandler != null)
+            mHandler.removeCallbacksAndMessages(null);
+        mHandler = null;
+        mPresenter.releaseBle();
         unregisterReceiver(mGattUpdateReceiver);
     }
 
@@ -267,6 +271,26 @@ public class BingBraceletActivity extends AppBarMVPSwipeBackActivity<BindBraceCo
         } else {
             mBlueToothWhewView.stop();
             mClickSearchTextView.setText(R.string.click_search);
+        }
+    }
+
+    /**
+     * 打开蓝牙的回调
+     * @param requestCode 1
+     * @param resultCode 0 为失败  -1 为成功
+     * @param data null
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            switch (resultCode) {
+                case 0:
+                    setLayoutBlueOpenStateVisibility(android.view.View.VISIBLE);
+                    break;
+                case -1:
+                    setLayoutBlueOpenStateVisibility(android.view.View.GONE);
+                    break;
+            }
         }
     }
 
@@ -417,7 +441,8 @@ public class BingBraceletActivity extends AppBarMVPSwipeBackActivity<BindBraceCo
                 });
                 mPresenter.setConnectionState(true);
                 connectState = 2;
-                mPresenter.bleManagerDiscoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
+                mPresenter.discoverServices(); //连接成功后就去找出该设备中的服务 private BluetoothGatt mBluetoothGatt;
+                mPresenter.isBleManagerDoScan(false);
             } else if (BleService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mPresenter.setConnectionState(false);
                 connectState = 0;
@@ -464,7 +489,6 @@ public class BingBraceletActivity extends AppBarMVPSwipeBackActivity<BindBraceCo
     protected void onPause() {
         super.onPause();
         mPresenter.pauseBle(this);
-        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override

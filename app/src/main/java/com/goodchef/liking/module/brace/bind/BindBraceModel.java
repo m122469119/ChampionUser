@@ -66,12 +66,12 @@ public class BindBraceModel {
        mBleManager = new BleManager(context, new BluetoothAdapter.LeScanCallback() {
            @Override
            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-               LogUtils.i(TAG, "needName = " + mMyBraceletMac + "searchName = " + device.getName() + " mac = " + device.getAddress());
-               if (Math.abs(rssi) <= 150) {//过滤掉信号强度小于-150的设备
+               //在这里可以把搜索到的设备保存起来
+               if (Math.abs(rssi) <= 90) {//过滤掉信号强度小于-90的设备
                    if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
                        if (!StringUtils.isEmpty(mMyBraceletMac) && mMyBraceletMac.equals(device.getAddress())) {
                            LogUtils.i(TAG, "找到匹配的手环设备: " + mMyBraceletMac);
-                           map.clear();
+                           LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
                            map.put(device.getAddress(), device);
                            setBlueToothDevicesList(callback);
                        }
@@ -79,6 +79,9 @@ public class BindBraceModel {
                }
            }
        });
+    }
+
+    public void bind(){
         mBleManager.bind();
     }
 
@@ -105,6 +108,8 @@ public class BindBraceModel {
             }
             if (!StringUtils.isEmpty(mBluetoothDevice.getName())) {
                 LikingPreference.setBlueToothName(mBluetoothDevice.getAddress(), mBluetoothDevice.getName());
+                mBindDevicesName = mBluetoothDevice.getName();
+                mBindDevicesAddress = mBluetoothDevice.getAddress();
             }
             callback.callback();
         }

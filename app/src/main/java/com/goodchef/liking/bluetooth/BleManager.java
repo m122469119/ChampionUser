@@ -30,11 +30,13 @@ public class BleManager {
     private BleScanner mBleScanner;
     private BleUtils mBleUtils;
     private Context mContext;
+    private boolean mIsBind = false;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mIsBind = true;
             mBleService = ((BleService.BleServiceBinder) service).getService();
             if (!mBleService.initialize()) {
                 LogUtils.e(TAG, "Unable to initialize Bluetooth");
@@ -80,9 +82,13 @@ public class BleManager {
     }
 
     public void release() {
-        mBleService.disconnect();
+        if (mBleService != null)
+            mBleService.disconnect();
         mBleScanner.setLeScanCallback(null);
-        mContext.unbindService(mServiceConnection);
+        if (mIsBind) {
+            mContext.unbindService(mServiceConnection);
+            mIsBind = false;
+        }
         mBleService = null;
         mBleScanner = null;
         mBleUtils = null;

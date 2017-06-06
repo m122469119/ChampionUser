@@ -1,9 +1,8 @@
 package com.goodchef.liking.module.home.myfragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
+import android.support.v4.app.Fragment;
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -17,7 +16,6 @@ import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
 import com.goodchef.liking.module.brace.bind.BingBraceletActivity;
 import com.goodchef.liking.module.brace.braceletdata.BraceletDataActivity;
-import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.train.UserExerciseModel;
 import com.goodchef.liking.umeng.UmengEventId;
@@ -36,6 +34,8 @@ class LikingMyContract {
         void updateInfoData(MyUserOtherInfoResult.UserOtherInfoData userOtherInfoData);
 
         void updateExerciseData(UserExerciseResult.ExerciseData exerciseData);
+
+        void jumpMyBraceletActivity();
     }
 
     public static class Presenter extends RxBasePresenter<View> {
@@ -87,23 +87,14 @@ class LikingMyContract {
         /**
          * 跳转到我的手环
          */
-        void jumpBraceletActivity(Context context, String UUID, String mBraceletMac) {
+        void jumpBraceletActivity(Context context, Fragment f, String UUID, String mBraceletMac) {
             if (LikingPreference.isLogin()) {
                 if (!StringUtils.isEmpty(mBraceletMac)) {
                     LogUtils.i(TAG, "用户手环的 mac: " + mBraceletMac.toUpperCase() + " UUID = " + UUID);
                 }
                 if (LikingPreference.isBind()) {//绑定过手环
-                    if (initBlueTooth(context)) {
-                        UMengCountUtil.UmengCount(context, UmengEventId.MYBRACELETACTIVITY);
-                        Intent intent = new Intent(context, MyBraceletActivity.class);
-                        if (!StringUtils.isEmpty(mBraceletMac)) {
-                            intent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
-                        }
-                        intent.putExtra(LikingMyFragment.KEY_UUID, UUID);
-                        intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
-                        intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
-                        intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
-                        context.startActivity(intent);
+                    if (initBlueTooth(f)) {
+                        mView.jumpMyBraceletActivity();
                     }
                 } else {//没有绑过
                     UMengCountUtil.UmengCount(context, UmengEventId.BINGBRACELETACTIVITY);
@@ -156,11 +147,11 @@ class LikingMyContract {
 
         /**
          * 初始化蓝牙
-         * @param context
+         * @param
          */
-        boolean initBlueTooth(Context context) {
+        boolean initBlueTooth(Fragment fragment) {
             if (!mBleUtils.isOpen()) {
-                openBluetooth(context);
+                openBluetooth(fragment);
                 return false;
             } else {
                 return true;
@@ -170,10 +161,9 @@ class LikingMyContract {
         /**
          * 打开蓝牙
          */
-        void openBluetooth(Context context) {
-            mBleUtils.openBlueTooth((Activity) context);
+        void openBluetooth(Fragment context) {
+            mBleUtils.openBlueTooth( context);
         }
-
 
     }
 

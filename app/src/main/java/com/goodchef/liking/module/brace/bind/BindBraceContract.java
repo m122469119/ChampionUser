@@ -69,15 +69,13 @@ public interface BindBraceContract {
             mModel = new BindBraceModel(context, new BindBraceModel.Callback() {
                 @Override
                 public void callback() {
-                    mView.getHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mView.stopBlueToothWhewView();
-                        }
-                    }, 1500);
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (mView == null) {
+                                return;
+                            }
+                            mView.stopBlueToothWhewView();
                             mView.setLayoutBlueOpenStateVisibility(android.view.View.VISIBLE);//展示会员的设备
                             mView.setLayoutBlueToothBraceletVisibility(android.view.View.GONE);//隐藏搜索提示
                             mView.setLayoutBlueBoothVisibility(android.view.View.VISIBLE);
@@ -92,6 +90,7 @@ public interface BindBraceContract {
                     });
                 }
             });
+            mModel.bind();
         }
 
         /**
@@ -99,25 +98,6 @@ public interface BindBraceContract {
          */
         public void openBluetooth(Activity c) {
             mModel.mBleManager.getBleUtils().openBlueTooth(c);
-            mView.getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mModel.mBleManager == null) {
-                        return;
-                    }
-                    BleUtils bleUtils = mModel.mBleManager.getBleUtils();
-
-                    if (bleUtils == null) {
-                        return;
-                    }
-
-                    if (bleUtils.isOpen()) {
-                        mView.setLayoutBlueOpenStateVisibility(android.view.View.GONE);
-                    } else {
-                        mView.setLayoutBlueOpenStateVisibility(android.view.View.VISIBLE);
-                    }
-                }
-            }, 4000);
         }
 
         /**
@@ -264,7 +244,7 @@ public interface BindBraceContract {
         /**
          * 断开蓝牙连接，并且清理相关资源
          */
-        public void releaseBleConnect() {
+        public void releaseBle() {
             mModel.mBleManager.release();
         }
 
@@ -288,7 +268,7 @@ public interface BindBraceContract {
             mModel.mUUID = stringExtra;
         }
 
-        public void bleManagerDiscoverServices() {
+        public void discoverServices() {
             mModel.mBleManager.discoverServices();
         }
 

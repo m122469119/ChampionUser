@@ -27,6 +27,7 @@ import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
+import com.goodchef.liking.module.brace.mybracelet.MyBraceletActivity;
 import com.goodchef.liking.module.card.my.MyCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
@@ -443,7 +444,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 }
                 break;
             case R.id.layout_bind_bracelet://绑定手环
-                mPresenter.jumpBraceletActivity(getActivity(), UUID, mBraceletMac);
+                mPresenter.jumpBraceletActivity(getActivity(), this,  UUID, mBraceletMac);
                 break;
             case R.id.layout_everyday_sport://手环数据
                 mPresenter.jumpBracelet(getActivity(), UUID, mBraceletMac);
@@ -496,6 +497,41 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mSelfHelpGroupLayout.setVisibility(android.view.View.GONE);
         }
     }
+
+    /**
+     * 打开蓝牙的回调
+     * @param requestCode 1
+     * @param resultCode 0 为失败  -1 为成功
+     * @param data null
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            switch (resultCode) {
+                case 0:
+                    break;
+                case -1:
+                    jumpMyBraceletActivity();
+                    break;
+            }
+        }
+    }
+
+
+    @Override
+    public void jumpMyBraceletActivity(){
+        UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYBRACELETACTIVITY);
+        Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
+        if (!StringUtils.isEmpty(mBraceletMac)) {
+            intent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac.toUpperCase());
+        }
+        intent.putExtra(LikingMyFragment.KEY_UUID, UUID);
+        intent.putExtra(MyBraceletActivity.KEY_BRACELET_NAME, "");
+        intent.putExtra(MyBraceletActivity.KEY_BRACELET_ADDRESS, "");
+        intent.putExtra(MyBraceletActivity.KEY_BRACELET_SOURCE, "LikingMyFragment");
+        getActivity().startActivity(intent);
+    }
+
 
     public void setPresenter() {
         mPresenter = new LikingMyContract.Presenter();

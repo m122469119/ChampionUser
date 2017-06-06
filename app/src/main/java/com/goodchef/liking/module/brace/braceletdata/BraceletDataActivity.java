@@ -981,6 +981,9 @@ public class BraceletDataActivity extends AppBarMVPSwipeBackActivity<BraceletDat
         if (mBleManager != null) {
             mBleManager.release();
         }
+        if (mHandler != null)
+            mHandler.removeCallbacksAndMessages(null);
+        mHandler = null;
         unregisterReceiver(mGattUpdateReceiver);
     }
 
@@ -1033,6 +1036,7 @@ public class BraceletDataActivity extends AppBarMVPSwipeBackActivity<BraceletDat
                 setSynchronizationSate(getString(R.string.connect_success), ResourceUtils.getColor(R.color.c4A90E2));
                 setConnectStateView();
                 mBleManager.discoverServices();
+                mBleManager.stopScan();
             } else if (BleService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnectionState = false;
                 setSynchronizationSate(getString(R.string.connect_fial), ResourceUtils.getColor(R.color.c4A90E2));
@@ -1061,6 +1065,24 @@ public class BraceletDataActivity extends AppBarMVPSwipeBackActivity<BraceletDat
         intentFilter.addAction(BleService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BleService.ACTION_CHARACTERISTIC_CHANGED);
         return intentFilter;
+    }
+
+    /**
+     * 打开蓝牙的回调
+     * @param requestCode 1
+     * @param resultCode 0 为失败 -1 为成功
+     * @param data null
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            switch (resultCode) {
+                case 0:
+                    break;
+                case -1:
+                    break;
+            }
+        }
     }
 
     @Override

@@ -471,7 +471,7 @@
     <string name="waite_you_taste_first">等你首尝</string>
     <string name="sell_out">已售罄</string>
     <string name="devices_no_support_ble">该设备不支持蓝牙4.0</string>
-    <string name="weixin_public_number">微信公共号：</string>
+    <string name="weixin_public_number">微信公众号：</string>
     <string name="all_picture">所有图片</string>
     <string name="zero_pager">0张</string>
     <string name="info_submit_success_and_waite">信息提交成功后商务人员会与您联系,请耐心等待</string>

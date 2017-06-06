@@ -80,6 +80,7 @@ interface MyBraceContract {
                     }
                 }
             });
+            mModel.bind();
             mMyBraceModel = new MyBraceModel();
         }
 
@@ -442,6 +443,10 @@ interface MyBraceContract {
 
         public void discoverServicesBlue() {
             mModel.mBleManager.discoverServices();
+        }
+
+        public void isBleManagerDoScan(boolean v){
+            mModel.mBleManager.doScan(v);
         }
 
         public void setBluetoothDevice() {
