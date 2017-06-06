@@ -316,7 +316,7 @@ public class BraceletDataActivity extends AppBarMVPSwipeBackActivity<BraceletDat
                     if (Math.abs(rssi) <= 90) {//过滤掉信号强度小于-90的设备
                         if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
                             if (!StringUtils.isEmpty(myBraceletMac) && myBraceletMac.equals(device.getAddress())) {
-                                LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
+                                LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress() + "hashcode=" + mBleManager.hashCode());
                                 myBraceletMac = device.getAddress();
                                 connect();
                             }

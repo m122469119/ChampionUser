@@ -34,7 +34,6 @@ public class BleService extends Service {
     public static final UUID SERVER_UUID = UUID.fromString("C3E6FEA0-E966-1000-8000-BE99C223DF6A");
     private static final String TAG = "BleService";
     private BluetoothManager mBluetoothManager;
-
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothGatt mBluetoothGatt;
     private String mBluetoothDeviceAddress;
@@ -45,7 +44,6 @@ public class BleService extends Service {
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
     public final static String ACTION_GATT_CONNECTED = "com.liking.bluetooth.le.ACTION_GATT_CONNECTED";
-
     public final static String ACTION_GATT_DISCONNECTED = "com.liking.bluetooth.le.ACTION_GATT_DISCONNECTED";
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.liking.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
     public final static String ACTION_CHARACTERISTIC_CHANGED = "com.liking.bluetooth.le.ACTION_CHARACTERISTIC_CHANGED";
@@ -73,7 +71,6 @@ public class BleService extends Service {
         // After using a given device, you should make sure that BluetoothGatt.close() is called
         // such that resources are cleaned up properly.  In this particular example, close() is
         // invoked when the UI is disconnected from the Service.
-        close();
         return super.onUnbind(intent);
     }
 
@@ -86,6 +83,7 @@ public class BleService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        close();
     }
 
     /**
@@ -283,11 +281,16 @@ public class BleService extends Service {
      * released properly.
      */
     public void close() {
-        if (mBluetoothGatt == null) {
-            return;
+        if (mBluetoothGatt != null) {
+            mBluetoothGatt.close();
         }
-        mBluetoothGatt.close();
         mBluetoothGatt = null;
+        if (mBluetoothAdapter != null) {
+            if (mBluetoothAdapter.isDiscovering()) {
+                mBluetoothAdapter.cancelDiscovery();
+            }
+        }
+        mBluetoothAdapter = null;
     }
 
     /**

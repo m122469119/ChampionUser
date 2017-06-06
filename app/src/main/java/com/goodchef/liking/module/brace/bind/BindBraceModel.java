@@ -71,7 +71,7 @@ public class BindBraceModel {
                    if (!TextUtils.isEmpty(device.getName()) && !TextUtils.isEmpty(device.getAddress())) {
                        if (!StringUtils.isEmpty(mMyBraceletMac) && mMyBraceletMac.equals(device.getAddress())) {
                            LogUtils.i(TAG, "找到匹配的手环设备: " + mMyBraceletMac);
-                           LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress());
+                           LogUtils.i(TAG, "name = " + device.getName() + " mac = " + device.getAddress() + mBleManager.hashCode());
                            map.put(device.getAddress(), device);
                            setBlueToothDevicesList(callback);
                        }
@@ -139,6 +139,14 @@ public class BindBraceModel {
             }
         }
     }
+
+    public void release(){
+        if (mBleManager.isOpen() && mWriteCharacteristic != null) {
+            mBleManager.wirteCharacteristic(mWriteCharacteristic, BlueCommandUtil.getDisconnectBlueTooth());
+        }
+        mBleManager.release();
+    }
+
 
     /**
      * 发送绑定手环信息

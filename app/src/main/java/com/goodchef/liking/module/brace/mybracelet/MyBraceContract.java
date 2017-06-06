@@ -324,7 +324,7 @@ interface MyBraceContract {
 
 
         public void releaseBlue(){
-            mModel.mBleManager.release();
+            mModel.release();
         }
 
 

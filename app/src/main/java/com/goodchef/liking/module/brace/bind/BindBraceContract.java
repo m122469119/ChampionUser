@@ -245,7 +245,7 @@ public interface BindBraceContract {
          * 断开蓝牙连接，并且清理相关资源
          */
         public void releaseBle() {
-            mModel.mBleManager.release();
+            mModel.release();
         }
 
         public boolean isBleManagerOpen() {

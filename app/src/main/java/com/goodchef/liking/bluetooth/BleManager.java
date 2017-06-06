@@ -78,10 +78,11 @@ public class BleManager {
 
     public void bind() {
         Intent gattServiceIntent = new Intent(mContext, BleService.class);
-        mContext.bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        mContext.bindService(gattServiceIntent, mServiceConnection, Context.BIND_ADJUST_WITH_ACTIVITY | Context.BIND_AUTO_CREATE);
     }
 
     public void release() {
+        stopScan();
         if (mBleService != null)
             mBleService.disconnect();
         mBleScanner.setLeScanCallback(null);
@@ -89,16 +90,15 @@ public class BleManager {
             mContext.unbindService(mServiceConnection);
             mIsBind = false;
         }
+        mBleScanner.destroy();
+        mContext = null;
         mBleService = null;
         mBleScanner = null;
         mBleUtils = null;
     }
 
     public void doScan(boolean enable) {
-        if (mBleScanner ==null){
-            return;
-        }
-        if (mBleScanner.isScanning()) {
+        if (mBleScanner == null){
             return;
         }
         mBleScanner.scanLeDevice(enable);

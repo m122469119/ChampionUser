@@ -2,10 +2,13 @@ package com.goodchef.liking.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
+import android.support.annotation.RequiresApi;
 import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
 
@@ -19,7 +22,7 @@ import com.goodchef.liking.R;
 
 public class BleScanner {
     public static final int SCANNER_DELAY_MILLIS = 45000;
-    private final Context mContext;
+    private Context mContext;
     private boolean mIsScanning = false;
     private BluetoothAdapter mBluetoothAdapter;
     private Handler mHandler = new Handler(Looper.getMainLooper());
@@ -55,7 +58,6 @@ public class BleScanner {
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
             }, SCANNER_DELAY_MILLIS);
-
             mIsScanning = true;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
@@ -75,7 +77,10 @@ public class BleScanner {
         return mIsScanning;
     }
 
-    public void destory() {
+    public void destroy() {
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler = null;
+        mContext = null;
         mLeScanCallback = null;
         mBluetoothAdapter = null;
     }
