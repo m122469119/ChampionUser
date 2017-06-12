@@ -52,6 +52,7 @@ android {
             buildConfigField STRING, HTTP_HOST, "\"http://app.likingfit.com\""
             minifyEnabled true
             shrinkResources true
+            resValue "string", "app_name", "Liking健身"
             signingConfig signingConfigs.myConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -60,6 +61,7 @@ android {
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://testapp.likingfit.com\""
             applicationIdSuffix ".test"
+            resValue "string", "app_name", "Liking皮皮虾"
             signingConfig signingConfigs.myConfig
             proguardFiles 'proguard-rules.pro'
         }

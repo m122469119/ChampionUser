@@ -35,6 +35,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class LikingBaseObserver<T extends LikingResult> extends BaseRequestObserver<T> {
     private BaseView mView;
 
+    public static final int IS_START_HOME = 100;
     public LikingBaseObserver(BaseView view) {
         mView = view;
     }
@@ -57,12 +58,16 @@ public abstract class LikingBaseObserver<T extends LikingResult> extends BaseReq
         if (e instanceof ApiException) {
             switch (((ApiException) e).getErrorCode()) {
                 case LiKingRequestCode.LOGIN_TOKEN_INVALID:
+                    LoginInvalidMessage message = new LoginInvalidMessage();
+                    if (!ConstantUtils.BLANK_STRING.equals(LikingPreference.getToken())) {
+                        message.arg1 = IS_START_HOME;
+                    }
                     LikingPreference.setToken(ConstantUtils.BLANK_STRING);
                     LikingPreference.setNickName(ConstantUtils.BLANK_STRING);
                     LikingPreference.setUserPhone(ConstantUtils.BLANK_STRING);
                     LikingPreference.setIsNewUser(null);
                     LikingPreference.setUserIconUrl(ConstantUtils.BLANK_STRING);
-                    EventBus.getDefault().post(new LoginInvalidMessage());
+                    EventBus.getDefault().post(message);
                     break;
                 case LiKingRequestCode.REQEUST_TIMEOUT:
                     LikingBaseRequestHelper.isTimestampInit = false;

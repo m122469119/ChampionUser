@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Liking健身</string>
     <string name="activity_liking_home">Liking健身</string>
     <string name="tab_liking_home_my">我</string>
     <string name="tab_liking_home_recharge">购卡</string>

@@ -27,9 +27,10 @@
         android:id="@+id/layout_blank_view"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_below="@+id/layout_InfiniteViewPager"
         android:background="@color/app_content_background"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:layout_below="@+id/layout_InfiniteViewPager"
+        android:layout_toEndOf="@+id/layout_no_content" />
 
     <LinearLayout
         android:id="@+id/layout_self_courses_view"

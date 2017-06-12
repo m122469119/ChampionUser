@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -18,7 +19,9 @@ import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
 import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
+import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.utils.NumberConstantUtil;
 
@@ -46,12 +49,23 @@ public class LoginActivity extends AppBarMVPSwipeBackActivity<LoginContract.Pres
     @BindView(R.id.login_btn)
     Button mLoginBtn;//登录按钮
 
+
+
     private MyCountdownTime mMyCountdownTime;//60s 倒计时类
+
+    private boolean isStartHome = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Intent intent = getIntent();
+        if (intent != null) {
+            int start_home = intent.getIntExtra("start_home", -1);
+            if (start_home == (LikingBaseObserver.IS_START_HOME)) {
+                isStartHome = true;
+            }
+        }
         ButterKnife.bind(this);
         setTitle(R.string.login_btn_text);
         initData();
@@ -145,13 +159,14 @@ public class LoginActivity extends AppBarMVPSwipeBackActivity<LoginContract.Pres
         if (mMyCountdownTime != null) {
             mMyCountdownTime.cancel();
         }
+        if (isStartHome)
+             startActivity(new Intent(this, LikingHomeActivity.class));
     }
 
     @Override
     public void setPresenter() {
         mPresenter = new LoginContract.Presenter();
     }
-
 
     /**
      * 发送验证码按钮 60s倒计时

@@ -722,7 +722,9 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     }
 
     public void onEvent(LoginInvalidMessage message) {
-        startActivity(new Intent(this, LoginActivity.class));
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("start_home", message.arg1);
+        startActivity(intent);
     }
 
     @Override
