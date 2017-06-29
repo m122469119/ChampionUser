@@ -22,6 +22,7 @@
     <color name="lesson_details_gray_back">#888b9a</color>
     <color name="lesson_details_layer">#60000000</color>
     <color name="liking_green_btn_back">#34c86c</color>
+    <color name="liking_grey_btn_back">#edeff3</color>
     <color name="pressed">#EAEAEA</color>
     <color name="buy_card_green_text">#3dc66f</color>
     <color name="buy_card_prompt_background">#dee0e4</color>
@@ -91,5 +92,5 @@
     <color name="water_checked_bg">#f4fdf7</color>
     <color name="water_text_green">@color/c34c86c</color>
     <color name="water_text_grey">#596167</color>
-    <color name="water_line_color">#fffbf9</color>
+    <color name="water_line_color">#ecf0f3</color>
 </resources>

@@ -1,12 +1,15 @@
 package com.goodchef.liking.module.card.buy.confirm;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -96,6 +99,10 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
 
     @BindView(R.id.buy_card_agree_protocol)
     LinearLayout mAgreeProtocolTextView;
+
+    @BindView(R.id.buy_card_agree_protocol_checkbox)
+    CheckBox mAgreeProtocolCheckBox;
+
     @BindView(R.id.card_money)
     TextView mCardMoneyTextView;//
     @BindView(R.id.immediately_buy_btn)
@@ -150,6 +157,20 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 sendConfirmCardRequest();
             }
         });
+
+        mAgreeProtocolCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(BuyCardConfirmActivity.this, R.color.liking_green_btn_back));
+                    mImmediatelyBuyBtn.setClickable(true);
+                } else {
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(BuyCardConfirmActivity.this, R.color.liking_grey_btn_back));
+                    mImmediatelyBuyBtn.setClickable(false);
+                }
+            }
+        });
+        mAgreeProtocolCheckBox.setChecked(false);
     }
 
     /**
@@ -186,7 +207,13 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         }
     }
 
-    @OnClick({R.id.layout_alipay, R.id.layout_wechat, R.id.layout_coupons_courses, R.id.immediately_buy_btn, R.id.buy_card_agree_protocol, R.id.buy_card_notice})
+    @OnClick({R.id.layout_alipay,
+            R.id.layout_wechat,
+            R.id.layout_coupons_courses,
+            R.id.immediately_buy_btn,
+            R.id.buy_card_agree_protocol,
+            R.id.buy_card_notice,
+            R.id.buy_card_agree_protocol_text})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_alipay:
@@ -230,6 +257,16 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 }
                 break;
             case R.id.buy_card_agree_protocol:
+
+                mAgreeProtocolCheckBox.setChecked(!mAgreeProtocolCheckBox.isChecked());
+
+                break;
+            case R.id.buy_card_notice:
+                final AnnouncementDialog dialog = new AnnouncementDialog(this, noticeActivity);
+                dialog.setButtonDismiss();
+                break;
+
+            case R.id.buy_card_agree_protocol_text:
                 BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
                 if (baseConfigResult != null) {
                     BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
@@ -240,10 +277,6 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                         }
                     }
                 }
-                break;
-            case R.id.buy_card_notice:
-                final AnnouncementDialog dialog = new AnnouncementDialog(this, noticeActivity);
-                dialog.setButtonDismiss();
                 break;
             default:
         }

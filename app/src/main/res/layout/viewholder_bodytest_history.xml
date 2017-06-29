@@ -12,6 +12,7 @@
         android:layout_marginTop="@dimen/spacing_12dp"
         android:background="#333"
         android:gravity="center"
+        android:orientation="vertical"
         android:tag="Bottom2">
 
         <TextView

@@ -88,4 +88,10 @@
         <attr name="clickToClose" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="OutTextView">
+        <attr name="out_text" format="string"/>
+        <attr name="out_textColor" format="color"/>
+        <attr name="out_textSize" format="dimension"/>
+
+    </declare-styleable>
 </resources>

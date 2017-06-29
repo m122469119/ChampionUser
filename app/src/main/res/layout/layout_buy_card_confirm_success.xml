@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,15 +31,14 @@
                     android:ellipsize="end"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:textColor="@color/white"
-                    />
+                    android:textColor="@color/white" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/app_bar_back_white"/>
+                    android:src="@drawable/app_bar_back_white" />
             </RelativeLayout>
 
 
@@ -63,7 +63,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="@string/gymName"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_small" />
 
                     <TextView
                         android:id="@+id/gym_name"
@@ -74,7 +74,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:textColor="@color/add_minus_dishes_text"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_small" />
 
                 </RelativeLayout>
 
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@color/line"/>
+                    android:background="@color/line" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                         android:gravity="left"
                         android:text="@string/gymAddress"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_small" />
 
                     <TextView
                         android:id="@+id/gym_address"
@@ -112,7 +112,7 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:textColor="@color/add_minus_dishes_text"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_small" />
 
                 </LinearLayout>
 
@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@color/line"/>
+                    android:background="@color/line" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="@string/period_of_validity"
                         android:textColor="@color/lesson_details_dark_back"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_small" />
 
                     <TextView
                         android:id="@+id/period_of_validity"
@@ -147,27 +147,71 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:textColor="@color/add_minus_dishes_text"
-                        android:textSize="@dimen/textsize_small"/>
+                        android:textSize="@dimen/textsize_small" />
 
                 </RelativeLayout>
             </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/line"/>
+                android:background="@color/line" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/card_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/line"/>
+                android:background="@color/line" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_card_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/give_water_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="@string/give_water_time"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/textsize_small" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/give_water_time"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="@string/give_water_uknow"
+                    android:textColor="#888b9a"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:text="200min"
+                    android:textColor="@color/liking_green_btn_back"
+                    android:textSize="@dimen/textsize_small" />
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/layout_coupons_courses"
@@ -187,7 +231,7 @@
                     android:paddingTop="10dp"
                     android:text="@string/please_select_coupons"
                     android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="@dimen/textsize_small"/>
+                    android:textSize="@dimen/textsize_small" />
 
                 <ImageView
                     android:id="@+id/bg_right_arrow"
@@ -198,7 +242,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:paddingRight="10dp"
-                    android:src="@drawable/bg_right_arrow"/>
+                    android:src="@drawable/bg_right_arrow" />
 
                 <TextView
                     android:id="@+id/select_coupon_title"
@@ -208,11 +252,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@+id/bg_right_arrow"
                     android:textColor="@color/liking_green_btn_back"
-                    android:textSize="@dimen/textsize_small"/>
+                    android:textSize="@dimen/textsize_small" />
             </RelativeLayout>
 
-            <include
-                layout="@layout/layout_pay"/>
+            <include layout="@layout/layout_pay" />
 
             <LinearLayout
                 android:id="@+id/buy_card_agree_protocol"
@@ -220,24 +263,48 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
                 android:paddingTop="15dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/buy_card_agree"
-                    android:textColor="@color/lesson_details_gray_back"
-                    android:textSize="13sp"/>
+                <CheckBox
+                    android:id="@+id/buy_card_agree_protocol_checkbox"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:button="@null"
+                    android:background="@drawable/agree_check"
+                    android:clickable="false"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/vip_agreement"
+                    android:text="@string/i_read_agreement"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/buy_card_agree_protocol_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/buy_card_agreement"
                     android:textColor="@color/add_minus_dishes_text"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
             </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="25dp"
+                android:gravity="center"
+                android:textColor="#888b8a"
+                android:textSize="12sp"
+                android:text="@string/likingfit_uknow"
+                />
+
 
         </LinearLayout>
 
@@ -245,32 +312,55 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="49dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_card_background"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/card_money"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="left|center"
             android:paddingLeft="10dp"
+            android:gravity="center"
             android:textColor="@color/liking_green_btn_back"
-            android:textSize="@dimen/textsize_small"
-            android:textStyle="bold"/>
+            android:textSize="16sp"
+            android:text="¥1233"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="¥"
+            android:textColor="#888b9a"
+            android:textStyle="bold" />
+
+        <com.goodchef.liking.widgets.OutTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:out_text="1111"
+            app:out_textSize="13sp"
+            app:out_textColor="#888b9a"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
 
         <TextView
             android:id="@+id/immediately_buy_btn"
-            android:layout_width="match_parent"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="@color/liking_green_btn_back"
+            android:background="@color/liking_grey_btn_back"
             android:gravity="center"
             android:text="@string/immediately_buy_btn"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_small"/>
+            android:textSize="@dimen/textsize_small" />
     </LinearLayout>
 
 </RelativeLayout>

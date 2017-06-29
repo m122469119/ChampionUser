@@ -68,7 +68,7 @@
     <string name="immediately_pay">立即支付</string>
 
     <string name="dialog_message_clear_shopping_cart">您是否确定清空购物车?</string>
-    <string name="please_select_coupons">请选择优惠券</string>
+    <string name="please_select_coupons">优惠券</string>
     <string name="title_dishes_confirm_order">确认订单</string>
 
     <string name="tab_title_dishes">营养餐</string>
@@ -619,4 +619,9 @@
     <string name="water_uknow">建议您根据会员卡有效期购买相应水费时间(会员卡过期则水费自动失效);\r\n 若存在疑问，请联系健身房处理;\r\n 水费一经购买，不予退款;</string>
     <string name="rmb">¥</string>
     <string name="water_recharge_time">选择充值时长</string>
+    <string name="give_water_uknow">若在会员卡有效期内未使用完，系统将会清空处理</string>
+    <string name="give_water_time">赠送洗澡时间</string>
+    <string name="buy_card_agreement">《购卡协议》</string>
+    <string name="i_read_agreement">我已阅读并同意</string>
+    <string name="likingfit_uknow">*LikingFit申明：禁售任何形式超过1年的会员卡\r\n造成的任何损失和品牌无关*</string>
 </resources>
