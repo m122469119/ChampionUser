@@ -13,6 +13,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
 import com.goodchef.liking.utils.TypefaseUtil;
+import com.goodchef.liking.widgets.SwipeLayout;
 
 /**
  * 说明:
@@ -25,6 +26,19 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
 
     private Context context;
 
+
+    private OnItemDeleteClickListener mItemDeleteClickListener;
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setItemDeleteClickListener(OnItemDeleteClickListener mItemDeleteClickListener) {
+        this.mItemDeleteClickListener = mItemDeleteClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
     public BodyTestHistoryAdapter(Context context) {
         super(context);
         this.context = context;
@@ -35,6 +49,17 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
         View view = LayoutInflater.from(context).inflate(R.layout.viewholder_bodytest_history, parent, false);
         return new BodyTestHistoryViewHolder(view);
     }
+
+
+    public interface OnItemDeleteClickListener {
+        void onItemDelete(SwipeLayout layout, View view, BodyHistoryResult.BodyHistoryData.ListData data, int pos);
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(SwipeLayout layout, View view, BodyHistoryResult.BodyHistoryData.ListData data, int pos);
+    }
+
 
     class BodyTestHistoryViewHolder extends BaseRecycleViewHolder<BodyHistoryResult.BodyHistoryData.ListData> {
         CardView mCardView;
@@ -57,6 +82,10 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
 
         TextView mBodyMeasureTimeTextView;
 
+        SwipeLayout mSwipelayout;
+
+        View mDeleteView, mBodytestContent;
+
         public BodyTestHistoryViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.bodytest_history_cardView);
@@ -77,10 +106,15 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
             mWhrChineseNameTextView = (TextView) itemView.findViewById(R.id.whr_chinese_name_TextView);
 
             mBodyMeasureTimeTextView = (TextView) itemView.findViewById(R.id.body_measure_time_TextView);
+
+            mDeleteView = itemView.findViewById(R.id.delete);
+            mBodytestContent = itemView.findViewById(R.id.bodytest_content);
+            mSwipelayout = (SwipeLayout) itemView.findViewById(R.id.bodytest_swipelayout);
+
         }
 
         @Override
-        public void bindViews(BodyHistoryResult.BodyHistoryData.ListData object) {
+        public void bindViews(final BodyHistoryResult.BodyHistoryData.ListData object) {
             setTextViewType();
             BodyHistoryResult.BodyHistoryData.ListData.BmiData bmiData = object.getBmi();
             BodyHistoryResult.BodyHistoryData.ListData.FatRateData fatRateData = object.getFatRate();
@@ -106,6 +140,31 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
                 mWhrChineseNameTextView.setText(waistHipData.getChineseName());
             }
             mBodyMeasureTimeTextView.setText(context.getString(R.string.body_measure_time) + object.getBodyTime());
+
+
+            if (mItemDeleteClickListener != null) {
+                mDeleteView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mItemDeleteClickListener.onItemDelete(mSwipelayout, mDeleteView, object, getDataList().indexOf(object));
+                    }
+                });
+            } else {
+                mDeleteView.setOnClickListener(null);
+            }
+
+            if (mOnItemClickListener != null) {
+                mBodytestContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOnItemClickListener.onItemClick(mSwipelayout, mBodytestContent, object, getDataList().indexOf(object));
+                    }
+                });
+            } else {
+                mBodytestContent.setOnClickListener(null);
+            }
+
+            mSwipelayout.close(false, false);
         }
 
         private void setTextViewType() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/standard_my_text"
@@ -25,16 +25,30 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:textColor="@color/lesson_details_dark_back"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
+
 
         <ImageView
+            android:id="@+id/standard_my_arrow"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:src="@drawable/bg_right_arrow"/>
+            android:src="@drawable/bg_right_arrow" />
+
+        <TextView
+            android:id="@+id/standard_my_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/standard_my_arrow"
+            android:text="剩余时间10min"
+            android:textColor="@color/liking_green_btn_back"
+            android:visibility="gone"
+            android:textSize="15sp" />
 
     </RelativeLayout>
 
@@ -43,5 +57,5 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="10dp"
-        android:background="@color/action_bar_gray"/>
+        android:background="@color/action_bar_gray" />
 </LinearLayout>

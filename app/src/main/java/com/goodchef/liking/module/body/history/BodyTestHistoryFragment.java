@@ -3,6 +3,7 @@ package com.goodchef.liking.module.body.history;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BodyTestHistoryAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
 import com.goodchef.liking.module.bodytest.BodyTestDataActivity;
+import com.goodchef.liking.widgets.SwipeLayout;
 
 /**
  * 说明:
@@ -52,10 +54,21 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
             mBodyTestHistoryAdapter = new BodyTestHistoryAdapter(getActivity());
         }
         setRecyclerAdapter(mBodyTestHistoryAdapter);
-        mBodyTestHistoryAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+
+        mBodyTestHistoryAdapter.setItemDeleteClickListener(new BodyTestHistoryAdapter.OnItemDeleteClickListener() {
             @Override
-            public void onItemClick(android.view.View view, int position) {
-                BodyHistoryResult.BodyHistoryData.ListData object = mBodyTestHistoryAdapter.getDataList().get(position);
+            public void onItemDelete(SwipeLayout layout, View view, BodyHistoryResult.BodyHistoryData.ListData data, int pos) {
+                layout.close();
+                mBodyTestHistoryAdapter.getDataList().remove(pos);
+                mBodyTestHistoryAdapter.notifyItemRemoved(pos);
+            }
+
+        });
+
+        mBodyTestHistoryAdapter.setOnItemClickListener(new BodyTestHistoryAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(SwipeLayout layout, View view, BodyHistoryResult.BodyHistoryData.ListData data, int pos) {
+                BodyHistoryResult.BodyHistoryData.ListData object = mBodyTestHistoryAdapter.getDataList().get(pos);
                 if (object != null) {
                     String bodyId = object.getBodyId();
                     Intent intent = new Intent(getActivity(), BodyTestDataActivity.class);
@@ -63,11 +76,6 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
                     intent.putExtra(BodyTestDataActivity.SOURCE, "history");
                     startActivity(intent);
                 }
-            }
-
-            @Override
-            public boolean onItemLongClick(android.view.View view, int position) {
-                return false;
             }
         });
     }

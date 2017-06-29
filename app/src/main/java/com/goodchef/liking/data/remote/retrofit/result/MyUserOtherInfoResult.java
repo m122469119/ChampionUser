@@ -56,6 +56,16 @@ public class MyUserOtherInfoResult extends LikingResult {
         private String uuid;
         @SerializedName("today_min")
         private String todayMin;
+        @SerializedName("water")
+        private WaterData waterData;
+
+        public WaterData getWaterData() {
+            return waterData;
+        }
+
+        public void setWaterData(WaterData waterData) {
+            this.waterData = waterData;
+        }
 
         public String getIsVip() {
             return isVip;
@@ -121,7 +131,43 @@ public class MyUserOtherInfoResult extends LikingResult {
             this.todayMin = todayMin;
         }
 
-        public static class CardData {
+        public static class CardData extends Data {
         }
+
+        public static class WaterData extends Data {
+
+
+            public static final int FREE_WATER = 0;
+            public static final int CHARGE_WATER = 1;
+
+            /**
+             * water_status : 0
+             * water_time : 20
+             */
+
+            @SerializedName("water_status")
+            private int water_status;
+            @SerializedName("water_time")
+            private int water_time;
+
+            public int getWater_status() {
+                return water_status;
+            }
+
+            public void setWater_status(int water_status) {
+                this.water_status = water_status;
+            }
+
+            public int getWater_time() {
+                return water_time;
+            }
+
+            public void setWater_time(int water_time) {
+                this.water_time = water_time;
+            }
+        }
+
     }
+
+
 }

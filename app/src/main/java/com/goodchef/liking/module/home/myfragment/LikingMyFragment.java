@@ -34,6 +34,7 @@ import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.home.myfragment.water.WaterRateActivity;
 import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
 import com.goodchef.liking.module.login.LoginActivity;
@@ -95,6 +96,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mSelfHelpGroupLayout;//自助团体课
     private LinearLayout mBindBraceletLinearLayout;//绑定手环
+    private LinearLayout mWaterRateLinearLayout;   //水费充值
     private LinearLayout mBodyScoreLayout;//体测评分
     private LinearLayout mEverydaySportLayout;//每日运动
     private LinearLayout mTrainLayout;//今日训练
@@ -102,10 +104,15 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     private TextView mEveryDataSportData;//每日运动
     private TextView mTrainTimeData;//训练时间
 
+
+    private TextView mWaterSurplus; //剩余水费时间
+
+
     private boolean isRetryRequest = true;
     private Typeface mTypeface;//字体
     private String mBraceletMac;//手环mac地址
     private String UUID;//蓝牙UUID
+
 
     @Nullable
     @Override
@@ -201,6 +208,24 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         } else {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
         }
+
+
+        //TODO 设置显示开关
+//        if (userOtherInfoData.getCard() != null) {
+//            if (userOtherInfoData.getWaterData().getWater_status() == MyUserOtherInfoResult.UserOtherInfoData.WaterData.CHARGE_WATER) {
+//                mWaterRateLinearLayout.setVisibility(View.VISIBLE);
+//                mWaterSurplus.setVisibility(View.VISIBLE);
+//                mWaterSurplus.setText(userOtherInfoData.getWaterData().getWater_time());
+//            } else  {
+//                mWaterRateLinearLayout.setVisibility(View.GONE);
+//                mWaterSurplus.setVisibility(View.GONE);
+//            }
+//        }
+
+        mWaterRateLinearLayout.setVisibility(View.VISIBLE);
+        mWaterSurplus.setVisibility(View.VISIBLE);
+
+
         setHeadPersonData();
     }
 
@@ -270,6 +295,10 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         mBecomeTeacherLayout = (LinearLayout) view.findViewById(R.id.layout_become_teacher);
         mSelfHelpGroupLayout = (LinearLayout) view.findViewById(R.id.layout_self_help_group_gym);
         mBindBraceletLinearLayout = (LinearLayout) view.findViewById(R.id.layout_bind_bracelet);
+
+        mWaterRateLinearLayout = (LinearLayout) view.findViewById(R.id.layout_water_rate);
+        mWaterSurplus = (TextView) mWaterRateLinearLayout.findViewById(R.id.standard_my_label);
+
         mBodyScoreLayout = (LinearLayout) view.findViewById(R.id.layout_body_score);
         mEverydaySportLayout = (LinearLayout) view.findViewById(R.id.layout_everyday_sport);
         mTrainLayout = (LinearLayout) view.findViewById(R.id.layout_today_data);
@@ -293,6 +322,9 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         } else {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
         }
+        setMySettingCard(mWaterRateLinearLayout, R.string.layout_water_rate, true);
+        mWaterRateLinearLayout.setVisibility(View.GONE);
+        mWaterSurplus.setVisibility(View.GONE);
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, false);
     }
@@ -358,7 +390,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             R.id.layout_contact_join, R.id.layout_become_teacher,
             R.id.layout_more, R.id.layout_self_help_group_gym,
             R.id.layout_body_score, R.id.layout_bind_bracelet,
-            R.id.layout_everyday_sport})
+            R.id.layout_water_rate, R.id.layout_everyday_sport})
     public void onClick(android.view.View view) {
         switch (view.getId()) {
             case R.id.layout_today_data://我的训练数据
@@ -445,6 +477,9 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 break;
             case R.id.layout_bind_bracelet://绑定手环
                 mPresenter.jumpBraceletActivity(getActivity(), this,  UUID, mBraceletMac);
+                break;
+            case R.id.layout_water_rate: //水费充值
+                startActivity(WaterRateActivity.class);
                 break;
             case R.id.layout_everyday_sport://手环数据
                 mPresenter.jumpBracelet(getActivity(), UUID, mBraceletMac);

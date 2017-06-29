@@ -90,16 +90,18 @@ dependencies {
     compile project(path: ':SoybeanFramework:map')
     compile project(path: ':SoybeanFramework:share')
     compile project(path: ':SoybeanFramework:jpush')
-    compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.2' // 适用于Android的中国地区词典
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.android.support:multidex:1.0.1'
+    // 适用于Android的中国地区词典
     //tinker
     compile("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
     provided("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
+    compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.2'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 
 

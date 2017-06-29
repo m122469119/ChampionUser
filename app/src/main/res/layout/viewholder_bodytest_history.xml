@@ -1,235 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    android:id="@+id/bodytest_history_cardView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/spacing_12dp"
-                                    android:layout_marginRight="@dimen/spacing_12dp"
-                                    android:layout_marginTop="@dimen/spacing_12dp"
-                                    android:orientation="vertical"
-                                    card_view:cardCornerRadius="0dp"
-                                    card_view:cardPreventCornerOverlap="true">
+<com.goodchef.liking.widgets.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bodytest_swipelayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:id="@+id/delete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/spacing_12dp"
+        android:background="#333"
+        android:gravity="center"
+        android:tag="Bottom2">
 
         <TextView
-            android:id="@+id/bodytest_history_grade_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/spacing_12dp"
-            android:textColor="@color/liking_green_btn_back"
-            android:textSize="@dimen/textsize_huge"
-            android:textStyle="bold"
-            />
-
+            android:text="删"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/body_test_grade"
-            android:layout_marginTop="@dimen/spacing_4dp"
-            android:layout_marginBottom="@dimen/spacing_12dp"
-            android:textColor="@color/c969a9e"
-            android:textSize="@dimen/textsize_small"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12dp"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/spacing_12dp"
-            android:paddingRight="@dimen/spacing_12dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/body_index_number_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/liking_green_btn_back"
-                        android:textSize="@dimen/textsize_huge"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        android:id="@+id/body_index_number_unit_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="kg/m²"
-                        android:textColor="@color/liking_green_btn_back"
-                        android:textSize="@dimen/textsize_small"
-                        />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/body_index_bmi_TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:text="BMI"
-                    android:textColor="@color/lesson_details_gray_back"
-                    android:textSize="@dimen/textsize_15"
-                    android:textStyle="bold"
-                    />
-
-                <TextView
-                    android:id="@+id/bmi_chinese_name_TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:text="@string/body_quality_score"
-                    android:textColor="@color/c969a9e"
-                    android:textSize="@dimen/textsize_small"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/body_fat_number_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/liking_green_btn_back"
-                        android:textSize="@dimen/textsize_huge"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        android:id="@+id/body_fat_number_unit_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="%"
-                        android:textColor="@color/liking_green_btn_back"
-                        android:textSize="@dimen/textsize_small"
-                        />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/body_fat_TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:text="PBF"
-                    android:textColor="@color/lesson_details_gray_back"
-                    android:textSize="@dimen/textsize_15"
-                    android:textStyle="bold"
-                    />
-
-                <TextView
-                    android:id="@+id/fat_chinese_name_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:text="@string/fat_chinese_name"
-                    android:textColor="@color/c969a9e"
-                    android:textSize="@dimen/textsize_small"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/body_whr_number_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/liking_green_btn_back"
-                        android:textSize="@dimen/textsize_huge"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        android:id="@+id/body_whr_unit_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text=""
-                        android:textColor="@color/liking_green_btn_back"
-                        android:textSize="@dimen/textsize_small"
-                        />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/body_whr_TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:text="WHR"
-                    android:textColor="@color/lesson_details_gray_back"
-                    android:textSize="@dimen/textsize_15"
-                    android:textStyle="bold"
-                    />
-
-                <TextView
-                    android:id="@+id/whr_chinese_name_TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4dp"
-                    android:gravity="center"
-                    android:text="@string/whr_chinese_name"
-                    android:textColor="@color/c969a9e"
-                    android:textSize="@dimen/textsize_small"
-                    />
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/body_measure_time_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_8dp"
-            android:layout_marginTop="@dimen/spacing_8dp"
-            android:gravity="center"
-            android:padding="@dimen/spacing_12dp"
-            android:textColor="@color/c969a9e"
-            android:textSize="@dimen/textsize_small"
-            />
-
+            android:text="除"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+
+    <RelativeLayout
+        android:id="@+id/bodytest_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/bodytest_history_cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_12dp"
+            android:layout_marginRight="@dimen/spacing_12dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:orientation="vertical"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardPreventCornerOverlap="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bodytest_history_grade_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:gravity="center"
+                    android:textColor="@color/liking_green_btn_back"
+                    android:textSize="@dimen/textsize_huge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_4dp"
+                    android:gravity="center"
+                    android:text="@string/body_test_grade"
+                    android:textColor="@color/c969a9e"
+                    android:textSize="@dimen/textsize_small" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/spacing_12dp"
+                    android:paddingRight="@dimen/spacing_12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/body_index_number_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/liking_green_btn_back"
+                                android:textSize="@dimen/textsize_huge"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/body_index_number_unit_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="kg/m²"
+                                android:textColor="@color/liking_green_btn_back"
+                                android:textSize="@dimen/textsize_small" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/body_index_bmi_TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:text="BMI"
+                            android:textColor="@color/lesson_details_gray_back"
+                            android:textSize="@dimen/textsize_15"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/bmi_chinese_name_TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:text="@string/body_quality_score"
+                            android:textColor="@color/c969a9e"
+                            android:textSize="@dimen/textsize_small" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/body_fat_number_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/liking_green_btn_back"
+                                android:textSize="@dimen/textsize_huge"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/body_fat_number_unit_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="%"
+                                android:textColor="@color/liking_green_btn_back"
+                                android:textSize="@dimen/textsize_small" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/body_fat_TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:text="PBF"
+                            android:textColor="@color/lesson_details_gray_back"
+                            android:textSize="@dimen/textsize_15"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/fat_chinese_name_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:text="@string/fat_chinese_name"
+                            android:textColor="@color/c969a9e"
+                            android:textSize="@dimen/textsize_small" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/body_whr_number_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/liking_green_btn_back"
+                                android:textSize="@dimen/textsize_huge"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/body_whr_unit_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/liking_green_btn_back"
+                                android:textSize="@dimen/textsize_small" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/body_whr_TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:text="WHR"
+                            android:textColor="@color/lesson_details_gray_back"
+                            android:textSize="@dimen/textsize_15"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/whr_chinese_name_TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_4dp"
+                            android:gravity="center"
+                            android:text="@string/whr_chinese_name"
+                            android:textColor="@color/c969a9e"
+                            android:textSize="@dimen/textsize_small" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/body_measure_time_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_8dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
+                    android:gravity="center"
+                    android:padding="@dimen/spacing_12dp"
+                    android:textColor="@color/c969a9e"
+                    android:textSize="@dimen/textsize_small" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</com.goodchef.liking.widgets.SwipeLayout>
