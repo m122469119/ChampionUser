@@ -1,5 +1,7 @@
 package com.goodchef.liking.module.home.myfragment.water;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
@@ -17,6 +20,7 @@ import com.goodchef.liking.adapter.WaterRateAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
 import com.goodchef.liking.eventmessages.WaterRateActivityMessage;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.widgets.itemdecoration.DividerGridItemDecoration;
 
 import java.util.List;
@@ -119,10 +123,49 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.immediately_buy_btn:
-                mPresenter.buyWaterRate(this);
+                mPresenter.checkIsShowDialog();
                 break;
         }
     }
+
+
+    /***
+     * 确认购卡信息对话框
+     */
+    @Override
+    public void showSubmitDialog() {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        android.view.View view = LayoutInflater.from(this).inflate(R.layout.dialog_view_buy_card_submit, null, false);
+        TextView mGymTextView = (TextView) view.findViewById(R.id.buy_card_gym_TextView);
+        TextView mCardTypeTextView = (TextView) view.findViewById(R.id.buy_card_type_TextView);
+        TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
+
+        TextView mBuyCardType = (TextView) view.findViewById(R.id.buy_card_type_prompt_TextView);
+
+        mBuyCardType.setText(getString(R.string.water_time));
+
+
+        mGymTextView.setText(mGymName.getText());
+        mCardTypeTextView.setText(mPresenter.getCheckedDate().getWater_time() + getString(R.string.min));
+        mMoneyTextView.setText(getString(R.string.money_symbol) + mPresenter.getCheckedDate().getWater_price());
+
+        builder.setCustomView(view);
+        builder.setNegativeButton(R.string.again_think, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.buy_card_confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPresenter.buyWaterRate(WaterRateActivity.this);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
 
     @Override
     public void setPresenter() {
@@ -145,6 +188,11 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
         mGymName.setText(data.getGym_name());
         mResidueWaterTime.setText(data.getResidue_water_time() + getString(R.string.min));
         mPresenter.setWaterAdapter();
+    }
+
+    @Override
+    public void startLoginActivity() {
+        startActivity(LoginActivity.class);
     }
 
 

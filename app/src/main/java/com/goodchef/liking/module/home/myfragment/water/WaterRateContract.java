@@ -8,19 +8,18 @@ import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.data.remote.rxobserver.StateViewLoadingObserver;
 import com.goodchef.liking.module.pay.PayModel;
-import com.goodchef.liking.wxapi.WXEntryActivity;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 
 /**
@@ -30,13 +29,16 @@ import io.reactivex.functions.Predicate;
  * @version 1.0.0
  */
 
-public interface WaterRateContract {
+interface WaterRateContract {
     interface View extends BaseStateView {
+        void showSubmitDialog();
+
         void setWaterAdapter(List<WaterRateResult.DataBean.WaterListBean> list);
 
         void updateInfoData(WaterRateResult.DataBean data);
-    }
 
+        void startLoginActivity();
+    }
 
 
     class Presenter extends RxBasePresenter<WaterRateContract.View> {
@@ -84,7 +86,7 @@ public interface WaterRateContract {
             });
         }
 
-        public void setWaterAdapter() {
+        void setWaterAdapter() {
             mView.setWaterAdapter(mModel.mWaterRateResultList);
         }
 
@@ -93,8 +95,20 @@ public interface WaterRateContract {
             setWaterAdapter();
         }
 
-        public void buyWaterRate(Context context) {
+
+        void checkIsShowDialog() {
             Observable.just("")
+                    .filter(new Predicate<String>() {
+                        @Override
+                        public boolean test(String s) throws Exception {
+                            if (LikingPreference.isLogin()) {
+                                return true;
+                            } else {
+                                mView.startLoginActivity();
+                            }
+                            return false;
+                        }
+                    })
                     .filter(new Predicate<String>() {
                         @Override
                         public boolean test(String s) throws Exception {
@@ -104,13 +118,17 @@ public interface WaterRateContract {
                             }
                             return true;
                         }
-                    })
-                    .flatMap(new Function<String, ObservableSource<WaterOrderResult>>() {
-                        @Override
-                        public ObservableSource<WaterOrderResult> apply(String s) throws Exception {
-                            return mModel.buyWaterRate();
-                        }
-                    })
+                    }).subscribe(new Consumer<String>() {
+                @Override
+                public void accept(String s) throws Exception {
+                    mView.showSubmitDialog();
+                }
+            });
+        }
+
+
+        void buyWaterRate(Context context) {
+            mModel.buyWaterRate()
                     .subscribe(addObserverToCompositeDisposable(new ProgressObserver<WaterOrderResult>(context, R.string.loading_data, mView) {
                         @Override
                         public void onNext(WaterOrderResult value) {
@@ -123,29 +141,29 @@ public interface WaterRateContract {
                         }
                     }));
 
-
         }
 
-        public void savePayWay(int payWay) {
+        void savePayWay(int payWay) {
             mModel.savePayWay(payWay);
         }
 
-        public void getWaterAll() {
+        void getWaterAll() {
             mModel.getWaterAllData()
-                 .subscribe(addObserverToCompositeDisposable(new StateViewLoadingObserver<WaterRateResult>(mView) {
-                     @Override
-                     public void onNext(WaterRateResult value) {
-                         super.onNext(value);
-                         if (value == null) return;
-                         if (value.getData() != null) {
-                             mView.updateInfoData(value.getData());
-                         }
-                     }
-            }));
+                    .subscribe(addObserverToCompositeDisposable(new StateViewLoadingObserver<WaterRateResult>(mView) {
+                        @Override
+                        public void onNext(WaterRateResult value) {
+                            super.onNext(value);
+                            if (value == null) return;
+                            if (value.getData() != null) {
+                                mView.updateInfoData(value.getData());
+                            }
+                        }
+                    }));
 
         }
 
-
-
+        WaterRateResult.DataBean.WaterListBean getCheckedDate() {
+            return mModel.mWaterRateResultList.get(mModel.mCheckedPos);
+        }
     }
 }
