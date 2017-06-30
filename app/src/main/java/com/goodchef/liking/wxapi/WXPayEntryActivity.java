@@ -14,6 +14,7 @@ import com.goodchef.liking.eventmessages.BuyGroupCoursesWechatMessage;
 import com.goodchef.liking.eventmessages.DishesWechatPayMessage;
 import com.goodchef.liking.eventmessages.MyDishesDetailsWechatMessage;
 import com.goodchef.liking.eventmessages.MyDishesListWechatMessage;
+import com.goodchef.liking.eventmessages.WaterRateActivityMessage;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -35,11 +36,12 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     public static final int PAY_TYPE_MY_DISHES_DETAILS = 4444;
     public static final int PAY_TYPE_BUY_CARD = 5555;//买卡
     public static final int PAY_TYPE_BUY_GROUP_COURSES = 6666;//购买付费团体课
-
+    public static final int PAY_TYPE_BUY_WATER = 7777; //购买水卡
 
     private IWXAPI api;
     public static int payType;
     public static String orderId;
+
 
 
     @Override
@@ -109,13 +111,20 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     dialog.dismiss();
                     orderId = "";
                     finish();
-                }else if (payType == PAY_TYPE_BUY_CARD){
+                } else if (payType == PAY_TYPE_BUY_CARD){
                     postEvent(new BuyCardWeChatMessage(paySuccess));
                     dialog.dismiss();
                     orderId = "";
                     finish();
-                }else if (payType == PAY_TYPE_BUY_GROUP_COURSES){
+                } else if (payType == PAY_TYPE_BUY_GROUP_COURSES){
                     postEvent(new BuyGroupCoursesWechatMessage(paySuccess));
+                    dialog.dismiss();
+                    orderId = "";
+                    finish();
+                } else if (payType == PAY_TYPE_BUY_WATER) {
+                    WaterRateActivityMessage waterMessage = new WaterRateActivityMessage(WaterRateActivityMessage.WECHAT_PAY);
+                    waterMessage.obj1 = paySuccess;
+                    postEvent(waterMessage);
                     dialog.dismiss();
                     orderId = "";
                     finish();

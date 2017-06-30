@@ -624,4 +624,5 @@
     <string name="buy_card_agreement">《购卡协议》</string>
     <string name="i_read_agreement">我已阅读并同意</string>
     <string name="likingfit_uknow">*LikingFit申明：禁售任何形式超过1年的会员卡\r\n造成的任何损失和品牌无关*</string>
+    <string name="time_remaining">剩余时间</string>
 </resources>

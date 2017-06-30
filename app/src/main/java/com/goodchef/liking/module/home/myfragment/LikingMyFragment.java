@@ -209,22 +209,19 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
         }
 
-
-        //TODO 设置显示开关
-//        if (userOtherInfoData.getCard() != null) {
-//            if (userOtherInfoData.getWaterData().getWater_status() == MyUserOtherInfoResult.UserOtherInfoData.WaterData.CHARGE_WATER) {
-//                mWaterRateLinearLayout.setVisibility(View.VISIBLE);
-//                mWaterSurplus.setVisibility(View.VISIBLE);
-//                mWaterSurplus.setText(userOtherInfoData.getWaterData().getWater_time());
-//            } else  {
-//                mWaterRateLinearLayout.setVisibility(View.GONE);
-//                mWaterSurplus.setVisibility(View.GONE);
-//            }
-//        }
-
-        mWaterRateLinearLayout.setVisibility(View.VISIBLE);
-        mWaterSurplus.setVisibility(View.VISIBLE);
-
+        if (userOtherInfoData.getWaterData() != null) {
+            if (userOtherInfoData.getWaterData().getWater_status() == MyUserOtherInfoResult.UserOtherInfoData.WaterData.CHARGE_WATER) {
+                mWaterRateLinearLayout.setVisibility(View.VISIBLE);
+                mWaterSurplus.setVisibility(View.VISIBLE);
+                mWaterSurplus.setText( getString(R.string.time_remaining)+userOtherInfoData.getWaterData().getWater_time() + getString(R.string.min));
+            } else  {
+                mWaterRateLinearLayout.setVisibility(View.GONE);
+                mWaterSurplus.setVisibility(View.GONE);
+            }
+        } else  {
+            mWaterRateLinearLayout.setVisibility(View.GONE);
+            mWaterSurplus.setVisibility(View.GONE);
+        }
 
         setHeadPersonData();
     }

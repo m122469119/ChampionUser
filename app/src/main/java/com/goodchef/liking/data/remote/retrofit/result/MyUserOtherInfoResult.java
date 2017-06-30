@@ -3,6 +3,8 @@ package com.goodchef.liking.data.remote.retrofit.result;
 import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * 说明:
  * Author : shaozucheng
@@ -132,6 +134,116 @@ public class MyUserOtherInfoResult extends LikingResult {
         }
 
         public static class CardData extends Data {
+
+            /**
+             * card_no : 4704402099455160135
+             * buy_time : 2017-02-14
+             * start_time : 2017-04-25
+             * end_time : 2017-11-11
+             * time_limit : [{"title":"周一至周五","desc":"上午11:00前，下午14:00-17:00，晚上21:00后"},{"title":"周六、周日","desc":"全天"}]
+             * gym_id : 1
+             * gym_name : LikingFit复兴店
+             * gym_addr : 马当路388号复兴SOHO广场B2-02
+             */
+
+            private String card_no;
+            private String buy_time;
+            private String start_time;
+            private String end_time;
+            private String gym_id;
+            private String gym_name;
+            private String gym_addr;
+            private List<TimeLimitBean> time_limit;
+
+            public String getCard_no() {
+                return card_no;
+            }
+
+            public void setCard_no(String card_no) {
+                this.card_no = card_no;
+            }
+
+            public String getBuy_time() {
+                return buy_time;
+            }
+
+            public void setBuy_time(String buy_time) {
+                this.buy_time = buy_time;
+            }
+
+            public String getStart_time() {
+                return start_time;
+            }
+
+            public void setStart_time(String start_time) {
+                this.start_time = start_time;
+            }
+
+            public String getEnd_time() {
+                return end_time;
+            }
+
+            public void setEnd_time(String end_time) {
+                this.end_time = end_time;
+            }
+
+            public String getGym_id() {
+                return gym_id;
+            }
+
+            public void setGym_id(String gym_id) {
+                this.gym_id = gym_id;
+            }
+
+            public String getGym_name() {
+                return gym_name;
+            }
+
+            public void setGym_name(String gym_name) {
+                this.gym_name = gym_name;
+            }
+
+            public String getGym_addr() {
+                return gym_addr;
+            }
+
+            public void setGym_addr(String gym_addr) {
+                this.gym_addr = gym_addr;
+            }
+
+            public List<TimeLimitBean> getTime_limit() {
+                return time_limit;
+            }
+
+            public void setTime_limit(List<TimeLimitBean> time_limit) {
+                this.time_limit = time_limit;
+            }
+
+            public static class TimeLimitBean extends Data{
+                /**
+                 * title : 周一至周五
+                 * desc : 上午11:00前，下午14:00-17:00，晚上21:00后
+                 */
+
+                private String title;
+                private String desc;
+
+                public String getTitle() {
+                    return title;
+                }
+
+                public void setTitle(String title) {
+                    this.title = title;
+                }
+
+                public String getDesc() {
+                    return desc;
+                }
+
+                public void setDesc(String desc) {
+                    this.desc = desc;
+                }
+            }
         }
 
         public static class WaterData extends Data {

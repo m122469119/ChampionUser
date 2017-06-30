@@ -5,28 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/delete"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/spacing_12dp"
-        android:background="#333"
-        android:gravity="center"
-        android:orientation="vertical"
         android:tag="Bottom2">
-
-        <TextView
-            android:text="删"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="除"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/spacing_12dp"
+            android:layout_width="60dp"
+            android:layout_height="234dp"
+            android:background="#ff6161"
+            android:gravity="center"
+            >
+            <TextView
+                android:text="删除"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -37,7 +35,7 @@
         <android.support.v7.widget.CardView
             android:id="@+id/bodytest_history_cardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="234dp"
             android:layout_marginLeft="@dimen/spacing_12dp"
             android:layout_marginRight="@dimen/spacing_12dp"
             android:layout_marginTop="@dimen/spacing_12dp"

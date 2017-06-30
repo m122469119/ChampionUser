@@ -43,6 +43,8 @@ import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
 import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
+import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
+import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
 
 import java.util.Map;
 
@@ -69,6 +71,11 @@ public interface LikingApiService {
     String KEY_DISTRICT_ID = "district_id";
     String KEY_CITY_ID = "city_id";
     String BODY_ID = "body_id";
+
+    String GYM_ID = "gym_id";
+    String WATER_ID = "water_id";
+    String PAY_TYPE = "pay_type";
+
 
     @FormUrlEncoded
     @POST(Urls.USER_LOGIN)
@@ -379,6 +386,19 @@ public interface LikingApiService {
                                                 @Field("url") String url,
                                                 @Field("error_msg") String errorMsg);
 
+    @FormUrlEncoded
+    @POST(Urls.GET_WATER_ALL)
+    Observable<WaterRateResult> getWaterRateResult(@Path(PATH_VERSION) String sHostVersion,
+                                                   @Field(KEY_TOKEN) String token);
+
+    @FormUrlEncoded
+    @POST(Urls.WATER_ORDER_SUBMIT)
+    Observable<WaterOrderResult> buyWaterRate(@Path(PATH_VERSION) String sHostVersion,
+                                              @Field(KEY_TOKEN) String token,
+                                              @Field(GYM_ID) String gymId,
+                                              @Field(WATER_ID) String waterId,
+                                              @Field(PAY_TYPE) String payType);
+
     class Urls {
         private static final String sVersion = "{version}/";
 
@@ -678,5 +698,15 @@ public interface LikingApiService {
          * 上报接口错误信息
          */
         public static final String UPLOAD_ERROR = sVersion + "/index/err-log";
+
+        /**
+         * 获取水费
+         */
+        public static final String GET_WATER_ALL = sVersion + "water/get-water-all";
+
+        /**
+         * 水费支付订单
+         */
+        public static final String WATER_ORDER_SUBMIT = sVersion + "water/order-submit";
     }
 }

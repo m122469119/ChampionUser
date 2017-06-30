@@ -60,7 +60,7 @@
             android:paddingTop="15dp">
 
             <TextView
-                android:id="@+id/gym_address_prompt"
+                android:id="@+id/residue_water_time_prompt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -72,7 +72,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/gym_address"
+                android:id="@+id/residue_water_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

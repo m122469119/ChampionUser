@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * @version 1.0.0
  */
 
-public class WaterRateAdapter extends BaseRecyclerAdapter<WaterRateResult.WaterListBean> {
+public class WaterRateAdapter extends BaseRecyclerAdapter<WaterRateResult.DataBean.WaterListBean> {
 
 
     public WaterRateAdapter(Context context) {
@@ -37,7 +37,7 @@ public class WaterRateAdapter extends BaseRecyclerAdapter<WaterRateResult.WaterL
     }
 
     @Override
-    public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, WaterRateResult.WaterListBean data) {
+    public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, WaterRateResult.DataBean.WaterListBean data) {
         ViewHolder holder = (ViewHolder) viewHolder;
         holder.mTime.setText(data.getWater_time() + mContext.getString(R.string.min_cn));
         holder.mPrice.setText(mContext.getString(R.string.rmb) + data.getWater_price());
