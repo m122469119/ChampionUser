@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/head_activity"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:visibility="gone">
+
+        <com.aaron.imageloader.code.HImageView
+            android:id="@+id/header_buy_card_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            fresco:failureImage="@mipmap/buy_card_activity_bg"
+            fresco:failureImageScaleType="fitXY"
+            fresco:placeholderImage="@mipmap/buy_card_activity_bg" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header_buy_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="十五字十五字十五字十五字十五字"
+                android:textColor="@color/buy_card_text_color_green"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/header_buy_card_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="2017.05.30 - 2017.06.30"
+                android:textColor="@color/buy_card_text_color_green"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/header_buy_card_view_0"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/header_buy_card_view_title"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="55dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="错峰卡"
+            android:textColor="@color/buy_card_text_color_grey_black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/header_buy_card_view_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="错峰卡"
+            android:textColor="@color/buy_card_text_color_black"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/header_buy_card_view_1"
+        layout="@layout/header_buy_card_view_1"
+        android:visibility="visible" />
+
+    <include
+        android:id="@+id/header_buy_card_view_3"
+        layout="@layout/header_buy_card_view_3"
+        android:visibility="visible" />
+
+    <include
+        android:id="@+id/header_buy_card_view_2"
+        layout="@layout/header_buy_card_view_2" />
+
+</LinearLayout>

@@ -14,13 +14,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:background="@color/liking_green_btn_back">
 
                 <TextView
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:text="@string/gymName"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_small" />
@@ -71,8 +71,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
                         android:textColor="@color/add_minus_dishes_text"
                         android:textSize="@dimen/textsize_small" />
 
@@ -96,7 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_weight="2.2"
                         android:gravity="left"
                         android:text="@string/gymAddress"
@@ -108,7 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="15dp"
                         android:layout_weight="1"
                         android:gravity="right"
                         android:textColor="@color/add_minus_dishes_text"
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:text="@string/period_of_validity"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/textsize_small" />
@@ -144,37 +144,49 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
                         android:textColor="@color/add_minus_dishes_text"
                         android:textSize="@dimen/textsize_small" />
 
                 </RelativeLayout>
             </LinearLayout>
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginTop="10dp"
                 android:background="@color/line" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/card_recyclerView"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white" />
+                android:orientation="vertical"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/shape_card_background"
+                >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/line" />
+                <TextView
+                    android:id="@+id/card_type"
+                    android:text="全通卡"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/textsize_small"
+                    android:layout_height="50dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_card_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/shape_card_background"
                 android:orientation="horizontal">
 
@@ -184,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="15dp"
                     android:text="@string/give_water_time"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/textsize_small" />
@@ -195,18 +207,19 @@
                     android:layout_below="@id/give_water_time"
                     android:layout_marginBottom="18dp"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="15dp"
                     android:text="@string/give_water_uknow"
                     android:textColor="#888b9a"
                     android:textSize="12sp" />
 
 
                 <TextView
+                    android:id="@+id/water_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:text="200min"
                     android:textColor="@color/liking_green_btn_back"
                     android:textSize="@dimen/textsize_small" />
@@ -217,8 +230,8 @@
                 android:id="@+id/layout_coupons_courses"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/shape_card_background"
                 android:orientation="horizontal">
 
@@ -255,7 +268,8 @@
                     android:textSize="@dimen/textsize_small" />
             </RelativeLayout>
 
-            <include layout="@layout/layout_pay" />
+            <include
+                layout="@layout/layout_pay" />
 
             <LinearLayout
                 android:id="@+id/buy_card_agree_protocol"
@@ -321,7 +335,7 @@
             android:id="@+id/card_money"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:gravity="center"
             android:textColor="@color/liking_green_btn_back"
             android:textSize="16sp"
@@ -339,11 +353,12 @@
             android:textStyle="bold" />
 
         <com.goodchef.liking.widgets.OutTextView
+            android:id="@+id/old_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:out_text="1111"
             app:out_textSize="13sp"
-            app:out_textColor="#888b9a"
+            app:out_textColor="@color/buy_card_text_color_grey_black"
             />
 
         <View
@@ -360,6 +375,7 @@
             android:gravity="center"
             android:text="@string/immediately_buy_btn"
             android:textColor="@color/white"
+            android:clickable="false"
             android:textSize="@dimen/textsize_small" />
     </LinearLayout>
 

@@ -55,14 +55,12 @@ public abstract class BaseRecyclerAdapter<T> extends  RecyclerView.Adapter<Recyc
 
     public void addDatas(List<T> datas) {
         mDatas.addAll(datas);
-        notifyDataSetChanged();
     }
 
     public void setDatas(List<T> datas){
+        mDatas.clear();
         if (datas != null){
-            mDatas.clear();
             mDatas.addAll(datas);
-            notifyDataSetChanged();
         }
     }
 

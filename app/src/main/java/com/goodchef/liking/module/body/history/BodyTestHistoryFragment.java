@@ -59,8 +59,8 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
             @Override
             public void onItemDelete(SwipeLayout layout, View view, BodyHistoryResult.BodyHistoryData.ListData data, int pos) {
                 layout.close();
-                mBodyTestHistoryAdapter.getDataList().remove(pos);
-                mBodyTestHistoryAdapter.notifyItemRemoved(pos);
+                mPresenter.delBodyHistory(getContext(), data);
+
             }
 
         });
@@ -111,8 +111,15 @@ public class BodyTestHistoryFragment extends NetworkSwipeRecyclerRefreshPagerLoa
     }
 
     @Override
-    public void changeStateView(StateView.State state) {
+    public void delBodyHistory(BodyHistoryResult.BodyHistoryData.ListData data) {
+        int pos = mBodyTestHistoryAdapter.getDataList().indexOf(data);
+        mBodyTestHistoryAdapter.getDataList().remove(pos);
+        mBodyTestHistoryAdapter.notifyItemRemoved(pos);
+    }
 
+    @Override
+    public void changeStateView(StateView.State state) {
+        getStateView().setState(state);
     }
 
     @Override

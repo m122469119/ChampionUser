@@ -15,8 +15,10 @@ import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
+import com.goodchef.liking.data.remote.rxobserver.StateViewLoadingObserver;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
-import com.goodchef.liking.module.card.CardModel;
+
+import java.util.List;
 
 /**
  * Created on 2017/05/19
@@ -29,57 +31,46 @@ import com.goodchef.liking.module.card.CardModel;
 interface BuyCardConfirmContract {
 
     interface View extends BaseStateView {
-        void updateConfirmBuyCardView(ConfirmBuyCardResult.ConfirmBuyCardData confirmBuyCardData);
+        void updateConfirmBuyCardView(ConfirmBuyCardResult.DataBean confirmBuyCardData);
 
         void updateSubmitPayView(PayResultData payResultData);
 
         void updateErrorView(String errorMessage);
+
+        void showBuyCardConfirmDialog(String message);
+
+        void setCardTimeAdapter(List<ConfirmBuyCardResult.DataBean.CardsBean.TimeLimitBean> mTimeLimitBeanList);
     }
 
     class Presenter extends RxBasePresenter<View> {
 
-        private CardModel mCardModel = null;
+        private BuyCardConfirmModel mModel = null;
 
         public Presenter() {
-            mCardModel = new CardModel();
+            mModel = new BuyCardConfirmModel();
         }
 
         /**
          * 购卡确认
          *
-         * @param type
-         * @param categoryId
-         * @param gymId
          */
-        public void confirmBuyCard(final Context context, int type, int categoryId, String gymId) {
+        public void confirmBuyCard() {
 
-            mCardModel.confirmCard(type, categoryId, gymId)
-                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ConfirmBuyCardResult>(mView) {
-
+            mModel.confirmCard()
+                    .subscribe(addObserverToCompositeDisposable(new StateViewLoadingObserver<ConfirmBuyCardResult>(mView) {
                         @Override
                         public void onNext(ConfirmBuyCardResult value) {
+                            super.onNext(value);
                             if (value == null) return;
                             mView.updateConfirmBuyCardView(value.getData());
+                            setCardTimeAdapter();
                         }
 
                         @Override
                         public void apiError(ApiException apiException) {
                             switch (apiException.getErrorCode()) {
                                 case LiKingRequestCode.BUY_CARD_CONFIRM:
-                                    HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
-                                    builder.setMessage(apiException.getErrorMessage());
-                                    builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (context != null && context instanceof BuyCardConfirmActivity) {
-                                                dialog.dismiss();
-                                                postEvent(new BuyCardListMessage());
-                                                ((BuyCardConfirmActivity) context).finish();
-                                            }
-                                        }
-                                    });
-                                    builder.create().setCancelable(false);
-                                    builder.create().show();
+                                    mView.showBuyCardConfirmDialog(apiException.getErrorMessage());
                                     break;
                                 case LiKingRequestCode.NO_GYM:
                                 case LiKingRequestCode.HAS_OTHER_GYM_CARD:
@@ -88,27 +79,29 @@ interface BuyCardConfirmContract {
                                 default:
                                     super.apiError(apiException);
                             }
-
                         }
 
                         @Override
                         public void networkError(Throwable throwable) {
                             super.networkError(throwable);
-                            mView.changeStateView(StateView.State.FAILED);
                         }
                     }));
+        }
+
+        private void setCardTimeAdapter() {
+
+            mView.setCardTimeAdapter(mModel.mTimeLimitBeanList);
+
         }
 
         /***
          * 提交买卡订单
          *
-         * @param cardId     cardId
-         * @param type       类型 1购卡页 2续卡 3升级卡
          * @param couponCode 优惠券code
          * @param payType    支付方式
          */
-        public void submitBuyCardData(Context context, int cardId, int type, String couponCode, String payType, String gymId) {
-            mCardModel.submitBuyCardData(cardId, type, couponCode, payType, gymId)
+        public void submitBuyCardData(Context context, String couponCode, String payType) {
+            mModel.submitBuyCardData(couponCode, payType)
                     .subscribe(addObserverToCompositeDisposable(new ProgressObserver<SubmitPayResult>(context, R.string.loading, mView) {
                         @Override
                         public void onNext(SubmitPayResult value) {
@@ -116,6 +109,19 @@ interface BuyCardConfirmContract {
                             mView.updateSubmitPayView(value.getPayData());
                         }
                     }));
+        }
+
+        public void setIntentParams(String cardName, String categoryId, int buyType, String gymId, String cardId) {
+            mModel.setIntentParams(cardName, categoryId,  buyType, gymId, cardId);
+
+        }
+
+        public String getCardId() {
+            return mModel.mCardId;
+        }
+
+        public String getSubmitGymId() {
+            return mModel.mSubmitGymId;
         }
     }
 

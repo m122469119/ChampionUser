@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +28,7 @@ public class OutTextView extends View {
     private String mText;
     private float mTextSize;
     private int mTextColor;
+
 
     public OutTextView(Context context) {
         this(context, null);
@@ -56,16 +58,20 @@ public class OutTextView extends View {
         mPaint.setColor(mTextColor);
         mPaint.setTextSize(mTextSize);
         mPaint.setStrokeWidth(DisplayUtils.dp2px(1));
+        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
         mBounds = new Rect();
     }
 
     public void setText(String mText) {
         this.mText = mText;
+        requestLayout();
         invalidate();
     }
 
     public void setTextColor(@ColorInt int color) {
-        mPaint.setColor(color);
+        mTextColor = color;
+        mPaint.setColor(mTextColor);
+        requestLayout();
         invalidate();
     }
 
@@ -77,7 +83,7 @@ public class OutTextView extends View {
             widthMeasureSpec = (int) (mBounds.width() * 1.3f);
         }
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST) {
-            widthMeasureSpec = (int) (mBounds.height() * 1.3f);
+            heightMeasureSpec = (int) mTextSize;
         }
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
@@ -88,7 +94,7 @@ public class OutTextView extends View {
         Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();
         int baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
         canvas.drawText(mText, getMeasuredWidth() / 2 - mBounds.width() / 2, baseline, mPaint);
-        canvas.drawLine((float) ((getMeasuredWidth() - mBounds.width()) / 2), getMeasuredHeight() / 2,
-                (float) ((getMeasuredWidth() - mBounds.width()) / 2 +  mBounds.width() + mBounds.width() * 0.2), getMeasuredHeight() / 2, mPaint);
+        canvas.drawLine((float) ((getMeasuredWidth() - mBounds.width()) / 2), (float) (getMeasuredHeight() / 1.9),
+                (float) ((getMeasuredWidth() - mBounds.width()) / 2 +  mBounds.width() + mBounds.width() * 0.1), (float) (getMeasuredHeight() / 1.9), mPaint);
     }
 }

@@ -1,11 +1,17 @@
 package com.goodchef.liking.module.body.history;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
+import com.goodchef.liking.data.remote.retrofit.result.DelBodyRecordResult;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
+import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.module.body.BodyModel;
 
 /**
@@ -20,6 +26,8 @@ public interface BodyTestHistoryContract {
 
     interface View extends BaseStateView {
         void updateBodyHistoryView(BodyHistoryResult.BodyHistoryData data);
+
+        void delBodyHistory(BodyHistoryResult.BodyHistoryData.ListData data);
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -33,27 +41,37 @@ public interface BodyTestHistoryContract {
         public void getHistoryData(int page) {
 
             mBodyModel.getHistoryData(page)
-            .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<BodyHistoryResult>(mView) {
+                    .subscribe(addObserverToCompositeDisposable(new PagerLoadingObserver<BodyHistoryResult>(mView) {
 
-                @Override
-                public void onNext(BodyHistoryResult result) {
-                    super.onNext(result);
-                    if(result == null) return;
-                    mView.updateBodyHistoryView(result.getData());
-                }
+                        @Override
+                        public void onNext(BodyHistoryResult result) {
+                            super.onNext(result);
+                            if (result == null) return;
+                            mView.updateBodyHistoryView(result.getData());
+                        }
 
-                @Override
-                public void apiError(ApiException apiException) {
-                    super.apiError(apiException);
-                    mView.changeStateView(StateView.State.FAILED);
-                }
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
 
-                @Override
-                public void networkError(Throwable throwable) {
-                    super.networkError(throwable);
-                    mView.changeStateView(StateView.State.FAILED);
-                }
-            }));
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+                    }));
+        }
+
+        public void delBodyHistory(Context context, final BodyHistoryResult.BodyHistoryData.ListData data) {
+            mBodyModel.delBodyHistory(Integer.parseInt(data.getBodyId()))
+                    .subscribe(new ProgressObserver<DelBodyRecordResult>(context, R.string.loading_data, mView) {
+                        @Override
+                        public void onNext(DelBodyRecordResult value) {
+                            mView.delBodyHistory(data);
+                        }
+                    });
         }
     }
 

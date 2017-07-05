@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:id="@+id/buy_card_card_view"
-                                    xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="180dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:orientation="vertical"
-                                    card_view:cardCornerRadius="10dp"
-                                    card_view:cardPreventCornerOverlap="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/buy_card_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="46dp"
+    >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/card_back">
 
-        <TextView
-            android:id="@+id/card_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/buy_card_green_text"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
+    <ImageView
+        android:id="@+id/left_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
+        android:src="@mipmap/buy_card_item_icon_0" />
 
-        <TextView
-            android:id="@+id/card_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/card_money"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/lesson_details_dark_back"
-            android:textSize="15sp"/>
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/left_icon"
+        android:textColor="@color/buy_card_text_color_black"
+        android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/buy_card_btn"
-            android:layout_width="85dp"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/icon_buy_background"
-            android:gravity="center"
-            android:paddingBottom="3dp"
-            android:text="@string/buy"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_small"/>
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
+    <ImageView
+        android:id="@+id/right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:src="@mipmap/arrow" />
+
+
+    <com.goodchef.liking.widgets.OutTextView
+        android:id="@+id/out_price"
+        android:layout_toLeftOf="@id/right_arrow"
+        android:layout_marginRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        app:out_text="1111"
+        app:out_textSize="13sp"
+        app:out_textColor="@color/buy_card_text_color_grey_black"
+        />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/out_price"
+        android:textColor="@color/buy_card_text_color_green"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

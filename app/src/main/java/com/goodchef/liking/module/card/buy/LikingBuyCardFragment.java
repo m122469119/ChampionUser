@@ -3,27 +3,28 @@ package com.goodchef.liking.module.card.buy;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.base.widget.pullrefresh.PullToRefreshBase;
-import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.StringUtils;
+import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.BaseRecyclerAdapter;
 import com.goodchef.liking.adapter.BuyCardAdapter;
-import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
-import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.GymData;
-import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
@@ -33,13 +34,11 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
-import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
-import com.goodchef.liking.widgets.PullToRefreshRecyclerView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.List;
@@ -57,35 +56,43 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     public static final String KEY_CARD_CATEGORY = "key_card_category";
     public static final String KEY_CATEGORY_ID = "key_category_id";
     public static final String KEY_BUY_TYPE = "key_buy_type";
+    public static final String CARD_ID = "key_buy_card_id";
 
     private BuyCardAdapter mBuyCardAdapter;
-    private android.view.View mHeadView;
     private static final int TYPE_BUY = 1;
+
 
     @BindView(R.id.card_state_view)
     LikingStateView mStateView;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.buy_card_recyclerView)
-    PullToRefreshRecyclerView mRecyclerView;
-    private android.view.View mainView = null;
+    RecyclerView mRecyclerView;
     private TextView mCityOpenTextView;//当前城市是否开通
+
+    private HImageView mHeadActivityBg;
+    private TextView mHeadActivityTitle, mHeadActivityTime;
+    private View mTitleAndTimeView, mOnlyAllView, mOnlyStaggerView, mAllAndStaggerView, mHeadActivityView;
+
+
+    private TextView mAllAndStaggerTitle, mAllAndStaggerTime;
+    private RadioGroup mAllAndStaggerRg;
+    private RadioButton mAllAndStaggerRbAll, mAllAndStaggerRbStagger;
+
+    public static LikingBuyCardFragment newInstance() {
+        Bundle args = new Bundle();
+        LikingBuyCardFragment fragment = new LikingBuyCardFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
     public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (!EnvironmentUtils.Network.isNetWorkAvailable() && mainView != null && mBuyCardAdapter != null
-                && mBuyCardAdapter.getDataList().size() > 0) { //无网络情况并且有数据显示上一次的缓存
-            if (mStateView != null) {
-                if (mRecyclerView.getRefreshableView().getAdapter() == null) {
-                    mRecyclerView.getRefreshableView().setAdapter(mBuyCardAdapter);
-                }
-                mStateView.setState(LikingStateView.State.SUCCESS);
-            }
-        } else {
-            mainView = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
-            ButterKnife.bind(this, mainView);
-            initViews();
-        }
-        return mainView;
+        View view = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
+        ButterKnife.bind(this, view);
+        initViews();
+        return view;
     }
 
     protected void initViews() {
@@ -95,34 +102,8 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
                 sendBuyCardListRequest();
             }
         });
-        mRecyclerView.setRefreshViewPadding(0, 0, 0, DisplayUtils.dp2px(10));
-        mRecyclerView.setMode(PullToRefreshBase.Mode.DISABLED);
         initRecycleHeadView();
         sendBuyCardListRequest();
-    }
-
-    private void setItemClickListener() {
-        mBuyCardAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
-            @Override
-            public void onItemClick(android.view.View view, int position) {
-                CardResult.CardData.Card card = mBuyCardAdapter.getDataList().get(position);
-                if (card != null) {
-                    String status = card.getUseStatus() + "";
-                    if (!StringUtils.isEmpty(status)) {
-                        if (status.equals(NumberConstantUtil.STR_ZERO)) {//0表示不可进入购卡确认页
-                            showCanNotIntoConfirmActivity(card.getUseDesc());
-                        } else if (status.equals(NumberConstantUtil.STR_ONE)) {
-                            jumpCardConfirmActivity(card);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public boolean onItemLongClick(android.view.View view, int position) {
-                return false;
-            }
-        });
     }
 
 
@@ -154,12 +135,13 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
      *
      * @param card
      */
-    private void jumpCardConfirmActivity(CardResult.CardData.Card card) {
+    private void jumpCardConfirmActivity(CardResult.CardData.Category.CardBean card) {
         if (!StringUtils.isEmpty(mPresenter.getGymId())) {
             UMengCountUtil.UmengCount(getActivity(), UmengEventId.BUYCARDCONFIRMACTIVITY);
             Intent intent = new Intent(getActivity(), BuyCardConfirmActivity.class);
-            intent.putExtra(KEY_CARD_CATEGORY, card.getCategoryName());
-            intent.putExtra(KEY_CATEGORY_ID, card.getCategoryId());
+            intent.putExtra(KEY_CARD_CATEGORY, card.getCategory_name());
+            intent.putExtra(KEY_CATEGORY_ID, card.getCategory_id());
+            intent.putExtra(CARD_ID, card.getCard_id());
             intent.putExtra(KEY_BUY_TYPE, NumberConstantUtil.ONE);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mPresenter.getGymId());
             startActivity(intent);
@@ -174,69 +156,129 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
         noDataImageView.setImageResource(R.drawable.icon_no_data);
         noDataText.setText(R.string.no_data);
         refreshView.setText(R.string.refresh_btn_text);
-        refreshView.setOnClickListener(refreshOnClickListener);
+        refreshView.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                sendBuyCardListRequest();
+            }
+        });
         mStateView.setNodataView(noDataView);
     }
 
-    /***
-     * 刷新事件
-     */
-    private android.view.View.OnClickListener refreshOnClickListener = new android.view.View.OnClickListener() {
-        @Override
-        public void onClick(android.view.View v) {
-            sendBuyCardListRequest();
-        }
-    };
-
     private void initRecycleHeadView() {
-        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_buy_card_item, mRecyclerView, false);
-        mCityOpenTextView = (TextView) mHeadView.findViewById(R.id.buy_card_head_text);
-        mCityOpenTextView.setVisibility(android.view.View.VISIBLE);
+        mBuyCardAdapter = new BuyCardAdapter(getContext());
+        View mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.header_buy_card, null);
+        mHeadActivityBg = (HImageView) mHeadView.findViewById(R.id.header_buy_card_bg);
+        mHeadActivityTitle = (TextView) mHeadView.findViewById(R.id.header_buy_card_title);
+        mHeadActivityTime = (TextView) mHeadView.findViewById(R.id.header_buy_card_time);
+        mOnlyAllView = mHeadView.findViewById(R.id.header_buy_card_view_1);
+        mAllAndStaggerView = mHeadView.findViewById(R.id.header_buy_card_view_2);
+        mOnlyStaggerView = mHeadView.findViewById(R.id.header_buy_card_view_3);
+        mTitleAndTimeView = mHeadView.findViewById(R.id.header_buy_card_view_0);
+
+        mHeadActivityView = mHeadView.findViewById(R.id.head_activity);
+        mAllAndStaggerTitle = (TextView) mHeadView.findViewById(R.id.header_buy_card_view_title);
+        mAllAndStaggerTime = (TextView) mHeadView.findViewById(R.id.header_buy_card_view_time);
+
+        mAllAndStaggerRg = (RadioGroup) mHeadView.findViewById(R.id.header_buy_card_view_rg);
+        mAllAndStaggerRbAll = (RadioButton) mHeadView.findViewById(R.id.header_buy_card_view_rb_all);
+        mAllAndStaggerRbStagger = (RadioButton) mHeadView.findViewById(R.id.header_buy_card_view_rb_stagger);
+
+        mAllAndStaggerRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId) {
+                    case R.id.header_buy_card_view_rb_all:
+                        mPresenter.setAllAndStaggerChecked(CardResult.CardData.Category.CardBean.ALL_CARD);
+                        break;
+                    case R.id.header_buy_card_view_rb_stagger:
+                        mPresenter.setAllAndStaggerChecked(CardResult.CardData.Category.CardBean.STAGGER_CARD);
+                        break;
+                }
+            }
+        });
+        mAllAndStaggerRbAll.setChecked(true);
+        mPresenter.setAllAndStaggerChecked(CardResult.CardData.Category.CardBean.ALL_CARD);
+        mBuyCardAdapter.setHeaderView(mHeadView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mBuyCardAdapter);
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                sendBuyCardListRequest();
+            }
+        });
+
+
+        mBuyCardAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<CardResult.CardData.Category.CardBean>() {
+            @Override
+            public void onItemClick(int position, CardResult.CardData.Category.CardBean card) {
+                if (card != null) {
+                    String status = card.getUse_status() + "";
+                    if (!StringUtils.isEmpty(status)) {
+                        if (status.equals(NumberConstantUtil.STR_ZERO)) {//0表示不可进入购卡确认页
+                            showCanNotIntoConfirmActivity(card.getUse_desc());
+                        } else if (status.equals(NumberConstantUtil.STR_ONE)) {
+                            jumpCardConfirmActivity(card);
+                        }
+                    }
+                }
+
+
+            }
+        });
     }
 
     private void sendBuyCardListRequest() {
-        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            if (mStateView != null) {
-                mStateView.setState(StateView.State.FAILED);
-            }
-        } else {
-            if (mStateView != null) {
-                mStateView.setState(StateView.State.LOADING);
-            }
-            mPresenter.getCardList(TYPE_BUY);
-        }
+        mPresenter.getCardList(TYPE_BUY);
     }
 
     @Override
     public void updateCardListView(CardResult.CardData cardData) {
-        if (cardData != null) {
-            if (mStateView == null) {
-                return;
-            }
-            mStateView.setState(StateView.State.SUCCESS);
-            GymData mGymData = cardData.getGymData();
-            mPresenter.setGymData(mGymData);
-            if (mGymData != null) {
-                CoursesResult.Courses.Gym gym = new CoursesResult.Courses.Gym();
-                gym.setGymId(mGymData.getGymId());
-                gym.setDistance(mGymData.getDistance());
-                gym.setName(mGymData.getName());
-                gym.setCityId(mGymData.getCityId());
-                postEvent(new getGymDataMessage(gym));
-            }
-            List<CardResult.CardData.Card> list = cardData.getCardList();
-            if (list != null && list.size() > 0) {
-                LocationData locationData = LikingPreference.getLocationData();
-                if (locationData != null) {
-                    mBuyCardAdapter = new BuyCardAdapter(getActivity());
-                    mBuyCardAdapter.setData(list);
-                    mRecyclerView.setAdapter(mBuyCardAdapter);
-                    setItemClickListener();
-                }
-            } else if (list == null || list.size() == 0) {
-                setNoDataView();
-            }
+        mRefreshLayout.setRefreshing(false);
+        if (cardData.getGymActivityBean().getIs_activity() == CardResult.CardData.GymActivityBean.NO_ACTIVITY) {
+            mHeadActivityView.setVisibility(View.GONE);
+        } else {
+            mHeadActivityView.setVisibility(View.VISIBLE);
+            mHeadActivityTitle.setText(cardData.getGymActivityBean().getName());
+            mHeadActivityTime.setText(cardData.getGymActivityBean().getStart_time() + " - " + cardData.getGymActivityBean().getEnd_time());
         }
+
+        if (cardData.getType() == CardResult.CardData.ALL_CARD) {
+            mOnlyAllView.setVisibility(View.VISIBLE);
+            mAllAndStaggerView.setVisibility(View.GONE);
+            mOnlyStaggerView.setVisibility(View.GONE);
+            mTitleAndTimeView.setVisibility(View.GONE);
+        } else if (cardData.getType() == CardResult.CardData.STAGGER_CARD) {
+            mTitleAndTimeView.setVisibility(View.VISIBLE);
+            mOnlyStaggerView.setVisibility(View.VISIBLE);
+            mAllAndStaggerView.setVisibility(View.GONE);
+            mOnlyAllView.setVisibility(View.GONE);
+        } else if (cardData.getType() == CardResult.CardData.STAGGER_AND_ALL_CARD) {
+            mTitleAndTimeView.setVisibility(View.VISIBLE);
+            mOnlyStaggerView.setVisibility(View.GONE);
+            mAllAndStaggerView.setVisibility(View.VISIBLE);
+            mOnlyAllView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setAllAndStaggerTitleText(String text) {
+        mAllAndStaggerTitle.setText(text);
+    }
+
+    @Override
+    public void setAllAndStaggerTimeText(String text) {
+        mAllAndStaggerTime.setText(text);
+    }
+
+
+    @Override
+    public void setAdapter(List<CardResult.CardData.Category.CardBean> cardList) {
+        mBuyCardAdapter.setDatas(cardList);
+        mBuyCardAdapter.notifyDataSetChanged();
+
     }
 
     @Override

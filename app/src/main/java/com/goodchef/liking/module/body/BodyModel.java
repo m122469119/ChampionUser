@@ -7,6 +7,7 @@ import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
 import com.goodchef.liking.data.remote.retrofit.result.BodyAnalyzeHistoryResult;
 import com.goodchef.liking.data.remote.retrofit.result.BodyHistoryResult;
 import com.goodchef.liking.data.remote.retrofit.result.BodyModelNavigationResult;
+import com.goodchef.liking.data.remote.retrofit.result.DelBodyRecordResult;
 
 import io.reactivex.Observable;
 
@@ -51,5 +52,10 @@ public class BodyModel extends BaseModel {
 
         return LikingNewApi.getInstance().getBodyHistoryList(LikingNewApi.sHostVersion, LikingPreference.getToken(),column)
                 .compose(RxUtils.<BodyAnalyzeHistoryResult>applyHttpSchedulers());
+    }
+
+    public Observable<DelBodyRecordResult> delBodyHistory(int id) {
+        return LikingNewApi.getInstance().delBodyRecord(LikingNewApi.sHostVersion, LikingPreference.getToken(), id)
+                .compose(RxUtils.<DelBodyRecordResult>applyHttpSchedulers());
     }
 }

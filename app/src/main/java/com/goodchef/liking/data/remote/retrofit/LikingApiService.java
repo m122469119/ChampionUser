@@ -17,6 +17,7 @@ import com.goodchef.liking.data.remote.retrofit.result.CouponsDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsPersonResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.DelBodyRecordResult;
 import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
@@ -111,8 +112,9 @@ public interface LikingApiService {
                                                                @Query("order_id") String orderId);
 
     @POST(Urls.CARD_LIST)
+    @FormUrlEncoded
     Observable<CardResult> getCardList(@Path(PATH_VERSION) String version,
-                                       @QueryMap Map<String, String> map);
+                                       @FieldMap Map<String, String> map);
 
     @POST(Urls.GET_CARD_ORDER_LIST)
     Observable<OrderCardListResult> getCardOrderList(@Path(PATH_VERSION) String version,
@@ -399,8 +401,15 @@ public interface LikingApiService {
                                               @Field(WATER_ID) String waterId,
                                               @Field(PAY_TYPE) String payType);
 
+    @FormUrlEncoded
+    @POST(Urls.DEL_BODY_RECORD)
+    Observable<DelBodyRecordResult> delBodyRecord(@Path(PATH_VERSION) String sHostVersion,
+                                                  @Field(KEY_TOKEN) String token,
+                                                  @Field("body_id") int id);
+
+
     class Urls {
-        private static final String sVersion = "{version}/";
+        private static final String sVersion = "/{version}/";
 
         /**
          * 基础配置
@@ -708,5 +717,10 @@ public interface LikingApiService {
          * 水费支付订单
          */
         public static final String WATER_ORDER_SUBMIT = sVersion + "water/order-submit";
+
+        /**
+         * 删除体侧记录
+         */
+        public static final String DEL_BODY_RECORD = sVersion + "user/del-body-record";
     }
 }
