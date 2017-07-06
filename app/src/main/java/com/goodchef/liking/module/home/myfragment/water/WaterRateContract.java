@@ -38,6 +38,8 @@ interface WaterRateContract {
         void updateInfoData(WaterRateResult.DataBean data);
 
         void startLoginActivity();
+
+        void jumpOrderActivity();
     }
 
 
@@ -62,6 +64,7 @@ interface WaterRateContract {
                 @Override
                 public void onSuccess() {
                     mView.showToast("支付成功");
+                    mView.jumpOrderActivity();
                 }
 
                 @Override
@@ -133,11 +136,15 @@ interface WaterRateContract {
                         @Override
                         public void onNext(WaterOrderResult value) {
                             if (value == null) return;
-                            mPayModel.handlePay(value.getData().getPay_type(),
-                                    value.getData().getAli_pay_token(),
-                                    WXPayEntryActivity.PAY_TYPE_BUY_WATER,
-                                    String.valueOf(value.getData().getOrder_id()),
-                                    value.getData().getWx_prepay_id());
+                            if (value.getData().getPay_type() == 3) {
+                                mView.jumpOrderActivity();
+                            } else {
+                                mPayModel.handlePay(value.getData().getPay_type(),
+                                        value.getData().getAli_pay_token(),
+                                        WXPayEntryActivity.PAY_TYPE_BUY_WATER,
+                                        String.valueOf(value.getData().getOrder_id()),
+                                        value.getData().getWx_prepay_id());
+                            }
                         }
                     }));
 

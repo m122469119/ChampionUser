@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="@string/gymName"
                 android:textColor="@color/water_text_grey"
                 android:textSize="15sp" />
@@ -39,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:textColor="@color/add_minus_dishes_text"
                 android:textSize="15sp" />
 
@@ -64,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="2.2"
                 android:gravity="left"
                 android:text="@string/water_rate"
@@ -76,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textColor="@color/add_minus_dishes_text"

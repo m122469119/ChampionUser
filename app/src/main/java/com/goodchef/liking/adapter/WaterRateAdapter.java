@@ -55,7 +55,6 @@ public class WaterRateAdapter extends BaseRecyclerAdapter<WaterRateResult.DataBe
 
         @BindView(R.id.item_water_contains)
         View mContains;
-
         @BindView(R.id.item_water_time)
         TextView mTime;
         @BindView(R.id.item_water_price)

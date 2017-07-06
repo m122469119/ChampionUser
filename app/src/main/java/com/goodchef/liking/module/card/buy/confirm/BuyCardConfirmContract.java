@@ -89,9 +89,7 @@ interface BuyCardConfirmContract {
         }
 
         private void setCardTimeAdapter() {
-
             mView.setCardTimeAdapter(mModel.mTimeLimitBeanList);
-
         }
 
         /***
@@ -122,6 +120,14 @@ interface BuyCardConfirmContract {
 
         public String getSubmitGymId() {
             return mModel.mSubmitGymId;
+        }
+
+        public String getCardName() {
+            return mModel.mCardName;
+        }
+
+        public int getBuyType() {
+            return mModel.mBuyType;
         }
     }
 

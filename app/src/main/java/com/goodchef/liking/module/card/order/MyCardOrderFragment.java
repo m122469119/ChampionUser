@@ -165,15 +165,25 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
                 if (orderSate == 1) {
                     mOrderStateTextView.setText(getString(R.string.dishes_order_state_payed));
                 }
-                String buyType = object.getBuyType();
-                if ("1".equals(buyType)) {
-                    mOrderBuyTypeTextView.setText(getString(R.string.buy_card));
-                } else if ("2".equals(buyType)) {
-                    mOrderBuyTypeTextView.setText(getString(R.string.continue_card));
-                } else if ("3".equals(buyType)) {
-                    mOrderBuyTypeTextView.setText(getString(R.string.upgrade_card));
+
+                String type = object.getType();
+
+
+                if ("4".equals(type)) {
+                    mOrderBuyTypeTextView.setText(getString(R.string.water_card));
+                    mOrderPeriodOfValidityTextView.setText(object.getWaterStartTime() + " ~ " + object.getWaterEndTime());
+                } else if ("3".equals(type)) {
+                    String buyType = object.getBuyType();
+                    if ("1".equals(buyType)) {
+                        mOrderBuyTypeTextView.setText(getString(R.string.buy_card));
+                    } else if ("2".equals(buyType)) {
+                        mOrderBuyTypeTextView.setText(getString(R.string.continue_card));
+                    } else if ("3".equals(buyType)) {
+                        mOrderBuyTypeTextView.setText(getString(R.string.upgrade_card));
+                    }
+                    mOrderPeriodOfValidityTextView.setText(object.getStartTime() + " ~ " + object.getEndTime());
                 }
-                mOrderPeriodOfValidityTextView.setText(object.getStartTime() + " ~ " + object.getEndTime());
+
                 mOrderMoneyTextView.setText(getString(R.string.money_symbol) + object.getOrderAmount());
                 String imageUrl = object.getCardImg();
                 if (!StringUtils.isEmpty(imageUrl)) {

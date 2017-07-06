@@ -47,7 +47,7 @@
         android:layout_centerVertical="true"
         app:out_text="1111"
         app:out_textSize="13sp"
-        app:out_textColor="@color/buy_card_text_color_grey_black"
+        app:out_textColor="@color/buy_card_text_color_grey"
         />
 
     <TextView

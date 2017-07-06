@@ -38,11 +38,8 @@ public class CardTimeAdapter extends BaseRecycleViewAdapter<CardTimeAdapter.View
 
         @BindView(R.id.title)
         TextView mTitleText;
-
         @BindView(R.id.content)
         TextView mContentText;
-
-
 
         public ViewHolder(View itemView) {
             super(itemView);

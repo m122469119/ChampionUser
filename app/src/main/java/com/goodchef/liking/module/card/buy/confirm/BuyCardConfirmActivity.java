@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.OutTextView;
 import com.goodchef.liking.widgets.base.LikingStateView;
+import com.goodchef.liking.widgets.layoutmanager.FixLinearLayoutManager;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
@@ -167,17 +169,14 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(BuyCardConfirmActivity.this, R.color.liking_green_btn_back));
-                    mImmediatelyBuyBtn.setClickable(true);
                 } else {
                     mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(BuyCardConfirmActivity.this, R.color.liking_grey_btn_back));
-                    mImmediatelyBuyBtn.setClickable(false);
                 }
             }
         });
-        mAgreeProtocolCheckBox.setChecked(false);
 
         mCardTimeAdapter = new CardTimeAdapter(this);
-        mCardTimeRv.setLayoutManager(new LinearLayoutManager(this));
+        mCardTimeRv.setLayoutManager(new FixLinearLayoutManager(this));
         mCardTimeRv.setNestedScrollingEnabled(false);
         mCardTimeRv.setAdapter(mCardTimeAdapter);
 
@@ -242,7 +241,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                     Intent intent = new Intent(this, CouponsActivity.class);
                     intent.putExtra(CouponsActivity.TYPE_MY_COUPONS, "BuyCardConfirmActivity");
                     intent.putExtra(KEY_CARD_ID, mPresenter.getCardId() + "");
-                    intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, ""); //buyType
+                    intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, mPresenter.getBuyType() + ""); //buyType
                     intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mPresenter.getSubmitGymId());
                     if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getCoupon_code())) {
                         intent.putExtra(CouponsActivity.KEY_COUPON_ID, mCoupon.getCoupon_code());
@@ -255,12 +254,17 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 break;
             case R.id.immediately_buy_btn:
                 if (LikingPreference.isLogin()) {
-                    if (payType.equals("-1")) {
-                        showToast(getString(R.string.please_select_pay_type));
-                        return;
+
+                    if (mAgreeProtocolCheckBox.isChecked()) {
+                        if (payType.equals("-1")) {
+                            showToast(getString(R.string.please_select_pay_type));
+                            return;
+                        }
+                        UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
+                        showSubmitDialog();
+                    } else {
+                        showAgreeProtocolCheckBoxDialog();
                     }
-                    UMengCountUtil.UmengBtnCount(this, UmengEventId.BUY_CARD_IMMEDIATELY_BUY);
-                    showSubmitDialog();
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
@@ -290,6 +294,19 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         }
     }
 
+    private void showAgreeProtocolCheckBoxDialog() {
+        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
+                .setMessage("请同意购卡协议")
+                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        baseDialog.setCancelable(false);
+        baseDialog.show();
+    }
+
     /***
      * 确认购卡信息对话框
      */
@@ -301,7 +318,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         TextView mMoneyTextView = (TextView) view.findViewById(R.id.buy_card_money_TextView);
 
         mGymTextView.setText(mCardGymName);
-        mCardTypeTextView.setText("mCardName" + mCardType);
+        mCardTypeTextView.setText(mPresenter.getCardName());
         mMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
 
         builder.setCustomView(view);
@@ -395,16 +412,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.DataBean confirmBuyCardData) {
         ConfirmBuyCardResult.DataBean.CardsBean cardsBean = confirmBuyCardData.getCards().get(0);
         //1购卡 2续卡 3升级卡
-        int type = confirmBuyCardData.getPurchase_type();
         explain = confirmBuyCardData.getTips();
-//        String name = cardsBean.getName();
-//        if (type == BUY_TYPE_BUY) {
-//            setTitle(getString(R.string.buy) + name);
-//        } else if (type == BUY_TYPE_CONTINUE) {
-//            setTitle(getString(R.string.go_on_buy) + name);
-//        } else if (type == BUY_TYPE_UPGRADE) {
-//            setTitle(getString(R.string.upgrade) + name);
-//        }
 
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadline());
         mCardPrice = cardsBean.getPrice();
@@ -433,33 +441,33 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
 
     @Override
     public void updateErrorView(String errorMessage) {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage(errorMessage);
-        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                BuyCardConfirmActivity.this.finish();
-                dialog.dismiss();
-            }
-        });
-        builder.create().setCancelable(false);
-        builder.create().show();
+        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
+                .setMessage(errorMessage)
+                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        BuyCardConfirmActivity.this.finish();
+                        dialog.dismiss();
+                    }
+                }).create();
+        baseDialog.setCancelable(false);
+        baseDialog.show();
     }
 
     @Override
     public void showBuyCardConfirmDialog(String message) {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                postEvent(new BuyCardListMessage());
-                finish();
-            }
-        });
-        builder.create().setCancelable(false);
-        builder.create().show();
+        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        postEvent(new BuyCardListMessage());
+                        finish();
+                    }
+                }).create();
+        baseDialog.setCancelable(false);
+        baseDialog.show();
     }
 
     @Override

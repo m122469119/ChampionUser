@@ -626,4 +626,5 @@
     <string name="likingfit_uknow">*LikingFit申明：禁售任何形式超过1年的会员卡\r\n造成的任何损失和品牌无关*</string>
     <string name="time_remaining">剩余时间</string>
     <string name="water_time">时间:</string>
+    <string name="water_card">水费</string>
 </resources>

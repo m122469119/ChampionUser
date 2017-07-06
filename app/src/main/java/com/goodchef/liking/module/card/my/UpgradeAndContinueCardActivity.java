@@ -1,13 +1,15 @@
 package com.goodchef.liking.module.card.my;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarSwipeBackActivity;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
+import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+
+import static com.goodchef.liking.module.card.my.MyCardActivity.KEY_INTENT_TITLE;
 
 /**
  * 说明:升级卡或者续卡
@@ -16,15 +18,18 @@ import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
  */
 public class UpgradeAndContinueCardActivity extends AppBarSwipeBackActivity{
 
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrade_and_continue);
 
+        int buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
+        String gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
+        String title = getIntent().getStringExtra(KEY_INTENT_TITLE);
+        setTitle(title);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.upgrade_contains, LikingBuyCardFragment.newInstance())
+                .replace(R.id.upgrade_contains, LikingBuyCardFragment.newInstance(gymId, buyType))
                 .commit();
     }
 

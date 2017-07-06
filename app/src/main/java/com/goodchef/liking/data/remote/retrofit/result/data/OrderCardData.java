@@ -25,6 +25,37 @@ public class OrderCardData extends Data {
     @SerializedName("end_time")
     private String endTime;
 
+    @SerializedName("type")
+    private String type;
+    @SerializedName("water_start_time")
+    private String waterStartTime;
+    @SerializedName("water_end_time")
+    private String waterEndTime;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getWaterStartTime() {
+        return waterStartTime;
+    }
+
+    public void setWaterStartTime(String waterStartTime) {
+        this.waterStartTime = waterStartTime;
+    }
+
+    public String getWaterEndTime() {
+        return waterEndTime;
+    }
+
+    public void setWaterEndTime(String waterEndTime) {
+        this.waterEndTime = waterEndTime;
+    }
+
     public String getOrderId() {
         return orderId;
     }

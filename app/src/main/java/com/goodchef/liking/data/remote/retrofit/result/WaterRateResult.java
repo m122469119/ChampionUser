@@ -65,47 +65,48 @@ public class WaterRateResult extends LikingResult {
 
 
         public static class WaterListBean extends Data {
+
+
             /**
-             * water_id : 2
-             * water_price : 1
-             * water_time : 1
+             * water_id : 1
+             * water_price : 12.3
+             * water_time : 10
              */
 
-            private int water_id;
-            private int water_price;
-            private int water_time;
-
-            private boolean isChecked;
+            private String water_id;
+            private String water_price;
+            private String water_time;
+            private boolean checked;
 
             public boolean isChecked() {
-                return isChecked;
+                return checked;
             }
 
             public void setChecked(boolean checked) {
-                isChecked = checked;
+                this.checked = checked;
             }
 
-            public int getWater_id() {
+            public String getWater_id() {
                 return water_id;
             }
 
-            public void setWater_id(int water_id) {
+            public void setWater_id(String water_id) {
                 this.water_id = water_id;
             }
 
-            public int getWater_price() {
+            public String getWater_price() {
                 return water_price;
             }
 
-            public void setWater_price(int water_price) {
+            public void setWater_price(String water_price) {
                 this.water_price = water_price;
             }
 
-            public int getWater_time() {
+            public String getWater_time() {
                 return water_time;
             }
 
-            public void setWater_time(int water_time) {
+            public void setWater_time(String water_time) {
                 this.water_time = water_time;
             }
         }

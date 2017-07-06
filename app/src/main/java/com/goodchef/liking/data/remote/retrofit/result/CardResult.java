@@ -205,6 +205,14 @@ public class CardResult extends LikingResult {
                 private int category_type;
                 private int use_status;
                 private String use_desc;
+                /**
+                 * user_card_status : 0
+                 * user_card_msg : 续卡只能续同类型会员卡
+                 */
+
+                private int user_card_status;
+                private String user_card_msg;
+
 
                 public String getCategory_id() {
                     return category_id;
@@ -284,6 +292,22 @@ public class CardResult extends LikingResult {
 
                 public void setUse_desc(String use_desc) {
                     this.use_desc = use_desc;
+                }
+
+                public int getUser_card_status() {
+                    return user_card_status;
+                }
+
+                public void setUser_card_status(int user_card_status) {
+                    this.user_card_status = user_card_status;
+                }
+
+                public String getUser_card_msg() {
+                    return user_card_msg;
+                }
+
+                public void setUser_card_msg(String user_card_msg) {
+                    this.user_card_msg = user_card_msg;
                 }
             }
         }

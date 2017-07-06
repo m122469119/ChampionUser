@@ -64,7 +64,7 @@ public class BuyCardModel {
         }
         StringBuilder sb = new StringBuilder();
         for (CardData.Category.TimeLimitBean bean : timeLimitBeanList) {
-            sb.append(bean.getTitle()).append(":").append(bean.getDesc());
+            sb.append(bean.getTitle()).append(": ").append(bean.getDesc());
             if (timeLimitBeanList.indexOf(bean) < timeLimitBeanList.size() - 1) {
                 sb.append("\r\n").append("\r\n");
             }

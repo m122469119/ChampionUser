@@ -36,9 +36,12 @@ interface BuyCardContract {
             mModel = new BuyCardModel();
         }
 
-        void getCardList(int buyType) {
+        void getCardList(String gymId, int buyType) {
+            if (gymId.equals("-1")) {
+                gymId = LikingHomeActivity.gymId;
+            }
             mModel.getLocationData();
-            mModel.getCardList(LikingHomeActivity.gymId, buyType)
+            mModel.getCardList(gymId, buyType)
                     .subscribe(addObserverToCompositeDisposable(new StateViewLoadingObserver<CardResult>(mView) {
                 @Override
                 public void onNext(CardResult value) {

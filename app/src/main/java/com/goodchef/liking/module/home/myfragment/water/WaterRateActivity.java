@@ -17,10 +17,14 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
 import com.goodchef.liking.adapter.WaterRateAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
+import com.goodchef.liking.eventmessages.BuyCardSuccessMessage;
 import com.goodchef.liking.eventmessages.WaterRateActivityMessage;
+import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.widgets.itemdecoration.DividerGridItemDecoration;
 
 import java.util.List;
@@ -114,8 +118,6 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
         DividerGridItemDecoration itemDecoration = new DividerGridItemDecoration(ContextCompat.getDrawable(this, R.drawable.water_h_line));
         mWaterRate.addItemDecoration(itemDecoration);
         mWaterRate.setAdapter(mAdapter);
-        mPresenter.setWaterAdapter();
-
 
     }
 
@@ -202,6 +204,7 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
                 boolean isSuccess = (boolean) message.obj1;
                 if (isSuccess) {
                     showToast("支付成功");
+                    jumpOrderActivity();
                 } else {
                     showToast("支付失败");
                 }
@@ -209,6 +212,16 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
 
 
         }
+    }
+
+    @Override
+    public void jumpOrderActivity() {
+        postEvent(new BuyCardSuccessMessage());
+        LikingPreference.setLoginGymId(LikingPreference.getLoginGymId());
+        Intent intent = new Intent(this, MyOrderActivity.class);
+        intent.putExtra(MyOrderActivity.KEY_CURRENT_INDEX, NumberConstantUtil.ONE);
+        startActivity(intent);
+        finish();
     }
 
 

@@ -80,7 +80,7 @@ public class OutTextView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
         if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST) {
-            widthMeasureSpec = (int) (mBounds.width() * 1.3f);
+            widthMeasureSpec = (int) (mBounds.width() * 1.2f);
         }
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST) {
             heightMeasureSpec = (int) mTextSize;
@@ -95,6 +95,6 @@ public class OutTextView extends View {
         int baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
         canvas.drawText(mText, getMeasuredWidth() / 2 - mBounds.width() / 2, baseline, mPaint);
         canvas.drawLine((float) ((getMeasuredWidth() - mBounds.width()) / 2), (float) (getMeasuredHeight() / 1.9),
-                (float) ((getMeasuredWidth() - mBounds.width()) / 2 +  mBounds.width() + mBounds.width() * 0.1), (float) (getMeasuredHeight() / 1.9), mPaint);
+                (float) ((getMeasuredWidth() - mBounds.width()) / 2 +  mBounds.width()), (float) (getMeasuredHeight() / 1.9), mPaint);
     }
 }

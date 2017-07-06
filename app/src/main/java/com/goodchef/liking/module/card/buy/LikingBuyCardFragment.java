@@ -59,7 +59,8 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     public static final String CARD_ID = "key_buy_card_id";
 
     private BuyCardAdapter mBuyCardAdapter;
-    private static final int TYPE_BUY = 1;
+    private static int mBuyType = 1;
+    private static String mGymId = "-1";
 
 
     @BindView(R.id.card_state_view)
@@ -79,9 +80,11 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     private RadioGroup mAllAndStaggerRg;
     private RadioButton mAllAndStaggerRbAll, mAllAndStaggerRbStagger;
 
-    public static LikingBuyCardFragment newInstance() {
+    public static LikingBuyCardFragment newInstance(String gymId, int buyType) {
         Bundle args = new Bundle();
         LikingBuyCardFragment fragment = new LikingBuyCardFragment();
+        args.putInt("buy_type", buyType);
+        args.putString("gym_id", gymId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,6 +94,10 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
         ButterKnife.bind(this, view);
+        if (getArguments() != null) {
+            mBuyType = getArguments().getInt("buy_type", 1);
+            mGymId = getArguments().getString("gym_id", "-1");
+        }
         initViews();
         return view;
     }
@@ -203,6 +210,7 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mBuyCardAdapter);
 
+        mRefreshLayout.setColorSchemeResources(R.color.liking_green_btn_back);
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -214,7 +222,9 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
         mBuyCardAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<CardResult.CardData.Category.CardBean>() {
             @Override
             public void onItemClick(int position, CardResult.CardData.Category.CardBean card) {
-                if (card != null) {
+                if (card.getUser_card_status() == 0) {
+                    showCanNotIntoConfirmActivity(card.getUser_card_msg());
+                } else {
                     String status = card.getUse_status() + "";
                     if (!StringUtils.isEmpty(status)) {
                         if (status.equals(NumberConstantUtil.STR_ZERO)) {//0表示不可进入购卡确认页
@@ -224,14 +234,12 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
                         }
                     }
                 }
-
-
             }
         });
     }
 
     private void sendBuyCardListRequest() {
-        mPresenter.getCardList(TYPE_BUY);
+        mPresenter.getCardList(mGymId, mBuyType);
     }
 
     @Override
