@@ -74,13 +74,13 @@ public class MyTrainDataActivity extends AppBarMVPSwipeBackActivity<UserExercise
             mTrainCalALl.setTypeface(typeFace);
             mTrainTimeAll.setTypeface(typeFace);
 
-            mTrainTime.setText(exerciseData.getTodayMin());
-            mTrainDistance.setText(exerciseData.getTodayDistance());
-            mTrainCal.setText(exerciseData.getTodayCal());
-            mTrainCountAll.setText(exerciseData.getTotalTimes());
-            mTrainTimeAll.setText(exerciseData.getTotalMin());
-            mTrainDistanceALL.setText(exerciseData.getTotalDistance());
-            mTrainCalALl.setText(exerciseData.getTotalCal());
+            mTrainTime.setText(exerciseData.getToday_min());
+            mTrainDistance.setText(exerciseData.getToday_distance());
+            mTrainCal.setText(exerciseData.getToday_cal());
+            mTrainCountAll.setText(exerciseData.getTotal_times());
+            mTrainTimeAll.setText(exerciseData.getTotal_min());
+            mTrainDistanceALL.setText(exerciseData.getTotal_distance());
+            mTrainCalALl.setText(exerciseData.getTotal_cal());
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }

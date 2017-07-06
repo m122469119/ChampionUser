@@ -22,7 +22,6 @@ public class UserExerciseResult extends LikingResult {
 
     public static class ExerciseData extends Data {
 
-
         /**
          * today_min : 0
          * today_distance : 0
@@ -34,77 +33,69 @@ public class UserExerciseResult extends LikingResult {
          * score : --
          */
 
-        @SerializedName("today_min")
-        private String todayMin;
-        @SerializedName("today_distance")
-        private String todayDistance;
-        @SerializedName("today_cal")
-        private String todayCal;
-        @SerializedName("total_min")
-        private String totalMin;
-        @SerializedName("total_times")
-        private String totalTimes;
-        @SerializedName("total_distance")
-        private String totalDistance;
-        @SerializedName("total_cal")
-        private String totalCal;
-        @SerializedName("score")
+        private String today_min;
+        private String today_distance;
+        private String today_cal;
+        private String total_min;
+        private String total_times;
+        private String total_distance;
+        private String total_cal;
         private String score;
 
-        public String getTodayMin() {
-            return todayMin;
+        public String getToday_min() {
+            return today_min;
         }
 
-        public void setTodayMin(String todayMin) {
-            this.todayMin = todayMin;
+        public void setToday_min(String today_min) {
+            this.today_min = today_min;
         }
 
-        public String getTodayDistance() {
-            return todayDistance;
+        public String getToday_distance() {
+            return today_distance;
         }
 
-        public void setTodayDistance(String todayDistance) {
-            this.todayDistance = todayDistance;
+        public void setToday_distance(String today_distance) {
+            this.today_distance = today_distance;
         }
 
-        public String getTodayCal() {
-            return todayCal;
+        public String getToday_cal() {
+            return today_cal;
         }
 
-        public void setTodayCal(String todayCal) {
-            this.todayCal = todayCal;
+        public void setToday_cal(String today_cal) {
+            this.today_cal = today_cal;
         }
 
-        public String getTotalMin() {
-            return totalMin;
+        public String getTotal_min() {
+            return total_min;
         }
 
-        public void setTotalMin(String totalMin) {
-            this.totalMin = totalMin;
+        public void setTotal_min(String total_min) {
+            this.total_min = total_min;
         }
 
-        public String getTotalTimes() {
-            return totalTimes;
+        public String getTotal_times() {
+            return total_times;
         }
 
-        public void setTotalTimes(String totalTimes) {
-            this.totalTimes = totalTimes;
+        public void setTotal_times(String total_times) {
+            this.total_times = total_times;
         }
 
-        public String getTotalDistance() {
-            return totalDistance;
+        public String getTotal_distance() {
+            return total_distance;
         }
 
-        public void setTotalDistance(String totalDistance) {
-            this.totalDistance = totalDistance;
+        public void setTotal_distance(String total_distance) {
+            this.total_distance = total_distance;
         }
 
-        public String getTotalCal() {
-            return totalCal;
+        public String getTotal_cal() {
+            return total_cal;
         }
 
-        public void setTotalCal(String totalCal) {
-            this.totalCal = totalCal;
+        public void setTotal_cal(String total_cal) {
+            this.total_cal = total_cal;
         }
 
         public String getScore() {

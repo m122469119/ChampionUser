@@ -208,6 +208,8 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         } else {
             setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
         }
+        mWaterRateLinearLayout.setVisibility(View.GONE);
+        mWaterSurplus.setVisibility(View.GONE);
 
         if (userOtherInfoData.getWaterData() != null) {
             if (userOtherInfoData.getWaterData().getWater_status() == MyUserOtherInfoResult.UserOtherInfoData.WaterData.CHARGE_WATER) {
@@ -218,9 +220,6 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 mWaterRateLinearLayout.setVisibility(View.GONE);
                 mWaterSurplus.setVisibility(View.GONE);
             }
-        } else  {
-            mWaterRateLinearLayout.setVisibility(View.GONE);
-            mWaterSurplus.setVisibility(View.GONE);
         }
 
         setHeadPersonData();
@@ -240,7 +239,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
      */
     private void doExerciseData(UserExerciseResult.ExerciseData exerciseData) {
         if (exerciseData != null) {
-            mTrainTimeData.setText(exerciseData.getTodayMin());
+            mTrainTimeData.setText(exerciseData.getToday_min());
             if (LikingPreference.isBind()) {
                 mBodyScoreData.setText(exerciseData.getScore());
             } else {

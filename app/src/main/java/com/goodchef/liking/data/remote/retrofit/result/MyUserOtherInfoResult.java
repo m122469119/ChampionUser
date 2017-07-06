@@ -252,15 +252,14 @@ public class MyUserOtherInfoResult extends LikingResult {
             public static final int FREE_WATER = 0;
             public static final int CHARGE_WATER = 1;
 
+
             /**
              * water_status : 0
-             * water_time : 20
+             * water_time :
              */
 
-            @SerializedName("water_status")
             private int water_status;
-            @SerializedName("water_time")
-            private int water_time;
+            private String water_time;
 
             public int getWater_status() {
                 return water_status;
@@ -270,11 +269,11 @@ public class MyUserOtherInfoResult extends LikingResult {
                 this.water_status = water_status;
             }
 
-            public int getWater_time() {
+            public String getWater_time() {
                 return water_time;
             }
 
-            public void setWater_time(int water_time) {
+            public void setWater_time(String water_time) {
                 this.water_time = water_time;
             }
         }

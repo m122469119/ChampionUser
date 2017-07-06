@@ -56,11 +56,17 @@ public class BuyCardModel {
 
     public String getTimeText() {
         if (mCardResult == null) return "";
-        List<CardData.Category.TimeLimitBean> timeLimitBeanList;
+        List<CardData.Category.TimeLimitBean> timeLimitBeanList = new ArrayList<>();
+
         if (CardData.Category.CardBean.ALL_CARD == mCheckedType) {
-            timeLimitBeanList = mCardResult.getCardData().getCategory().getAllDayCardBean().getTimeLimitBeanList();
+            if (mCardResult.getCardData().getCategory().getAllDayCardBean() != null) {
+                timeLimitBeanList.addAll(mCardResult.getCardData().getCategory().getAllDayCardBean().getTimeLimitBeanList());
+            }
+
         } else {
-            timeLimitBeanList = mCardResult.getCardData().getCategory().getFreeCardBean().getTimeLimitBeanList();
+            if (mCardResult.getCardData().getCategory().getFreeCardBean() != null) {
+                timeLimitBeanList.addAll(timeLimitBeanList = mCardResult.getCardData().getCategory().getFreeCardBean().getTimeLimitBeanList());
+            }
         }
         StringBuilder sb = new StringBuilder();
         for (CardData.Category.TimeLimitBean bean : timeLimitBeanList) {

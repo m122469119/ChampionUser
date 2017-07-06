@@ -40,6 +40,7 @@ interface WaterRateContract {
         void startLoginActivity();
 
         void jumpOrderActivity();
+
     }
 
 

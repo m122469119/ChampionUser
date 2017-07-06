@@ -4,6 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <RadioGroup
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -12,30 +16,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
-
         <RadioButton
             android:id="@+id/header_buy_card_view_rb_all"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/buy_card_all"
             android:button="@null"
+            android:layout_weight="1"
             android:checked="true" />
 
         <RadioButton
             android:id="@+id/header_buy_card_view_rb_stagger"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/buy_card_stagger"
             android:button="@null" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
 
     </RadioGroup>
 

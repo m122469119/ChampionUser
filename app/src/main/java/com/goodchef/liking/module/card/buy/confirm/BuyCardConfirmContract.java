@@ -40,6 +40,8 @@ interface BuyCardConfirmContract {
         void showBuyCardConfirmDialog(String message);
 
         void setCardTimeAdapter(List<ConfirmBuyCardResult.DataBean.CardsBean.TimeLimitBean> mTimeLimitBeanList);
+
+        void setPayFailView();
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -98,13 +100,19 @@ interface BuyCardConfirmContract {
          * @param couponCode 优惠券code
          * @param payType    支付方式
          */
-        public void submitBuyCardData(Context context, String couponCode, String payType) {
+        public void submitBuyCardData(final Context context, String couponCode, String payType) {
             mModel.submitBuyCardData(couponCode, payType)
                     .subscribe(addObserverToCompositeDisposable(new ProgressObserver<SubmitPayResult>(context, R.string.loading, mView) {
                         @Override
                         public void onNext(SubmitPayResult value) {
                             if (value == null) return;
                             mView.updateSubmitPayView(value.getPayData());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            mView.setPayFailView();
                         }
                     }));
         }

@@ -174,12 +174,11 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 }
             }
         });
-
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCardTimeAdapter = new CardTimeAdapter(this);
-        mCardTimeRv.setLayoutManager(new FixLinearLayoutManager(this));
+        mCardTimeRv.setLayoutManager(mLayoutManager);
         mCardTimeRv.setNestedScrollingEnabled(false);
         mCardTimeRv.setAdapter(mCardTimeAdapter);
-
     }
 
     /**
@@ -634,7 +633,8 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         }
     }
 
-    private void setPayFailView() {
+    @Override
+    public void setPayFailView() {
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getAmount())) {
             mCouponsMoneyTextView.setText("");
             mCardTotalMoney = mCardPrice;

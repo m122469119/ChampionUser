@@ -132,12 +132,14 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
             mGymAddressTextView.setText(data.getGym_address());
 
             List<TimeLimitData> limitDataList = data.getTimeLimit();
+
             if (limitDataList != null && limitDataList.size() > 0) {
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 mTimeLimitRecyclerView.setLayoutManager(mLayoutManager);
                 MyCardTimeLimitAdapter adapter = new MyCardTimeLimitAdapter(this);
                 adapter.setData(limitDataList);
                 mTimeLimitRecyclerView.setAdapter(adapter);
+                mTimeLimitRecyclerView.setNestedScrollingEnabled(false);
             }
 
             String couponAmount = data.getCouponAmount();
