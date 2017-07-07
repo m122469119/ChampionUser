@@ -5,6 +5,7 @@ import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.card.CardModel;
 
@@ -17,6 +18,8 @@ import com.goodchef.liking.module.card.CardModel;
 interface MyCardDetailsContract {
     interface View extends BaseStateView {
         void updateMyCardDetailsView(MyOrderCardDetailsResult.OrderCardDetailsData orderCardDetailsData);
+
+        void updateWaterDetailsView(WaterDetailsResult.DataBean data);
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -50,5 +53,32 @@ interface MyCardDetailsContract {
                         }
                     }));
         }
+
+
+        void getWaterDetails(String orderId) {
+            mCardModel.getWaterDetails(orderId)
+                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<WaterDetailsResult>(mView) {
+                        @Override
+                        public void onNext(WaterDetailsResult value) {
+                            if (null == value) return;
+                            mView.updateWaterDetailsView(value.getData());
+                        }
+
+                        @Override
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+
+                        @Override
+                        public void networkError(Throwable throwable) {
+                            super.networkError(throwable);
+                            mView.changeStateView(StateView.State.FAILED);
+                        }
+                    }));
+
+        }
+
+
     }
 }

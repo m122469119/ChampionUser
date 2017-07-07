@@ -84,6 +84,7 @@ public class MyCardOrderFragment extends NetworkSwipeRecyclerRefreshPagerLoaderF
                 if (data != null) {
                     Intent intent = new Intent(getActivity(), MyCardDetailsActivity.class);
                     intent.putExtra(KEY_ORDER_ID, data.getOrderId());
+                    intent.putExtra(MyCardDetailsActivity.IS_WATER, data.getType().equals("4"));
                     startActivity(intent);
                 }
             }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.MyOrderCardDetailsResult;
+import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.TimeLimitData;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -37,6 +39,7 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
     private static final int PAY_TYPE_WECHAT = 0;//微信支付
     private static final int PAY_TYPE_ALIPLY = 1;//支付宝支付
     private static final int PAY_TYPE_FREE = 3;//免金额
+    public static final String IS_WATER = "is_water";
 
 
     @BindView(R.id.card_order_number)
@@ -68,20 +71,36 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
     @BindView(R.id.my_card_details_state_view)
     LikingStateView mStateView;
 
+    @BindView(R.id.card_user_time)
+    View mCardUserTimeView;
+
+    @BindView(R.id.buy_water_time_view)
+    View mWaterTimeView;
+    @BindView(R.id.buy_water_time)
+    TextView mBuyWaterTime;
+
     private String orderId;//订单id
+    private boolean isWater = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_card_details);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.title_my_card_details));
+        orderId = getIntent().getStringExtra(MyCardOrderFragment.KEY_ORDER_ID);
+        isWater = getIntent().getBooleanExtra(MyCardDetailsActivity.IS_WATER, false);
+
+        if (!isWater) {
+            setTitle(getString(R.string.title_my_card_details));
+        } else {
+            setTitle(getString(R.string.water_details));
+        }
+
         initView();
         iniData();
     }
 
     private void initView() {
-
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
             @Override
@@ -92,24 +111,35 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
     }
 
     private void iniData() {
-        orderId = getIntent().getStringExtra(MyCardOrderFragment.KEY_ORDER_ID);
         sendCardDetailsRequest();
     }
 
     private void sendCardDetailsRequest() {
-        mPresenter.getMyCardDetails(orderId);
+        if (isWater) {
+            mPresenter.getWaterDetails(orderId);
+        } else {
+            mPresenter.getMyCardDetails(orderId);
+        }
     }
 
     @Override
     public void updateMyCardDetailsView(MyOrderCardDetailsResult.OrderCardDetailsData data) {
         if (data != null) {
             mStateView.setState(StateView.State.SUCCESS);
+
+            mCardUserTimeView.setVisibility(View.VISIBLE);
+            mWaterTimeView.setVisibility(View.GONE);
+
             mOrderNumberTextView.setText(getString(R.string.order_number) + data.getOrderId());
             mBuyTimeTextView.setText(getString(R.string.buy_time) + data.getOrderTime());
+
+
             int orderSate = data.getOrderStatus();
+
             if (orderSate == 1) {
                 mBuyStateTextView.setText(R.string.dishes_order_state_payed);
             }
+
             int buyType = data.getBuyType();
             if (buyType == BUY_TYPE_BUY) {
                 mBuyWayTextView.setText(R.string.buy_card);
@@ -156,6 +186,43 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
                 mFavourableLayout.setVisibility(android.view.View.GONE);
                 mImageViewLine.setVisibility(android.view.View.GONE);
             }
+
+        } else {
+            mStateView.setState(StateView.State.NO_DATA);
+        }
+    }
+
+    @Override
+    public void updateWaterDetailsView(WaterDetailsResult.DataBean data) {
+        if (data != null) {
+            mStateView.setState(StateView.State.SUCCESS);
+            mCardUserTimeView.setVisibility(View.GONE);
+            mWaterTimeView.setVisibility(View.VISIBLE);
+
+            mOrderNumberTextView.setText(getString(R.string.order_number) + data.getOrder_id());
+            mBuyTimeTextView.setText(getString(R.string.buy_time) + data.getOrder_time());
+
+            int orderSate = data.getOrder_status();
+
+            if (orderSate == 1) {
+                mBuyStateTextView.setText(R.string.dishes_order_state_payed);
+            }
+            mBuyWayTextView.setText(getString(R.string.water_card));
+            mBuyWaterTime.setText(data.getWater_time());
+
+            mPeriodOfValidityTextView.setText(data.getStart_time() + " ~ " + data.getEnd_time());
+            int payType = data.getPay_type();
+            if (payType == PAY_TYPE_WECHAT) {
+                mBuyTypeTextView.setText(R.string.pay_wechat_type);
+            } else if (payType == PAY_TYPE_ALIPLY) {
+                mBuyTypeTextView.setText(R.string.pay_alipay_type);
+            } else if (payType == PAY_TYPE_FREE) {
+                mBuyTypeTextView.setText(R.string.pay_free_type);
+            }
+
+            mCardPriceTextView.setText(getString(R.string.money_symbol) + data.getOrder_amount());
+            mGymNameTextView.setText(data.getGym_name());
+            mGymAddressTextView.setText(data.getGym_addr());
 
         } else {
             mStateView.setState(StateView.State.NO_DATA);

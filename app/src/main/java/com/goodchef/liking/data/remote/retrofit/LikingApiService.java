@@ -44,6 +44,7 @@ import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserLoginResult;
 import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
+import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
 
@@ -407,6 +408,12 @@ public interface LikingApiService {
                                                   @Field(KEY_TOKEN) String token,
                                                   @Field("body_id") int id);
 
+    @FormUrlEncoded
+    @POST(Urls.WATER_DETAILS)
+    Observable<WaterDetailsResult> getWaterDetailsResult(@Path(PATH_VERSION) String sHostVersion,
+                                                         @Field(KEY_TOKEN) String token,
+                                                         @Field("order_id") String orderId);
+
 
     class Urls {
         private static final String sVersion = "/{version}/";
@@ -722,5 +729,6 @@ public interface LikingApiService {
          * 删除体侧记录
          */
         public static final String DEL_BODY_RECORD = sVersion + "user/del-body-record";
+        public static final String WATER_DETAILS = sVersion + "water/order-water-detail";
     }
 }

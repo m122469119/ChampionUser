@@ -627,4 +627,6 @@
     <string name="time_remaining">剩余时间</string>
     <string name="water_time">时间:</string>
     <string name="water_card">水费</string>
+    <string name="buy_water_time">购买时长</string>
+    <string name="water_details">水费详情</string>
 </resources>
