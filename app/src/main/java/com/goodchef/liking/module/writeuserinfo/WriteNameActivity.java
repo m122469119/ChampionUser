@@ -2,6 +2,8 @@ package com.goodchef.liking.module.writeuserinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -13,11 +15,8 @@ import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.eventmessages.UpDateUserInfoMessage;
+import com.goodchef.liking.utils.CheckUtils;
 import com.goodchef.liking.widgets.base.LikingStateView;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +50,30 @@ public class WriteNameActivity extends BaseActivity {
     }
 
     private void initView() {
-        mWriteNameNextBtn = (TextView) findViewById(R.id.write_name_next_btn);
+        mWriteNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence ss, int start, int before, int count) {
+                String editable = mWriteNameEditText.getText().toString();
+                String str = CheckUtils.replaceSpecialCharacter(editable);
+                if(!editable.equals(str)){
+                    mWriteNameEditText.setText(str);
+                    //设置新的光标所在位置
+                    mWriteNameEditText.setSelection(str.length());
+                    showToast("不可输入特殊字符");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });
 
     }
 
@@ -94,19 +116,9 @@ public class WriteNameActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 过滤字符，只能输入中文英文或者数字
-     *
-     * @param str
-     * @return
-     * @throws PatternSyntaxException
-     */
-    public static String stringFilter(String str) throws PatternSyntaxException {
-        String regEx = "[^a-zA-Z0-9\\u4E00-\\u9FA5]"; //要过滤掉的字符
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(str);
-        return m.replaceAll("").trim();
-    }
+
+
+
 
     @Override
     protected boolean isEventTarget() {

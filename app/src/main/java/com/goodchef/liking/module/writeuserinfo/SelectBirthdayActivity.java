@@ -125,6 +125,7 @@ public class SelectBirthdayActivity extends AppBarActivity  {
             @Override
             public void onScaleChanged(int scale) {
                 year = scale;
+                mDayRulerView.setDaySum(year, month);
                 mBirthdayTextView.setText(year + getString(R.string.year) + month + getString(R.string.month) + day + getString(R.string.day));
                 checkDate();
             }
@@ -134,6 +135,7 @@ public class SelectBirthdayActivity extends AppBarActivity  {
             @Override
             public void onScaleChanged(int scale) {
                 month = scale;
+                mDayRulerView.setDaySum(year, month);
                 mBirthdayTextView.setText(year + getString(R.string.year) + month + getString(R.string.month) + day + getString(R.string.day));
                 checkDate();
             }

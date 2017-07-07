@@ -24,7 +24,6 @@ import java.util.ArrayList;
  * Time:16/5/30 下午5:03
  */
 public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFromAlbum {
-    private Context mContext;
     private String mImageDirPath;//图片文件夹路径
     private int mNeedSelectAmount;//需要选择的图片数量
     //用户选择的图片，存储为图片的完整路径
@@ -32,7 +31,6 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
 
     public AlbumAdapter(Context context) {
         super(context);
-        this.mContext = context;
     }
 
     public void setImageDirPath(String imageDirPath, int needSelectAmount) {
@@ -58,7 +56,7 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
 
         @Override
         public View inflateItemView() {
-            mRootView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, null, false);
+            mRootView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item, null, false);
             mImageView = (HImageView) mRootView.findViewById(R.id.id_item_image);
             mImageButton = (ImageButton) mRootView.findViewById(R.id.id_item_select);
             return mRootView;
@@ -66,9 +64,10 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
 
         @Override
         public void bindViews(final String dirPath) {
-            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mImageView, mImageDirPath+"/"+dirPath)
+            HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mImageView, mImageDirPath+ "/" +dirPath)
                     .resize(100,100)
-                    .setLoadType(ImageLoader.LoaderType.FILE).build(), (Activity) mContext);
+                    .setLoadType(ImageLoader.LoaderType.FILE).build(), (Activity) getContext());
+
             mImageButton.setImageResource(R.drawable.pay_radio_gray_uncheck);
             mImageView.setColorFilter(null);
             mImageView.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +80,7 @@ public class AlbumAdapter extends HBaseAdapter<String> implements SelectImageFro
                         mImageView.setColorFilter(null);
                     } else {// 未选择该图片
                         if (mSelectedImage.size() >= mNeedSelectAmount) {
-                            Toast.makeText(mContext, "最多可选择" + mNeedSelectAmount + "张图片", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "最多可选择" + mNeedSelectAmount + "张图片", Toast.LENGTH_LONG).show();
                         } else {
                             mSelectedImage.add(mImageDirPath + "/" + dirPath);
                             mImageButton.setImageResource(R.drawable.pay_radio_green_check);

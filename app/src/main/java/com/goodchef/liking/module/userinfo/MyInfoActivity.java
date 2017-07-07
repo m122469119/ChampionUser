@@ -25,6 +25,7 @@ import com.goodchef.liking.dialog.SelectSexDialog;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.writeuserinfo.CompleteUserInfoContract;
 import com.goodchef.liking.utils.BitmapBase64Util;
+import com.goodchef.liking.utils.CheckUtils;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
@@ -123,6 +124,29 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
             @Override
             public void onRetryRequested() {
                 setInfoRequest();
+            }
+        });
+        mUserNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String editable = mUserNameEditText.getText().toString();
+                String str = CheckUtils.replaceSpecialCharacter(editable);
+                if(!editable.equals(str)){
+                    mUserNameEditText.setText(str);
+                    //设置新的光标所在位置
+                    mUserNameEditText.setSelection(str.length());
+                    showToast("不可输入特殊字符");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

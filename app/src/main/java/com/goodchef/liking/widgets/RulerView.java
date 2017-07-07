@@ -86,6 +86,8 @@ public class RulerView extends View {
     private static final int DAY = 2;
     private static final int WEIGHT = 3;
 
+    Calendar cal = Calendar.getInstance();
+
 
     public RulerView(Context context) {
         this(context, null);
@@ -104,16 +106,16 @@ public class RulerView extends View {
         mTextColor = ta.getColor(R.styleable.RulerView_textColor, Color.GRAY);
         mTextSize = ta.getDimension(R.styleable.RulerView_textSize, 18);
         mBeginRange = ta.getInt(R.styleable.RulerView_begin, 0);
-        Calendar c = Calendar.getInstance();
+        mType = ta.getInt(R.styleable.RulerView_type, -1);
 
-        int year = c.get(Calendar.YEAR);
+        int year = cal.get(Calendar.YEAR);
+
         if (mType == YEAR) {
             mEndRange = ta.getInt(R.styleable.RulerView_end, year);
         } else {
             mEndRange = ta.getInt(R.styleable.RulerView_end, 100);
         }
 
-        mType = ta.getInt(R.styleable.RulerView_type, -1);
         mIndicateWidth = (int) ta.getDimension(R.styleable.RulerView_indicateWidth, 5);
         mIndicatePadding = (int) ta.getDimension(R.styleable.RulerView_indicatePadding, 15);
         ta.recycle();
@@ -126,6 +128,16 @@ public class RulerView extends View {
         mIndicateScale = 0.7f;
 
         initValue();
+    }
+
+    public void setDaySum(int year, int month){
+        if (mType == DAY) {
+
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month - 1);
+            mEndRange = cal.getActualMaximum(Calendar.DATE);
+            refreshValues();
+        }
     }
 
     private void initValue() {
@@ -147,6 +159,8 @@ public class RulerView extends View {
         mTextPaint.setColor(mTextColor);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.setTextSize(mTextSize);
+
+
         mInnerWidth = (mEndRange - mBeginRange) * getIndicateWidth();
 
         mIndicateLoc = new Rect();

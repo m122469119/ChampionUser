@@ -90,6 +90,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@+id/user_name"
                 android:background="@color/transparent"
+                android:maxLength="15"
                 android:ellipsize="end"
                 android:gravity="right"
                 android:hint="@string/input_user_name"
