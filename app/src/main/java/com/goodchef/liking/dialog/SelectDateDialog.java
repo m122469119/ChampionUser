@@ -84,10 +84,17 @@ public class SelectDateDialog {
             mWheelYearPicker.setCurrentYear(Integer.parseInt(year));
             mWheelMonthPicker.setCurrentMonth(Integer.parseInt(month));
             mWheelDayPicker.setCurrentDay(Integer.parseInt(day));
+            yearStr = year;
+            monthStr = month;
+            dayStr = day;
+
         } else {
             mWheelYearPicker.setCurrentYear(1990);
             mWheelMonthPicker.setCurrentMonth(6);
             mWheelDayPicker.setCurrentDay(15);
+            yearStr = "1990";
+            monthStr = "6";
+            dayStr = "15";
         }
     }
 
@@ -102,6 +109,7 @@ public class SelectDateDialog {
             @Override
             public void onWheelSelected(int index, String data) {
                 yearStr = data;
+                mWheelDayPicker.setCurrentYearAndMonth(Integer.parseInt(yearStr), Integer.parseInt(monthStr));
             }
 
             @Override
@@ -122,6 +130,7 @@ public class SelectDateDialog {
             @Override
             public void onWheelSelected(int index, String data) {
                 monthStr = data;
+                mWheelDayPicker.setCurrentYearAndMonth(Integer.parseInt(yearStr), Integer.parseInt(monthStr));
             }
 
             @Override
