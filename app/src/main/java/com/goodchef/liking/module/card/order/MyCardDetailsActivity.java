@@ -149,14 +149,22 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
                 mBuyWayTextView.setText(R.string.upgrade_card);
             }
             mPeriodOfValidityTextView.setText(data.getStartTime() + " ~ " + data.getEndTime());
-            int payType = data.getPayType();
-            if (payType == PAY_TYPE_WECHAT) {
-                mBuyTypeTextView.setText(R.string.pay_wechat_type);
-            } else if (payType == PAY_TYPE_ALIPLY) {
-                mBuyTypeTextView.setText(R.string.pay_alipay_type);
-            } else if (payType == PAY_TYPE_FREE) {
-                mBuyTypeTextView.setText(R.string.pay_free_type);
+            int order_type = data.getOrder_type();
+
+            if (order_type == 1) {
+                int payType = data.getPayType();
+                if (payType == PAY_TYPE_WECHAT) {
+                    mBuyTypeTextView.setText(R.string.pay_wechat_type);
+                } else if (payType == PAY_TYPE_ALIPLY) {
+                    mBuyTypeTextView.setText(R.string.pay_alipay_type);
+                } else if (payType == PAY_TYPE_FREE) {
+                    mBuyTypeTextView.setText(R.string.pay_free_type);
+                }
+            } else if (order_type == 2) {
+                mBuyTypeTextView.setText(getString(R.string.offline_payment));
             }
+
+
             mCardPriceTextView.setText(getString(R.string.money_symbol) + data.getOrderAmount());
             mGymNameTextView.setText(data.getGym_name());
             mGymAddressTextView.setText(data.getGym_address());
@@ -211,13 +219,21 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
             mBuyWaterTime.setText(data.getWater_time());
 
             mPeriodOfValidityTextView.setText(data.getStart_time() + " ~ " + data.getEnd_time());
-            int payType = data.getPay_type();
-            if (payType == PAY_TYPE_WECHAT) {
-                mBuyTypeTextView.setText(R.string.pay_wechat_type);
-            } else if (payType == PAY_TYPE_ALIPLY) {
-                mBuyTypeTextView.setText(R.string.pay_alipay_type);
-            } else if (payType == PAY_TYPE_FREE) {
-                mBuyTypeTextView.setText(R.string.pay_free_type);
+
+
+            int order_type = data.getOrder_type();
+
+            if (order_type == 1) {
+                int payType = data.getPay_type();
+                if (payType == PAY_TYPE_WECHAT) {
+                    mBuyTypeTextView.setText(R.string.pay_wechat_type);
+                } else if (payType == PAY_TYPE_ALIPLY) {
+                    mBuyTypeTextView.setText(R.string.pay_alipay_type);
+                } else if (payType == PAY_TYPE_FREE) {
+                    mBuyTypeTextView.setText(R.string.pay_free_type);
+                }
+            } else if (order_type == 2) {
+                mBuyTypeTextView.setText(getString(R.string.offline_payment));
             }
 
             mCardPriceTextView.setText(getString(R.string.money_symbol) + data.getOrder_amount());

@@ -49,6 +49,12 @@ public class MyOrderCardDetailsResult extends LikingResult {
         private String gym_name;
         @SerializedName("gym_addr")
         private String gym_address;
+        /**
+         * order_type : 1
+         */
+
+        private int order_type;
+
 
         public String getOrderId() {
             return orderId;
@@ -144,6 +150,14 @@ public class MyOrderCardDetailsResult extends LikingResult {
 
         public void setGym_address(String gym_address) {
             this.gym_address = gym_address;
+        }
+
+        public int getOrder_type() {
+            return order_type;
+        }
+
+        public void setOrder_type(int order_type) {
+            this.order_type = order_type;
         }
     }
 }
