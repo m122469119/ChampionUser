@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,14 +14,16 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.DateUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageView;
+import com.bigkoo.pickerview.TimePickerView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.dialog.CameraCustomDialog;
-import com.goodchef.liking.dialog.SelectDateDialog;
 import com.goodchef.liking.dialog.SelectSexDialog;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.writeuserinfo.CompleteUserInfoContract;
@@ -29,11 +32,12 @@ import com.goodchef.liking.utils.CheckUtils;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
-import com.goodchef.liking.utils.VerifyDateUtils;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,11 +86,9 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
     private boolean isChange = false;
     private UserInfoResult.UserInfoData mUserInfoData;
     private String headUrl = "";
-    private String yearStr = "";
-    private String monthStr = "";
-    private String dayStr = "";
     private int isUpdateBirthday;
     private int isUpdateGender;
+    private TimePickerView mTimePickerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +138,7 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String editable = mUserNameEditText.getText().toString();
                 String str = CheckUtils.replaceSpecialCharacter(editable);
-                if(!editable.equals(str)){
+                if (!editable.equals(str)) {
                     mUserNameEditText.setText(str);
                     //设置新的光标所在位置
                     mUserNameEditText.setSelection(str.length());
@@ -228,7 +230,7 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
         });
     }
 
-    @OnClick({R.id.layout_head_image,R.id.select_sex,R.id.select_birthday,R.id.finish_btn})
+    @OnClick({R.id.layout_head_image, R.id.select_sex, R.id.select_birthday, R.id.finish_btn})
     public void onClick(android.view.View v) {
         if (v == mHeadImageLayout) {//选择头像
             showCameraDialog();
@@ -242,7 +244,8 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
             if (isUpdateBirthday == NumberConstantUtil.ZERO) {
                 showToast(getString(R.string.user_can_not_revise_info));
             } else if (isUpdateBirthday == NumberConstantUtil.ONE) {
-                showSelectDateDialog();
+                //  showSelectDateDialog();
+                mTimePickerView.show(mSelectBirthdayTextView);
             }
         } else if (v == mFinishBtn) {//完成按钮
             updateChangeData();
@@ -304,6 +307,7 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
 
     /**
      * 过滤字符
+     *
      * @param str
      * @return
      * @throws PatternSyntaxException
@@ -395,48 +399,44 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
         return birthday;
     }
 
-
     /**
-     * 选择出生日期
+     * 初始化时间选择控件
      */
-    private void showSelectDateDialog() {
-        final SelectDateDialog dateDialog = new SelectDateDialog(this, yearStr, monthStr, dayStr);
-        dateDialog.setTextViewOnClickListener(new android.view.View.OnClickListener() {
+    private void initTimePickerView(final Date defaultDate) {
+        final String defaultDateString = DateUtils.formatDate("yyyy-MM-dd", defaultDate);
+        mSelectBirthdayTextView.setText(defaultDateString);
+        Calendar selectedDate = Calendar.getInstance();
+        selectedDate.setTime(defaultDate);
+        mTimePickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
-            public void onClick(android.view.View v) {
-                switch (v.getId()) {
-                    case R.id.dialog_date_cancel:
-                        dateDialog.dismiss();
-                        isChange = false;
-                        break;
-                    case R.id.dialog_date_confirm:
-                        yearStr = dateDialog.getYear();
-                        String month = dateDialog.getMonth();
-                        monthStr = month;
-                        dayStr = dateDialog.getDay();
-                        if (Integer.parseInt(month) < 10) {
-                            month = "0" + month;
-                        }
-                        if (Integer.parseInt(dayStr) < 10) {
-                            dayStr = "0" + dayStr;
-                        }
-                        String str = yearStr + "-" + month + "-" + dayStr;
-                        if (VerifyDateUtils.isVerifyDate(str)) {
-                            mSelectBirthdayTextView.setText(str);
-                            isChange = true;
-                           showToast(getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
-                            dateDialog.dismiss();
-                        } else {
-                            yearStr = "";
-                            monthStr = "";
-                            dayStr = "";
-                            showToast(getString(R.string.select_date_error_prompt));
-                        }
-                        break;
+            public void onTimeSelect(Date date, View v) {
+                String dateString = DateUtils.formatDate("yyyy-MM-dd", date);
+                if (!defaultDateString.equals(dateString)) {
+                    isChange = true;
+                } else {
+                    isChange = false;
                 }
+                mSelectBirthdayTextView.setText(dateString);
+                showToast(getString(R.string.user_birthday) + getString(R.string.myinfo_sex_and_birthday_only_change_one_times));
             }
-        });
+        })
+                .setDate(selectedDate)
+                .setTitleText("")
+                .setTitleSize(18)
+                .setCancelColor(ResourceUtils.getColor(R.color.c565656))
+                .setSubmitColor(ResourceUtils.getColor(R.color.c565656))
+                .setTitleBgColor(ResourceUtils.getColor(R.color.white))
+                .setDividerColor(ResourceUtils.getColor(R.color.c8E8E8E))
+                .setContentSize(21)
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
+                .setDecorView(null)
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setLabel(getString(R.string.year), getString(R.string.month), getString(R.string.day), "", "", "")
+                .build();
     }
+
+
 
     /**
      * 选择性别
@@ -551,13 +551,11 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
             }
             String birthday = userInfoData.getBirthday();
             if (!StringUtils.isEmpty(birthday)) {
+                Date date = DateUtils.parseString("yyyy-MM-dd", birthday);
+                initTimePickerView(date);
                 mSelectBirthdayTextView.setText(birthday);
-                String a[] = birthday.split("-");
-                if (a.length >= 2) {
-                    yearStr = a[0];
-                    monthStr = a[1];
-                    dayStr = a[2];
-                }
+            } else {
+                initTimePickerView(new Date());
             }
             int height = userInfoData.getHeight();
             if (height > 0) {

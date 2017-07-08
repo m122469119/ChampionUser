@@ -99,4 +99,7 @@
     <color name="buy_card_text_color_black">#596167</color>
     <color name="buy_card_text_color_grey_black">#888b8a</color>
     <color name="buy_card_text_color_grey">#d6d7db</color>
+
+    <color name="c565656">#565656</color>
+    <color name="c8E8E8E">#8E8E8E</color>
 </resources>

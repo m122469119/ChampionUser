@@ -102,6 +102,7 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.contrarywind:Android-PickerView:3.2.5'
 }
 
 
