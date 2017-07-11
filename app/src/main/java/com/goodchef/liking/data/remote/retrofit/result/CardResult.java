@@ -182,6 +182,8 @@ public class CardResult extends LikingResult {
                 public static final int STAGGER_CARD = 1;
                 public static final int ALL_CARD = 2;
 
+                public static final int NO_ACTIVITY = 0;
+                public static final int HAVE_ACTIVITY = 1;
 
                 /**
                  * category_id : 2000
@@ -213,6 +215,11 @@ public class CardResult extends LikingResult {
 
                 private int user_card_status;
                 private String user_card_msg;
+                /**
+                 * is_card_activity : 0
+                 */
+
+                private int is_card_activity;
 
 
                 public String getCategory_id() {
@@ -309,6 +316,14 @@ public class CardResult extends LikingResult {
 
                 public void setUser_card_msg(String user_card_msg) {
                     this.user_card_msg = user_card_msg;
+                }
+
+                public int getIs_card_activity() {
+                    return is_card_activity;
+                }
+
+                public void setIs_card_activity(int is_card_activity) {
+                    this.is_card_activity = is_card_activity;
                 }
             }
         }

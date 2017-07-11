@@ -248,7 +248,6 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
         mRefreshLayout.setRefreshing(false);
         mAllAndStaggerRbAll.setChecked(true);
 
-
         if (!mPresenter.isActivity()) {
             mHeadActivityView.setVisibility(View.GONE);
         } else {
@@ -258,8 +257,6 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
                     + " - "
                     + cardData.getGymActivityBean().getEnd_time());
         }
-
-        mBuyCardAdapter.setIsActivity(mPresenter.isActivity());
 
         if (cardData.getType() == CardResult.CardData.ALL_CARD) {
             mOnlyAllView.setVisibility(View.VISIBLE);

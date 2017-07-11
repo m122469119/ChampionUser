@@ -419,7 +419,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mCardTotalMoney = mCardPrice;
         mCardBuyType.setText(cardsBean.getName());
         mCardMoneyTextView.setText(getString(R.string.rmb) + cardsBean.getPrice());
-        mOldPriceText.setText(cardsBean.getOld_price());
+        mOldPriceText.setText(getString(R.string.rmb) + cardsBean.getOld_price());
         mWaterTime.setText(cardsBean.getPresent_water() + getString(R.string.min));
         mCardGymName = confirmBuyCardData.getGym_name();
         mGymNameTextView.setText(mCardGymName);

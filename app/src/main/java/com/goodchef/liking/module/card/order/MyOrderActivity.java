@@ -22,7 +22,7 @@ public class MyOrderActivity extends AppBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
-        setTitle(getString(R.string.title_activity_myorder));
+        setTitle(getString(R.string.order));
         showHomeUpIcon(R.drawable.app_bar_back, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

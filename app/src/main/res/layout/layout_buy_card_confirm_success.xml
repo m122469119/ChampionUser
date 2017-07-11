@@ -338,16 +338,6 @@
             android:text="¥1233"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="13sp"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="¥"
-            android:textColor="#888b9a"
-            android:textStyle="bold" />
-
         <com.goodchef.liking.widgets.OutTextView
             android:id="@+id/old_price"
             android:layout_width="wrap_content"
