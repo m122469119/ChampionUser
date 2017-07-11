@@ -115,23 +115,21 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
                     mSwipeLayout.open();
-                    isOpen = true;
                 }
 
                 @Override
                 public void onOpen(SwipeLayout layout) {
-
+                    isOpen = true;
                 }
 
                 @Override
                 public void onStartClose(SwipeLayout layout) {
                     mSwipeLayout.close();
-                    isOpen = false;
                 }
 
                 @Override
                 public void onClose(SwipeLayout layout) {
-
+                    isOpen = false;
                 }
 
                 @Override

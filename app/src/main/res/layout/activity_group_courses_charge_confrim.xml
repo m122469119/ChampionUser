@@ -5,6 +5,4 @@
                                                   android:layout_width="match_parent"
                                                   android:layout_height="match_parent"
                                                   android:orientation="vertical"
-                                                  app:success_view="@layout/layout_group_courses_charge_confirm_success">
-
-</com.goodchef.liking.widgets.base.LikingStateView>
+                                                  app:success_view="@layout/layout_group_courses_charge_confirm_success"/>

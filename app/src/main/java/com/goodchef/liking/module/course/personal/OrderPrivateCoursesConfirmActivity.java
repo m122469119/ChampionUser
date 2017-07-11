@@ -3,10 +3,12 @@ package com.goodchef.liking.module.course.personal;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,6 +38,7 @@ import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.data.remote.retrofit.result.data.PlacesData;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
@@ -152,6 +155,17 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
             @Override
             public void onRetryRequested() {
                 sendRequest();
+            }
+        });
+
+        mProtocolCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(OrderPrivateCoursesConfirmActivity.this, R.color.liking_green_btn_back));
+                } else {
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(OrderPrivateCoursesConfirmActivity.this, R.color.liking_grey_btn_back));
+                }
             }
         });
     }
@@ -308,7 +322,8 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
             R.id.courses_time_minus,
             R.id.courses_time_add,
             R.id.courses_times,
-            R.id.private_buy_protocol_content})
+            R.id.private_buy_protocol_content,
+            R.id.private_buy_protocol_view})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_coupons_courses:
@@ -387,6 +402,9 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
                         }
                     }
                 }
+                break;
+            case R.id.private_buy_protocol_view:
+                mProtocolCheckBox.setChecked(!mProtocolCheckBox.isChecked());
                 break;
         }
     }

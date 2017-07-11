@@ -3,7 +3,9 @@ package com.goodchef.liking.module.course.group.details.charge;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -129,6 +131,17 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
                 initData();
             }
         });
+
+        mProtocolCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(GroupCoursesChargeConfirmActivity.this, R.color.liking_green_btn_back));
+                } else {
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(GroupCoursesChargeConfirmActivity.this, R.color.liking_grey_btn_back));
+                }
+            }
+        });
     }
 
     private void getIntentData() {
@@ -178,7 +191,8 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
             R.id.layout_alipay,
             R.id.layout_wechat,
             R.id.immediately_buy_btn,
-            R.id.group_buy_protocol_content})
+            R.id.group_buy_protocol_content,
+            R.id.private_buy_protocol_view})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_coupons_courses://收费团体课没有传入gymid
@@ -225,6 +239,9 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
                         }
                     }
                 }
+                break;
+            case R.id.private_buy_protocol_view:
+                mProtocolCheckBox.setChecked(!mProtocolCheckBox.isChecked());
                 break;
             default:
                 break;

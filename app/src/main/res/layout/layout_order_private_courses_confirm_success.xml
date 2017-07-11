@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -322,45 +322,41 @@
             <include layout="@layout/layout_pay"/>
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/private_buy_protocol_view"
                 android:layout_width="match_parent"
-                android:layout_height="54dp">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="15dp">
+
+                <CheckBox
+                    android:id="@+id/private_buy_protocol_checkbox"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:button="@null"
+                    android:background="@drawable/agree_check"
+                    />
 
                 <TextView
-                    android:id="@+id/private_buy_protocol_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="我已阅读并同意购课协议"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="12sp"
-                    />
+                    android:text="@string/i_read_agreement"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/lesson_details_gray_back"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/private_buy_protocol_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/private_buy_protocol_title"
+                    android:layout_marginLeft="3dp"
                     android:text="《平台私教协议》"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/liking_green_btn_back"
-                    android:textSize="12sp"
-                    />
+                    android:textColor="@color/add_minus_dishes_text"
+                    android:textSize="13sp" />
 
-                <CheckBox
-                    android:id="@+id/private_buy_protocol_checkbox"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/pay_radio_button_bg"
-                    android:button="@null"/>
+            </LinearLayout>
 
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -388,7 +384,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="@color/liking_green_btn_back"
+            android:background="@color/liking_grey_btn_back"
             android:gravity="center"
             android:text="@string/immediately_buy_btn"
             android:textColor="@color/white"

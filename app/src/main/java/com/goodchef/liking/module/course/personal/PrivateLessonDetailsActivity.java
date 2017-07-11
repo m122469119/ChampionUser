@@ -185,7 +185,8 @@ public class PrivateLessonDetailsActivity extends AppBarMVPSwipeBackActivity<Pri
     }
 
 
-    @OnClick({R.id.private_lesson_immediately_submit, R.id.layout_private_courses_share})
+    @OnClick({R.id.private_lesson_immediately_submit,
+            R.id.layout_private_courses_share})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.private_lesson_immediately_submit://立即预约

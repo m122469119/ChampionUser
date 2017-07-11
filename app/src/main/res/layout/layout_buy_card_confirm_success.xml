@@ -300,7 +300,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:text="@string/buy_card_agreement"
+                    android:text="@string/platform_purchase_agreement"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="13sp" />
 
