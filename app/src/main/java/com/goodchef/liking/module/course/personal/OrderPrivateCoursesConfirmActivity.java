@@ -92,8 +92,6 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
     ImageView mMinusImageView;//减号
     @BindView(R.id.courses_time_add)
     ImageView mAddImageView;//加号
-    @BindView(R.id.private_buy_protocol)
-    TextView mPrivateBuyProtocolTextView;
 
     @BindView(R.id.layout_alipay)
     RelativeLayout mAlipayLayout;//支付布局
@@ -106,6 +104,12 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
 
     @BindView(R.id.private_courses_confirm_state_view)
     LikingStateView mStateView;
+
+    @BindView(R.id.private_buy_protocol_content)
+    TextView mProtocolContentView;
+
+    @BindView(R.id.private_buy_protocol_checkbox)
+    CheckBox mProtocolCheckBox;
 
     private PrivateCoursesTrainItemAdapter mPrivateCoursesTrainItemAdapter;
 
@@ -284,7 +288,27 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
         });
     }
 
-    @OnClick({R.id.layout_coupons_courses, R.id.immediately_buy_btn, R.id.layout_alipay, R.id.layout_wechat, R.id.courses_time_minus, R.id.courses_time_add, R.id.courses_times, R.id.private_buy_protocol})
+    private void showAgreeProtocolCheckBoxDialog() {
+        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
+                .setMessage("请同意平台私教协议")
+                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        baseDialog.setCancelable(false);
+        baseDialog.show();
+    }
+
+    @OnClick({R.id.layout_coupons_courses,
+            R.id.immediately_buy_btn,
+            R.id.layout_alipay,
+            R.id.layout_wechat,
+            R.id.courses_time_minus,
+            R.id.courses_time_add,
+            R.id.courses_times,
+            R.id.private_buy_protocol_content})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_coupons_courses:
@@ -307,11 +331,15 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
                 }
                 break;
             case R.id.immediately_buy_btn:
-                if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-                    showToast(getString(R.string.network_error));
-                    return;
+                if (!mProtocolCheckBox.isChecked()) {
+                    showAgreeProtocolCheckBoxDialog();
                 } else {
-                    sendBuyCoursesRequest();
+                    if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                        showToast(getString(R.string.network_error));
+                        return;
+                    } else {
+                        sendBuyCoursesRequest();
+                    }
                 }
                 break;
             case R.id.layout_alipay:
@@ -348,7 +376,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
                     showCoursesTimesDialog();
                 }
                 break;
-            case R.id.private_buy_protocol:
+            case R.id.private_buy_protocol_content:
                 BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
                 if (baseConfigResult != null) {
                     BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();

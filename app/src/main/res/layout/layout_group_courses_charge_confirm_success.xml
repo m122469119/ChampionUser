@@ -280,6 +280,48 @@
 
             <include layout="@layout/layout_pay"/>
 
+
+
+            <RelativeLayout
+                android:id="@+id/private_buy_protocol_view"
+                android:layout_width="match_parent"
+                android:layout_height="54dp">
+
+                <TextView
+                    android:id="@+id/group_buy_protocol_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="我已阅读并同意购课协议"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="12sp"
+                    />
+
+                <TextView
+                    android:id="@+id/group_buy_protocol_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/group_buy_protocol_title"
+                    android:text="《平台团课协议》"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/liking_green_btn_back"
+                    android:textSize="12sp"
+                    />
+
+                <CheckBox
+                    android:id="@+id/group_buy_protocol_checkbox"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/pay_radio_button_bg"
+                    android:button="@null"/>
+
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 

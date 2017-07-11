@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -425,6 +426,14 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mGymAddressTextView.setText(confirmBuyCardData.getGym_address());
         mNoticeActivity = confirmBuyCardData.getPurchase_activity();
         mBuyCardNoticeTextView.setText(mNoticeActivity);
+
+
+        if (cardsBean.getIs_activity() == ConfirmBuyCardResult.DataBean.CardsBean.NO_ACTIVITY) {
+            mOldPriceText.setVisibility(View.GONE);
+        } else {
+            mOldPriceText.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

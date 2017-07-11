@@ -24,7 +24,7 @@ public abstract class BaseRecyclerAdapter<T> extends  RecyclerView.Adapter<Recyc
     public static final int TYPE_FOOTER = 2;
     private List<T> mDatas = new ArrayList<>();
     private View mHeaderView, mFooterView;
-    private OnItemClickListener mListener;
+    protected OnItemClickListener mListener;
     protected Context mContext;
 
     public BaseRecyclerAdapter(Context mContext) {

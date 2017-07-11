@@ -82,7 +82,7 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
 
         TextView mBodyMeasureTimeTextView;
 
-        SwipeLayout mSwipelayout;
+        SwipeLayout mSwipeLayout;
 
         View mDeleteView, mBodytestContent;
 
@@ -109,17 +109,59 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
 
             mDeleteView = itemView.findViewById(R.id.delete);
             mBodytestContent = itemView.findViewById(R.id.bodytest_content);
-            mSwipelayout = (SwipeLayout) itemView.findViewById(R.id.bodytest_swipelayout);
+            mSwipeLayout = (SwipeLayout) itemView.findViewById(R.id.bodytest_swipelayout);
+            mSwipeLayout.removeAllSwipeListener();
+            mSwipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onStartOpen(SwipeLayout layout) {
+                    mSwipeLayout.open();
+                    isOpen = true;
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout layout) {
+                    mSwipeLayout.close();
+                    isOpen = false;
+                }
+
+                @Override
+                public void onClose(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
+                }
+            });
+
+
 
         }
 
+        boolean isOpen = false;
+
         @Override
         public void bindViews(final BodyHistoryResult.BodyHistoryData.ListData object) {
+            if (isOpen) {
+                mSwipeLayout.close();
+                isOpen = false;
+            }
+
             setTextViewType();
             BodyHistoryResult.BodyHistoryData.ListData.BmiData bmiData = object.getBmi();
             BodyHistoryResult.BodyHistoryData.ListData.FatRateData fatRateData = object.getFatRate();
             BodyHistoryResult.BodyHistoryData.ListData.WaistHipData waistHipData = object.getWaistHip();
-
             mBodyHistoryGradeTextView.setText(object.getScore());
             if (bmiData != null) {
                 mBodyIndexNumberTextView.setText(bmiData.getValue());
@@ -146,7 +188,7 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
                 mDeleteView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mItemDeleteClickListener.onItemDelete(mSwipelayout, mDeleteView, object, getDataList().indexOf(object));
+                        mItemDeleteClickListener.onItemDelete(mSwipeLayout, mDeleteView, object, getDataList().indexOf(object));
                     }
                 });
             } else {
@@ -157,14 +199,17 @@ public class BodyTestHistoryAdapter extends BaseRecycleViewAdapter<BodyTestHisto
                 mBodytestContent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mOnItemClickListener.onItemClick(mSwipelayout, mBodytestContent, object, getDataList().indexOf(object));
+                        if (isOpen) {
+                            mSwipeLayout.close();
+                            isOpen = false;
+                        } else {
+                            mOnItemClickListener.onItemClick(mSwipeLayout, mBodytestContent, object, getDataList().indexOf(object));
+                        }
                     }
                 });
             } else {
                 mBodytestContent.setOnClickListener(null);
             }
-
-            mSwipelayout.close(false, false);
         }
 
         private void setTextViewType() {

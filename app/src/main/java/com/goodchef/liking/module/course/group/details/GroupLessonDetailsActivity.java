@@ -378,7 +378,11 @@ public class GroupLessonDetailsActivity extends AppBarMVPSwipeBackActivity<TeamC
         }
     }
 
-    @OnClick({R.id.group_immediately_submit_btn, R.id.cancel_order_btn, R.id.layout_gym_introduce, R.id.layout_group_details, R.id.layout_group_courses_share})
+    @OnClick({R.id.group_immediately_submit_btn,
+            R.id.cancel_order_btn,
+            R.id.layout_gym_introduce,
+            R.id.layout_group_details,
+            R.id.layout_group_courses_share})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.group_immediately_submit_btn://立即购买

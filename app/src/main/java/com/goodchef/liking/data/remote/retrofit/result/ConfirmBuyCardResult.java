@@ -26,7 +26,7 @@ public class ConfirmBuyCardResult extends LikingResult {
         this.data = data;
     }
 
-    public static class DataBean extends Data  {
+    public static class DataBean extends Data {
         /**
          * purchase_activity : 购卡后请前往该健身房免费领取手环
          * deadline : 2017-09-11 ~ 2017-12-10
@@ -122,6 +122,11 @@ public class ConfirmBuyCardResult extends LikingResult {
         }
 
         public static class CardsBean extends Data {
+
+
+            public static final int NO_ACTIVITY = 0;
+            public static final int HAVE_ACTIVITY = 1;
+
             /**
              * card_id : 20000
              * name : 错峰卡

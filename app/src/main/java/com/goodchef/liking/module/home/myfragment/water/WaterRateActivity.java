@@ -42,6 +42,10 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
     @BindView(R.id.water_state)
     StateView mStateView;
 
+    @BindView(R.id.card_money)
+    TextView mCardMoney;
+
+
     View mAlipayView, mWechatView;
 
     CheckBox mAlipayCheckBox, mWechatCheckBox;
@@ -109,6 +113,7 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
             @Override
             public void onItemClick(int position, Object data) {
                 mPresenter.onItemClick(position);
+                WaterRateResult.DataBean.WaterListBean bean = (WaterRateResult.DataBean.WaterListBean) data;
             }
         });
 
@@ -183,6 +188,12 @@ public class WaterRateActivity extends AppBarMVPSwipeBackActivity<WaterRateContr
     public void setWaterAdapter(List<WaterRateResult.DataBean.WaterListBean> list) {
         mAdapter.setDatas(list);
         mAdapter.notifyDataSetChanged();
+        for (WaterRateResult.DataBean.WaterListBean bean : list) {
+            if (bean.isChecked()) {
+                mCardMoney.setText(getString(R.string.rmb) + " "+ bean.getWater_price());
+                break;
+            }
+        }
     }
 
     @Override

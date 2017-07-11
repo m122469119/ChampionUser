@@ -49,8 +49,8 @@ interface BuyCardContract {
                         @Override
                         public void onNext(CardResult value) {
                             super.onNext(value);
-                            mView.setAdapter(mModel.getCardList());
                             mView.updateCardListView(value.getCardData());
+                            mView.setAdapter(mModel.getCardList());
                             setCheckedTitleAndTime();
                         }
 
@@ -61,6 +61,10 @@ interface BuyCardContract {
                         }
                     }));
 
+        }
+
+        public boolean isActivity(){
+            return mModel.isActivity;
         }
 
         public void setAllAndStaggerChecked(int allCard) {

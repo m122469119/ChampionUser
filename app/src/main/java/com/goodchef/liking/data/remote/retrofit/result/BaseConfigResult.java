@@ -49,10 +49,17 @@ public class BaseConfigResult extends LikingResult {
         private String trainerProtocol;
 
 
+
+
         @SerializedName("update")
         private UpdateData mUpdateData;
         @SerializedName("wechat")
         private String wechat;
+        /**
+         * group_course_url : http://testapp.likingfit.com/index/course-team
+         */
+
+        private String group_course_url;
 
         public String getCustomerPhone() {
             return customerPhone;
@@ -149,6 +156,14 @@ public class BaseConfigResult extends LikingResult {
 
         public void setTrainerProtocol(String trainerProtocol) {
             this.trainerProtocol = trainerProtocol;
+        }
+
+        public String getGroup_course_url() {
+            return group_course_url;
+        }
+
+        public void setGroup_course_url(String group_course_url) {
+            this.group_course_url = group_course_url;
         }
 
         public static class UpdateData extends Data {

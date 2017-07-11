@@ -216,7 +216,7 @@ public class MyCardDetailsActivity extends AppBarMVPSwipeBackActivity<MyCardDeta
                 mBuyStateTextView.setText(R.string.dishes_order_state_payed);
             }
             mBuyWayTextView.setText(getString(R.string.water_card));
-            mBuyWaterTime.setText(data.getWater_time());
+            mBuyWaterTime.setText(data.getWater_time() + getString(R.string.min));
 
             mPeriodOfValidityTextView.setText(data.getStart_time() + " ~ " + data.getEnd_time());
 

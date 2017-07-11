@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
@@ -18,6 +20,8 @@ import com.aaron.pay.alipay.OnAliPayListener;
 import com.aaron.pay.weixin.WeixinPay;
 import com.aaron.pay.weixin.WeixinPayListener;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.ChargeGroupConfirmResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
@@ -27,8 +31,10 @@ import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
+import com.goodchef.liking.module.course.personal.OrderPrivateCoursesConfirmActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -84,6 +90,12 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
     CheckBox mAlipayCheckBox;
     @BindView(R.id.pay_type_wechat_checkBox)
     CheckBox mWechatCheckBox;
+
+    @BindView(R.id.group_buy_protocol_content)
+    TextView mProtocolContent;
+
+    @BindView(R.id.group_buy_protocol_checkbox)
+    CheckBox mProtocolCheckBox;
 
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
@@ -162,7 +174,11 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
         mStateView.setState(state);
     }
 
-    @OnClick({R.id.layout_coupons_courses, R.id.layout_alipay, R.id.layout_wechat, R.id.immediately_buy_btn})
+    @OnClick({R.id.layout_coupons_courses,
+            R.id.layout_alipay,
+            R.id.layout_wechat,
+            R.id.immediately_buy_btn,
+            R.id.group_buy_protocol_content})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_coupons_courses://收费团体课没有传入gymid
@@ -187,11 +203,47 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
                 payType = "0";
                 break;
             case R.id.immediately_buy_btn:
-                sendBuyCoursesRequest();
+                if (!mProtocolCheckBox.isChecked()) {
+                    showAgreeProtocolCheckBoxDialog();
+                } else {
+                    if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+                        showToast(getString(R.string.network_error));
+                        return;
+                    } else {
+                        sendBuyCoursesRequest();
+                    }
+                }
+                break;
+            case R.id.group_buy_protocol_content:
+                BaseConfigResult baseConfigResult = LikingPreference.getBaseConfig();
+                if (baseConfigResult != null) {
+                    BaseConfigResult.ConfigData baseConfigData = baseConfigResult.getBaseConfigData();
+                    if (baseConfigData != null) {
+                        String agreeUrl = baseConfigData.getGroup_course_url();
+                        if (!StringUtils.isEmpty(agreeUrl)) {
+                            HDefaultWebActivity.launch(this, agreeUrl, getString(R.string.platform_group_pro));
+                        }
+                    }
+                }
                 break;
             default:
                 break;
         }
+    }
+
+
+
+    private void showAgreeProtocolCheckBoxDialog() {
+        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
+                .setMessage("请同意平台团课协议")
+                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        baseDialog.setCancelable(false);
+        baseDialog.show();
     }
 
     /**

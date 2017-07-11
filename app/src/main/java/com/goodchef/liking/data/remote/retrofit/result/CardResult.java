@@ -29,6 +29,7 @@ public class CardResult extends LikingResult {
         public static final int STAGGER_CARD = 1;
         public static final int ALL_CARD = 2;
         public static final int STAGGER_AND_ALL_CARD = 3;
+        public static final int NO_ALL_AND_STAGGER = 4;
 
 
         @SerializedName("category")

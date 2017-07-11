@@ -1,7 +1,5 @@
 package com.goodchef.liking.module.card.buy.confirm;
 
-import android.text.TextUtils;
-
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.data.remote.retrofit.LikingNewApi;

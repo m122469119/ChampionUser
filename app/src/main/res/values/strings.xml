@@ -460,6 +460,7 @@
     <string name="private_buy_protocol">购买私教课即同意《平台私教协议》</string>
     <string name="courses_people_number">上课人数</string>
     <string name="platform_private_teacher_pro">平台私教协议</string>
+    <string name="platform_group_pro">平台团课协议</string>
     <string name="cm">" cm"</string>
     <string name="kg">" kg"</string>
     <string name="remian_number">还剩</string>
@@ -538,7 +539,7 @@
     <string name="get_location_address">获取定位地址</string>
     <string name="coming_soon">敬请期待...</string>
     <string name="my_gym">我的健身房</string>
-    <string name="buy_type">购买方式</string>
+    <string name="buy_type">购买类型</string>
     <string name="use_times">使用时段</string>
     <string name="pay_type">支付方式</string>
     <string name="favourable_number">优惠金额</string>
@@ -616,7 +617,7 @@
     <string name="name_digits">！!@#$%^*()_+{}|:?/.,""^~`</string>
     <string name="not_input_filter_code">不能输入非法字符或者空格！</string>
     <string name="title_activity_water_rate">WaterRateActivity</string>
-    <string name="water_uknow">建议您根据会员卡有效期购买相应水费时间(会员卡过期则水费自动失效);\r\n 若存在疑问，请联系健身房处理;\r\n 水费一经购买，不予退款;</string>
+    <string name="water_uknow">建议您根据会员卡有效期购买相应水费时间(会员卡过期则水费自动失效);\r\n若存在疑问，请联系健身房处理;\r\n水费一经购买，不予退款;</string>
     <string name="rmb">¥</string>
     <string name="water_recharge_time">选择充值时长</string>
     <string name="give_water_uknow">若在会员卡有效期内未使用完，系统将会清空处理</string>
@@ -625,7 +626,7 @@
     <string name="i_read_agreement">我已阅读并同意</string>
     <string name="likingfit_uknow">*LikingFit申明：禁售任何形式超过1年的会员卡\r\n造成的任何损失和品牌无关*</string>
     <string name="time_remaining">剩余时间</string>
-    <string name="water_time">时间:</string>
+    <string name="water_time">时间：</string>
     <string name="water_card">水费</string>
     <string name="buy_water_time">购买时长</string>
     <string name="water_details">水费详情</string>

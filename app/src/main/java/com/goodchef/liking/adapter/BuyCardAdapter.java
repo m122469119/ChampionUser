@@ -32,6 +32,8 @@ public class BuyCardAdapter extends BaseRecyclerAdapter<CardResult.CardData.Cate
         super(context);
     }
 
+    boolean isActivity;
+
     @Override
     public RecyclerView.ViewHolder onCreate(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_buy_card, parent, false);
@@ -46,6 +48,10 @@ public class BuyCardAdapter extends BaseRecyclerAdapter<CardResult.CardData.Cate
 
     public void setBuyCardListener(View.OnClickListener onClickListener) {
         mClickListener = onClickListener;
+    }
+
+    public void setIsActivity(boolean activity) {
+        isActivity = activity;
     }
 
 
@@ -73,6 +79,12 @@ public class BuyCardAdapter extends BaseRecyclerAdapter<CardResult.CardData.Cate
             mOutPrice.setText(object.getOld_price());
             mPrice.setText(object.getPrice());
             setLeftIcon(object);
+
+            if (isActivity) {
+                mOutPrice.setVisibility(View.VISIBLE);
+            } else {
+                mOutPrice.setVisibility(View.GONE);
+            }
         }
 
         private void setLeftIcon(CardResult.CardData.Category.CardBean object) {

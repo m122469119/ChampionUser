@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:textColor="@color/liking_green_btn_back"
             android:textSize="@dimen/textsize_small"
             android:textStyle="bold" />
