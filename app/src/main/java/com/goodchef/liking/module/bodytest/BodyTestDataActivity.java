@@ -154,7 +154,7 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
 
     @BindView(R.id.muscle_analyze_result_TextView)
     TextView mMuscleAnalyzeResultTextView;
-    @BindView(R.id.muscle_result_history_TextView)
+
     TextView mMuscleResultHistoryTextView;
     //---end------
 
@@ -299,7 +299,7 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
             R.id.muscle_fat_history_TextView,
             R.id.body_radar_help_ImageView,
             R.id.fat_analyze_help_ImageView,
-            R.id.body_test_history_TextView
+            R.id.body_test_history_TextView,
     })
     public void onClick(android.view.View v) {
         if (v == mBodyGradeHistoryTextView) {//体侧评分历史记录
@@ -630,6 +630,7 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
         mLeftDownMuscleEvaluateTextView.setText(bodyListData.get(3).getEvaluate());
 
         mMuscleAnalyzeResultTextView.setText(muscleData.getAdvise());
+
         mMuscleResultHistoryTextView.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
@@ -643,6 +644,7 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
     }
 
     private void setMuscleView(android.view.View view) {
+        mMuscleResultHistoryTextView = (TextView) view.findViewById(R.id.muscle_result_history_TextView);
         setBodyFatTypeface();
     }
 

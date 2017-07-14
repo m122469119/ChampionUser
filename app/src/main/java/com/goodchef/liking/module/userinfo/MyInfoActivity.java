@@ -407,6 +407,10 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
         mSelectBirthdayTextView.setText(defaultDateString);
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.setTime(defaultDate);
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(1950, 0, 1);
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(new Date());
         mTimePickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -432,10 +436,10 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
                 .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
                 .setDecorView(null)
                 .setType(new boolean[]{true, true, true, false, false, false})
+                .setRangDate(startDate, endDate)//起始终止年月日设定
                 .setLabel(getString(R.string.year), getString(R.string.month), getString(R.string.day), "", "", "")
                 .build();
     }
-
 
 
     /**
