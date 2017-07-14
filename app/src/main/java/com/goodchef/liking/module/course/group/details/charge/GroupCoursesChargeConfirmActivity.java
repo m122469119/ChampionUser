@@ -249,7 +249,6 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
     }
 
 
-
     private void showAgreeProtocolCheckBoxDialog() {
         HBaseDialog baseDialog = new HBaseDialog.Builder(this)
                 .setMessage("请同意平台团课协议")
@@ -298,28 +297,29 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
 
     @Override
     public void updateErrorNoCard(String errorMessage) {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage(errorMessage);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                GroupCoursesChargeConfirmActivity.this.finish();
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(getString(R.string.go_buy_card), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(GroupCoursesChargeConfirmActivity.this, LikingHomeActivity.class);
-                intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, 1);
-                startActivity(intent);
-                postEvent(new NoCardMessage(1));
-                dialog.dismiss();
-                GroupCoursesChargeConfirmActivity.this.finish();
-            }
-        });
-        builder.create().setCancelable(false);
-        builder.create().show();
+        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
+                .setMessage(errorMessage)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GroupCoursesChargeConfirmActivity.this.finish();
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.go_buy_card), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(GroupCoursesChargeConfirmActivity.this, LikingHomeActivity.class);
+                        intent.putExtra(LikingHomeActivity.KEY_INTENT_TAB, 1);
+                        startActivity(intent);
+                        postEvent(new NoCardMessage(1));
+                        dialog.dismiss();
+                        GroupCoursesChargeConfirmActivity.this.finish();
+                    }
+                })
+                .create();
+        baseDialog.setCancelable(false);
+        baseDialog.show();
     }
 
     @Override

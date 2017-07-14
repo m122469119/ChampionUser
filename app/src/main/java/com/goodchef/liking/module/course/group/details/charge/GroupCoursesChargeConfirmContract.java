@@ -70,7 +70,7 @@ interface GroupCoursesChargeConfirmContract {
                                     mView.updateBuyCoursesNotOnGym(apiException.getErrorMessage());
                                     break;
                                 case LiKingRequestCode.BUY_COURSES_NO_CARD:
-                                    mView.updateErrorNoCard(apiException.getMessage());
+                                    mView.updateErrorNoCard(apiException.getErrorMessage());
                                     break;
                                 default:
                                     super.apiError(apiException);
