@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 说明:
+ * 说明:体测数据
  * Author : shaozucheng
  * Time: 上午10:21
  * version 1.0.0

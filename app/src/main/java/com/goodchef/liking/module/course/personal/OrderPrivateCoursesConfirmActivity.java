@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -38,7 +39,6 @@ import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.data.remote.retrofit.result.data.PlacesData;
 import com.goodchef.liking.eventmessages.BuyPrivateCoursesMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
-import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
@@ -303,16 +303,22 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
     }
 
     private void showAgreeProtocolCheckBoxDialog() {
-        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
-                .setMessage("请同意平台私教协议")
-                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
-        baseDialog.setCancelable(false);
-        baseDialog.show();
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_one_content, null, false);
+        TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
+        TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
+        titleTextView.setText(getString(R.string.notice_prompt));
+        contentTextView.setText(R.string.agree_private_agrement);
+        builder.setCustomView(view);
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        HBaseDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @OnClick({R.id.layout_coupons_courses,

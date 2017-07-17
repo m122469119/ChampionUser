@@ -460,7 +460,7 @@
     <string name="private_buy_protocol">购买私教课即同意《平台私教协议》</string>
     <string name="courses_people_number">上课人数</string>
     <string name="platform_private_teacher_pro">平台私教协议</string>
-    <string name="platform_group_pro">平台团课协议</string>
+    <string name="platform_group_pro">平台团操课协议</string>
     <string name="cm">" cm"</string>
     <string name="kg">" kg"</string>
     <string name="remian_number">还剩</string>
@@ -632,4 +632,7 @@
     <string name="water_details">水费详情</string>
     <string name="offline_payment">线下支付</string>
     <string name="platform_purchase_agreement">《平台购卡协议》</string>
+    <string name="agree_group_agrement">请同意平台团操课协议</string>
+    <string name="agree_private_agrement">请同意平台私教协议</string>
+    <string name="agree_buy_card_agrement">请同意购卡协议</string>
 </resources>

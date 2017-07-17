@@ -20,7 +20,6 @@ import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
 import com.goodchef.liking.adapter.BuyCardAdapter;
@@ -69,9 +68,7 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.buy_card_recyclerView)
     RecyclerView mRecyclerView;
-    private TextView mCityOpenTextView;//当前城市是否开通
 
-    private HImageView mHeadActivityBg;
     private TextView mHeadActivityTitle, mHeadActivityTime;
     private View mTitleAndTimeView, mOnlyAllView, mOnlyStaggerView, mAllAndStaggerView, mHeadActivityView;
 
@@ -149,7 +146,7 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
             intent.putExtra(KEY_CARD_CATEGORY, card.getCategory_name());
             intent.putExtra(KEY_CATEGORY_ID, card.getCategory_id());
             intent.putExtra(CARD_ID, card.getCard_id());
-            intent.putExtra(KEY_BUY_TYPE, NumberConstantUtil.ONE);
+            intent.putExtra(KEY_BUY_TYPE, mBuyType);
             intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mPresenter.getGymId());
             startActivity(intent);
         }
@@ -176,7 +173,6 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     private void initRecycleHeadView() {
         mBuyCardAdapter = new BuyCardAdapter(getContext());
         View mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.header_buy_card, null);
-        mHeadActivityBg = (HImageView) mHeadView.findViewById(R.id.header_buy_card_bg);
         mHeadActivityTitle = (TextView) mHeadView.findViewById(R.id.header_buy_card_title);
         mHeadActivityTime = (TextView) mHeadView.findViewById(R.id.header_buy_card_time);
         mOnlyAllView = mHeadView.findViewById(R.id.header_buy_card_view_1);

@@ -210,6 +210,7 @@
         <activity
             android:name=".module.course.group.details.charge.MyChargeGroupCoursesDetailsActivity"
             android:screenOrientation="portrait" />
+        <!--绑定场馆-->
         <activity
             android:name=".module.brace.bind.BingBraceletActivity"
             android:screenOrientation="portrait" />

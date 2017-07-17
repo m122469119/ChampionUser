@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RatingBar;
@@ -33,10 +35,8 @@ import com.goodchef.liking.eventmessages.CoursesErrorMessage;
 import com.goodchef.liking.eventmessages.NoCardMessage;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
-import com.goodchef.liking.module.course.personal.OrderPrivateCoursesConfirmActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
@@ -250,16 +250,22 @@ public class GroupCoursesChargeConfirmActivity extends AppBarMVPSwipeBackActivit
 
 
     private void showAgreeProtocolCheckBoxDialog() {
-        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
-                .setMessage("请同意平台团课协议")
-                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
-        baseDialog.setCancelable(false);
-        baseDialog.show();
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_one_content, null, false);
+        TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
+        TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
+        titleTextView.setText(getString(R.string.notice_prompt));
+        contentTextView.setText(R.string.agree_group_agrement);
+        builder.setCustomView(view);
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        HBaseDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     /**

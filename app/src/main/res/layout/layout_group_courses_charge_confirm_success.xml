@@ -285,6 +285,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingBottom="@dimen/spacing_12dp"
                 android:orientation="horizontal"
                 android:paddingTop="15dp">
 
@@ -310,7 +311,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:text="《平台团课协议》"
+                    android:text="《平台团操课协议》"
                     android:textColor="@color/add_minus_dishes_text"
                     android:textSize="13sp" />
 

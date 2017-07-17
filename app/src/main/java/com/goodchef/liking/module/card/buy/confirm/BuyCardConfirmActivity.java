@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +48,6 @@ import com.goodchef.liking.utils.PayType;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.OutTextView;
 import com.goodchef.liking.widgets.base.LikingStateView;
-import com.goodchef.liking.widgets.layoutmanager.FixLinearLayoutManager;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
 import java.util.List;
@@ -145,7 +143,6 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_card_confirm);
         ButterKnife.bind(this);
-        setTitle("购买月卡");
         initView();
         setDefaultPayType();
         initData();
@@ -209,6 +206,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0),
                 getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID),
                 getIntent().getStringExtra(LikingBuyCardFragment.CARD_ID));
+
         sendConfirmCardRequest();
     }
 
@@ -295,16 +293,22 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     }
 
     private void showAgreeProtocolCheckBoxDialog() {
-        HBaseDialog baseDialog = new HBaseDialog.Builder(this)
-                .setMessage("请同意购卡协议")
-                .setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
-        baseDialog.setCancelable(false);
-        baseDialog.show();
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_one_content, null, false);
+        TextView titleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
+        TextView contentTextView = (TextView) view.findViewById(R.id.one_dialog_content);
+        titleTextView.setText(getString(R.string.notice_prompt));
+        contentTextView.setText(R.string.agree_buy_card_agrement);
+        builder.setCustomView(view);
+        builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        HBaseDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     /***
@@ -413,6 +417,13 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         ConfirmBuyCardResult.DataBean.CardsBean cardsBean = confirmBuyCardData.getCards().get(0);
         //1购卡 2续卡 3升级卡
         explain = confirmBuyCardData.getTips();
+        int purchaseType = confirmBuyCardData.getPurchase_type();
+        if (purchaseType == 1) {//购卡
+            setTitle("购买" + mPresenter.getCardName());
+        } else if (purchaseType == 2) {//续卡
+            setTitle("续" + mPresenter.getCardName());
+        }
+
 
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadline());
         mCardPrice = cardsBean.getPrice();
