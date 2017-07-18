@@ -2,7 +2,6 @@ package com.goodchef.liking.module.card.buy;
 
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
 import com.goodchef.liking.data.remote.rxobserver.StateViewLoadingObserver;
 import com.goodchef.liking.module.home.LikingHomeActivity;
@@ -46,6 +45,12 @@ interface BuyCardContract {
             mModel.getLocationData();
             mModel.getCardList(gymId, buyType)
                     .subscribe(addObserverToCompositeDisposable(new StateViewLoadingObserver<CardResult>(mView) {
+
+                        @Override
+                        public void onStart() {
+
+                        }
+
                         @Override
                         public void onNext(CardResult value) {
                             super.onNext(value);

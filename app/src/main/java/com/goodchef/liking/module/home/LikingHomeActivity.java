@@ -114,6 +114,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     public static final String ACTION = "action";
     public static final int SHOW_PUSH_NOTICE = 0x00001111;
     public static final int SHOW_PUSH_NOTICE_RECEIVED = 0x00001112;
+    private boolean pause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        pause = false;
         int intExtra = intent.getIntExtra(ACTION, 0);
         if (SHOW_PUSH_NOTICE == intExtra) {
             fragmentTabHost.setCurrentTab(0);
@@ -148,8 +150,10 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     @Override
     protected void onResume() {
         super.onResume();
-        if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB))
+        pause = false;
+        if (fragmentTabHost.getCurrentTabTag().equals(TAG_MAIN_TAB)) {
             mPresenter.showPushDialog();
+        }
     }
 
     private void initData() {
@@ -597,6 +601,12 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        pause = true;
+    }
+
+    @Override
     protected boolean isEventTarget() {
         return true;
     }
@@ -625,7 +635,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             gymName = mNoticeGym.getName();
         }
         setHomeTitle();
-        if (showDefaultGymDialog()) {
+        if (showDefaultGymDialog() && !pause) {
             setHomeMenuReadNotice();
         }
     }
