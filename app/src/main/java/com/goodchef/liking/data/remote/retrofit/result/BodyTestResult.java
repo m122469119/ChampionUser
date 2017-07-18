@@ -417,7 +417,7 @@ public class BodyTestResult extends LikingResult {
                 this.title = title;
             }
 
-            public static class BodyDataData {
+            public static class BodyDataData extends Data{
                 @SerializedName("value")
                 private String mValue;
                 @SerializedName("criterion_max")
@@ -481,7 +481,7 @@ public class BodyTestResult extends LikingResult {
             }
         }
 
-        public static class MuscleData {
+        public static class MuscleData extends Data{
             @SerializedName("advise")
             private String mAdvise;
             @SerializedName("type")
@@ -533,7 +533,7 @@ public class BodyTestResult extends LikingResult {
             }
 
         }
-        public static class BodyFatData {
+        public static class BodyFatData extends Data{
             @SerializedName("advise")
             private String mAdvise;
             @SerializedName("type")
@@ -587,7 +587,7 @@ public class BodyTestResult extends LikingResult {
 
         }
 
-        public static class FooterData {
+        public static class FooterData extends Data{
             @SerializedName("type")
             private String mType;
 
@@ -628,7 +628,7 @@ public class BodyTestResult extends LikingResult {
                 this.title = title;
             }
 
-            public static class BodyDataData {
+            public static class BodyDataData extends Data{
                 @SerializedName("value")
                 private String mValue;
                 @SerializedName("chinese_name")

@@ -25,7 +25,7 @@ public class SelfGroupCoursesListResult extends LikingResult {
         mData = data;
     }
 
-    public static class SelfGroupCoursesData {
+    public static class SelfGroupCoursesData extends Data{
         /**
          * course_id : 1851033696
          * category : 综合训练

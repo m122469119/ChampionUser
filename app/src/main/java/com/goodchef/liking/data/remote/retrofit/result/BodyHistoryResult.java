@@ -1,5 +1,6 @@
 package com.goodchef.liking.data.remote.retrofit.result;
 
+import com.aaron.http.code.result.Data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class BodyHistoryResult extends LikingResult {
         mData = data;
     }
 
-    public static class BodyHistoryData {
+    public static class BodyHistoryData extends Data{
         /**
          * body_id : 1
          * score : 1
@@ -46,7 +47,7 @@ public class BodyHistoryResult extends LikingResult {
             mList = list;
         }
 
-        public static class ListData {
+        public static class ListData extends Data{
             @SerializedName("body_id")
             private String mBodyId;
             @SerializedName("score")
@@ -129,7 +130,7 @@ public class BodyHistoryResult extends LikingResult {
                 mBodyTime = bodyTime;
             }
 
-            public static class BmiData {
+            public static class BmiData extends Data{
                 @SerializedName("value")
                 private String mValue;
                 @SerializedName("chinese_name")
@@ -172,7 +173,7 @@ public class BodyHistoryResult extends LikingResult {
                 }
             }
 
-            public static class FatRateData {
+            public static class FatRateData extends Data{
                 @SerializedName("value")
                 private String mValue;
                 @SerializedName("chinese_name")
@@ -215,7 +216,7 @@ public class BodyHistoryResult extends LikingResult {
                 }
             }
 
-            public static class WaistHipData {
+            public static class WaistHipData extends Data{
                 @SerializedName("value")
                 private String mValue;
                 @SerializedName("chinese_name")

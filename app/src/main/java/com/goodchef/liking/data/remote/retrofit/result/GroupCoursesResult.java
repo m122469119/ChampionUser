@@ -266,7 +266,7 @@ public class GroupCoursesResult extends LikingResult {
             this.tagName = tagName;
         }
 
-        public static class GymImgsData {
+        public static class GymImgsData extends Data{
             @SerializedName("object_id")
             private String objectId;
             @SerializedName("title")

@@ -1,5 +1,6 @@
 package com.goodchef.liking.data.remote.retrofit.result;
 
+import com.aaron.http.code.result.Data;
 import com.goodchef.liking.data.remote.retrofit.result.data.BodyHistoryData;
 import com.google.gson.annotations.SerializedName;
 
@@ -26,7 +27,7 @@ public class BodyAnalyzeHistoryResult extends LikingResult {
         mData = data;
     }
 
-    public static class BodyHistory {
+    public static class BodyHistory extends Data {
         /**
          * value : 1.00
          * body_time : 1

@@ -24,7 +24,7 @@ public class BannerResult extends LikingResult {
         return mBannerData;
     }
 
-    public static class BannerData {
+    public static class BannerData extends Data{
         /**
          * imgUrl : /img/banner/hello.jpg
          * loadUrl : http://www.chushi007.com

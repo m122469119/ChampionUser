@@ -27,7 +27,7 @@ public class WaterRateResult extends LikingResult {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean extends Data {
         /**
          * gym_name :
          * residue_water_time :

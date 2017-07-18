@@ -27,7 +27,7 @@ public class BodyModelNavigationResult extends LikingResult {
         mData = data;
     }
 
-    public static class HistoryTitleData {
+    public static class HistoryTitleData extends Data{
         /**
          * column : weight
          * chinese_name : 体重
