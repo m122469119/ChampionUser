@@ -112,6 +112,9 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     @BindView(R.id.card_type)
     TextView mCardBuyType;
 
+    @BindView(R.id.layout_water)
+    RelativeLayout mWaterLayout;
+
     @BindView(R.id.water_time)
     TextView mWaterTime;
 
@@ -431,7 +434,16 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mCardBuyType.setText(cardsBean.getName());
         mCardMoneyTextView.setText(getString(R.string.rmb) + cardsBean.getPrice());
         mOldPriceText.setText(getString(R.string.rmb) + cardsBean.getOld_price());
-        mWaterTime.setText(cardsBean.getPresent_water() + getString(R.string.min));
+
+        int gymWater = confirmBuyCardData.getIs_gym_water();
+        int presenterWater = cardsBean.getPresent_water();
+        if (gymWater == 1 && presenterWater > 0) {//收费并且赠送时长大于0 显示赠送水的布局
+            mWaterLayout.setVisibility(View.VISIBLE);
+            mWaterTime.setText(presenterWater + getString(R.string.min));
+        } else {
+            mWaterLayout.setVisibility(View.GONE);
+        }
+
         mCardGymName = confirmBuyCardData.getGym_name();
         mGymNameTextView.setText(mCardGymName);
         mGymAddressTextView.setText(confirmBuyCardData.getGym_address());

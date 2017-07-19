@@ -43,6 +43,7 @@ public class ConfirmBuyCardResult extends LikingResult {
         private String deadline;
         private String gym_name;
         private String gym_address;
+        private int is_gym_water; //0该场馆水费免费   1为场馆水费收费
         private String price;
         private int purchase_type;
         private String tips;
@@ -119,6 +120,14 @@ public class ConfirmBuyCardResult extends LikingResult {
 
         public void setCards(List<CardsBean> cards) {
             this.cards = cards;
+        }
+
+        public int getIs_gym_water() {
+            return is_gym_water;
+        }
+
+        public void setIs_gym_water(int is_gym_water) {
+            this.is_gym_water = is_gym_water;
         }
 
         public static class CardsBean extends Data {
