@@ -2,14 +2,15 @@ package com.goodchef.liking.module.card.buy.confirm;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
@@ -30,7 +32,6 @@ import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
 import com.goodchef.liking.data.remote.retrofit.result.ConfirmBuyCardResult;
 import com.goodchef.liking.data.remote.retrofit.result.CouponsResult;
-import com.goodchef.liking.data.remote.retrofit.result.data.ConfirmCard;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
@@ -45,8 +46,8 @@ import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PayType;
+import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
-import com.goodchef.liking.widgets.OutTextView;
 import com.goodchef.liking.widgets.base.LikingStateView;
 import com.goodchef.liking.wxapi.WXPayEntryActivity;
 
@@ -86,8 +87,12 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     //支付相关
     @BindView(R.id.layout_alipay)
     RelativeLayout mAlipayLayout;
+    @BindView(R.id.tv_pay_alipay_type)
+    TextView mAlipayTypeTextView;
     @BindView(R.id.layout_wechat)
     RelativeLayout mWechatLayout;
+    @BindView(R.id.tv_pay_wechat_type)
+    TextView mWechatTypeTextView;
     @BindView(R.id.pay_type_alipay_checkBox)
     CheckBox mAlipayCheckBox;
     @BindView(R.id.pay_type_wechat_checkBox)
@@ -103,7 +108,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     TextView mCardMoneyTextView;//
 
     @BindView(R.id.old_price)
-    OutTextView mOldPriceText;
+    TextView mOldPriceText;
 
     @BindView(R.id.immediately_buy_btn)
     TextView mImmediatelyBuyBtn;//立即支付
@@ -113,7 +118,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     TextView mCardBuyType;
 
     @BindView(R.id.layout_water)
-    RelativeLayout mWaterLayout;
+    LinearLayout mWaterLayout;
 
     @BindView(R.id.water_time)
     TextView mWaterTime;
@@ -121,19 +126,19 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     @BindView(R.id.rv_card_time)
     RecyclerView mCardTimeRv;
 
+    @BindView(R.id.address_map)
+    ImageView mAddressMapImageView;
+
     private AliPay mAliPay;//支付宝
     private WeixinPay mWeixinPay;//微信
 
     private String mCardPrice;//卡的金额
-    private String mOldPrice;//
 
     @BindView(R.id.buy_card_confirm_state_view)
     LikingStateView mStateView;
-    private String explain;
     private String mNoticeActivity;//活动
 
     private String mCardGymName;//场馆名称
-    private String mCardType;//购卡类型
     private String mCardTotalMoney;//卡的总价钱
     private String payType;
     private CouponsResult.CouponData.Coupon mCoupon;
@@ -147,7 +152,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         setContentView(R.layout.activity_buy_card_confirm);
         ButterKnife.bind(this);
         initView();
-        setDefaultPayType();
+        setAliPayType();
         initData();
         initPayModule();
     }
@@ -169,9 +174,9 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(BuyCardConfirmActivity.this, R.color.liking_green_btn_back));
+                    mImmediatelyBuyBtn.setBackground(ResourceUtils.getDrawable(R.drawable.shape_green_gradient));
                 } else {
-                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(BuyCardConfirmActivity.this, R.color.liking_grey_btn_back));
+                    mImmediatelyBuyBtn.setBackground(ResourceUtils.getDrawable(R.drawable.shape_gray_radius_back));
                 }
             }
         });
@@ -180,15 +185,11 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mCardTimeRv.setLayoutManager(mLayoutManager);
         mCardTimeRv.setNestedScrollingEnabled(false);
         mCardTimeRv.setAdapter(mCardTimeAdapter);
-    }
-
-    /**
-     * 设置默认支付方式
-     */
-    private void setDefaultPayType() {
-        mAlipayCheckBox.setChecked(true);
-        mWechatCheckBox.setChecked(false);
-        payType = "1";
+        Typeface typeface = TypefaseUtil.getImpactTypeface(this);
+        mCardMoneyTextView.setTypeface(typeface);
+        mOldPriceText.setTypeface(typeface);
+        mCouponsMoneyTextView.setText("请选择");
+        mCouponsMoneyTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
     }
 
     @Override
@@ -223,18 +224,15 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
             R.id.immediately_buy_btn,
             R.id.buy_card_agree_protocol,
             R.id.buy_card_notice,
-            R.id.buy_card_agree_protocol_text})
+            R.id.buy_card_agree_protocol_text,
+            R.id.address_map})
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.layout_alipay:
-                mAlipayCheckBox.setChecked(true);
-                mWechatCheckBox.setChecked(false);
-                payType = "1";
+                setAliPayType();
                 break;
             case R.id.layout_wechat:
-                mAlipayCheckBox.setChecked(false);
-                mWechatCheckBox.setChecked(true);
-                payType = "0";
+                setWechatPayType();
                 break;
             case R.id.layout_coupons_courses:
                 if (LikingPreference.isLogin()) {
@@ -291,8 +289,35 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                     }
                 }
                 break;
+            case R.id.address_map://地图
+                
+                break;
             default:
         }
+    }
+
+
+    /**
+     * 设置默认支付方式  支付宝支付
+     */
+    private void setAliPayType() {
+        mAlipayCheckBox.setChecked(true);
+        mWechatCheckBox.setChecked(false);
+        payType = "1";
+        mAlipayTypeTextView.setTextColor(ResourceUtils.getColor(R.color.c34c86c));
+        mWechatTypeTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
+    }
+
+
+    /**
+     * 设置微信支付类型
+     */
+    private void setWechatPayType() {
+        mAlipayCheckBox.setChecked(false);
+        mWechatCheckBox.setChecked(true);
+        payType = "0";
+        mAlipayTypeTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_dark_back));
+        mWechatTypeTextView.setTextColor(ResourceUtils.getColor(R.color.c34c86c));
     }
 
     private void showAgreeProtocolCheckBoxDialog() {
@@ -380,6 +405,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         double couponAmount = Double.parseDouble(couponAmountStr);
         double price = Double.parseDouble(mCardPrice);
         mCouponsMoneyTextView.setText(mCoupon.getAmount() + getString(R.string.yuan));
+        mCouponsMoneyTextView.setTextColor(ResourceUtils.getColor(R.color.c34c86c));
         if (price >= couponAmount) {
             //订单的价格大于优惠券的面额
             double amount = price - couponAmount;
@@ -419,7 +445,6 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     public void updateConfirmBuyCardView(ConfirmBuyCardResult.DataBean confirmBuyCardData) {
         ConfirmBuyCardResult.DataBean.CardsBean cardsBean = confirmBuyCardData.getCards().get(0);
         //1购卡 2续卡 3升级卡
-        explain = confirmBuyCardData.getTips();
         int purchaseType = confirmBuyCardData.getPurchase_type();
         if (purchaseType == 1) {//购卡
             setTitle("购买" + mPresenter.getCardName());
@@ -431,7 +456,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadline());
         mCardPrice = cardsBean.getPrice();
         mCardTotalMoney = mCardPrice;
-        mCardBuyType.setText(cardsBean.getName());
+        mCardBuyType.setText(mPresenter.getCardName());
         mCardMoneyTextView.setText(getString(R.string.rmb) + cardsBean.getPrice());
         mOldPriceText.setText(getString(R.string.rmb) + cardsBean.getOld_price());
 
@@ -507,31 +532,6 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mCardTimeAdapter.notifyDataSetChanged();
     }
 
-
-    /**
-     * 设置不能点击 说明 文字事件
-     */
-    private android.view.View.OnClickListener mExplainClickListener = new android.view.View.OnClickListener() {
-        @Override
-        public void onClick(android.view.View v) {
-            ConfirmCard confirmCard = (ConfirmCard) v.getTag();
-            if (confirmCard != null) {
-                showExplainDialog(explain);
-            }
-        }
-    };
-
-    private void showExplainDialog(String explain) {
-        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
-        builder.setMessage(explain);
-        builder.setPositiveButton(getString(R.string.diaog_got_it), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
 
 //    /**
 //     * 设置闲时或者全天选择状态
@@ -668,7 +668,8 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     @Override
     public void setPayFailView() {
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getAmount())) {
-            mCouponsMoneyTextView.setText("");
+            mCouponsMoneyTextView.setText("请选择");
+            mCouponsMoneyTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
             mCardTotalMoney = mCardPrice;
             mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
             mCoupon = null;

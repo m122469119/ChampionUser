@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/pay_type"
+        android:textColor="@color/lesson_details_gray_back"
+        android:textSize="20sp"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_alipay"
+        android:layout_width="match_parent"
+        android:layout_height="38dp">
+
+        <TextView
+            android:id="@+id/tv_pay_alipay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/spacing_12dp"
+            android:text="支付宝"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"
+            />
+
+        <CheckBox
+            android:id="@+id/pay_type_alipay_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_wechat"
+        android:layout_width="match_parent"
+        android:layout_height="38dp">
+
+        <TextView
+            android:id="@+id/tv_pay_wechat_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/spacing_12dp"
+            android:text="微信"
+            android:textColor="@color/lesson_details_dark_back"
+            android:textSize="@dimen/textsize_small"
+            />
+
+        <CheckBox
+            android:id="@+id/pay_type_wechat_checkBox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/pay_radio_button_bg"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
