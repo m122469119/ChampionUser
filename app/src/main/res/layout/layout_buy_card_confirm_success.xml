@@ -192,7 +192,7 @@
                         android:layout_marginLeft="@dimen/spacing_12dp"
                         android:layout_marginRight="@dimen/spacing_12dp"
                         android:layout_marginTop="2dp"
-                        android:background="@drawable/icon_address_map"/>
+                        android:background="@drawable/icon_map"/>
 
                 </RelativeLayout>
 

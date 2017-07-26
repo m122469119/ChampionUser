@@ -52,6 +52,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String FOOD = "food";
     public static final String TEAM = "team";
     public static final String CARD = "card";
+    public static final String MSG = "msg";
     public static final String DIRECT_TYPE_HTML5 = "h5";
     public static final String DIRECT_ANNOUNCEMENT = "announcement";
 
@@ -144,6 +145,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     } else if (DIRECT_ANNOUNCEMENT.equals(direct)) {
                         //  String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
                         toNoticeInfo(extras, context);
+                    }else if (MSG.equals(direct)){
+                        LogUtils.i(TAG,data.toString());
                     }
                     break;
                 case DIRECT_TYPE_HTML5:

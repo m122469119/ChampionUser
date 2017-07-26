@@ -43,6 +43,7 @@ import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.map.MapActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.PayType;
@@ -290,7 +291,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 }
                 break;
             case R.id.address_map://地图
-                
+                startActivity(MapActivity.class);
                 break;
             default:
         }

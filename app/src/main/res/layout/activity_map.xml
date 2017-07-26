@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <com.amap.api.maps2d.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="19dp"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/icon_gym"
+                android:padding="@dimen/spacing_12dp"/>
+
+            <TextView
+                android:id="@+id/gym_name_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:paddingLeft="@dimen/spacing_12dp"
+                android:paddingRight="@dimen/spacing_12dp"
+                android:paddingTop="15dp"
+                android:text="LIk复兴店"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_15"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="19dp"
+                android:layout_marginLeft="@dimen/spacing_12dp"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:background="@drawable/icon_map"
+                android:padding="@dimen/spacing_12dp"/>
+
+            <TextView
+                android:id="@+id/gym_address_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:paddingLeft="@dimen/spacing_12dp"
+                android:paddingRight="@dimen/spacing_12dp"
+                android:text="LIk复兴店"
+                android:textColor="@color/lesson_details_dark_back"
+                android:textSize="@dimen/textsize_15"/>
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/navigation_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_12dp"
+            android:background="@drawable/shape_radius_green_btn_background"
+            android:gravity="center"
+            android:padding="@dimen/spacing_12dp"
+            android:text="@string/title_map"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_medium"/>
+
+    </LinearLayout>
+
+</LinearLayout>

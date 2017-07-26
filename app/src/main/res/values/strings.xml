@@ -635,4 +635,5 @@
     <string name="agree_group_agrement">请同意平台团操课协议</string>
     <string name="agree_private_agrement">请同意平台私教协议</string>
     <string name="agree_buy_card_agrement">请同意购卡协议</string>
+    <string name="title_map">地图导航</string>
 </resources>
