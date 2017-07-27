@@ -62,7 +62,7 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navigation_button:
-                
+                SelectMapDialog dialog = new SelectMapDialog(this, 31.257052, 121.462702);
                 break;
         }
     }

@@ -454,7 +454,7 @@
         <activity android:name=".module.coupons.gym.CouponsGymActivity"/>
         <activity
             android:name=".module.home.myfragment.water.WaterRateActivity"
-            android:label="@string/title_activity_water_rate"></activity>
+            android:label="@string/title_activity_water_rate"/>
     </application>
 
 </manifest>
