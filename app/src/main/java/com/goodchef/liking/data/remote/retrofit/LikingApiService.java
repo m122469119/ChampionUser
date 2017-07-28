@@ -729,6 +729,14 @@ public interface LikingApiService {
          * 删除体侧记录
          */
         public static final String DEL_BODY_RECORD = sVersion + "user/del-body-record";
+
+        /**
+         * 水费详情
+         */
         public static final String WATER_DETAILS = sVersion + "water/order-water-detail";
+
+        public static final String USER_GET_MY_MSG = sVersion + "/user/get-my-msg";
+
+
     }
 }

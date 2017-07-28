@@ -10,8 +10,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.DialogUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 
@@ -29,11 +29,12 @@ public class SelectMapDialog {
     private AppCompatDialog mDialog;
     private LinearLayout mMapListLayout;
     private TextView mCancelTextView;
+    private TextView mRecommendButton;
     private Double latitude, longitude;
     private Handler mHandler = new Handler();
 
 
-    public SelectMapDialog(Context context, Double latitude, Double longitude) {
+    public SelectMapDialog(final Context context, Double latitude, Double longitude) {
         mContext = context;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -51,7 +52,14 @@ public class SelectMapDialog {
 
         mMapListLayout = (LinearLayout) window.findViewById(R.id.dialog_map_layout);
         mCancelTextView = (TextView) window.findViewById(R.id.map_cancel);
+        mRecommendButton = (TextView) window.findViewById(R.id.recommend_button);
         mCancelTextView.setOnClickListener(cancelListener);
+        mRecommendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HDefaultWebActivity.launch(context, "http://www.autonavi.com/download.html", "");
+            }
+        });
         loadMapView();
     }
 
@@ -61,7 +69,9 @@ public class SelectMapDialog {
         addAppMapView("使用腾讯地图导航", NavigationMap.NAVIGATION_MAP_PACKAGENAME_TENCENT, NavigationMap.MapType.TENCENT, mMapListLayout);
 
         if (mMapListLayout.getChildCount() == 0) {
-            PopupUtils.showToast(mContext, "您还没有安装任何地图应用！");
+            mRecommendButton.setVisibility(View.VISIBLE);
+        } else {
+            mRecommendButton.setVisibility(View.GONE);
         }
     }
 

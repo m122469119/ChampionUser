@@ -162,14 +162,8 @@ public class MyPrivateCoursesDetailsActivity extends AppBarMVPSwipeBackActivity<
             mFavourableTextView.setText(getString(R.string.money_symbol) + data.getCouponAmount());
             mRealityPriceTextView.setText(getString(R.string.money_symbol) + data.getActualAmount());
 
-            int payTpe = data.getPayType();
-            if (payTpe == 0) {
-                mPayTypeTextView.setText(R.string.pay_wechat_type);
-            } else if (payTpe == 1) {
-                mPayTypeTextView.setText(R.string.pay_alipay_type);
-            } else if (payTpe == 3) {
-                mPayTypeTextView.setText(R.string.pay_free_type);
-            }
+            String payTpe = data.getPayDesc();
+            mPayTypeTextView.setText(payTpe);
             mTeacherPhone = data.getTrainerPhone();
             String imageUrl = data.getTrainerAvatar();
             if (!StringUtils.isEmpty(imageUrl)) {

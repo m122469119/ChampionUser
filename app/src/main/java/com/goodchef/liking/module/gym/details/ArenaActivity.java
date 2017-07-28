@@ -1,8 +1,10 @@
 package com.goodchef.liking.module.gym.details;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
 import com.goodchef.liking.dialog.AnnouncementDialog;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
+import com.goodchef.liking.module.map.MapActivity;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
@@ -48,11 +51,16 @@ public class ArenaActivity extends AppBarMVPSwipeBackActivity<GymDetailsContract
     TextView mAddressTextView;
     @BindView(R.id.tag_recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.address_map_button)
+    ImageView mAddressMapButton;
     private BannerPagerAdapter mBannerPagerAdapter;
     private String announcement;
     private String gymId;//场馆id
     private ArenaTagAdapter mArenaTagAdapter;
-
+    private double longitude;
+    private double latitude;
+    private String mGymName;//场馆名称
+    private String mGymAddress;//场馆地址
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +73,9 @@ public class ArenaActivity extends AppBarMVPSwipeBackActivity<GymDetailsContract
     }
 
     private void setRightMenu() {
-        setRightIcon(R.drawable.icon_phone, new android.view.View.OnClickListener() {
+        setRightIcon(R.drawable.icon_phone, new View.OnClickListener() {
             @Override
-            public void onClick(android.view.View v) {
+            public void onClick(View v) {
                 LikingCallUtil.showPhoneDialog(ArenaActivity.this);
             }
         });
@@ -95,12 +103,31 @@ public class ArenaActivity extends AppBarMVPSwipeBackActivity<GymDetailsContract
         mPresenter.getGymDetails(this, gymId);
     }
 
-    @OnClick(R.id.layout_area_announcement)
-    public void onClick() {
+    @OnClick({R.id.layout_area_announcement, R.id.address_map_button})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_area_announcement:
+                setAnnouncementDialog();
+                break;
+            case R.id.address_map_button:
+                if (longitude != 0d && latitude != 0d) {
+                    Intent intent = new Intent(this, MapActivity.class);
+                    intent.putExtra(MapActivity.LONGITUDE, longitude);
+                    intent.putExtra(MapActivity.LATITUDE, latitude);
+                    intent.putExtra(MapActivity.GYM_NAME, mGymName);
+                    intent.putExtra(MapActivity.GYM_ADDRESS, mGymAddress);
+                    startActivity(intent);
+                }
+                break;
+        }
+
+    }
+
+    private void setAnnouncementDialog() {
         final AnnouncementDialog dialog = new AnnouncementDialog(this, announcement);
-        dialog.setViewOnClickListener(new android.view.View.OnClickListener() {
+        dialog.setViewOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(android.view.View v) {
+            public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.announcement_cancel_image_button:
                         dialog.dismiss();
@@ -128,10 +155,15 @@ public class ArenaActivity extends AppBarMVPSwipeBackActivity<GymDetailsContract
 
     @Override
     public void updateGymDetailsView(GymDetailsResult.GymDetailsData gymDetailsData) {
-        setTitle(gymDetailsData.getName());
-        mAddressTextView.setText(getString(R.string.area_address_left) + gymDetailsData.getAddress());
+        longitude = gymDetailsData.getLongitude();
+        latitude = gymDetailsData.getLatitude();
+        mGymName = gymDetailsData.getName();
+        mGymAddress = gymDetailsData.getAddress();
+
+        setTitle(mGymName);
+        mAddressTextView.setText(getString(R.string.area_address_left) + mGymAddress);
         announcement = gymDetailsData.getAnnouncement().trim();
-        mAnnouncementLayout.setVisibility(android.view.View.GONE);
+        mAnnouncementLayout.setVisibility(View.GONE);
 
         List<GymDetailsResult.GymDetailsData.ImgsData> imgDataList = gymDetailsData.getImgs();
         if (imgDataList != null && imgDataList.size() > 0) {

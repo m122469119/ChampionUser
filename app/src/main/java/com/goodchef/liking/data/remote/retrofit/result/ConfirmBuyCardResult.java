@@ -49,6 +49,8 @@ public class ConfirmBuyCardResult extends LikingResult {
         private String tips;
         private int show_time_limit;
         private List<CardsBean> cards;
+        private double longitude;
+        private double latitude;
 
         public String getPurchase_activity() {
             return purchase_activity;
@@ -128,6 +130,22 @@ public class ConfirmBuyCardResult extends LikingResult {
 
         public void setIs_gym_water(int is_gym_water) {
             this.is_gym_water = is_gym_water;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            this.latitude = latitude;
         }
 
         public static class CardsBean extends Data {

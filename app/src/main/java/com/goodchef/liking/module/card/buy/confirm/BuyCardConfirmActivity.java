@@ -140,12 +140,13 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
     private String mNoticeActivity;//活动
 
     private String mCardGymName;//场馆名称
+    private String mGymAddress;//场馆地址
     private String mCardTotalMoney;//卡的总价钱
     private String payType;
     private CouponsResult.CouponData.Coupon mCoupon;
-
-
     CardTimeAdapter mCardTimeAdapter;
+    private double longitude;
+    private double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,7 +292,14 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 }
                 break;
             case R.id.address_map://地图
-                startActivity(MapActivity.class);
+                if (longitude != 0d && latitude != 0d) {
+                    Intent intent = new Intent(this, MapActivity.class);
+                    intent.putExtra(MapActivity.LONGITUDE, longitude);
+                    intent.putExtra(MapActivity.LATITUDE, latitude);
+                    intent.putExtra(MapActivity.GYM_NAME, mCardGymName);
+                    intent.putExtra(MapActivity.GYM_ADDRESS, mGymAddress);
+                    startActivity(intent);
+                }
                 break;
             default:
         }
@@ -453,7 +461,8 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
             setTitle("续" + mPresenter.getCardName());
         }
 
-
+        longitude = confirmBuyCardData.getLongitude();
+        latitude = confirmBuyCardData.getLatitude();
         mPeriodOfValidityTextView.setText(confirmBuyCardData.getDeadline());
         mCardPrice = cardsBean.getPrice();
         mCardTotalMoney = mCardPrice;
@@ -472,7 +481,8 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
 
         mCardGymName = confirmBuyCardData.getGym_name();
         mGymNameTextView.setText(mCardGymName);
-        mGymAddressTextView.setText(confirmBuyCardData.getGym_address());
+        mGymAddress = confirmBuyCardData.getGym_address();
+        mGymAddressTextView.setText(mGymAddress);
         mNoticeActivity = confirmBuyCardData.getPurchase_activity();
         mBuyCardNoticeTextView.setText(mNoticeActivity);
 

@@ -64,6 +64,16 @@ public class MyPrivateCoursesDetailsResult extends LikingResult {
         private String duration;
         @SerializedName("buy_times")
         private String buyTimes;
+        @SerializedName("pay_desc")
+        private String payDesc;
+
+        public String getPayDesc() {
+            return payDesc;
+        }
+
+        public void setPayDesc(String payDesc) {
+            this.payDesc = payDesc;
+        }
 
         public int getStatus() {
             return status;

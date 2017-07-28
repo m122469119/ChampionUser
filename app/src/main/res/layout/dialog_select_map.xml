@@ -12,6 +12,18 @@
         android:orientation="vertical"/>
 
     <TextView
+        android:id="@+id/recommend_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="@dimen/spacing_12dp"
+        android:text="使用高德地图（推荐）"
+        android:textColor="@color/lesson_details_dark_back"
+        android:textSize="16sp"/>
+
+    <TextView
         android:id="@+id/map_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

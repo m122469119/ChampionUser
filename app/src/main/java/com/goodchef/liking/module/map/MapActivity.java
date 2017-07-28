@@ -1,5 +1,6 @@
 package com.goodchef.liking.module.map;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
 
@@ -40,6 +43,11 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
     @BindView(R.id.navigation_button)
     TextView mNavigationButton;
 
+    public static final String LONGITUDE = "longitude";
+    public static final String LATITUDE = "latitude";
+    public static final String GYM_NAME = "gymName";
+    public static final String GYM_ADDRESS = "gymAddress";
+
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient;
     private OnLocationChangedListener mListener;
@@ -47,14 +55,29 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
     private AMapLocationClientOption mLocationOption;
     private AMap aMap;
 
+    private double longitude;
+    private double latitude;
+    private String gymName;
+    private String gymAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
         setTitle(getString(R.string.title_map));
+        getIntentData();
         mMapView.onCreate(savedInstanceState);
         initMap();
+    }
+
+    private void getIntentData() {
+        longitude = getIntent().getDoubleExtra(LONGITUDE, 0d);
+        latitude = getIntent().getDoubleExtra(LATITUDE, 0d);
+        gymName = getIntent().getStringExtra(GYM_NAME);
+        gymAddress = getIntent().getStringExtra(GYM_ADDRESS);
+        mGymNameTextView.setText(gymName);
+        mGymAddressTextView.setText(gymAddress);
     }
 
 
@@ -62,7 +85,7 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navigation_button:
-                SelectMapDialog dialog = new SelectMapDialog(this, 31.257052, 121.462702);
+                new SelectMapDialog(this, latitude, longitude);
                 break;
         }
     }
@@ -109,28 +132,33 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
         //设置定位回调监听
         mLocationClient.setLocationListener(this);
         aMap = mMapView.getMap();
+
+        LatLng latLang = new LatLng(latitude, longitude);
 //        //绘制marker
-//        Marker marker = aMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(39.986919,116.353369))
-//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-//                        .decodeResource(getResources(),R.drawable.marker)))
-//                .draggable(true));
+        aMap.addMarker(new MarkerOptions()
+                .position(latLang)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.icon_mark)))
+                .draggable(true));
 
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(12f));
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLang));
 
         // 自定义系统定位蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         // 自定义定位蓝点图标
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.location_marke));
-        // 自定义精度范围的圆形边框颜色
-        myLocationStyle.strokeColor(Color.GREEN);
+//        // 自定义精度范围的圆形边框颜色
+        myLocationStyle.strokeColor(Color.argb(180, 3, 145, 255));
+        myLocationStyle.radiusFillColor(Color.argb(10, 0, 0, 180));
         //自定义精度范围的圆形边框宽度
         myLocationStyle.strokeWidth(5);
         // 将自定义的 myLocationStyle 对象添加到地图上
         aMap.setMyLocationStyle(myLocationStyle);
+
 
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
