@@ -1,6 +1,7 @@
 package com.goodchef.liking.module.map;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
 import android.view.View;
@@ -29,6 +30,7 @@ public class SelectMapDialog {
     private LinearLayout mMapListLayout;
     private TextView mCancelTextView;
     private Double latitude, longitude;
+    private Handler mHandler = new Handler();
 
 
     public SelectMapDialog(Context context, Double latitude, Double longitude) {
@@ -89,7 +91,12 @@ public class SelectMapDialog {
             NavigationMap.MapType type = (NavigationMap.MapType) v.getTag();
             if (type != null) {
                 NavigationMap.navigationGoMap(mContext, type, latitude, longitude);
-                dismiss();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismiss();
+                    }
+                }, 2000);
             }
         }
     };

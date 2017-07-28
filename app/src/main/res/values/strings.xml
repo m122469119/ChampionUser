@@ -636,4 +636,6 @@
     <string name="agree_private_agrement">请同意平台私教协议</string>
     <string name="agree_buy_card_agrement">请同意购卡协议</string>
     <string name="title_map">地图导航</string>
+    <string name="tab_title_announcement">公告</string>
+    <string name="tab_title_message">消息</string>
 </resources>

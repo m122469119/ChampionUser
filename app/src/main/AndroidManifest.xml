@@ -284,6 +284,11 @@
             android:name=".module.more.MoreActivity"
             android:screenOrientation="portrait"/>
 
+        <!--消息和公告-->
+        <activity
+            android:name=".module.message.MessageActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- 支付宝h5页面 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

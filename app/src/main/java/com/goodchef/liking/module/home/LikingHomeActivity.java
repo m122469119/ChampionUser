@@ -47,6 +47,7 @@ import com.goodchef.liking.module.gym.list.ChangeGymActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.message.MessageActivity;
 import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
@@ -196,7 +197,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
         mLikingLeftTitleTextView.setText(R.string.title_change_gym);
         mRightImageView.setVisibility(android.view.View.VISIBLE);
-        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
+        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
     }
 
     private android.view.View buildTabIndicatorCustomView(String tabTitle, int drawableResId) {
@@ -244,7 +245,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
         mRightImageView.setVisibility(android.view.View.VISIBLE);
-        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_menu));
+        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
         mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
     }
 
@@ -302,7 +303,8 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             case R.id.liking_right_imageView:
                 if (tag.equals(TAG_NEARBY_TAB)) {
                 } else if (tag.equals(TAG_MAIN_TAB)) {
-                    showRightMenuDialog();
+                    startActivity(MessageActivity.class);
+                    // showRightMenuDialog();
                 }
                 break;
             case R.id.layout_home_middle:
