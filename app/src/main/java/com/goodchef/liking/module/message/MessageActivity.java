@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.aaron.android.framework.base.ui.BaseSwipeBackActivity;
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,10 @@ import butterknife.ButterKnife;
 
 public class MessageActivity extends BaseSwipeBackActivity {
 
+    public static final String NOTICE_DATA = "notice_data";
+
     private static final int INDEX_ANNOUNCEMENT = 0;//公告
-    private static final int INDEX_MESSAGE= 1;//消息
+    private static final int INDEX_MESSAGE = 1;//消息
 
     @BindView(R.id.message_tabLayout)
     TabLayout mMessageTabLayout;
@@ -36,6 +39,7 @@ public class MessageActivity extends BaseSwipeBackActivity {
     ViewPager mMessageViewpager;
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
     private int currentInt = 0;
+    CoursesResult.Courses.Gym mNoticeGym;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,8 @@ public class MessageActivity extends BaseSwipeBackActivity {
     }
 
     private void initData() {
-
+        Bundle bundle = getIntent().getExtras();
+        mNoticeGym = (CoursesResult.Courses.Gym) bundle.getSerializable(NOTICE_DATA);
     }
 
     private void initView() {
@@ -87,7 +92,7 @@ public class MessageActivity extends BaseSwipeBackActivity {
 
     private TabFragmentPagerAdapter.FragmentBinder buildFragmentBinder(MyTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
-                0,  AnnouncementFragment.newInstance());
+                0, AnnouncementFragment.newInstance(mNoticeGym));
     }
 
     private TabFragmentPagerAdapter.FragmentBinder buildMessageFragmentBinder(MyTab tab) {

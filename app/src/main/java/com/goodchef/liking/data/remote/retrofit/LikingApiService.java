@@ -21,6 +21,7 @@ import com.goodchef.liking.data.remote.retrofit.result.DelBodyRecordResult;
 import com.goodchef.liking.data.remote.retrofit.result.GroupCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.GymDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
+import com.goodchef.liking.data.remote.retrofit.result.MessageResult;
 import com.goodchef.liking.data.remote.retrofit.result.MyCardResult;
 import com.goodchef.liking.data.remote.retrofit.result.MyChargeGroupCoursesDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.MyGroupCoursesResult;
@@ -414,6 +415,17 @@ public interface LikingApiService {
                                                          @Field(KEY_TOKEN) String token,
                                                          @Field("order_id") String orderId);
 
+    @FormUrlEncoded
+    @POST(Urls.USER_GET_MY_MSG)
+    Observable<MessageResult> getMessageList(@Path(PATH_VERSION) String sHostVersion,
+                                             @Field(KEY_TOKEN) String token,
+                                             @Field("page") int page);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_MSG_READ_SET)
+    Observable<LikingResult> setMessageRead(@Path(PATH_VERSION) String sHostVersion,
+                                          @Field(KEY_TOKEN) String token,
+                                          @Field("msg_id") String msgId);
 
     class Urls {
         private static final String sVersion = "/{version}/";
@@ -713,7 +725,7 @@ public interface LikingApiService {
         /**
          * 上报接口错误信息
          */
-        public static final String UPLOAD_ERROR = sVersion + "/index/err-log";
+        public static final String UPLOAD_ERROR = sVersion + "index/err-log";
 
         /**
          * 获取水费
@@ -735,7 +747,15 @@ public interface LikingApiService {
          */
         public static final String WATER_DETAILS = sVersion + "water/order-water-detail";
 
-        public static final String USER_GET_MY_MSG = sVersion + "/user/get-my-msg";
+        /**
+         * 获取消息列表
+         */
+        public static final String USER_GET_MY_MSG = sVersion + "user/get-my-msg";
+
+        /**
+         * 设置消息是否已读
+         */
+        public static final String USER_MSG_READ_SET = sVersion + "user/msg-read-set";
 
 
     }

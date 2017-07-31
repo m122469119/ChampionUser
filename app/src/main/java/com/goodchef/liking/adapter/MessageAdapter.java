@@ -11,6 +11,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapte
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.retrofit.result.MessageResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
  * version 1.0.0
  */
 
-public class MessageAdapter extends BaseRecycleViewAdapter<MessageAdapter.MessageViewHolder, String> {
+public class MessageAdapter extends BaseRecycleViewAdapter<MessageAdapter.MessageViewHolder, MessageResult.MessageData.Message> {
 
 
     public MessageAdapter(Context context) {
@@ -35,7 +36,7 @@ public class MessageAdapter extends BaseRecycleViewAdapter<MessageAdapter.Messag
         return new MessageViewHolder(view);
     }
 
-    class MessageViewHolder extends BaseRecycleViewHolder<String> {
+    class MessageViewHolder extends BaseRecycleViewHolder<MessageResult.MessageData.Message> {
         @BindView(R.id.message_read_tag)
         ImageView mMessageReadTag;
         @BindView(R.id.message_name)
@@ -51,17 +52,22 @@ public class MessageAdapter extends BaseRecycleViewAdapter<MessageAdapter.Messag
         }
 
         @Override
-        public void bindViews(String object) {
-            mMessageName.setText(object);
+        public void bindViews(MessageResult.MessageData.Message object) {
+            int read = object.getIsRead();
+            mMessageName.setText(object.getTypeDesc());
+            mMessageContent.setText(object.getContent());
+            mMessageNameTime.setText(object.getCreateTime());
+            messageHasRead(read);
+            mMessageContent.setTag(object);
         }
 
-        private void messageHasRead(boolean read) {
-            if (read) {
+        private void messageHasRead(int read) {
+            if (read == 1) { //已读
                 mMessageReadTag.setVisibility(View.GONE);
                 mMessageName.setTextColor(ResourceUtils.getColor(R.color.c888b99));
                 mMessageNameTime.setTextColor(ResourceUtils.getColor(R.color.c888b99));
                 mMessageContent.setTextColor(ResourceUtils.getColor(R.color.c888b99));
-            } else {
+            } else {// 未读
                 mMessageReadTag.setVisibility(View.VISIBLE);
                 mMessageName.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_text));
                 mMessageNameTime.setTextColor(ResourceUtils.getColor(R.color.liking_lesson_text));

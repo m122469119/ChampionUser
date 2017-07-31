@@ -256,7 +256,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         if (courses.getGym() != null) {
             CoursesResult.Courses.UserInfo userInfo = courses.getUserInfo();
             UserIsComplete(userInfo);
-            doLessonGym(courses);
+            doLessonGym(courses, courses.getHasUnreadMsg());
         }
         list = courses.getCoursesDataList();
         if (list != null && list.size() > 0) {
@@ -293,7 +293,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
      *
      * @param courses
      */
-    private void doLessonGym(CoursesResult.Courses courses) {
+    private void doLessonGym(CoursesResult.Courses courses, int hasMeg) {
         CoursesResult.Courses.Gym mGym = courses.getGym();
         LikingHomeActivity.gymTel = mGym.getTel();
         LikingHomeActivity.gymId = mGym.getGymId();
@@ -305,7 +305,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         } else {
             mSelfCoursesInView.setVisibility(android.view.View.GONE);
         }
-        postEvent(new GymNoticeMessage(courses.getGym()));
+        postEvent(new GymNoticeMessage(courses.getGym(), hasMeg));
     }
 
     /**
@@ -501,7 +501,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     }
 
     public void onEvent(OnClickLessonFragmentMessage message) {
-        if(!isFirstMessage) {
+        if (!isFirstMessage) {
             postEvent(new LikingHomeNoNetWorkMessage());
         } else {
             loadHomePage();

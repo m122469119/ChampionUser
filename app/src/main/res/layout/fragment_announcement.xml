@@ -1,49 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@drawable/notice_top"/>
+<com.goodchef.liking.widgets.base.LikingStateView xmlns:android="http://schemas.android.com/apk/res/android"
+                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                  android:id="@+id/announcement_stateView"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="match_parent"
+                                                  android:orientation="vertical"
+                                                  app:success_view="@layout/layout_announcement_success">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_20dp"
-        android:layout_marginRight="@dimen/spacing_20dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/bg_notice_background"
-        android:minHeight="200dp"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/spacing_12dp"
-            android:text=" · 上海凌空店 · "
-            android:textColor="@color/c34c86c"
-            android:textSize="16sp"/>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="3dp"
-            android:paddingBottom="@dimen/spacing_12dp"
-            android:paddingLeft="@dimen/spacing_12dp"
-            android:paddingRight="@dimen/spacing_12dp"
-            android:text="公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告"
-            android:textColor="@color/lesson_details_gray_back"
-            android:textSize="14sp"/>
-
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</com.goodchef.liking.widgets.base.LikingStateView>

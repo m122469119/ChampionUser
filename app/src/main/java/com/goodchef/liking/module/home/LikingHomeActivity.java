@@ -217,7 +217,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
                 if (tabId.equals(TAG_MAIN_TAB)) {//首页
                     setTagMainTab();
                     setHomeTitle();
-                    setHomeMenuReadNotice();
+                    setHomeMenuReadNotice(0);
                     mPresenter.checkUpdateApp(LikingHomeActivity.this);
                     postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
@@ -303,7 +303,11 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             case R.id.liking_right_imageView:
                 if (tag.equals(TAG_NEARBY_TAB)) {
                 } else if (tag.equals(TAG_MAIN_TAB)) {
-                    startActivity(MessageActivity.class);
+                    Intent intent = new Intent(this, MessageActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(MessageActivity.NOTICE_DATA, mNoticeGym);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                     // showRightMenuDialog();
                 }
                 break;
@@ -334,7 +338,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
                 if (!shoDefaultDialog) {
-                    setHomeMenuReadNotice();
+                    setHomeMenuReadNotice(0);
                 }
             }
         });
@@ -620,13 +624,14 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     public void onEvent(getGymDataMessage message) {
         mGym = message.getGym();
         setHomeTitle();
-        setHomeMenuReadNotice();//切换场馆有公告就弹出公告
+        setHomeMenuReadNotice(0);//切换场馆有公告就弹出公告
     }
 
     /**
      * @param message
      */
     public void onEvent(GymNoticeMessage message) {
+
         mNoticeGym = message.getGym();
         mCanSchedule = mNoticeGym.getCanSchedule();
         if (mNoticeGym != null
@@ -638,7 +643,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         }
         setHomeTitle();
         if (showDefaultGymDialog() && !pause) {
-            setHomeMenuReadNotice();
+            setHomeMenuReadNotice(message.getHasUnreadMsg());
         }
     }
 
@@ -707,11 +712,11 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     /**
      * 设置是否读取过公告
      */
-    private void setHomeMenuReadNotice() {
+    private void setHomeMenuReadNotice(int hasMsg) {
         String tag = fragmentTabHost.getCurrentTabTag();
         if (tag.equals(TAG_MAIN_TAB)) {
-            if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
-                if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+            if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId()) || hasMsg == 1) {
+                if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId()) || hasMsg == 1) {
                     mRedPoint.setVisibility(android.view.View.VISIBLE);
                     RightMenuDialog.setRedPromptShow(true);
                     showNoticeDialog();
