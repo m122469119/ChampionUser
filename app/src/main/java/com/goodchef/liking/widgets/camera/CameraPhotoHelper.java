@@ -13,15 +13,15 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
-
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
-import io.reactivex.functions.Consumer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明:
@@ -73,7 +73,7 @@ public class CameraPhotoHelper {
      * 拍照
      */
     public void takePhotoFromCamera() {
-        new RxPermissions(mContext).request(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        new RxPermissions(mContext).request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
@@ -90,7 +90,11 @@ public class CameraPhotoHelper {
                                 File f = new File(filePicScreenshot, localTempImageFileName);
                                 Uri u;
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.fileprovider", f);
+                                    if (EnvironmentUtils.Config.isTestMode()) {
+                                        u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.test.fileprovider", f);
+                                    } else {
+                                        u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.fileprovider", f);
+                                    }
                                 } else {
                                     u = Uri.fromFile(f);
                                 }
@@ -172,6 +176,7 @@ public class CameraPhotoHelper {
 
     public interface CameraPhotoCallBack {
         void takePictureFromCamera(String imagePath);
+
         void takePictureFromGallery(ArrayList<String> imagePathList);
     }
 
