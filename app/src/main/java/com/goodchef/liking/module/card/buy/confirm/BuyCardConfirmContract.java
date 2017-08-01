@@ -1,22 +1,17 @@
 package com.goodchef.liking.module.card.buy.confirm;
 
 import android.content.Context;
-import android.content.DialogInterface;
 
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
-import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
-import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.LiKingRequestCode;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.ConfirmBuyCardResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.PayResultData;
-import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.ProgressObserver;
 import com.goodchef.liking.data.remote.rxobserver.StateViewLoadingObserver;
-import com.goodchef.liking.eventmessages.BuyCardListMessage;
 
 import java.util.List;
 
@@ -42,6 +37,8 @@ interface BuyCardConfirmContract {
         void setCardTimeAdapter(List<ConfirmBuyCardResult.DataBean.CardsBean.TimeLimitBean> mTimeLimitBeanList);
 
         void setPayFailView();
+
+        void setLogininvalid();
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -54,7 +51,6 @@ interface BuyCardConfirmContract {
 
         /**
          * 购卡确认
-         *
          */
         public void confirmBuyCard() {
 
@@ -81,6 +77,18 @@ interface BuyCardConfirmContract {
                                 default:
                                     super.apiError(apiException);
                             }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e instanceof ApiException) {
+                                switch (((ApiException) e).getErrorCode()) {
+                                    case LiKingRequestCode.LOGIN_TOKEN_INVALID:
+                                        mView.setLogininvalid();
+                                        return;
+                                }
+                            }
+                            super.onError(e);
                         }
 
                         @Override
@@ -118,7 +126,7 @@ interface BuyCardConfirmContract {
         }
 
         public void setIntentParams(String cardName, String categoryId, int buyType, String gymId, String cardId) {
-            mModel.setIntentParams(cardName, categoryId,  buyType, gymId, cardId);
+            mModel.setIntentParams(cardName, categoryId, buyType, gymId, cardId);
 
         }
 

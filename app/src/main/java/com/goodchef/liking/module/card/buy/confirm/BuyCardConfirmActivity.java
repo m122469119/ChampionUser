@@ -20,6 +20,7 @@ import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.pay.alipay.AliPay;
@@ -676,6 +677,12 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         }
     }
 
+//    public void onEvent(LoginInvalidMessage message){
+//        if (message !=null){
+//            finish();
+//        }
+//    }
+
     @Override
     public void setPayFailView() {
         if (mCoupon != null && !StringUtils.isEmpty(mCoupon.getAmount())) {
@@ -685,6 +692,17 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
             mCardMoneyTextView.setText(getString(R.string.money_symbol) + mCardTotalMoney);
             mCoupon = null;
         }
+    }
+
+    @Override
+    public void setLogininvalid() {
+        LikingPreference.setToken(ConstantUtils.BLANK_STRING);
+        LikingPreference.setNickName(ConstantUtils.BLANK_STRING);
+        LikingPreference.setUserPhone(ConstantUtils.BLANK_STRING);
+        LikingPreference.setIsNewUser(null);
+        LikingPreference.setUserIconUrl(ConstantUtils.BLANK_STRING);
+        startActivity(LoginActivity.class);
+        finish();
     }
 
     private void jumpOrderActivity() {

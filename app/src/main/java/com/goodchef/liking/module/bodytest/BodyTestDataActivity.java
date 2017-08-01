@@ -111,48 +111,29 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
     RelativeLayout mFatLayout;
 
     //--节段肌肉和节段脂肪---
-    @BindView(R.id.muscle_analyze_title)
     TextView mMuscleAnalyzeTitle;
-    @BindView(R.id.muscle_analyze_imageView)
     ImageView mMuscleAnalyzeImageView;
 
-    @BindView(R.id.left_muscle_percentage_TextView)
     TextView mLeftMusclePercentageTextView;
-    @BindView(R.id.left_muscle_TextView)
     TextView mLeftMuscleTextView;
-    @BindView(R.id.left_muscle_unit_TextView)
     TextView mLeftMuscleUnitTextView;
-    @BindView(R.id.left_muscle_evaluate_TextView)
     TextView mLeftMuscleEvaluateTextView;
 
-    @BindView(R.id.right_muscle_percentage_TextView)
     TextView mRightMusclePercentageTextView;
-    @BindView(R.id.right_muscle_TextView)
     TextView mRightMuscleTextView;
-    @BindView(R.id.right_muscle_unit_TextView)
     TextView mRightMuscleUnitTextView;
-    @BindView(R.id.right_muscle_evaluate_TextView)
     TextView mRightMuscleEvaluateTextView;
 
-    @BindView(R.id.right_down_muscle_percentage_TextView)
     TextView mRightDownMusclePercentageTextView;
-    @BindView(R.id.right_down_muscle_TextView)
     TextView mRightDownMuscleTextView;
-    @BindView(R.id.right_down_muscle_unit_TextView)
     TextView mRightDownMuscleUnitTextView;
-    @BindView(R.id.right_down_muscle_evaluate_TextView)
     TextView mRightDownMuscleEvaluateTextView;
 
-    @BindView(R.id.left_down_muscle_percentage_TextView)
     TextView mLeftDownMusclePercentageTextView;
-    @BindView(R.id.lef_down_muscle_TextView)
     TextView mLeftDownMuscleTextView;
-    @BindView(R.id.lef_down_muscle_unit_TextView)
     TextView mLeftDownMuscleUnitTextView;
-    @BindView(R.id.lef_down_muscle_evaluate_TextView)
     TextView mLeftDownMuscleEvaluateTextView;
 
-    @BindView(R.id.muscle_analyze_result_TextView)
     TextView mMuscleAnalyzeResultTextView;
 
     TextView mMuscleResultHistoryTextView;
@@ -645,6 +626,31 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
 
     private void setMuscleView(android.view.View view) {
         mMuscleResultHistoryTextView = (TextView) view.findViewById(R.id.muscle_result_history_TextView);
+        mMuscleAnalyzeTitle = (TextView) view.findViewById(R.id.muscle_analyze_title);
+        mMuscleAnalyzeImageView = (ImageView) view.findViewById(R.id.muscle_analyze_imageView);
+
+        mLeftMusclePercentageTextView = (TextView) view.findViewById(R.id.left_muscle_percentage_TextView);
+        mLeftMuscleTextView = (TextView) view.findViewById(R.id.left_muscle_TextView);
+        mLeftMuscleUnitTextView = (TextView) view.findViewById(R.id.left_muscle_unit_TextView);
+        mLeftMuscleEvaluateTextView = (TextView) view.findViewById(R.id.left_muscle_evaluate_TextView);
+
+        mRightMusclePercentageTextView = (TextView) view.findViewById(R.id.right_muscle_percentage_TextView);
+        mRightMuscleTextView = (TextView) view.findViewById(R.id.right_muscle_TextView);
+        mRightMuscleUnitTextView = (TextView) view.findViewById(R.id.right_muscle_unit_TextView);
+        mRightMuscleEvaluateTextView = (TextView) view.findViewById(R.id.right_muscle_evaluate_TextView);
+
+        mRightDownMusclePercentageTextView = (TextView) view.findViewById(R.id.right_down_muscle_percentage_TextView);
+        mRightDownMuscleTextView = (TextView) view.findViewById(R.id.right_down_muscle_TextView);
+        mRightDownMuscleUnitTextView = (TextView) view.findViewById(R.id.right_down_muscle_unit_TextView);
+        mRightDownMuscleEvaluateTextView = (TextView) view.findViewById(R.id.right_down_muscle_evaluate_TextView);
+
+        mLeftDownMusclePercentageTextView = (TextView) view.findViewById(R.id.left_down_muscle_percentage_TextView);
+        mLeftDownMuscleTextView = (TextView) view.findViewById(R.id.lef_down_muscle_TextView);
+        mLeftDownMuscleUnitTextView = (TextView) view.findViewById(R.id.lef_down_muscle_unit_TextView);
+        mLeftDownMuscleEvaluateTextView = (TextView) view.findViewById(R.id.lef_down_muscle_evaluate_TextView);
+
+        mMuscleAnalyzeResultTextView = (TextView) view.findViewById(R.id.muscle_analyze_result_TextView);
+
         setBodyFatTypeface();
     }
 
