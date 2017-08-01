@@ -58,6 +58,7 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
     @Override
     protected void initViews() {
+        setMessageRead();
         setNoDataView();
         setPullMode(PullMode.PULL_BOTH);
         mMessageAdapter = new MessageAdapter(getContext());
@@ -77,6 +78,12 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                 return false;
             }
         });
+    }
+
+    /**
+     * 设置通知过来的消息显示已读
+     */
+    private void setMessageRead() {
         msgId = getArguments().getString(MessageActivity.MSG_ID);
         if (!StringUtils.isEmpty(msgId)) {
             mPresenter.setReadMessage(msgId);
@@ -123,6 +130,13 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     @Override
     public void updateMessageList(MessageResult.MessageData messageData) {
         messageList = messageData.getMessageList();
+        if (!StringUtils.isEmpty(msgId)) {
+            for (int i = 0; i < messageList.size(); i++) {
+                if (msgId.equals(messageList.get(i).getMsgId())) {
+                    messageList.get(i).setIsRead(1);
+                }
+            }
+        }
         updateListView(messageList);
     }
 

@@ -41,6 +41,7 @@ import com.goodchef.liking.eventmessages.LoginInvalidMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
+import com.goodchef.liking.eventmessages.PushHasMessage;
 import com.goodchef.liking.eventmessages.RefshReadMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
@@ -694,6 +695,14 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     public void onEvent(BuyCardMessage message) {
         if (message != null && fragmentTabHost != null) {
             fragmentTabHost.setCurrentTab(NumberConstantUtil.ONE);
+        }
+    }
+
+    public void onEvent(PushHasMessage message) {
+        if (message != null) {
+            mRedPoint.setVisibility(View.VISIBLE);
+        } else {
+            mRedPoint.setVisibility(View.GONE);
         }
     }
 

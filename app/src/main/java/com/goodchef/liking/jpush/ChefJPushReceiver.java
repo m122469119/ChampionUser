@@ -17,6 +17,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.data.AnnouncementDirect;
+import com.goodchef.liking.eventmessages.PushHasMessage;
 import com.goodchef.liking.module.card.my.MyCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -150,6 +152,10 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         JSONObject jsonObject = new JSONObject(data);
                         String msgId = jsonObject.getString("msg_id");
                         LogUtils.i(TAG, "msgId = " + msgId);
+                        if (StringUtils.isEmpty(msgId)) {
+                            return;
+                        }
+                        EventBus.getDefault().post(new PushHasMessage());
                         Intent intent = new Intent(context, MessageActivity.class);
                         intent.putExtra(MessageActivity.CURRENT_TAB, 1);
                         intent.putExtra(MessageActivity.MSG_ID, msgId);
