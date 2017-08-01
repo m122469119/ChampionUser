@@ -39,6 +39,10 @@
                 layout="@layout/item_my_standard"/>
 
             <include
+                android:id="@+id/layout_open"
+                layout="@layout/item_my_standard"/>
+
+            <include
                 android:id="@+id/layout_contact_join"
                 layout="@layout/item_my_standard"/>
 

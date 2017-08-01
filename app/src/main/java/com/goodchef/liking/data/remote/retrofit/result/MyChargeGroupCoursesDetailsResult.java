@@ -63,6 +63,16 @@ public class MyChargeGroupCoursesDetailsResult extends LikingResult {
         private int payType;
         @SerializedName("status")
         private int status;
+        @SerializedName("pay_desc")
+        private String payDesc;
+
+        public String getPayDesc() {
+            return payDesc;
+        }
+
+        public void setPayDesc(String payDesc) {
+            this.payDesc = payDesc;
+        }
 
         public String getOrderId() {
             return orderId;

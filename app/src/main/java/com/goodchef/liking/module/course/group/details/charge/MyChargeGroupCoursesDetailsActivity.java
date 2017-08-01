@@ -15,6 +15,7 @@ import com.goodchef.liking.widgets.base.LikingStateView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 /**
  * 说明:收费团体课详情界面
  * Author shaozucheng
@@ -108,14 +109,8 @@ public class MyChargeGroupCoursesDetailsActivity extends AppBarMVPSwipeBackActiv
             mPriceTextView.setText(groupCoursesDetails.getTotalAmount());
             mCouponsTextView.setText(groupCoursesDetails.getCouponAmount());
             mCoursesAmountTextView.setText(groupCoursesDetails.getActualAmount());
-            int payType = groupCoursesDetails.getPayType();
-            if (payType == 0) {
-                mPayTypeTextView.setText(R.string.pay_wechat_type);
-            } else if (payType == 1) {
-                mPayTypeTextView.setText(R.string.pay_alipay_type);
-            } else if (payType == 3) {
-                mPayTypeTextView.setText(R.string.pay_free_type);
-            }
+            String payDesc = groupCoursesDetails.getPayDesc();
+            mPayTypeTextView.setText(payDesc);
             int state = groupCoursesDetails.getStatus();//0 未开始  1 进行中 2 已结束 3已取消
             if (state == 0) {
                 mOrderStateTextView.setText(R.string.no_start);

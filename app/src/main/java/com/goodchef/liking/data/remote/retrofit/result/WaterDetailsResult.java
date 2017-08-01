@@ -1,6 +1,7 @@
 package com.goodchef.liking.data.remote.retrofit.result;
 
 import com.aaron.http.code.result.Data;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created on 2017/7/7
@@ -55,6 +56,17 @@ public class WaterDetailsResult extends LikingResult {
         private String gym_addr;
         private int water_time;
         private int type;
+
+        @SerializedName("pay_desc")
+        private String payDesc;
+
+        public String getPayDesc() {
+            return payDesc;
+        }
+
+        public void setPayDesc(String payDesc) {
+            this.payDesc = payDesc;
+        }
 
         public String getOrder_id() {
             return order_id;

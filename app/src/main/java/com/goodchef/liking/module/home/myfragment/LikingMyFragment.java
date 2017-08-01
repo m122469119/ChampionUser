@@ -39,6 +39,7 @@ import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
 import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.more.MoreActivity;
+import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.module.train.MyTrainDataActivity;
 import com.goodchef.liking.module.userinfo.MyInfoActivity;
 import com.goodchef.liking.umeng.UmengEventId;
@@ -97,6 +98,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     private LinearLayout mSelfHelpGroupLayout;//自助团体课
     private LinearLayout mBindBraceletLinearLayout;//绑定手环
     private LinearLayout mWaterRateLinearLayout;   //水费充值
+    private LinearLayout mOpenDoorLayout;//开们
     private LinearLayout mBodyScoreLayout;//体测评分
     private LinearLayout mEverydaySportLayout;//每日运动
     private LinearLayout mTrainLayout;//今日训练
@@ -215,8 +217,8 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             if (userOtherInfoData.getWaterData().getWater_status() == MyUserOtherInfoResult.UserOtherInfoData.WaterData.CHARGE_WATER) {
                 mWaterRateLinearLayout.setVisibility(View.VISIBLE);
                 mWaterSurplus.setVisibility(View.VISIBLE);
-                mWaterSurplus.setText( getString(R.string.time_remaining)+userOtherInfoData.getWaterData().getWater_time() + getString(R.string.min));
-            } else  {
+                mWaterSurplus.setText(getString(R.string.time_remaining) + userOtherInfoData.getWaterData().getWater_time() + getString(R.string.min));
+            } else {
                 mWaterRateLinearLayout.setVisibility(View.GONE);
                 mWaterSurplus.setVisibility(View.GONE);
             }
@@ -293,6 +295,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         mBindBraceletLinearLayout = (LinearLayout) view.findViewById(R.id.layout_bind_bracelet);
 
         mWaterRateLinearLayout = (LinearLayout) view.findViewById(R.id.layout_water_rate);
+        mOpenDoorLayout = (LinearLayout) view.findViewById(R.id.layout_open);
         mWaterSurplus = (TextView) mWaterRateLinearLayout.findViewById(R.id.standard_my_label);
 
         mBodyScoreLayout = (LinearLayout) view.findViewById(R.id.layout_body_score);
@@ -321,6 +324,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         setMySettingCard(mWaterRateLinearLayout, R.string.layout_water_rate, true);
         mWaterRateLinearLayout.setVisibility(View.GONE);
         mWaterSurplus.setVisibility(View.GONE);
+        setMySettingCard(mOpenDoorLayout, R.string.layout_open_door, true);
         setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
         setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, false);
     }
@@ -386,7 +390,8 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             R.id.layout_contact_join, R.id.layout_become_teacher,
             R.id.layout_more, R.id.layout_self_help_group_gym,
             R.id.layout_body_score, R.id.layout_bind_bracelet,
-            R.id.layout_water_rate, R.id.layout_everyday_sport})
+            R.id.layout_water_rate, R.id.layout_everyday_sport,
+            R.id.layout_open})
     public void onClick(android.view.View view) {
         switch (view.getId()) {
             case R.id.layout_today_data://我的训练数据
@@ -472,13 +477,16 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 }
                 break;
             case R.id.layout_bind_bracelet://绑定手环
-                mPresenter.jumpBraceletActivity(getActivity(), this,  UUID, mBraceletMac);
+                mPresenter.jumpBraceletActivity(getActivity(), this, UUID, mBraceletMac);
                 break;
             case R.id.layout_water_rate: //水费充值
                 startActivity(WaterRateActivity.class);
                 break;
             case R.id.layout_everyday_sport://手环数据
                 mPresenter.jumpBracelet(getActivity(), UUID, mBraceletMac);
+                break;
+            case R.id.layout_open:
+                startActivity(OpenTheDoorActivity.class);
                 break;
         }
     }
@@ -531,9 +539,10 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
 
     /**
      * 打开蓝牙的回调
+     *
      * @param requestCode 1
-     * @param resultCode 0 为失败  -1 为成功
-     * @param data null
+     * @param resultCode  0 为失败  -1 为成功
+     * @param data        null
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -550,7 +559,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
 
 
     @Override
-    public void jumpMyBraceletActivity(){
+    public void jumpMyBraceletActivity() {
         UMengCountUtil.UmengCount(getActivity(), UmengEventId.MYBRACELETACTIVITY);
         Intent intent = new Intent(getActivity(), MyBraceletActivity.class);
         if (!StringUtils.isEmpty(mBraceletMac)) {

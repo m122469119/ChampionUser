@@ -12,6 +12,7 @@
     <string name="layout_invite_friends">邀请好友</string>
     <string name="layout_coupons">优惠券</string>
     <string name="layout_contact_join">联系加盟</string>
+    <string name="layout_open_door">密码开门</string>
     <string name="layout_become_teacher">成为教练</string>
     <string name="layout_about_us">关于我们</string>
     <string name="layout_check_update">检测更新</string>
