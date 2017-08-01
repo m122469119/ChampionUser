@@ -51,10 +51,10 @@ public class MessageActivity extends BaseSwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ButterKnife.bind(this);
-        initData();
-        initView();
         currentInt = getIntent().getIntExtra(CURRENT_TAB, 0);
         msgId = getIntent().getStringExtra(MSG_ID);
+        initData();
+        initView();
     }
 
     private void initData() {

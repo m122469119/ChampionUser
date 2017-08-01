@@ -55,7 +55,7 @@ public class AnnouncementFragment extends BaseFragment {
     }
 
     private void showNotice() {
-        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId()) && !StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId()) && !StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
             mAnnouncementStateView.setState(StateView.State.SUCCESS);
             mNoticeName.setText(mNoticeGym.getName());
             mNoticeContent.setText(mNoticeGym.getAnnouncementInfo());

@@ -153,6 +153,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         Intent intent = new Intent(context, MessageActivity.class);
                         intent.putExtra(MessageActivity.CURRENT_TAB, 1);
                         intent.putExtra(MessageActivity.MSG_ID, msgId);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                     break;

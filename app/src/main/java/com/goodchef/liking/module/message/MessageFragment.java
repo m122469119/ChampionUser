@@ -68,7 +68,7 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                 TextView tv = (TextView) view.findViewById(R.id.message_content);
                 if (tv != null) {
                     MessageResult.MessageData.Message object = (MessageResult.MessageData.Message) tv.getTag();
-                    doReadClick(object);
+                    doReadClick(object, position);
                 }
             }
 
@@ -112,16 +112,12 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     }
 
 
-    private void doReadClick(MessageResult.MessageData.Message object) {
-        if (object != null && !StringUtils.isEmpty(object.getMsgId())) {
-            for (int i = 0; i < messageList.size(); i++) {
-                if (messageList.get(i).getMsgId().equals(object.getMsgId()) && messageList.get(i).getIsRead() == 0) {
-                    messageList.get(i).setIsRead(1);
-                    mPresenter.setReadMessage(object.getMsgId());
-                }
-            }
+    private void doReadClick(MessageResult.MessageData.Message object, int position) {
+        if (object != null && !StringUtils.isEmpty(object.getMsgId()) && object.getIsRead() == 0) {
+            mPresenter.setReadMessage(object.getMsgId());
+            object.setIsRead(1);
+            mMessageAdapter.notifyItemChanged(position);
         }
-        mMessageAdapter.notifyDataSetChanged();
     }
 
     @Override

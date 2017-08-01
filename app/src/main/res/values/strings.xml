@@ -618,7 +618,7 @@
     <string name="name_digits">！!@#$%^*()_+{}|:?/.,""^~`</string>
     <string name="not_input_filter_code">不能输入非法字符或者空格！</string>
     <string name="title_activity_water_rate">WaterRateActivity</string>
-    <string name="water_uknow">建议您根据会员卡有效期购买相应水费时间(会员卡过期则水费自动失效);\r\n若存在疑问，请联系健身房处理;\r\n水费一经购买，不予退款;</string>
+    <string name="water_uknow">水费一经购买，不予退款，会员卡过期则水费自动失效;\r\n若存在疑问，请联系健身房处理;</string>
     <string name="rmb">¥</string>
     <string name="water_recharge_time">选择充值时长</string>
     <string name="give_water_uknow">若在会员卡有效期内未使用完，系统将会清空处理</string>

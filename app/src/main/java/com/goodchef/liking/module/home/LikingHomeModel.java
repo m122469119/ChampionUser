@@ -33,7 +33,7 @@ public class LikingHomeModel extends BaseModel {
             return LikingNewApi.getInstance().getHasReadMessage(LikingNewApi.sHostVersion, LikingPreference.getToken())
                     .compose(RxUtils.<UnreadMessageResult>applyHttpSchedulers());
         } else {
-            return LikingNewApi.getInstance().getHasReadMessage(LikingNewApi.sHostVersion)
+            return LikingNewApi.getInstance().getHasReadMessage2(LikingNewApi.sHostVersion)
                     .compose(RxUtils.<UnreadMessageResult>applyHttpSchedulers());
         }
     }

@@ -18,19 +18,19 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/arena_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:lineSpacingExtra="3dp"
                     android:padding="10dp"
                     android:textColor="@color/lesson_details_dark_back"
-                    android:textSize="@dimen/normal_text_size_13sp"/>
+                    android:textSize="@dimen/normal_text_size_14sp"/>
 
 
                 <ImageView
