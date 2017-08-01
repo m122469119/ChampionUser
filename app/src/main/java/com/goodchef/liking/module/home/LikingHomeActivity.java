@@ -26,20 +26,22 @@ import com.amap.api.location.AMapLocation;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
 import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
 import com.goodchef.liking.dialog.CancelOnClickListener;
 import com.goodchef.liking.dialog.ConfirmOnClickListener;
 import com.goodchef.liking.dialog.DefaultGymDialog;
-import com.goodchef.liking.dialog.HomeRightDialog;
 import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.LikingHomeActivityMessage;
 import com.goodchef.liking.eventmessages.LikingHomeNoNetWorkMessage;
+import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginInvalidMessage;
+import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
-import com.goodchef.liking.eventmessages.UserCityIdMessage;
+import com.goodchef.liking.eventmessages.RefshReadMessage;
 import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.module.card.buy.LikingBuyCardFragment;
 import com.goodchef.liking.module.gym.details.ArenaActivity;
@@ -48,7 +50,6 @@ import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.message.MessageActivity;
-import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.NumberConstantUtil;
@@ -69,8 +70,6 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     public static final String TAG_NEARBY_TAB = "nearby";
     public static final String TAG_RECHARGE_TAB = "recharge";
     public static final String TAG_MY_TAB = "my";
-    public static final String INTENT_KEY_BUY_LIST = "intent_key_buy_list";
-    public static final String INTENT_KEY_FOOD_OBJECT = "intent_key_food_object";
 
     public static final String KEY_SELECT_CITY_ID = "key_select_city_id";
     public static final String KEY_TAB_INDEX = "key_tab_index";
@@ -108,7 +107,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
-    private HomeRightDialog RightMenuDialog;//右边加好
+    //    private HomeRightDialog RightMenuDialog;//右边加好
     private String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
     public static boolean shoDefaultDialog = true;
@@ -124,7 +123,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         ButterKnife.bind(this);
         setTitle(R.string.activity_liking_home);
         mPresenter.initHomeGymId();
-        RightMenuDialog = new HomeRightDialog(this);
+//        RightMenuDialog = new HomeRightDialog(this);
         initTabHost();
         sendUpdateAppRequest();
         initData();
@@ -217,7 +216,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
                 if (tabId.equals(TAG_MAIN_TAB)) {//首页
                     setTagMainTab();
                     setHomeTitle();
-                    setHomeMenuReadNotice(0);
+                    setHomeMenuReadNotice();
                     mPresenter.checkUpdateApp(LikingHomeActivity.this);
                     postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
@@ -338,7 +337,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             public void onCancelClickListener(AppCompatDialog dialog) {
                 dialog.dismiss();
                 if (!shoDefaultDialog) {
-                    setHomeMenuReadNotice(0);
+                    setHomeMenuReadNotice();
                 }
             }
         });
@@ -370,32 +369,32 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
      * 展示右边按钮
      */
     private void showRightMenuDialog() {
-        UMengCountUtil.UmengBtnCount(this, UmengEventId.ADD_BTN, currentCityName);
-        RightMenuDialog.setAnchor(mRightImageView);
-        RightMenuDialog.setViewOnClickListener(rightListener);
-        RightMenuDialog.show();
+//        UMengCountUtil.UmengBtnCount(this, UmengEventId.ADD_BTN, currentCityName);
+//        RightMenuDialog.setAnchor(mRightImageView);
+//        RightMenuDialog.setViewOnClickListener(rightListener);
+//        RightMenuDialog.show();
     }
 
     /**
      * 右边按钮监听
      */
-    private android.view.View.OnClickListener rightListener = new android.view.View.OnClickListener() {
-        @Override
-        public void onClick(android.view.View v) {
-            switch (v.getId()) {
-                case R.id.layout_notice://公告
-                    if (mNoticeGym != null) {
-                        showNoticeDialog();
-                        RightMenuDialog.dismiss();
-                    }
-                    break;
-                case R.id.layout_open_door://开门
-                    jumpOpenTheDoorActivity();
-                    RightMenuDialog.dismiss();
-                    break;
-            }
-        }
-    };
+//    private android.view.View.OnClickListener rightListener = new android.view.View.OnClickListener() {
+//        @Override
+//        public void onClick(android.view.View v) {
+//            switch (v.getId()) {
+//                case R.id.layout_notice://公告
+//                    if (mNoticeGym != null) {
+//                        showNoticeDialog();
+//                        //  RightMenuDialog.dismiss();
+//                    }
+//                    break;
+//                case R.id.layout_open_door://开门
+//                   // jumpOpenTheDoorActivity();
+//                    //  RightMenuDialog.dismiss();
+//                    break;
+//            }
+//        }
+//    };
 
 
     /**
@@ -414,13 +413,13 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
             LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-            mRedPoint.setVisibility(android.view.View.GONE);
-            RightMenuDialog.setRedPromptShow(false);
+            // mRedPoint.setVisibility(android.view.View.GONE);
+            // RightMenuDialog.setRedPromptShow(false);
         } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
             defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
             LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-            mRedPoint.setVisibility(android.view.View.GONE);
-            RightMenuDialog.setRedPromptShow(false);
+            //mRedPoint.setVisibility(android.view.View.GONE);
+            // RightMenuDialog.setRedPromptShow(false);
         } else {
             defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
         }
@@ -474,19 +473,42 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         });
     }
 
-
-    /**
-     * 开门
-     */
-    private void jumpOpenTheDoorActivity() {
-        if (StringUtils.isEmpty(currentCityName)) {
-            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, "定位失败");
+    @Override
+    public void updateHasMessage(UnreadMessageResult.UnreadMsgData data) {
+        String tag = fragmentTabHost.getCurrentTabTag();
+        int hasMsg = data.getHasUnreadMsg();
+        boolean hasAnnouncement;
+        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
+                && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+            hasAnnouncement = true;
         } else {
-            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, currentCityName);
+            hasAnnouncement = false;
         }
-        Intent intent = new Intent(this, OpenTheDoorActivity.class);
-        startActivity(intent);
+
+        if (tag.equals(TAG_MAIN_TAB)) {
+            if (hasMsg == 1 || hasAnnouncement) {
+                mRedPoint.setVisibility(View.VISIBLE);
+            } else {
+                mRedPoint.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mRedPoint.setVisibility(View.GONE);
+        }
     }
+
+
+//    /**
+//     * 开门
+//     */
+//    private void jumpOpenTheDoorActivity() {
+//        if (StringUtils.isEmpty(currentCityName)) {
+//            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, "定位失败");
+//        } else {
+//            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, currentCityName);
+//        }
+//        Intent intent = new Intent(this, OpenTheDoorActivity.class);
+//        startActivity(intent);
+//    }
 
 
     /**
@@ -597,7 +619,6 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -617,21 +638,16 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         return true;
     }
 
-    public void onEvent(UserCityIdMessage userCityIdMessage) {
-
-    }
-
     public void onEvent(getGymDataMessage message) {
         mGym = message.getGym();
         setHomeTitle();
-        setHomeMenuReadNotice(0);//切换场馆有公告就弹出公告
+        setHomeMenuReadNotice();//切换场馆有公告就弹出公告
     }
 
     /**
      * @param message
      */
     public void onEvent(GymNoticeMessage message) {
-
         mNoticeGym = message.getGym();
         mCanSchedule = mNoticeGym.getCanSchedule();
         if (mNoticeGym != null
@@ -643,7 +659,14 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         }
         setHomeTitle();
         if (showDefaultGymDialog() && !pause) {
-            setHomeMenuReadNotice(message.getHasUnreadMsg());
+            setHomeMenuReadNotice();
+        }
+        mPresenter.getHasMessage();
+    }
+
+    public void onEvent(LoginOutMessage message) {
+        if (message != null) {
+            mPresenter.getHasMessage();
         }
     }
 
@@ -712,25 +735,30 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     /**
      * 设置是否读取过公告
      */
-    private void setHomeMenuReadNotice(int hasMsg) {
+    private void setHomeMenuReadNotice() {
         String tag = fragmentTabHost.getCurrentTabTag();
-        if (tag.equals(TAG_MAIN_TAB)) {
-            if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId()) || hasMsg == 1) {
-                if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId()) || hasMsg == 1) {
-                    mRedPoint.setVisibility(android.view.View.VISIBLE);
-                    RightMenuDialog.setRedPromptShow(true);
-                    showNoticeDialog();
-                } else {
-                    mRedPoint.setVisibility(android.view.View.GONE);
-                    RightMenuDialog.setRedPromptShow(false);
-                }
-            } else {
-                mRedPoint.setVisibility(android.view.View.GONE);
-                RightMenuDialog.setRedPromptShow(false);
-            }
+//        if (tag.equals(TAG_MAIN_TAB)) {
+//            if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
+//                if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+//                    // mRedPoint.setVisibility(android.view.View.VISIBLE);
+//                    // RightMenuDialog.setRedPromptShow(true);
+//                    showNoticeDialog();
+//                } else {
+//                    //  mRedPoint.setVisibility(View.GONE);
+//                }
+//            } else {
+//                // mRedPoint.setVisibility(View.GONE);
+//            }
+//        } else {
+//            mRedPoint.setVisibility(android.view.View.GONE);
+//            //RightMenuDialog.setRedPromptShow(false);
+//        }
+
+        if (tag.equals(TAG_MAIN_TAB) && mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
+                && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+            showNoticeDialog();
         } else {
-            mRedPoint.setVisibility(android.view.View.GONE);
-            RightMenuDialog.setRedPromptShow(false);
+            mRedPoint.setVisibility(View.GONE);
         }
     }
 
@@ -742,6 +770,19 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("start_home", message.arg1);
         startActivity(intent);
+    }
+
+
+    public void onEvent(RefshReadMessage message) {
+        if (message != null) {
+            mPresenter.getHasMessage();
+        }
+    }
+
+    public void onEvent(LoginFinishMessage message) {
+        if (message != null) {
+            mPresenter.getHasMessage();
+        }
     }
 
     @Override

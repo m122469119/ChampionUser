@@ -15,6 +15,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
+import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.HomeAnnouncement;
 import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
@@ -37,6 +38,8 @@ class LikingHomeContract {
 
     interface View extends BaseView {
         void showNoticesDialog(Set<NoticeData> noticeData);
+
+        void updateHasMessage(UnreadMessageResult.UnreadMsgData data);
     }
 
     public static class Presenter extends RxBasePresenter<View> {
@@ -155,6 +158,18 @@ class LikingHomeContract {
             }
         }
 
+        /**
+         * 获取是否还有消息
+         */
+        public void getHasMessage() {
+            mLikingHomeModel.getHasMessage().subscribe(new LikingBaseObserver<UnreadMessageResult>(mView) {
+                @Override
+                public void onNext(UnreadMessageResult value) {
+                    if (value == null) return;
+                    mView.updateHasMessage(value.getData());
+                }
+            });
+        }
 
     }
 }

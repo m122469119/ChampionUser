@@ -39,6 +39,7 @@ import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.SyncTimestampResult;
+import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserAuthCodeResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserImageResult;
@@ -427,6 +428,14 @@ public interface LikingApiService {
                                           @Field(KEY_TOKEN) String token,
                                           @Field("msg_id") String msgId);
 
+    @FormUrlEncoded
+    @POST(Urls.USER_CHECK_UNREAD_MSG)
+    Observable<UnreadMessageResult> getHasReadMessage(@Path(PATH_VERSION) String sHostVersion,@Field(KEY_TOKEN) String token);
+
+    @FormUrlEncoded
+    @POST(Urls.USER_CHECK_UNREAD_MSG)
+    Observable<UnreadMessageResult> getHasReadMessage(@Path(PATH_VERSION) String sHostVersion);
+
     class Urls {
         private static final String sVersion = "/{version}/";
 
@@ -756,6 +765,11 @@ public interface LikingApiService {
          * 设置消息是否已读
          */
         public static final String USER_MSG_READ_SET = sVersion + "user/msg-read-set";
+
+        /**
+         * 获取消息数
+         */
+        public static final String USER_CHECK_UNREAD_MSG = sVersion + "user/check-unread-msg";
 
 
     }

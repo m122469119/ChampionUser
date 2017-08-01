@@ -45,7 +45,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="com.goodchef.liking"/>
+                <category android:name="com.goodchef.liking.test"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity"/>
@@ -64,7 +64,7 @@
             android:exported="true">
             <intent-filter tools:node="remove">
                 <action android:name="cn.jpush.android.intent.DaemonService"/>
-                <category android:name="com.goodchef.liking"/>
+                <category android:name="com.goodchef.liking.test"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService"/>
@@ -81,7 +81,7 @@
             <intent-filter android:priority="1000" tools:node="remove">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
                 <!--Required  显示通知栏 -->
-                <category android:name="com.goodchef.liking"/>
+                <category android:name="com.goodchef.liking.test"/>
             </intent-filter>
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
@@ -121,7 +121,7 @@
                 <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
                 <action android:name="cn.jpush.android.intent.CONNECTION"/>
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.goodchef.liking"/>
+                <category android:name="com.goodchef.liking.test"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION"/>

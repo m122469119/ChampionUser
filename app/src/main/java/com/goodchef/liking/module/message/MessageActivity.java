@@ -3,6 +3,7 @@ package com.goodchef.liking.module.message;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,6 +11,7 @@ import com.aaron.android.framework.base.ui.BaseSwipeBackActivity;
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.eventmessages.RefshReadMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,8 @@ import butterknife.ButterKnife;
 public class MessageActivity extends BaseSwipeBackActivity {
 
     public static final String NOTICE_DATA = "notice_data";
+    public static final String CURRENT_TAB = "current_tab";
+    public static final String MSG_ID = "msg_id";
 
     private static final int INDEX_ANNOUNCEMENT = 0;//公告
     private static final int INDEX_MESSAGE = 1;//消息
@@ -40,6 +44,7 @@ public class MessageActivity extends BaseSwipeBackActivity {
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
     private int currentInt = 0;
     CoursesResult.Courses.Gym mNoticeGym;
+    private String msgId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class MessageActivity extends BaseSwipeBackActivity {
         ButterKnife.bind(this);
         initData();
         initView();
+        currentInt = getIntent().getIntExtra(CURRENT_TAB, 0);
+        msgId = getIntent().getStringExtra(MSG_ID);
     }
 
     private void initData() {
@@ -65,6 +72,7 @@ public class MessageActivity extends BaseSwipeBackActivity {
         mMessageLeftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                postEvent(new RefshReadMessage());
                 finish();
             }
         });
@@ -97,7 +105,7 @@ public class MessageActivity extends BaseSwipeBackActivity {
 
     private TabFragmentPagerAdapter.FragmentBinder buildMessageFragmentBinder(MyTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
-                0, MessageFragment.newInstance());
+                0, MessageFragment.newInstance(msgId));
     }
 
 
@@ -123,5 +131,14 @@ public class MessageActivity extends BaseSwipeBackActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            postEvent(new RefshReadMessage());
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
 
+    }
 }

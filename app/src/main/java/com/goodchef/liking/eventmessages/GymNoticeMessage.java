@@ -10,18 +10,13 @@ import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
  */
 public class GymNoticeMessage extends BaseMessage {
     private CoursesResult.Courses.Gym mGym;
-    private int mHasUnreadMsg;
 
-    public GymNoticeMessage(CoursesResult.Courses.Gym gym, int hasUnreadMsg) {
+    public GymNoticeMessage(CoursesResult.Courses.Gym gym) {
         mGym = gym;
-        mHasUnreadMsg = hasUnreadMsg;
     }
 
     public CoursesResult.Courses.Gym getGym() {
         return mGym;
     }
 
-    public int getHasUnreadMsg() {
-        return mHasUnreadMsg;
-    }
 }

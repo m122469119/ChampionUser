@@ -22,7 +22,7 @@ public class CoursesResult extends LikingResult {
         mCourses = courses;
     }
 
-    public static class Courses extends Data{
+    public static class Courses extends Data {
         @SerializedName("gym")
         private Gym mGym;
         @SerializedName("courses")
@@ -30,9 +30,6 @@ public class CoursesResult extends LikingResult {
 
         @SerializedName("user_info")
         private UserInfo mUserInfo;
-
-        @SerializedName("has_unread_msg")
-        private int hasUnreadMsg;
 
         public List<CoursesData> getCoursesDataList() {
             return mCoursesDataList;
@@ -56,14 +53,6 @@ public class CoursesResult extends LikingResult {
 
         public void setUserInfo(UserInfo userInfo) {
             mUserInfo = userInfo;
-        }
-
-        public int getHasUnreadMsg() {
-            return hasUnreadMsg;
-        }
-
-        public void setHasUnreadMsg(int hasUnreadMsg) {
-            this.hasUnreadMsg = hasUnreadMsg;
         }
 
         public static class CoursesData extends Data {

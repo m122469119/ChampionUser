@@ -30,10 +30,12 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
     private MessageAdapter mMessageAdapter;
     private List<MessageResult.MessageData.Message> messageList;
+    private String msgId = "";
 
-    public static MessageFragment newInstance() {
-        Bundle args = new Bundle();
+    public static MessageFragment newInstance(String msgId) {
         MessageFragment fragment = new MessageFragment();
+        Bundle args = new Bundle();
+        args.putString(MessageActivity.MSG_ID, msgId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,6 +77,10 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
                 return false;
             }
         });
+        msgId = getArguments().getString(MessageActivity.MSG_ID);
+        if (!StringUtils.isEmpty(msgId)) {
+            mPresenter.setReadMessage(msgId);
+        }
     }
 
     private void setNoDataView() {

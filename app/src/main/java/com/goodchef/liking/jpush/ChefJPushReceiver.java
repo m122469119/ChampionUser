@@ -21,6 +21,7 @@ import com.goodchef.liking.module.card.my.MyCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.message.MessageActivity;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
 
@@ -145,8 +146,14 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     } else if (DIRECT_ANNOUNCEMENT.equals(direct)) {
                         //  String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
                         toNoticeInfo(extras, context);
-                    }else if (MSG.equals(direct)){
-                        LogUtils.i(TAG,data.toString());
+                    } else if (MSG.equals(direct)) {
+                        JSONObject jsonObject = new JSONObject(data);
+                        String msgId = jsonObject.getString("msg_id");
+                        LogUtils.i(TAG, "msgId = " + msgId);
+                        Intent intent = new Intent(context, MessageActivity.class);
+                        intent.putExtra(MessageActivity.CURRENT_TAB, 1);
+                        intent.putExtra(MessageActivity.MSG_ID, msgId);
+                        context.startActivity(intent);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
