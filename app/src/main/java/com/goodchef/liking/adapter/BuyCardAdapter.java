@@ -1,8 +1,8 @@
 package com.goodchef.liking.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.v7.widget.CardView;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
-import com.goodchef.liking.widgets.OutTextView;
+import com.goodchef.liking.utils.TypefaseUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +28,11 @@ public class BuyCardAdapter extends BaseRecyclerAdapter<CardResult.CardData.Cate
 
     private View.OnClickListener mClickListener;
 
+    private  Typeface typeface;
+
     public BuyCardAdapter(Context context) {
         super(context);
+        typeface = TypefaseUtil.getImpactTypeface(context);
     }
 
 
@@ -61,7 +64,7 @@ public class BuyCardAdapter extends BaseRecyclerAdapter<CardResult.CardData.Cate
         @BindView(R.id.price)
         TextView mPrice;
         @BindView(R.id.out_price)
-        OutTextView mOutPrice;
+        TextView mOutPrice;
 
         public BuyCardViewHolder(View itemView) {
             super(itemView);
@@ -71,8 +74,15 @@ public class BuyCardAdapter extends BaseRecyclerAdapter<CardResult.CardData.Cate
         @Override
         public void bindViews(CardResult.CardData.Category.CardBean object) {
             mTypeText.setText(object.getCategory_name());
+            mPrice.setTypeface(typeface);
+            mOutPrice.setTypeface(typeface);
             mOutPrice.setText(object.getOld_price());
             mPrice.setText(object.getPrice());
+
+            mOutPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG |Paint.ANTI_ALIAS_FLAG);
+            mOutPrice.getPaint().setAntiAlias(true);
+            mOutPrice.setTextColor(ResourceUtils.getColor(R.color.buy_card_text_color_grey));
+
             setLeftIcon(object);
 
             if (object.getIs_card_activity() == CardResult.CardData.Category.CardBean.HAVE_ACTIVITY) {

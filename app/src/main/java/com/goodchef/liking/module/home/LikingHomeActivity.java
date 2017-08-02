@@ -108,7 +108,6 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
-    //    private HomeRightDialog RightMenuDialog;//右边加好
     private String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
     public static boolean shoDefaultDialog = true;
@@ -124,7 +123,6 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         ButterKnife.bind(this);
         setTitle(R.string.activity_liking_home);
         mPresenter.initHomeGymId();
-//        RightMenuDialog = new HomeRightDialog(this);
         initTabHost();
         sendUpdateAppRequest();
         initData();
@@ -367,38 +365,6 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     }
 
     /**
-     * 展示右边按钮
-     */
-    private void showRightMenuDialog() {
-//        UMengCountUtil.UmengBtnCount(this, UmengEventId.ADD_BTN, currentCityName);
-//        RightMenuDialog.setAnchor(mRightImageView);
-//        RightMenuDialog.setViewOnClickListener(rightListener);
-//        RightMenuDialog.show();
-    }
-
-    /**
-     * 右边按钮监听
-     */
-//    private android.view.View.OnClickListener rightListener = new android.view.View.OnClickListener() {
-//        @Override
-//        public void onClick(android.view.View v) {
-//            switch (v.getId()) {
-//                case R.id.layout_notice://公告
-//                    if (mNoticeGym != null) {
-//                        showNoticeDialog();
-//                        //  RightMenuDialog.dismiss();
-//                    }
-//                    break;
-//                case R.id.layout_open_door://开门
-//                   // jumpOpenTheDoorActivity();
-//                    //  RightMenuDialog.dismiss();
-//                    break;
-//            }
-//        }
-//    };
-
-
-    /**
      * 查看公告
      */
     private DefaultGymDialog showNoticeDialog() {
@@ -414,13 +380,9 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
                 defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
             }
             LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-            // mRedPoint.setVisibility(android.view.View.GONE);
-            // RightMenuDialog.setRedPromptShow(false);
         } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
             defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
             LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-            //mRedPoint.setVisibility(android.view.View.GONE);
-            // RightMenuDialog.setRedPromptShow(false);
         } else {
             defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
         }
@@ -490,26 +452,12 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             if (hasMsg == 1 || hasAnnouncement) {
                 mRedPoint.setVisibility(View.VISIBLE);
             } else {
-                mRedPoint.setVisibility(View.VISIBLE);
+                mRedPoint.setVisibility(View.GONE);
             }
         } else {
             mRedPoint.setVisibility(View.GONE);
         }
     }
-
-
-//    /**
-//     * 开门
-//     */
-//    private void jumpOpenTheDoorActivity() {
-//        if (StringUtils.isEmpty(currentCityName)) {
-//            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, "定位失败");
-//        } else {
-//            UMengCountUtil.UmengCount(this, UmengEventId.OPENTHEDOORACTIVITY, currentCityName);
-//        }
-//        Intent intent = new Intent(this, OpenTheDoorActivity.class);
-//        startActivity(intent);
-//    }
 
 
     /**
@@ -746,23 +694,6 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
      */
     private void setHomeMenuReadNotice() {
         String tag = fragmentTabHost.getCurrentTabTag();
-//        if (tag.equals(TAG_MAIN_TAB)) {
-//            if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
-//                if (LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
-//                    // mRedPoint.setVisibility(android.view.View.VISIBLE);
-//                    // RightMenuDialog.setRedPromptShow(true);
-//                    showNoticeDialog();
-//                } else {
-//                    //  mRedPoint.setVisibility(View.GONE);
-//                }
-//            } else {
-//                // mRedPoint.setVisibility(View.GONE);
-//            }
-//        } else {
-//            mRedPoint.setVisibility(android.view.View.GONE);
-//            //RightMenuDialog.setRedPromptShow(false);
-//        }
-
         if (tag.equals(TAG_MAIN_TAB) && mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
                 && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
             showNoticeDialog();

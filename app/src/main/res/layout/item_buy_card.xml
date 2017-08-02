@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/buy_card_card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:layout_marginBottom="20dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/buy_card_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_vertical"
     >
 
 
@@ -15,18 +15,18 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="25dp"
-        android:src="@mipmap/buy_card_item_icon_0" />
+        android:src="@mipmap/buy_card_item_icon_0"/>
 
     <TextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/left_icon"
+        android:gravity="center"
         android:textColor="@color/buy_card_text_color_black"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <ImageView
         android:id="@+id/right_arrow"
@@ -34,31 +34,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="10dp"
-        android:src="@mipmap/arrow" />
+        android:layout_marginRight="20dp"
+        android:src="@mipmap/arrow"/>
 
 
-    <com.goodchef.liking.widgets.OutTextView
+    <TextView
         android:id="@+id/out_price"
-        android:layout_toLeftOf="@id/right_arrow"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_centerVertical="true"
-        app:out_text="1111"
-        app:out_textSize="13sp"
-        app:out_textColor="@color/buy_card_text_color_grey"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_8dp"
+        android:textSize="@dimen/normal_text_size_13sp"
+        android:layout_marginTop="6dp"
+        android:layout_toLeftOf="@id/right_arrow"
+        android:textColor="@color/buy_card_text_color_grey"
         />
 
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/out_price"
+        android:gravity="center"
         android:textColor="@color/buy_card_text_color_green"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

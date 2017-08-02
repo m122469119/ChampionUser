@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/layout_confirm_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="2.4"
+        android:layout_height="wrap_content"
         android:background="@color/cf1f3f7"
         android:orientation="vertical">
 
@@ -30,11 +28,11 @@
             android:textColor="@color/c34c86c"
             android:textSize="@dimen/normal_text_size_12sp"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_below="@+id/buy_card_notice"
+            android:orientation="horizontal"
             android:visibility="visible">
 
 
@@ -46,26 +44,26 @@
                 android:background="@drawable/bg_confirm_card_back"
                 android:gravity="center"
                 android:paddingTop="@dimen/spacing_4dp"
-                android:text="全通半年卡"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_15"
                 android:textStyle="bold"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/card_type">
 
                 <TextView
                     android:id="@+id/card_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:paddingLeft="15dp"
-                    android:text="¥1233"
                     android:textColor="@color/liking_green_btn_back"
-                    android:textSize="25sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     />
 
@@ -73,10 +71,10 @@
                     android:id="@+id/old_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/card_money"
-                    android:text="¥123333"
-                    android:textSize="@dimen/textsize_small"
+                    android:textColor="@color/lesson_details_dark_back"
+                    android:textSize="@dimen/normal_text_size_15sp"
                     android:visibility="visible"
                     />
 
@@ -89,7 +87,7 @@
                     android:layout_below="@+id/card_money"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/period_of_validity"
                     android:textColor="@color/lesson_details_gray_back"
                     android:textSize="@dimen/normal_text_size_12sp"/>
@@ -102,7 +100,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:layout_toRightOf="@+id/period_of_validity_prompt"
                     android:text="2019.08.09~2018.10.11"
                     android:textColor="@color/lesson_details_dark_back"
@@ -111,15 +109,15 @@
             </RelativeLayout>
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_confirm_top"
         android:scrollbars="none">
 
         <LinearLayout
@@ -151,7 +149,6 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:paddingTop="@dimen/spacing_12dp"
-                    android:text="LIKin健身店"
                     android:textColor="@color/lesson_details_dark_back"
                     android:textSize="@dimen/normal_text_size_13sp"/>
 
@@ -180,7 +177,6 @@
                         android:layout_marginTop="15dp"
                         android:layout_toLeftOf="@+id/address_map"
                         android:paddingLeft="@dimen/spacing_12dp"
-                        android:text="中山按"
                         android:textColor="@color/lesson_details_dark_back"
                         android:textSize="@dimen/normal_text_size_12sp"/>
 
@@ -207,6 +203,7 @@
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:text="时段"
+                    android:textColor="@color/lesson_details_gray_back"
                     android:textSize="20sp"/>
 
                 <android.support.v7.widget.RecyclerView
@@ -251,7 +248,6 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="12dp"
                     android:paddingTop="6dp"
-                    android:text="200min"
                     android:textColor="@color/liking_green_btn_back"
                     android:textSize="@dimen/textsize_small"/>
             </LinearLayout>
@@ -366,4 +362,4 @@
     </ScrollView>
 
 
-</LinearLayout>
+</RelativeLayout>

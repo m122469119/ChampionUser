@@ -26,8 +26,7 @@ public class AnnouncementDialog {
 
     public AnnouncementDialog(Context context, String announcementStr) {
         this.context = context;
-       // mDialog = new android.app.AlertDialog.Builder(context, R.style.announcement_dialog_no_screen).create();
-        mDialog = new AppCompatDialog(context,R.style.announcement_dialog_no_screen);
+        mDialog = new AppCompatDialog(context, R.style.announcement_dialog_no_screen);
         //这一行很重要
         DialogUtils.resetDialogScreenPosition(mDialog, Gravity.CENTER, 0, 0, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
@@ -39,6 +38,11 @@ public class AnnouncementDialog {
         window.setWindowAnimations(R.style.my_dialog_enter_exit);  //添加dialog进入和退出的动画
         mTextView = (TextView) window.findViewById(R.id.announcement);
         mButton = (ImageButton) window.findViewById(R.id.announcement_cancel_image_button);
+        if (announcementStr.length() > 22) {
+            mTextView.setGravity(Gravity.LEFT);
+        } else {
+            mTextView.setGravity(Gravity.CENTER);
+        }
         mTextView.setText(announcementStr);
     }
 
@@ -46,7 +50,7 @@ public class AnnouncementDialog {
         mButton.setOnClickListener(onClickListener);
     }
 
-    public void setButtonDismiss(){
+    public void setButtonDismiss() {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

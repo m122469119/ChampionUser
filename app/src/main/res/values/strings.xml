@@ -640,4 +640,5 @@
     <string name="tab_title_announcement">公告</string>
     <string name="tab_title_message">消息</string>
     <string name="no_message_data">暂时没有消息</string>
+    <string name="please_select">请选择</string>
 </resources>

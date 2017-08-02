@@ -2,6 +2,7 @@ package com.goodchef.liking.module.card.buy.confirm;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -191,7 +192,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         Typeface typeface = TypefaseUtil.getImpactTypeface(this);
         mCardMoneyTextView.setTypeface(typeface);
         mOldPriceText.setTypeface(typeface);
-        mCouponsMoneyTextView.setText("请选择");
+        mCouponsMoneyTextView.setText(R.string.please_select);
         mCouponsMoneyTextView.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
     }
 
@@ -469,6 +470,10 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
         mCardTotalMoney = mCardPrice;
         mCardBuyType.setText(mPresenter.getCardName());
         mCardMoneyTextView.setText(getString(R.string.rmb) + cardsBean.getPrice());
+
+        mOldPriceText.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG |Paint.ANTI_ALIAS_FLAG);
+        mOldPriceText.getPaint().setAntiAlias(true);
+        mOldPriceText.setTextColor(ResourceUtils.getColor(R.color.lesson_details_gray_back));
         mOldPriceText.setText(getString(R.string.rmb) + cardsBean.getOld_price());
 
         int gymWater = confirmBuyCardData.getIs_gym_water();
