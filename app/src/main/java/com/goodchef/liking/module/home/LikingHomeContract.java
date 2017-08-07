@@ -165,7 +165,7 @@ class LikingHomeContract {
             mLikingHomeModel.getHasMessage().subscribe(new LikingBaseObserver<UnreadMessageResult>(mView) {
                 @Override
                 public void onNext(UnreadMessageResult value) {
-                    if (value == null) return;
+                    if (value == null || value.getData() == null) return;
                     mView.updateHasMessage(value.getData());
                 }
             });

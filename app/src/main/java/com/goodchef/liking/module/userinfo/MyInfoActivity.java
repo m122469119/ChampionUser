@@ -97,7 +97,6 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
         ButterKnife.bind(this);
         initView();
         initData();
-        showHomeUpIcon(R.drawable.app_bar_left_quit);
         mCameraPhotoHelper = new CameraPhotoHelper(this);
     }
 
@@ -128,6 +127,9 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
                 setInfoRequest();
             }
         });
+    }
+
+    private void setFlag() {
         mUserNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -144,30 +146,10 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
                     mUserNameEditText.setSelection(str.length());
                     showToast("不可输入特殊字符");
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    private void setFlag() {
-        mUserNameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    if (s.toString().equals(mUserInfoData.getName())) {
-                        isChange = false;
-                    } else {
-                        isChange = true;
-                    }
+                if (s != null && s.length() > 0 && mUserInfoData != null &&
+                        !StringUtils.isEmpty(mUserInfoData.getName()) &&
+                        !s.toString().equals(mUserInfoData.getName())) {
+                    isChange = true;
                 } else {
                     isChange = false;
                 }
@@ -186,12 +168,9 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    if (s.toString().equals(String.valueOf(mUserInfoData.getWeight()))) {
-                        isChange = false;
-                    } else {
-                        isChange = true;
-                    }
+                if (s != null && s.length() > 0 && mUserInfoData != null &&
+                        !s.toString().equals(String.valueOf(mUserInfoData.getWeight()))) {
+                    isChange = true;
                 } else {
                     isChange = false;
                 }
@@ -212,12 +191,9 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    if (s.toString().equals(String.valueOf(mUserInfoData.getHeight()))) {
-                        isChange = false;
-                    } else {
-                        isChange = true;
-                    }
+                if (s != null && s.length() > 0 && mUserInfoData != null &&
+                        !s.toString().equals(String.valueOf(mUserInfoData.getHeight()))) {
+                    isChange = true;
                 } else {
                     isChange = false;
                 }

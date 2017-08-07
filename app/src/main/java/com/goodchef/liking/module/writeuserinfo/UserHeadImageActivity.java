@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -26,6 +24,10 @@ import com.goodchef.liking.widgets.camera.CameraPhotoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 说明:首次登陆添加头像
@@ -139,7 +141,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
             @Override
             public void takePictureFromCamera(String imagePath) {
                 Bitmap mBitmap = ImageEnviromentUtil.compressImageSize(imagePath);
-                if (mBitmap != null) {
+                if (mBitmap != null && !StringUtils.isEmpty(imagePath)) {
                     mLoaclHeadUrl = imagePath;
                     HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)
                             .resize(100, 100)
@@ -154,7 +156,7 @@ public class UserHeadImageActivity extends AppBarActivity  {
             public void takePictureFromGallery(ArrayList<String> imagePathList) {
                 List<Bitmap> bitmapList = ImageEnviromentUtil.getAlbumBitmapList(imagePathList);
                 Bitmap mBitmap = bitmapList.get(0);
-                if (mBitmap != null) {
+                if (mBitmap != null && !StringUtils.isEmpty(imagePathList.get(0))) {
                     LogUtils.i("imagepath =", imagePathList.get(0));
                     mLoaclHeadUrl = imagePathList.get(0);
                     HImageLoaderSingleton.loadImage(new HImageConfigBuilder(mHImageView, mLoaclHeadUrl)

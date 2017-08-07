@@ -17,6 +17,7 @@ import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.goodchef.liking.R;
@@ -135,7 +136,7 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
 
         LatLng latLang = new LatLng(latitude, longitude);
 //        //绘制marker
-        aMap.addMarker(new MarkerOptions()
+        Marker marker = aMap.addMarker(new MarkerOptions()
                 .position(latLang)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.icon_mark)))
@@ -143,9 +144,10 @@ public class MapActivity extends AppBarSwipeBackActivity implements LocationSour
 
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(12f));
-        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLang));
+        aMap.setMyLocationEnabled(false);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16f));//设置地图放大的
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLang));//设置可视区域
+        aMap.getUiSettings().setZoomControlsEnabled(true);//设置手势可放大缩小
 
         // 自定义系统定位蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();

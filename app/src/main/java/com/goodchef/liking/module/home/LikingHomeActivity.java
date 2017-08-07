@@ -610,11 +610,13 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         if (showDefaultGymDialog() && !pause) {
             setHomeMenuReadNotice();
         }
-        mPresenter.getHasMessage();
+        if (mPresenter != null) {
+            mPresenter.getHasMessage();
+        }
     }
 
     public void onEvent(LoginOutMessage message) {
-        if (message != null) {
+        if (message != null && mPresenter != null) {
             mPresenter.getHasMessage();
         }
     }
@@ -714,13 +716,13 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
 
 
     public void onEvent(RefshReadMessage message) {
-        if (message != null) {
+        if (message != null && mPresenter != null) {
             mPresenter.getHasMessage();
         }
     }
 
     public void onEvent(LoginFinishMessage message) {
-        if (message != null) {
+        if (message != null && mPresenter != null) {
             mPresenter.getHasMessage();
         }
     }

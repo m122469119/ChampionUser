@@ -14,6 +14,7 @@ import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.utils.ImageEnviromentUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -161,7 +162,9 @@ public class CameraPhotoHelper {
             switch (requestCode) {
                 case REQUEST_CODE_CAMERA://拍照
                     String imagePath = getCameraPicturePath();
-                    mCameraPhotoCallBack.takePictureFromCamera(imagePath);
+                    if (!StringUtils.isEmpty(imagePath)) {
+                        mCameraPhotoCallBack.takePictureFromCamera(imagePath);
+                    }
                     break;
                 case REQUEST_CODE_ALBUM://从相册中选择图片
                     ArrayList<String> selectPhoto = data.getStringArrayListExtra(INTENT_KEY_ALBUM);

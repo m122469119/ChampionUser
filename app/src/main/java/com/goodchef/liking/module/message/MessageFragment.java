@@ -49,8 +49,7 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
     @Override
     protected void requestData(int page) {
         if (!LikingPreference.isLogin()) {
-            startActivity(LoginActivity.class);
-            setNoLoginView();
+            setNoDataView();
         } else {
             mPresenter.getMessageList(page);
         }
@@ -85,7 +84,7 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
      */
     private void setMessageRead() {
         msgId = getArguments().getString(MessageActivity.MSG_ID);
-        if (!StringUtils.isEmpty(msgId)) {
+        if (!StringUtils.isEmpty(msgId) && mPresenter != null) {
             mPresenter.setReadMessage(msgId);
         }
     }
@@ -120,7 +119,7 @@ public class MessageFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragm
 
 
     private void doReadClick(MessageResult.MessageData.Message object, int position) {
-        if (object != null && !StringUtils.isEmpty(object.getMsgId()) && object.getIsRead() == 0) {
+        if (object != null && !StringUtils.isEmpty(object.getMsgId()) && object.getIsRead() == 0 && mPresenter != null) {
             mPresenter.setReadMessage(object.getMsgId());
             object.setIsRead(1);
             mMessageAdapter.notifyItemChanged(position);
