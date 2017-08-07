@@ -1,8 +1,8 @@
 package com.goodchef.liking.data.remote.rxobserver;
 
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
-import com.aaron.android.framework.base.mvp.view.BaseView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 
 /**
@@ -33,8 +33,14 @@ public abstract class StateViewLoadingObserver<T extends LikingResult> extends L
 
 
     @Override
-    public void onError(Throwable e) {
-        super.onError(e);
+    public void apiError(ApiException apiException) {
+        super.apiError(apiException);
+    }
+
+    @Override
+    public void networkError(Throwable throwable) {
+        super.networkError(throwable);
         ((BaseStateView)getView()).changeStateView(StateView.State.FAILED);
     }
+
 }

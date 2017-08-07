@@ -11,7 +11,6 @@ import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClic
 import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
-import com.aaron.android.framework.utils.PhoneUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
@@ -39,6 +38,7 @@ import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
@@ -386,7 +386,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         @Override
         public void onClick(android.view.View v) {
             if (!StringUtils.isEmpty(LikingHomeActivity.gymTel)) {
-                PhoneUtils.phoneCall(getActivity(), LikingHomeActivity.gymTel);
+                LikingCallUtil.showCallDialog(getActivity(), getString(R.string.confirm_call), LikingHomeActivity.gymTel);
             }
         }
     };
