@@ -480,12 +480,15 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 mPresenter.jumpBraceletActivity(getActivity(), this, UUID, mBraceletMac);
                 break;
             case R.id.layout_water_rate: //水费充值
+                UMengCountUtil.UmengBtnCount(getActivity(),UmengEventId.WATERRATEACTIVITY);
                 startActivity(WaterRateActivity.class);
                 break;
             case R.id.layout_everyday_sport://手环数据
+                UMengCountUtil.UmengBtnCount(getActivity(),UmengEventId.BRACELETDATAACTIVITY);
                 mPresenter.jumpBracelet(getActivity(), UUID, mBraceletMac);
                 break;
             case R.id.layout_open:
+                UMengCountUtil.UmengBtnCount(getActivity(),UmengEventId.OPENTHEDOORACTIVITY);
                 startActivity(OpenTheDoorActivity.class);
                 break;
         }

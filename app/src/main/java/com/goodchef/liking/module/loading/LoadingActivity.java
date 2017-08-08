@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.crashlytics.android.Crashlytics;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.LikingBaseRequestHelper;
@@ -30,6 +31,7 @@ import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
 import java.util.ArrayList;
 
+import io.fabric.sdk.android.Fabric;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -48,6 +50,7 @@ public class LoadingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_loading);
         mRxPermissions = new RxPermissions(this);
         mCompleteLayout = (LinearLayout) findViewById(R.id.company_info);

@@ -171,5 +171,16 @@ public class UmengEventId {
      */
     public static final String EVERYDAYSPORTACTIVITY = "BraceletDataActivity";
 
+    /**
+     * 水费充值
+     */
+    public static final String WATERRATEACTIVITY = "WaterRateActivity";
+
+    /**
+     * 手环数据
+     */
+    public static final String BRACELETDATAACTIVITY = "BraceletDataActivity";
+
+
 
 }

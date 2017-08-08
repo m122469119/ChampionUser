@@ -460,6 +460,9 @@
         <activity
             android:name=".module.home.myfragment.water.WaterRateActivity"
             android:label="@string/title_activity_water_rate"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="b2e28232e14d72627873af629670196aa5168d31" />
     </application>
 
 </manifest>

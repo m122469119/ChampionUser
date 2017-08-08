@@ -432,7 +432,6 @@ public interface LikingApiService {
     @POST(Urls.USER_CHECK_UNREAD_MSG)
     Observable<UnreadMessageResult> getHasReadMessage(@Path(PATH_VERSION) String sHostVersion,@Field(KEY_TOKEN) String token);
 
-    @FormUrlEncoded
     @POST(Urls.USER_CHECK_UNREAD_MSG)
     Observable<UnreadMessageResult> getHasReadMessage2(@Path(PATH_VERSION) String sHostVersion);
 

@@ -20,6 +20,7 @@ import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.ConstantUtils;
 import com.aaron.common.utils.LogUtils;
@@ -182,6 +183,7 @@ public class BuyCardConfirmActivity extends AppBarMVPSwipeBackActivity<BuyCardCo
                 } else {
                     mImmediatelyBuyBtn.setBackground(ResourceUtils.getDrawable(R.drawable.shape_gray_radius_back));
                 }
+                mImmediatelyBuyBtn.setPadding(DisplayUtils.dp2px(12),DisplayUtils.dp2px(12),DisplayUtils.dp2px(12),DisplayUtils.dp2px(12));
             }
         });
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

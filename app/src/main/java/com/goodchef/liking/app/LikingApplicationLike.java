@@ -12,6 +12,7 @@ import com.aaron.android.framework.base.ProcessInit;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.http.volley.VolleyRequestSingleton;
 import com.aaron.jpush.JPush;
+import com.crashlytics.android.Crashlytics;
 import com.goodchef.liking.BuildConfig;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.tinker.MyLogImp;
@@ -20,6 +21,8 @@ import com.tencent.tinker.lib.tinker.Tinker;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.tencent.tinker.loader.shareutil.ShareConstants;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created on 2017/4/12
@@ -66,6 +69,7 @@ public class LikingApplicationLike extends DefaultApplicationLike {
 
     @Override
     public void onCreate() {
+        Fabric.with(getApplication(), new Crashlytics());
         super.onCreate();
         init();
     }
@@ -98,7 +102,6 @@ public class LikingApplicationLike extends DefaultApplicationLike {
         /*网络请求初始化*/
         VolleyRequestSingleton.init(getApplication());
     }
-
 
 
 }
