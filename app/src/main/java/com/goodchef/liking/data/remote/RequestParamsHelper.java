@@ -19,12 +19,11 @@ public class RequestParamsHelper {
     //1.1.1 appkey :sxpYGL1MMbnY7GXUfN0X //1.2.0 appkey:I3DMnKF4egsgUJ5V5k1m
     //1.3.0 appkey :Yc7T1ao8YnoH6ftAX2E4 //1.3.1 appkey:K9hfTOCzxUUEleHgfvn7
     //1.4.0 appkey :Hb6uTQW9umy5T6mAzhGF //1.4.1 appkey:auW9w9kkD6GnFUnh4KEb
-    //1.4.2 appkey :KMlaAYc2rl1NeXBglRRAAPr3GJfnIhIF
-    //1.4.3 appkey :XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F
-    //1.4.5 appkey:7jPGh33yq1gtzcSqbiaQOGAnswiJ4ksR
-    //1.4.6 8kuhS63rl1fvpeqer90oQGAnIhjJ8iop
+    //1.4.2 appkey :KMlaAYc2rl1NeXBglRRAAPr3GJfnIhIF //1.4.3 appkey :XTK7SQ43EJXfaTz1Yr1peq1IudLRtQ1F
+    //1.4.5 appkey:7jPGh33yq1gtzcSqbiaQOGAnswiJ4ksR //1.4.6 8kuhS63rl1fvpeqer90oQGAnIhjJ8iop
+    //1.4.7 appkey:8kuhS63rl1fvpeqer90oQGAnIhjJ8iop //1.4.9 appkey:TThGOdYkpERMZzSy19abSRYVJjRKKJL3
 
-    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isTestMode() ? "testCcmsIam500QiangA" : "8kuhS63rl1fvpeqer90oQGAnIhjJ8iop"; //app签名key
+    public static String REQUEST_APP_KEY = EnvironmentUtils.Config.isTestMode() ? "testCcmsIam500QiangA" : "TThGOdYkpERMZzSy19abSRYVJjRKKJL3"; //app签名key
 
 
     //正式环境的支付公钥为(yGcNQznPTvusj7Y6rMI5)
