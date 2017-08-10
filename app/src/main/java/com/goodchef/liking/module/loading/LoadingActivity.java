@@ -50,7 +50,7 @@ public class LoadingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+        initCrashlytics();
         setContentView(R.layout.activity_loading);
         mRxPermissions = new RxPermissions(this);
         mCompleteLayout = (LinearLayout) findViewById(R.id.company_info);
@@ -77,6 +77,16 @@ public class LoadingActivity extends BaseActivity {
                 }
             }
         }, DURATION);
+    }
+
+    /**
+     * 初始化记录崩溃日志
+     */
+    private void initCrashlytics() {
+        Fabric.with(this, new Crashlytics());
+        if (LikingPreference.isLogin()) {
+            Crashlytics.getInstance().setUserName(LikingPreference.getToken());
+        }
     }
 
 

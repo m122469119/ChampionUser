@@ -164,7 +164,7 @@ public class OrderPrivateCoursesConfirmActivity extends AppBarMVPSwipeBackActivi
                 if (isChecked) {
                     mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(OrderPrivateCoursesConfirmActivity.this, R.color.liking_green_btn_back));
                 } else {
-                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(OrderPrivateCoursesConfirmActivity.this, R.color.liking_grey_btn_back));
+                    mImmediatelyBuyBtn.setBackgroundColor(ContextCompat.getColor(OrderPrivateCoursesConfirmActivity.this, R.color.cd1d1d1));
                 }
             }
         });

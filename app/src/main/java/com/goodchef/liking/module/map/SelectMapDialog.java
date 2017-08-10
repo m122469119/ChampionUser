@@ -1,6 +1,9 @@
 package com.goodchef.liking.module.map;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
@@ -57,11 +60,24 @@ public class SelectMapDialog {
         mRecommendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HDefaultWebActivity.launch(context, "http://www.autonavi.com/download.html", "");
+                HDefaultWebActivity.launch(context, "http://a.app.qq.com/o/simple.jsp?pkgname=com.autonavi.minimap", "");
+                dismiss();
             }
         });
         loadMapView();
     }
+
+    public static void goToMarket(Context context, String packageName) {
+        Uri uri = Uri.parse("market://details?id=" + packageName);
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            context.startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     private void loadMapView() {
         addAppMapView("使用百度地图导航", NavigationMap.NAVIGATION_MAP_PACKAGENAME_BAIDU, NavigationMap.MapType.BAIDU, mMapListLayout);
