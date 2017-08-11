@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
@@ -60,11 +59,21 @@ public class SelectMapDialog {
         mRecommendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HDefaultWebActivity.launch(context, "http://a.app.qq.com/o/simple.jsp?pkgname=com.autonavi.minimap", "");
+                //HDefaultWebActivity.launch(context, "http://a.app.qq.com/o/simple.jsp?pkgname=com.autonavi.minimap", "");
+               // gotoUrl();
+                goToMarket(mContext,"com.autonavi.minimap");
                 dismiss();
             }
         });
         loadMapView();
+    }
+
+    private void gotoUrl(){
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.autonavi.minimap");
+        intent.setData(content_url);
+        mContext.startActivity(intent);
     }
 
     public static void goToMarket(Context context, String packageName) {
