@@ -1,9 +1,14 @@
 package com.goodchef.liking.module.scanqrcode;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
 import com.goodchef.liking.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by aaa on 17/9/2.
@@ -11,12 +16,25 @@ import com.goodchef.liking.R;
 
 public class QrCodeSuccessActivity extends AppBarActivity {
 
+    @BindView(R.id.ok_button)
+    TextView okButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_success);
-        showHomeUpIcon(R.drawable.app_bar_left_quit);
-        setTitle("扫描成功");
+        ButterKnife.bind(this);
+        showHomeUpIcon(0);
+        setTitle("成功开启");
+    }
+
+    @OnClick({R.id.ok_button})
+    public void onClick(android.view.View view) {
+        switch (view.getId()) {
+            case R.id.ok_button:
+                finish();
+                break;
+        }
     }
 
     @Override

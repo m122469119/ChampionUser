@@ -113,4 +113,5 @@
     <color name="qr_code_flash_light_text_color">#66FFFFFF</color>
     <color name="qr_code_finder_frame">#FFFFFFFF</color>
     <color name="qr_code_finder_laser">@color/c34c86c</color>
+
 </resources>
