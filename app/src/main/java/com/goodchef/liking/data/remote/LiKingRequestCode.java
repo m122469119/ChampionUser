@@ -51,4 +51,14 @@ public interface LiKingRequestCode {
     int NO_GYM=240000;
     /**该教练下无可约的私教课*/
     int PRIVATE_COURSES_CONFIRM = 221004;
+
+    /**已断开网络，请联系场馆管理员*/
+    int SPARTSPOT_OFFLINE_ERRCODE= 41001;
+    /**你还不是会员，请先成为场馆的会员*/
+    int USER_NO_CARD_ERRCODE = 41002;
+    /**你的会员卡已过期，请先进行续卡*/
+    int USER_CARD_OVERDUE_ERRCODE = 41003;
+    /**没有购买手环*/
+    int NO_HAVE_BRACELET_ERRCODE = 70005;
+
 }

@@ -18,7 +18,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.goodchef.liking.R;
-import com.goodchef.liking.qrcode.QrCodeActivity;
+import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 import com.goodchef.liking.qrcode.camera.CameraManager;
 import com.google.zxing.Result;
 

@@ -16,7 +16,7 @@ package com.goodchef.liking.qrcode.decode;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.goodchef.liking.qrcode.QrCodeActivity;
+import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 
 import java.util.concurrent.CountDownLatch;
 

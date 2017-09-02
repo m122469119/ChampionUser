@@ -49,7 +49,7 @@ import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
-import com.goodchef.liking.module.smartspot.QRCodeResult;
+import com.goodchef.liking.data.remote.retrofit.result.QRCodeResult;
 import com.goodchef.liking.module.smartspot.SmartspotDetailResult;
 
 import java.util.Map;
