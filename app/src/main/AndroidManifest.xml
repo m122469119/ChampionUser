@@ -289,6 +289,12 @@
             android:name=".module.message.MessageActivity"
             android:screenOrientation="portrait"/>
 
+        <!-- QRCode -->
+        <activity android:name=".qrcode.QrCodeActivity"/>
+
+        <!-- Smartspot详情 -->
+        <activity android:name=".module.smartspot.SmartSpotDetailActivity"/>
+
         <!-- 支付宝h5页面 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

@@ -49,6 +49,8 @@ import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
+import com.goodchef.liking.module.smartspot.QRCodeResult;
+import com.goodchef.liking.module.smartspot.SmartspotDetailResult;
 
 import java.util.Map;
 
@@ -425,15 +427,27 @@ public interface LikingApiService {
     @FormUrlEncoded
     @POST(Urls.USER_MSG_READ_SET)
     Observable<LikingResult> setMessageRead(@Path(PATH_VERSION) String sHostVersion,
-                                          @Field(KEY_TOKEN) String token,
-                                          @Field("msg_id") String msgId);
+                                            @Field(KEY_TOKEN) String token,
+                                            @Field("msg_id") String msgId);
 
     @FormUrlEncoded
     @POST(Urls.USER_CHECK_UNREAD_MSG)
-    Observable<UnreadMessageResult> getHasReadMessage(@Path(PATH_VERSION) String sHostVersion,@Field(KEY_TOKEN) String token);
+    Observable<UnreadMessageResult> getHasReadMessage(@Path(PATH_VERSION) String sHostVersion, @Field(KEY_TOKEN) String token);
 
     @POST(Urls.USER_CHECK_UNREAD_MSG)
     Observable<UnreadMessageResult> getHasReadMessage2(@Path(PATH_VERSION) String sHostVersion);
+
+    @FormUrlEncoded
+    @POST(Urls.GET_SMARTSPOT_DETAIL)
+    Observable<SmartspotDetailResult> getSmartspotDetail(@Path(PATH_VERSION) String sHostVersion,
+                                                         @Field(KEY_TOKEN) String token,
+                                                         @Field("record_id") String recordID);
+
+    @FormUrlEncoded
+    @POST(Urls.AUTH_QRCODE)
+    Observable<QRCodeResult> authQRCode(@Path(PATH_VERSION) String sHostVersion,
+                                        @Field(KEY_TOKEN) String token,
+                                        @Field("code") String code);
 
     class Urls {
         private static final String sVersion = "/{version}/";
@@ -770,6 +784,14 @@ public interface LikingApiService {
          */
         public static final String USER_CHECK_UNREAD_MSG = sVersion + "user/check-unread-msg";
 
+        /**
+         * 获取smartspot详情
+         */
+        public static final String GET_SMARTSPOT_DETAIL = sVersion + "sport/info";
 
+        /**
+         * 二维码确认
+         */
+        public static final String AUTH_QRCODE = sVersion + "code/auth";
     }
 }

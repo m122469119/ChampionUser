@@ -26,7 +26,9 @@ import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.dialog.SelectSexDialog;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 import com.goodchef.liking.module.writeuserinfo.CompleteUserInfoContract;
+import com.goodchef.liking.qrcode.QrCodeActivity;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.CheckUtils;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
@@ -224,7 +226,9 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
                 mTimePickerView.show(mSelectBirthdayTextView);
             }
         } else if (v == mFinishBtn) {//完成按钮
-            updateChangeData();
+//            updateChangeData();
+//            QrCodeActivity.launch(MyInfoActivity.this);
+            SmartSpotDetailActivity.launch(MyInfoActivity.this, "2929");
         }
     }
 

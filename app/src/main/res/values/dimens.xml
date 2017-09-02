@@ -33,4 +33,10 @@
 
     <dimen name="item_coupons_price_40sp">40sp</dimen>
     <dimen name="item_coupons_price_type_22sp">22sp</dimen>
+
+
+    <dimen name="textsize_18">18sp</dimen>
+    <dimen name="textsize_16">16sp</dimen>
+    <dimen name="textsize_14">14sp</dimen>
+    <dimen name="textsize_12">12sp</dimen>
 </resources>

@@ -105,4 +105,12 @@
     <color name="cf1f3f7">#f1f3f7</color>
     <color name="c888b99">#888b99</color>
     <color name="cd1d1d1">#d1d1d1</color>
+
+
+    <color name="qr_code_white">#FFFFFFFF</color>
+    <color name="qr_code_flashlight_bg">#66000000</color>
+    <color name="qr_code_finder_mask">#80000000</color>
+    <color name="qr_code_flash_light_text_color">#66FFFFFF</color>
+    <color name="qr_code_finder_frame">#FFFFFFFF</color>
+    <color name="qr_code_finder_laser">@color/main_app_color</color>
 </resources>
