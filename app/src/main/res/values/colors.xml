@@ -106,6 +106,8 @@
     <color name="c888b99">#888b99</color>
     <color name="cd1d1d1">#d1d1d1</color>
 
+    <color name="smartspot_bg">#FFEDEEF0</color>
+
 
     <color name="qr_code_white">#FFFFFFFF</color>
     <color name="qr_code_flashlight_bg">#66000000</color>

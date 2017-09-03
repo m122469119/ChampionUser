@@ -3,29 +3,158 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_reps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="4" />
-
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="20s" />
-
-    <TextView
-        android:id="@+id/tv_rest_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="30s" />
-
-    <com.aaron.imageloader.code.HImageView
-        android:id="@+id/hiv_capture"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="@dimen/spacing_4dp"
+                android:background="@color/smartspot_bg" />
+
+            <TextView
+                android:id="@+id/tv_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/liking_green_btn_back"
+                android:textStyle="bold"
+                tools:text="SET1" />
+
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_4dp"
+                android:layout_weight="1"
+                android:background="@color/smartspot_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_4dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Resp" />
+
+                    <TextView
+                        android:id="@+id/tv_reps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
+                        android:layout_marginTop="@dimen/spacing_8dp"
+                        android:textColor="@color/liking_green_btn_back"
+                        android:textSize="@dimen/textsize_30"
+                        android:textStyle="bold"
+                        tools:text="4" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="运动时间" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_8dp"
+                        android:textColor="@color/liking_green_btn_back"
+                        android:textSize="@dimen/textsize_30"
+                        android:textStyle="bold"
+                        tools:text="120 s" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="休息时间" />
+
+                    <TextView
+                        android:id="@+id/tv_rest_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_8dp"
+                        android:textColor="@color/liking_green_btn_back"
+                        android:textSize="@dimen/textsize_30"
+                        android:textStyle="bold"
+                        tools:text="120 s" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="310dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
+                android:id="@+id/view_image"
+                android:background="@color/smartspot_bg">
+
+                <com.aaron.imageloader.code.HImageView
+                    android:id="@+id/hiv_capture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_8dp"
+                    android:scaleType="centerInside" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_video_play" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_end"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_8dp"
+        android:layout_marginTop="@dimen/spacing_4dp"
+        android:gravity="center_horizontal"
+        android:text="END"
+        android:textColor="@color/liking_green_btn_back"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </LinearLayout>

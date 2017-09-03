@@ -1,8 +1,8 @@
 package com.goodchef.liking.module.smartspot;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,14 +17,17 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.module.paly.VideoPlayActivity;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ttdevs
@@ -78,7 +81,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mPresenter.requestSmartDetail(mRecordId);
     }
 
-    private String calDateString(String start, String end){
+    private String calDateString(String start, String end) {
         String result = null;
         try {
             Calendar startCal = Calendar.getInstance();
@@ -89,6 +92,16 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
             int month = startCal.get(Calendar.MONTH);
             int day = startCal.get(Calendar.DAY_OF_MONTH);
             String week = getWeek(startCal.get(Calendar.DAY_OF_WEEK));
+            int startHour = startCal.get(Calendar.HOUR_OF_DAY);
+            int startMinute = startCal.get(Calendar.MINUTE);
+            int endHour = endCal.get(Calendar.HOUR_OF_DAY);
+            int endMinute = endCal.get(Calendar.MINUTE);
+            String format = "%d.%d.%d(%s) %d:%d - %d:%d";
+            result = String.format(format,
+                    year, month, day,
+                    week,
+                    startHour, startMinute,
+                    endHour, endMinute);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -96,15 +109,23 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         return result;
     }
 
-    private String getWeek(int week){
-        switch (week){
+    private String getWeek(int week) {
+        switch (week) {
             case 1:
                 return "周一";
-
+            case 2:
+                return "周二";
+            case 3:
+                return "周三";
+            case 4:
+                return "周四";
+            case 5:
+                return "周五";
+            case 6:
+                return "周六";
 
             default:
                 return "周日";
-
         }
     }
 
@@ -117,7 +138,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mStateView.setState(StateView.State.SUCCESS);
         SmartspotDetailResult.DataBean.InfoBean info = data.getInfo();
         mTvTitle.setText(info.getTitle());
-        mTvDateTime.setText(info.getStartTime() + info.getEndTime());// TODO: 2017/9/2
+        mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));// TODO: 2017/9/2
 
         mAdapter.addData(data.getList());
         mAdapter.notifyDataSetChanged();
@@ -151,29 +172,71 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         }
 
         class SmartspotViewHolder extends BaseRecycleViewHolder<SmartspotDetailResult.DataBean.ListBean> {
-
+            @BindView(R.id.tv_set)
+            TextView tvSet;
             @BindView(R.id.tv_reps)
             TextView tvReps;
             @BindView(R.id.tv_time)
             TextView tvTime;
             @BindView(R.id.tv_rest_time)
             TextView tvRestTime;
+            @BindView(R.id.tv_end)
+            TextView tvEnd;
             @BindView(R.id.hiv_capture)
             HImageView hivCapture;
+            @BindView(R.id.view_image)
+            View viewImage;
+
+            @OnClick({R.id.view_image})
+            public void onViewClicked(View view) {
+                SmartspotDetailResult.DataBean.ListBean item = (SmartspotDetailResult.DataBean.ListBean)view.getTag();
+                if(null != item.getMedias()){
+                    SmartspotDetailResult.DataBean.ListBean.MediasBean bean = item.getMedias();
+                    VideoPlayActivity.launch(SmartSpotDetailActivity.this, bean.getImg(), bean.getVideo());
+                }
+
+//                List<SmartspotDetailResult.DataBean.ListBean> dataList = getDataList();
+//                ArrayList<String> mVideos = new ArrayList<>();
+//                ArrayList<String> mImages = new ArrayList<>();
+//                for (SmartspotDetailResult.DataBean.ListBean item : dataList) {
+//                    String video = item.getMedias().getVideo();
+//                    mVideos.add(video);
+//                    System.out.println(video);
+//                    String image = item.getMedias().getImg();
+//                    mImages.add(image);
+//                }
+//                VideoPlayActivity.launch(SmartSpotDetailActivity.this, mImages, mVideos);
+            }
+
+            private Typeface mTypeFace;
 
             public SmartspotViewHolder(View itemView) {
                 super(itemView);
 
                 ButterKnife.bind(this, itemView);
+
+                mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Impact.ttf");
+                tvSet.setTypeface(mTypeFace);
+                tvReps.setTypeface(mTypeFace);
+                tvTime.setTypeface(mTypeFace);
+                tvRestTime.setTypeface(mTypeFace);
+                tvEnd.setTypeface(mTypeFace);
             }
 
             @Override
             public void bindViews(SmartspotDetailResult.DataBean.ListBean data) {
+                viewImage.setTag(data);
+                List<SmartspotDetailResult.DataBean.ListBean> dataList = getDataList();
+                int index = dataList.indexOf(data) + 1;
+                tvEnd.setVisibility(index == dataList.size() ? View.VISIBLE : View.GONE);
+
+                tvSet.setText("SET " + index);
                 tvReps.setText(data.getReps());
                 tvTime.setText(String.valueOf(data.getTime()));
                 tvRestTime.setText(String.valueOf(data.getRestTime()));
-                if (null != data.getMedias() && data.getMedias().size() > 0) {
-                    HImageLoaderSingleton.loadImage(hivCapture, data.getMedias().get(0), SmartSpotDetailActivity.this);
+                SmartspotDetailResult.DataBean.ListBean.MediasBean bean = data.getMedias();
+                if (null != bean) {
+                    HImageLoaderSingleton.loadImage(hivCapture, bean.getImg(), SmartSpotDetailActivity.this);
                 }
             }
         }

@@ -8,7 +8,7 @@ import java.util.List;
 public class SmartspotDetailResult extends LikingResult {
 
     /**
-     * data : {"info":{"title":"test","start_time":"1504264505","end_time":"1504264605"},"list":[{"reps":"1","time":100,"rest_time":30,"medias":["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268797&Signature=3nAFNW4B5T6ROYxZaK%2BQ3vUehy8%3D","http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D","http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D"]},{"reps":"10","time":100,"rest_time":40,"medias":["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268797&Signature=mFDjmuHb%2Fn2EEjzHB2qKIJykQs4%3D"]},{"reps":"8","time":100,"rest_time":0,"medias":["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841_thumbnail.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268798&Signature=uRfrKGo%2BJQKLMXbcgi81n1hr%2B%2B4%3D"]}]}
+     * data : {"info":{"title":"test","start_time":"1504264505","end_time":"1504264605"},"list":[{"reps":"1","time":100,"rest_time":30,"medias":{"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D"}},{"reps":"10","time":100,"rest_time":40,"medias":{"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36884_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268808&Signature=sTxedQKJYsytD%2BmwTxYzSfgtQBs%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36884.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268806&Signature=Z6TRWDfRfIbfPqRy4bl5QVjCM%2Bc%3D"}},{"reps":"8","time":100,"rest_time":0,"medias":{"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36886_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268818&Signature=Wmhd27BqFPCxb51vE%2FBzaQDgqNY%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36886.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268817&Signature=%2B1MQ8bbksqpzPoQytmx3SN2rofU%3D"}}]}
      */
 
     @SerializedName("data")
@@ -25,7 +25,7 @@ public class SmartspotDetailResult extends LikingResult {
     public static class DataBean {
         /**
          * info : {"title":"test","start_time":"1504264505","end_time":"1504264605"}
-         * list : [{"reps":"1","time":100,"rest_time":30,"medias":["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268797&Signature=3nAFNW4B5T6ROYxZaK%2BQ3vUehy8%3D","http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D","http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D"]},{"reps":"10","time":100,"rest_time":40,"medias":["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268797&Signature=mFDjmuHb%2Fn2EEjzHB2qKIJykQs4%3D"]},{"reps":"8","time":100,"rest_time":0,"medias":["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841_thumbnail.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268798&Signature=uRfrKGo%2BJQKLMXbcgi81n1hr%2B%2B4%3D"]}]
+         * list : [{"reps":"1","time":100,"rest_time":30,"medias":{"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D"}},{"reps":"10","time":100,"rest_time":40,"medias":{"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36884_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268808&Signature=sTxedQKJYsytD%2BmwTxYzSfgtQBs%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36884.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268806&Signature=Z6TRWDfRfIbfPqRy4bl5QVjCM%2Bc%3D"}},{"reps":"8","time":100,"rest_time":0,"medias":{"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36886_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268818&Signature=Wmhd27BqFPCxb51vE%2FBzaQDgqNY%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36886.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268817&Signature=%2B1MQ8bbksqpzPoQytmx3SN2rofU%3D"}}]
          */
 
         @SerializedName("info")
@@ -93,7 +93,7 @@ public class SmartspotDetailResult extends LikingResult {
              * reps : 1
              * time : 100
              * rest_time : 30
-             * medias : ["http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36841_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268797&Signature=3nAFNW4B5T6ROYxZaK%2BQ3vUehy8%3D","http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D","http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D"]
+             * medias : {"img":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D","video":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D"}
              */
 
             @SerializedName("reps")
@@ -103,7 +103,7 @@ public class SmartspotDetailResult extends LikingResult {
             @SerializedName("rest_time")
             private int restTime;
             @SerializedName("medias")
-            private List<String> medias;
+            private MediasBean medias;
 
             public String getReps() {
                 return reps;
@@ -129,12 +129,40 @@ public class SmartspotDetailResult extends LikingResult {
                 this.restTime = restTime;
             }
 
-            public List<String> getMedias() {
+            public MediasBean getMedias() {
                 return medias;
             }
 
-            public void setMedias(List<String> medias) {
+            public void setMedias(MediasBean medias) {
                 this.medias = medias;
+            }
+
+            public static class MediasBean {
+                /**
+                 * img : http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883.mp4?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268801&Signature=CEoj7%2F8uZoJRlxrAX2uwcn7abkU%3D
+                 * video : http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg?OSSAccessKeyId=LTAI9HqTxcb0M3Kw&Expires=1592268802&Signature=wtt2F0PlygQ0MqWnCnVMynXr2yU%3D
+                 */
+
+                @SerializedName("img")
+                private String img;
+                @SerializedName("video")
+                private String video;
+
+                public String getImg() {
+                    return img;
+                }
+
+                public void setImg(String img) {
+                    this.img = img;
+                }
+
+                public String getVideo() {
+                    return video;
+                }
+
+                public void setVideo(String video) {
+                    this.video = video;
+                }
             }
         }
     }
