@@ -847,6 +847,8 @@ public interface LikingApiService {
         /**
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
          * 七天分享
          */
         public static final String SPORT_SHARE = sVersion + "sport/sport-share";
@@ -857,6 +859,10 @@ public interface LikingApiService {
         public static final String SMART_SPOT_SHARE = sVersion + "sport/smart-spot-share";
 
         /**
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
