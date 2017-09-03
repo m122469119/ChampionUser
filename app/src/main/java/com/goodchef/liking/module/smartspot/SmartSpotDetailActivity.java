@@ -85,13 +85,13 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         String result = null;
         try {
             Calendar startCal = Calendar.getInstance();
-            startCal.setTimeInMillis(Long.parseLong(start));
+            startCal.setTimeInMillis(Long.parseLong(start) * 1000);
             Calendar endCal = Calendar.getInstance();
-            endCal.setTimeInMillis(Long.parseLong(end));
+            endCal.setTimeInMillis(Long.parseLong(end) * 1000);
             int year = startCal.get(Calendar.YEAR);
-            int month = startCal.get(Calendar.MONTH);
+            int month = startCal.get(Calendar.MONTH) + 1;
             int day = startCal.get(Calendar.DAY_OF_MONTH);
-            String week = getWeek(startCal.get(Calendar.DAY_OF_WEEK));
+            String week = getWeek(startCal);
             int startHour = startCal.get(Calendar.HOUR_OF_DAY);
             int startMinute = startCal.get(Calendar.MINUTE);
             int endHour = endCal.get(Calendar.HOUR_OF_DAY);
@@ -109,8 +109,11 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         return result;
     }
 
-    private String getWeek(int week) {
+    private String getWeek(Calendar calendar) {
+        int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         switch (week) {
+            case 0:
+                return "周日";
             case 1:
                 return "周一";
             case 2:
