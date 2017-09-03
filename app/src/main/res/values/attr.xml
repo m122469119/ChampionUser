@@ -94,4 +94,11 @@
         <attr name="out_textSize" format="dimension"/>
 
     </declare-styleable>
+
+
+    <declare-styleable name="HistogramView">
+        <attr name="his_color" format="color"/>
+        <attr name="his_text_color" format="color"/>
+        <attr name="his_text_size" format="dimension"/>
+    </declare-styleable>
 </resources>

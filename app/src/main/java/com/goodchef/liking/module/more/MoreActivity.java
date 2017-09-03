@@ -18,11 +18,16 @@ import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CheckUpdateAppResult;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.module.about.AboutActivity;
+import com.goodchef.liking.module.joinus.becomecoach.BecomeTeacherActivity;
+import com.goodchef.liking.module.joinus.contractjoin.ContactJonInActivity;
+import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.FileDownloaderManager;
+import com.goodchef.liking.utils.UMengCountUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -32,7 +37,7 @@ import io.reactivex.functions.Consumer;
  * version 1.0.0
  */
 
-public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presenter> implements android.view.View.OnClickListener, MoreContract.View {
+public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presenter> implements MoreContract.View {
 
     @BindView(R.id.login_out_btn)
     TextView mLoginOutBtn;
@@ -43,6 +48,8 @@ public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presen
     @BindView(R.id.check_update_prompt_TextView)
     TextView mCheckUpdatePromptTextView;
 
+    private LinearLayout mContactJoinLayout;//联系加盟
+    private LinearLayout mBecomeTeacherLayout;//称为教练
     private LinearLayout mAboutUsLayout;//关于我们
 
     private CheckUpdateAppResult.UpdateAppData mUpdateAppData;
@@ -56,16 +63,20 @@ public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presen
         setTitle(getString(R.string.title_activity_more));
         initView();
         initViewIconAndText();
-        setViewOnClickListener();
         sendUpdateAppRequest();
     }
 
     private void initView() {
         mAboutUsLayout = (LinearLayout) findViewById(R.id.layout_about_us);
+        mContactJoinLayout = (LinearLayout) findViewById(R.id.layout_contact_join);
+        mBecomeTeacherLayout = (LinearLayout) findViewById(R.id.layout_become_teacher);
     }
 
     private void initViewIconAndText() {
+        setMySettingCard(mContactJoinLayout, R.string.layout_contact_join, true);
+        setMySettingCard(mBecomeTeacherLayout, R.string.layout_become_teacher, true);
         setMySettingCard(mAboutUsLayout, R.string.layout_about_us, true);
+
         if (LikingPreference.isLogin()) {
             mLoginOutBtn.setVisibility(android.view.View.VISIBLE);
         } else {
@@ -92,29 +103,38 @@ public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presen
         mPresenter.checkAppUpdate();
     }
 
-    private void setViewOnClickListener() {
-        mAboutUsLayout.setOnClickListener(this);
-        mLayoutCheckUpdate.setOnClickListener(this);
-        mLoginOutBtn.setOnClickListener(this);
-    }
 
-    @Override
+
+    @OnClick({R.id.layout_contact_join, R.id.layout_become_teacher, R.id.layout_about_us,
+            R.id.login_out_btn, R.id.layout_check_update})
     public void onClick(android.view.View v) {
-        if (v == mAboutUsLayout) {//关于我们
-            startActivity(AboutActivity.class);
-        } else if (v == mLayoutCheckUpdate) {//检测更新
-            if (mUpdateAppData != null) {
-                int update = mUpdateAppData.getUpdate();
-                if (update == 1 || update == 2) {
-                    showCheckUpdateDialog();
+        switch (v.getId()) {
+            case R.id.layout_contact_join://联系加盟
+                UMengCountUtil.UmengCount(this, UmengEventId.CONTACTJONINACTIVITY);
+                startActivity(ContactJonInActivity.class);
+                break;
+            case R.id.layout_become_teacher://成为教练
+                UMengCountUtil.UmengCount(this, UmengEventId.BECOMETEACHERACTIVITY);
+                startActivity(BecomeTeacherActivity.class);
+                break;
+            case R.id.layout_about_us://关于我们
+                startActivity(AboutActivity.class);
+                break;
+            case R.id.layout_check_update:
+                if (mUpdateAppData != null) {
+                    int update = mUpdateAppData.getUpdate();
+                    if (update == 1 || update == 2) {
+                        showCheckUpdateDialog();
+                    }
                 }
-            }
-        } else if (v == mLoginOutBtn) {
-            if (LikingPreference.isLogin()) {
-                showExitDialog();
-            } else {
-                showToast(getString(R.string.not_login));
-            }
+                break;
+            case R.id.login_out_btn:
+                if (LikingPreference.isLogin()) {
+                    showExitDialog();
+                } else {
+                    showToast(getString(R.string.not_login));
+                }
+                break;
         }
     }
 

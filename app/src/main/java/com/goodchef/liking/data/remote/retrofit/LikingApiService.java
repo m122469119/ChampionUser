@@ -37,6 +37,8 @@ import com.goodchef.liking.data.remote.retrofit.result.SelfGroupCoursesListResul
 import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportWeekResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.SyncTimestampResult;
 import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
@@ -49,7 +51,7 @@ import com.goodchef.liking.data.remote.retrofit.result.VerificationCodeResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
-import com.goodchef.liking.module.smartspot.QRCodeResult;
+import com.goodchef.liking.data.remote.retrofit.result.QRCodeResult;
 import com.goodchef.liking.module.smartspot.SmartspotDetailResult;
 
 import java.util.Map;
@@ -434,6 +436,7 @@ public interface LikingApiService {
     @POST(Urls.USER_CHECK_UNREAD_MSG)
     Observable<UnreadMessageResult> getHasReadMessage(@Path(PATH_VERSION) String sHostVersion, @Field(KEY_TOKEN) String token);
 
+    @FormUrlEncoded
     @POST(Urls.USER_CHECK_UNREAD_MSG)
     Observable<UnreadMessageResult> getHasReadMessage2(@Path(PATH_VERSION) String sHostVersion);
 
@@ -448,6 +451,18 @@ public interface LikingApiService {
     Observable<QRCodeResult> authQRCode(@Path(PATH_VERSION) String sHostVersion,
                                         @Field(KEY_TOKEN) String token,
                                         @Field("code") String code);
+
+    @FormUrlEncoded
+    @POST(Urls.SPORT_LIST)
+    Observable<SportListResult> getSportListResult(@Path(PATH_VERSION) String sHostVersion,
+                                                   @Field(KEY_TOKEN) String token,
+                                                   @Field("page") String page,
+                                                   @Field("date") String date);
+
+    @FormUrlEncoded
+    @POST(Urls.SPORT_STATS)
+    Observable<SportWeekResult> getSportStatsData(@Path(PATH_VERSION) String sHostVersion,
+                                                  @Field(KEY_TOKEN) String token);
 
     class Urls {
         private static final String sVersion = "/{version}/";
@@ -793,5 +808,14 @@ public interface LikingApiService {
          * 二维码确认
          */
         public static final String AUTH_QRCODE = sVersion + "code/auth";
-    }
+        /**
+         * 运动列表
+         */
+        public static final String SPORT_LIST = sVersion + "sport/list";
+
+        /**
+         * 运动状态
+         */
+        public static final String SPORT_STATS = sVersion + "sport/stats";
+     }
 }

@@ -23,6 +23,7 @@ import com.aaron.common.utils.StringUtils;
 import com.aaron.map.LocationListener;
 import com.aaron.map.amap.AmapGDLocation;
 import com.amap.api.location.AMapLocation;
+import com.amap.api.maps2d.model.PoiPara;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
@@ -51,6 +52,8 @@ import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.message.MessageActivity;
+import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
+import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.NumberConstantUtil;
@@ -87,6 +90,9 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     RelativeLayout mMiddleLayout;//title中间布局
     @BindView(R.id.liking_right_imageView)
     ImageView mRightImageView;//右边图片
+
+    @BindView(R.id.liking_right_right_imageView)
+    ImageView mRightLeftImageView; //右边第二张图片
     @BindView(R.id.home_notice_prompt)
     TextView mRedPoint;//红色点点
     @BindView(R.id.tv_shopping_cart_num)
@@ -143,6 +149,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         } else {
             int tag = intent.getIntExtra(KEY_INTENT_TAB, 0);
             fragmentTabHost.setCurrentTab(tag);
+
         }
     }
 
@@ -195,8 +202,10 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
         mLikingLeftTitleTextView.setText(R.string.title_change_gym);
         mRightImageView.setVisibility(android.view.View.VISIBLE);
+        mRightLeftImageView.setVisibility(android.view.View.GONE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
     }
+
 
     private android.view.View buildTabIndicatorCustomView(String tabTitle, int drawableResId) {
         android.view.View tabView = getLayoutInflater().inflate(R.layout.layout_liking_home_tab_custom_view, null, false);
@@ -243,6 +252,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
         mRightImageView.setVisibility(android.view.View.VISIBLE);
+        mRightLeftImageView.setVisibility(android.view.View.GONE);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
         mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
     }
@@ -258,6 +268,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
         mRightImageView.setVisibility(android.view.View.GONE);
+        mRightLeftImageView.setVisibility(android.view.View.GONE);
         mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
         mRedPoint.setVisibility(android.view.View.GONE);
     }
@@ -269,6 +280,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingLeftTitleTextView.setVisibility(android.view.View.INVISIBLE);
         mLikingRightTitleTextView.setVisibility(android.view.View.INVISIBLE);
         mRightImageView.setVisibility(android.view.View.GONE);
+        mRightLeftImageView.setVisibility(android.view.View.GONE);
         mRedPoint.setVisibility(android.view.View.GONE);
         mLikingDistanceTextView.setVisibility(android.view.View.GONE);
     }
@@ -281,13 +293,19 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingDistanceTextView.setVisibility(android.view.View.GONE);
         mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
         mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
-        mRightImageView.setVisibility(android.view.View.GONE);
         mRedPoint.setVisibility(android.view.View.GONE);
         mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
+        mRightImageView.setVisibility(View.VISIBLE);
+        mRightLeftImageView.setVisibility(View.VISIBLE);
+        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_qr));
+        mRightLeftImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_key));
     }
 
 
-    @OnClick({R.id.liking_left_title_text, R.id.liking_right_imageView, R.id.layout_home_middle})
+    @OnClick({R.id.liking_left_title_text,
+            R.id.liking_right_imageView,
+            R.id.liking_right_right_imageView,
+            R.id.layout_home_middle,})
     public void onClick(View view) {
         String tag = fragmentTabHost.getCurrentTabTag();
         switch (view.getId()) {
@@ -300,6 +318,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
                 break;
             case R.id.liking_right_imageView:
                 if (tag.equals(TAG_NEARBY_TAB)) {
+
                 } else if (tag.equals(TAG_MAIN_TAB)) {
                     Intent intent = new Intent(this, MessageActivity.class);
                     Bundle bundle = new Bundle();
@@ -307,6 +326,15 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
                     intent.putExtras(bundle);
                     startActivity(intent);
                     // showRightMenuDialog();
+                } else if (tag.equals(TAG_MY_TAB)) {
+                    //TODO 我的界面扫描二维码
+//                    showToast("扫描二维码开发中。。。");
+                    QrCodeActivity.launch(this);
+                }
+                break;
+            case R.id.liking_right_right_imageView:
+                if (tag.equals(TAG_MY_TAB)) {//开门
+                    startActivity(OpenTheDoorActivity.class);
                 }
                 break;
             case R.id.layout_home_middle:

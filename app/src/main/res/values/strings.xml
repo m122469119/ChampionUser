@@ -246,7 +246,10 @@
     <string name="more_advice">更多建议请咨询店内教练</string>
     <string name="no_body_history_data">暂无体测历史</string>
     <string name="person_test_data">个人体测数据</string>
-    <string name="today_train_data">今日训练</string>
+    <string name="today_train_data">总运动</string>
+    <string name="Mins">Mins</string>
+    <string name="Days">days</string>
+    <string name="Times">Times</string>
     <string name="today_train_data_unit">Min</string>
     <string name="title_body_test">体测数据</string>
     <string name="home_buy_card">点击购卡</string>
@@ -642,7 +645,6 @@
     <string name="no_message_data">暂时没有消息</string>
     <string name="please_select">请选择</string>
 
-
     <string name="title_activity_scan_qr_code">扫一扫</string>
     <string name="qc_code_close">关闭</string>
     <string name="qr_code_select_picture">照片</string>
@@ -656,4 +658,21 @@
     <string name="qr_code_could_not_read_qr_code_from_picture">没有读出图片中的链接，换张图片试试吧~</string>
     <string name="qr_code_could_not_read_qr_code_from_scanner">对不起，无法打开扫出的内容</string>
     <string name="qr_code_camera_not_found">未检测到相机</string>
+    <string name="continuation_card">续卡</string>
+
+    <string-array name="my_item_array">
+        <item>全部课程</item>
+        <item>全部订单</item>
+        <item>优惠券</item>
+        <item>会员卡</item>
+        <item>我的手环</item>
+        <item>充值水费</item>
+        <item>更多</item>
+    </string-array>
+    <string name="title_activity_sport_data">SportDataActivity</string>
+
+    <string name="sport_league_lesson">团体课</string>
+    <string name="sport_private_lesson">私教课</string>
+    <string name="sport_smartspot">SmartSpot</string>
+    <string name="sport_treadmill">跑步机</string>
 </resources>

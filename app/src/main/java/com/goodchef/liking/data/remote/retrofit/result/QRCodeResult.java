@@ -1,5 +1,6 @@
-package com.goodchef.liking.module.smartspot;
+package com.goodchef.liking.data.remote.retrofit.result;
 
+import com.aaron.http.code.result.Data;
 import com.goodchef.liking.data.remote.retrofit.result.LikingResult;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,7 +26,7 @@ public class QRCodeResult extends LikingResult {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean extends Data{
         /**
          * title : xxxxxxxxx
          */

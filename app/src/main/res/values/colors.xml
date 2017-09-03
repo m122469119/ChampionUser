@@ -2,6 +2,8 @@
 <resources>
     <color name="main_app_color">#2e2f34</color>
     <color name="main_app_dark_color">#2e2f34</color>
+    <color name="main_app_green_color">#34c86c</color>
+    <color name="main_app_bg_color">#edeff3</color>
 
     <color name="tab_indicator_color">#23ec7d</color>
     <color name="tab_indicator_gray_color">#9198a1</color>
@@ -114,5 +116,12 @@
     <color name="qr_code_finder_mask">#80000000</color>
     <color name="qr_code_flash_light_text_color">#66FFFFFF</color>
     <color name="qr_code_finder_frame">#FFFFFFFF</color>
-    <color name="qr_code_finder_laser">@color/main_app_color</color>
+    <color name="qr_code_finder_laser">@color/c34c86c</color>
+    <color name="my_text_color_grey">#fff8f8</color>
+    <color name="person_body_unit_color">#596167</color>
+    <color name="my_item_text_color_grey">#596167</color>
+    <color name="sport_title_text_color">#596167</color>
+    <color name="sport_content_text_color">#95979e</color>
+    <color name="his_bg">#95979e</color>
+    <color name="his_bg_green">@color/main_app_green_color</color>
 </resources>

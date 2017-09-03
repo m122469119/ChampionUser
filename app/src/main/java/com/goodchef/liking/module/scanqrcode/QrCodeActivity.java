@@ -1,4 +1,4 @@
-package com.goodchef.liking.qrcode;
+package com.goodchef.liking.module.scanqrcode;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,17 +27,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aaron.android.framework.base.mvp.view.BaseView;
-import com.aaron.android.framework.base.ui.actionbar.AppBarSwipeBackActivity;
-import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
+import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.data.local.LikingPreference;
-import com.goodchef.liking.data.remote.RxUtils;
-import com.goodchef.liking.data.remote.retrofit.ApiException;
-import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
-import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
-import com.goodchef.liking.module.smartspot.QRCodeResult;
-import com.goodchef.liking.module.smartspot.SmartspotDetailResult;
+import com.goodchef.liking.data.remote.retrofit.result.QRCodeResult;
 import com.goodchef.liking.qrcode.camera.CameraManager;
 import com.goodchef.liking.qrcode.decode.CaptureActivityHandler;
 import com.goodchef.liking.qrcode.decode.DecodeImageCallback;
@@ -55,7 +48,7 @@ import java.util.concurrent.Executors;
 
 import io.reactivex.functions.Consumer;
 
-public class QrCodeActivity extends AppBarSwipeBackActivity implements Callback, OnClickListener {
+public class QrCodeActivity extends AppBarMVPSwipeBackActivity<ScanQrCodeContract.Presenter> implements Callback, OnClickListener, ScanQrCodeContract.View {
 
     private static final int REQUEST_SYSTEM_PICTURE = 0;
     private static final int REQUEST_PICTURE = 1;
@@ -86,6 +79,7 @@ public class QrCodeActivity extends AppBarSwipeBackActivity implements Callback,
 
     private boolean isShowPermissionDeniedDialog;
 
+
     public static void launch(Context context) {
         Intent i = new Intent(context, QrCodeActivity.class);
         context.startActivity(i);
@@ -97,6 +91,11 @@ public class QrCodeActivity extends AppBarSwipeBackActivity implements Callback,
         setContentView(R.layout.activity_qr_code);
         initView();
         initData();
+    }
+
+    @Override
+    public void setPresenter() {
+        mPresenter = new ScanQrCodeContract.Presenter();
     }
 
     private void checkPermission() {
@@ -216,7 +215,7 @@ public class QrCodeActivity extends AppBarSwipeBackActivity implements Callback,
         }
         super.onDestroy();
 
-        if(null != mHandler){
+        if (null != mHandler) {
             mHandler.removeCallbacksAndMessages(null);
         }
     }
@@ -392,67 +391,31 @@ public class QrCodeActivity extends AppBarSwipeBackActivity implements Callback,
                 }
             });
         } else {
-            Toast.makeText(this, resultString, Toast.LENGTH_LONG).show();
-
+            LogUtils.i(TAG, "resultString= " + resultString);
             requestDate(resultString);
         }
     }
 
     private void requestDate(final String data) {
-        System.out.println(">>>>>Data:" + data);
+        mPresenter.sendScanQrCode(this, data);
+    }
 
-        BaseView view = new BaseView() {
+    @Override
+    public void updateScanQrView(QRCodeResult.DataBean dataBean) {
+        Intent intent = new Intent(this, QrCodeSuccessActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+        finish();
+    }
+
+    @Override
+    public void scanErrorView() {
+        mHandler.postDelayed(new Runnable() {
             @Override
-            public void setPresenter() {
-
+            public void run() {
+                restartPreview();
             }
-
-            @Override
-            public void showToast(String message) {
-
-            }
-
-            @Override
-            public void showToast(int resId) {
-
-            }
-        };
-        LikingNewApi.getInstance()
-                .authQRCode(LikingNewApi.sHostVersion,
-                        LikingPreference.getToken(),
-                        data)
-                .compose(RxUtils.<QRCodeResult>applyHttpSchedulers())
-                .subscribe(new LikingBaseObserver<QRCodeResult>(view) {
-                    @Override
-                    public void onNext(QRCodeResult value) {
-                        QrCodeActivity.this.finish();
-                    }
-
-                    @Override
-                    public void apiError(ApiException apiException) {
-                        super.apiError(apiException);
-
-                        restart();
-                        System.out.println(">>>>>apiError:" + apiException.getErrorMessage());
-                    }
-
-                    @Override
-                    public void networkError(Throwable throwable) {
-                        super.networkError(throwable);
-
-                        restart();
-                        System.out.println(">>>>>networkError:" + throwable.getMessage());
-                    }
-
-                    private void restart(){
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                restartPreview();
-                            }
-                        }, 3000);
-                    }
-                });
+        }, 3000);
     }
 
     @Override
@@ -498,6 +461,7 @@ public class QrCodeActivity extends AppBarSwipeBackActivity implements Callback,
             mHandler.sendEmptyMessage(MSG_DECODE_FAIL);
         }
     };
+
 
     private static class WeakHandler extends Handler {
         private WeakReference<QrCodeActivity> mWeakQrCodeActivity;

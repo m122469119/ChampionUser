@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-             xmlns:fresco="http://schemas.android.com/apk/res-auto"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="vertical">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -13,160 +13,212 @@
         <com.aaron.imageloader.code.HImageView
             android:id="@+id/head_image_background"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="150dp"
             fresco:failureImage="@drawable/bg_head_background"
             fresco:failureImageScaleType="centerCrop"
             fresco:placeholderImage="@drawable/bg_head_background"
-            fresco:placeholderImageScaleType="centerCrop"
-            />
+            fresco:placeholderImageScaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="150dp"
             android:background="@color/c80000000"
-            android:gravity="center"
-            android:orientation="vertical">
-
-
-            <com.aaron.imageloader.code.HImageView
-                android:id="@+id/head_image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                fresco:failureImage="@drawable/icon_head_default_image"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/icon_head_default_image"
-                fresco:placeholderImageScaleType="centerCrop"
-                fresco:roundAsCircle="true"/>
-
-            <RelativeLayout
-                android:id="@+id/layout_head_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/person_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/textsize_15"/>
-
-                <TextView
-                    android:id="@+id/is_vip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="@dimen/spacing_2dp"
-                    android:layout_toRightOf="@+id/person_name"
-                    android:background="@drawable/shape_radius_green_vip_back"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/spacing_2dp"
-                    android:paddingLeft="@dimen/spacing_4dp"
-                    android:paddingRight="@dimen/spacing_4dp"
-                    android:paddingTop="2dp"
-                    android:text="VIP"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    android:visibility="gone"/>
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/person_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/white"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/login_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/shape_radius_green_btn_background"
-                android:gravity="center"
-                android:minWidth="60dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/login_btn_text"
-                android:textColor="@color/white"
-                android:visibility="gone"/>
-        </LinearLayout>
-
-
-    </FrameLayout>
-
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/my_head_CardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="260dp"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardPreventCornerOverlap="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/my_head_person_data_TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:visibility="gone"
-                android:paddingTop="@dimen/spacing_12dp"
-                android:text="@string/person_data"/>
-
-            <include
-                android:id="@+id/layout_body_score"
-                layout="@layout/layout_person_body_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="10dp"
-                android:visibility="visible"
-                />
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/spacing_12dp"
-                android:paddingBottom="@dimen/spacing_8dp"
-                android:visibility="visible">
+                android:layout_height="130dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <include
-                    android:id="@+id/layout_everyday_sport"
-                    layout="@layout/layout_person_body_data"
-                    android:layout_width="match_parent"
+                <com.aaron.imageloader.code.HImageView
+                    android:id="@+id/head_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="15dp"
+                    fresco:failureImage="@drawable/icon_head_default_image"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/icon_head_default_image"
+                    fresco:placeholderImageScaleType="centerCrop"
+                    fresco:roundAsCircle="true" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_head_info"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:visibility="visible"/>
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/line"/>
+                    <TextView
+                        android:id="@+id/person_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="未登录"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_15" />
 
-                <include
-                    android:id="@+id/layout_today_data"
-                    layout="@layout/layout_person_body_data"
-                    android:layout_width="match_parent"
+
+                    <TextView
+                        android:id="@+id/person_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/person_name"
+                        android:text="131xxxxxxxx"
+                        android:layout_marginTop="@dimen/spacing_2dp"
+                        android:textColor="@color/my_text_color_grey"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/is_vip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:layout_toRightOf="@+id/person_name"
+                        android:layout_marginTop="@dimen/spacing_4dp"
+                        android:background="@drawable/shape_radius_green_vip_back"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/spacing_4dp"
+                        android:paddingRight="@dimen/spacing_4dp"
+                        android:text="VIP"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_marginRight="15sp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/login_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/shape_radius_green_btn_background"
+                        android:gravity="center"
+                        android:minWidth="60dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/login_btn_text"
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
+
+
+                    <TextView
+                        android:id="@+id/end_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="2017.10.20到期"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/continuation_card"
+                        android:layout_width="45dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@id/end_time"
+                        android:background="@drawable/shape_radius_green_btn_background"
+                        android:gravity="center"
+                        android:minWidth="60dp"
+                        android:text="@string/continuation_card"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="114dp"
+            android:layout_marginTop="120dp"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layout_body_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardPreventCornerOverlap="true">
+
+                <include
+
+                    layout="@layout/layout_person_body_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible" />
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layout_bracelet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardPreventCornerOverlap="true">
+
+                <include
+
+                    layout="@layout/layout_person_body_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible" />
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/layout_all_sport"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardPreventCornerOverlap="true">
+
+            <include
+                layout="@layout/layout_person_body_data_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="visible" />
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
 </FrameLayout>

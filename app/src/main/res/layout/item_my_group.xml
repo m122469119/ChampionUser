@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/item_icon"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/my_bracelet"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/item_text"
+            android:layout_marginTop="15sp"
+            android:layout_width="wrap_content"
+            android:text="我的手环"
+            android:textSize="13sp"
+            android:layout_gravity="center"
+            android:textColor="@color/my_item_text_color_grey"
+            android:layout_height="wrap_content"/>
+</LinearLayout>

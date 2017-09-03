@@ -8,6 +8,7 @@ import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
+import com.goodchef.liking.R;
 import com.goodchef.liking.bluetooth.BleUtils;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.MyUserOtherInfoResult;

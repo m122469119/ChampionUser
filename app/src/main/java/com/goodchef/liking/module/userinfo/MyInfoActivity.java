@@ -26,9 +26,7 @@ import com.goodchef.liking.data.remote.retrofit.result.UserInfoResult;
 import com.goodchef.liking.dialog.CameraCustomDialog;
 import com.goodchef.liking.dialog.SelectSexDialog;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 import com.goodchef.liking.module.writeuserinfo.CompleteUserInfoContract;
-import com.goodchef.liking.qrcode.QrCodeActivity;
 import com.goodchef.liking.utils.BitmapBase64Util;
 import com.goodchef.liking.utils.CheckUtils;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
@@ -210,25 +208,27 @@ public class MyInfoActivity extends AppBarMVPSwipeBackActivity<CompleteUserInfoC
 
     @OnClick({R.id.layout_head_image, R.id.select_sex, R.id.select_birthday, R.id.finish_btn})
     public void onClick(android.view.View v) {
-        if (v == mHeadImageLayout) {//选择头像
-            showCameraDialog();
-        } else if (v == mSelectSexTextView) {//选择性别
-            if (isUpdateGender == NumberConstantUtil.ZERO) {//没有机会修改性别
-                showToast(getString(R.string.user_can_not_revise_info));
-            } else if (isUpdateGender == NumberConstantUtil.ONE) {
-                showSelectSexDialog();
-            }
-        } else if (v == mSelectBirthdayTextView) {//选择出生日期
-            if (isUpdateBirthday == NumberConstantUtil.ZERO) {
-                showToast(getString(R.string.user_can_not_revise_info));
-            } else if (isUpdateBirthday == NumberConstantUtil.ONE) {
-                //  showSelectDateDialog();
-                mTimePickerView.show(mSelectBirthdayTextView);
-            }
-        } else if (v == mFinishBtn) {//完成按钮
-//            updateChangeData();
-//            QrCodeActivity.launch(MyInfoActivity.this);
-            SmartSpotDetailActivity.launch(MyInfoActivity.this, "2929");
+        switch (v.getId()) {
+            case R.id.layout_head_image://选择头像
+                showCameraDialog();
+                break;
+            case R.id.select_sex://选择性别
+                if (isUpdateGender == NumberConstantUtil.ZERO) {//没有机会修改性别
+                    showToast(getString(R.string.user_can_not_revise_info));
+                } else if (isUpdateGender == NumberConstantUtil.ONE) {
+                    showSelectSexDialog();
+                }
+                break;
+            case R.id.select_birthday://选择出生日期
+                if (isUpdateBirthday == NumberConstantUtil.ZERO) {
+                    showToast(getString(R.string.user_can_not_revise_info));
+                } else if (isUpdateBirthday == NumberConstantUtil.ONE) {
+                    mTimePickerView.show(mSelectBirthdayTextView);
+                }
+                break;
+            case R.id.finish_btn://完成按钮
+                updateChangeData();
+                break;
         }
     }
 

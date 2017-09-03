@@ -56,6 +56,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String TEAM = "team";
     public static final String CARD = "card";
     public static final String MSG = "msg";
+    public static final String USER_RUN = "user_run";
     public static final String DIRECT_TYPE_HTML5 = "h5";
     public static final String DIRECT_ANNOUNCEMENT = "announcement";
 
@@ -162,6 +163,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         intent.putExtra(MessageActivity.ENTER, "push");
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
+                    } else if (USER_RUN.equals(direct)) {
+
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
@@ -299,9 +302,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         if (announcement == null || announcement.getData() == null) {
             return;
         }
-
         LikingPreference.setHomeAnnouncementId(announcement.getData());
-
         if (!AppStatusUtils.appIsRunning(context, AppStatusUtils.getAppPackageName(context))
                 || BaseActivity.isAppToBackground()) {
             Intent resultIntent = new Intent(context, LikingHomeActivity.class);

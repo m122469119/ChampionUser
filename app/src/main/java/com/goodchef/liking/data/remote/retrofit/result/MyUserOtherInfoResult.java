@@ -31,6 +31,10 @@ public class MyUserOtherInfoResult extends LikingResult {
     }
 
     public static class UserOtherInfoData extends Data {
+
+        public static final int CAN_RENEW = 1;
+        public static final int CAN_NOT_RENEW = 0;
+
         /**
          * is_vip : 0
          * card : {}
@@ -60,6 +64,8 @@ public class MyUserOtherInfoResult extends LikingResult {
         private String todayMin;
         @SerializedName("water")
         private WaterData waterData;
+        @SerializedName("can_renew")
+        private int can_renew;
 
         public WaterData getWaterData() {
             return waterData;
@@ -131,6 +137,14 @@ public class MyUserOtherInfoResult extends LikingResult {
 
         public void setTodayMin(String todayMin) {
             this.todayMin = todayMin;
+        }
+
+        public int getCan_renew() {
+            return can_renew;
+        }
+
+        public void setCan_renew(int can_renew) {
+            this.can_renew = can_renew;
         }
 
         public static class CardData extends Data {

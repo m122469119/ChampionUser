@@ -22,6 +22,11 @@ public class UserExerciseResult extends LikingResult {
 
     public static class ExerciseData extends Data {
 
+        public static final int SPORT_DOWN = -1; //体侧分数减少
+        public static final int SPORT_UP = 1;  //体侧分数增加
+        public static final int SPORT_NORMAL = 0; //体侧分数没变
+        public static final int SPORT_NULL = 2; //无
+
         /**
          * today_min : 0
          * today_distance : 0
@@ -41,6 +46,17 @@ public class UserExerciseResult extends LikingResult {
         private String total_distance;
         private String total_cal;
         private String score;
+        @SerializedName("is_up")
+        private int is_up;
+        private String sport_date; // 运动天数
+
+        public String getSport_date() {
+            return sport_date;
+        }
+
+        public void setSport_date(String sport_date) {
+            this.sport_date = sport_date;
+        }
 
         public String getToday_min() {
             return today_min;
@@ -104,6 +120,14 @@ public class UserExerciseResult extends LikingResult {
 
         public void setScore(String score) {
             this.score = score;
+        }
+
+        public int getIs_up() {
+            return is_up;
+        }
+
+        public void setIs_up(int is_up) {
+            this.is_up = is_up;
         }
     }
 }

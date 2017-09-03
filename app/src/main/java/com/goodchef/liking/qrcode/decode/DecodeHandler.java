@@ -18,7 +18,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.goodchef.liking.R;
-import com.goodchef.liking.qrcode.QrCodeActivity;
+import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
