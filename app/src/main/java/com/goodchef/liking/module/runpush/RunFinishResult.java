@@ -8,7 +8,7 @@ import java.util.List;
 public class RunFinishResult extends LikingResult {
 
     /**
-     * data : {"user":{"avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","count":"1145","gender":1,"marahton_name":"马拉松","num":"No.32","use_time":526,"distance":"265"},"list":[{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232}]}
+     * data : {"user":{"avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","count":"1145","gender":1,"marahton_name":"马拉松","num":"No.32","use_time":"526","distance":"265"},"list":[{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"}]}
      */
 
     @SerializedName("data")
@@ -24,8 +24,8 @@ public class RunFinishResult extends LikingResult {
 
     public static class DataBean {
         /**
-         * user : {"avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","count":"1145","gender":1,"marahton_name":"马拉松","num":"No.32","use_time":526,"distance":"265"}
-         * list : [{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":232}]
+         * user : {"avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","count":"1145","gender":1,"marahton_name":"马拉松","num":"No.32","use_time":"526","distance":"265"}
+         * list : [{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"},{"name":"sss","avatar":"http://1029320420942-smartspot-bucket.oss-cn-hongkong.aliyuncs.com/WorkoutSet_36883_0.jpg","user_id":"likingfit2131231231","gender":1,"desc":"232"}]
          */
 
         @SerializedName("user")
@@ -150,7 +150,7 @@ public class RunFinishResult extends LikingResult {
             @SerializedName("gender")
             private int gender;
             @SerializedName("desc")
-            private int desc;
+            private String desc;
 
             public String getName() {
                 return name;
@@ -184,11 +184,11 @@ public class RunFinishResult extends LikingResult {
                 this.gender = gender;
             }
 
-            public int getDesc() {
+            public String getDesc() {
                 return desc;
             }
 
-            public void setDesc(int desc) {
+            public void setDesc(String desc) {
                 this.desc = desc;
             }
         }

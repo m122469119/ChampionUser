@@ -177,7 +177,7 @@
         <LinearLayout
             android:id="@+id/view_content"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_16dp"
             android:layout_marginTop="@dimen/spacing_24dp"
             android:orientation="vertical" />

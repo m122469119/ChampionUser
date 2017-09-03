@@ -478,6 +478,7 @@ public interface LikingApiService {
                                               @Field("video_url") String url,
                                               @Field("exercise_name") String exercise_name);
 
+    @FormUrlEncoded
     @POST(Urls.GET_MARAHTON)
     Observable<RunFinishResult> getMarathon(@Path(PATH_VERSION) String sHostVersion,
                                             @Field(KEY_TOKEN) String token,

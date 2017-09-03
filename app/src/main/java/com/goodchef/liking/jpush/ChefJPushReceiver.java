@@ -170,7 +170,8 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         String marathonId = dataObj.optString("marathon_id");
                         String userIds = dataObj.optString("rec_user_id");
                         userIds = userIds.substring(2, userIds.length() - 2);
-                        RunFinishActivity.launchWithNew(context, userIds, marathonId);
+                        String result = userIds.replace("\"","");
+                        RunFinishActivity.launchWithNew(context, result, marathonId);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:

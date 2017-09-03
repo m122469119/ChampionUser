@@ -11,7 +11,7 @@ import com.goodchef.liking.module.smartspot.SmartspotModel;
 interface RunFinishContract {
     interface View extends BaseStateView {
         void updateData(RunFinishResult.DataBean data);
-        void followUser(FollowUserResult.DataBean data);
+        void followUser(String userId);
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -50,7 +50,7 @@ interface RunFinishContract {
                     }));
         }
 
-        public void follow(String userId) {
+        public void follow(final String userId) {
             mModel.followUser(userId)
                     .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<FollowUserResult>(mView) {
                         @Override
@@ -59,7 +59,7 @@ interface RunFinishContract {
                                 mView.updateData(null);
                                 return;
                             }
-
+                            mView.followUser(userId);
                         }
 
                         @Override

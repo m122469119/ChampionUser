@@ -3,7 +3,6 @@ package com.goodchef.liking.module.runpush;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -68,6 +67,7 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
         setContentView(R.layout.activity_run_finish);
         ButterKnife.bind(this);
 
+        hideAppBar();
         initView();
     }
 
@@ -90,7 +90,6 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
         mPresenter.requestData(mUserId, mMarahtonId);
     }
 
-
     @Override
     public void updateData(RunFinishResult.DataBean data) {
         if (null == data) {
@@ -107,14 +106,14 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
             tvHeaderTitle.setText(getString(R.string.run_finish_finish_header));
             tvHeaderContent.setText("");
             tvLeftTitle.setText("跑步距离：");
-            tvLeftContent.setText(user.getDistance() + "Km");
+            tvLeftContent.setText(user.getDistance());
             tvRightTitle.setText("跑步时间：");
-            tvRightContent.setText(user.getUseTime() + ""); // TODO: 2017/9/3
+            tvRightContent.setText(user.getUseTime());
         } else { // 马拉松
             tvHeaderTitle.setText(getString(R.string.run_finish_finish_header_marahton));
             tvHeaderContent.setText("完成" + user.getMarahtonName()); // TODO: 2017/9/3
             tvLeftTitle.setText("耗时：");
-            tvLeftContent.setText(user.getUseTime() + ""); // TODO: 2017/9/3
+            tvLeftContent.setText(user.getUseTime());
             tvRightTitle.setText("名次：");
             tvRightContent.setText(user.getNum());
         }
@@ -124,18 +123,16 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
     }
 
     @Override
-    public void followUser(FollowUserResult.DataBean data) {
+    public void followUser(String userId) {
         for (int i = 0; i < mViewContent.getChildCount(); i++) {
             View view = mViewContent.getChildAt(i);
             RunFinishResult.DataBean.ListBean item = (RunFinishResult.DataBean.ListBean) view.getTag();
-            if (item == mClickItem) {
+            if (item.getUserId().equals(userId)) {
                 TextView tvStatus = (TextView) view.findViewById(R.id.tv_status);
                 tvStatus.setText("已关注");
             }
         }
     }
-
-    private RunFinishResult.DataBean.ListBean mClickItem;
 
     private void initListItem(List<RunFinishResult.DataBean.ListBean> list) {
         if (null == list || list.size() == 0) {
@@ -156,8 +153,6 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
             tvStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mClickItem = item;
-
                     mPresenter.follow(item.getUserId());
                 }
             });
