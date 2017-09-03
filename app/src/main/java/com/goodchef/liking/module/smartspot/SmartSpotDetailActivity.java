@@ -135,6 +135,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
             mStateView.setState(StateView.State.NO_DATA);
             return;
         }
+
         mStateView.setState(StateView.State.SUCCESS);
         SmartspotDetailResult.DataBean.InfoBean info = data.getInfo();
         mTvTitle.setText(info.getTitle());
@@ -192,7 +193,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
                 SmartspotDetailResult.DataBean.ListBean item = (SmartspotDetailResult.DataBean.ListBean)view.getTag();
                 if(null != item.getMedias()){
                     SmartspotDetailResult.DataBean.ListBean.MediasBean bean = item.getMedias();
-                    VideoPlayActivity.launch(SmartSpotDetailActivity.this, bean.getImg(), bean.getVideo());
+                    VideoPlayActivity.launch(SmartSpotDetailActivity.this, bean.getImg(), bean.getVideo(), mTvTitle.getText().toString());
                 }
 
 //                List<SmartspotDetailResult.DataBean.ListBean> dataList = getDataList();

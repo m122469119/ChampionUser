@@ -16,7 +16,7 @@ import io.reactivex.Observable;
  * @version:1.0
  */
 
-public class ShareModel extends BaseModel{
+public class ShareModel extends BaseModel {
 
     /***
      * 私教课分享
@@ -45,4 +45,20 @@ public class ShareModel extends BaseModel{
         return LikingNewApi.getInstance().getUserShare(LikingNewApi.sHostVersion, LikingPreference.getToken())
                 .compose(RxUtils.<ShareResult>applyHttpSchedulers());
     }
+
+
+    public Observable<ShareResult> getSportshare() {
+        return LikingNewApi.getInstance()
+                .getSportShare(LikingNewApi.sHostVersion, LikingPreference.getToken())
+                .compose(RxUtils.<ShareResult>applyHttpSchedulers());
+    }
+
+
+    public Observable<ShareResult> getSmartSpotShare(String url, String exercise_name) {
+        return LikingNewApi.getInstance().getSmartSpotShare(LikingNewApi.sHostVersion,
+                LikingPreference.getToken(), url, exercise_name)
+                .compose(RxUtils.<ShareResult>applyHttpSchedulers());
+    }
+
+
 }

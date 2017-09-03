@@ -43,6 +43,9 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
     private RecyclerView mRecyclerView;
     private SportDataAdapter mAdapter;
 
+
+    StateView mStateView;
+
     @BindView(R.id.bg_image)
     ImageView mHeaderBgImage;
 
@@ -77,13 +80,14 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sport_data);
+        setContentView(R.layout.activity_sport_contains);
         mTypeface = TypefaseUtil.getImpactTypeface(this);
         initIntent();
         initView();
     }
 
     private void initView() {
+        mStateView = (StateView) findViewById(R.id.state_view);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_sport);
         mAdapter = new SportDataAdapter(this);
         View headView = LayoutInflater.from(this).inflate(R.layout.layout_sport_data_header, null);
@@ -100,12 +104,9 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 }
             }
         });
-        
         setRightIcon(R.mipmap.sport_share, new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // TODO: 2017/9/3  
-                Toast.makeText(SportDataActivity.this, "Share", Toast.LENGTH_LONG).show();
+            public void onClick(View v) {mPresenter.getSportShare(SportDataActivity.this);
             }
         });
     }
@@ -174,7 +175,6 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 histogramView.setColor(ContextCompat.getColor(SportDataActivity.this,R.color.his_bg_green));
             }
         });
-        mTabLayout.getTabAt(0).select();
     }
 
     private View getTabView(int position) {
@@ -194,7 +194,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
             title.setText(date4Index.getTitle());
             content.setText(date4Index.getContent());
         }
-        mTabLayout.getTabAt(0).select();
+        mTabLayout.getTabAt(6).select();
     }
 
 
@@ -217,8 +217,13 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
 
     @Override
     public void updateSportStatsView(SportWeekResult value) {
-        setTabView();
-        setTitle(value.getData().getTitle());
+        if (value != null) {
+            setTabView();
+            setTitle(value.getData().getTitle());
+            mStateView.setState(StateView.State.SUCCESS);
+        } else  {
+            mStateView.setState(StateView.State.NO_DATA);
+        }
     }
 
     @Override
@@ -229,6 +234,6 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
 
     @Override
     public void changeStateView(StateView.State state) {
-
+        mStateView.setState(state);
     }
 }

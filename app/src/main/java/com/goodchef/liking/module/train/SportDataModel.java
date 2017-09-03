@@ -37,9 +37,8 @@ public class SportDataModel extends BaseModel {
                 .doOnNext(new Consumer<SportWeekResult>() {
                     @Override
                     public void accept(SportWeekResult sportWeekResult) throws Exception {
-                        if (sportWeekResult != null) {
-                            createWeekDates(sportWeekResult);
-                        }
+                        if (sportWeekResult != null)
+                             createWeekDates(sportWeekResult);
                     }
                 });
     }
@@ -58,26 +57,31 @@ public class SportDataModel extends BaseModel {
         mSportDataEntities.clear();
         List<SportWeekResult.DataBean.StatsBean> stats = sportWeekResult.getData().getStats();
         long max = 0;
-        for (SportWeekResult.DataBean.StatsBean bean: stats) {
+        for (SportWeekResult.DataBean.StatsBean bean : stats) {
             long s = Long.parseLong(bean.getSeconds());
             if (s > max) {
                 max = s;
             }
         }
-        for (SportWeekResult.DataBean.StatsBean bean: stats) {
+        for (SportWeekResult.DataBean.StatsBean bean : stats) {
             long s = Long.parseLong(bean.getSeconds());
 
             Date yyyyMMdd = DateUtils.parseString("yyyyMMdd", bean.getDate());
             mSportDataEntities.add(new SportDataEntity(yyyyMMdd.getTime(),
                     DateUtils.formatDate("MM/dd", yyyyMMdd),
                     getWeek(yyyyMMdd.getTime()),
-                    String.valueOf((float)s / max),
+                    String.valueOf((float) s / max),
                     bean.getFmtSeconds(),
                     false));
         }
+
     }
 
+
     public SportDataEntity getDate4Index(int position) {
+        if (mSportDataEntities == null || mSportDataEntities.size() <= position) {
+            return null;
+        }
         return mSportDataEntities.get(position);
     }
 

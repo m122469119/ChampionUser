@@ -464,6 +464,20 @@ public interface LikingApiService {
     Observable<SportWeekResult> getSportStatsData(@Path(PATH_VERSION) String sHostVersion,
                                                   @Field(KEY_TOKEN) String token);
 
+    @FormUrlEncoded
+    @POST(Urls.SPORT_SHARE)
+    Observable<ShareResult> getSportShare(@Path(PATH_VERSION) String sHostVersion,
+                                          @Field(KEY_TOKEN) String token);
+
+
+    @FormUrlEncoded
+    @POST(Urls.SMART_SPOT_SHARE)
+    Observable<ShareResult> getSmartSpotShare(@Path(PATH_VERSION) String sHostVersion,
+                                              @Field(KEY_TOKEN) String token,
+                                              @Field("video_url") String url,
+                                              @Field("exercise_name") String exercise_name);
+
+
     class Urls {
         private static final String sVersion = "/{version}/";
 
@@ -817,5 +831,17 @@ public interface LikingApiService {
          * 运动状态
          */
         public static final String SPORT_STATS = sVersion + "sport/stats";
-     }
+
+
+        /**
+         * 七天分享
+         */
+        public static final String SPORT_SHARE = sVersion + "sport/sport-share";
+
+        /**
+         * Smartspot分享
+         */
+        public static final String SMART_SPOT_SHARE = sVersion + "sport/smart-spot-share";
+
+    }
 }
