@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.goodchef.liking.R;
@@ -91,22 +93,25 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_sport);
         mAdapter = new SportDataAdapter(this);
         View headView = LayoutInflater.from(this).inflate(R.layout.layout_sport_data_header, null);
+        ImageView imageView = (ImageView) headView.findViewById(R.id.body_data_arrow);
+        imageView.setVisibility(View.INVISIBLE);
         initHeadView(headView);
         mAdapter.setHeaderView(headView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-        
-        mAdapter.setOnNextClickListener(new SportDataAdapter.OnNextClickListener() {
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<SportListResult.DataBean.ListBean>() {
+
             @Override
-            public void onClick(SportListResult.DataBean.ListBean bean) {
-                if (bean.getType() == SportListResult.DataBean.ListBean.TYPE_SMARTSPOT) {
-                    SmartSpotDetailActivity.launch(SportDataActivity.this, String.valueOf(bean.getRecordId()));
+            public void onItemClick(int position, SportListResult.DataBean.ListBean data) {
+                if (data.getType() == SportListResult.DataBean.ListBean.TYPE_SMARTSPOT) {
+                    SmartSpotDetailActivity.launch(SportDataActivity.this, String.valueOf(data.getRecordId()));
                 }
             }
         });
         setRightIcon(R.mipmap.sport_share, new View.OnClickListener() {
             @Override
-            public void onClick(View v) {mPresenter.getSportShare(SportDataActivity.this);
+            public void onClick(View v) {
+                mPresenter.getSportShare(SportDataActivity.this);
             }
         });
     }
@@ -137,13 +142,13 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
         requestData();
     }
 
-    public void requestData(){
+    public void requestData() {
         mPresenter.getSportStats();
     }
 
 
     private void bindTabLayout() {
-        for (int i = 0 ; i < 7 ; i ++) {
+        for (int i = 0; i < 7; i++) {
             TabLayout.Tab tab = mTabLayout.newTab();
             tab.setCustomView(getTabView(i));
             mTabLayout.addTab(tab);
@@ -155,7 +160,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 View view = tab.getCustomView();
                 view.findViewById(R.id.image_triangle).setVisibility(View.VISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
-                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this,R.color.his_bg_green));
+                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
                 mPresenter.getSportList(tab.getPosition());
             }
 
@@ -164,7 +169,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 View view = tab.getCustomView();
                 view.findViewById(R.id.image_triangle).setVisibility(View.INVISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
-                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this,R.color.his_bg));
+                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg));
             }
 
             @Override
@@ -172,7 +177,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 View view = tab.getCustomView();
                 view.findViewById(R.id.image_triangle).setVisibility(View.VISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
-                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this,R.color.his_bg_green));
+                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
             }
         });
     }
@@ -182,7 +187,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
     }
 
     private void setTabView() {
-        for (int i = 0 ; i < 7 ; i ++) {
+        for (int i = 0; i < 7; i++) {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
             View customView = tab.getCustomView();
             SportDataEntity date4Index = mPresenter.getDate4Index(i);
@@ -196,7 +201,6 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
         }
         mTabLayout.getTabAt(6).select();
     }
-
 
 
     private void initIntent() {
@@ -221,7 +225,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
             setTabView();
             setTitle(value.getData().getTitle());
             mStateView.setState(StateView.State.SUCCESS);
-        } else  {
+        } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
     }

@@ -2,6 +2,7 @@ package com.goodchef.liking.module.smartspot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.imageloader.ImageLoaderCallback;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.module.paly.VideoPlayActivity;
@@ -144,7 +148,8 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mTvTitle.setText(info.getTitle());
         mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));// TODO: 2017/9/2
 
-        mAdapter.addData(data.getList());
+        //mAdapter.addData(data.getList());
+        mAdapter.setData(data.getList());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -164,7 +169,6 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
 
         public SmartDetailAdapter(Context context) {
             super(context);
-
             mContext = context;
         }
 
@@ -172,7 +176,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         protected SmartspotViewHolder createViewHolder(ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.item_smartspot_detail, parent, false);
-            return new SmartspotViewHolder(view);
+            return new SmartspotViewHolder(view,mContext);
         }
 
         class SmartspotViewHolder extends BaseRecycleViewHolder<SmartspotDetailResult.DataBean.ListBean> {
@@ -190,11 +194,26 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
             HImageView hivCapture;
             @BindView(R.id.view_image)
             View viewImage;
+            @BindView(R.id.play_video_icon)
+            ImageView iconImageView;
+
+            public SmartspotViewHolder(View itemView, Context context) {
+                super(itemView, context);
+
+                ButterKnife.bind(this, itemView);
+
+                mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Impact.ttf");
+                tvSet.setTypeface(mTypeFace);
+                tvReps.setTypeface(mTypeFace);
+                tvTime.setTypeface(mTypeFace);
+                tvRestTime.setTypeface(mTypeFace);
+                tvEnd.setTypeface(mTypeFace);
+            }
 
             @OnClick({R.id.view_image})
             public void onViewClicked(View view) {
-                SmartspotDetailResult.DataBean.ListBean item = (SmartspotDetailResult.DataBean.ListBean)view.getTag();
-                if(null != item.getMedias()){
+                SmartspotDetailResult.DataBean.ListBean item = (SmartspotDetailResult.DataBean.ListBean) view.getTag();
+                if (null != item.getMedias()) {
                     SmartspotDetailResult.DataBean.ListBean.MediasBean bean = item.getMedias();
                     VideoPlayActivity.launch(SmartSpotDetailActivity.this, bean.getImg(), bean.getVideo(), mTvTitle.getText().toString());
                 }
@@ -214,18 +233,8 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
 
             private Typeface mTypeFace;
 
-            public SmartspotViewHolder(View itemView) {
-                super(itemView);
 
-                ButterKnife.bind(this, itemView);
 
-                mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Impact.ttf");
-                tvSet.setTypeface(mTypeFace);
-                tvReps.setTypeface(mTypeFace);
-                tvTime.setTypeface(mTypeFace);
-                tvRestTime.setTypeface(mTypeFace);
-                tvEnd.setTypeface(mTypeFace);
-            }
 
             @Override
             public void bindViews(SmartspotDetailResult.DataBean.ListBean data) {
@@ -240,7 +249,14 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
                 tvRestTime.setText(String.valueOf(data.getRestTime()));
                 SmartspotDetailResult.DataBean.ListBean.MediasBean bean = data.getMedias();
                 if (null != bean) {
-                    HImageLoaderSingleton.loadImage(hivCapture, bean.getImg(), SmartSpotDetailActivity.this);
+                    HImageLoaderSingleton.loadImage(hivCapture, bean.getImg(), new ImageLoaderCallback() {
+                        @Override
+                        public void finish(Bitmap bitmap) {
+                            super.finish(bitmap);
+                            viewImage.setBackgroundColor(ResourceUtils.getColor(R.color.action_bar_gray));
+                            iconImageView.setImageResource(R.drawable.ic_video_load_success);
+                        }
+                    }, SmartSpotDetailActivity.this);
                 }
             }
         }
