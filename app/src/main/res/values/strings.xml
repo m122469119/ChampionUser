@@ -681,4 +681,6 @@
     <string name="run_finish_finish">感谢你们的陪伴</string>
     <string name="run_finish_finish_header">恭喜你，完成本次跑步</string>
     <string name="run_finish_finish_header_marahton">恭喜你</string>
+    <string name="ok">好的</string>
+    <string name="no_recognition_qr_code">无法识别二维码</string>
 </resources>

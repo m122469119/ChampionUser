@@ -397,7 +397,11 @@ public class QrCodeActivity extends AppBarMVPSwipeBackActivity<ScanQrCodeContrac
     }
 
     private void requestDate(final String data) {
-        mPresenter.sendScanQrCode(this, data);
+        if (data.contains("http")) {
+            mPresenter.showDialog(this, getString(R.string.no_recognition_qr_code));
+        } else {
+            mPresenter.sendScanQrCode(this, data);
+        }
     }
 
     @Override
@@ -415,7 +419,7 @@ public class QrCodeActivity extends AppBarMVPSwipeBackActivity<ScanQrCodeContrac
             public void run() {
                 restartPreview();
             }
-        }, 3000);
+        }, 1500);
     }
 
     @Override
