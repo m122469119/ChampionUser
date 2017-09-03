@@ -12,10 +12,12 @@ import android.widget.Toast;
 
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.widget.web.HDefaultWebActivity;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.data.remote.retrofit.result.MilResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.AnnouncementDirect;
 import com.goodchef.liking.eventmessages.PushHasMessage;
 import com.goodchef.liking.module.card.my.MyCardActivity;
@@ -35,6 +37,9 @@ import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
+
+import static com.goodchef.liking.module.runpush.RunFinishActivity.KEY_MARAHTON_ID;
+import static com.goodchef.liking.module.runpush.RunFinishActivity.KEY_REC_USER_ID;
 
 
 /**
@@ -166,12 +171,6 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     } else if (USER_RUN.equals(direct)) {
-                        JSONObject dataObj = extraJsonObject.optJSONObject(EXTRA_KEY_DATA);
-                        String marathonId = dataObj.optString("marathon_id");
-                        String userIds = dataObj.optString("rec_user_id");
-                        userIds = userIds.substring(2, userIds.length() - 2);
-                        String result = userIds.replace("\"","");
-                        RunFinishActivity.launchWithNew(context, result, marathonId);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
@@ -296,9 +295,47 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
                     toAnnouncement(extras, context);
                     break;
+                case USER_RUN:
+                    toUserRun(extras, context);
+                    break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void toUserRun(String s, Context context) {
+        Gson gson = new Gson();
+        MilResult milResult = gson.fromJson(s, MilResult.class);
+
+        String marathonId = milResult.getData().getMarathonId();
+        String userIds = gson.toJson(milResult.getData().getRecUserId());
+
+        userIds = userIds.substring(2, userIds.length() - 2);
+        String result = userIds.replace("\"", "");
+
+        if (AppStatusUtils.getTopActivityClass(context).contains("com.goodchef.liking.module")) {
+            RunFinishActivity.launchWithNew(context, result, marathonId);
+        } else {
+            Intent resultIntent = new Intent(context, RunFinishActivity.class);
+
+            resultIntent.putExtra(KEY_REC_USER_ID, result);
+            resultIntent.putExtra(KEY_MARAHTON_ID, marathonId);
+            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(RunFinishActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            showNotification(context,
+                    context.getString(R.string.app_name),
+                    milResult.getData().getAlert(),
+                    resultPendingIntent);
         }
     }
 

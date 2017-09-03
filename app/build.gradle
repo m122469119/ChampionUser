@@ -65,6 +65,7 @@ android {
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //        }
         release {
+            minifyEnabled false
             buildConfigField BOOLEAN, TEST_MODE, TRUE
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://testapp.likingfit.com\""

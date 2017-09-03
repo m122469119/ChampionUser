@@ -14,6 +14,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -101,7 +102,10 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
         RunFinishResult.DataBean.UserBean user = data.getUser();
 
         HImageLoaderSingleton.loadImage(ivHeader, LikingPreference.getUserIconUrl(), RunFinishActivity.this);
+
         tvUserName.setText(LikingPreference.getNickName());
+
+
 
         if ("0".equals(mMarahtonId)) { // 普通跑
             tvHeaderTitle.setText(getString(R.string.run_finish_finish_header));
@@ -141,25 +145,26 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
             return;
         }
         mViewContent.removeAllViews();
-
         LayoutInflater inflater = LayoutInflater.from(this);
         for (final RunFinishResult.DataBean.ListBean item : list) {
             View view = inflater.inflate(R.layout.item_run_finish_partner, null);
             view.setTag(item);
             TextView tvUsername = (TextView) view.findViewById(R.id.tv_username);
             TextView tvNo = (TextView) view.findViewById(R.id.tv_no);
-            ImageView ivSex = (ImageView) view.findViewById(R.id.iv_sex);
+            HImageView ivSex = (HImageView) view.findViewById(R.id.iv_sex);
+            HImageView ivHeader = (HImageView) view.findViewById(R.id.iv_icon);
+            HImageLoaderSingleton.loadImage(ivHeader, item.getAvatar(),RunFinishActivity.this);
+
             if (item.getGender() == 0) { // 0 女  1 男
-                ivSex.setImageResource(R.drawable.ic_female);
+                HImageLoaderSingleton.loadImage(ivSex, R.drawable.ic_female, this);
             } else {
-                ivSex.setImageResource(R.drawable.ic_male);
+                HImageLoaderSingleton.loadImage(ivSex, R.drawable.ic_male, this);
             }
             TextView tvStatus = (TextView) view.findViewById(R.id.tv_status);
             tvUsername.setText(item.getName());
             tvNo.setText(String.valueOf(item.getDesc()));
             tvStatus.setText("+ 关注");
             tvStatus.setTextColor(getResources().getColor(R.color.lesson_details_gray_back));
-
             mViewContent.addView(view);
             tvStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,8 +185,8 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
         mPresenter = new RunFinishContract.Presenter();
     }
 
-    private static final String KEY_REC_USER_ID = "key_rec_user_id";
-    private static final String KEY_MARAHTON_ID = "key_marahton_id";
+    public static final String KEY_REC_USER_ID = "key_rec_user_id";
+    public static final String KEY_MARAHTON_ID = "key_marahton_id";
 
     public static void launch(Context context, String userId, String marahtonId) {
         if (null == context) {
@@ -202,5 +207,13 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
         intent.putExtra(KEY_MARAHTON_ID, marahtonId);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        Intent intent = new Intent(RunFinishActivity.this, LikingHomeActivity.class);
+        startActivity(intent);
     }
 }

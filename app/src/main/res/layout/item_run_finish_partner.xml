@@ -14,21 +14,27 @@
 
         <com.aaron.imageloader.code.HImageView
             android:id="@+id/iv_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
             fresco:failureImage="@drawable/icon_head_default_image"
             fresco:failureImageScaleType="centerCrop"
             fresco:placeholderImage="@drawable/icon_head_default_image"
             fresco:placeholderImageScaleType="centerCrop"
             fresco:roundAsCircle="true" />
 
-        <ImageView
+        <com.aaron.imageloader.code.HImageView
             android:id="@+id/iv_sex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_male" />
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_below="@id/iv_icon"
+            fresco:failureImage="@drawable/ic_male"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_male"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundAsCircle="true"
+
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -45,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_16dp"
             android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="@dimen/textsize_14"
             tools:text="UserName" />
@@ -54,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_16dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/lesson_details_gray_back"
             android:textSize="@dimen/textsize_14"
             android:textStyle="bold"
@@ -64,7 +72,7 @@
             android:id="@+id/tv_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal"
             tools:text="已关注" />
     </LinearLayout>
