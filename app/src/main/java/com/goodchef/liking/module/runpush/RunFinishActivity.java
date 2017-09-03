@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -129,7 +130,8 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
             RunFinishResult.DataBean.ListBean item = (RunFinishResult.DataBean.ListBean) view.getTag();
             if (item.getUserId().equals(userId)) {
                 TextView tvStatus = (TextView) view.findViewById(R.id.tv_status);
-                tvStatus.setText("已关注");
+                tvStatus.setText("√ 已关注");
+                tvStatus.setTextColor(getResources().getColor(R.color.c34c86c));
             }
         }
     }
@@ -139,16 +141,25 @@ public class RunFinishActivity extends AppBarMVPSwipeBackActivity<RunFinishContr
             return;
         }
         mViewContent.removeAllViews();
+
         LayoutInflater inflater = LayoutInflater.from(this);
         for (final RunFinishResult.DataBean.ListBean item : list) {
             View view = inflater.inflate(R.layout.item_run_finish_partner, null);
             view.setTag(item);
             TextView tvUsername = (TextView) view.findViewById(R.id.tv_username);
             TextView tvNo = (TextView) view.findViewById(R.id.tv_no);
+            ImageView ivSex = (ImageView) view.findViewById(R.id.iv_sex);
+            if (item.getGender() == 0) { // 0 女  1 男
+                ivSex.setImageResource(R.drawable.ic_female);
+            } else {
+                ivSex.setImageResource(R.drawable.ic_male);
+            }
             TextView tvStatus = (TextView) view.findViewById(R.id.tv_status);
             tvUsername.setText(item.getName());
             tvNo.setText(String.valueOf(item.getDesc()));
             tvStatus.setText("+ 关注");
+            tvStatus.setTextColor(getResources().getColor(R.color.lesson_details_gray_back));
+
             mViewContent.addView(view);
             tvStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
