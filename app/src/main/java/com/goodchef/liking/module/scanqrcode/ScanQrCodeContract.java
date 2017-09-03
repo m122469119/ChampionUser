@@ -66,19 +66,22 @@ public class ScanQrCodeContract {
             }));
         }
 
-        private void showDialog(Context context, String string) {
+        public void showDialog(Context context, String string) {
             HBaseDialog.Builder builder = new HBaseDialog.Builder(context);
             android.view.View view = LayoutInflater.from(context).inflate(R.layout.dialog_one_content, null, false);
+            TextView mTitleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
             TextView mTextView = (TextView) view.findViewById(R.id.one_dialog_content);
             mTextView.setText(string);
+            mTitleTextView.setText("提示");
             builder.setCustomView(view);
-            builder.setPositiveButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    mView.scanErrorView();
                     dialog.dismiss();
                 }
             });
-            builder.create();
+            builder.create().show();
         }
 
     }
