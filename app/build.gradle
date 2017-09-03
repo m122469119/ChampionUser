@@ -21,6 +21,13 @@ android {
             keyAlias "haochushi"
             keyPassword "haochushi"
         }
+        testConfig {
+            storeFile file("test.keystore")
+            storePassword "likingfit"
+            keyAlias "android.keystore"
+            keyPassword "likingfit"
+        }
+
     }
 
     sourceSets {
@@ -61,9 +68,9 @@ android {
             buildConfigField BOOLEAN, TEST_MODE, TRUE
             buildConfigField STRING, APP_FLAG, appFlag
             buildConfigField STRING, HTTP_HOST, "\"http://testapp.likingfit.com\""
-          //  applicationIdSuffix ".test"
+            applicationIdSuffix ".test"
             resValue "string", "app_name", "Liking皮皮虾"
-            signingConfig signingConfigs.myConfig
+            signingConfig signingConfigs.testConfig
             proguardFiles 'proguard-rules.pro'
         }
     }
@@ -96,7 +103,7 @@ dependencies {
     compile("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
     provided("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
+        transitive = true
     }
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
