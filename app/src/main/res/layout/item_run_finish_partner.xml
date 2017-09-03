@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_16dp">
+
+    <com.aaron.imageloader.code.HImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_16dp"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:textColor="@color/lesson_details_gray_back"
+        android:textSize="@dimen/textsize_14"
+        tools:text="UserName" />
+
+    <TextView
+        android:id="@+id/tv_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_16dp"
+        android:layout_toRightOf="@+id/tv_username"
+        android:textColor="@color/lesson_details_gray_back"
+        android:textSize="@dimen/textsize_14"
+        tools:text="相遇11次" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        tools:text="已关注" />
+</RelativeLayout>

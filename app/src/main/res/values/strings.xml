@@ -675,4 +675,10 @@
     <string name="sport_private_lesson">私教课</string>
     <string name="sport_smartspot">SmartSpot</string>
     <string name="sport_treadmill">跑步机</string>
+
+    <string name="run_finish_have">有</string>
+    <string name="run_finish_partner">位一起奔跑的Liking伙伴</string>
+    <string name="run_finish_finish">感谢你们的陪伴</string>
+    <string name="run_finish_finish_header">恭喜你，完成本次跑步</string>
+    <string name="run_finish_finish_header_marahton">恭喜你</string>
 </resources>

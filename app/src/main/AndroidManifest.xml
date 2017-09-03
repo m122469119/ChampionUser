@@ -307,6 +307,9 @@
         <!-- QRCode -->
         <activity android:name=".module.scanqrcode.QrCodeActivity" />
 
+        <!-- 推送 -->
+        <activity android:name=".module.runpush.RunFinishActivity" />
+
         <!-- 支付宝h5页面 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

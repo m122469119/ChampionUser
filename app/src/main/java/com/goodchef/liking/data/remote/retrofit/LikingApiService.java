@@ -52,6 +52,8 @@ import com.goodchef.liking.data.remote.retrofit.result.WaterDetailsResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterOrderResult;
 import com.goodchef.liking.data.remote.retrofit.result.WaterRateResult;
 import com.goodchef.liking.data.remote.retrofit.result.QRCodeResult;
+import com.goodchef.liking.module.runpush.FollowUserResult;
+import com.goodchef.liking.module.runpush.RunFinishResult;
 import com.goodchef.liking.module.smartspot.SmartspotDetailResult;
 
 import java.util.Map;
@@ -469,7 +471,6 @@ public interface LikingApiService {
     Observable<ShareResult> getSportShare(@Path(PATH_VERSION) String sHostVersion,
                                           @Field(KEY_TOKEN) String token);
 
-
     @FormUrlEncoded
     @POST(Urls.SMART_SPOT_SHARE)
     Observable<ShareResult> getSmartSpotShare(@Path(PATH_VERSION) String sHostVersion,
@@ -477,6 +478,17 @@ public interface LikingApiService {
                                               @Field("video_url") String url,
                                               @Field("exercise_name") String exercise_name);
 
+    @POST(Urls.GET_MARAHTON)
+    Observable<RunFinishResult> getMarathon(@Path(PATH_VERSION) String sHostVersion,
+                                            @Field(KEY_TOKEN) String token,
+                                            @Field("rec_user_id") String userId,
+                                            @Field("marahton_id") String marahtonId);
+
+    @FormUrlEncoded
+    @POST(Urls.GET_FOLLOW)
+    Observable<FollowUserResult> followUser(@Path(PATH_VERSION) String sHostVersion,
+                                            @Field(KEY_TOKEN) String token,
+                                            @Field("follow_user_id") String userId);
 
     class Urls {
         private static final String sVersion = "/{version}/";
@@ -832,8 +844,9 @@ public interface LikingApiService {
          */
         public static final String SPORT_STATS = sVersion + "sport/stats";
 
-
         /**
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
          * 七天分享
          */
         public static final String SPORT_SHARE = sVersion + "sport/sport-share";
@@ -843,5 +856,18 @@ public interface LikingApiService {
          */
         public static final String SMART_SPOT_SHARE = sVersion + "sport/smart-spot-share";
 
+        /**
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+         * 马拉松列表
+         */
+        public static final String GET_MARAHTON = sVersion + "marathon/list";
+
+        /**
+         * 关注用户
+         */
+        public static final String GET_FOLLOW = sVersion + "marathon/follow";
     }
 }

@@ -23,9 +23,11 @@ import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.message.MessageActivity;
+import com.goodchef.liking.module.runpush.RunFinishActivity;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -164,7 +166,11 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     } else if (USER_RUN.equals(direct)) {
-
+                        JSONObject dataObj = extraJsonObject.optJSONObject(EXTRA_KEY_DATA);
+                        String marathonId = dataObj.optString("marathon_id");
+                        String userIds = dataObj.optString("rec_user_id");
+                        userIds = userIds.substring(2, userIds.length() - 2);
+                        RunFinishActivity.launchWithNew(context, userIds, marathonId);
                     }
                     break;
                 case DIRECT_TYPE_HTML5:
