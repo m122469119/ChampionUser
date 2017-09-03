@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -151,7 +152,12 @@
                         android:id="@+id/iv_header"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/ic_launcher" />
+                        fresco:failureImage="@drawable/icon_head_default_image"
+                        fresco:failureImageScaleType="centerCrop"
+                        fresco:placeholderImage="@drawable/icon_head_default_image"
+                        fresco:placeholderImageScaleType="centerCrop"
+                        fresco:roundAsCircle="true"
+                        tools:src="@drawable/ic_launcher" />
 
                     <TextView
                         android:id="@+id/tv_username"
