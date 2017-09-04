@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -239,10 +240,13 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
         mAdapter.setDatas(data);
         mAdapter.notifyDataSetChanged();
 
+        ViewGroup.LayoutParams params = mFooterView.getLayoutParams();
         if(null == data || data.size() == 0){
             mFooterView.setVisibility(View.VISIBLE);
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         } else {
             mFooterView.setVisibility(View.GONE);
+            params.height = 0;
         }
     }
 

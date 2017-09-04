@@ -2,12 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingTop="@dimen/spacing_24dp">
 
     <ImageView
+        android:id="@+id/iv_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:scaleType="centerInside"
+        android:layout_marginTop="@dimen/spacing_24dp"
         android:src="@drawable/ic_no_sport" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_indicator"
+        android:layout_marginTop="@dimen/spacing_16dp"
+        android:gravity="center"
+        android:text="@string/sport_no_record"
+        android:textColor="@color/c34c86c" />
 </RelativeLayout>
