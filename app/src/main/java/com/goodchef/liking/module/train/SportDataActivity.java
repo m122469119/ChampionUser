@@ -29,14 +29,14 @@ import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.HistogramView;
 
+import java.util.List;
+
 
 public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContract.Presenter> implements SportDataContract.View {
-
     public static final String SPORT_MINS = "sport_mins";
     public static final String SPORT_DAYS = "sport_days";
     public static final String SPORT_TIMES = "sport_times";
     public static final String SHOW_ACTION = "show_action";
-
 
     private String mSportMin = "--";
     private String mSportDay = "--";
@@ -44,7 +44,6 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
 
     private RecyclerView mRecyclerView;
     private SportDataAdapter mAdapter;
-
 
     StateView mStateView;
 
@@ -76,6 +75,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
     TabLayout mTabLayout;
 
     ImageView mRightImage;
+    private View mFooterView;
 
     private Typeface mTypeface;
 
@@ -92,11 +92,14 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
         mStateView = (StateView) findViewById(R.id.state_view);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_sport);
         mAdapter = new SportDataAdapter(this);
-        View headView = LayoutInflater.from(this).inflate(R.layout.layout_sport_data_header, null);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View headView = inflater.inflate(R.layout.layout_sport_data_header, null);
         ImageView imageView = (ImageView) headView.findViewById(R.id.body_data_arrow);
         imageView.setVisibility(View.INVISIBLE);
         initHeadView(headView);
+        mFooterView = inflater.inflate(R.layout.item_sport_data_empty, null);
         mAdapter.setHeaderView(headView);
+        mAdapter.setFooterView(mFooterView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<SportListResult.DataBean.ListBean>() {
@@ -232,8 +235,15 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
 
     @Override
     public void updateSportListView(SportListResult value) {
-        mAdapter.setDatas(value.getData().getList());
+        List<SportListResult.DataBean.ListBean> data = value.getData().getList();
+        mAdapter.setDatas(data);
         mAdapter.notifyDataSetChanged();
+
+        if(null == data || data.size() == 0){
+            mFooterView.setVisibility(View.VISIBLE);
+        } else {
+            mFooterView.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.goodchef.liking.module.train.SportDataActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_sport"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.goodchef.liking.module.train.SportDataActivity">
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_sport"
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:background="@color/white"/>
 </LinearLayout>

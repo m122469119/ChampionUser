@@ -25,7 +25,6 @@ import com.goodchef.liking.module.paly.VideoPlayActivity;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -146,9 +145,8 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mStateView.setState(StateView.State.SUCCESS);
         SmartspotDetailResult.DataBean.InfoBean info = data.getInfo();
         mTvTitle.setText(info.getTitle());
-        mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));// TODO: 2017/9/2
+        mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));
 
-        //mAdapter.addData(data.getList());
         mAdapter.setData(data.getList());
         mAdapter.notifyDataSetChanged();
     }
@@ -217,24 +215,9 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
                     SmartspotDetailResult.DataBean.ListBean.MediasBean bean = item.getMedias();
                     VideoPlayActivity.launch(SmartSpotDetailActivity.this, bean.getImg(), bean.getVideo(), mTvTitle.getText().toString());
                 }
-
-//                List<SmartspotDetailResult.DataBean.ListBean> dataList = getDataList();
-//                ArrayList<String> mVideos = new ArrayList<>();
-//                ArrayList<String> mImages = new ArrayList<>();
-//                for (SmartspotDetailResult.DataBean.ListBean item : dataList) {
-//                    String video = item.getMedias().getVideo();
-//                    mVideos.add(video);
-//                    System.out.println(video);
-//                    String image = item.getMedias().getImg();
-//                    mImages.add(image);
-//                }
-//                VideoPlayActivity.launch(SmartSpotDetailActivity.this, mImages, mVideos);
             }
 
             private Typeface mTypeFace;
-
-
-
 
             @Override
             public void bindViews(SmartspotDetailResult.DataBean.ListBean data) {
@@ -245,8 +228,8 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
 
                 tvSet.setText("SET " + index);
                 tvReps.setText(data.getReps());
-                tvTime.setText(String.valueOf(data.getTime()));
-                tvRestTime.setText(String.valueOf(data.getRestTime()));
+                tvTime.setText(data.getTime() + " s");
+                tvRestTime.setText(data.getRestTime() + " s");
                 SmartspotDetailResult.DataBean.ListBean.MediasBean bean = data.getMedias();
                 if (null != bean) {
                     HImageLoaderSingleton.loadImage(hivCapture, bean.getImg(), new ImageLoaderCallback() {
