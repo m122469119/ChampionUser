@@ -3,83 +3,84 @@ package com.goodchef.liking.module.paly;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
 import android.view.View;
+
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
-import com.aaron.android.framework.base.ui.actionbar.AppBarActivity;
-import com.aaron.android.framework.base.ui.actionbar.AppBarSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.PopupUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.widgets.video.MyGSYPlayView;
+import com.goodchef.liking.widgets.video.SlideListener;
+import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContract.Presenter> implements VideoPlayContract.View {
-    private JCVideoPlayerStandard mJCPlayer;
+public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContract.Presenter> implements VideoPlayContract.View, SlideListener {
+    public static final String VIDEO_POSTION = "video_position";
+    @BindView(R.id.video_player)
+    MyGSYPlayView videoPlayer;
+
 
     private ArrayList<String> mImage;
-    private ArrayList<String> mVideo;
+    private ArrayList<String> mVideoList;
     private String mTitle;
     private LinkedHashMap<String, String> mVideoMap = new LinkedHashMap<>();
+    private int postion = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_play);
-
-
-//        ActionBar actionBar = getActionBar();
-//        if (null != actionBar) {
-//            actionBar.setDisplayHomeAsUpEnabled(true); // 设置返回按钮可见
-//            actionBar.setDisplayShowHomeEnabled(true); // 设置是否显示logo图标
-//            actionBar.setHomeButtonEnabled(true); // 设置左上角的图标可点击
-//        }
-
-
-
+        hideAppBar();
+        ButterKnife.bind(this);
         mImage = getIntent().getStringArrayListExtra(KEY_IMG);
-        mVideo = getIntent().getStringArrayListExtra(KEY_VIDEO);
+        mVideoList = getIntent().getStringArrayListExtra(KEY_VIDEO);
         mTitle = getIntent().getStringExtra(KEY_TITLE);
+        postion = getIntent().getIntExtra(VIDEO_POSTION, 0);
 
         setTitle(mTitle);
 
-        for (String video: mVideo){
+        for (String video : mVideoList) {
             mVideoMap.put(video, video);
         }
-
-
-
-        mJCPlayer = (JCVideoPlayerStandard) findViewById(R.id.videoplayer);
-        mJCPlayer.setUp(mVideoMap, 0, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
-//        mJCPlayer.startWindowFullscreen();
-        mJCPlayer.startVideo();
-//        mJCPlayer.backButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//        HImageLoaderSingleton.loadImage(mJCPlayer.thumbImageView, mImage.get(0), this);
-
         setRightIcon(R.mipmap.sport_share, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.getVideoShare(VideoPlayActivity.this, mVideo.get(0), mTitle);
+                mPresenter.getVideoShare(VideoPlayActivity.this, mVideoList.get(0), mTitle);
             }
         });
+        initPlay();
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mImage = getIntent().getStringArrayListExtra(KEY_IMG);
+        mVideoList = getIntent().getStringArrayListExtra(KEY_VIDEO);
+        mTitle = getIntent().getStringExtra(KEY_TITLE);
+        postion = getIntent().getIntExtra(VIDEO_POSTION, 0);
+        initPlay();
+    }
+
+    private void initPlay() {
+        if (mVideoList.size() > 0) {
+            videoPlayer.setUp(mVideoList.get(postion), false, "");
+            videoPlayer.startPlayLogic();
+            videoPlayer.setSlideListener(this);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        JCVideoPlayer.releaseAllVideos();
+        if (videoPlayer != null) {
+            videoPlayer.onVideoPause();
+        }
     }
 
     @Override
@@ -95,9 +96,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     @Override
     public void onBackPressed() {
-        if (JCVideoPlayer.backPress()) {
-            return;
-        }
         super.onBackPressed();
     }
 
@@ -105,24 +103,24 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     private static final String KEY_VIDEO = "key_video";
     private static final String KEY_TITLE = "key_title";
 
-    public static void launch(Context context, String img, String video, String title) {
+    public static void launch(Context context, String img, String video, String title, int postion) {
         ArrayList<String> imgs = new ArrayList<>();
         ArrayList<String> videos = new ArrayList<>();
         imgs.add(img);
         videos.add(video);
-        launch(context, imgs, videos, title);
+        launch(context, imgs, videos, title, postion);
     }
 
     /**
-     *
      * @param context
-     * @param img 缩略图
-     * @param video 视频
+     * @param img     缩略图
+     * @param video   视频
      */
     public static void launch(Context context,
                               ArrayList<String> img,
                               ArrayList<String> video,
-                              String title) {
+                              String title,
+                              int postion) {
         if (null == context) {
             return;
         }
@@ -133,17 +131,10 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         intent.putStringArrayListExtra(KEY_IMG, img);
         intent.putStringArrayListExtra(KEY_VIDEO, video);
         intent.putExtra(KEY_TITLE, title);
-
+        intent.putExtra(VIDEO_POSTION, postion);
         context.startActivity(intent);
     }
 
-    public static void playTest(Context context) {
-        String title = "Test Video";
-        // String videoUrl = "http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4";
-        String videoUrl = "http://video.boohee.cn/chaomo/female/6%E5%8F%A5%E8%AF%9D.mp4";
-        String thumbImageUrl = "http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640";
-      //  launch(context, thumbImageUrl, videoUrl);
-    }
 
     @Override
     public void changeStateView(StateView.State state) {
@@ -153,5 +144,44 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     @Override
     public void setPresenter() {
         mPresenter = new VideoPlayContract.Presenter();
+    }
+
+    @Override
+    public void touchUp() {
+        if (mVideoList.size() == 1) {
+            return;
+        }
+        releasePlayer();
+        postion--;
+        if (postion > -1) {
+            playNextVideo();
+        }
+    }
+
+    private void playNextVideo() {
+        Intent intent = new Intent(this, VideoPlayActivity.class);
+        intent.putExtra(VIDEO_POSTION, postion);
+        intent.putStringArrayListExtra(KEY_VIDEO, mVideoList);
+        startActivity(intent);
+    }
+
+    private void releasePlayer() {
+        //释放所有
+        if (videoPlayer != null) {
+            videoPlayer.setStandardVideoAllCallBack(null);
+            videoPlayer.release();
+        }
+    }
+
+    @Override
+    public void touchDown() {
+        if (mVideoList.size() == 1) {
+            return;
+        }
+        releasePlayer();
+        postion++;
+        if (postion < mVideoList.size()) {
+            playNextVideo();
+        }
     }
 }

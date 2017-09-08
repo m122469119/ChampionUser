@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
+import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.imageloader.ImageLoaderCallback;
@@ -25,6 +26,7 @@ import com.goodchef.liking.module.paly.VideoPlayActivity;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
     private String mRecordId;
 
     private SmartDetailAdapter mAdapter;
+    List<String> videoUrlList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mAdapter = new SmartDetailAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setOnItemListener();
 
         mStateView.setState(StateView.State.LOADING);
         mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
@@ -136,19 +140,35 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
     }
 
     @Override
-    public void updateData(SmartspotDetailResult.DataBean data) {
+    public void updateData(final SmartspotDetailResult.DataBean data) {
         if (null == data) {
             mStateView.setState(StateView.State.NO_DATA);
             return;
         }
-
         mStateView.setState(StateView.State.SUCCESS);
         SmartspotDetailResult.DataBean.InfoBean info = data.getInfo();
         mTvTitle.setText(info.getTitle());
         mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));
-
         mAdapter.setData(data.getList());
         mAdapter.notifyDataSetChanged();
+        videoUrlList.clear();
+        for (SmartspotDetailResult.DataBean.ListBean dataBean : mAdapter.getDataList()) {
+            videoUrlList.add(dataBean.getMedias().getVideo());
+        }
+    }
+
+    private void setOnItemListener() {
+        mAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                VideoPlayActivity.launch(SmartSpotDetailActivity.this, new ArrayList<String>(), (ArrayList<String>) videoUrlList, mTvTitle.getText().toString(), position);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -174,7 +194,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         protected SmartspotViewHolder createViewHolder(ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.item_smartspot_detail, parent, false);
-            return new SmartspotViewHolder(view,mContext);
+            return new SmartspotViewHolder(view, mContext);
         }
 
         class SmartspotViewHolder extends BaseRecycleViewHolder<SmartspotDetailResult.DataBean.ListBean> {
@@ -206,15 +226,6 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
                 tvTime.setTypeface(mTypeFace);
                 tvRestTime.setTypeface(mTypeFace);
                 tvEnd.setTypeface(mTypeFace);
-            }
-
-            @OnClick({R.id.view_image})
-            public void onViewClicked(View view) {
-                SmartspotDetailResult.DataBean.ListBean item = (SmartspotDetailResult.DataBean.ListBean) view.getTag();
-                if (null != item.getMedias()) {
-                    SmartspotDetailResult.DataBean.ListBean.MediasBean bean = item.getMedias();
-                    VideoPlayActivity.launch(SmartSpotDetailActivity.this, bean.getImg(), bean.getVideo(), mTvTitle.getText().toString());
-                }
             }
 
             private Typeface mTypeFace;
