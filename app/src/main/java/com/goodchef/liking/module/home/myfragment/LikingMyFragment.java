@@ -217,9 +217,10 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mContinuationCard.setVisibility(View.GONE);
         }
 
-        mEndTime.setVisibility(View.VISIBLE);
+
         gymId = userOtherInfoData.getCard().getGym_id();
         if (!StringUtils.isEmpty(userOtherInfoData.getCard().getEnd_time())) {
+            mEndTime.setVisibility(View.VISIBLE);
             Date date = DateUtils.parseString("yyyy-MM-dd", userOtherInfoData.getCard().getEnd_time());
             String endTime = DateUtils.formatDate("yyyy.MM.dd到期", date);
             mEndTime.setText(endTime);
