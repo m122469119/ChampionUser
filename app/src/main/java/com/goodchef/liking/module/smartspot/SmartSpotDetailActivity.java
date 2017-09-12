@@ -161,7 +161,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                VideoPlayActivity.launch(SmartSpotDetailActivity.this, new ArrayList<String>(), (ArrayList<String>) videoUrlList, mTvTitle.getText().toString(), position);
+                launch(SmartSpotDetailActivity.this, new ArrayList<String>(), (ArrayList<String>) videoUrlList, mTvTitle.getText().toString(), position);
             }
 
             @Override
@@ -170,6 +170,43 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
             }
         });
     }
+
+
+
+    public  void launch(Context context, String img, String video, String title, int postion) {
+        ArrayList<String> imgs = new ArrayList<>();
+        ArrayList<String> videos = new ArrayList<>();
+        imgs.add(img);
+        videos.add(video);
+        launch(context, imgs, videos, title, postion);
+    }
+
+    /**
+     * @param context
+     * @param img     缩略图
+     * @param video   视频
+     */
+    public void launch(Context context,
+                       ArrayList<String> img,
+                       ArrayList<String> video,
+                       String title,
+                       int postion) {
+        if (null == context) {
+            return;
+        }
+        if (null == video || video.size() == 0) {
+            return;
+        }
+        Intent intent = new Intent(context, VideoPlayActivity.class);
+        intent.putStringArrayListExtra(VideoPlayActivity.KEY_IMG, img);
+        intent.putStringArrayListExtra(VideoPlayActivity.KEY_VIDEO, video);
+        intent.putExtra(VideoPlayActivity.KEY_TITLE, title);
+        intent.putExtra(VideoPlayActivity.VIDEO_POSTION, postion);
+        context.startActivity(intent);
+        overridePendingTransition(R.anim.silde_bottom_in, 0);
+    }
+
+
 
     @Override
     public void changeStateView(StateView.State state) {
