@@ -13,6 +13,7 @@ android {
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
         multiDexEnabled true
+        multiDexKeepProguard file("./tinker_multidexkeep.pro")
     }
     signingConfigs {
         myConfig {
