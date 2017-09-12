@@ -5,8 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.multidex.MultiDex;
+//import android.support.multidex.MultiDex;
 
+import android.support.multidex.MultiDex;
 import com.aaron.android.framework.base.MainProcessInit;
 import com.aaron.android.framework.base.ProcessInit;
 import com.aaron.android.framework.utils.EnvironmentUtils;
@@ -57,8 +58,8 @@ public class LikingApplicationLike extends DefaultApplicationLike {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onBaseContextAttached(Context base) {
-        MultiDex.install(base);
         super.onBaseContextAttached(base);
+        MultiDex.install(base);
         TinkerInstaller.setLogIml(new MyLogImp());
         TinkerInstaller.install(this);
         Tinker tinker = Tinker.with(getApplication());
