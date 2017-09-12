@@ -57,8 +57,8 @@ public class LikingApplicationLike extends DefaultApplicationLike {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onBaseContextAttached(Context base) {
-        super.onBaseContextAttached(base);
         MultiDex.install(base);
+        super.onBaseContextAttached(base);
         TinkerInstaller.setLogIml(new MyLogImp());
         TinkerInstaller.install(this);
         Tinker tinker = Tinker.with(getApplication());

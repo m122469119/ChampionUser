@@ -217,7 +217,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mContinuationCard.setVisibility(View.GONE);
         }
 
-
+        mEndTime.setVisibility(View.GONE);
         gymId = userOtherInfoData.getCard().getGym_id();
         if (!StringUtils.isEmpty(userOtherInfoData.getCard().getEnd_time())) {
             mEndTime.setVisibility(View.VISIBLE);
