@@ -21,11 +21,59 @@
 
 
     <RelativeLayout
+        android:id="@+id/layout_controller"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/qr_code_flashlight_bg"
+            android:orientation="horizontal">
 
 
+            <TextView
+                android:id="@+id/playtime_textView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
 
+            <SeekBar
+                android:id="@+id/play_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="5.0"
+                android:max="100"
+                android:progress="0"
+                android:thumbOffset="0dp" />
+
+            <TextView
+                android:id="@+id/totalTime_textView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/spacing_12dp"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/start_pause"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/video_pause_normal" />
     </RelativeLayout>
-
 </RelativeLayout>

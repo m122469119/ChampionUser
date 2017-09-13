@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.View;
+
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
 
@@ -40,7 +41,7 @@ public class HistogramView extends View {
         super(context, attrs, defStyleAttr);
         mRectPaint = new Paint();
         mTextPaint = new Paint();
-        mTextPaint.setTextSize(DisplayUtils.dp2px(10));
+        mTextPaint.setTextSize(DisplayUtils.dp2px(8));
         mTextPaint.setAntiAlias(true);
 
         mTextPaint.setColor(ContextCompat.getColor(context, R.color.his_bg));
@@ -61,10 +62,10 @@ public class HistogramView extends View {
 
     public void setPercentageText(String percentageText) {
         this.mPercentageText = percentageText;
-        if (percentageText.equals("NO\nTRAINING")){
+        if (percentageText.equals("NO\nTRAINING")) {
             mTextPaint.setTextSize(DisplayUtils.dp2px(4));
-        }else {
-            mTextPaint.setTextSize(DisplayUtils.dp2px(10));
+        } else {
+            mTextPaint.setTextSize(DisplayUtils.dp2px(8));
         }
         postInvalidate();
     }
@@ -78,11 +79,11 @@ public class HistogramView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(getMeasuredWidth() * 0.1F, getHisHeight() ,
+        canvas.drawRect(getMeasuredWidth() * 0.1F, getHisHeight(),
                 getMeasuredWidth() * 0.9F, getMeasuredHeight(), mRectPaint);
 
         if (mPercentageText == null || mPercentageText.length() == 0) {
-           mPercentageText = "0mins";
+            mPercentageText = "0mins";
         }
         mTextPaint.getTextBounds(mPercentageText, 0, mPercentageText.length(), mRect);
 
@@ -95,7 +96,6 @@ public class HistogramView extends View {
         float height = getMeasuredHeight() * 0.8F;
         return getMeasuredHeight() - height * mPercentage;
     }
-
 
 
 }
