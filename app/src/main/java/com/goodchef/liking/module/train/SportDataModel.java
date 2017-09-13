@@ -71,7 +71,7 @@ public class SportDataModel extends BaseModel {
                     DateUtils.formatDate("MM/dd", yyyyMMdd),
                     getWeek(yyyyMMdd.getTime()),
                     String.valueOf((float) s / max),
-                    bean.getFmtSeconds(),
+                    Integer.parseInt(bean.getSeconds()) / 60 + "mins",
                     false));
         }
 

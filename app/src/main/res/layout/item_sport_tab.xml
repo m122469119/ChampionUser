@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
->
-    
+    android:id="@+id/layout_sport_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
     <com.goodchef.liking.widgets.HistogramView
-            android:id="@+id/histogramview"
-            android:layout_width="40dp"
-            android:layout_height="100dp"/>
+        android:id="@+id/histogramview"
+        android:layout_width="40dp"
+        android:layout_height="100dp" />
 
     <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/text_date"
-            android:text="08/31"
-            android:textSize="10sp"
-            android:textColor="@color/tab_sport_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="08/31"
+        android:textColor="@color/tab_sport_color"
+        android:textSize="10sp" />
 
     <TextView
-            android:id="@+id/text_week"
-            android:textSize="10sp"
-            android:textColor="@color/tab_sport_color"
-            android:text="四"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/text_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="四"
+        android:textColor="@color/tab_sport_color"
+        android:textSize="10sp" />
 
-    <View android:layout_width="0dp"
-          android:layout_weight="1"
-          android:layout_height="0dp"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <ImageView
-            android:id="@+id/image_triangle"
-            android:visibility="invisible"
-            android:src="@mipmap/tab_triangle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/image_triangle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/tab_triangle"
+        android:visibility="invisible" />
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import butterknife.OnClick;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
 import com.goodchef.liking.adapter.SportDataAdapter;
@@ -27,12 +29,15 @@ import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportWeekResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
+import com.goodchef.liking.utils.DecimalFormatUtil;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.widgets.HistogramView;
 
 import java.util.List;
 
-
+/**
+ * 我的训练数据记录
+ */
 public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContract.Presenter> implements SportDataContract.View {
     public static final String SPORT_MINS = "sport_mins";
     public static final String SPORT_DAYS = "sport_days";
@@ -74,6 +79,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
 
     @BindView(R.id.tablayout_sport)
     TabLayout mTabLayout;
+
 
     ImageView mRightImage;
     private View mFooterView;
@@ -165,6 +171,14 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 view.findViewById(R.id.image_triangle).setVisibility(View.VISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
                 histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
+                SportDataEntity date4Index = (SportDataEntity) histogramView.getTag();
+                if (Float.parseFloat(date4Index.getPercentage()) == 0.0) {
+                    histogramView.setPercentageText("0mins");
+                    histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+                } else {
+                    String percentageText = date4Index.getPercentageText();
+
+                }
                 mPresenter.getSportList(tab.getPosition());
             }
 
@@ -174,6 +188,14 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 view.findViewById(R.id.image_triangle).setVisibility(View.INVISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
                 histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg));
+                SportDataEntity date4Index = (SportDataEntity) histogramView.getTag();
+                if (Float.parseFloat(date4Index.getPercentage()) == 0.0) {
+                    histogramView.setPercentageText("NO\nTRAINING");
+                    histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+                } else {
+                    histogramView.setPercentageText(date4Index.getPercentageText());
+                    histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+                }
             }
 
             @Override
@@ -198,8 +220,14 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
             TextView title = (TextView) customView.findViewById(R.id.text_date);
             TextView content = (TextView) customView.findViewById(R.id.text_week);
             HistogramView histogramView = (HistogramView) customView.findViewById(R.id.histogramview);
-            histogramView.setPercentageText(date4Index.getPercentageText());
-            histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+            if (Float.parseFloat(date4Index.getPercentage()) == 0.0) {
+                histogramView.setPercentageText("NO\nTRAINING");
+                histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+            } else {
+                histogramView.setPercentageText(date4Index.getPercentageText());
+                histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+            }
+            histogramView.setTag(date4Index);
             title.setText(date4Index.getTitle());
             content.setText(date4Index.getContent());
         }
@@ -213,9 +241,9 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
             finish();
         }
         Bundle bundle = intent.getExtras();
-        mSportMin = bundle.getString(SPORT_MINS);
-        mSportDay = bundle.getString(SPORT_DAYS);
-        mSportTimes = bundle.getString(SPORT_TIMES);
+//        mSportMin = bundle.getString(SPORT_MINS);
+//        mSportDay = bundle.getString(SPORT_DAYS);
+//        mSportTimes = bundle.getString(SPORT_TIMES);
     }
 
     @Override
@@ -226,9 +254,18 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
     @Override
     public void updateSportStatsView(SportWeekResult value) {
         if (value != null) {
+            mStateView.setState(StateView.State.SUCCESS);
             setTabView();
             setTitle(value.getData().getTitle());
-            mStateView.setState(StateView.State.SUCCESS);
+            SportWeekResult.DataBean.TotalBean totalBean = value.getData().getTotal();
+            if (totalBean != null) {
+                String min = DecimalFormatUtil.getDecimalFormat((Double.parseDouble(totalBean.getSeconds()) / 60) + "");
+                mHeaderMin.setText(min);
+                mHeaderDay.setText(totalBean.getSportDate() + "");
+                mHeaderTime.setText(totalBean.getTimes());
+            }
+
+
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }
@@ -241,7 +278,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
         mAdapter.notifyDataSetChanged();
 
         ViewGroup.LayoutParams params = mFooterView.getLayoutParams();
-        if(null == data || data.size() == 0){
+        if (null == data || data.size() == 0) {
             mFooterView.setVisibility(View.VISIBLE);
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         } else {

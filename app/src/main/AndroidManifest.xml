@@ -302,7 +302,6 @@
         <activity
             android:name=".module.paly.VideoPlayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- QRCode -->

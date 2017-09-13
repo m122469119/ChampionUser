@@ -14,13 +14,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.widgets.video.SlideListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,18 +39,20 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     private MediaPlayer mediaPlayer;
     private ProgressDialog progressDialog = null;
 
+
+
     private ArrayList<String> mImage;
     private ArrayList<String> mVideoList;
     private String mTitle;
     private LinkedHashMap<String, String> mVideoMap = new LinkedHashMap<>();
     private int postion = 0;
+    private int currentPosition;
 
     float x1 = 0;
     float x2 = 0;
     float y1 = 0;
     float y2 = 0;
 
-    private SlideListener mSlideListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,9 +150,12 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 if (mVideoList.size() == 1) {
                     showToast("播放完成");
                     finish();
-                } else {
+                } else if (postion < mVideoList.size()) {
                     postion++;
                     playNextVideo();
+                } else {
+                    showToast("播放完成");
+                    finish();
                 }
             }
         });
@@ -197,7 +200,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     protected void onPause() {
         if (mediaPlayer.isPlaying()) {
             // 保存当前播放的位置
-            postion = mediaPlayer.getCurrentPosition();
+            currentPosition = mediaPlayer.getCurrentPosition();
             mediaPlayer.stop();
         }
         super.onPause();
@@ -244,7 +247,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         if (mVideoList.size() == 1) {
             return;
         }
-       // releasePlayer();
+        // releasePlayer();
         postion--;
         if (postion > -1) {
             playNextVideo();
@@ -256,11 +259,12 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         intent.putExtra(VIDEO_POSTION, postion);
         intent.putStringArrayListExtra(KEY_VIDEO, mVideoList);
         startActivity(intent);
+        finish();
     }
 
     private void releasePlayer() {
         if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+            mediaPlayer.stop();
             mediaPlayer.release();
         }
     }
@@ -269,7 +273,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         if (mVideoList.size() == 1) {
             return;
         }
-      //  releasePlayer();
+        //  releasePlayer();
         postion++;
         if (postion < mVideoList.size()) {
             playNextVideo();
@@ -278,12 +282,12 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-//       mediaPlayer.reset();
+        mediaPlayer.reset();
         try {
             //设置视屏文件图像的显示参数
             mediaPlayer.setDisplay(holder);
             //uri 网络视频
-            mediaPlayer.setDataSource(VideoPlayActivity.this, Uri.parse(mVideoList.get(0)));
+            mediaPlayer.setDataSource(VideoPlayActivity.this, Uri.parse(mVideoList.get(postion)));
             //异步准备 准备工作在子线程中进行 当播放网络视频时候一般采用此方法
             mediaPlayer.prepareAsync();
             showProgressDialog();

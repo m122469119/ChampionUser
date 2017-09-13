@@ -61,6 +61,11 @@ public class HistogramView extends View {
 
     public void setPercentageText(String percentageText) {
         this.mPercentageText = percentageText;
+        if (percentageText.equals("NO\nTRAINING")){
+            mTextPaint.setTextSize(DisplayUtils.dp2px(4));
+        }else {
+            mTextPaint.setTextSize(DisplayUtils.dp2px(10));
+        }
         postInvalidate();
     }
 

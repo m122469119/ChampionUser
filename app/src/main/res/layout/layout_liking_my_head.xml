@@ -54,6 +54,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="未登录"
+                        android:lines="1"
+                        android:maxWidth="80dp"
+                        android:ellipsize="end"
                         android:textColor="@color/white"
                         android:textSize="@dimen/textsize_15" />
 
@@ -64,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/person_name"
                         android:text="131xxxxxxxx"
-                        android:layout_marginTop="@dimen/spacing_2dp"
+                        android:layout_marginTop="@dimen/spacing_4dp"
                         android:textColor="@color/my_text_color_grey"
                         android:textSize="12sp" />
 
@@ -95,7 +98,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15sp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center_vertical">
 
                     <TextView
