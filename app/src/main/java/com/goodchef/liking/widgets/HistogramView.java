@@ -83,7 +83,7 @@ public class HistogramView extends View {
                 getMeasuredWidth() * 0.9F, getMeasuredHeight(), mRectPaint);
 
         if (mPercentageText == null || mPercentageText.length() == 0) {
-            mPercentageText = "0mins";
+            mPercentageText = "0m";
         }
         mTextPaint.getTextBounds(mPercentageText, 0, mPercentageText.length(), mRect);
 

@@ -9,6 +9,7 @@ import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportWeekResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
+
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
@@ -38,7 +39,7 @@ public class SportDataModel extends BaseModel {
                     @Override
                     public void accept(SportWeekResult sportWeekResult) throws Exception {
                         if (sportWeekResult != null)
-                             createWeekDates(sportWeekResult);
+                            createWeekDates(sportWeekResult);
                     }
                 });
     }
@@ -71,7 +72,7 @@ public class SportDataModel extends BaseModel {
                     DateUtils.formatDate("MM/dd", yyyyMMdd),
                     getWeek(yyyyMMdd.getTime()),
                     String.valueOf((float) s / max),
-                    Integer.parseInt(bean.getSeconds()) / 60 + "mins",
+                    Integer.parseInt(bean.getSeconds()) / 60 + "m",
                     false));
         }
 

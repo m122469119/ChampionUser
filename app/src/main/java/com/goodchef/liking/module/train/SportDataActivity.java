@@ -173,7 +173,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
                 SportDataEntity date4Index = (SportDataEntity) histogramView.getTag();
                 if (Float.parseFloat(date4Index.getPercentage()) == 0.0) {
-                    histogramView.setPercentageText("0mins");
+                    histogramView.setPercentageText("0m");
                     histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
                 } else {
                     String percentageText = date4Index.getPercentageText();
