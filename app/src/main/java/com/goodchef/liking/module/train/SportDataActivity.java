@@ -129,7 +129,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
     private void initHeadView(View headView) {
         ButterKnife.bind(this, headView);
 
-        mHeaderTitle.setText(R.string.today_train_data);
+        mHeaderTitle.setText(R.string.today_train_data_seven_day);
         mHeaderMinUnit.setText(getString(R.string.Mins));
         mHeaderDayUnit.setText(getString(R.string.Days));
         mHeaderTimeUnit.setText(getString(R.string.Times));
