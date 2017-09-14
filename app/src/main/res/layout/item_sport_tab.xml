@@ -8,7 +8,7 @@
 
     <com.goodchef.liking.widgets.HistogramView
         android:id="@+id/histogramview"
-        android:layout_width="45dp"
+        android:layout_width="50dp"
         android:layout_height="100dp" />
 
     <TextView

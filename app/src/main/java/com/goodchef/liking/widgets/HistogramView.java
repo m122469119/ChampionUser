@@ -6,6 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.View;
@@ -41,7 +44,7 @@ public class HistogramView extends View {
     public HistogramView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mRectPaint = new Paint();
-        mTextPaint = new Paint();
+        mTextPaint = new TextPaint();
         mTextPaint.setTextSize(DisplayUtils.dp2px(6));
         mTextPaint.setAntiAlias(true);
 
@@ -65,7 +68,7 @@ public class HistogramView extends View {
     public void setPercentageText(String percentageText) {
         this.mPercentageText = percentageText;
         if (percentageText.equals("NO\nTRAINING")) {
-            mTextPaint.setTextSize(DisplayUtils.dp2px(4));
+            mTextPaint.setTextSize(DisplayUtils.dp2px(6));
         } else {
             mTextPaint.setTextSize(DisplayUtils.dp2px(8));
         }
@@ -89,8 +92,18 @@ public class HistogramView extends View {
         }
         mTextPaint.getTextBounds(mPercentageText, 0, mPercentageText.length(), mRect);
 
-        canvas.drawText(mPercentageText, (getMeasuredWidth() - mRect.width()) / 2,
-                getHisHeight() - mRect.height(), mTextPaint);
+        if (mPercentageText.equals("NO\nTRAINING")) {
+            canvas.save();
+            //字符串超出宽度时自动换行
+            StaticLayout myStaticLayout = new StaticLayout(mPercentageText, 0, mPercentageText.length(), (TextPaint) mTextPaint, getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
+            canvas.translate((getMeasuredWidth() - mRect.width() * 0.8F) / 2, getHisHeight() - mRect.height() * 4);
+            myStaticLayout.draw(canvas);
+            canvas.restore();
+        } else {
+            canvas.drawText(mPercentageText, (getMeasuredWidth() - mRect.width()) / 2,
+                    getHisHeight() - mRect.height(), mTextPaint);
+        }
+
 
     }
 

@@ -686,4 +686,5 @@
     <string name="no_recognition_qr_code">无法识别二维码</string>
     <string name="please_wait">请稍等...</string>
     <string name="play_prepare">播放准备中...</string>
+    <string name="buffering">正在缓冲</string>
 </resources>

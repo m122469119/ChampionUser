@@ -38,8 +38,7 @@ public class SportDataModel extends BaseModel {
                 .doOnNext(new Consumer<SportWeekResult>() {
                     @Override
                     public void accept(SportWeekResult sportWeekResult) throws Exception {
-                        if (sportWeekResult != null)
-                            createWeekDates(sportWeekResult);
+                        createWeekDates(sportWeekResult);
                     }
                 });
     }
@@ -52,30 +51,56 @@ public class SportDataModel extends BaseModel {
 
     public SportDataModel() {
         mSportDataEntities = new LinkedList<>();
+        initEntities();
     }
+
+    private void initEntities() {
+        long s = System.currentTimeMillis();
+        for (int i = 7; i > 0; i --) {
+            Date yyyyMMdd = new Date(s);
+            mSportDataEntities.addFirst(new SportDataEntity(yyyyMMdd.getTime(),
+                    DateUtils.formatDate("MM/dd", yyyyMMdd),
+                    getWeek(yyyyMMdd.getTime()),
+                    "0",
+                    "0mins",
+                    false));
+            s -= 24 * 60 * 60 * 1000;
+        }
+    }
+
 
     private void createWeekDates(SportWeekResult sportWeekResult) {
         mSportDataEntities.clear();
-        List<SportWeekResult.DataBean.StatsBean> stats = sportWeekResult.getData().getStats();
-        long max = 0;
-        for (SportWeekResult.DataBean.StatsBean bean : stats) {
-            long s = Long.parseLong(bean.getSeconds());
-            if (s > max) {
-                max = s;
+
+        if (sportWeekResult == null
+                || sportWeekResult.getData() == null
+                || sportWeekResult.getData().getStats() == null
+                || sportWeekResult.getData().getStats().size() == 0) {
+            initEntities();
+        } else {
+            List<SportWeekResult.DataBean.StatsBean> stats = sportWeekResult.getData().getStats();
+            long max = 0;
+            for (SportWeekResult.DataBean.StatsBean bean : stats) {
+                long s = Long.parseLong(bean.getSeconds());
+                if (s > max) {
+                    max = s;
+                }
+            }
+            for (SportWeekResult.DataBean.StatsBean bean : stats) {
+                long s = Long.parseLong(bean.getSeconds());
+                float p = 0F ;
+                if (max != 0) {
+                    p =  (float) s / max;
+                }
+                Date yyyyMMdd = DateUtils.parseString("yyyyMMdd", bean.getDate());
+                mSportDataEntities.add(new SportDataEntity(yyyyMMdd.getTime(),
+                        DateUtils.formatDate("MM/dd", yyyyMMdd),
+                        getWeek(yyyyMMdd.getTime()),
+                        String.valueOf(p),
+                        Integer.parseInt(bean.getSeconds()) / 60 + "mins",
+                        false));
             }
         }
-        for (SportWeekResult.DataBean.StatsBean bean : stats) {
-            long s = Long.parseLong(bean.getSeconds());
-
-            Date yyyyMMdd = DateUtils.parseString("yyyyMMdd", bean.getDate());
-            mSportDataEntities.add(new SportDataEntity(yyyyMMdd.getTime(),
-                    DateUtils.formatDate("MM/dd", yyyyMMdd),
-                    getWeek(yyyyMMdd.getTime()),
-                    String.valueOf((float) s / max),
-                    Integer.parseInt(bean.getSeconds()) / 60 + "mins",
-                    false));
-        }
-
     }
 
 

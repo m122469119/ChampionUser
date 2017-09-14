@@ -259,13 +259,10 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
             setTitle(value.getData().getTitle());
             SportWeekResult.DataBean.TotalBean totalBean = value.getData().getTotal();
             if (totalBean != null) {
-                String min = DecimalFormatUtil.getDecimalFormat((Double.parseDouble(totalBean.getSeconds()) / 60) + "");
-                mHeaderMin.setText(min);
+                mHeaderMin.setText(totalBean.getSeconds());
                 mHeaderDay.setText(totalBean.getSportDate() + "");
                 mHeaderTime.setText(totalBean.getTimes());
             }
-
-
         } else {
             mStateView.setState(StateView.State.NO_DATA);
         }

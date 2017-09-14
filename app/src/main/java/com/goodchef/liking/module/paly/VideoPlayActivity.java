@@ -182,6 +182,17 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         surfaceViewTouch();
         playerCompletion();
         seekBarListener();
+        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                    showProgressDialog(getString(R.string.buffering));
+                } else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+                    dialogDismiss();
+                }
+                return false;
+            }
+        });
     }
 
     private void seekBarListener() {
@@ -331,7 +342,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         if (mediaPlayer.isPlaying()) {
             // 保存当前播放的位置
             currentPosition = mediaPlayer.getCurrentPosition();
-            mediaPlayer.stop();
+            mediaPlayer.pause();
         }
         super.onPause();
     }
@@ -411,7 +422,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 mediaPlayer.setDataSource(VideoPlayActivity.this, Uri.parse(mVideoList.get(postion)));
                 //异步准备 准备工作在子线程中进行 当播放网络视频时候一般采用此方法
                 mediaPlayer.prepareAsync();
-                showProgressDialog();
+                showProgressDialog(getString(R.string.play_prepare));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -428,8 +439,8 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     }
 
-    private void showProgressDialog() {
-        progressDialog = showProgressDialog(this, getString(R.string.please_wait), getString(R.string.play_prepare));
+    private void showProgressDialog(String string) {
+        progressDialog = showProgressDialog(this, getString(R.string.please_wait), string);
         progressDialog.show();
     }
 
