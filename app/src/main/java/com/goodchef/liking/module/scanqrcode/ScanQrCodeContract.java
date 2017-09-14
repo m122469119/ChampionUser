@@ -35,7 +35,7 @@ public class ScanQrCodeContract {
             scanQrCodeModel = new ScanQrCodeModel();
         }
 
-        public void sendScanQrCode(Context context, String code) {
+        public void sendScanQrCode(final Context context, String code) {
             scanQrCodeModel.scanQrCode(code).subscribe(addObserverToCompositeDisposable(new ProgressObserver<QRCodeResult>(context, R.string.loading_data, mView) {
 
                 @Override
@@ -46,15 +46,19 @@ public class ScanQrCodeContract {
 
                 @Override
                 public void apiError(ApiException apiException) {
-//                    if (apiException.getErrorCode() == LiKingRequestCode.SPARTSPOT_OFFLINE_ERRCODE){
-//
-//                    }else if (apiException.getErrorCode() == LiKingRequestCode.USER_NO_CARD_ERRCODE){
-//
-//                    }else if (apiException.getErrorCode() == LiKingRequestCode.USER_CARD_OVERDUE_ERRCODE){
-//
-//                    }else if (apiException.getErrorCode() == LiKingRequestCode.NO_HAVE_BRACELET_ERRCODE){
-//
-//                    }
+                    if (apiException.getErrorCode() == LiKingRequestCode.SPARTSPOT_OFFLINE_ERRCODE) {
+                        showDialog(context, apiException.getErrorMessage());
+                        return;
+                    } else if (apiException.getErrorCode() == LiKingRequestCode.USER_NO_CARD_ERRCODE) {
+                        showDialog(context, apiException.getErrorMessage());
+                        return;
+                    } else if (apiException.getErrorCode() == LiKingRequestCode.USER_CARD_OVERDUE_ERRCODE) {
+                        showDialog(context, apiException.getErrorMessage());
+                        return;
+                    } else if (apiException.getErrorCode() == LiKingRequestCode.NO_HAVE_BRACELET_ERRCODE) {
+                        showDialog(context, apiException.getErrorMessage());
+                        return;
+                    }
                     super.apiError(apiException);
                     mView.scanErrorView();
                 }
