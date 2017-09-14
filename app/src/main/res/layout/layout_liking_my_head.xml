@@ -25,7 +25,7 @@
             android:background="@color/c80000000"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:gravity="center_vertical"
@@ -47,18 +47,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/head_image"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/person_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="未登录"
-                        android:lines="1"
-                        android:maxWidth="80dp"
                         android:ellipsize="end"
+                        android:lines="1"
+                        android:text="未登录"
+                        android:maxWidth="120dp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/textsize_15" />
+                        android:textSize="13sp" />
 
 
                     <TextView
@@ -66,40 +67,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/person_name"
+                        android:layout_marginTop="6dp"
                         android:text="131xxxxxxxx"
-                        android:layout_marginTop="@dimen/spacing_4dp"
                         android:textColor="@color/my_text_color_grey"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/is_vip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
-                        android:layout_toRightOf="@+id/person_name"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:layout_marginTop="@dimen/spacing_4dp"
+                        android:layout_toRightOf="@+id/person_name"
                         android:background="@drawable/shape_radius_green_vip_back"
                         android:gravity="center"
                         android:paddingLeft="@dimen/spacing_4dp"
                         android:paddingRight="@dimen/spacing_4dp"
                         android:text="VIP"
                         android:textColor="@color/white"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:visibility="gone" />
 
                 </RelativeLayout>
 
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="@dimen/spacing_8dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="21dp"
                     android:gravity="center_vertical">
 
                     <TextView
@@ -113,6 +109,7 @@
                         android:paddingBottom="8dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
+                        android:textSize="@dimen/textsize_14"
                         android:paddingTop="8dp"
                         android:text="@string/login_btn_text"
                         android:textColor="@color/white"
@@ -127,27 +124,26 @@
                         android:gravity="center"
                         android:text="2017.10.20到期"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/continuation_card"
-                        android:layout_width="45dp"
-                        android:layout_height="25dp"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/end_time"
                         android:background="@drawable/shape_radius_green_btn_background"
                         android:gravity="center"
-                        android:minWidth="60dp"
                         android:text="@string/continuation_card"
                         android:textColor="@color/white"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:visibility="visible" />
 
                 </RelativeLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
 

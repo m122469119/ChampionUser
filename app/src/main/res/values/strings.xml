@@ -675,7 +675,7 @@
     <string name="sport_private_lesson">私教课</string>
     <string name="sport_smartspot">SmartSpot</string>
     <string name="sport_treadmill">跑步机</string>
-    <string name="sport_no_record">今天休息一下吧，但是要坚持锻炼哦</string>
+    <string name="sport_no_record">无运动记录</string>
 
     <string name="run_finish_have">有</string>
     <string name="run_finish_partner">位一起奔跑的Liking伙伴</string>

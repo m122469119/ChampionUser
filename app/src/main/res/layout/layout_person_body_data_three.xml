@@ -74,7 +74,7 @@
                     android:layout_marginLeft="10sp"
                     android:gravity="center"
                     android:text="Point"
-                    android:textColor="@color/person_body_unit_color"
+                    android:textColor="@color/cd6d7d8"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -103,7 +103,7 @@
                     android:layout_marginLeft="10sp"
                     android:gravity="center"
                     android:text="Point"
-                    android:textColor="@color/person_body_unit_color"
+                    android:textColor="@color/cd6d7d8"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -132,7 +132,7 @@
                     android:layout_marginLeft="10sp"
                     android:gravity="center"
                     android:text="Point"
-                    android:textColor="@color/person_body_unit_color"
+                    android:textColor="@color/cd6d7d8"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>

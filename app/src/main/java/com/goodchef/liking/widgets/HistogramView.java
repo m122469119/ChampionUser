@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.aaron.android.framework.utils.DisplayUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.utils.TypefaseUtil;
 
 /**
  * @Author SanFen
@@ -41,18 +42,19 @@ public class HistogramView extends View {
         super(context, attrs, defStyleAttr);
         mRectPaint = new Paint();
         mTextPaint = new Paint();
-        mTextPaint.setTextSize(DisplayUtils.dp2px(8));
+        mTextPaint.setTextSize(DisplayUtils.dp2px(6));
         mTextPaint.setAntiAlias(true);
 
         mTextPaint.setColor(ContextCompat.getColor(context, R.color.his_bg));
-        mRectPaint.setColor(ContextCompat.getColor(context, R.color.his_bg));
+        mRectPaint.setColor(ContextCompat.getColor(context, R.color.ce6e6e6));
+        mTextPaint.setTypeface(TypefaseUtil.getImpactTypeface(context));
         mRect = new Rect();
 
     }
 
-    public void setColor(@ColorInt int color) {
-        mRectPaint.setColor(color);
-        mTextPaint.setColor(color);
+    public void setColor(@ColorInt int textcolor, int rextcolot) {
+        mRectPaint.setColor(rextcolot);
+        mTextPaint.setColor(textcolor);
     }
 
     public void setPercentage(float percentage) {
@@ -83,7 +85,7 @@ public class HistogramView extends View {
                 getMeasuredWidth() * 0.9F, getMeasuredHeight(), mRectPaint);
 
         if (mPercentageText == null || mPercentageText.length() == 0) {
-            mPercentageText = "0m";
+            mPercentageText = "";
         }
         mTextPaint.getTextBounds(mPercentageText, 0, mPercentageText.length(), mRect);
 

@@ -170,14 +170,14 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 View view = tab.getCustomView();
                 view.findViewById(R.id.image_triangle).setVisibility(View.VISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
-                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
+                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green), ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
                 SportDataEntity date4Index = (SportDataEntity) histogramView.getTag();
                 if (Float.parseFloat(date4Index.getPercentage()) == 0.0) {
-                    histogramView.setPercentageText("0m");
+                    histogramView.setPercentageText("0mins");
                     histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
                 } else {
-                    String percentageText = date4Index.getPercentageText();
-
+                    histogramView.setPercentageText(date4Index.getPercentageText());
+                    histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
                 }
                 mPresenter.getSportList(tab.getPosition());
             }
@@ -187,13 +187,13 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 View view = tab.getCustomView();
                 view.findViewById(R.id.image_triangle).setVisibility(View.INVISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
-                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg));
+                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg), ContextCompat.getColor(SportDataActivity.this, R.color.ce6e6e6));
                 SportDataEntity date4Index = (SportDataEntity) histogramView.getTag();
                 if (Float.parseFloat(date4Index.getPercentage()) == 0.0) {
                     histogramView.setPercentageText("NO\nTRAINING");
                     histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
                 } else {
-                    histogramView.setPercentageText(date4Index.getPercentageText());
+                    histogramView.setPercentageText("");
                     histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
                 }
             }
@@ -203,13 +203,13 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 View view = tab.getCustomView();
                 view.findViewById(R.id.image_triangle).setVisibility(View.VISIBLE);
                 HistogramView histogramView = (HistogramView) view.findViewById(R.id.histogramview);
-                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
+                histogramView.setColor(ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green), ContextCompat.getColor(SportDataActivity.this, R.color.his_bg_green));
             }
         });
     }
 
     private View getTabView(int position) {
-        return LayoutInflater.from(this).inflate(R.layout.item_sport_tab, null);
+        return LayoutInflater.from(this).inflate(R.layout.item_sport_tab, null, false);
     }
 
     private void setTabView() {
@@ -224,7 +224,7 @@ public class SportDataActivity extends AppBarMVPSwipeBackActivity<SportDataContr
                 histogramView.setPercentageText("NO\nTRAINING");
                 histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
             } else {
-                histogramView.setPercentageText(date4Index.getPercentageText());
+                histogramView.setPercentageText("");
                 histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
             }
             histogramView.setTag(date4Index);

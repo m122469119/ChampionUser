@@ -22,6 +22,7 @@ import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.imageloader.ImageLoaderCallback;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
+import com.goodchef.liking.adapter.SmartSpotRecordListAdapter;
 import com.goodchef.liking.module.paly.VideoPlayActivity;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -49,9 +50,9 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
     @BindView(R.id.tv_datetime)
     TextView mTvDateTime;
 
+    private static final String KEY_RDID = "key_record_id";
     private String mRecordId;
-
-    private SmartDetailAdapter mAdapter;
+    private SmartSpotRecordListAdapter smartSpotRecordListAdapter;
     List<String> videoUrlList = new ArrayList<>();
 
     @Override
@@ -59,15 +60,14 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smartspot_history);
         ButterKnife.bind(this);
-
         initView();
     }
 
     private void initView() {
         mRecordId = getIntent().getStringExtra(KEY_RDID);
 
-        mAdapter = new SmartDetailAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
+        smartSpotRecordListAdapter = new SmartSpotRecordListAdapter(this);
+        mRecyclerView.setAdapter(smartSpotRecordListAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         setOnItemListener();
 
@@ -149,16 +149,23 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         SmartspotDetailResult.DataBean.InfoBean info = data.getInfo();
         mTvTitle.setText(info.getTitle());
         mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));
-        mAdapter.setData(data.getList());
-        mAdapter.notifyDataSetChanged();
+        smartSpotRecordListAdapter.setData(data.getList());
+        smartSpotRecordListAdapter.notifyDataSetChanged();
+        doPlayUrlList();
+    }
+
+    /**
+     * 处理视频的url
+     */
+    private void doPlayUrlList() {
         videoUrlList.clear();
-        for (SmartspotDetailResult.DataBean.ListBean dataBean : mAdapter.getDataList()) {
+        for (SmartspotDetailResult.DataBean.ListBean dataBean : smartSpotRecordListAdapter.getDataList()) {
             videoUrlList.add(dataBean.getMedias().getVideo());
         }
     }
 
     private void setOnItemListener() {
-        mAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
+        smartSpotRecordListAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 launch(SmartSpotDetailActivity.this, new ArrayList<String>(), (ArrayList<String>) videoUrlList, mTvTitle.getText().toString(), position);
@@ -172,8 +179,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
     }
 
 
-
-    public  void launch(Context context, String img, String video, String title, int postion) {
+    public void launch(Context context, String img, String video, String title, int postion) {
         ArrayList<String> imgs = new ArrayList<>();
         ArrayList<String> videos = new ArrayList<>();
         imgs.add(img);
@@ -181,11 +187,6 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         launch(context, imgs, videos, title, postion);
     }
 
-    /**
-     * @param context
-     * @param img     缩略图
-     * @param video   视频
-     */
     public void launch(Context context,
                        ArrayList<String> img,
                        ArrayList<String> video,
@@ -207,93 +208,10 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
     }
 
 
-
-    @Override
-    public void changeStateView(StateView.State state) {
-        mStateView.setState(state);
-    }
-
     @Override
     public void setPresenter() {
         mPresenter = new SmartSpotDetailContract.Presenter();
     }
-
-    class SmartDetailAdapter extends BaseRecycleViewAdapter<SmartDetailAdapter.SmartspotViewHolder, SmartspotDetailResult.DataBean.ListBean> {
-
-        private Context mContext;
-
-        public SmartDetailAdapter(Context context) {
-            super(context);
-            mContext = context;
-        }
-
-        @Override
-        protected SmartspotViewHolder createViewHolder(ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            View view = inflater.inflate(R.layout.item_smartspot_detail, parent, false);
-            return new SmartspotViewHolder(view, mContext);
-        }
-
-        class SmartspotViewHolder extends BaseRecycleViewHolder<SmartspotDetailResult.DataBean.ListBean> {
-            @BindView(R.id.tv_set)
-            TextView tvSet;
-            @BindView(R.id.tv_reps)
-            TextView tvReps;
-            @BindView(R.id.tv_time)
-            TextView tvTime;
-            @BindView(R.id.tv_rest_time)
-            TextView tvRestTime;
-            @BindView(R.id.tv_end)
-            TextView tvEnd;
-            @BindView(R.id.hiv_capture)
-            HImageView hivCapture;
-            @BindView(R.id.view_image)
-            View viewImage;
-            @BindView(R.id.play_video_icon)
-            ImageView iconImageView;
-
-            public SmartspotViewHolder(View itemView, Context context) {
-                super(itemView, context);
-
-                ButterKnife.bind(this, itemView);
-
-                mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Impact.ttf");
-                tvSet.setTypeface(mTypeFace);
-                tvReps.setTypeface(mTypeFace);
-                tvTime.setTypeface(mTypeFace);
-                tvRestTime.setTypeface(mTypeFace);
-                tvEnd.setTypeface(mTypeFace);
-            }
-
-            private Typeface mTypeFace;
-
-            @Override
-            public void bindViews(SmartspotDetailResult.DataBean.ListBean data) {
-                viewImage.setTag(data);
-                List<SmartspotDetailResult.DataBean.ListBean> dataList = getDataList();
-                int index = dataList.indexOf(data) + 1;
-                tvEnd.setVisibility(index == dataList.size() ? View.VISIBLE : View.GONE);
-
-                tvSet.setText("SET " + index);
-                tvReps.setText(data.getReps());
-                tvTime.setText(data.getTime() + " s");
-                tvRestTime.setText(data.getRestTime() + " s");
-                SmartspotDetailResult.DataBean.ListBean.MediasBean bean = data.getMedias();
-                if (null != bean) {
-                    HImageLoaderSingleton.loadImage(hivCapture, bean.getImg(), new ImageLoaderCallback() {
-                        @Override
-                        public void finish(Bitmap bitmap) {
-                            super.finish(bitmap);
-                            viewImage.setBackgroundColor(ResourceUtils.getColor(R.color.action_bar_gray));
-                            iconImageView.setImageResource(R.drawable.ic_video_load_success);
-                        }
-                    }, SmartSpotDetailActivity.this);
-                }
-            }
-        }
-    }
-
-    private static final String KEY_RDID = "key_record_id";
 
     public static void launch(Context context, String recordID) {
         if (null == context) {
@@ -302,5 +220,10 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         Intent intent = new Intent(context, SmartSpotDetailActivity.class);
         intent.putExtra(KEY_RDID, recordID);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void handleNetworkFailure() {
+        mStateView.setState(StateView.State.FAILED);
     }
 }

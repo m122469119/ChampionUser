@@ -112,11 +112,17 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     @BindView(R.id.layout_all_sport)
     View mAllSportLayout;
 
+    public static final int SPORT_DOWN = -1; //体侧分数减少
+    public static final int SPORT_UP = 1;  //体侧分数增加
+    public static final int SPORT_NORMAL = 0; //体侧分数没变
+    public static final int SPORT_NULL = 2; //无
+
     private TextView mBodyScoreData;//个人训练数据
     private TextView mBraceletData; // 手环数据
     private TextView mContentTextViewMin, mContentTextViewDay, mContentTextViewTime;
 
     private View mBodyScoreDataTitle;
+    private ImageView mBodyLevelImageView;
     private LinearLayout mBodyScoreDataContent;
 
     private boolean isRetryRequest = true;
@@ -138,6 +144,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         super.onResume();
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
+            setRecycleViewItem();
             showUpdate();
             setLogonView();
             getMyUserInfoOther();
@@ -269,6 +276,19 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mContentTextViewMin.setText(exerciseData.getTotal_min());
             mContentTextViewDay.setText(exerciseData.getSport_date());
             mContentTextViewTime.setText(exerciseData.getTotal_times());
+            int level = exerciseData.getIs_up();
+            if (level == SPORT_DOWN) {
+                mBodyLevelImageView.setVisibility(View.VISIBLE);
+                mBodyLevelImageView.setImageResource(R.drawable.icon_decline);
+            } else if (level == SPORT_UP) {
+                mBodyLevelImageView.setVisibility(View.VISIBLE);
+                mBodyLevelImageView.setImageResource(R.drawable.icon_rise);
+            } else if (level == SPORT_NORMAL) {
+                mBodyLevelImageView.setVisibility(View.VISIBLE);
+                mBodyLevelImageView.setImageResource(R.drawable.icon_hold_the_line);
+            } else if (level == SPORT_NULL) {
+                mBodyLevelImageView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -323,6 +343,31 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         mMyAdapter = new MyPersonAdapter(getActivity());
         mPersonEntities = new ArrayList<>();
 
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_my_head, null);
+        initHeadView(headerView);
+        mMyAdapter.setHeaderView(headerView);
+
+        setEntitiesItemListener();
+
+        mMyRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        mMyRecyclerView.setAdapter(mMyAdapter);
+
+        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
+            @Override
+            public void onRetryRequested() {
+                setLogonView();
+                isRetryRequest = true;
+                getMyUserInfoOther();
+                getUserExerciseData();
+            }
+        });
+    }
+
+    /**
+     * 设置主布局的item点击事件
+     */
+    private void setRecycleViewItem() {
+        mPersonEntities.clear();
         String[] array = getActivity().getResources().getStringArray(R.array.my_item_array);
         mPersonEntities.add(new MyPersonAdapter.MyPersonEntity(array[0], R.mipmap.my_lesson));
         mPersonEntities.add(new MyPersonAdapter.MyPersonEntity(array[1], R.mipmap.my_order));
@@ -331,11 +376,13 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         mPersonEntities.add(new MyPersonAdapter.MyPersonEntity(array[4], R.mipmap.my_bracelet));
         mMyWaterEntity = new MyPersonAdapter.MyPersonEntity(array[5], R.mipmap.my_water);
         mPersonEntities.add(new MyPersonAdapter.MyPersonEntity(array[6], R.mipmap.my_more));
+        updateAdapter(mPersonEntities);
+    }
 
-        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_my_head, null);
-        initHeadView(headerView);
-        mMyAdapter.setHeaderView(headerView);
-
+    /**
+     * 设置主布局内容
+     */
+    private void setEntitiesItemListener() {
         mMyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<MyPersonAdapter.MyPersonEntity>() {
             @Override
             public void onItemClick(int position, MyPersonAdapter.MyPersonEntity data) {
@@ -384,21 +431,8 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 }
             }
         });
-
-        mMyRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        mMyRecyclerView.setAdapter(mMyAdapter);
-        updateAdapter(mPersonEntities);
-
-        mStateView.setOnRetryRequestListener(new StateView.OnRetryRequestListener() {
-            @Override
-            public void onRetryRequested() {
-                setLogonView();
-                isRetryRequest = true;
-                getMyUserInfoOther();
-                getUserExerciseData();
-            }
-        });
     }
+
 
     private void initHeadView(View headerView) {
         ButterKnife.bind(this, headerView);
@@ -433,18 +467,22 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         TextView contentTextView = (TextView) view.findViewById(R.id.text_point);
         TextView unitTextView = (TextView) view.findViewById(R.id.text_point_unit);
         ImageView bg = (ImageView) view.findViewById(R.id.bg_image);
+        ImageView leverImage = (ImageView) view.findViewById(R.id.person_body_level);
         titleTextView.setText(title);
         unitTextView.setText(unitText);
         unitTextView.setTypeface(mTypeface);
         contentTextView.setTypeface(mTypeface);
         switch (view.getId()) {
             case R.id.layout_body_score:
+                leverImage.setVisibility(View.VISIBLE);
+                mBodyLevelImageView = leverImage;
                 mBodyScoreData = contentTextView;
                 bg.setImageResource(R.mipmap.bg_person);
                 mBodyScoreDataTitle = titleTextView;
                 mBodyScoreDataContent = (LinearLayout) view.findViewById(R.id.person_body_content);
                 break;
             case R.id.layout_bracelet:
+                leverImage.setVisibility(View.GONE);
                 mBraceletData = contentTextView;
                 bg.setImageResource(R.mipmap.bg_bracelet);
                 break;

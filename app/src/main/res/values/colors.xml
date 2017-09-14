@@ -125,5 +125,7 @@
     <color name="sport_content_text_color">#95979e</color>
     <color name="his_bg">#95979e</color>
     <color name="his_bg_green">@color/main_app_green_color</color>
+    <color name="cd6d7d8">#d6d7d8</color>
+    <color name="ce6e6e6">#e6e6e6</color>
 
 </resources>

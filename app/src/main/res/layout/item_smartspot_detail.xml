@@ -73,7 +73,7 @@
                         android:textColor="@color/liking_green_btn_back"
                         android:textSize="@dimen/textsize_30"
                         android:textStyle="bold"
-                        tools:text="4" />
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -93,12 +93,12 @@
                         android:id="@+id/tv_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
                         android:layout_marginTop="@dimen/spacing_8dp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/liking_green_btn_back"
                         android:textSize="@dimen/textsize_30"
                         android:textStyle="bold"
-                        tools:text="120 s" />
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -118,29 +118,27 @@
                         android:id="@+id/tv_rest_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
                         android:layout_marginTop="@dimen/spacing_8dp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/liking_green_btn_back"
                         android:textSize="@dimen/textsize_30"
-                        android:textStyle="bold"
-                        tools:text="120 s" />
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/view_image"
-                android:layout_width="200dp"
-                android:layout_height="310dp"
-                android:layout_marginTop="@dimen/spacing_8dp"
-                android:background="@color/smartspot_bg">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8dp">
 
                 <com.aaron.imageloader.code.HImageView
                     android:id="@+id/hiv_capture"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    fresco:failureImage="@drawable/bg_no_data_default_image"
+                    android:layout_width="200dp"
+                    android:layout_height="310dp"
+                    fresco:failureImage="@drawable/hiv_capture_back"
                     fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@drawable/bg_no_data_default_image"
+                    fresco:placeholderImage="@drawable/hiv_capture_back"
                     fresco:placeholderImageScaleType="centerCrop" />
 
                 <ImageView
@@ -148,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_video_play" />
+                    android:src="@drawable/icon_video_play" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
