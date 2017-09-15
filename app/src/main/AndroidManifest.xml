@@ -45,12 +45,12 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-            android:name=".app.LikingApplication"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/LikingTheme">
+        android:name=".app.LikingApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/LikingTheme">
         <activity android:name=".module.loading.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,10 +60,10 @@
         </activity>
 
         <provider
-                android:name="android.support.v4.content.FileProvider"
-                android:authorities="${applicationId}.fileprovider"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
@@ -266,16 +266,12 @@
             android:name=".module.body.analyze.BodyAnalyzeChartActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 蓝牙帮助界面 -->
-
 
         <!-- 我的手环 -->
         <activity
             android:name=".module.brace.mybracelet.MyBraceletActivity"
             android:screenOrientation="portrait" />
 
-
-        <!-- 手环数据 -->
         <!-- 每日运动 -->
         <activity
             android:name=".module.brace.braceletdata.BraceletDataActivity"
@@ -295,8 +291,18 @@
             android:name=".module.message.MessageActivity"
             android:screenOrientation="portrait" />
 
+        <!--smartspot训练数据-->
+        <activity
+            android:name=".module.train.SportDataActivity"
+            android:label="@string/title_activity_sport_data"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <!-- Smartspot详情 -->
-        <activity android:name=".module.smartspot.SmartSpotDetailActivity" />
+        <activity
+            android:name=".module.smartspot.SmartSpotDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <!-- 视频播放 -->
         <activity
@@ -306,6 +312,14 @@
 
         <!-- QRCode -->
         <activity android:name=".module.scanqrcode.QrCodeActivity" />
+
+        <!--适用场馆-->
+        <activity android:name=".module.coupons.gym.CouponsGymActivity" />
+
+        <!--水费-->
+        <activity
+            android:name=".module.home.myfragment.water.WaterRateActivity"
+            android:label="@string/title_activity_water_rate" />
 
         <!-- 推送 -->
         <activity android:name=".module.runpush.RunFinishActivity" />
@@ -352,10 +366,10 @@
 
         <!-- Required SDK核心功能 -->
         <activity
-                android:name="cn.jpush.android.ui.PushActivity"
-                android:configChanges="orientation|keyboardHidden"
-                android:exported="false"
-                android:theme="@android:style/Theme.NoTitleBar">
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
@@ -378,9 +392,9 @@
         <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
-                android:name="cn.jpush.android.service.PushService"
-                android:enabled="true"
-                android:exported="false">
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTER" />
                 <action android:name="cn.jpush.android.intent.REPORT" />
@@ -392,9 +406,9 @@
         <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
         <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
         <service
-                android:name="cn.jpush.android.service.DaemonService"
-                android:enabled="true"
-                android:exported="true">
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
 
@@ -405,9 +419,9 @@
 
         <!-- Required SDK核心功能 -->
         <receiver
-                android:name="cn.jpush.android.service.PushReceiver"
-                android:enabled="true"
-                android:exported="false">
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
                 <!-- Required  显示通知栏 -->
@@ -432,9 +446,9 @@
             android:exported="false" />
 
         <receiver
-                android:name=".jpush.ChefJPushReceiver"
-                android:enabled="true"
-                android:exported="false">
+            android:name=".jpush.ChefJPushReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
                 <!-- Required  用户注册SDK的intent -->
@@ -480,20 +494,10 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="umeng" />
-
-        <activity android:name=".module.coupons.gym.CouponsGymActivity" />
-        <activity
-            android:name=".module.home.myfragment.water.WaterRateActivity"
-            android:label="@string/title_activity_water_rate" />
-
         <meta-data
-                android:name="io.fabric.ApiKey"
-                android:value="b2e28232e14d72627873af629670196aa5168d31"/>
+            android:name="io.fabric.ApiKey"
+            android:value="b2e28232e14d72627873af629670196aa5168d31" />
 
-        <activity
-                android:name=".module.train.SportDataActivity"
-                android:label="@string/title_activity_sport_data">
-        </activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -26,6 +27,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.widgets.enviews.ENDownloadView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -60,6 +62,8 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     ImageView startPauseButton;
     @BindView(R.id.layout_controller)
     RelativeLayout layoutController;
+    @BindView(R.id.loading)
+    ENDownloadView loading;
 
     private MediaPlayer mediaPlayer;
     private ProgressDialog progressDialog = null;
@@ -68,7 +72,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     private ArrayList<String> mImage;
     private ArrayList<String> mVideoList;
     private String mTitle;
-    private LinkedHashMap<String, String> mVideoMap = new LinkedHashMap<>();
     private int postion = 0;
     private int currentPosition;
 
@@ -92,7 +95,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     private Timer timer = null;
     private final static int WHAT = 0;
     private Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             switch (msg.what) {
                 case WHAT:
                     if (mediaPlayer != null) {
@@ -186,9 +189,9 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
                 if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
-                    showProgressDialog(getString(R.string.buffering));
+                    showLoading();
                 } else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
-                    dialogDismiss();
+                    dismissLoading();
                 }
                 return false;
             }
@@ -256,7 +259,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     }
                 }, 0, 1000);
                 showOrHiddenController();
-                dialogDismiss();
+                dismissLoading();
             }
 
 
@@ -290,12 +293,12 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 postion++;
                 LogUtils.i(TAG, "播放完成");
                 if (mVideoList.size() == 1) {
-                    showToast("播放完成");
+                    showToast("播放结束");
                     finish();
                 } else if (postion < mVideoList.size()) {
                     playNextVideo();
                 } else {
-                    showToast("播放完成");
+                    showToast("播放结束");
                     finish();
                 }
             }
@@ -319,12 +322,12 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     //当手指离开的时候
                     x2 = event.getX();
                     y2 = event.getY();
-                    if (y1 - y2 > 100) {
+                    if (y1 - y2 > 150) {
                         LogUtils.i(TAG, "向上滑");
-                        touchDown();
-                    } else if (y2 - y1 > 100) {
-                        LogUtils.i(TAG, "向下滑");
                         touchUp();
+                    } else if (y2 - y1 > 150) {
+                        LogUtils.i(TAG, "向下滑");
+                        touchDown();
                     }
                 }
                 return false;
@@ -369,15 +372,27 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
 
     /**
-     * 向上滑动处理
+     * 向下滑动播放上一个视频
      */
-    public void touchUp() {
-        if (mVideoList.size() == 1) {
+    public void touchDown() {
+        if (mVideoList.size() == 1 || postion <= 0) {
             return;
         }
-        // releasePlayer();
         postion--;
         if (postion > -1) {
+            playNextVideo();
+        }
+    }
+
+    /**
+     * 向上滑动播放下一个视频
+     */
+    public void touchUp() {
+        if (mVideoList.size() == 1 || postion >= mVideoList.size()) {
+            return;
+        }
+        postion++;
+        if (postion < mVideoList.size()) {
             playNextVideo();
         }
     }
@@ -386,29 +401,9 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         Intent intent = new Intent(this, VideoPlayActivity.class);
         intent.putExtra(VIDEO_POSTION, postion);
         intent.putStringArrayListExtra(KEY_VIDEO, mVideoList);
+        intent.putExtra(KEY_TITLE, mTitle);
         startActivity(intent);
         finish();
-    }
-
-    private void releasePlayer() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-        }
-    }
-
-    /**
-     * 向下滑动处理
-     */
-    public void touchDown() {
-        if (mVideoList.size() == 1) {
-            return;
-        }
-        //  releasePlayer();
-        postion++;
-        if (postion < mVideoList.size()) {
-            playNextVideo();
-        }
     }
 
     @Override
@@ -422,7 +417,8 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 mediaPlayer.setDataSource(VideoPlayActivity.this, Uri.parse(mVideoList.get(postion)));
                 //异步准备 准备工作在子线程中进行 当播放网络视频时候一般采用此方法
                 mediaPlayer.prepareAsync();
-                showProgressDialog(getString(R.string.play_prepare));
+                //  showProgressDialog(getString(R.string.play_prepare));
+                showLoading();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -439,24 +435,17 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     }
 
-    private void showProgressDialog(String string) {
-        progressDialog = showProgressDialog(this, getString(R.string.please_wait), string);
-        progressDialog.show();
+    private void showLoading() {
+        loading.setVisibility(View.VISIBLE);
+        startPauseButton.setVisibility(View.GONE);
+        loading.start();
     }
 
-    private void dialogDismiss() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+    private void dismissLoading() {
+        if (loading != null) {
+            loading.reset();
+            loading.setVisibility(View.GONE);
         }
-    }
-
-    public ProgressDialog showProgressDialog(Context context, String title, String msg) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle(title);
-        progressDialog.setMessage(msg);
-        progressDialog.setCancelable(true);
-        return progressDialog;
     }
 
     @Override
@@ -474,6 +463,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             } else {
                 hasShowController = false;
                 layoutController.setVisibility(View.VISIBLE);
+                startPauseButton.setVisibility(View.VISIBLE);
                 // 延时执行
                 handler.postDelayed(r, HIDDEN_TIME);
             }
