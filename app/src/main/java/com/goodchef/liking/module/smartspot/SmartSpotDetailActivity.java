@@ -25,6 +25,7 @@ import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SmartSpotRecordListAdapter;
 import com.goodchef.liking.module.paly.VideoPlayActivity;
+import com.goodchef.liking.module.paly.VideoPlayListActivity;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
 

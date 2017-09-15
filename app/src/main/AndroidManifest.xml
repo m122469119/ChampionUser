@@ -314,6 +314,11 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
 
+        <!--视频列表播放-->
+        <activity android:name=".module.paly.VideoPlayListActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"/>
+
         <!-- QRCode -->
         <activity android:name=".module.scanqrcode.QrCodeActivity" />
 

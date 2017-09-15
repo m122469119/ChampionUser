@@ -11,6 +11,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -188,8 +189,8 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC); // 设置多媒体流类型
         mySurfaceView.getHolder().addCallback(this);
-        prepareVideo();
         surfaceViewTouch();
+        prepareVideo();
         playerCompletion();
         seekBarListener();
         mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -254,7 +255,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     setVideoWindow(vWidth, vHeight, lw, lh);
                 }
                 //准备完成后播放
-                mediaPlayer.start();
+                start();
                 // String duration = mediaPlayer.getDuration() ;
                 totalTimeTextView.setText(formatTime(mediaPlayer.getDuration()));
                 // 初始化定时器
@@ -302,11 +303,13 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 LogUtils.i(TAG, "播放完成");
                 if (mVideoList.size() == 1) {
                     showToast("播放结束");
-                    finish();
+                    //finish();
                 } else if (postion < mVideoList.size()) {
                     playNextVideo();
-                }else {
-                    finish();
+                    showToast("播放下一个");
+                } else {
+                    //finish();
+                    showToast("播放结束");
                 }
             }
         });
@@ -349,7 +352,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     @Override
     protected void onPause() {
-        if (mediaPlayer.isPlaying()) {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             // 保存当前播放的位置
             currentPosition = mediaPlayer.getCurrentPosition();
             mediaPlayer.pause();
@@ -359,12 +362,22 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     @Override
     protected void onDestroy() {
-        if (mediaPlayer.isPlaying()) {
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+        mySurfaceView.getHolder().removeCallback(this);
+        mySurfaceView.getHolder().getSurface().release();
+        super.onDestroy();
+    }
+
+    private void release() {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
             mediaPlayer.stop();
             mediaPlayer.release();
-            mySurfaceView.getHolder().getSurface().release();
+            mySurfaceView.getHolder().removeCallback(this);
+            mediaPlayer = null;
         }
-        super.onDestroy();
     }
 
 
@@ -406,22 +419,39 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     }
 
     private void playNextVideo() {
-        Intent intent = new Intent(this, VideoPlayActivity.class);
-        intent.putExtra(VIDEO_POSTION, postion);
-        intent.putStringArrayListExtra(KEY_VIDEO, mVideoList);
-        intent.putExtra(KEY_TITLE, mTitle);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, VideoPlayActivity.class);
+//        intent.putExtra(VIDEO_POSTION, postion);
+//        intent.putStringArrayListExtra(KEY_VIDEO, mVideoList);
+//        intent.putExtra(KEY_TITLE, mTitle);
+//        startActivity(intent);
+//        finish();
+        release();
+        initPlay();
+        inintHolder(holder);
+
     }
+
+    SurfaceHolder holder = null;
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        LogUtils.i(TAG, "surfaceCreated");
+        inintHolder(holder);
+    }
+
+    private void inintHolder(SurfaceHolder holder) {
+        if (mediaPlayer == null) {
+            return;
+        }
+        this.holder = holder;
+
         mediaPlayer.reset();
         try {
             //设置视屏文件图像的显示参数
             mediaPlayer.setDisplay(holder);
             //uri 网络视频
             if (postion < mVideoList.size()) {
+                LogUtils.i(TAG, "postion = " + postion + "  url = " + Uri.parse(mVideoList.get(postion)));
                 mediaPlayer.setDataSource(VideoPlayActivity.this, Uri.parse(mVideoList.get(postion)));
                 //异步准备 准备工作在子线程中进行 当播放网络视频时候一般采用此方法
                 mediaPlayer.prepareAsync();
@@ -434,14 +464,15 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         }
     }
 
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        LogUtils.i(TAG, "surfaceChanged");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        LogUtils.i(TAG, "surfaceDestroyed");
     }
 
     private void showLoading() {
@@ -459,6 +490,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 
     @Override
     public void finish() {
+        release();
         super.finish();
         overridePendingTransition(R.anim.silde_bottom_in, 0);
     }
@@ -555,7 +587,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             builder.setPositiveButton(getString(R.string.continues), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mediaPlayer.start();
+                    start();
                     dialog.dismiss();
                 }
             });
