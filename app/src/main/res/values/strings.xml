@@ -688,4 +688,7 @@
     <string name="please_wait">请稍等...</string>
     <string name="play_prepare">播放准备中...</string>
     <string name="buffering">正在缓冲</string>
+    <string name="continues">继续</string>
+    <string name="tips_not_wifi">您当前正在使用移动网络，继续播放将消耗流量</string>
+    <string name="network_no_work">当前网络不可用</string>
 </resources>

@@ -1,19 +1,23 @@
 package com.goodchef.liking.module.paly;
 
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -23,17 +27,20 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
+import com.goodchef.liking.eventmessages.WifiMessage;
+import com.goodchef.liking.service.NetBroadcastReceiver;
+import com.goodchef.liking.utils.NetUtil;
 import com.goodchef.liking.widgets.enviews.ENDownloadView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,9 +71,10 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     RelativeLayout layoutController;
     @BindView(R.id.loading)
     ENDownloadView loading;
+    @BindView(R.id.layout_loading)
+    FrameLayout layoutLoading;
 
     private MediaPlayer mediaPlayer;
-    private ProgressDialog progressDialog = null;
 
 
     private ArrayList<String> mImage;
@@ -130,6 +138,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mVideoList = getIntent().getStringArrayListExtra(KEY_VIDEO);
         mTitle = getIntent().getStringExtra(KEY_TITLE);
         postion = getIntent().getIntExtra(VIDEO_POSTION, 0);
+        registerNet();
         initPlay();
         setTitle(mTitle);
 
@@ -161,12 +170,10 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         switch (view.getId()) {
             case R.id.start_pause:
                 if (mediaPlayer.isPlaying()) {
-                    startPauseButton.setBackground(ResourceUtils.getDrawable(R.drawable.video_play_normal));
                     currentPosition = mediaPlayer.getCurrentPosition();
-                    mediaPlayer.pause();
+                    pause();
                 } else {
-                    startPauseButton.setBackground(ResourceUtils.getDrawable(R.drawable.video_pause_normal));
-                    mediaPlayer.start();
+                    start();
                 }
                 break;
         }
@@ -231,6 +238,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                layoutLoading.setVisibility(View.GONE);
                 // 首先取得video的宽和高
                 int vWidth = mediaPlayer.getVideoWidth();
                 int vHeight = mediaPlayer.getVideoHeight();
@@ -297,8 +305,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     finish();
                 } else if (postion < mVideoList.size()) {
                     playNextVideo();
-                } else {
-                    showToast("播放结束");
+                }else {
                     finish();
                 }
             }
@@ -355,6 +362,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
+            mySurfaceView.getHolder().getSurface().release();
         }
         super.onDestroy();
     }
@@ -419,6 +427,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 mediaPlayer.prepareAsync();
                 //  showProgressDialog(getString(R.string.play_prepare));
                 showLoading();
+                layoutLoading.setVisibility(View.VISIBLE);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -463,10 +472,116 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             } else {
                 hasShowController = false;
                 layoutController.setVisibility(View.VISIBLE);
-                startPauseButton.setVisibility(View.VISIBLE);
+                if (loading.getVisibility() == View.GONE) {
+                    startPauseButton.setVisibility(View.VISIBLE);
+                } else {
+                    startPauseButton.setVisibility(View.INVISIBLE);
+                }
                 // 延时执行
                 handler.postDelayed(r, HIDDEN_TIME);
             }
         }
     }
+
+    @Override
+    protected boolean isEventTarget() {
+        return true;
+    }
+
+    private void start() {
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+            startPauseButton.setBackground(ResourceUtils.getDrawable(R.drawable.video_pause_normal));
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void pause() {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            startPauseButton.setBackground(ResourceUtils.getDrawable(R.drawable.video_play_normal));
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 当前处于的网络
+     * -1 ：网络不可用
+     * 0 ：2G/3G/4G
+     * 1：wifi
+     */
+    public void onEvent(WifiMessage message) {
+        if (message != null) {
+            int wifiState = message.getWifiState();
+            if (wifiState == NetUtil.NETWORK_NONE) {
+                pause();
+                showWifiDialog(getString(R.string.network_no_work));
+                showOrHiddenController();
+            } else if (wifiState == NetUtil.NETWORK_MOBILE) {
+                pause();
+                showWifiDialog(getString(R.string.tips_not_wifi));
+            } else if (wifiState == NetUtil.NETWORK_WIFI) {
+                dismissWifiDialog();
+                start();
+            }
+        }
+    }
+
+    private HBaseDialog dialog;
+
+    public void showWifiDialog(String string) {
+        HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_one_content, null, false);
+        TextView mTitleTextView = (TextView) view.findViewById(R.id.one_dialog_title);
+        TextView mTextView = (TextView) view.findViewById(R.id.one_dialog_content);
+        mTextView.setText(string);
+        mTitleTextView.setText("提示");
+        builder.setCustomView(view);
+        if (string.equals(getString(R.string.network_no_work))) {
+            builder.setNegativeButton(R.string.dialog_know, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    pause();
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setPositiveButton(getString(R.string.continues), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mediaPlayer.start();
+                    dialog.dismiss();
+                }
+            });
+        }
+        dialog = builder.create();
+        dialog.show();
+    }
+
+
+    private void dismissWifiDialog() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
+
+    /**
+     * 注册网络
+     */
+    private void registerNet() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new NetBroadcastReceiver(), filter);
+    }
+
+
 }

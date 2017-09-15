@@ -1,8 +1,14 @@
 package com.goodchef.liking.module.paly;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.widget.TextView;
+
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
+import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
+import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.share.ShareModel;
@@ -22,7 +28,7 @@ interface VideoPlayContract {
         }
 
 
-        public void getVideoShare(final Context context, String url, String name){
+        public void getVideoShare(final Context context, String url, String name) {
             mModel.getSmartSpotShare(url, name).subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ShareResult>(mView) {
                 @Override
                 public void onNext(ShareResult value) {
@@ -30,7 +36,5 @@ interface VideoPlayContract {
                 }
             }));
         }
-
-
     }
 }

@@ -19,6 +19,7 @@ import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.ImageLoaderCallback;
 import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
@@ -148,7 +149,9 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         mStateView.setState(StateView.State.SUCCESS);
         SmartspotDetailResult.DataBean.InfoBean info = data.getInfo();
         mTvTitle.setText(info.getTitle());
-        mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));
+        if (!StringUtils.isEmpty(info.getStartTime()) && !StringUtils.isEmpty(info.getEndTime())) {
+            mTvDateTime.setText(calDateString(info.getStartTime(), info.getEndTime()));
+        }
         smartSpotRecordListAdapter.setData(data.getList());
         smartSpotRecordListAdapter.notifyDataSetChanged();
         doPlayUrlList();
