@@ -2,31 +2,19 @@ package com.goodchef.liking.module.smartspot;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
-import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewAdapter;
-import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
 import com.aaron.android.framework.base.widget.refresh.StateView;
-import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.StringUtils;
-import com.aaron.imageloader.ImageLoaderCallback;
-import com.aaron.imageloader.code.HImageView;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SmartSpotRecordListAdapter;
 import com.goodchef.liking.module.paly.VideoPlayActivity;
-import com.goodchef.liking.module.paly.VideoPlayListActivity;
-import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import java.util.ArrayList;
@@ -35,7 +23,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ttdevs
