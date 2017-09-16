@@ -315,12 +315,20 @@
             android:screenOrientation="portrait" />
 
         <!--视频列表播放-->
+        <activity
+            android:name=".module.paly.VideoListActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <!-- QRCode -->
-        <activity android:name=".module.scanqrcode.QrCodeActivity" />
+        <activity
+            android:name=".module.scanqrcode.QrCodeActivity"
+            android:screenOrientation="portrait" />
 
         <!--适用场馆-->
-        <activity android:name=".module.coupons.gym.CouponsGymActivity" />
+        <activity
+            android:name=".module.coupons.gym.CouponsGymActivity"
+            android:screenOrientation="portrait" />
 
         <!--水费-->
         <activity
@@ -328,7 +336,8 @@
             android:label="@string/title_activity_water_rate" />
 
         <!-- 推送 -->
-        <activity android:name=".module.runpush.RunFinishActivity" />
+        <activity android:name=".module.runpush.RunFinishActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- 支付宝h5页面 -->
         <activity
@@ -363,11 +372,11 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <!--<receiver android:name=".service.NetBroadcastReceiver">-->
-            <!--<intent-filter android:priority="1001">-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-                <!--<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />-->
-                <!--<action android:name="android.net.wifi.STATE_CHANGE" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter android:priority="1001">-->
+        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+        <!--<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />-->
+        <!--<action android:name="android.net.wifi.STATE_CHANGE" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
 
         <!-- JPush极光推送 -->

@@ -14,6 +14,7 @@ import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.SmartSpotRecordListAdapter;
+import com.goodchef.liking.module.paly.VideoListActivity;
 import com.goodchef.liking.module.paly.VideoPlayActivity;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
@@ -189,7 +190,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         if (null == video || video.size() == 0) {
             return;
         }
-        Intent intent = new Intent(context, VideoPlayActivity.class);
+        Intent intent = new Intent(context, VideoListActivity.class);
         intent.putStringArrayListExtra(VideoPlayActivity.KEY_IMG, img);
         intent.putStringArrayListExtra(VideoPlayActivity.KEY_VIDEO, video);
         intent.putExtra(VideoPlayActivity.KEY_TITLE, title);

@@ -11,7 +11,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -75,8 +74,9 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     @BindView(R.id.layout_loading)
     FrameLayout layoutLoading;
 
-    private MediaPlayer mediaPlayer;
+    private HBaseDialog dialog;
 
+    private MediaPlayer mediaPlayer;
 
     private ArrayList<String> mImage;
     private ArrayList<String> mVideoList;
@@ -306,7 +306,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     //finish();
                 } else if (postion < mVideoList.size()) {
                     playNextVideo();
-                    showToast("播放下一个");
                 } else {
                     //finish();
                     showToast("播放结束");
@@ -427,7 +426,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
 //        finish();
         release();
         initPlay();
-        inintHolder(holder);
+        initHolder(holder);
 
     }
 
@@ -436,10 +435,10 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         LogUtils.i(TAG, "surfaceCreated");
-        inintHolder(holder);
+        initHolder(holder);
     }
 
-    private void inintHolder(SurfaceHolder holder) {
+    private void initHolder(SurfaceHolder holder) {
         if (mediaPlayer == null) {
             return;
         }
@@ -559,7 +558,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         }
     }
 
-    private HBaseDialog dialog;
 
     public void showWifiDialog(String string) {
         HBaseDialog.Builder builder = new HBaseDialog.Builder(this);
