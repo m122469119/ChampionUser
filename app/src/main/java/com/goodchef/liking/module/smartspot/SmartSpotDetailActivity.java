@@ -190,7 +190,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
         if (null == video || video.size() == 0) {
             return;
         }
-        Intent intent = new Intent(context, VideoListActivity.class);
+        Intent intent = new Intent(context, VideoPlayActivity.class);
         intent.putStringArrayListExtra(VideoPlayActivity.KEY_IMG, img);
         intent.putStringArrayListExtra(VideoPlayActivity.KEY_VIDEO, video);
         intent.putExtra(VideoPlayActivity.KEY_TITLE, title);

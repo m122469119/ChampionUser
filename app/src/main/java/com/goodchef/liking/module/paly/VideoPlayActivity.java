@@ -20,15 +20,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.aaron.android.framework.base.mvp.AppBarMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.DisplayUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
@@ -75,6 +74,8 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     FrameLayout layoutLoading;
 
     private HBaseDialog dialog;
+    private boolean isNotMobileNetwork;//是否移动网络
+    private boolean isNotWiFiNetWork;//是否有WIFI
 
     private MediaPlayer mediaPlayer;
 
@@ -139,20 +140,24 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mVideoList = getIntent().getStringArrayListExtra(KEY_VIDEO);
         mTitle = getIntent().getStringExtra(KEY_TITLE);
         postion = getIntent().getIntExtra(VIDEO_POSTION, 0);
+        LogUtils.i(TAG, "onCreate", "postion = " + postion);
         registerNet();
         initPlay();
         setTitle(mTitle);
+        setSportShare();
+    }
 
+    /**
+     * 设置分享
+     */
+    private void setSportShare() {
         setRightIcon(R.mipmap.sport_share, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pause();
                 mPresenter.getVideoShare(VideoPlayActivity.this, mVideoList.get(0), mTitle);
             }
         });
-
-        VideoView videoView = new VideoView(this);
-        videoView.setMediaController(new MediaController(this));
-
     }
 
     @Override
@@ -197,9 +202,13 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
                 if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                    LogUtils.i(TAG, "正在缓冲....");
+                    layoutLoading.setVisibility(View.VISIBLE);
                     showLoading();
                 } else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+                    layoutLoading.setVisibility(View.GONE);
                     dismissLoading();
+                    LogUtils.i(TAG, "缓冲结束....");
                 }
                 return false;
             }
@@ -246,7 +255,11 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 // 该LinearLayout的父容器 android:orientation="vertical" 必须
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_video);
                 int lw = linearLayout.getWidth();
-                int lh = linearLayout.getHeight();
+                int lh = linearLayout.getHeight() + DisplayUtils.dp2px(42);
+
+                LogUtils.i(TAG, " vidowith = " + vWidth + " VideoHeight = " + vHeight);
+                LogUtils.i(TAG, " lw = " + lw + " lh = " + lh);
+                LogUtils.i(TAG, " WidthPixels = " + DisplayUtils.getWidthPixels() + " HeightPixels = " + DisplayUtils.getHeightPixels());
 
                 if (vWidth > lw || vHeight > lh) {
                     setVideoWindow(vWidth, vHeight, lw, lh);
@@ -299,13 +312,18 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                postion++;
-                LogUtils.i(TAG, "播放完成");
+                LogUtils.i(TAG, " 播放完成 postion = " + postion);
                 if (mVideoList.size() == 1) {
                     showToast("播放结束");
                     //finish();
                 } else if (postion < mVideoList.size()) {
-                    playNextVideo();
+                    postion++;
+                    if (postion < mVideoList.size()) {
+                        playNextVideo();
+                    } else {
+                        postion--;
+                        showToast("播放结束");
+                    }
                 } else {
                     //finish();
                     showToast("播放结束");
@@ -331,10 +349,11 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     //当手指离开的时候
                     x2 = event.getX();
                     y2 = event.getY();
-                    if (y1 - y2 > 150) {
+                    LogUtils.i(TAG, " y1-y2 = " + (y1 - y2));
+                    if (y1 - y2 > 200) {
                         LogUtils.i(TAG, "向上滑");
                         touchUp();
-                    } else if (y2 - y1 > 150) {
+                    } else if (y2 - y1 > 200) {
                         LogUtils.i(TAG, "向下滑");
                         touchDown();
                     }
@@ -366,6 +385,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         }
         mySurfaceView.getHolder().removeCallback(this);
         mySurfaceView.getHolder().getSurface().release();
+        postion = 0;
         super.onDestroy();
     }
 
@@ -399,6 +419,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             return;
         }
         postion--;
+        LogUtils.i(TAG, "  touchDown postion=  " + postion);
         if (postion > -1) {
             playNextVideo();
         }
@@ -412,6 +433,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             return;
         }
         postion++;
+        LogUtils.i(TAG, "  touchUp postion=" + postion);
         if (postion < mVideoList.size()) {
             playNextVideo();
         }
@@ -427,7 +449,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         release();
         initPlay();
         initHolder(holder);
-
     }
 
     SurfaceHolder holder = null;
@@ -494,7 +515,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         overridePendingTransition(R.anim.silde_bottom_in, 0);
     }
 
-
     private void showOrHiddenController() {
         if (hasShowController) {
             if (layoutController.getVisibility() == View.VISIBLE) {
@@ -549,6 +569,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 showWifiDialog(getString(R.string.network_no_work));
                 showOrHiddenController();
             } else if (wifiState == NetUtil.NETWORK_MOBILE) {
+                dismissWifiDialog();
                 pause();
                 showWifiDialog(getString(R.string.tips_not_wifi));
             } else if (wifiState == NetUtil.NETWORK_WIFI) {
@@ -579,6 +600,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    pause();
                     dialog.dismiss();
                 }
             });
