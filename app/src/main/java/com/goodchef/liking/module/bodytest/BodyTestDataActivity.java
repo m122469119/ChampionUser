@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -188,6 +189,8 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
     Toolbar mToolbar;
     @BindView(R.id.toolbar_title)
     TextView mTooBarTitle;
+    @BindView(R.id.layout_body_data)
+    LinearLayout mLayoutBodyData;
 
     private Typeface mTypeface;
 
@@ -269,6 +272,10 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
     }
 
     private void sendRequest() {
+        mLayoutBodyData.setVisibility(View.INVISIBLE);
+        mHeadCardView.setVisibility(View.GONE);
+        mNoDataLayout.setVisibility(android.view.View.GONE);
+        mAppBarLayout.setVisibility(View.GONE);
         mPresenter.getBodyData(this, bodyId);
     }
 
@@ -409,6 +416,7 @@ public class BodyTestDataActivity extends BaseMVPActivity<BodyTestDataContract.P
             mNoDataPromptTextView.setText(R.string.no_data);
             mAppBarLayout.setVisibility(android.view.View.GONE);
         } else {
+            mLayoutBodyData.setVisibility(View.VISIBLE);
             mHeadCardView.setVisibility(android.view.View.VISIBLE);
             mNoDataLayout.setVisibility(android.view.View.GONE);
             mAppBarLayout.setVisibility(android.view.View.VISIBLE);

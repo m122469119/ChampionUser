@@ -268,7 +268,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         }
         mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
         mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
-        mRightImageView.setVisibility(android.view.View.GONE);
+        mRightImageView.setVisibility(View.GONE);
         mRightLeftImageView.setVisibility(android.view.View.GONE);
         mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
         mRedPoint.setVisibility(android.view.View.GONE);
@@ -280,7 +280,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     private void setTagRechargeTab() {
         mLikingLeftTitleTextView.setVisibility(android.view.View.INVISIBLE);
         mLikingRightTitleTextView.setVisibility(android.view.View.INVISIBLE);
-        mRightImageView.setVisibility(android.view.View.GONE);
+        mRightImageView.setVisibility(View.GONE);
         mRightLeftImageView.setVisibility(android.view.View.GONE);
         mRedPoint.setVisibility(android.view.View.GONE);
         mLikingDistanceTextView.setVisibility(android.view.View.GONE);
@@ -303,11 +303,17 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
 
     private void setQrCodeView() {
         mRightImageView.setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRightLeftImageView.getLayoutParams();
+        layoutParams.rightMargin = DisplayUtils.dp2px(40);
+        mRightLeftImageView.setLayoutParams(layoutParams);
         mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_qr));
     }
 
     private void hintQeCodeView() {
         mRightImageView.setVisibility(View.GONE);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRightLeftImageView.getLayoutParams();
+        layoutParams.rightMargin = DisplayUtils.dp2px(10);
+        mRightLeftImageView.setLayoutParams(layoutParams);
     }
 
 
