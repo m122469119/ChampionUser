@@ -52,6 +52,7 @@ import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.LikingMyFragment;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.message.MessageActivity;
+import com.goodchef.liking.module.message.ShowCodeMessage;
 import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 import com.goodchef.liking.umeng.UmengEventId;
@@ -295,10 +296,18 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
         mRedPoint.setVisibility(android.view.View.GONE);
         mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
-        mRightImageView.setVisibility(View.VISIBLE);
         mRightLeftImageView.setVisibility(View.VISIBLE);
-        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_qr));
+        hintQeCodeView();
         mRightLeftImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_key));
+    }
+
+    private void setQrCodeView() {
+        mRightImageView.setVisibility(View.VISIBLE);
+        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_qr));
+    }
+
+    private void hintQeCodeView() {
+        mRightImageView.setVisibility(View.GONE);
     }
 
 
@@ -619,6 +628,19 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         mGym = message.getGym();
         setHomeTitle();
         setHomeMenuReadNotice();//切换场馆有公告就弹出公告
+    }
+
+    public void onEvent(ShowCodeMessage message) {
+        if (message != null) {
+            String tag = fragmentTabHost.getCurrentTabTag();
+            int showCode = message.getShowCode();
+            LogUtils.i(TAG, " ShowCodeMessage = " + showCode);
+            if (showCode == NumberConstantUtil.ONE && tag != null && tag.equals(TAG_MY_TAB)) {
+                setQrCodeView();
+            } else if (showCode == NumberConstantUtil.ZERO) {
+                hintQeCodeView();
+            }
+        }
     }
 
     /**

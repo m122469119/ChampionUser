@@ -43,6 +43,7 @@ import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.water.WaterRateActivity;
 import com.goodchef.liking.module.login.LoginActivity;
+import com.goodchef.liking.module.message.ShowCodeMessage;
 import com.goodchef.liking.module.more.MoreActivity;
 import com.goodchef.liking.module.train.MyTrainDataActivity;
 import com.goodchef.liking.module.train.SportDataActivity;
@@ -129,6 +130,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     private Typeface mTypeface;//字体
     private String mBraceletMac;//手环mac地址
     private String UUID;//蓝牙UUID
+    private int showCode;
 
     @Nullable
     @Override
@@ -211,6 +213,8 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         LikingPreference.setIsVip(Integer.parseInt(userOtherInfoData.getIsVip()));
         mBraceletMac = userOtherInfoData.getBraceletMac();
         UUID = userOtherInfoData.getUuid();
+        showCode = userOtherInfoData.getShowCode();
+        postEvent(new ShowCodeMessage(showCode));
 
         if (LikingPreference.isVIP()) {
             mIsVip.setVisibility(android.view.View.VISIBLE);

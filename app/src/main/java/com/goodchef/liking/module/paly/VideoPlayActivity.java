@@ -76,6 +76,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     private HBaseDialog dialog;
     private boolean isNotMobileNetwork;//是否移动网络
     private boolean isNotWiFiNetWork;//是否有WIFI
+    private boolean isPrepare = false;
 
     private MediaPlayer mediaPlayer;
 
@@ -195,7 +196,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC); // 设置多媒体流类型
         mySurfaceView.getHolder().addCallback(this);
         surfaceViewTouch();
-        prepareVideo();
         playerCompletion();
         seekBarListener();
         mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -268,6 +268,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     setVideoWindow(vWidth, vHeight, lw, lh);
                 }
                 //准备完成后播放
+                isPrepare = true;
                 start();
                 // String duration = mediaPlayer.getDuration() ;
                 totalTimeTextView.setText(formatTime(mediaPlayer.getDuration()));
@@ -313,6 +314,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             @Override
             public void onCompletion(MediaPlayer mp) {
                 LogUtils.i(TAG, " 播放完成 postion = " + postion);
+                isPrepare = false;
                 if (mVideoList.size() == 1) {
                     showToast("播放结束");
                     //finish();
@@ -350,10 +352,10 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     x2 = event.getX();
                     y2 = event.getY();
                     LogUtils.i(TAG, " y1-y2 = " + (y1 - y2));
-                    if (y1 - y2 > 200) {
+                    if (y1 - y2 > DisplayUtils.getHeightPixels() / 3) {
                         LogUtils.i(TAG, "向上滑");
                         touchUp();
-                    } else if (y2 - y1 > 200) {
+                    } else if (y2 - y1 > DisplayUtils.getHeightPixels() / 3) {
                         LogUtils.i(TAG, "向下滑");
                         touchDown();
                     }
@@ -386,6 +388,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mySurfaceView.getHolder().removeCallback(this);
         mySurfaceView.getHolder().getSurface().release();
         postion = 0;
+        release();
         super.onDestroy();
     }
 
@@ -474,8 +477,8 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 LogUtils.i(TAG, "postion = " + postion + "  url = " + Uri.parse(mVideoList.get(postion)));
                 mediaPlayer.setDataSource(VideoPlayActivity.this, Uri.parse(mVideoList.get(postion)));
                 //异步准备 准备工作在子线程中进行 当播放网络视频时候一般采用此方法
+                prepareVideo();
                 mediaPlayer.prepareAsync();
-                //  showProgressDialog(getString(R.string.play_prepare));
                 showLoading();
                 layoutLoading.setVisibility(View.VISIBLE);
             }
@@ -574,7 +577,9 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 showWifiDialog(getString(R.string.tips_not_wifi));
             } else if (wifiState == NetUtil.NETWORK_WIFI) {
                 dismissWifiDialog();
-                start();
+                if (isPrepare && !mediaPlayer.isPlaying()) {
+                    start();
+                }
             }
         }
     }

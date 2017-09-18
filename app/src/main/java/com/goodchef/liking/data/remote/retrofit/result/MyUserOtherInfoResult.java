@@ -66,6 +66,8 @@ public class MyUserOtherInfoResult extends LikingResult {
         private WaterData waterData;
         @SerializedName("can_renew")
         private int can_renew;
+        @SerializedName("show_code")
+        private int showCode;
 
         public WaterData getWaterData() {
             return waterData;
@@ -145,6 +147,14 @@ public class MyUserOtherInfoResult extends LikingResult {
 
         public void setCan_renew(int can_renew) {
             this.can_renew = can_renew;
+        }
+
+        public int getShowCode() {
+            return showCode;
+        }
+
+        public void setShowCode(int showCode) {
+            this.showCode = showCode;
         }
 
         public static class CardData extends Data {
@@ -233,7 +243,7 @@ public class MyUserOtherInfoResult extends LikingResult {
                 this.time_limit = time_limit;
             }
 
-            public static class TimeLimitBean extends Data{
+            public static class TimeLimitBean extends Data {
                 /**
                  * title : 周一至周五
                  * desc : 上午11:00前，下午14:00-17:00，晚上21:00后
