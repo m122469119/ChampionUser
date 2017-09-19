@@ -40,7 +40,7 @@ public class SmartSpotDetailActivity extends AppBarMVPSwipeBackActivity<SmartSpo
     @BindView(R.id.tv_datetime)
     TextView mTvDateTime;
 
-    private static final String KEY_RDID = "key_record_id";
+    public static final String KEY_RDID = "key_record_id";
     private String mRecordId;
     private SmartSpotRecordListAdapter smartSpotRecordListAdapter;
     List<String> videoUrlList = new ArrayList<>();

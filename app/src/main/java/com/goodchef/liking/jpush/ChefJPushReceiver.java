@@ -18,6 +18,7 @@ import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.MilResult;
+import com.goodchef.liking.data.remote.retrofit.result.SmartSpotResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.AnnouncementDirect;
 import com.goodchef.liking.eventmessages.PushHasMessage;
 import com.goodchef.liking.module.card.my.MyCardActivity;
@@ -26,6 +27,7 @@ import com.goodchef.liking.module.course.MyLessonActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.message.MessageActivity;
 import com.goodchef.liking.module.runpush.RunFinishActivity;
+import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 import com.goodchef.liking.utils.AppStatusUtils;
 import com.google.gson.Gson;
 
@@ -62,6 +64,7 @@ public class ChefJPushReceiver extends BroadcastReceiver {
     public static final String FOOD = "food";
     public static final String TEAM = "team";
     public static final String CARD = "card";
+    public static final String SMART_SPOT = "smartspot";
     public static final String MSG = "msg";
     public static final String USER_RUN = "user_run";
     public static final String DIRECT_TYPE_HTML5 = "h5";
@@ -298,6 +301,9 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                 case USER_RUN:
                     toUserRun(extras, context);
                     break;
+                case SMART_SPOT:
+                    toSmartSpot(extras, context);
+                    break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -337,6 +343,39 @@ public class ChefJPushReceiver extends BroadcastReceiver {
                     milResult.getData().getAlert(),
                     resultPendingIntent);
         }
+    }
+
+    /**
+     * 跳转到smartspot 推送消息
+     *
+     * @param s
+     * @param context
+     */
+    private void toSmartSpot(String s, Context context) {
+        Gson gson = new Gson();
+        SmartSpotResult smartSpotResult = gson.fromJson(s, SmartSpotResult.class);
+        String recordId = smartSpotResult.getData().getRecord_id();
+        if (AppStatusUtils.getTopActivityClass(context).contains("com.goodchef.liking")) {
+            Intent intent = new Intent(context, SmartSpotDetailActivity.class);
+            intent.putExtra(SmartSpotDetailActivity.KEY_RDID, recordId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
+        } else {
+            Intent resultIntent = new Intent(context, SmartSpotDetailActivity.class);
+            resultIntent.putExtra(SmartSpotDetailActivity.KEY_RDID, recordId);
+            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(SmartSpotDetailActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            showNotification(context,
+                    context.getString(R.string.app_name),
+                    smartSpotResult.getData().getAlert(),
+                    resultPendingIntent);
+        }
+
     }
 
 
