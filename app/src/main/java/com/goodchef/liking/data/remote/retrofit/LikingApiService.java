@@ -38,7 +38,7 @@ import com.goodchef.liking.data.remote.retrofit.result.SelfHelpGroupCoursesResul
 import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
-import com.goodchef.liking.data.remote.retrofit.result.SportWeekResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.SyncTimestampResult;
 import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
@@ -463,8 +463,10 @@ public interface LikingApiService {
 
     @FormUrlEncoded
     @POST(Urls.SPORT_STATS)
-    Observable<SportWeekResult> getSportStatsData(@Path(PATH_VERSION) String sHostVersion,
-                                                  @Field(KEY_TOKEN) String token);
+    Observable<SportStatsResult> getSportStatsData(@Path(PATH_VERSION) String sHostVersion,
+                                                   @Field(KEY_TOKEN) String token,
+                                                   @Field("type") String type,
+                                                   @Field("date") String date);
 
     @FormUrlEncoded
     @POST(Urls.SPORT_SHARE)

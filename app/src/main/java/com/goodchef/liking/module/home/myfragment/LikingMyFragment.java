@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
@@ -45,8 +44,8 @@ import com.goodchef.liking.module.home.myfragment.water.WaterRateActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.message.ShowCodeMessage;
 import com.goodchef.liking.module.more.MoreActivity;
-import com.goodchef.liking.module.train.MyTrainDataActivity;
 import com.goodchef.liking.module.train.SportDataActivity;
+import com.goodchef.liking.module.train.SportDataDayFragment;
 import com.goodchef.liking.module.userinfo.MyInfoActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
@@ -540,12 +539,12 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             case R.id.layout_all_sport://我的训练数据
                 if (LikingPreference.isLogin()) {
                     Intent intent = new Intent(getActivity(), SportDataActivity.class);
-                    intent.setAction(SportDataActivity.SHOW_ACTION);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(SportDataActivity.SPORT_MINS, mContentTextViewMin.getText().toString());
-                    bundle.putString(SportDataActivity.SPORT_DAYS, mContentTextViewDay.getText().toString());
-                    bundle.putString(SportDataActivity.SPORT_TIMES, mContentTextViewTime.getText().toString());
-                    intent.putExtras(bundle);
+//                    intent.setAction(SportDataDayFragment.SHOW_ACTION);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(SportDataDayFragment.SPORT_MINS, mContentTextViewMin.getText().toString());
+//                    bundle.putString(SportDataDayFragment.SPORT_DAYS, mContentTextViewDay.getText().toString());
+//                    bundle.putString(SportDataDayFragment.SPORT_TIMES, mContentTextViewTime.getText().toString());
+//                    intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
                     startActivity(LoginActivity.class);

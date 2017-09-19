@@ -9,7 +9,8 @@ import com.aaron.http.code.result.Data;
  * @Version 1.0
  */
 public class SportDataEntity extends Data{
-    private Long timstamp;
+    private Long startTime;
+    private Long endTime;
     private String title;
     private String content;
     private String percentage;
@@ -19,8 +20,9 @@ public class SportDataEntity extends Data{
     public SportDataEntity() {
     }
 
-    public SportDataEntity(Long timstamp, String title, String content, String percentage, String percentageText, boolean isChecked) {
-        this.timstamp = timstamp;
+    public SportDataEntity(Long startTime,Long endTime,String title, String content, String percentage, String percentageText, boolean isChecked) {
+        this.startTime = startTime;
+        this.startTime = endTime;
         this.title = title;
         this.content = content;
         this.percentage = percentage;
@@ -44,12 +46,20 @@ public class SportDataEntity extends Data{
         this.percentageText = percentageText;
     }
 
-    public Long getTimstamp() {
-        return timstamp;
+    public Long getStartTime() {
+        return startTime;
     }
 
-    public void setTimstamp(Long timstamp) {
-        this.timstamp = timstamp;
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 
     public String getTitle() {

@@ -691,4 +691,6 @@
     <string name="continues">继续</string>
     <string name="tips_not_wifi">您当前正在使用移动网络，继续播放将消耗流量</string>
     <string name="network_no_work">当前网络不可用</string>
+
+    <string name="week">周</string>
 </resources>

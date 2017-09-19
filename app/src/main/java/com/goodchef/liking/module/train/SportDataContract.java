@@ -4,17 +4,17 @@ import android.content.Context;
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.common.utils.DateUtils;
-import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
-import com.goodchef.liking.data.remote.retrofit.result.SportWeekResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.share.ShareModel;
 import com.goodchef.liking.utils.ShareUtils;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 说明:
@@ -23,18 +23,24 @@ import java.util.Date;
  */
 
 interface SportDataContract {
+
     interface View extends BaseStateView {
-        void updateSportStatsView(SportWeekResult value);
+        void updateSportStatsView(SportStatsResult value);
 
         void updateSportListView(SportListResult value);
     }
 
     class Presenter extends RxBasePresenter<View> {
+
+        public final static int TYPE_TIME_DAY = SportDataModel.TYPE_TIME_DAY;
+        public final static int TYPE_TIME_WEEK = SportDataModel.TYPE_TIME_WEEK;
+        public final static int TYPE_TIME_MONTH = SportDataModel.TYPE_TIME_MONTH;
+
         SportDataModel mModel;
         ShareModel mShareModel;
 
-        public Presenter() {
-            mModel = new SportDataModel();
+        public Presenter(int type) {
+            mModel = new SportDataModel(type);
             mShareModel = new ShareModel();
         }
 
@@ -42,14 +48,16 @@ interface SportDataContract {
             return mModel.getDate4Index(position);
         }
 
+        public List<SportDataEntity> getSportDatas() {
+            return mModel.getSportDatas();
+        }
 
         public void getSportStats() {
             mModel.getSportStats().subscribe(addObserverToCompositeDisposable(
-                    new LikingBaseObserver<SportWeekResult>(mView) {
+                    new LikingBaseObserver<SportStatsResult>(mView) {
                         @Override
-                        public void onNext(SportWeekResult value) {
+                        public void onNext(SportStatsResult value) {
                             mView.updateSportStatsView(value);
-
                         }
 
                         @Override
@@ -68,7 +76,7 @@ interface SportDataContract {
         public void getSportList(int pos) {
             SportDataEntity date4Index = mModel.getDate4Index(pos);
             if (date4Index == null) {return;}
-            String yyyyMMdd = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getTimstamp()));
+            String yyyyMMdd = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getStartTime()));
             mModel.getSportListResult("", yyyyMMdd).subscribe(addObserverToCompositeDisposable(
                     new LikingBaseObserver<SportListResult>(mView) {
                         @Override
