@@ -355,26 +355,20 @@ public class ChefJPushReceiver extends BroadcastReceiver {
         Gson gson = new Gson();
         SmartSpotResult smartSpotResult = gson.fromJson(s, SmartSpotResult.class);
         String recordId = smartSpotResult.getData().getRecord_id();
-        if (AppStatusUtils.getTopActivityClass(context).contains("com.goodchef.liking")) {
-            Intent intent = new Intent(context, SmartSpotDetailActivity.class);
-            intent.putExtra(SmartSpotDetailActivity.KEY_RDID, recordId);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(intent);
-        } else {
-            Intent resultIntent = new Intent(context, SmartSpotDetailActivity.class);
-            resultIntent.putExtra(SmartSpotDetailActivity.KEY_RDID, recordId);
-            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(SmartSpotDetailActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
+        Intent resultIntent = new Intent(context, SmartSpotDetailActivity.class);
+        resultIntent.putExtra(SmartSpotDetailActivity.KEY_RDID, recordId);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification(context,
-                    context.getString(R.string.app_name),
-                    smartSpotResult.getData().getAlert(),
-                    resultPendingIntent);
-        }
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(SmartSpotDetailActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        showNotification(context,
+                context.getString(R.string.app_name),
+                smartSpotResult.getData().getAlert(),
+                resultPendingIntent);
 
     }
 

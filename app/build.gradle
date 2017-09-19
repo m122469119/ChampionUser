@@ -54,29 +54,29 @@ android {
         def TRUE = "true"
         def FALSE = "false"
         def appFlag = "\"LikingFit\""
-//        release {
-//            debuggable false
-//            buildConfigField BOOLEAN, TEST_MODE, FALSE
-//            buildConfigField STRING, APP_FLAG, appFlag
-//            buildConfigField STRING, HTTP_HOST, "\"http://app.likingfit.com\""
-//            minifyEnabled true
-//            shrinkResources true
-//            resValue "string", "app_name", "Liking健身"
-//            signingConfig signingConfigs.myConfig
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
-
         release {
             debuggable false
             buildConfigField BOOLEAN, TEST_MODE, FALSE
             buildConfigField STRING, APP_FLAG, appFlag
-            buildConfigField STRING, HTTP_HOST, "\"http://betaapp.likingfit.com\""
+            buildConfigField STRING, HTTP_HOST, "\"http://app.likingfit.com\""
             minifyEnabled true
             shrinkResources true
-            resValue "string", "app_name", "Liking健身beta"
+            resValue "string", "app_name", "Liking健身"
             signingConfig signingConfigs.myConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+//        release {
+//            debuggable false
+//            buildConfigField BOOLEAN, TEST_MODE, FALSE
+//            buildConfigField STRING, APP_FLAG, appFlag
+//            buildConfigField STRING, HTTP_HOST, "\"http://betaapp.likingfit.com\""
+//            minifyEnabled true
+//            shrinkResources true
+//            resValue "string", "app_name", "Liking健身beta"
+//            signingConfig signingConfigs.myConfig
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
 
 //        release {
 //            minifyEnabled false
