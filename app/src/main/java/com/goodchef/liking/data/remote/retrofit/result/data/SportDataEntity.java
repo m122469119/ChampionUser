@@ -22,7 +22,7 @@ public class SportDataEntity extends Data{
 
     public SportDataEntity(Long startTime,Long endTime,String title, String content, String percentage, String percentageText, boolean isChecked) {
         this.startTime = startTime;
-        this.startTime = endTime;
+        this.endTime = endTime;
         this.title = title;
         this.content = content;
         this.percentage = percentage;

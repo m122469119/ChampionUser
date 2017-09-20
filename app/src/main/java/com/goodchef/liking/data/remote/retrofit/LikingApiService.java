@@ -39,6 +39,7 @@ import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportDataResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
 import com.goodchef.liking.data.remote.retrofit.result.SubmitPayResult;
 import com.goodchef.liking.data.remote.retrofit.result.SyncTimestampResult;
 import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
@@ -471,7 +472,9 @@ public interface LikingApiService {
     @FormUrlEncoded
     @POST(Urls.SPORT_SHARE)
     Observable<ShareResult> getSportShare(@Path(PATH_VERSION) String sHostVersion,
-                                          @Field(KEY_TOKEN) String token);
+                                          @Field(KEY_TOKEN) String token,
+                                          @Field("start_date") String startDate,
+                                          @Field("end_date") String endDate);
 
     @FormUrlEncoded
     @POST(Urls.SMART_SPOT_SHARE)
@@ -492,6 +495,13 @@ public interface LikingApiService {
     Observable<FollowUserResult> followUser(@Path(PATH_VERSION) String sHostVersion,
                                             @Field(KEY_TOKEN) String token,
                                             @Field("follow_user_id") String userId);
+
+    @FormUrlEncoded
+    @POST(Urls.GET_SPORT_USER_STAT)
+    Observable<SportUserStatResult> getSportUserStatsResult(@Path(PATH_VERSION) String sHostVersion,
+                                                            @Field(KEY_TOKEN) String token,
+                                                            @Field("start_date") String startDate,
+                                                            @Field("end_date") String endDate);
 
     class Urls {
         private static final String sVersion = "/{version}/";
@@ -866,5 +876,10 @@ public interface LikingApiService {
          * 关注用户
          */
         public static final String GET_FOLLOW = sVersion + "marathon/follow";
+
+        /**
+         * 用户运动记录统计
+         */
+        public static final String GET_SPORT_USER_STAT = sVersion + "sport/user_stat";
     }
 }

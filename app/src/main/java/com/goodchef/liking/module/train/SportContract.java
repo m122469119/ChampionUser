@@ -27,7 +27,7 @@ interface SportContract {
         }
 
         public void getSportShare(final Context context) {
-            mShareModel.getSportshare()
+            mShareModel.getSportshare("","")
                     .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ShareResult>(mView) {
                         @Override
                         public void onNext(ShareResult value) {

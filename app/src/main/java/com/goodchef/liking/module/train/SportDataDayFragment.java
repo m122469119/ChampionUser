@@ -22,6 +22,7 @@ import com.goodchef.liking.adapter.SportDataAdapter;
 import com.goodchef.liking.adapter.SportHistogramAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
 import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 
 import java.util.List;
@@ -166,6 +167,11 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
             mFooterView.setVisibility(View.GONE);
             params.height = 0;
         }
+    }
+
+    @Override
+    public void updateSportUserStatView(SportUserStatResult value) {
+
     }
 
     @Override

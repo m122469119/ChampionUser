@@ -8,6 +8,10 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -19,6 +23,7 @@ import com.goodchef.liking.adapter.SportDataAdapter;
 import com.goodchef.liking.adapter.SportHistogramAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
 import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 
 import java.util.List;
@@ -33,11 +38,42 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
 
     public static final String SPORTDATA_TIME_TYPE_KEY = "timetype";
 
+    private ScrollView rootView;
+
     @BindView(R.id.state_view)
     StateView mStateView;
 
     @BindView(R.id.recyclerView_sport)
     RecyclerView mSportRecyclerView;
+
+    @BindView(R.id.sport_data_header_layout)
+    LinearLayout mSportDataHeaderLayout;
+
+    TextView mSportRecordDate; //选中日期
+
+    TextView mSportTotalSeconds; //运动时间
+
+    TextView mSportTotalDays; //运动天数
+
+    TextView mSportTotalKcal; //燃烧卡路里
+
+    TextView mSportTotalExercise; //运动次数
+
+    TextView mSportRunKilometre; //跑步-公里
+
+    TextView mSportRunMin; //跑步-分钟
+
+    TextView mSportTrainingTimes; //力量训练-次数
+
+    TextView mSportTrainingMin; //力量训练-分钟
+
+    TextView mSportGroupLessonSection; //团体课-节
+
+    TextView mSportGroupLessonMin; //团体课-min
+
+    TextView mSportPrivateTeachingSection; //私教课-节
+
+    TextView mSportPrivateTeachingMin; //私教课-min
 
     private SportHistogramAdapter mHistogramAdapter = null;
 
@@ -56,14 +92,40 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View viewRoot = inflater.inflate(R.layout.fragment_sport_week_day_contains, container, false);
-        ButterKnife.bind(this, viewRoot);
+        rootView = new ScrollView(getContext());
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        rootView.setLayoutParams(layoutParams);
+        rootView.removeAllViews();
+        rootView.addView(viewRoot);
+        ButterKnife.bind(this, rootView);
         initData();
         initView();
-        return viewRoot;
+        return rootView;
     }
 
     private void initView() {
         initHeadView();
+        initRecordView();
+    }
+
+    private void initRecordView() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_sport_record_stat, null);
+        mSportDataHeaderLayout.addView(view);
+
+        mSportRecordDate = (TextView)view.findViewById(R.id.sport_record_stat_date);
+        mSportTotalSeconds = (TextView)view.findViewById(R.id.sport_total_seconds);
+        mSportTotalDays = (TextView)view.findViewById(R.id.sport_total_days);
+        mSportTotalKcal = (TextView)view.findViewById(R.id.sport_total_kcal);
+        mSportTotalExercise = (TextView)view.findViewById(R.id.sport_total_exercise);
+        mSportRunKilometre = (TextView)view.findViewById(R.id.sport_run_kilometre);
+        mSportRunMin = (TextView)view.findViewById(R.id.sport_run_min);
+        mSportTrainingTimes = (TextView)view.findViewById(R.id.sport_strength_training_times);
+        mSportTrainingMin = (TextView)view.findViewById(R.id.sport_strength_training_min);
+        mSportGroupLessonSection = (TextView)view.findViewById(R.id.sport_group_lesson_section);
+        mSportGroupLessonMin = (TextView)view.findViewById(R.id.sport_group_lesson_section_min);
+        mSportPrivateTeachingSection = (TextView)view.findViewById(R.id.sport_private_teaching_section);
+        mSportPrivateTeachingMin = (TextView)view.findViewById(R.id.sport_private_teaching_min);
+
     }
 
     private void initData() {
@@ -113,7 +175,8 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
                 }
                 mHistogramAdapter.getDatas().get(position).setChecked(true);
                 mHistogramAdapter.setSelectCurrPosition(position);
-//                mPresenter.getSportList(position);
+                mSportRecordDate.setText(mHistogramAdapter.getDatas().get(position).getTitle());
+                mPresenter.getSportUserStatsResult(position);
             }
         });
     }
@@ -122,7 +185,9 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
         mHistogramAdapter.setDatas(mPresenter.getSportDatas(), isLoadMore);
         mHistogramAdapter.notifyDataSetChanged();
         if (mHistogramAdapter.getSelectCurrPosition() != -1 && !isLoadMore) {
-//            mPresenter.getSportList(mHistogramAdapter.getSelectCurrPosition());
+            int pos = mHistogramAdapter.getSelectCurrPosition();
+            mPresenter.getSportUserStatsResult(pos);
+            mSportRecordDate.setText(mHistogramAdapter.getDatas().get(pos).getTitle());
         }
     }
 
@@ -143,7 +208,25 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
     }
 
     @Override
-    public void updateSportListView(SportListResult value) {
+    public void updateSportListView(SportListResult value) {}
+
+    @Override
+    public void updateSportUserStatView(SportUserStatResult value) {
+        if(value != null && value.getData() != null) {
+            SportUserStatResult.DataBean bean = value.getData();
+            mSportTotalSeconds.setText(bean.getTotalSeconds());
+            mSportTotalDays.setText(bean.getTotalDay());
+            mSportTotalKcal.setText(bean.getTotalCal());
+            mSportTotalExercise.setText(bean.getTotalTime());
+            mSportRunKilometre.setText(bean.getRunDistance());
+            mSportRunMin.setText(bean.getRunTime());
+            mSportTrainingTimes.setText(bean.getSmartspotExercise());
+            mSportTrainingMin.setText(bean.getSmartspotTime());
+            mSportGroupLessonSection.setText(bean.getCourse());
+            mSportGroupLessonMin.setText(bean.getCourseTime());
+            mSportPrivateTeachingSection.setText(bean.getPersonal());
+            mSportPrivateTeachingMin.setText(bean.getPersonalTime());
+        }
     }
 
     @Override

@@ -47,9 +47,9 @@ public class ShareModel extends BaseModel {
     }
 
 
-    public Observable<ShareResult> getSportshare() {
+    public Observable<ShareResult> getSportshare(String sDate, String eDate) {
         return LikingNewApi.getInstance()
-                .getSportShare(LikingNewApi.sHostVersion, LikingPreference.getToken())
+                .getSportShare(LikingNewApi.sHostVersion, LikingPreference.getToken(), sDate, eDate)
                 .compose(RxUtils.<ShareResult>applyHttpSchedulers());
     }
 

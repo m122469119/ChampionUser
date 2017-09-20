@@ -11,6 +11,8 @@ import com.aaron.android.framework.base.mvp.BaseMVPSwipeBackActivity;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
+import com.goodchef.liking.widgets.NoScrollViewPager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class SportDataActivity extends BaseMVPSwipeBackActivity<SportContract.Pr
     @BindView(R.id.sport_right_btn)
     ImageView mSportRightBtn;
     @BindView(R.id.sport_viewpager)
-    ViewPager mSportViewpager;
+    NoScrollViewPager mSportViewpager;
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
 
     @Override

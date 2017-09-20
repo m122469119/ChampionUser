@@ -44,7 +44,7 @@
 
     </FrameLayout>
 
-    <android.support.v4.view.ViewPager
+    <com.goodchef.liking.widgets.NoScrollViewPager
         android:id="@+id/sport_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

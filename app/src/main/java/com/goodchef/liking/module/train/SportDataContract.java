@@ -1,6 +1,7 @@
 package com.goodchef.liking.module.train;
 
 import android.content.Context;
+
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.common.utils.DateUtils;
@@ -8,6 +9,7 @@ import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.ShareResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.module.share.ShareModel;
@@ -28,6 +30,8 @@ interface SportDataContract {
         void updateSportStatsView(SportStatsResult value);
 
         void updateSportListView(SportListResult value);
+
+        void updateSportUserStatView(SportUserStatResult value);
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -75,7 +79,9 @@ interface SportDataContract {
 
         public void getSportList(int pos) {
             SportDataEntity date4Index = mModel.getDate4Index(pos);
-            if (date4Index == null) {return;}
+            if (date4Index == null) {
+                return;
+            }
             String yyyyMMdd = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getStartTime()));
             mModel.getSportListResult("", yyyyMMdd).subscribe(addObserverToCompositeDisposable(
                     new LikingBaseObserver<SportListResult>(mView) {
@@ -97,14 +103,53 @@ interface SportDataContract {
 
         }
 
-        public void getSportShare(final Context context){
-            mShareModel.getSportshare()
-                    .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ShareResult>(mView) {
-                @Override
-                public void onNext(ShareResult value) {
-                    ShareUtils.showShareDialog(context, value.getShareData());
-                }
-            }));
+        public void getSportUserStatsResult(int pos) {
+            SportDataEntity date4Index = mModel.getDate4Index(pos);
+            if (date4Index == null) {
+                return;
+            }
+            try {
+                String yyyyMMddStart = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getStartTime()));
+                String yyyyMMddEnd = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getEndTime()));
+                mModel.getSportUserStatsResult(yyyyMMddStart, yyyyMMddEnd).subscribe(addObserverToCompositeDisposable(
+                        new LikingBaseObserver<SportUserStatResult>(mView) {
+                            @Override
+                            public void onNext(SportUserStatResult value) {
+                                mView.updateSportUserStatView(value);
+                            }
+
+                            @Override
+                            public void networkError(Throwable throwable) {
+                                super.networkError(throwable);
+                            }
+
+                            @Override
+                            public void apiError(ApiException apiException) {
+                                super.apiError(apiException);
+                            }
+                        }));
+            } catch (Exception e) {
+            }
+
+        }
+
+        public void getSportShare(final Context context, int pos) {
+            SportDataEntity date4Index = mModel.getDate4Index(pos);
+            if (date4Index == null) {
+                return;
+            }
+            try {
+                String yyyyMMddStart = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getStartTime()));
+                String yyyyMMddEnd = DateUtils.formatDate("yyyyMMdd", new Date(date4Index.getEndTime()));
+                mShareModel.getSportshare(yyyyMMddStart, yyyyMMddEnd)
+                        .subscribe(addObserverToCompositeDisposable(new LikingBaseObserver<ShareResult>(mView) {
+                            @Override
+                            public void onNext(ShareResult value) {
+                                ShareUtils.showShareDialog(context, value.getShareData());
+                            }
+                        }));
+            } catch (Exception e) {
+            }
         }
 
     }

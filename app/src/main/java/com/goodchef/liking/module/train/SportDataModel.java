@@ -8,6 +8,7 @@ import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
+import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
 import com.goodchef.liking.data.remote.retrofit.result.UserExerciseResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 
@@ -35,6 +36,8 @@ public class SportDataModel extends BaseModel {
     LinkedList<SportStatsResult.DataBean.StatsBean> mSportStatsResult;
 
     public static final long ONE_DAY = 24 * 60 * 60 * 1000;
+
+    public StringBuilder sb = null;
 
     public Observable<UserExerciseResult> getExerciseData() {
         return LikingNewApi.getInstance().getUserExerciseData(LikingNewApi.sHostVersion, LikingPreference.getToken())
@@ -73,10 +76,23 @@ public class SportDataModel extends BaseModel {
                 .compose(RxUtils.<SportListResult>applyHttpSchedulers());
     }
 
+    /**
+     * 用户运动记录统计
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public Observable<SportUserStatResult> getSportUserStatsResult(String startDate, String endDate) {
+        return LikingNewApi.getInstance().getSportUserStatsResult(LikingNewApi.sHostVersion,
+                LikingPreference.getToken(), startDate, endDate)
+                .compose(RxUtils.<SportUserStatResult>applyHttpSchedulers());
+    }
+
     public SportDataModel(int type) {
         typeTime = type;
         mSportDataEntities = new LinkedList<>();
         mSportStatsResult = new LinkedList<>();
+        sb = new StringBuilder();
 //        initEntities();
     }
 
@@ -118,26 +134,58 @@ public class SportDataModel extends BaseModel {
             Long sTime = parseTime(bean.getStartDate()).getTime();
             Long eTime = parseTime(bean.getEndDate()).getTime();
 
-            String title = "";
+            sb.setLength(0);
             String content = "";
+            Date sDate = parseTime(bean.getStartDate());
+            if (!isThisYear(sDate)) {
+                sb.append(getYear(sDate) + "\n");
+            }
+
             switch (typeTime) {
                 case TYPE_TIME_DAY:
-                    title = DateUtils.formatDate("MM/dd", parseTime(bean.getStartDate()));
+                    sb.append(DateUtils.formatDate("MM/dd", sDate));
                     content = getWeek(sTime);
                     break;
                 case TYPE_TIME_WEEK:
-                    title = DateUtils.formatDate("MM/dd", parseTime(bean.getStartDate()))
-                            + " " + DateUtils.formatDate("MM/dd", parseTime(bean.getEndDate()));
+                    Date endDate = parseTime(bean.getEndDate());
+                    sb.append(DateUtils.formatDate("MM/dd", sDate));
+                    sb.append(" ");
+                    sb.append(DateUtils.formatDate("MM/dd", endDate));
                     break;
                 case TYPE_TIME_MONTH:
-                    title = DateUtils.formatDate("MM", parseTime(bean.getStartDate())) + "月";
+                    sb.append(DateUtils.formatDate("M", sDate));
+                    sb.append("月");
                     break;
             }
             mSportDataEntities.add(new SportDataEntity(sTime, eTime,
-                    title, content,
+                    sb.toString(), content,
                     String.valueOf(p),
                     Integer.parseInt(bean.getSeconds()) / 60 + "mins",
                     false));
+        }
+    }
+
+    /**
+     * 是否是今年
+     *
+     * @param date
+     * @return
+     */
+    public boolean isThisYear(Date date) {
+        try {
+            return getYear(new Date()) == getYear(date);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public int getYear(Date date) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar.get(Calendar.YEAR);
+        } catch (Exception e) {
+            return 0;
         }
     }
 
