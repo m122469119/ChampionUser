@@ -880,6 +880,6 @@ public interface LikingApiService {
         /**
          * 用户运动记录统计
          */
-        public static final String GET_SPORT_USER_STAT = sVersion + "sport/user_stat";
+        public static final String GET_SPORT_USER_STAT = sVersion + "sport/user-stat";
     }
 }

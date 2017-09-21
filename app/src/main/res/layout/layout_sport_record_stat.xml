@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:paddingBottom="@dimen/spacing_20dp"
               android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_16dp"
+        android:layout_marginTop="@dimen/spacing_12dp"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/spacing_12dp">
@@ -24,14 +25,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -55,24 +56,25 @@
 
                     <TextView
                         android:id="@+id/sport_total_seconds"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/min_cn"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
@@ -81,7 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -105,24 +107,25 @@
 
                     <TextView
                         android:id="@+id/sport_total_days"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/sport_day"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -132,14 +135,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -157,30 +160,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sport_total_kcal"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/sport_kcal"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
@@ -189,7 +193,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -207,30 +211,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sport_total_exercise"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/times"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
@@ -241,7 +246,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_16dp"
+        android:layout_marginTop="@dimen/spacing_12dp"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/spacing_12dp">
@@ -258,14 +263,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -289,24 +294,25 @@
 
                     <TextView
                         android:id="@+id/sport_run_kilometre"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/sport_kilometre"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -320,24 +326,25 @@
 
                     <TextView
                         android:id="@+id/sport_run_min"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/min_cn"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -347,7 +354,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -371,24 +378,25 @@
 
                     <TextView
                         android:id="@+id/sport_strength_training_times"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/times"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -402,24 +410,25 @@
 
                     <TextView
                         android:id="@+id/sport_strength_training_min"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/min_cn"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -430,14 +439,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16dp"
+            android:layout_marginTop="@dimen/spacing_12dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -455,30 +464,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sport_group_lesson_section"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/sport_section"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -486,30 +496,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sport_group_lesson_section_min"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/min_cn"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -519,7 +530,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_12dp"
-                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginTop="@dimen/spacing_8dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical">
 
@@ -537,30 +548,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sport_private_teaching_section"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/sport_section"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -569,30 +581,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_12dp"
+                    android:layout_marginTop="@dimen/spacing_8dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sport_private_teaching_min"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/c34c86c"
-                        android:textSize="@dimen/textsize_34"
+                        android:textSize="@dimen/textsize_28"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="@dimen/spacing_8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_marginLeft="@dimen/spacing_4dp"
                         android:text="@string/min_cn"
                         android:textColor="@color/cdfe0e3"
-                        android:textSize="@dimen/textsize_18"
+                        android:textSize="@dimen/textsize_16"
                         android:textStyle="bold"/>
                 </LinearLayout>
 

@@ -42,6 +42,7 @@ interface SportDataContract {
 
         SportDataModel mModel;
         ShareModel mShareModel;
+        private boolean isLoad = false;
 
         public Presenter(int type) {
             mModel = new SportDataModel(type);
@@ -57,22 +58,26 @@ interface SportDataContract {
         }
 
         public void getSportStats() {
+            if(isLoad) return;//如果加载中return，防止重复加载
+            isLoad = true;
             mModel.getSportStats().subscribe(addObserverToCompositeDisposable(
                     new LikingBaseObserver<SportStatsResult>(mView) {
                         @Override
                         public void onNext(SportStatsResult value) {
                             mView.updateSportStatsView(value);
+                            isLoad = false;
                         }
 
                         @Override
                         public void networkError(Throwable throwable) {
                             super.networkError(throwable);
-
+                            isLoad = false;
                         }
 
                         @Override
                         public void apiError(ApiException apiException) {
                             super.apiError(apiException);
+                            isLoad = false;
                         }
                     }));
         }

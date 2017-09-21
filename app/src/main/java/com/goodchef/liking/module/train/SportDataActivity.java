@@ -3,12 +3,10 @@ package com.goodchef.liking.module.train;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aaron.android.framework.base.mvp.BaseMVPSwipeBackActivity;
-import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
 import com.goodchef.liking.widgets.NoScrollViewPager;
@@ -27,7 +25,7 @@ import butterknife.ButterKnife;
  * @version:1.0
  */
 
-public class SportDataActivity extends BaseMVPSwipeBackActivity<SportContract.Presenter> implements SportContract.View {
+public class SportDataActivity extends BaseActivity {
 
     private static final int INDEX_SPORT_DAY = 1;//天
     private static final int INDEX_SPORT_WEEK = 2;//周
@@ -67,7 +65,16 @@ public class SportDataActivity extends BaseMVPSwipeBackActivity<SportContract.Pr
         mSportRightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.getSportShare(SportDataActivity.this);
+                if(mTabFragmentPagerAdapter != null) {
+                    Fragment fragment = mTabFragmentPagerAdapter.getItem(mSportViewpager.getCurrentItem());
+                    if(fragment != null) {
+                        if(fragment instanceof SportDataDayFragment) {
+                            ((SportDataDayFragment)fragment).sportShare();
+                        } else if(fragment instanceof SportDataWeekOrMonthFragment) {
+                            ((SportDataWeekOrMonthFragment)fragment).sportShare();
+                        }
+                    }
+                }
             }
         });
     }
@@ -107,16 +114,6 @@ public class SportDataActivity extends BaseMVPSwipeBackActivity<SportContract.Pr
     private TabFragmentPagerAdapter.FragmentBinder buildFragmentSportMonth(MyTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
                 0, SportDataWeekOrMonthFragment.newInstance(INDEX_SPORT_MONTH));
-    }
-
-    @Override
-    public void setPresenter() {
-        mPresenter = new SportContract.Presenter();
-    }
-
-    @Override
-    public void changeStateView(StateView.State state) {
-
     }
 
     private enum MyTab {

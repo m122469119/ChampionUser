@@ -49,8 +49,8 @@ public class SportHistogramAdapter extends BaseRecyclerAdapter<SportDataEntity> 
         setDatas(datas);
         if (getDatas().size() > 0 && !isLoadMore) {
             selectCurrPosition = 0;
-            datas.get(selectCurrPosition).setChecked(true);
         }
+        datas.get(selectCurrPosition).setChecked(true);
     }
 
     @Override

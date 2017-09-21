@@ -44,123 +44,123 @@ public class SportUserStatResult extends LikingResult {
          */
 
         @SerializedName("total_time")
-        private int totalTime;
+        private String totalTime;
         @SerializedName("total_day")
-        private int totalDay;
+        private String totalDay;
         @SerializedName("total_cal")
-        private int totalCal;
+        private String totalCal;
         @SerializedName("total_seconds")
-        private int totalSeconds;
+        private String totalSeconds;
         @SerializedName("run_distance")
-        private int runDistance;
+        private String runDistance;
         @SerializedName("run_time")
-        private int runTime;
+        private String runTime;
         @SerializedName("smartspot_exercise")
-        private int smartspotExercise;
+        private String smartspotExercise;
         @SerializedName("smartspot_time")
-        private int smartspotTime;
+        private String smartspotTime;
         @SerializedName("course")
-        private int course;
+        private String course;
         @SerializedName("course_time")
-        private int courseTime;
+        private String courseTime;
         @SerializedName("personal")
-        private int personal;
+        private String personal;
         @SerializedName("personal_time")
-        private int personalTime;
+        private String personalTime;
 
-        public int getTotalTime() {
+        public String getTotalTime() {
             return totalTime;
         }
 
-        public void setTotalTime(int totalTime) {
+        public void setTotalTime(String totalTime) {
             this.totalTime = totalTime;
         }
 
-        public int getTotalDay() {
+        public String getTotalDay() {
             return totalDay;
         }
 
-        public void setTotalDay(int totalDay) {
+        public void setTotalDay(String totalDay) {
             this.totalDay = totalDay;
         }
 
-        public int getTotalCal() {
+        public String getTotalCal() {
             return totalCal;
         }
 
-        public void setTotalCal(int totalCal) {
+        public void setTotalCal(String totalCal) {
             this.totalCal = totalCal;
         }
 
-        public int getTotalSeconds() {
+        public String getTotalSeconds() {
             return totalSeconds;
         }
 
-        public void setTotalSeconds(int totalSeconds) {
+        public void setTotalSeconds(String totalSeconds) {
             this.totalSeconds = totalSeconds;
         }
 
-        public int getRunDistance() {
+        public String getRunDistance() {
             return runDistance;
         }
 
-        public void setRunDistance(int runDistance) {
+        public void setRunDistance(String runDistance) {
             this.runDistance = runDistance;
         }
 
-        public int getRunTime() {
+        public String getRunTime() {
             return runTime;
         }
 
-        public void setRunTime(int runTime) {
+        public void setRunTime(String runTime) {
             this.runTime = runTime;
         }
 
-        public int getSmartspotExercise() {
+        public String getSmartspotExercise() {
             return smartspotExercise;
         }
 
-        public void setSmartspotExercise(int smartspotExercise) {
+        public void setSmartspotExercise(String smartspotExercise) {
             this.smartspotExercise = smartspotExercise;
         }
 
-        public int getSmartspotTime() {
+        public String getSmartspotTime() {
             return smartspotTime;
         }
 
-        public void setSmartspotTime(int smartspotTime) {
+        public void setSmartspotTime(String smartspotTime) {
             this.smartspotTime = smartspotTime;
         }
 
-        public int getCourse() {
+        public String getCourse() {
             return course;
         }
 
-        public void setCourse(int course) {
+        public void setCourse(String course) {
             this.course = course;
         }
 
-        public int getCourseTime() {
+        public String getCourseTime() {
             return courseTime;
         }
 
-        public void setCourseTime(int courseTime) {
+        public void setCourseTime(String courseTime) {
             this.courseTime = courseTime;
         }
 
-        public int getPersonal() {
+        public String getPersonal() {
             return personal;
         }
 
-        public void setPersonal(int personal) {
+        public void setPersonal(String personal) {
             this.personal = personal;
         }
 
-        public int getPersonalTime() {
+        public String getPersonalTime() {
             return personalTime;
         }
 
-        public void setPersonalTime(int personalTime) {
+        public void setPersonalTime(String personalTime) {
             this.personalTime = personalTime;
         }
     }

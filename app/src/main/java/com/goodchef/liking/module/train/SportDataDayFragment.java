@@ -101,9 +101,10 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 LogUtils.i(TAG, "-----------onScrollStateChanged-----------");
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && !recyclerView.canScrollHorizontally(-1)) {
-                    mPresenter.getSportStats();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && !recyclerView.canScrollHorizontally(-1)) {
                     isLoadMore = true;
+                    mPresenter.getSportStats();
                     PopupUtils.showToast(getContext(), "加载更多...");
                 }
             }
@@ -172,6 +173,10 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
     @Override
     public void updateSportUserStatView(SportUserStatResult value) {
 
+    }
+
+    public void sportShare() {
+        mPresenter.getSportShare(getContext(), mHistogramAdapter.getSelectCurrPosition());
     }
 
     @Override
