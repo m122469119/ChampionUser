@@ -3,6 +3,7 @@ package com.goodchef.liking.module.card.buy;
 import com.aaron.android.framework.base.mvp.presenter.RxBasePresenter;
 import com.aaron.android.framework.base.mvp.view.BaseStateView;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.goodchef.liking.data.remote.retrofit.ApiException;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
 import com.goodchef.liking.data.remote.rxobserver.StateViewLoadingObserver;
 import com.goodchef.liking.module.home.LikingHomeActivity;
@@ -61,8 +62,8 @@ interface BuyCardContract {
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
+                        public void apiError(ApiException apiException) {
+                            super.apiError(apiException);
                             mView.setNoDataView();
                         }
 

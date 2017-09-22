@@ -1,16 +1,20 @@
 package com.goodchef.liking.module.home.lessonfragment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatDialog;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.base.widget.recycleview.OnRecycleViewItemClickListener;
-import com.aaron.android.framework.base.widget.refresh.NetworkSwipeRecyclerRefreshPagerLoaderFragment;
+import com.aaron.android.framework.base.widget.refresh.AppBarNetworkSwipeRecyclerRefreshPagerLoaderFragment;
 import com.aaron.android.framework.base.widget.refresh.PullMode;
 import com.aaron.android.framework.utils.DisplayUtils;
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.ListUtils;
 import com.aaron.common.utils.LogUtils;
@@ -21,6 +25,11 @@ import com.goodchef.liking.adapter.LikingLessonRecyclerAdapter;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
+import com.goodchef.liking.dialog.CancelOnClickListener;
+import com.goodchef.liking.dialog.ConfirmOnClickListener;
+import com.goodchef.liking.dialog.DefaultGymDialog;
 import com.goodchef.liking.eventmessages.BuyCardMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
@@ -32,20 +41,30 @@ import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.OnClickLessonFragmentMessage;
+import com.goodchef.liking.eventmessages.PushHasMessage;
+import com.goodchef.liking.eventmessages.RefshReadMessage;
+import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.module.course.group.details.GroupLessonDetailsActivity;
 import com.goodchef.liking.module.course.personal.PrivateLessonDetailsActivity;
 import com.goodchef.liking.module.course.selfhelp.SelfHelpGroupActivity;
+import com.goodchef.liking.module.gym.list.ChangeGymActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
+import com.goodchef.liking.module.message.MessageActivity;
 import com.goodchef.liking.module.writeuserinfo.WriteNameActivity;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.ChangeGymUtil;
+import com.goodchef.liking.utils.CityUtils;
 import com.goodchef.liking.utils.LikingCallUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
+import com.goodchef.liking.widgets.HomeToolBarController;
 import com.goodchef.liking.widgets.autoviewpager.InfiniteViewPager;
 import com.goodchef.liking.widgets.autoviewpager.indicator.IconPageIndicator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created on 16/5/20.
@@ -53,7 +72,7 @@ import java.util.List;
  * @author aaron.huang
  * @version 1.0.0
  */
-public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoaderFragment<LikingLessonContract.Presenter> implements LikingLessonContract.View {
+public class LikingLessonFragment extends AppBarNetworkSwipeRecyclerRefreshPagerLoaderFragment<LikingLessonContract.Presenter> implements LikingLessonContract.View {
     public static final int IMAGE_SLIDER_SWITCH_DURATION = 4000;
     public static final String KEY_GYM_ID = "key_gym_id";
     public static final String KEY_GYM_NAME = "key_gym_name";
@@ -88,6 +107,10 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
     private List<CoursesResult.Courses.CoursesData> list;
     private String presale;
     private String mNoBuinesses = "";
+    private HomeToolBarController homeToolBarController;
+    private CoursesResult.Courses.Gym mGym;//场馆信息
+    private String currentCityName = "";
+    private boolean shoDefaultDialog = true;
 
     @Override
     protected void requestData(int page) {
@@ -102,6 +125,13 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         } else {
             setLoading(false);
         }
+    }
+
+
+    @Override
+    public View createToolBarLayout() {
+        homeToolBarController = new HomeToolBarController(getActivity());
+        return homeToolBarController.createToolbarLayout();
     }
 
     @Override
@@ -294,7 +324,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
      * @param courses
      */
     private void doLessonGym(CoursesResult.Courses courses) {
-        CoursesResult.Courses.Gym mGym = courses.getGym();
+        mGym = courses.getGym();
         LikingHomeActivity.gymTel = mGym.getTel();
         LikingHomeActivity.gymId = mGym.getGymId();
         LikingHomeActivity.defaultGym = mGym.getDefaultGym();
@@ -305,7 +335,168 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         } else {
             mSelfCoursesInView.setVisibility(android.view.View.GONE);
         }
+
+        setToolbarView();
+        showDefaultGymDialog();
+        mPresenter.getHasMessage();
+        LikingPreference.saveGymData(mGym);
         postEvent(new GymNoticeMessage(courses.getGym()));
+    }
+
+
+    /**
+     * 弹出默认场馆的对话框
+     */
+    private boolean showDefaultGymDialog() {
+        //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
+        if (!LikingPreference.getUserHasCard() && NumberConstantUtil.ONE == LikingHomeActivity.defaultGym && shoDefaultDialog) {
+            if (!LikingHomeActivity.isWhetherLocation) {//定位失败
+                shoDefaultDialog = false;
+                setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
+            } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
+                if (!CityUtils.isDredge(LikingHomeActivity.cityCode)) {
+                    shoDefaultDialog = false;
+                    setDefaultGymDialog(getString(R.string.current_default_gym_no_gym) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 显示默认场馆的对话框
+     */
+    private void setDefaultGymDialog(String text, boolean isDefaultGym) {
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(getActivity(), DefaultGymDialog.defaultGymType);
+        defaultGymDialog.setCancelable(false);
+        defaultGymDialog.setCanceledOnTouchOutside(false);
+        if (isDefaultGym) {
+            defaultGymDialog.setDefaultPromptView(text);
+        } else {
+            defaultGymDialog.setCurrentCityNotOpen(text);
+        }
+        defaultGymDialog.setCancelClickListener(new CancelOnClickListener() {
+            @Override
+            public void onCancelClickListener(AppCompatDialog dialog) {
+                dialog.dismiss();
+                if (!shoDefaultDialog) {
+                    setHomeMenuReadNotice();
+                }
+            }
+        });
+
+        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+            @Override
+            public void onConfirmClickListener(AppCompatDialog dialog) {
+                if (mGym != null) {
+                    ChangeGymUtil.changeGym(getActivity(), mGym, 0);
+                }
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+
+//    /**
+//     * 切换场馆
+//     */
+//    private void changeGym(int index) {
+//        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+//            showToast(getString(R.string.network_no_connection));
+//            return;
+//        }
+//        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId())) {
+//            if (StringUtils.isEmpty(currentCityName)) {
+//                UMengCountUtil.UmengCount(getActivity(), UmengEventId.CHANGE_GYM_ACTIVITY, "定位失败");
+//            } else {
+//                UMengCountUtil.UmengCount(getActivity(), UmengEventId.CHANGE_GYM_ACTIVITY, currentCityName);
+//            }
+//            Intent intent = new Intent(getActivity(), ChangeGymActivity.class);
+//            intent.putExtra(LikingHomeActivity.KEY_SELECT_CITY_ID, mGym.getCityId());
+//            intent.putExtra(LikingHomeActivity.KEY_WHETHER_LOCATION, LikingHomeActivity.isWhetherLocation);
+//            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+//            intent.putExtra(LikingHomeActivity.KEY_TAB_INDEX, index);
+//            startActivity(intent);
+//        } else {
+//            showToast(getString(R.string.network_home_error));
+//        }
+//    }
+
+
+    /**
+     * 设置是否读取过公告
+     */
+    private void setHomeMenuReadNotice() {
+        if (mGym != null && !StringUtils.isEmpty(mGym.getAnnouncementId())
+                && LikingPreference.isIdenticalAnnouncement(mGym.getAnnouncementId())) {
+            showNoticeDialog();
+        } else {
+            homeToolBarController.setHomeNoticePrompt(false);
+        }
+    }
+
+
+    /**
+     * 设置Toolbar
+     */
+    private void setToolbarView() {
+        if (homeToolBarController == null) return;
+
+        homeToolBarController.getLikingLeftTitleText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGym != null) {
+                    ChangeGymUtil.changeGym(getActivity(), mGym, 0);
+                }
+            }
+        });
+        homeToolBarController.getLayoutHomeMiddle().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGym != null) {
+                    ChangeGymUtil.jumpArenaActivity(getActivity(), mGym);
+                }
+            }
+        });
+
+        homeToolBarController.setLikingRightImageView(R.drawable.icon_home_msg, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MessageActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(MessageActivity.NOTICE_DATA, mGym);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        if (EnvironmentUtils.Network.isNetWorkAvailable()) {
+            if (!StringUtils.isEmpty(mGym.getCityName())) {
+                homeToolBarController.setLikingLeftTitleText(mGym.getCityName());
+            }
+            if (!StringUtils.isEmpty(mGym.getName())) {
+                homeToolBarController.setLikingMiddleTitleText(mGym.getName());
+                homeToolBarController.setLikingDistanceText(mGym.getDistance());
+            } else {//当一个（上海）地区所有的店铺关闭时，而它定位在某个地区（上海），后台返回的场馆数据为空
+                homeToolBarController.setLikingMiddleTitleText("");
+                homeToolBarController.setLikingDistanceText("");
+            }
+        } else {
+            setNotNetWorkMiddleView();
+        }
+    }
+
+
+    /**
+     * 设置没有网络是中间view的显示
+     */
+    private void setNotNetWorkMiddleView() {
+        LikingHomeActivity.isWhetherLocation = false;
+        homeToolBarController.setLikingMiddleTitleText(getString(R.string.title_network_contact_fail));
+        homeToolBarController.setLikingDistanceText("");
     }
 
     /**
@@ -406,6 +597,64 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         setBannerData();
     }
 
+    @Override
+    public void updateHasMessage(UnreadMessageResult.UnreadMsgData data) {
+        int hasMsg = data.getHasUnreadMsg();
+        boolean hasAnnouncement;
+        if (mGym != null && !StringUtils.isEmpty(mGym.getAnnouncementId())
+                && LikingPreference.isIdenticalAnnouncement(mGym.getAnnouncementId())) {
+            hasAnnouncement = true;
+        } else {
+            hasAnnouncement = false;
+        }
+        if (hasMsg == 1 || hasAnnouncement) {
+            homeToolBarController.setHomeNoticePrompt(true);
+        } else {
+            homeToolBarController.setHomeNoticePrompt(false);
+        }
+    }
+
+    @Override
+    public void showNoticesDialog(final Set<NoticeData> noticeData) {
+        Iterator<NoticeData> iterator = noticeData.iterator();
+        NoticeData next;
+        if (iterator.hasNext()) {
+            next = iterator.next();
+            noticeData.remove(next);
+        } else {
+            return;
+        }
+        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + next.getAid());
+        if (!LikingPreference.isIdenticalAnnouncement(next.getGym_id())) {
+            showNoticesDialog(noticeData);
+        }
+        UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(getActivity(), DefaultGymDialog.noticeType);
+        defaultGymDialog.setCancelable(true);
+        defaultGymDialog.setCanceledOnTouchOutside(true);
+
+        if (!StringUtils.isEmpty(next.getAid())) {
+            if (!StringUtils.isEmpty(next.getGymContent())) {
+                defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
+            } else {
+                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+            }
+            LikingPreference.setAnnouncementId(next.getAid());
+        } else if (!StringUtils.isEmpty(next.getGymContent())) {
+            defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
+            LikingPreference.setAnnouncementId(next.getAid());
+        } else {
+            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+        }
+        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+            @Override
+            public void onConfirmClickListener(AppCompatDialog dialog) {
+                dialog.dismiss();
+                showNoticesDialog(noticeData);
+            }
+        });
+    }
+
     private void setBannerData() {
         if (bannerDataList != null && bannerDataList.size() > 0) {
             mHeadInfiteLayout.setVisibility(android.view.View.VISIBLE);
@@ -441,6 +690,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         if (mImageViewPager != null && mImageViewPager.getChildCount() != 0) {
             mImageViewPager.startAutoScroll();
         }
+        setHomeMenuReadNotice();
         LogUtils.i("bbbbb", "onResume()");
     }
 
@@ -463,6 +713,7 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
             mLongitude = mainAddressChanged.getLongitude();
             mCityId = mainAddressChanged.getCityId();
             mDistrictId = mainAddressChanged.getDistrictId();
+            currentCityName = mainAddressChanged.getCityName();
             LogUtils.i("dust", "消息传送：" + mLatitude + " -- " + mLongitude + "-- " + mCityId + "--" + mDistrictId);
             isFirstMessage = true;
             loadHomePage();
@@ -506,6 +757,66 @@ public class LikingLessonFragment extends NetworkSwipeRecyclerRefreshPagerLoader
         } else {
             loadHomePage();
         }
+    }
+
+    public void onEvent(PushHasMessage message) {
+        if (message != null) {
+            homeToolBarController.setHomeNoticePrompt(true);
+        } else {
+            homeToolBarController.setHomeNoticePrompt(false);
+        }
+    }
+
+    public void onEvent(RefshReadMessage message) {
+        if (message != null && mPresenter != null) {
+            mPresenter.getHasMessage();
+        }
+    }
+
+    public void onEvent(getGymDataMessage message) {
+        mGym = message.getGym();
+        setToolbarView();
+        setHomeMenuReadNotice();//切换场馆有公告就弹出公告
+    }
+
+    public void onEvent(LikingHomeActivityMessage message) {
+        switch (message.what) {
+            case LikingHomeActivityMessage.SHOW_PUSH_DIALOG:
+                mPresenter.showPushDialog();
+                break;
+        }
+    }
+
+
+    /**
+     * 查看公告
+     */
+    private DefaultGymDialog showNoticeDialog() {
+        UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(getActivity(), DefaultGymDialog.noticeType);
+        defaultGymDialog.setCancelable(true);
+        defaultGymDialog.setCanceledOnTouchOutside(true);
+        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + mGym.getAnnouncementId());
+        if (!StringUtils.isEmpty(mGym.getAnnouncementId())) {
+            if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
+                defaultGymDialog.setNoticesMessage(mGym.getName(), mGym.getAnnouncementInfo());
+            } else {
+                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+            }
+            LikingPreference.setAnnouncementId(mGym.getAnnouncementId());
+        } else if (!StringUtils.isEmpty(mGym.getAnnouncementInfo())) {
+            defaultGymDialog.setNoticesMessage(mGym.getName(), mGym.getAnnouncementInfo());
+            LikingPreference.setAnnouncementId(mGym.getAnnouncementId());
+        } else {
+            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+        }
+        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+            @Override
+            public void onConfirmClickListener(AppCompatDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        return defaultGymDialog;
     }
 
     @Override

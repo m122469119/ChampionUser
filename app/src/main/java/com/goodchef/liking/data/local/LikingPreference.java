@@ -7,6 +7,7 @@ import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
 import com.goodchef.liking.data.remote.retrofit.result.BaseConfigResult;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 import com.goodchef.liking.data.remote.retrofit.result.data.Announcement;
 import com.goodchef.liking.data.remote.retrofit.result.data.HomeAnnouncement;
 import com.goodchef.liking.data.remote.retrofit.result.data.LocationData;
@@ -44,6 +45,7 @@ public class LikingPreference extends AbsPreference {
     private static final String IS_BIND = "is_bind";
     private static final String KEY_BRACELET_FIRST_PROMPT = "key_bracelet_first_prompt";
     private static final String SHOW_DEFAULT_GYM_DIALOG = "SHOW_DEFAULT_GYM_DIALOG";
+    public static final String KEY_GYM = "key_gym";
     private static Set<String> announcementList = new HashSet<>();
     private static final String NEW_APK_NAME = "new_apk_name";
     private static final String UPDATE_APP = "update_app";
@@ -318,6 +320,7 @@ public class LikingPreference extends AbsPreference {
 
     /**
      * 判断当前用户是否有卡
+     *
      * @return
      */
     public static boolean getUserHasCard() {
@@ -413,21 +416,21 @@ public class LikingPreference extends AbsPreference {
         setObject(ANNOUNCEMENT_ID, announcement);
     }
 
-    public static boolean clearHomeAnnouncement(){
+    public static boolean clearHomeAnnouncement() {
         Gson gson = new Gson();
         String s = gson.toJson(new HomeAnnouncement());
         setObject(ANNOUNCEMENT_HOME_ID, s);
         return true;
     }
 
-    public static boolean setHomeAnnouncementId(NoticeData noticeData){
-        if (noticeData == null){
+    public static boolean setHomeAnnouncementId(NoticeData noticeData) {
+        if (noticeData == null) {
             return false;
         }
         Gson gson = new Gson();
         String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
         HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
-        if(announcement == null) {
+        if (announcement == null) {
             announcement = new HomeAnnouncement();
         }
         announcement.addNotice(noticeData);
@@ -436,7 +439,7 @@ public class LikingPreference extends AbsPreference {
         return true;
     }
 
-    public static HomeAnnouncement getHomeAnnouncement(){
+    public static HomeAnnouncement getHomeAnnouncement() {
         Gson gson = new Gson();
         String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
         HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
@@ -444,12 +447,12 @@ public class LikingPreference extends AbsPreference {
     }
 
 
-
     /**
      * 判断push的公告是否为空
+     *
      * @return
      */
-    public static boolean isHomeAnnouncement(){
+    public static boolean isHomeAnnouncement() {
         Gson gson = new Gson();
         String json = (String) getObject(ANNOUNCEMENT_HOME_ID, NULL_STRING);
         HomeAnnouncement announcement = gson.fromJson(json, HomeAnnouncement.class);
@@ -583,6 +586,27 @@ public class LikingPreference extends AbsPreference {
     public static PatchData getPatchData() {
         String patchDataString = (String) getObject(PATCH_DATA, NULL_STRING);
         return new Gson().fromJson(patchDataString, PatchData.class);
+    }
+
+    /**
+     * 保存场馆信息
+     *
+     * @param mGym
+     * @return
+     */
+    public static boolean saveGymData(CoursesResult.Courses.Gym mGym) {
+        String gymString = new Gson().toJson(mGym);
+        return setObject(KEY_GYM, gymString);
+    }
+
+    /**
+     * 获取场馆信息
+     *
+     * @return
+     */
+    public static CoursesResult.Courses.Gym getGym() {
+        String gymString = (String) getObject(KEY_GYM, NULL_STRING);
+        return new Gson().fromJson(gymString, CoursesResult.Courses.Gym.class);
     }
 
 

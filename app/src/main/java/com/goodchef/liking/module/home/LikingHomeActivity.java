@@ -1,11 +1,13 @@
 package com.goodchef.liking.module.home;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatDialog;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -81,25 +83,25 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     public static final String KEY_INTENT_TAB = "key_intent_tab";
     public static final String KEY_WHETHER_LOCATION = "key_whether_location";
 
-    @BindView(R.id.liking_left_title_text)
-    TextView mLikingLeftTitleTextView;//左边文字
-    @BindView(R.id.liking_middle_title_text)
-    TextView mLikingMiddleTitleTextView;//中间title
-    @BindView(R.id.liking_distance_text)
-    TextView mLikingDistanceTextView;//距离
-    @BindView(R.id.layout_home_middle)
-    RelativeLayout mMiddleLayout;//title中间布局
-    @BindView(R.id.liking_right_imageView)
-    ImageView mRightImageView;//右边图片
-
-    @BindView(R.id.liking_right_right_imageView)
-    ImageView mRightLeftImageView; //右边第二张图片
-    @BindView(R.id.home_notice_prompt)
-    TextView mRedPoint;//红色点点
-    @BindView(R.id.tv_shopping_cart_num)
-    TextView mShoppingCartNumTextView;//购物车数量
-    @BindView(R.id.liking_right_title_text)
-    TextView mLikingRightTitleTextView;
+//    @BindView(R.id.liking_left_title_text)
+//    TextView mLikingLeftTitleTextView;//左边文字
+//    @BindView(R.id.liking_middle_title_text)
+//    TextView mLikingMiddleTitleTextView;//中间title
+//    @BindView(R.id.liking_distance_text)
+//    TextView mLikingDistanceTextView;//距离
+//    @BindView(R.id.layout_home_middle)
+//    RelativeLayout mMiddleLayout;//title中间布局
+//    @BindView(R.id.liking_right_imageView)
+//    ImageView mRightImageView;//右边图片
+//
+//    @BindView(R.id.liking_right_right_imageView)
+//    ImageView mRightLeftImageView; //右边第二张图片
+//    @BindView(R.id.home_notice_prompt)
+//    TextView mRedPoint;//红色点点
+//    @BindView(R.id.tv_shopping_cart_num)
+//    TextView mShoppingCartNumTextView;//购物车数量
+//    @BindView(R.id.liking_right_title_text)
+//    TextView mLikingRightTitleTextView;
 
     private FragmentTabHost fragmentTabHost;
     private TabWidget tabWidget;
@@ -107,7 +109,8 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     private String currentCityName = "";
 
     public int mCanSchedule = -1;//是否支持自助团体课
-    public boolean isWhetherLocation = false;
+    public static boolean isWhetherLocation = false;
+    public static int isStartLoaction = 0;
     public static String gymId;
     public static String gymName = "";
     public static String gymTel = "";
@@ -115,7 +118,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     private long firstTime = 0;//第一点击返回键
     private CoursesResult.Courses.Gym mGym;//买卡界面传过来的带有城市id的Gym对象
     private CoursesResult.Courses.Gym mNoticeGym;//带有公告的Gym对象
-    private String cityCode;//高德地图定位的城市返回的code码
+    public static String cityCode;//高德地图定位的城市返回的code码
     public static boolean isChangeGym = false;
     public static boolean shoDefaultDialog = true;
     public static final String ACTION = "action";
@@ -166,7 +169,7 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     private void initData() {
         //首次进来如果没有网络设置定位失败设置显示的view
         if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            setNotNetWorkMiddleView();
+            // setNotNetWorkMiddleView();
         } else {//有网络，去定位
             initTitleLocation();
         }
@@ -200,11 +203,11 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
      * 设置初始标题view
      */
     private void setMainTableView() {
-        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
-        mLikingLeftTitleTextView.setText(R.string.title_change_gym);
-        mRightImageView.setVisibility(android.view.View.VISIBLE);
-        mRightLeftImageView.setVisibility(android.view.View.GONE);
-        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
+//        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
+//        mLikingLeftTitleTextView.setText(R.string.title_change_gym);
+//        mRightImageView.setVisibility(android.view.View.VISIBLE);
+//        mRightLeftImageView.setVisibility(android.view.View.GONE);
+//        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
     }
 
 
@@ -223,19 +226,14 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             @Override
             public void onTabChanged(String tabId) {
                 if (tabId.equals(TAG_MAIN_TAB)) {//首页
-                    setTagMainTab();
                     setHomeTitle();
-                    setHomeMenuReadNotice();
+                    //  setHomeMenuReadNotice();
                     mPresenter.checkUpdateApp(LikingHomeActivity.this);
                     postEvent(new OnClickLessonFragmentMessage());
                 } else if (tabId.equals(TAG_NEARBY_TAB)) {//购买营养餐
-                    setTagRechargeTab();
                 } else if (tabId.equals(TAG_RECHARGE_TAB)) {//买卡
-                    setTagNearbyTab();
-                    setHomeTitle();
                     mPresenter.checkUpdateApp(LikingHomeActivity.this);
                 } else if (tabId.equals(TAG_MY_TAB)) {//我的
-                    setTagMyTab();
                     mPresenter.checkUpdateApp(LikingHomeActivity.this);
                 }
             }
@@ -245,288 +243,288 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     /**
      * 设置首页界面tab
      */
-    private void setTagMainTab() {
-        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
-        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
-            mLikingLeftTitleTextView.setText(mGym.getCityName());
-        }
-        mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
-        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
-        mRightImageView.setVisibility(android.view.View.VISIBLE);
-        mRightLeftImageView.setVisibility(android.view.View.GONE);
-        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
-        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
-    }
+//    private void setTagMainTab() {
+//        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
+//        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
+//            mLikingLeftTitleTextView.setText(mGym.getCityName());
+//        }
+//        mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
+//        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
+//        mRightImageView.setVisibility(android.view.View.VISIBLE);
+//        mRightLeftImageView.setVisibility(android.view.View.GONE);
+//        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.drawable.icon_home_msg));
+//        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
+//    }
 
     /**
      * 设置买卡界面tab
      */
-    private void setTagNearbyTab() {
-        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
-        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
-            mLikingLeftTitleTextView.setText(mGym.getCityName());
-        }
-        mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
-        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
-        mRightImageView.setVisibility(View.GONE);
-        mRightLeftImageView.setVisibility(android.view.View.GONE);
-        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
-        mRedPoint.setVisibility(android.view.View.GONE);
-    }
+//    private void setTagNearbyTab() {
+//        mLikingLeftTitleTextView.setVisibility(android.view.View.VISIBLE);
+//        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
+//            mLikingLeftTitleTextView.setText(mGym.getCityName());
+//        }
+//        mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
+//        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
+//        mRightImageView.setVisibility(View.GONE);
+//        mRightLeftImageView.setVisibility(android.view.View.GONE);
+//        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
+//        mRedPoint.setVisibility(android.view.View.GONE);
+//    }
 
     /**
      * 设置营养餐tab
      */
-    private void setTagRechargeTab() {
-        mLikingLeftTitleTextView.setVisibility(android.view.View.INVISIBLE);
-        mLikingRightTitleTextView.setVisibility(android.view.View.INVISIBLE);
-        mRightImageView.setVisibility(View.GONE);
-        mRightLeftImageView.setVisibility(android.view.View.GONE);
-        mRedPoint.setVisibility(android.view.View.GONE);
-        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
-    }
+//    private void setTagRechargeTab() {
+//        mLikingLeftTitleTextView.setVisibility(android.view.View.INVISIBLE);
+//        mLikingRightTitleTextView.setVisibility(android.view.View.INVISIBLE);
+//        mRightImageView.setVisibility(View.GONE);
+//        mRightLeftImageView.setVisibility(android.view.View.GONE);
+//        mRedPoint.setVisibility(android.view.View.GONE);
+//        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
+//    }
 
     /**
      * 设置我的界面Tab
      */
-    private void setTagMyTab() {
-        mLikingLeftTitleTextView.setVisibility(android.view.View.GONE);
-        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
-        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
-        mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
-        mRedPoint.setVisibility(android.view.View.GONE);
-        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
-        mRightLeftImageView.setVisibility(View.VISIBLE);
-        hintQeCodeView();
-        mRightLeftImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_key));
-    }
+//    private void setTagMyTab() {
+//        mLikingLeftTitleTextView.setVisibility(android.view.View.GONE);
+//        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
+//        mLikingRightTitleTextView.setVisibility(android.view.View.GONE);
+//        mLikingMiddleTitleTextView.setText(R.string.tab_liking_home_my);
+//        mRedPoint.setVisibility(android.view.View.GONE);
+//        mShoppingCartNumTextView.setVisibility(android.view.View.GONE);
+//        mRightLeftImageView.setVisibility(View.VISIBLE);
+//        hintQeCodeView();
+//        mRightLeftImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_key));
+//    }
 
-    private void setQrCodeView() {
-        mRightImageView.setVisibility(View.VISIBLE);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRightLeftImageView.getLayoutParams();
-        layoutParams.rightMargin = DisplayUtils.dp2px(40);
-        mRightLeftImageView.setLayoutParams(layoutParams);
-        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_qr));
-    }
+//    private void setQrCodeView() {
+//        mRightImageView.setVisibility(View.VISIBLE);
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRightLeftImageView.getLayoutParams();
+//        layoutParams.rightMargin = DisplayUtils.dp2px(40);
+//        mRightLeftImageView.setLayoutParams(layoutParams);
+//        mRightImageView.setImageDrawable(ResourceUtils.getDrawable(R.mipmap.my_qr));
+//    }
 
-    private void hintQeCodeView() {
-        mRightImageView.setVisibility(View.GONE);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRightLeftImageView.getLayoutParams();
-        layoutParams.rightMargin = DisplayUtils.dp2px(10);
-        mRightLeftImageView.setLayoutParams(layoutParams);
-    }
+//    private void hintQeCodeView() {
+//        mRightImageView.setVisibility(View.GONE);
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRightLeftImageView.getLayoutParams();
+//        layoutParams.rightMargin = DisplayUtils.dp2px(10);
+//        mRightLeftImageView.setLayoutParams(layoutParams);
+//    }
+//
 
+//    @OnClick({R.id.liking_left_title_text,
+//            R.id.liking_right_imageView,
+//            R.id.liking_right_right_imageView,
+//            R.id.layout_home_middle,})
+//    public void onClick(View view) {
+//        String tag = fragmentTabHost.getCurrentTabTag();
+//        switch (view.getId()) {
+//            case R.id.liking_left_title_text:
+//                if (tag.equals(TAG_MAIN_TAB)) {
+//                    changeGym(NumberConstantUtil.ZERO);//从首页切换过去
+//                } else if (tag.equals(TAG_RECHARGE_TAB)) {
+//                    changeGym(NumberConstantUtil.ONE);//从买卡界面切换过去
+//                }
+//                break;
+//            case R.id.liking_right_imageView:
+//                if (tag.equals(TAG_NEARBY_TAB)) {
+//
+//                } else if (tag.equals(TAG_MAIN_TAB)) {
+////                    Intent intent = new Intent(this, MessageActivity.class);
+////                    Bundle bundle = new Bundle();
+////                    bundle.putSerializable(MessageActivity.NOTICE_DATA, mNoticeGym);
+////                    intent.putExtras(bundle);
+////                    startActivity(intent);
+//                    // showRightMenuDialog();
+//                } else if (tag.equals(TAG_MY_TAB)) {
+//                    //TODO 我的界面扫描二维码
+////                    showToast("扫描二维码开发中。。。");
+//                    QrCodeActivity.launch(this);
+//                }
+//                break;
+//            case R.id.liking_right_right_imageView:
+//                if (tag.equals(TAG_MY_TAB)) {//开门
+//                    startActivity(OpenTheDoorActivity.class);
+//                }
+//                break;
+//            case R.id.layout_home_middle:
+//                if (tag.equals(TAG_MAIN_TAB)) {
+//                    jumpArenaActivity();
+//                } else if (tag.equals(TAG_RECHARGE_TAB)) {
+//                    jumpArenaActivity();
+//                }
+//                break;
+//        }
+//    }
 
-    @OnClick({R.id.liking_left_title_text,
-            R.id.liking_right_imageView,
-            R.id.liking_right_right_imageView,
-            R.id.layout_home_middle,})
-    public void onClick(View view) {
-        String tag = fragmentTabHost.getCurrentTabTag();
-        switch (view.getId()) {
-            case R.id.liking_left_title_text:
-                if (tag.equals(TAG_MAIN_TAB)) {
-                    changeGym(NumberConstantUtil.ZERO);//从首页切换过去
-                } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                    changeGym(NumberConstantUtil.ONE);//从买卡界面切换过去
-                }
-                break;
-            case R.id.liking_right_imageView:
-                if (tag.equals(TAG_NEARBY_TAB)) {
+//    /**
+//     * 显示默认场馆的对话框
+//     */
+//    private void setDefaultGymDialog(String text, boolean isDefaultGym) {
+//        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.defaultGymType);
+//        defaultGymDialog.setCancelable(false);
+//        defaultGymDialog.setCanceledOnTouchOutside(false);
+//        if (isDefaultGym) {
+//            defaultGymDialog.setDefaultPromptView(text);
+//        } else {
+//            defaultGymDialog.setCurrentCityNotOpen(text);
+//        }
+//        defaultGymDialog.setCancelClickListener(new CancelOnClickListener() {
+//            @Override
+//            public void onCancelClickListener(AppCompatDialog dialog) {
+//                dialog.dismiss();
+//                if (!shoDefaultDialog) {
+//                    setHomeMenuReadNotice();
+//                }
+//            }
+//        });
+//
+//        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+//            @Override
+//            public void onConfirmClickListener(AppCompatDialog dialog) {
+//                changeGym(0);
+//                dialog.dismiss();
+//            }
+//        });
+//
+//    }
 
-                } else if (tag.equals(TAG_MAIN_TAB)) {
-                    Intent intent = new Intent(this, MessageActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(MessageActivity.NOTICE_DATA, mNoticeGym);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    // showRightMenuDialog();
-                } else if (tag.equals(TAG_MY_TAB)) {
-                    //TODO 我的界面扫描二维码
-//                    showToast("扫描二维码开发中。。。");
-                    QrCodeActivity.launch(this);
-                }
-                break;
-            case R.id.liking_right_right_imageView:
-                if (tag.equals(TAG_MY_TAB)) {//开门
-                    startActivity(OpenTheDoorActivity.class);
-                }
-                break;
-            case R.id.layout_home_middle:
-                if (tag.equals(TAG_MAIN_TAB)) {
-                    jumpArenaActivity();
-                } else if (tag.equals(TAG_RECHARGE_TAB)) {
-                    jumpArenaActivity();
-                }
-                break;
-        }
-    }
+//    /***
+//     * 跳转门店
+//     */
+//    private void jumpArenaActivity() {
+//        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getName())) {
+//            UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
+//            Intent intent = new Intent(this, ArenaActivity.class);
+//            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+//            this.startActivity(intent);
+//            this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
+//        }
+//    }
 
-    /**
-     * 显示默认场馆的对话框
-     */
-    private void setDefaultGymDialog(String text, boolean isDefaultGym) {
-        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.defaultGymType);
-        defaultGymDialog.setCancelable(false);
-        defaultGymDialog.setCanceledOnTouchOutside(false);
-        if (isDefaultGym) {
-            defaultGymDialog.setDefaultPromptView(text);
-        } else {
-            defaultGymDialog.setCurrentCityNotOpen(text);
-        }
-        defaultGymDialog.setCancelClickListener(new CancelOnClickListener() {
-            @Override
-            public void onCancelClickListener(AppCompatDialog dialog) {
-                dialog.dismiss();
-                if (!shoDefaultDialog) {
-                    setHomeMenuReadNotice();
-                }
-            }
-        });
-
-        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
-            @Override
-            public void onConfirmClickListener(AppCompatDialog dialog) {
-                changeGym(0);
-                dialog.dismiss();
-            }
-        });
-
-    }
-
-    /***
-     * 跳转门店
-     */
-    private void jumpArenaActivity() {
-        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getName())) {
-            UMengCountUtil.UmengCount(LikingHomeActivity.this, UmengEventId.ARENAACTIVITY);
-            Intent intent = new Intent(this, ArenaActivity.class);
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
-            this.startActivity(intent);
-            this.overridePendingTransition(R.anim.silde_bottom_in, R.anim.silde_bottom_out);
-        }
-    }
-
-    /**
-     * 查看公告
-     */
-    private DefaultGymDialog showNoticeDialog() {
-        UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
-        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
-        defaultGymDialog.setCancelable(true);
-        defaultGymDialog.setCanceledOnTouchOutside(true);
-        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + mNoticeGym.getAnnouncementId());
-        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
-            if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-                defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
-            } else {
-                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
-            }
-            LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-        } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
-            defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
-            LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
-        } else {
-            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
-        }
-        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
-            @Override
-            public void onConfirmClickListener(AppCompatDialog dialog) {
-                dialog.dismiss();
-            }
-        });
-        return defaultGymDialog;
-    }
+//    /**
+//     * 查看公告
+//     */
+//    private DefaultGymDialog showNoticeDialog() {
+//        UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+//        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
+//        defaultGymDialog.setCancelable(true);
+//        defaultGymDialog.setCanceledOnTouchOutside(true);
+//        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + mNoticeGym.getAnnouncementId());
+//        if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementId())) {
+//            if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+//                defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
+//            } else {
+//                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+//            }
+//            LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+//        } else if (!StringUtils.isEmpty(mNoticeGym.getAnnouncementInfo())) {
+//            defaultGymDialog.setNoticesMessage(mNoticeGym.getName(), mNoticeGym.getAnnouncementInfo());
+//            LikingPreference.setAnnouncementId(mNoticeGym.getAnnouncementId());
+//        } else {
+//            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+//        }
+//        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+//            @Override
+//            public void onConfirmClickListener(AppCompatDialog dialog) {
+//                dialog.dismiss();
+//            }
+//        });
+//        return defaultGymDialog;
+//    }
 
     @Override
     public void showNoticesDialog(final Set<NoticeData> noticeData) {
-        Iterator<NoticeData> iterator = noticeData.iterator();
-        NoticeData next;
-        if (iterator.hasNext()) {
-            next = iterator.next();
-            noticeData.remove(next);
-        } else {
-            return;
-        }
-        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + next.getAid());
-        if (!LikingPreference.isIdenticalAnnouncement(next.getGym_id())) {
-            showNoticesDialog(noticeData);
-        }
-        UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
-        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
-        defaultGymDialog.setCancelable(true);
-        defaultGymDialog.setCanceledOnTouchOutside(true);
-
-        if (!StringUtils.isEmpty(next.getAid())) {
-            if (!StringUtils.isEmpty(next.getGymContent())) {
-                defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
-            } else {
-                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
-            }
-            LikingPreference.setAnnouncementId(next.getAid());
-        } else if (!StringUtils.isEmpty(next.getGymContent())) {
-            defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
-            LikingPreference.setAnnouncementId(next.getAid());
-        } else {
-            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
-        }
-        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
-            @Override
-            public void onConfirmClickListener(AppCompatDialog dialog) {
-                dialog.dismiss();
-                showNoticesDialog(noticeData);
-            }
-        });
+//        Iterator<NoticeData> iterator = noticeData.iterator();
+//        NoticeData next;
+//        if (iterator.hasNext()) {
+//            next = iterator.next();
+//            noticeData.remove(next);
+//        } else {
+//            return;
+//        }
+//        LogUtils.e(TAG, "------------->mNoticeGym.getAnnouncementId() == " + next.getAid());
+//        if (!LikingPreference.isIdenticalAnnouncement(next.getGym_id())) {
+//            showNoticesDialog(noticeData);
+//        }
+//        UMengCountUtil.UmengBtnCount(this, UmengEventId.CHECK_ANNOUNCEMENT, currentCityName);
+//        DefaultGymDialog defaultGymDialog = new DefaultGymDialog(this, DefaultGymDialog.noticeType);
+//        defaultGymDialog.setCancelable(true);
+//        defaultGymDialog.setCanceledOnTouchOutside(true);
+//
+//        if (!StringUtils.isEmpty(next.getAid())) {
+//            if (!StringUtils.isEmpty(next.getGymContent())) {
+//                defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
+//            } else {
+//                defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+//            }
+//            LikingPreference.setAnnouncementId(next.getAid());
+//        } else if (!StringUtils.isEmpty(next.getGymContent())) {
+//            defaultGymDialog.setNoticesMessage(next.getGymName(), next.getGymContent());
+//            LikingPreference.setAnnouncementId(next.getAid());
+//        } else {
+//            defaultGymDialog.setNoticesMessage(getString(R.string.no_announcement));
+//        }
+//        defaultGymDialog.setConfirmClickListener(new ConfirmOnClickListener() {
+//            @Override
+//            public void onConfirmClickListener(AppCompatDialog dialog) {
+//                dialog.dismiss();
+//                showNoticesDialog(noticeData);
+//            }
+//        });
     }
 
     @Override
     public void updateHasMessage(UnreadMessageResult.UnreadMsgData data) {
-        String tag = fragmentTabHost.getCurrentTabTag();
-        int hasMsg = data.getHasUnreadMsg();
-        boolean hasAnnouncement;
-        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
-                && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
-            hasAnnouncement = true;
-        } else {
-            hasAnnouncement = false;
-        }
-
-        if (tag.equals(TAG_MAIN_TAB)) {
-            if (hasMsg == 1 || hasAnnouncement) {
-                mRedPoint.setVisibility(View.VISIBLE);
-            } else {
-                mRedPoint.setVisibility(View.GONE);
-            }
-        } else {
-            mRedPoint.setVisibility(View.GONE);
-        }
+//        String tag = fragmentTabHost.getCurrentTabTag();
+//        int hasMsg = data.getHasUnreadMsg();
+//        boolean hasAnnouncement;
+//        if (mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
+//                && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+//            hasAnnouncement = true;
+//        } else {
+//            hasAnnouncement = false;
+//        }
+//
+//        if (tag.equals(TAG_MAIN_TAB)) {
+//            if (hasMsg == 1 || hasAnnouncement) {
+//                mRedPoint.setVisibility(View.VISIBLE);
+//            } else {
+//                mRedPoint.setVisibility(View.GONE);
+//            }
+//        } else {
+//            mRedPoint.setVisibility(View.GONE);
+//        }
     }
 
 
-    /**
-     * 切换场馆
-     */
-    private void changeGym(int index) {
-        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
-            showToast(getString(R.string.network_no_connection));
-            return;
-        }
-        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId())) {
-            if (StringUtils.isEmpty(currentCityName)) {
-                UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, "定位失败");
-            } else {
-                UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, currentCityName);
-            }
-            Intent intent = new Intent(this, ChangeGymActivity.class);
-            intent.putExtra(KEY_SELECT_CITY_ID, mGym.getCityId());
-            intent.putExtra(KEY_WHETHER_LOCATION, isWhetherLocation);
-            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
-            intent.putExtra(KEY_TAB_INDEX, index);
-            startActivity(intent);
-        } else {
-            showToast(getString(R.string.network_home_error));
-        }
-    }
+//    /**
+//     * 切换场馆
+//     */
+//    private void changeGym(int index) {
+//        if (!EnvironmentUtils.Network.isNetWorkAvailable()) {
+//            showToast(getString(R.string.network_no_connection));
+//            return;
+//        }
+//        if (mGym != null && !StringUtils.isEmpty(mGym.getGymId()) && !StringUtils.isEmpty(mGym.getCityId())) {
+//            if (StringUtils.isEmpty(currentCityName)) {
+//                UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, "定位失败");
+//            } else {
+//                UMengCountUtil.UmengCount(this, UmengEventId.CHANGE_GYM_ACTIVITY, currentCityName);
+//            }
+//            Intent intent = new Intent(this, ChangeGymActivity.class);
+//            intent.putExtra(KEY_SELECT_CITY_ID, mGym.getCityId());
+//            intent.putExtra(KEY_WHETHER_LOCATION, isWhetherLocation);
+//            intent.putExtra(LikingLessonFragment.KEY_GYM_ID, mGym.getGymId());
+//            intent.putExtra(KEY_TAB_INDEX, index);
+//            startActivity(intent);
+//        } else {
+//            showToast(getString(R.string.network_home_error));
+//        }
+//    }
 
     /***
      * 初始化定位
@@ -583,7 +581,8 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
             @Override
             public void start() {
                 isWhetherLocation = false;
-                mLikingMiddleTitleTextView.setText("定位中...");
+                isStartLoaction = 1;
+                // mLikingMiddleTitleTextView.setText("定位中...");
             }
 
             @Override
@@ -631,71 +630,71 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     }
 
     public void onEvent(getGymDataMessage message) {
-        mGym = message.getGym();
-        setHomeTitle();
-        setHomeMenuReadNotice();//切换场馆有公告就弹出公告
+//        mGym = message.getGym();
+//        setHomeTitle();
+//        setHomeMenuReadNotice();//切换场馆有公告就弹出公告
     }
 
-    public void onEvent(ShowCodeMessage message) {
-        if (message != null) {
-            String tag = fragmentTabHost.getCurrentTabTag();
-            int showCode = message.getShowCode();
-            LogUtils.i(TAG, " ShowCodeMessage = " + showCode);
-            if (showCode == NumberConstantUtil.ONE && tag != null && tag.equals(TAG_MY_TAB)) {
-                setQrCodeView();
-            } else if (showCode == NumberConstantUtil.ZERO) {
-                hintQeCodeView();
-            }
-        }
-    }
+//    public void onEvent(ShowCodeMessage message) {
+//        if (message != null) {
+//            String tag = fragmentTabHost.getCurrentTabTag();
+//            int showCode = message.getShowCode();
+//            LogUtils.i(TAG, " ShowCodeMessage = " + showCode);
+//            if (showCode == NumberConstantUtil.ONE && tag != null && tag.equals(TAG_MY_TAB)) {
+//                setQrCodeView();
+//            } else if (showCode == NumberConstantUtil.ZERO) {
+//                hintQeCodeView();
+//            }
+//        }
+//    }
 
     /**
      * @param message
      */
     public void onEvent(GymNoticeMessage message) {
-        mNoticeGym = message.getGym();
-        mCanSchedule = mNoticeGym.getCanSchedule();
-        if (mNoticeGym != null
-                && !StringUtils.isEmpty(mNoticeGym.getGymId())
-                && !StringUtils.isEmpty(mNoticeGym.getName())) {
-            mGym = mNoticeGym;
-            gymId = mNoticeGym.getGymId();
-            gymName = mNoticeGym.getName();
-        }
-        setHomeTitle();
-        if (showDefaultGymDialog() && !pause) {
-            setHomeMenuReadNotice();
-        }
-        if (mPresenter != null) {
-            mPresenter.getHasMessage();
-        }
+//        mNoticeGym = message.getGym();
+//        mCanSchedule = mNoticeGym.getCanSchedule();
+//        if (mNoticeGym != null
+//                && !StringUtils.isEmpty(mNoticeGym.getGymId())
+//                && !StringUtils.isEmpty(mNoticeGym.getName())) {
+//            mGym = mNoticeGym;
+//            gymId = mNoticeGym.getGymId();
+//            gymName = mNoticeGym.getName();
+//        }
+//        setHomeTitle();
+//        if (showDefaultGymDialog() && !pause) {
+//            setHomeMenuReadNotice();
+//        }
+//        if (mPresenter != null) {
+//            mPresenter.getHasMessage();
+//        }
     }
 
-    public void onEvent(LoginOutMessage message) {
-        if (message != null && mPresenter != null) {
-            mPresenter.getHasMessage();
-        }
-    }
+//    public void onEvent(LoginOutMessage message) {
+//        if (message != null && mPresenter != null) {
+//            mPresenter.getHasMessage();
+//        }
+//    }
 
-    /**
-     * 弹出默认场馆的对话框
-     */
-    private boolean showDefaultGymDialog() {
-        //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
-        if (!LikingPreference.getUserHasCard() && NumberConstantUtil.ONE == defaultGym && shoDefaultDialog) {
-            if (!isWhetherLocation) {//定位失败
-                shoDefaultDialog = false;
-                setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
-            } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
-                if (!CityUtils.isDredge(cityCode)) {
-                    shoDefaultDialog = false;
-                    setDefaultGymDialog(getString(R.string.current_default_gym_no_gym) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
-                }
-            }
-            return false;
-        }
-        return true;
-    }
+//    /**
+//     * 弹出默认场馆的对话框
+//     */
+//    private boolean showDefaultGymDialog() {
+//        //无卡，定位失败，并且是默认场馆 ,没有弹出过 满足以上4各条件弹出
+//        if (!LikingPreference.getUserHasCard() && NumberConstantUtil.ONE == defaultGym && shoDefaultDialog) {
+//            if (!isWhetherLocation) {//定位失败
+//                shoDefaultDialog = false;
+//                setDefaultGymDialog(getString(R.string.current_default_gym) + "\n" + "      " + getString(R.string.please_hand_change_gym), true);
+//            } else {//定位成功，但是定位所在的城市不再我们开通的城市范围内
+//                if (!CityUtils.isDredge(cityCode)) {
+//                    shoDefaultDialog = false;
+//                    setDefaultGymDialog(getString(R.string.current_default_gym_no_gym) + "\n" + getString(R.string.current_default_gym_location) + "\n" + getString(R.string.please_hand_change_gym), false);
+//                }
+//            }
+//            return false;
+//        }
+//        return true;
+//    }
 
 
     public void onEvent(BuyCardMessage message) {
@@ -704,61 +703,60 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         }
     }
 
-    public void onEvent(PushHasMessage message) {
-        if (message != null) {
-            mRedPoint.setVisibility(View.VISIBLE);
-        } else {
-            mRedPoint.setVisibility(View.GONE);
-        }
-    }
+//    public void onEvent(PushHasMessage message) {
+//        if (message != null) {
+//            mRedPoint.setVisibility(View.VISIBLE);
+//        } else {
+//            mRedPoint.setVisibility(View.GONE);
+//        }
+//    }
 
     /**
      * 设置首页标题
      */
     private void setHomeTitle() {
-        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
-            mLikingLeftTitleTextView.setText(mGym.getCityName());
-        }
+//        if (mGym != null && !StringUtils.isEmpty(mGym.getCityName())) {
+//            mLikingLeftTitleTextView.setText(mGym.getCityName());
+//        }
         String tag = fragmentTabHost.getCurrentTabTag();
         if (tag.equals(TAG_MAIN_TAB) || tag.equals(TAG_RECHARGE_TAB)) {//如果是首页
-            if (EnvironmentUtils.Network.isNetWorkAvailable()) {
-                if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
-                    mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
-                    mLikingDistanceTextView.setText(mGym.getDistance());
-                    mLikingMiddleTitleTextView.setText(mGym.getName());
-                } else {//当一个（上海）地区所有的店铺关闭时，而它定位在某个地区（上海），后台返回的场馆数据为空
-                    mLikingMiddleTitleTextView.setText("");
-                    mLikingDistanceTextView.setVisibility(android.view.View.GONE);
-                }
-            } else {
-                setNotNetWorkMiddleView();
-            }
+//            if (EnvironmentUtils.Network.isNetWorkAvailable()) {
+//                if (mGym != null && !StringUtils.isEmpty(mGym.getName())) {
+//                    mLikingDistanceTextView.setVisibility(android.view.View.VISIBLE);
+//                    mLikingDistanceTextView.setText(mGym.getDistance());
+//                    mLikingMiddleTitleTextView.setText(mGym.getName());
+//                } else {//当一个（上海）地区所有的店铺关闭时，而它定位在某个地区（上海），后台返回的场馆数据为空
+//                    mLikingMiddleTitleTextView.setText("");
+//                    mLikingDistanceTextView.setVisibility(android.view.View.GONE);
+//                }
+//            } else {
+//                setNotNetWorkMiddleView();
+//            }
         } else if (tag.equals(TAG_MY_TAB)) {//我的
-            setTagMyTab();
         }
     }
 
-    /**
-     * 设置没有网络是中间view的显示
-     */
-    private void setNotNetWorkMiddleView() {
-        isWhetherLocation = false;
-        mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
-        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
-    }
+//    /**
+//     * 设置没有网络是中间view的显示
+//     */
+//    private void setNotNetWorkMiddleView() {
+//        isWhetherLocation = false;
+//        mLikingMiddleTitleTextView.setText(R.string.title_network_contact_fail);
+//        mLikingDistanceTextView.setVisibility(android.view.View.GONE);
+//    }
 
-    /**
-     * 设置是否读取过公告
-     */
-    private void setHomeMenuReadNotice() {
-        String tag = fragmentTabHost.getCurrentTabTag();
-        if (tag.equals(TAG_MAIN_TAB) && mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
-                && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
-            showNoticeDialog();
-        } else {
-            mRedPoint.setVisibility(View.GONE);
-        }
-    }
+//    /**
+//     * 设置是否读取过公告
+//     */
+//    private void setHomeMenuReadNotice() {
+//        String tag = fragmentTabHost.getCurrentTabTag();
+//        if (tag.equals(TAG_MAIN_TAB) && mNoticeGym != null && !StringUtils.isEmpty(mNoticeGym.getAnnouncementId())
+//                && LikingPreference.isIdenticalAnnouncement(mNoticeGym.getAnnouncementId())) {
+//            showNoticeDialog();
+//        } else {
+//            mRedPoint.setVisibility(View.GONE);
+//        }
+//    }
 
     public void onEvent(LikingHomeNoNetWorkMessage message) {
         initTitleLocation();
@@ -771,17 +769,17 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
     }
 
 
-    public void onEvent(RefshReadMessage message) {
-        if (message != null && mPresenter != null) {
-            mPresenter.getHasMessage();
-        }
-    }
+//    public void onEvent(RefshReadMessage message) {
+//        if (message != null && mPresenter != null) {
+//            mPresenter.getHasMessage();
+//        }
+//    }
 
-    public void onEvent(LoginFinishMessage message) {
-        if (message != null && mPresenter != null) {
-            mPresenter.getHasMessage();
-        }
-    }
+//    public void onEvent(LoginFinishMessage message) {
+//        if (message != null && mPresenter != null) {
+//            mPresenter.getHasMessage();
+//        }
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -798,13 +796,13 @@ public class LikingHomeActivity extends BaseMVPActivity<LikingHomeContract.Prese
         return super.onKeyDown(keyCode, event);
     }
 
-    public void onEvent(LikingHomeActivityMessage message) {
-        switch (message.what) {
-            case LikingHomeActivityMessage.SHOW_PUSH_DIALOG:
-                mPresenter.showPushDialog();
-                break;
-        }
-    }
+//    public void onEvent(LikingHomeActivityMessage message) {
+//        switch (message.what) {
+//            case LikingHomeActivityMessage.SHOW_PUSH_DIALOG:
+//                mPresenter.showPushDialog();
+//                break;
+//        }
+//    }
 
 
     @Override

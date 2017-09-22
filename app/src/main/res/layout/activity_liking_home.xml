@@ -7,9 +7,6 @@
      android:id="@+id/realtabcontent"
     -->
 
-    <include layout="@layout/layout_liking_lesson_title_bar"/>
-
-
     <FrameLayout
         android:id="@+id/tabContent_liking_home"
         android:layout_width="match_parent"

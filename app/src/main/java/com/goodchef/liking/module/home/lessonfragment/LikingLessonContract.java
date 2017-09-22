@@ -6,8 +6,13 @@ import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.HomeAnnouncement;
+import com.goodchef.liking.data.remote.retrofit.result.data.NoticeData;
 import com.goodchef.liking.data.remote.rxobserver.LikingBaseObserver;
 import com.goodchef.liking.data.remote.rxobserver.PagerLoadingObserver;
+
+import java.util.Set;
 
 /**
  * 说明:
@@ -22,6 +27,10 @@ interface LikingLessonContract {
         void updateCourseView(CoursesResult.Courses courses);
 
         void updateBanner(BannerResult.BannerData bannerData);
+
+        void updateHasMessage(UnreadMessageResult.UnreadMsgData data);
+
+        void showNoticesDialog(Set<NoticeData> noticeData);
     }
 
     class Presenter extends RxBasePresenter<View> {
@@ -65,5 +74,30 @@ interface LikingLessonContract {
                         }
                     }));
         }
+
+        /**
+         * 获取是否还有消息
+         */
+        public void getHasMessage() {
+            mLikingLessonModel.getHasMessage().subscribe(new LikingBaseObserver<UnreadMessageResult>(mView) {
+                @Override
+                public void onNext(UnreadMessageResult value) {
+                    if (value == null || value.getData() == null) return;
+                    mView.updateHasMessage(value.getData());
+                }
+            });
+        }
+
+        /**
+         * 处理push对话框
+         */
+        void showPushDialog() {
+            if (LikingPreference.isHomeAnnouncement()) {
+                HomeAnnouncement homeAnnouncement = LikingPreference.getHomeAnnouncement();
+                mView.showNoticesDialog(homeAnnouncement.getNoticeDatas());
+                LikingPreference.clearHomeAnnouncement();
+            }
+        }
+
     }
 }

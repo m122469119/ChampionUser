@@ -2,10 +2,12 @@ package com.goodchef.liking.module.home.lessonfragment;
 
 import android.text.TextUtils;
 
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.RxUtils;
 import com.goodchef.liking.data.remote.retrofit.LikingNewApi;
 import com.goodchef.liking.data.remote.retrofit.result.BannerResult;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
+import com.goodchef.liking.data.remote.retrofit.result.UnreadMessageResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +59,16 @@ public class LikingLessonModel {
         }
         return LikingNewApi.getInstance().getHomeData(LikingNewApi.sHostVersion, map)
                 .compose(RxUtils.<CoursesResult>applyHttpSchedulers());
+    }
+
+    Observable<UnreadMessageResult> getHasMessage() {
+        if (LikingPreference.isLogin()) {
+            return LikingNewApi.getInstance().getHasReadMessage(LikingNewApi.sHostVersion, LikingPreference.getToken())
+                    .compose(RxUtils.<UnreadMessageResult>applyHttpSchedulers());
+        } else {
+            return LikingNewApi.getInstance().getHasReadMessage2(LikingNewApi.sHostVersion)
+                    .compose(RxUtils.<UnreadMessageResult>applyHttpSchedulers());
+        }
     }
 
 

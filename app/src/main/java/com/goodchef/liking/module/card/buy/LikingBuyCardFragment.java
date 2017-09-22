@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,23 +21,32 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.dialog.HBaseDialog;
 import com.aaron.android.framework.base.widget.refresh.StateView;
+import com.aaron.android.framework.utils.EnvironmentUtils;
+import com.aaron.android.framework.utils.SDKVersionUtils;
+import com.aaron.android.framework.utils.ToolBarUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
 import com.goodchef.liking.adapter.BuyCardAdapter;
+import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.data.remote.retrofit.result.CardResult;
+import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
 import com.goodchef.liking.eventmessages.BuyCardListMessage;
 import com.goodchef.liking.eventmessages.ChangGymMessage;
 import com.goodchef.liking.eventmessages.CoursesErrorMessage;
+import com.goodchef.liking.eventmessages.GymNoticeMessage;
 import com.goodchef.liking.eventmessages.InitApiFinishedMessage;
 import com.goodchef.liking.eventmessages.LoginFinishMessage;
 import com.goodchef.liking.eventmessages.LoginOutFialureMessage;
 import com.goodchef.liking.eventmessages.LoginOutMessage;
 import com.goodchef.liking.eventmessages.MainAddressChanged;
 import com.goodchef.liking.eventmessages.RefreshBuyCardMessage;
+import com.goodchef.liking.eventmessages.getGymDataMessage;
 import com.goodchef.liking.module.card.buy.confirm.BuyCardConfirmActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.umeng.UmengEventId;
+import com.goodchef.liking.utils.ChangeGymUtil;
 import com.goodchef.liking.utils.NumberConstantUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.base.LikingStateView;
@@ -57,17 +68,18 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     public static final String KEY_BUY_TYPE = "key_buy_type";
     public static final String CARD_ID = "key_buy_card_id";
 
-    private BuyCardAdapter mBuyCardAdapter;
-    private static int mBuyType = 1;
-    private static String mGymId = "-1";
-
-
     @BindView(R.id.card_state_view)
     LikingStateView mStateView;
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.buy_card_recyclerView)
     RecyclerView mRecyclerView;
+
+    private BuyCardAdapter mBuyCardAdapter;
+    private static int mBuyType = 1;
+    private static String mGymId = "-1";
+    private BuyCardController buyCardController;
+    private CoursesResult.Courses.Gym mGym;//场馆信息
 
     private TextView mHeadActivityTitle, mHeadActivityTime;
     private View mTitleAndTimeView, mOnlyAllView, mOnlyStaggerView, mAllAndStaggerView, mHeadActivityView;
@@ -91,6 +103,11 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
         ButterKnife.bind(this, view);
+        buyCardController = new BuyCardController(getActivity(), view);
+        if (SDKVersionUtils.hasKitKat()) {
+            Window window = getActivity().getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         if (getArguments() != null) {
             mBuyType = getArguments().getInt("buy_type", 1);
             mGymId = getArguments().getString("gym_id", "-1");
@@ -272,6 +289,7 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
         } else {
             setNoDataView();
         }
+        setToolBarView();
     }
 
     @Override
@@ -293,8 +311,72 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setToolBarView();
+    }
+
+    @Override
     protected boolean isEventTarget() {
         return true;
+    }
+
+    public void onEvent(GymNoticeMessage message) {
+        mGym = message.getGym();
+        setToolBarView();
+    }
+
+    private void setToolBarView() {
+        mGym = LikingPreference.getGym();
+        if (buyCardController != null) {
+            buyCardController.getLikingLeftTitleText().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mGym != null) {
+                        ChangeGymUtil.changeGym(getActivity(), mGym, 1);
+                    }
+                }
+            });
+            buyCardController.getLayoutHomeMiddle().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mGym != null) {
+                        ChangeGymUtil.jumpArenaActivity(getActivity(), mGym);
+                    }
+                }
+            });
+        }
+        if (EnvironmentUtils.Network.isNetWorkAvailable() && buyCardController != null && mGym != null) {
+            if (!StringUtils.isEmpty(mGym.getCityName())) {
+                buyCardController.setLikingLeftTitleText(mGym.getCityName());
+            }
+            if (!StringUtils.isEmpty(mGym.getName())) {
+                buyCardController.setLikingMiddleTitleText(mGym.getName());
+                buyCardController.setLikingDistanceText(mGym.getDistance());
+            } else {//当一个（上海）地区所有的店铺关闭时，而它定位在某个地区（上海），后台返回的场馆数据为空
+                buyCardController.setLikingMiddleTitleText("");
+                buyCardController.setLikingDistanceText("");
+            }
+        } else {
+            setNotNetWorkMiddleView();
+        }
+    }
+
+
+    /**
+     * 设置没有网络是中间view的显示
+     */
+    private void setNotNetWorkMiddleView() {
+        LikingHomeActivity.isWhetherLocation = false;
+        if (buyCardController != null) {
+            buyCardController.setLikingMiddleTitleText(getString(R.string.title_network_contact_fail));
+            buyCardController.setLikingDistanceText("");
+        }
+    }
+
+    public void onEvent(getGymDataMessage message) {
+        mGym = message.getGym();
+        setToolBarView();
     }
 
     public void onEvent(MainAddressChanged mainAddressChanged) {

@@ -2,14 +2,20 @@ package com.goodchef.liking.module.home.myfragment;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,6 +25,8 @@ import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.android.framework.utils.SDKVersionUtils;
+import com.aaron.android.framework.utils.ToolBarUtils;
 import com.aaron.common.utils.DateUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.imageloader.code.HImageView;
@@ -39,19 +47,25 @@ import com.goodchef.liking.module.card.my.UpgradeAndContinueCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
+import com.goodchef.liking.module.gym.details.ArenaActivity;
+import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.water.WaterRateActivity;
 import com.goodchef.liking.module.login.LoginActivity;
 import com.goodchef.liking.module.message.ShowCodeMessage;
 import com.goodchef.liking.module.more.MoreActivity;
+import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
+import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 import com.goodchef.liking.module.train.SportDataActivity;
 import com.goodchef.liking.module.train.SportDataDayFragment;
 import com.goodchef.liking.module.userinfo.MyInfoActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.NumberConstantUtil;
+import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
+import com.goodchef.liking.widgets.AppBarStateChangeListener;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
 import butterknife.BindView;
@@ -85,15 +99,21 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     View mHeadInfoLayout;//头像布局;
     @BindView(R.id.person_phone)
     TextView mPersonPhoneTextView;//用户手机;
-
     @BindView(R.id.login_text)
     TextView mLoginBtn;//登录按钮;
-
     @BindView(R.id.end_time)
     TextView mEndTime;
-
     @BindView(R.id.continuation_card)
     TextView mContinuationCard;
+    @BindView(R.id.my_AppBarLayout)
+    AppBarLayout mAppBarLayout;
+    @BindView(R.id.my_toolbar_title)
+    TextView mTooBarTitle;
+    @BindView(R.id.my_right_imageView)
+    ImageView mRightImageView;
+    @BindView(R.id.my_right_right_imageView)
+    ImageView mRightRightImageView;
+
 
     MyPersonAdapter.MyPersonEntity mMyWaterEntity;
 
@@ -103,14 +123,10 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
 
     private String gymId = "";
 
-    @BindView(R.id.layout_body_score)
-    View mBodyScoreLayout;//体测评分
+    CardView mBodyScoreLayout;//体测评分
+    CardView mBraceletLinearLayout;//手环数据
+    CardView mAllSportLayout;//总运动
 
-    @BindView(R.id.layout_bracelet)
-    View mBraceletLinearLayout;
-
-    @BindView(R.id.layout_all_sport)
-    View mAllSportLayout;
 
     public static final int SPORT_DOWN = -1; //体侧分数减少
     public static final int SPORT_UP = 1;  //体侧分数增加
@@ -129,15 +145,48 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     private Typeface mTypeface;//字体
     private String mBraceletMac;//手环mac地址
     private String UUID;//蓝牙UUID
-    private int showCode;
+    private int showCode = -1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
+        ButterKnife.bind(this, view);
+        if (SDKVersionUtils.hasKitKat()) {
+            Window window = getActivity().getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN, WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN);
+        }
         initView(view);
+        setAppBarLayoutOnCLick();
         return view;
+    }
+
+    private void setAppBarLayoutOnCLick() {
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                if (state == State.EXPANDED) { //展开状态
+                    mTooBarTitle.setTextColor(ResourceUtils.getColor(R.color.white));
+                    mRightImageView.setImageResource(R.mipmap.my_key_white);
+                    if (showCode == NumberConstantUtil.ONE) {
+                        mRightRightImageView.setImageResource(R.mipmap.my_qr_white);
+                    }
+                } else if (state == State.COLLAPSED) {//折叠状态
+                    mTooBarTitle.setTextColor(ResourceUtils.getColor(R.color.add_minus_dishes_text));
+                    mRightImageView.setImageResource(R.mipmap.my_key);
+                    if (showCode == NumberConstantUtil.ONE) {
+                        mRightRightImageView.setImageResource(R.mipmap.my_qr);
+                    }
+                } else {//中间状态
+                    mTooBarTitle.setTextColor(ResourceUtils.getColor(R.color.white));
+                    mRightImageView.setImageResource(R.mipmap.my_key_white);
+                    if (showCode == NumberConstantUtil.ONE) {
+                        mRightRightImageView.setImageResource(R.mipmap.my_qr_white);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -213,7 +262,12 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         mBraceletMac = userOtherInfoData.getBraceletMac();
         UUID = userOtherInfoData.getUuid();
         showCode = userOtherInfoData.getShowCode();
-        postEvent(new ShowCodeMessage(showCode));
+
+        if (showCode == NumberConstantUtil.ZERO) {//隐藏
+            mRightRightImageView.setVisibility(View.GONE);
+        } else if (showCode == NumberConstantUtil.ONE) {//显示
+            mRightRightImageView.setVisibility(View.VISIBLE);
+        }
 
         if (LikingPreference.isVIP()) {
             mIsVip.setVisibility(android.view.View.VISIBLE);
@@ -347,7 +401,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         mMyAdapter = new MyPersonAdapter(getActivity());
         mPersonEntities = new ArrayList<>();
 
-        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_my_head, null);
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_liking_my, null);
         initHeadView(headerView);
         mMyAdapter.setHeaderView(headerView);
 
@@ -419,8 +473,12 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                         }
                         break;
                     case R.mipmap.my_water:
-                        UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.WATERRATEACTIVITY);
-                        startActivity(WaterRateActivity.class);
+                        if (LikingPreference.isLogin()) {
+                            UMengCountUtil.UmengBtnCount(getActivity(), UmengEventId.WATERRATEACTIVITY);
+                            startActivity(WaterRateActivity.class);
+                        } else {
+                            startActivity(LoginActivity.class);
+                        }
                         break;
                     case R.mipmap.my_bracelet:
                         mPresenter.jumpBraceletActivity(getActivity(), LikingMyFragment.this, UUID, mBraceletMac);
@@ -429,7 +487,11 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                         startActivity(MoreActivity.class);
                         break;
                     case R.mipmap.my_card:
-                        startActivity(MyCardActivity.class);
+                        if (LikingPreference.isLogin()) {
+                            startActivity(MyCardActivity.class);
+                        } else {
+                            startActivity(LoginActivity.class);
+                        }
                         break;
 
                 }
@@ -439,7 +501,9 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
 
 
     private void initHeadView(View headerView) {
-        ButterKnife.bind(this, headerView);
+        mBodyScoreLayout = (CardView) headerView.findViewById(R.id.layout_body_score);
+        mBraceletLinearLayout = (CardView) headerView.findViewById(R.id.layout_bracelet);
+        mAllSportLayout = (CardView) headerView.findViewById(R.id.layout_all_sport);
         setHeadPersonData();
         setLogonView();
     }
@@ -457,6 +521,37 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mBraceletLinearLayout.setVisibility(View.GONE);
             setCenter(true);
         }
+
+        mBraceletLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent braceletIntent = new Intent(getActivity(), BraceletDataActivity.class);
+                braceletIntent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac);
+                braceletIntent.putExtra(LikingMyFragment.KEY_UUID, UUID);
+                startActivity(braceletIntent);
+            }
+        });
+        mBodyScoreLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LikingPreference.isLogin()) {
+                    mPresenter.jumpBodyTestActivity(getActivity());
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+            }
+        });
+        mAllSportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LikingPreference.isLogin()) {
+                    Intent intent = new Intent(getActivity(), SportDataActivity.class);
+                    startActivity(intent);
+                } else {
+                    startActivity(LoginActivity.class);
+                }
+            }
+        });
     }
 
     /**
@@ -527,29 +622,14 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     }
 
 
-    @OnClick({R.id.layout_all_sport,
-            R.id.login_text,
+    @OnClick({R.id.login_text,
             R.id.layout_head_info,
             R.id.head_image,
-            R.id.layout_body_score,
             R.id.continuation_card,
-            R.id.layout_bracelet})
+            R.id.my_right_imageView,
+            R.id.my_right_right_imageView})
     public void onClick(android.view.View view) {
         switch (view.getId()) {
-            case R.id.layout_all_sport://我的训练数据
-                if (LikingPreference.isLogin()) {
-                    Intent intent = new Intent(getActivity(), SportDataActivity.class);
-//                    intent.setAction(SportDataDayFragment.SHOW_ACTION);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(SportDataDayFragment.SPORT_MINS, mContentTextViewMin.getText().toString());
-//                    bundle.putString(SportDataDayFragment.SPORT_DAYS, mContentTextViewDay.getText().toString());
-//                    bundle.putString(SportDataDayFragment.SPORT_TIMES, mContentTextViewTime.getText().toString());
-//                    intent.putExtras(bundle);
-                    startActivity(intent);
-                } else {
-                    startActivity(LoginActivity.class);
-                }
-                break;
             case R.id.login_text://登录
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
@@ -565,14 +645,6 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                     startActivity(myInfoIntent);
                 }
                 break;
-            case R.id.layout_body_score:
-                if (LikingPreference.isLogin()) {
-                    mPresenter.jumpBodyTestActivity(getActivity());
-                } else {
-                    startActivity(LoginActivity.class);
-                }
-                break;
-
             case R.id.continuation_card: //续卡
                 if (StringUtils.isEmpty(gymId)) {
                     return;
@@ -583,14 +655,15 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 intentUp.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 startActivity(intentUp);
                 break;
-            case R.id.layout_bracelet://手环数据
-                Intent braceletIntent = new Intent(getActivity(), BraceletDataActivity.class);
-                braceletIntent.putExtra(LikingMyFragment.KEY_MY_BRACELET_MAC, mBraceletMac);
-                braceletIntent.putExtra(LikingMyFragment.KEY_UUID, UUID);
-                startActivity(braceletIntent);
+            case R.id.my_right_imageView://开门
+                startActivity(OpenTheDoorActivity.class);
+                break;
+            case R.id.my_right_right_imageView://扫描二维码
+                QrCodeActivity.launch(getActivity());
                 break;
         }
     }
+
 
     @Override
     protected boolean isEventTarget() {
