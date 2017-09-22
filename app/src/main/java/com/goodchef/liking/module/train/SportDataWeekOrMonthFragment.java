@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
@@ -22,6 +23,7 @@ import com.goodchef.liking.adapter.SportHistogramAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import com.goodchef.liking.utils.TypefaseUtil;
 
 import butterknife.BindView;
@@ -89,7 +91,7 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View viewRoot = inflater.inflate(R.layout.fragment_sport_week_day_contains, container, false);
         rootView = new ScrollView(getContext());
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rootView.setLayoutParams(layoutParams);
         rootView.removeAllViews();
         rootView.addView(viewRoot);
@@ -108,35 +110,35 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_sport_record_stat, null);
         mSportDataHeaderLayout.addView(view);
 
-        mSportRecordDate = (TextView)view.findViewById(R.id.sport_record_stat_date);
-        mSportTotalSeconds = (TextView)view.findViewById(R.id.sport_total_seconds);
+        mSportRecordDate = (TextView) view.findViewById(R.id.sport_record_stat_date);
+        mSportTotalSeconds = (TextView) view.findViewById(R.id.sport_total_seconds);
         setImpactTypeface(mSportTotalSeconds);
-        mSportTotalDays = (TextView)view.findViewById(R.id.sport_total_days);
+        mSportTotalDays = (TextView) view.findViewById(R.id.sport_total_days);
         setImpactTypeface(mSportTotalDays);
-        mSportTotalKcal = (TextView)view.findViewById(R.id.sport_total_kcal);
+        mSportTotalKcal = (TextView) view.findViewById(R.id.sport_total_kcal);
         setImpactTypeface(mSportTotalKcal);
-        mSportTotalExercise = (TextView)view.findViewById(R.id.sport_total_exercise);
+        mSportTotalExercise = (TextView) view.findViewById(R.id.sport_total_exercise);
         setImpactTypeface(mSportTotalExercise);
-        mSportRunKilometre = (TextView)view.findViewById(R.id.sport_run_kilometre);
+        mSportRunKilometre = (TextView) view.findViewById(R.id.sport_run_kilometre);
         setImpactTypeface(mSportRunKilometre);
-        mSportRunMin = (TextView)view.findViewById(R.id.sport_run_min);
+        mSportRunMin = (TextView) view.findViewById(R.id.sport_run_min);
         setImpactTypeface(mSportRunMin);
-        mSportTrainingTimes = (TextView)view.findViewById(R.id.sport_strength_training_times);
+        mSportTrainingTimes = (TextView) view.findViewById(R.id.sport_strength_training_times);
         setImpactTypeface(mSportTrainingTimes);
-        mSportTrainingMin = (TextView)view.findViewById(R.id.sport_strength_training_min);
+        mSportTrainingMin = (TextView) view.findViewById(R.id.sport_strength_training_min);
         setImpactTypeface(mSportTrainingMin);
-        mSportGroupLessonSection = (TextView)view.findViewById(R.id.sport_group_lesson_section);
+        mSportGroupLessonSection = (TextView) view.findViewById(R.id.sport_group_lesson_section);
         setImpactTypeface(mSportGroupLessonSection);
-        mSportGroupLessonMin = (TextView)view.findViewById(R.id.sport_group_lesson_section_min);
+        mSportGroupLessonMin = (TextView) view.findViewById(R.id.sport_group_lesson_section_min);
         setImpactTypeface(mSportGroupLessonMin);
-        mSportPrivateTeachingSection = (TextView)view.findViewById(R.id.sport_private_teaching_section);
+        mSportPrivateTeachingSection = (TextView) view.findViewById(R.id.sport_private_teaching_section);
         setImpactTypeface(mSportPrivateTeachingSection);
-        mSportPrivateTeachingMin = (TextView)view.findViewById(R.id.sport_private_teaching_min);
+        mSportPrivateTeachingMin = (TextView) view.findViewById(R.id.sport_private_teaching_min);
         setImpactTypeface(mSportPrivateTeachingMin);
     }
 
     public void setImpactTypeface(TextView textView) {
-        if(textView != null) {
+        if (textView != null) {
             textView.setTypeface(TypefaseUtil.getImpactTypeface(getContext()));
         }
     }
@@ -186,12 +188,27 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
                 if (currPoi < mHistogramAdapter.getDatas().size()) {
                     mHistogramAdapter.getDatas().get(currPoi).setChecked(false);
                 }
-                mHistogramAdapter.getDatas().get(position).setChecked(true);
+                SportDataEntity entity = mHistogramAdapter.getDatas().get(position);
+                entity.setChecked(true);
+                setSportRecordDateText(entity);
                 mHistogramAdapter.setSelectCurrPosition(position);
-                mSportRecordDate.setText(mHistogramAdapter.getDatas().get(position).getTitle());
                 mPresenter.getSportUserStatsResult(position);
             }
         });
+    }
+
+    private void setSportRecordDateText(SportDataEntity entity){
+        if(entity == null) return;
+        String recordDateText = "";
+        if (typeTime == SportDataEntity.TYPE_TIME_WEEK) {
+            recordDateText = mPresenter.isThisWeek(entity.getStartTime())
+                    ? ResourceUtils.getString(R.string.this_week) : entity.getTitle();
+
+        } else if (typeTime == SportDataEntity.TYPE_TIME_MONTH) {
+            recordDateText = mPresenter.isThisMonth(entity.getStartTime())
+                    ? ResourceUtils.getString(R.string.this_month) : entity.getTitle();
+        }
+        mSportRecordDate.setText(recordDateText);
     }
 
     private void setSportRecyclerView() {
@@ -200,7 +217,7 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
         if (mHistogramAdapter.getSelectCurrPosition() != -1 && !isLoadMore) {
             int pos = mHistogramAdapter.getSelectCurrPosition();
             mPresenter.getSportUserStatsResult(pos);
-            mSportRecordDate.setText(mHistogramAdapter.getDatas().get(pos).getTitle());
+            setSportRecordDateText(mHistogramAdapter.getDatas().get(pos));
         }
     }
 
@@ -221,11 +238,12 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
     }
 
     @Override
-    public void updateSportListView(SportListResult value) {}
+    public void updateSportListView(SportListResult value) {
+    }
 
     @Override
     public void updateSportUserStatView(SportUserStatResult value) {
-        if(value != null && value.getData() != null) {
+        if (value != null && value.getData() != null) {
             SportUserStatResult.DataBean bean = value.getData();
             mSportTotalSeconds.setText(bean.getTotalSeconds());
             mSportTotalDays.setText(bean.getTotalDay());

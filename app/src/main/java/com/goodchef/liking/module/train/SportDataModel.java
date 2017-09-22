@@ -15,6 +15,8 @@ import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -25,11 +27,7 @@ import java.util.*;
 
 public class SportDataModel extends BaseModel {
 
-    public final static int TYPE_TIME_DAY = 1;
-    public final static int TYPE_TIME_WEEK = 2;
-    public final static int TYPE_TIME_MONTH = 3;
-
-    int typeTime = TYPE_TIME_DAY; ////type : 1 日 2 周 3 月
+    int typeTime = SportDataEntity.TYPE_TIME_DAY; ////type : 1 日 2 周 3 月
 
     LinkedList<SportDataEntity> mSportDataEntities;
 
@@ -78,6 +76,7 @@ public class SportDataModel extends BaseModel {
 
     /**
      * 用户运动记录统计
+     *
      * @param startDate
      * @param endDate
      * @return
@@ -142,17 +141,17 @@ public class SportDataModel extends BaseModel {
             }
 
             switch (typeTime) {
-                case TYPE_TIME_DAY:
+                case SportDataEntity.TYPE_TIME_DAY:
                     sb.append(DateUtils.formatDate("MM/dd", sDate));
                     content = getWeek(sTime);
                     break;
-                case TYPE_TIME_WEEK:
+                case SportDataEntity.TYPE_TIME_WEEK:
                     Date endDate = parseTime(bean.getEndDate());
                     sb.append(DateUtils.formatDate("MM/dd", sDate));
-                    sb.append(" ");
+                    sb.append("~");
                     sb.append(DateUtils.formatDate("MM/dd", endDate));
                     break;
-                case TYPE_TIME_MONTH:
+                case SportDataEntity.TYPE_TIME_MONTH:
                     sb.append(DateUtils.formatDate("M", sDate));
                     sb.append("月");
                     break;
@@ -175,6 +174,54 @@ public class SportDataModel extends BaseModel {
         try {
             return getYear(new Date()) == getYear(date);
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 判断选择的日期是否是本周
+     *
+     * @param time
+     * @return
+     */
+    public boolean isThisWeek(long time) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+            calendar.setTime(new Date(time));
+            int paramWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+            if (paramWeek == currentWeek) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 判断选择的日期是否是本月
+     *
+     * @param time
+     * @return
+     */
+    public boolean isThisMonth(long time) {
+        return isThisTime(time, "yyyy-MM");
+    }
+
+    private boolean isThisTime(long time, String pattern) {
+        try {
+            Date date = new Date(time);
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+            String param = sdf.format(date);//参数时间
+            String now = sdf.format(new Date());//当前时间
+            if (param.equals(now)) {
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception e) {
             return false;
         }
     }

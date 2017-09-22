@@ -693,6 +693,8 @@
     <string name="network_no_work">当前网络不可用</string>
 
     <string name="week">周</string>
+    <string name="this_week">本周</string>
+    <string name="this_month">本月</string>
 
     <string name="sport_day">天</string>
     <string name="sport_total_time">运动时间</string>

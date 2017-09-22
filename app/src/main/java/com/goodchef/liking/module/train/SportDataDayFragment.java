@@ -23,6 +23,7 @@ import com.goodchef.liking.adapter.SportHistogramAdapter;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportStatsResult;
 import com.goodchef.liking.data.remote.retrofit.result.SportUserStatResult;
+import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import com.goodchef.liking.module.smartspot.SmartSpotDetailActivity;
 
 import java.util.List;
@@ -100,7 +101,6 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                LogUtils.i(TAG, "-----------onScrollStateChanged-----------");
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && !recyclerView.canScrollHorizontally(-1)) {
                     isLoadMore = true;
@@ -141,7 +141,7 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
 
     @Override
     public void setPresenter() {
-        mPresenter = new SportDataContract.Presenter(SportDataContract.Presenter.TYPE_TIME_DAY);
+        mPresenter = new SportDataContract.Presenter(SportDataEntity.TYPE_TIME_DAY);
     }
 
     @Override

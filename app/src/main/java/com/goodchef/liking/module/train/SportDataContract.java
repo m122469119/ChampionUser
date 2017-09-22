@@ -36,10 +36,6 @@ interface SportDataContract {
 
     class Presenter extends RxBasePresenter<View> {
 
-        public final static int TYPE_TIME_DAY = SportDataModel.TYPE_TIME_DAY;
-        public final static int TYPE_TIME_WEEK = SportDataModel.TYPE_TIME_WEEK;
-        public final static int TYPE_TIME_MONTH = SportDataModel.TYPE_TIME_MONTH;
-
         SportDataModel mModel;
         ShareModel mShareModel;
         private boolean isLoad = false;
@@ -157,6 +153,13 @@ interface SportDataContract {
             }
         }
 
+        public boolean isThisWeek(long time) {
+            return mModel.isThisWeek(time);
+        }
+
+        public boolean isThisMonth(long time) {
+            return mModel.isThisMonth(time);
+        }
     }
 
 }

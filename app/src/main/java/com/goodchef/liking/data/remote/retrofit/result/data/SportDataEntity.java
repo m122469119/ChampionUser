@@ -9,6 +9,11 @@ import com.aaron.http.code.result.Data;
  * @Version 1.0
  */
 public class SportDataEntity extends Data{
+
+    public final static int TYPE_TIME_DAY = 1;
+    public final static int TYPE_TIME_WEEK = 2;
+    public final static int TYPE_TIME_MONTH = 3;
+
     private Long startTime;
     private Long endTime;
     private String title;

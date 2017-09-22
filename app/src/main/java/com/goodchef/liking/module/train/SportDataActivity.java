@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.aaron.android.framework.base.ui.BaseActivity;
 import com.aaron.android.framework.base.widget.viewpager.TabFragmentPagerAdapter;
 import com.goodchef.liking.R;
+import com.goodchef.liking.data.remote.retrofit.result.data.SportDataEntity;
 import com.goodchef.liking.widgets.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -26,10 +27,6 @@ import butterknife.ButterKnife;
  */
 
 public class SportDataActivity extends BaseActivity {
-
-    private static final int INDEX_SPORT_DAY = 1;//天
-    private static final int INDEX_SPORT_WEEK = 2;//周
-    private static final int INDEX_SPORT_MONTH = 3;//月
 
     @BindView(R.id.sport_tabLayout)
     TabLayout mSportTabLayout;
@@ -108,18 +105,18 @@ public class SportDataActivity extends BaseActivity {
 
     private TabFragmentPagerAdapter.FragmentBinder buildFragmentSportWeek(MyTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
-                0, SportDataWeekOrMonthFragment.newInstance(INDEX_SPORT_WEEK));
+                0, SportDataWeekOrMonthFragment.newInstance(SportDataEntity.TYPE_TIME_WEEK));
     }
 
     private TabFragmentPagerAdapter.FragmentBinder buildFragmentSportMonth(MyTab tab) {
         return new TabFragmentPagerAdapter.FragmentBinder(tab.getIndex(), getString(tab.getTextRestId()),
-                0, SportDataWeekOrMonthFragment.newInstance(INDEX_SPORT_MONTH));
+                0, SportDataWeekOrMonthFragment.newInstance(SportDataEntity.TYPE_TIME_MONTH));
     }
 
     private enum MyTab {
-        TAB_SPORT_DAY(INDEX_SPORT_DAY, R.string.day),
-        TAB_SPORT_WEEK(INDEX_SPORT_WEEK, R.string.week),
-        TAB_SPORT_MONTH(INDEX_SPORT_MONTH, R.string.month);
+        TAB_SPORT_DAY(SportDataEntity.TYPE_TIME_DAY, R.string.day),
+        TAB_SPORT_WEEK(SportDataEntity.TYPE_TIME_WEEK, R.string.week),
+        TAB_SPORT_MONTH(SportDataEntity.TYPE_TIME_MONTH, R.string.month);
 
         private int mTextRestId;
         private int mIndex;
