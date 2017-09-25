@@ -90,8 +90,8 @@ public class SportHistogramAdapter extends BaseRecyclerAdapter<SportDataEntity> 
         @Override
         public void bindViews(SportDataEntity date4Index) {
             if (date4Index == null) return;
-            histogramView.setPercentageText(date4Index.getPercentageText());
-            histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
+//            histogramView.setPercentageText(date4Index.getPercentageText());
+//            histogramView.setPercentage(Float.parseFloat(date4Index.getPercentage()));
             title.setText(date4Index.getTitle());
             content.setText(date4Index.getContent());
             if (date4Index.isChecked()) {

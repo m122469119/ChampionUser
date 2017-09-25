@@ -10,7 +10,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.Display;
 import android.view.View;
 
 import com.aaron.android.framework.utils.DisplayUtils;
@@ -62,7 +61,7 @@ public class HistogramView extends View {
 
     public void setPercentage(float percentage) {
         this.mPercentage = percentage;
-        postInvalidate();
+        invalidate();
     }
 
     public void setPercentageText(String percentageText) {
@@ -72,7 +71,7 @@ public class HistogramView extends View {
         } else {
             mTextPaint.setTextSize(DisplayUtils.dp2px(8));
         }
-        postInvalidate();
+        invalidate();
     }
 
     @Override
