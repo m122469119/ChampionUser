@@ -147,11 +147,12 @@ public class MoreActivity extends AppBarMVPSwipeBackActivity<MoreContract.Presen
                     public void accept(Boolean aBoolean) throws Exception {
                         if (!aBoolean) return;
                         HBaseDialog.Builder builder = new HBaseDialog.Builder(MoreActivity.this);
-                        android.view.View view = LayoutInflater.from(MoreActivity.this).inflate(R.layout.item_textview, null, false);
-                        TextView textView = (TextView) view.findViewById(R.id.dialog_custom_title);
+                        android.view.View view = LayoutInflater.from(MoreActivity.this).inflate(R.layout.dialog_one_content, null, false);
+                        TextView textView = (TextView) view.findViewById(R.id.one_dialog_title);
+                        TextView textViewContent = (TextView) view.findViewById(R.id.one_dialog_content);
                         textView.setText((mUpdateAppData.getTitle()));
-                        builder.setCustomTitle(view);
-                        builder.setMessage(mUpdateAppData.getContent());
+                        textViewContent.setText(mUpdateAppData.getContent());
+                        builder.setCustomView(view);
                         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

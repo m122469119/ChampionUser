@@ -8,11 +8,13 @@ import android.os.Build;
 //import android.support.multidex.MultiDex;
 
 import android.support.multidex.MultiDex;
+
 import com.aaron.android.framework.base.MainProcessInit;
 import com.aaron.android.framework.base.ProcessInit;
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.http.volley.VolleyRequestSingleton;
 import com.aaron.jpush.JPush;
+import com.aaron.share.weixin.WeixinShare;
 import com.goodchef.liking.BuildConfig;
 import com.goodchef.liking.data.local.LikingPreference;
 import com.goodchef.liking.tinker.MyLogImp;
@@ -98,6 +100,8 @@ public class LikingApplicationLike extends DefaultApplicationLike {
         LikingPreference.init(getApplication());
         /*网络请求初始化*/
         VolleyRequestSingleton.init(getApplication());
+        //设置分享的debug模式
+        WeixinShare.setIsDebug(EnvironmentUtils.Config.isTestMode());
     }
 
 

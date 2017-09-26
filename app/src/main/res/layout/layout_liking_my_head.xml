@@ -89,7 +89,7 @@
                         android:paddingRight="@dimen/spacing_4dp"
                         android:text="VIP"
                         android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textSize="8sp"
                         android:visibility="gone" />
 
                 </RelativeLayout>

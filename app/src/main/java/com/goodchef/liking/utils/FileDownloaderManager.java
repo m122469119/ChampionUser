@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.common.utils.LogUtils;
 import com.aaron.common.utils.StringUtils;
 import com.aaron.android.framework.base.BaseApplication;
@@ -21,6 +26,9 @@ import com.aaron.android.framework.base.storage.DiskStorageManager;
 import com.aaron.android.framework.utils.DialogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.local.LikingPreference;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 说明:
@@ -118,16 +126,10 @@ public class FileDownloaderManager {
 //                    ApkController.install(intent.getStringExtra(FileDownloadService.EXTRA_INSTALL_APK_PATH), mContext);
 
 //                     unregisterDownloadNewApkBroadcast();
-                    LikingPreference.setUpdateApp(0);//将更新设置为不用更新
-                    //调用系统安装
-                    String dirPath = DiskStorageManager.getInstance().getApkFileStoragePath();
-                    String apkName = LikingPreference.getNewAPkName();
-                    String filePath = dirPath + apkName + ".apk"; //文件需有可读权限
-                    Intent intent1 = new Intent();
-                    intent1.setAction(android.content.Intent.ACTION_VIEW);
-                    intent1.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
-                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent1);
+
+                    String apkDowlnloadPath = intent.getStringExtra(FileDownloadService.EXTRA_INSTALL_APK_PATH);
+                    LogUtils.i("FileDownloaderManager", " apkDowlnloadPath = " + apkDowlnloadPath);
+                    installApk(context);
                     BaseApplication.exitApp();
                 } else if (action.equals(FileDownloadService.ACTION_DOWNLOAD_FAIL)) {
                     mDownloadApkDialog.dismiss();
@@ -135,7 +137,36 @@ public class FileDownloaderManager {
                 }
             }
         }
+
+        private void installApk(Context context) {
+            LikingPreference.setUpdateApp(0);//将更新设置为不用更新
+            //调用系统安装
+            String dirPath = DiskStorageManager.getInstance().getApkFileStoragePath();
+            String apkName = LikingPreference.getNewAPkName();
+            String filePath = dirPath + apkName + ".apk"; //文件需有可读权限
+            LogUtils.i("FileDownloaderManager", " fileapth = " + filePath);
+            File f = new File(filePath);
+            Intent intent1 = new Intent();
+            intent1.setAction(Intent.ACTION_VIEW);
+            Uri u;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                if (EnvironmentUtils.Config.isTestMode()) {
+                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.test.fileprovider", f);
+                } else {
+                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.fileprovider", f);
+                }
+            } else {
+                u = Uri.fromFile(f);
+            }
+            intent1.setDataAndType(u, "application/vnd.android.package-archive");
+            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent1);
+
+        }
     }
+
+
 
     public void unregisterDownloadNewApkBroadcast() {
         if (mDownloadNewApkBroadcast != null) {
