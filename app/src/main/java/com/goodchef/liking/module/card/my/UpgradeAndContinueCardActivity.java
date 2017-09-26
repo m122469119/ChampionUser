@@ -17,6 +17,7 @@ import static com.goodchef.liking.module.card.my.MyCardActivity.KEY_INTENT_TITLE
  * Time:16/6/30 上午10:02
  */
 public class UpgradeAndContinueCardActivity extends AppBarSwipeBackActivity{
+    public static final String KEY_HIDE_TITLE = "hide_title";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,10 +27,11 @@ public class UpgradeAndContinueCardActivity extends AppBarSwipeBackActivity{
         int buyType = getIntent().getIntExtra(LikingBuyCardFragment.KEY_BUY_TYPE, 0);
         String gymId = getIntent().getStringExtra(LikingLessonFragment.KEY_GYM_ID);
         String title = getIntent().getStringExtra(KEY_INTENT_TITLE);
+        boolean hideTitle = getIntent().getBooleanExtra(KEY_HIDE_TITLE,false);
         setTitle(title);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.upgrade_contains, LikingBuyCardFragment.newInstance(gymId, buyType))
+                .replace(R.id.upgrade_contains, LikingBuyCardFragment.newInstance(gymId, buyType,hideTitle))
                 .commit();
     }
 

@@ -651,6 +651,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
                 }
                 Intent intentUp = new Intent(getActivity(), UpgradeAndContinueCardActivity.class);
                 intentUp.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, NumberConstantUtil.TWO);
+                intentUp.putExtra(UpgradeAndContinueCardActivity.KEY_HIDE_TITLE,true);
                 intentUp.putExtra(MyCardActivity.KEY_INTENT_TITLE, getString(R.string.flow_card));
                 intentUp.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
                 startActivity(intentUp);

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +75,13 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.buy_card_recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private BuyCardAdapter mBuyCardAdapter;
     private static int mBuyType = 1;
     private static String mGymId = "-1";
+    private boolean hideTitle = false;
     private BuyCardController buyCardController;
     private CoursesResult.Courses.Gym mGym;//场馆信息
 
@@ -89,11 +93,12 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     private RadioGroup mAllAndStaggerRg;
     private RadioButton mAllAndStaggerRbAll, mAllAndStaggerRbStagger;
 
-    public static LikingBuyCardFragment newInstance(String gymId, int buyType) {
+    public static LikingBuyCardFragment newInstance(String gymId, int buyType, boolean hideTitle) {
         Bundle args = new Bundle();
         LikingBuyCardFragment fragment = new LikingBuyCardFragment();
         args.putInt("buy_type", buyType);
         args.putString("gym_id", gymId);
+        args.putBoolean("key_hide_title", hideTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,15 +108,24 @@ public class LikingBuyCardFragment extends BaseMVPFragment<BuyCardContract.Prese
     public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_layout_buy_card, container, false);
         ButterKnife.bind(this, view);
+        if (getArguments() != null) {
+            mBuyType = getArguments().getInt("buy_type", 1);
+            mGymId = getArguments().getString("gym_id", "-1");
+            hideTitle = getArguments().getBoolean("key_hide_title",false);
+        }
         buyCardController = new BuyCardController(getActivity(), view);
+        if (hideTitle) {
+            mToolbar.setVisibility(View.GONE);
+        } else {
+            mToolbar.setVisibility(View.VISIBLE);
+        }
+
         if (SDKVersionUtils.hasKitKat()) {
             Window window = getActivity().getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        if (getArguments() != null) {
-            mBuyType = getArguments().getInt("buy_type", 1);
-            mGymId = getArguments().getString("gym_id", "-1");
-        }
+
+
         initViews();
         return view;
     }

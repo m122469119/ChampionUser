@@ -98,6 +98,7 @@ public class MyCardActivity extends AppBarMVPSwipeBackActivity<MyCardContract.Pr
         }
         Intent intent = new Intent(this, UpgradeAndContinueCardActivity.class);
         intent.putExtra(LikingBuyCardFragment.KEY_BUY_TYPE, NumberConstantUtil.TWO);
+        intent.putExtra(UpgradeAndContinueCardActivity.KEY_HIDE_TITLE,true);
         intent.putExtra(KEY_INTENT_TITLE, getString(R.string.flow_card));
         intent.putExtra(LikingLessonFragment.KEY_GYM_ID, gymId);
         startActivity(intent);
