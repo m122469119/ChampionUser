@@ -709,4 +709,5 @@
     <string name="sport_group_lesson">团体课</string>
     <string name="sport_section">节</string>
     <string name="sport_private_teaching">私教课</string>
+    <string name="sport_load_more">加载更多...</string>
 </resources>

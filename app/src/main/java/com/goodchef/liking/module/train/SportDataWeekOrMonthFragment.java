@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
@@ -78,6 +79,8 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
     private boolean isLoadMore = false;
 
     private int typeTime = -1;
+
+    private Toast mToastLoadMore = null;
 
     public static SportDataWeekOrMonthFragment newInstance(int type) {
         SportDataWeekOrMonthFragment fragment = new SportDataWeekOrMonthFragment();
@@ -169,7 +172,14 @@ public class SportDataWeekOrMonthFragment extends BaseMVPFragment<SportDataContr
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && !recyclerView.canScrollHorizontally(-1)) {
                     mPresenter.getSportStats();
                     isLoadMore = true;
-                    PopupUtils.showToast(getContext(), "加载更多...");
+
+                    if(mToastLoadMore == null) {
+                        mToastLoadMore =  Toast.makeText(getContext().getApplicationContext(),
+                                ResourceUtils.getString(R.string.sport_load_more), Toast.LENGTH_SHORT);
+                    } else {
+                        mToastLoadMore.setText(R.string.sport_load_more);
+                    }
+                    mToastLoadMore.show();
                 }
             }
 

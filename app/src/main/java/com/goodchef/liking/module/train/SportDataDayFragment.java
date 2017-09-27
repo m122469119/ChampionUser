@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 import com.aaron.android.framework.base.mvp.BaseMVPFragment;
 import com.aaron.android.framework.base.widget.refresh.StateView;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ResourceUtils;
 import com.aaron.common.utils.LogUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.adapter.BaseRecyclerAdapter;
@@ -46,6 +48,8 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
     private View mFooterView;
     private boolean isLoadMore = false;
 
+
+    private Toast mToastLoadMore = null;
     public static SportDataDayFragment newInstance() {
         SportDataDayFragment fragment = new SportDataDayFragment();
         Bundle args = new Bundle();
@@ -105,7 +109,14 @@ public class SportDataDayFragment extends BaseMVPFragment<SportDataContract.Pres
                         && !recyclerView.canScrollHorizontally(-1)) {
                     isLoadMore = true;
                     mPresenter.getSportStats();
-                    PopupUtils.showToast(getContext(), "加载更多...");
+
+                    if(mToastLoadMore == null) {
+                        mToastLoadMore =  Toast.makeText(getContext().getApplicationContext(),
+                                ResourceUtils.getString(R.string.sport_load_more), Toast.LENGTH_SHORT);
+                    } else {
+                        mToastLoadMore.setText(R.string.sport_load_more);
+                    }
+                    mToastLoadMore.show();
                 }
             }
 
