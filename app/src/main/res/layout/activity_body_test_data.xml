@@ -31,7 +31,7 @@
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="1"
                 />
-            
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_app_bar_style"
                 android:layout_width="match_parent"
@@ -65,27 +65,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_marginBottom="50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <TextView
-            android:id="@+id/body_test_history_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/add_minus_dishes_text"
-            android:gravity="center"
-            android:padding="@dimen/spacing_12dp"
-            android:text="@string/body_test_history"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_15"
-            android:visibility="visible" />
 
         <include
             layout="@layout/layout_test_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/body_test_history_TextView" />
+            />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/body_test_history_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:background="@color/add_minus_dishes_text"
+        android:gravity="center"
+        android:padding="@dimen/spacing_12dp"
+        android:text="@string/body_test_history"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_15"
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/body_test_no_data_view"
