@@ -82,7 +82,7 @@ public class SmartSpotRecordListAdapter extends BaseRecycleViewAdapter<SmartSpot
             int index = dataList.indexOf(data) + 1;
             tvEnd.setVisibility(index == dataList.size() ? View.VISIBLE : View.GONE);
 
-            tvSet.setText("SET " + index);
+            tvSet.setText("组 " + index);
             tvReps.setText(data.getReps());
             tvTime.setText(data.getTime() + " s");
             tvRestTime.setText(data.getRestTime() + " s");

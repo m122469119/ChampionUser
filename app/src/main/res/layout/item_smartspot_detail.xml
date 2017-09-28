@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="80dp"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/liking_green_btn_back"
                 android:textStyle="bold"
-                tools:text="SET1" />
+                tools:text="组1" />
 
             <ImageView
                 android:layout_width="2dp"
@@ -62,7 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="组数" />
+                        android:text="连续次数" />
 
                     <TextView
                         android:id="@+id/tv_reps"
@@ -158,7 +158,7 @@
         android:layout_marginBottom="@dimen/spacing_8dp"
         android:layout_marginTop="@dimen/spacing_4dp"
         android:gravity="center_horizontal"
-        android:text="END"
+        android:text="结束"
         android:textColor="@color/liking_green_btn_back"
         android:textStyle="bold"
         android:visibility="gone"
