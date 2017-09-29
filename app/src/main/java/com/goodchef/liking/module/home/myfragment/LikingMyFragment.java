@@ -344,6 +344,7 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mContentTextViewMin.setText("--");
             mContentTextViewDay.setText("--");
             mContentTextViewTime.setText("--");
+            mBodyLevelImageView.setImageResource(0);
             mBodyLevelImageView.setVisibility(View.GONE);
         }
     }
