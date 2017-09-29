@@ -2,7 +2,6 @@ package com.goodchef.liking.module.home.myfragment;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -47,34 +46,29 @@ import com.goodchef.liking.module.card.my.UpgradeAndContinueCardActivity;
 import com.goodchef.liking.module.card.order.MyOrderActivity;
 import com.goodchef.liking.module.coupons.CouponsActivity;
 import com.goodchef.liking.module.course.MyLessonActivity;
-import com.goodchef.liking.module.gym.details.ArenaActivity;
-import com.goodchef.liking.module.home.LikingHomeActivity;
 import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
 import com.goodchef.liking.module.home.myfragment.water.WaterRateActivity;
 import com.goodchef.liking.module.login.LoginActivity;
-import com.goodchef.liking.module.message.ShowCodeMessage;
 import com.goodchef.liking.module.more.MoreActivity;
 import com.goodchef.liking.module.opendoor.OpenTheDoorActivity;
 import com.goodchef.liking.module.scanqrcode.QrCodeActivity;
 import com.goodchef.liking.module.train.SportDataActivity;
-import com.goodchef.liking.module.train.SportDataDayFragment;
 import com.goodchef.liking.module.userinfo.MyInfoActivity;
 import com.goodchef.liking.umeng.UmengEventId;
 import com.goodchef.liking.utils.HImageLoaderSingleton;
 import com.goodchef.liking.utils.NumberConstantUtil;
-import com.goodchef.liking.utils.StatusBarUtils;
 import com.goodchef.liking.utils.TypefaseUtil;
 import com.goodchef.liking.utils.UMengCountUtil;
 import com.goodchef.liking.widgets.AppBarStateChangeListener;
 import com.goodchef.liking.widgets.base.LikingStateView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created on 16/5/20.
@@ -205,22 +199,12 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
         if (EnvironmentUtils.Network.isNetWorkAvailable()) {
             mStateView.setState(StateView.State.SUCCESS);
             setRecycleViewItem();
-            showUpdate();
             setLogonView();
             getMyUserInfoOther();
             getUserExerciseData();
         } else {
             mStateView.setState(StateView.State.FAILED);
         }
-    }
-
-    private void showUpdate() {
-        int update = LikingPreference.getUpdateApp();
-//        if (update == 0) {//不更新
-//            mUpdateAppImageView.setVisibility(android.view.View.GONE);
-//        } else if (update == 1 || update == 2) {//有更新
-//            mUpdateAppImageView.setVisibility(android.view.View.VISIBLE);
-//        }
     }
 
     /**
@@ -304,19 +288,11 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
             mBraceletData.setText(userOtherInfoData.getAllDistance());
         }
 
-        //mWaterRateLinearLayout.setVisibility(View.GONE);
-        // mWaterSurplus.setVisibility(View.GONE);
-
         if (userOtherInfoData.getWaterData() != null) {
             if (userOtherInfoData.getWaterData().getWater_status() == MyUserOtherInfoResult.UserOtherInfoData.WaterData.CHARGE_WATER) {
-//                mWaterRateLinearLayout.setVisibility(View.VISIBLE);
-//                mWaterSurplus.setVisibility(View.VISIBLE);
-//                mWaterSurplus.setText(getString(R.string.time_remaining) + userOtherInfoData.getWaterData().getWater_time() + getString(R.string.min));
                 addWater(mPersonEntities, mMyWaterEntity, 5);
                 updateAdapter(mPersonEntities);
             } else {
-//                mWaterRateLinearLayout.setVisibility(View.GONE);
-//                mWaterSurplus.setVisibility(View.GONE);
                 removeWater(mPersonEntities, mMyWaterEntity, 5);
                 updateAdapter(mPersonEntities);
             }
@@ -697,7 +673,6 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
 
     public void onEvent(LoginOutMessage loginOutMessage) {
         if (loginOutMessage != null) {
-            //setMySettingCard(mBindBraceletLinearLayout, R.string.layout_bing_bracelet, true);
             setHeadPersonData();
             setLogonView();
             clearExerciseData();

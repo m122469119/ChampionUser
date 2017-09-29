@@ -1,8 +1,6 @@
 package com.goodchef.liking.widgets;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -12,17 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aaron.android.framework.utils.EnvironmentUtils;
-import com.aaron.android.framework.utils.PopupUtils;
 import com.aaron.android.framework.utils.ToolBarUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
-import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
-import com.goodchef.liking.module.gym.list.ChangeGymActivity;
 import com.goodchef.liking.module.home.LikingHomeActivity;
-import com.goodchef.liking.module.home.lessonfragment.LikingLessonFragment;
-import com.goodchef.liking.umeng.UmengEventId;
-import com.goodchef.liking.utils.ChangeGymUtil;
-import com.goodchef.liking.utils.UMengCountUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
