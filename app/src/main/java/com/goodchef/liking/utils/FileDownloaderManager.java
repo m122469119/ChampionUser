@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -145,27 +146,19 @@ public class FileDownloaderManager {
             String apkName = LikingPreference.getNewAPkName();
             String filePath = dirPath + apkName + ".apk"; //文件需有可读权限
             LogUtils.i("FileDownloaderManager", " fileapth = " + filePath);
-            File f = new File(filePath);
-            Intent intent1 = new Intent();
-            intent1.setAction(Intent.ACTION_VIEW);
-            Uri u;
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            File apkFile = new File(filePath);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                if (EnvironmentUtils.Config.isTestMode()) {
-                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.test.fileprovider", f);
-                } else {
-                    u = FileProvider.getUriForFile(mContext, "com.goodchef.liking.fileprovider", f);
-                }
+                i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", apkFile);
+                i.setDataAndType(contentUri, "application/vnd.android.package-archive");
             } else {
-                u = Uri.fromFile(f);
+                i.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
             }
-            intent1.setDataAndType(u, "application/vnd.android.package-archive");
-            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
-
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
         }
     }
-
 
 
     public void unregisterDownloadNewApkBroadcast() {

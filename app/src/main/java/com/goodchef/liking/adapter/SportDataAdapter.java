@@ -121,17 +121,11 @@ public class SportDataAdapter extends BaseRecyclerAdapter<SportListResult.DataBe
                     break;
             }
             sb.append("  ");
-            sb.append(dateParse(object.getDate()));
+            sb.append(object.getDate());
             mContent.setText(sb.toString());
         }
 
-        private String dateParse(String data) {
-            try {
-                return DateUtils.formatDate("HH:mm:ss", DateUtils.parseString("yyyy-MM-dd HH:mm:ss", data));
-            }catch (Exception e){
-                return "";
-            }
-        }
+
     }
 
 }
