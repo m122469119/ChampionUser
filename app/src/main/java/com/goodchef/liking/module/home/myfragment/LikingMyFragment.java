@@ -113,6 +113,8 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     ImageView mRightImageView;
     @BindView(R.id.my_right_right_imageView)
     ImageView mRightRightImageView;
+    @BindView(R.id.my_toolbar_app_bar)
+    Toolbar mToolbar;
 
 
     MyPersonAdapter.MyPersonEntity mMyWaterEntity;
@@ -147,15 +149,23 @@ public class LikingMyFragment extends BaseMVPFragment<LikingMyContract.Presenter
     private String UUID;//蓝牙UUID
     private int showCode = -1;
 
+    public static LikingMyFragment newInstance() {
+        Bundle args = new Bundle();
+        LikingMyFragment fragment = new LikingMyFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liking_my, container, false);
         mTypeface = TypefaseUtil.getImpactTypeface(getActivity());
         ButterKnife.bind(this, view);
+        ToolBarUtils.setToolbarHeight(getActivity(),mToolbar);
         if (SDKVersionUtils.hasKitKat()) {
             Window window = getActivity().getWindow();
-            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN, WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN);
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         initView(view);
         setAppBarLayoutOnCLick();

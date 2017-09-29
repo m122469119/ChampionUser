@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:contentInsetLeft="0dp"
         android:contentInsetStart="0dp"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         android:minHeight="?attr/actionBarSize"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">

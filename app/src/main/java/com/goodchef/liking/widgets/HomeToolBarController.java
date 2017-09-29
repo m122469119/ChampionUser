@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.aaron.android.framework.utils.EnvironmentUtils;
 import com.aaron.android.framework.utils.PopupUtils;
+import com.aaron.android.framework.utils.ToolBarUtils;
 import com.aaron.common.utils.StringUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.CoursesResult;
@@ -66,6 +67,7 @@ public class HomeToolBarController {
     public View createToolbarLayout() {
         mRootView = LayoutInflater.from(context).inflate(R.layout.layout_liking_lesson_title_bar, null, false);
         ButterKnife.bind(this, mRootView);
+        ToolBarUtils.setToolbarHeight(context,toolbar);
         initDefaultTitle();
         return mRootView;
     }
