@@ -12,9 +12,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.aaron.android.framework.base.widget.recycleview.BaseRecycleViewHolder;
+import com.aaron.android.framework.utils.ResourceUtils;
+import com.aaron.common.utils.DateUtils;
 import com.goodchef.liking.R;
 import com.goodchef.liking.data.remote.retrofit.result.SportListResult;
 import com.goodchef.liking.module.smartspot.SmartspotDetailResult;
+
+import java.util.Date;
 
 /**
  * @Author SanFen
@@ -77,6 +81,8 @@ public class SportDataAdapter extends BaseRecyclerAdapter<SportListResult.DataBe
         @BindView(R.id.image_next)
         ImageView mPlay;
 
+        private StringBuilder sb = new StringBuilder();
+
         public SportDataViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -91,27 +97,39 @@ public class SportDataAdapter extends BaseRecyclerAdapter<SportListResult.DataBe
         }
 
         private void setImageIcon(SportListResult.DataBean.ListBean object) {
+            sb.setLength(0);
             switch (object.getType()) {
                 case SportListResult.DataBean.ListBean.TYPE_LEAGUE_LESSON:
                     mImageIcon.setImageResource(R.mipmap.sport_league_lesson);
                     mPlay.setVisibility(View.GONE);
-                    mContent.setText(R.string.sport_league_lesson);
+                    sb.append(ResourceUtils.getString(R.string.sport_league_lesson));
                     break;
                 case SportListResult.DataBean.ListBean.TYPE_PRIVATE_LESSON:
                     mImageIcon.setImageResource(R.mipmap.sport_private_lesson);
                     mPlay.setVisibility(View.GONE);
-                    mContent.setText(R.string.sport_private_lesson);
+                    sb.append(ResourceUtils.getString(R.string.sport_private_lesson));
                     break;
                 case SportListResult.DataBean.ListBean.TYPE_TREADMILL:
                     mImageIcon.setImageResource(R.mipmap.sport_treadmill);
                     mPlay.setVisibility(View.GONE);
-                    mContent.setText(R.string.sport_treadmill);
+                    sb.append(ResourceUtils.getString(R.string.sport_treadmill));
                     break;
                 case SportListResult.DataBean.ListBean.TYPE_SMARTSPOT:
                     mImageIcon.setImageResource(R.mipmap.sport_smartspot);
                     mPlay.setVisibility(View.VISIBLE);
-                    mContent.setText(R.string.sport_smartspot);
+                    sb.append(ResourceUtils.getString(R.string.sport_smartspot));
                     break;
+            }
+            sb.append("  ");
+            sb.append(dateParse(object.getDate()));
+            mContent.setText(sb.toString());
+        }
+
+        private String dateParse(String data) {
+            try {
+                return DateUtils.formatDate("HH:mm:ss", DateUtils.parseString("yyyy-MM-dd HH:mm:ss", data));
+            }catch (Exception e){
+                return "";
             }
         }
     }
