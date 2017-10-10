@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -203,16 +204,27 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
                 if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
                     LogUtils.i(TAG, "正在缓冲....");
-                    layoutLoading.setVisibility(View.VISIBLE);
+                    if (layoutLoading.getVisibility() == View.INVISIBLE) {
+                        layoutLoading.setVisibility(View.VISIBLE);
+                        layoutLoading.setBackgroundColor(ResourceUtils.getColor(R.color.transparent));
+                    }
                     showLoading();
                 } else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
-                    layoutLoading.setVisibility(View.GONE);
                     dismissLoading();
+                    hideLoadingLayout();
                     LogUtils.i(TAG, "缓冲结束....");
                 }
                 return false;
             }
+
+
         });
+    }
+
+    private void hideLoadingLayout() {
+        if (layoutLoading.getVisibility() == View.VISIBLE) {
+            layoutLoading.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void seekBarListener() {
@@ -248,7 +260,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                layoutLoading.setVisibility(View.GONE);
                 // 首先取得video的宽和高
                 int vWidth = mediaPlayer.getVideoWidth();
                 int vHeight = mediaPlayer.getVideoHeight();
@@ -282,6 +293,9 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                     }
                 }, 0, 1000);
                 showOrHiddenController();
+                if (Build.VERSION.SDK_INT < 22 && layoutLoading.getVisibility() == View.VISIBLE) {
+                    hideLoadingLayout();
+                }
                 dismissLoading();
             }
 
@@ -389,6 +403,7 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         mySurfaceView.getHolder().getSurface().release();
         postion = 0;
         release();
+        unregister();
         super.onDestroy();
     }
 
@@ -443,12 +458,6 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
     }
 
     private void playNextVideo() {
-//        Intent intent = new Intent(this, VideoPlayActivity.class);
-//        intent.putExtra(VIDEO_POSTION, postion);
-//        intent.putStringArrayListExtra(KEY_VIDEO, mVideoList);
-//        intent.putExtra(KEY_TITLE, mTitle);
-//        startActivity(intent);
-//        finish();
         release();
         initPlay();
         initHolder(holder);
@@ -479,8 +488,11 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
                 //异步准备 准备工作在子线程中进行 当播放网络视频时候一般采用此方法
                 prepareVideo();
                 mediaPlayer.prepareAsync();
+                if (layoutLoading.getVisibility() == View.INVISIBLE) {
+                    layoutLoading.setVisibility(View.VISIBLE);
+                    layoutLoading.setBackgroundColor(ResourceUtils.getColor(R.color.black));
+                }
                 showLoading();
-                layoutLoading.setVisibility(View.VISIBLE);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -628,16 +640,24 @@ public class VideoPlayActivity extends AppBarMVPSwipeBackActivity<VideoPlayContr
         }
     }
 
+    private NetBroadcastReceiver mNetBroadcastReceiver;
 
     /**
      * 注册网络
      */
     private void registerNet() {
         IntentFilter filter = new IntentFilter();
+        mNetBroadcastReceiver = new NetBroadcastReceiver();
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(new NetBroadcastReceiver(), filter);
+        registerReceiver(mNetBroadcastReceiver, filter);
+    }
+
+    private void unregister() {
+        if (mNetBroadcastReceiver != null) {
+            unregisterReceiver(mNetBroadcastReceiver);
+        }
     }
 
 

@@ -46,8 +46,8 @@ public class VideoPlayFragment extends BaseFragment implements SurfaceHolder.Cal
     // 自动隐藏自定义播放器控制条的时间
     private static final int HIDDEN_TIME = 5000;
 
-    @BindView(R.id.my_SurfaceView)
-    SurfaceView mySurfaceView;
+//    @BindView(R.id.my_SurfaceView)
+//    SurfaceView mySurfaceView;
     @BindView(R.id.layout_video)
     LinearLayout layoutVideo;
     @BindView(R.id.playtime_textView)
@@ -182,7 +182,7 @@ public class VideoPlayFragment extends BaseFragment implements SurfaceHolder.Cal
     private void initPlay() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC); // 设置多媒体流类型
-        mySurfaceView.getHolder().addCallback(this);
+      //  mySurfaceView.getHolder().addCallback(this);
         surfaceViewTouch();
         prepareVideo();
         playerCompletion();
@@ -247,16 +247,16 @@ public class VideoPlayFragment extends BaseFragment implements SurfaceHolder.Cal
      * 滑动
      */
     private void surfaceViewTouch() {
-        mySurfaceView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    //当手指按下的时候
-                    showOrHiddenController();
-                }
-                return false;
-            }
-        });
+//        mySurfaceView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    //当手指按下的时候
+//                    showOrHiddenController();
+//                }
+//                return false;
+//            }
+//        });
     }
 
 
@@ -341,12 +341,12 @@ public class VideoPlayFragment extends BaseFragment implements SurfaceHolder.Cal
         vWidth = (int) Math.ceil((float) vWidth / ratio);
         vHeight = (int) Math.ceil((float) vHeight / ratio);
         // 设置surfaceView的布局参数
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mySurfaceView.getLayoutParams();
-        lp.width = vWidth;
-        lp.height = vHeight;
-        //(vWidth, vHeight);
-        lp.gravity = Gravity.CENTER;
-        mySurfaceView.setLayoutParams(lp);
+//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mySurfaceView.getLayoutParams();
+//        lp.width = vWidth;
+//        lp.height = vHeight;
+//        //(vWidth, vHeight);
+//        lp.gravity = Gravity.CENTER;
+//        mySurfaceView.setLayoutParams(lp);
     }
 
 
@@ -386,8 +386,8 @@ public class VideoPlayFragment extends BaseFragment implements SurfaceHolder.Cal
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
-        mySurfaceView.getHolder().removeCallback(this);
-        mySurfaceView.getHolder().getSurface().release();
+//        mySurfaceView.getHolder().removeCallback(this);
+//        mySurfaceView.getHolder().getSurface().release();
         release();
         super.onDestroy();
     }
@@ -397,7 +397,7 @@ public class VideoPlayFragment extends BaseFragment implements SurfaceHolder.Cal
             mediaPlayer.pause();
             mediaPlayer.stop();
             mediaPlayer.release();
-            mySurfaceView.getHolder().removeCallback(this);
+//            mySurfaceView.getHolder().removeCallback(this);
             mediaPlayer = null;
         }
     }
